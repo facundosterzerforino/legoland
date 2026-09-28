@@ -2,14 +2,49 @@
 
 #include "build.h"
 #include "globals.h"
+#include "image_sprite.h"
+#include "llidb.h"
+#include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "render3d.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
-LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) { STUB(); }
+LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) {
+    int i;
+
+    if (DAT_006670f8 >= 256) {
+        return 0;
+    }
+    for (i = 0; i < 256; i++) {
+        if (DAT_006664f8[i].ride == NULL) {
+            break;
+        }
+    }
+    if (i >= 256) {
+        return 0;
+    }
+    DAT_006664f8[i].ride = (struct Ride *)obj;
+    DAT_006664f8[i].coords = coords;
+    DAT_006664f8[i].elapsed = 0;
+    DAT_006670f8++;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00450c00
-void FUN_00450c00(void) { STUB(); }
+void FUN_00450c00(TileId coords) {
+    int i;
+    BuildObj *b;
+
+    i = 0;
+    for (b = DAT_006664f8; (int)&b->coords < (int)&DAT_006670fc; b++, i++) {
+        if (b->coords.id == coords.id) {
+            DAT_006670f8--;
+            DAT_006664f8[i].ride = NULL;
+            return;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00450c40
 LEGO_EXPORT int GetBuildTime(Ride *objClass) {
@@ -32,7 +67,43 @@ unsigned int FUN_00450c70(void) {
 LEGO_EXPORT void ProcessBuildingTimes(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450cf0
-LEGO_EXPORT void GetBuildAnimFrame(void) { STUB(); }
+LEGO_EXPORT int GetBuildAnimFrame(Ride *ride, TileId coords) {
+    int i;
+    int frames;
+    int n;
+    int frame;
+    int max;
+    BuildObj *b;
+    LLS *lls;
+
+    i = 0;
+    for (b = DAT_006664f8; (int)&b->coords < (int)&DAT_006670fc; b++, i++) {
+        if (b->coords.id == coords.id) {
+            break;
+        }
+    }
+    if ((ride->anim->flags & 0x8000) != 0) {
+        max = 0;
+        for (n = 0; n < ride->anim->group->count; n++) {
+            lls = GetLLSForLayer(ride->anim, n);
+            if (lls != NULL && lls->frame_count > max) {
+                max = lls->frame_count;
+            }
+        }
+        frames = max;
+    } else {
+        lls = *ride->anim->lls;
+        if (lls == NULL) {
+            return 0;
+        }
+        frames = lls->frame_count;
+    }
+    frame = DAT_006664f8[i].elapsed * frames / GetBuildTime(ride);
+    if (frame >= frames) {
+        frame = frames - 1;
+    }
+    return frame;
+}
 
 // FUNCTION: LEGOLAND 0x00450d90
 LEGO_EXPORT void DoBuildEffects(void) { STUB(); }

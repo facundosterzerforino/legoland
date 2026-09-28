@@ -105,8 +105,9 @@ struct BuildObj {
         struct Ride *ride;
         int index;
     };
-    int field_4;
-    int field_8;
+    TileId coords;
+    unsigned short pad;
+    int elapsed;
 };
 typedef struct BuildObj BuildObj;
 
@@ -1721,7 +1722,7 @@ extern int DAT_006664ec;
 // 0x006664f8
 extern struct BuildObj DAT_006664f8[256]; /* objects under construction */
 // 0x006670f8
-extern unsigned int DAT_006670f8;
+extern int DAT_006670f8;
 // 0x006670fc
 extern unsigned int DAT_006670fc;
 // 0x00667104

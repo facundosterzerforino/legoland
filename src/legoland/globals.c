@@ -2110,7 +2110,7 @@ int DAT_006664ec;
 struct BuildObj DAT_006664f8[256] = {0};
 
 // GLOBAL: LEGOLAND 0x006670f8
-unsigned int DAT_006670f8 = 0;
+int DAT_006670f8 = 0;
 
 // GLOBAL: LEGOLAND 0x006670fc
 unsigned int DAT_006670fc;

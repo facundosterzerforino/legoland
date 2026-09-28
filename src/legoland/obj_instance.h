@@ -60,7 +60,8 @@ struct Ride {
     /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x64 */ struct Sprite *layer;
     /* 0x68 */ struct Sprite *icon; /* drawn over pending work orders */
-    /* 0x6c */ unsigned char pad_6c[0x78 - 0x6c];
+    /* 0x6c */ struct Sprite *anim; /* build-animation sprite */
+    /* 0x70 */ unsigned char pad_70[0x78 - 0x70];
     /* 0x78 */ char *name;
     /* 0x7c */ unsigned char pad_7c[0xc4 - 0x7c];
     /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */
