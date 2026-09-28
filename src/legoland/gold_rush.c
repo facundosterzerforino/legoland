@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "gold_rush.h"
@@ -92,12 +93,28 @@ struct GoldLayer {
     unsigned int flags;
 };
 
+struct GoldWalkItem {
+    unsigned char pad_0[8];
+    struct Bloke *bloke;
+};
+
+struct GoldSlot {
+    int index;
+    float weight;
+};
+
 #include "image_sprite.h"
+
+// GLOBAL: LEGOLAND 0x004b45b0
+static struct GoldSlot Gold_Slots[3] = {{0, 0.8f}, {1, 0.8f}, {2, 0.8f}};
 
 // GLOBAL: LEGOLAND 0x004b45e0
 static struct PathPair Gold_PathPairs[5] = {{-2, 0}, {0, -6}, {-6, 0}, {0, 1}, {3, 0}};
 // GLOBAL: LEGOLAND 0x004b4608
 struct PathTable DAT_004b4608 = {5, Gold_PathPairs};
+
+// GLOBAL: LEGOLAND 0x004b4610
+static struct Point Gold_Points[3] = {{0x400, 0x60}, {0x400, 0x3d0}, {0x400, 0x700}};
 
 // FUNCTION: LEGOLAND 0x00406920
 void FUN_00406920(struct GoldNode *src) {
@@ -223,7 +240,20 @@ void FUN_00406f30(void *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00406f60
-void FUN_00406f60(void) { STUB(); }
+void FUN_00406f60(struct GoldWalkItem *item, unsigned char *p) {
+    struct Bloke *b = item->bloke;
+    int slot = Gold_Slots[b->field_36].index;
+
+    b->dest.x = Gold_Points[slot].x;
+    b->dest.y = Gold_Points[slot].y;
+    b->dest.x += p[0] << 8;
+    b->dest.y += p[1] << 8;
+    b->dest.x += 0x80;
+    b->dest.y += 0x80;
+    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+    b->field_e = 7;
+    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+}
 
 // FUNCTION: LEGOLAND 0x00407000
 void FUN_00407000(void) { STUB(); }
