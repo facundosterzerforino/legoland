@@ -36,6 +36,20 @@ struct SafariObject {
     unsigned int field_c;
 };
 
+struct SafariSample {
+    unsigned char field_0;
+    unsigned char field_1;
+    unsigned char pad_2[2];
+    unsigned int field_4;
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned char pad_10[4];
+    unsigned int field_14;
+    unsigned int field_18;
+    unsigned int field_1c;
+    unsigned int field_20;
+};
+
 // FUNCTION: LEGOLAND 0x004149c0
 void FUN_004149c0(struct SafariNode *param) {
     struct SafariNode *s = (struct SafariNode *)malloc(sizeof(struct SafariNode));
@@ -59,26 +73,12 @@ void FUN_00414a60(void) {
 }
 
 struct SafariKey {
-    unsigned char g;
-    unsigned char h;
     unsigned short id;
+    unsigned short pad;
 };
 
 // FUNCTION: LEGOLAND 0x00414a80
 void *FUN_00414a80(struct SafariKey *key) { STUB(); }
-
-struct SafariSample {
-    unsigned char field_0;
-    unsigned char field_1;
-    unsigned char pad_2[2];
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned char pad_10[4];
-    unsigned int field_14;
-    unsigned char pad_18[4];
-    unsigned int field_1c;
-};
 
 // FUNCTION: LEGOLAND 0x00414ab0
 void FUN_00414ab0(struct SafariSample *a1) {
@@ -96,7 +96,21 @@ void FUN_00414ab0(struct SafariSample *a1) {
 }
 
 // FUNCTION: LEGOLAND 0x00414b10
-void FUN_00414b10(struct SafariNode *node) { STUB(); }
+void FUN_00414b10(struct SafariNode *node) {
+    struct SafariSample *a1 = (struct SafariSample *)node;
+    struct SampleSource src;
+
+    a1->field_1c = 0;
+    a1->field_c = 0;
+    a1->field_18 = rand() % 2 + 3;
+    a1->field_20 = 0;
+    a1->field_4 = 0;
+    src.type = 2;
+    a1->field_14 &= 0xFFFFBFFE;
+    src.field_8 = a1->field_0;
+    src.field_c = a1->field_1;
+    UnSourceAndFadeAllSamplesFromSource(&src, -200);
+}
 
 // FUNCTION: LEGOLAND 0x00414b80
 void FUN_00414b80(void) { STUB(); }
