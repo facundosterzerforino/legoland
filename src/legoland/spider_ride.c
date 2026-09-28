@@ -26,8 +26,10 @@ struct SpiderState {
     unsigned char field_4;
     unsigned char pad_5[3];
     unsigned int field_8;
-    unsigned char pad_c[4];
+    unsigned char field_c;
+    unsigned char pad_d[3];
     unsigned int field_10;
+    unsigned char field_14;
 };
 
 struct CarNode {
@@ -113,7 +115,16 @@ void FUN_00415a60(struct SpiderState *a) {
 }
 
 // FUNCTION: LEGOLAND 0x00415a90
-int FUN_00415a90(struct SpiderNode *node) { STUB(); }
+int FUN_00415a90(struct SpiderNode *node) {
+    struct SpiderState *a = (struct SpiderState *)node;
+    a->field_10 = 0;
+    a->field_4 = 0;
+    a->field_c = rand() % 2 != 0 ? 4 : 3;
+    a->field_8 &= 0xffffbffe;
+    a->field_14 = 0;
+    a->field_2 = 0;
+    FUN_00415a20((const unsigned char *)a);
+}
 
 // FUNCTION: LEGOLAND 0x00415ae0
 void FUN_00415ae0(void) { STUB(); }
