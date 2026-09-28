@@ -5,11 +5,18 @@
 struct LLIDB_Head;
 struct RoadEditArg;
 struct RoadPlaceArg;
+struct NeighborResult;
+struct RoadTile;
 
 unsigned int FUN_00413970(unsigned short param_1);
 void FUN_004132a0(TileId tile, int param_2, int param_3, unsigned int param_4, unsigned int param_5);
 void FUN_004133e0(int param_1, int param_2);
 void FUN_00413650(short param_1, int param_2, int param_3);
+
+void FUN_00413450();
+struct RoadTile *FUN_004134f0(int arg1, int arg2, struct RoadTile *tile);
+int FUN_00413520(int x, int y, struct NeighborResult *out);
+int FUN_004135d0(int x, int y, struct NeighborResult *out);
 
 void FUN_00413a10(struct LLIDB_Head *head);
 void FUN_00413a80();
@@ -22,4 +29,4 @@ void FUN_00414440(void);
 void FUN_00414830();
 void FUN_00414880(struct RoadEditArg *param_1, unsigned int param_2, unsigned int param_3);
 void FUN_00414940(struct RoadEditArg *param_1);
-void FUN_00414950();
+void FUN_00414950(struct RoadEditArg *edit, struct RoadPlaceArg *place);
