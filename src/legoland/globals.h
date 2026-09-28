@@ -656,6 +656,8 @@ extern char DAT_004b8344;
 extern char *PTR_DAT_004b8348[8];
 // 0x004b8368
 extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
+// 0x004b85c4
+extern HANDLE DAT_004b85c4;
 // 0x004b8710
 extern unsigned char DAT_004b8710[0x40];
 // 0x004b8750
