@@ -287,7 +287,17 @@ void FUN_00403690(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004036b0
-void FUN_004036b0(void) { STUB(); }
+signed char FUN_004036b0(struct CatapultNode *node) {
+    signed char i = rand() % 4;
+
+    while (node->slots[i] != NULL) {
+        i++;
+        if (i >= 4) {
+            i = 0;
+        }
+    }
+    return i;
+}
 
 // FUNCTION: LEGOLAND 0x004036f0
 void FUN_004036f0(void) { STUB(); }
