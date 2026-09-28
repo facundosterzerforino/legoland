@@ -69,6 +69,8 @@ struct CopterFXList {
     /* 0x08 */ void *field_8;
     /* 0x0c */ unsigned char pad_c[0x14 - 0xc];
     /* 0x14 */ void *field_14;
+    /* 0x18 */ unsigned char pad_18[0x20 - 0x18];
+    /* 0x20 */ void *field_20;
 };
 
 struct CopterChainNode {
@@ -418,10 +420,35 @@ unsigned int *FUN_00404490(struct CopterEditObject *editobj, unsigned short uid)
 }
 
 // FUNCTION: LEGOLAND 0x00404580
-void FUN_00404580(void) { STUB(); }
+void FUN_00404580(Element *obj, TileId tile, struct Cursor *cursor) {
+    struct CopterSfxNode *node;
+    struct SampleSource src;
+    unsigned int x;
+    unsigned int y;
+
+    node = (struct CopterSfxNode *)FUN_00403d00((struct CopterSource *)&tile);
+    if (node != NULL) {
+        FUN_00403c80((struct CopterNode *)node);
+    }
+    StandardRemoveObject(obj, tile, cursor);
+    RemoveAllBlokesFromRide(obj->ride, tile);
+    x = node->field_0;
+    y = node->field_1;
+    src.type = 2;
+    src.field_8 = x;
+    src.field_c = y;
+    UnSourceAndFadeAllSamplesFromSource(&src, -200);
+}
 
 // FUNCTION: LEGOLAND 0x00404600
-void FUN_00404600(void) { STUB(); }
+void FUN_00404600(Element *obj, int *coords) {
+    TileId tile;
+
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
+    AddBasicObject(obj, coords);
+    FUN_00403c40((struct CopterSource *)&tile);
+}
 
 // FUNCTION: LEGOLAND 0x00404630
 void FUN_00404630(void) { STUB(); }
@@ -489,7 +516,38 @@ void FUN_004048b0(struct CopterSfxNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004049a0
-void FUN_004049a0(struct CopterNode *node, int param) { STUB(); }
+void FUN_004049a0(struct CopterNode *node, int param) {
+    struct CopterFXList *fx = (struct CopterFXList *)Helicopter_SFX;
+    struct SampleParams params;
+    struct CopterSfxNode *n = (struct CopterSfxNode *)node;
+
+    n->layer[1].flags &= ~1u;
+    n->layer[0].flags &= ~1u;
+    n->layer[2].flags &= ~1u;
+    n->layer[3].flags &= ~1u;
+    n->layer[4].flags &= ~1u;
+    n->field_c = 0;
+    n->field_10 = 0;
+    n->field_2 = 0;
+    n->layer[1].field_4 = n->layer[1].field_1c - 1;
+    n->layer[0].field_4 = n->layer[0].field_1c - 1;
+    n->layer[2].field_4 = n->layer[2].field_1c - 1;
+    n->layer[3].field_4 = n->layer[3].field_1c - 1;
+    n->layer[4].field_4 = n->layer[4].field_1c - 1;
+    n->layer[1].rider = 0;
+    n->layer[0].rider = 0;
+    n->layer[2].rider = 0;
+    n->layer[3].rider = 0;
+    n->layer[4].rider = 0;
+    n->field_8 &= ~0x4001u;
+    if (param == 0) {
+        params.field_8 = n->field_0;
+        params.field_0 = 2;
+        params.field_c = n->field_1;
+        UnSourceAndFadeAllSamplesFromSource(&params, -200);
+        PlayInstanceOfSample(fx->field_20, 0, 1, &params);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00404a90
 void FUN_00404a90(struct CopterNode *node) { STUB(); }
@@ -510,7 +568,19 @@ void FUN_00404bc0(void) {
 void FUN_00404be0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404f20
-void FUN_00404f20(void) { STUB(); }
+unsigned int FUN_00404f20(struct CopterChainNode *node, struct CopterSource *id) {
+    struct CopterChainNode *cur;
+    unsigned int idx = 0;
+
+    for (cur = ((struct CopterChainRide *)DAT_004c1198)->chain; cur != NULL; cur = cur->next) {
+        struct CopterSource *p = (struct CopterSource *)((char *)cur + 0xc);
+        if (p->field_0 == id->field_0 && cur == node) {
+            return idx;
+        }
+        idx++;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00404f60
 LEGO_EXPORT int Copters_Save(void) {
