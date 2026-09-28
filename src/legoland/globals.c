@@ -1642,7 +1642,10 @@ struct Position *DAT_006160e4;
 struct EarthNode *DAT_006160e8;
 
 // GLOBAL: LEGOLAND 0x006160f4
-unsigned int DAT_006160f4;
+struct Ride *DAT_006160f4;
+
+// GLOBAL: LEGOLAND 0x006160f0
+struct Sprite *DAT_006160f0;
 
 // GLOBAL: LEGOLAND 0x006160fc
 struct Sprite *DAT_006160fc;

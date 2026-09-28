@@ -1409,7 +1409,9 @@ extern unsigned int DAT_006160cc;
 // 0x006160e8
 extern struct EarthNode *DAT_006160e8;
 // 0x006160f4
-extern unsigned int DAT_006160f4;
+extern struct Ride *DAT_006160f4;
+// 0x006160f0
+extern struct Sprite *DAT_006160f0;
 // 0x006160fc
 extern struct Sprite *DAT_006160fc;
 // 0x00616100
