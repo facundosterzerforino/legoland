@@ -250,7 +250,12 @@ struct Sample *FUN_00492a60(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00492aa0
-LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2) { STUB(); }
+LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2) {
+    unsigned short range = (unsigned short)param_2;
+    int percent = rand() % (range * 2) - range + 100;
+
+    SetSampleFrequency(sample, (int)FUN_00492a60(sample) * percent / 100);
+}
 
 // FUNCTION: LEGOLAND 0x00492af0
 LEGO_EXPORT int SetSampleFade(struct Sample *sample, unsigned int fade) {

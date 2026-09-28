@@ -84,3 +84,47 @@ The callee `FUN_00451740` got a real signature `int (char*, char*, char*)` in `c
 Takeaway: for small functions the process is mostly *reading* — naming calls, addresses and idioms.
 The MSVC6 idioms (inline `strlen`, `neg/sbb/neg`, `add esp` batching) come out on their own when
 the source is written in the natural way.
+
+---
+
+## Example 2: `AdjustPSampleFreq` (sound_sfx.c, 128 bytes) — 0% → 100% first try
+
+Picking a target: a small script lists stubs with their size (distance to the next function's address)
+so we can choose by size. Named functions (not `FUN_...`) are easier: the name usually says what to do.
+
+### Original asm, decoded
+
+```
+and  edi,0xffff            ; p = (unsigned short)param_2
+call _rand ; cdq
+lea  ecx,[edi+edi] ; idiv ecx   ; edx = rand() % (2*p)   (signed remainder)
+mov  esi,edx ; sub esi,edi ; add esi,0x64    ; pct = rem - p + 100
+call 0x492a60(sample)      ; current frequency   (FUN_00492a60)
+imul ecx,esi               ; freq * pct
+mov eax,0x51eb851f ; imul ; sar edx,5 ; shr eax,31 ; add edx,eax   ; /100 (signed magic-number divide)
+call 0x492a20(sample, ...) ; SetSampleFrequency(sample, freq*pct/100)
+```
+
+Idioms worth knowing: `mov eax,0x51eb851f ... imul ... sar 5` is how MSVC divides by the constant 100;
+`cdq; idiv` means signed `%`. So the intent is: *randomly detune the sample by ±p percent*.
+
+### The C
+
+```c
+LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2) {
+    unsigned short range = (unsigned short)param_2;
+    int percent = rand() % (range * 2) - range + 100;
+
+    SetSampleFrequency(sample, (int)FUN_00492a60(sample) * percent / 100);
+}
+```
+
+`FUN_00492a60` is really "get frequency" but is typed as returning a pointer (it reuses its `sample`
+parameter as an out-slot); a cast at the call site was enough, so it was left untouched.
+
+Result: 100%. Progress 74.53% → 74.69%.
+
+### Cost of this one
+
+About 8k tokens end to end (stub search, disassembly, two lookups, one edit, build+verify) — cheap when it
+matches first time. The expensive cases are the ones that don't (each retry = edit + build + verify).
