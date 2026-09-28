@@ -61,12 +61,13 @@ struct RoadPlaceArg {
 
 struct NeighborResult {
     struct RoadQueueEntry *field_0;
-    unsigned char pad_4[4];
+    struct RoadQueueEntry *field_4;
     struct RoadQueueEntry *field_8;
-    unsigned char pad_c[4];
+    struct RoadQueueEntry *field_c;
     struct RoadQueueEntry *field_10;
-    unsigned char pad_14[4];
+    struct RoadQueueEntry *field_14;
     struct RoadQueueEntry *field_18;
+    struct RoadQueueEntry *field_1c;
 };
 
 // FUNCTION: LEGOLAND 0x004132a0
@@ -155,7 +156,36 @@ struct RoadTile *FUN_004134f0(int arg1, int arg2, struct RoadTile *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x00413520
-void FUN_00413520(void) { STUB(); }
+int FUN_00413520(int x, int y, struct NeighborResult *out) {
+    struct NeighborResult r;
+    struct RoadTile *t3;
+    int count = 0;
+
+    FUN_004135d0(x, y, &r);
+    r.field_0 = (struct RoadQueueEntry *)FUN_004134f0(x, y, (struct RoadTile *)r.field_0);
+    if (r.field_0 != NULL) {
+        count = 1;
+    }
+    r.field_8 = (struct RoadQueueEntry *)FUN_004134f0(x, y, (struct RoadTile *)r.field_8);
+    if (r.field_8 != NULL) {
+        count++;
+    }
+    r.field_10 = (struct RoadQueueEntry *)FUN_004134f0(x, y, (struct RoadTile *)r.field_10);
+    if (r.field_10 != NULL) {
+        count++;
+    }
+    t3 = FUN_004134f0(x, y, (struct RoadTile *)r.field_18);
+    if (t3 != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out->field_0 = r.field_0;
+        out->field_8 = r.field_8;
+        out->field_10 = r.field_10;
+        out->field_18 = (struct RoadQueueEntry *)t3;
+    }
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x004135d0
 int FUN_004135d0(int x, int y, struct NeighborResult *out) {
@@ -384,4 +414,16 @@ void FUN_00414940(struct RoadEditArg *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00414950
-void FUN_00414950(void) { STUB(); }
+void FUN_00414950(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
+    struct NeighborResult r;
+    struct RoadTile *tile = (struct RoadTile *)FUN_004125a0(place->field_0, place->field_4);
+
+    if (tile != NULL) {
+        FUN_004135d0(place->field_0, place->field_4, &r);
+        tile->flags |= 0x10;
+        FUN_00413650(*(short *)((char *)tile + 8), place->field_0, place->field_4);
+        tile->field_1d = 0;
+        tile->field_1c = 0;
+        IncrementObjectCount((struct ObjectCount *)edit->field_c);
+    }
+}
