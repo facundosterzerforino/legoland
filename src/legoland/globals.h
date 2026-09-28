@@ -1555,6 +1555,8 @@ extern void *DAT_0062fe90;
 extern void *DAT_0062fe94;
 // 0x0062fe9c
 extern void *DAT_0062fe9c;
+// 0x0062fea4
+extern int DAT_0062fea4;
 // 0x0062fea8
 extern void *DAT_0062fea8;
 // 0x0062feac
