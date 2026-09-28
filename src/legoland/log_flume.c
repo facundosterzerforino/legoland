@@ -67,6 +67,12 @@ struct PairHolder {
     struct StateNode *var_34;
 };
 
+struct ModeNode {
+    unsigned char pad_0[0x18];
+    unsigned int flag_18;
+    unsigned int mode_1c;
+};
+
 struct SubBuf {
     unsigned char b0;
     unsigned char b1;
@@ -280,7 +286,20 @@ void FUN_004090c0(struct Node *node1, struct Node *node2, struct Node *node3) {
 struct Node *FUN_004090e0(struct ListContainer *container) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00409110
-void FUN_00409110(void) { STUB(); }
+void FUN_00409110(struct ListContainer *container) {
+    struct Node *node = FUN_004090e0(container);
+    struct Node *next;
+    struct Node *prev;
+    if (node != NULL) {
+        do {
+            next = node->next;
+            prev = node->prev;
+            node->next = prev;
+            node->prev = next;
+            node = next;
+        } while (next != NULL);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00409140
 int FUN_00409140(struct ListContainer *container) {
@@ -300,7 +319,14 @@ int FUN_00409140(struct ListContainer *container) {
 }
 
 // FUNCTION: LEGOLAND 0x00409170
-void FUN_00409170(void) { STUB(); }
+void FUN_00409170(struct ListContainer *container, struct ListNode *node) {
+    node->prev = container->tail_2c;
+    node->next = NULL;
+    if (container->tail_2c != NULL) {
+        container->tail_2c->next = node;
+    }
+    container->tail_2c = node;
+}
 
 // FUNCTION: LEGOLAND 0x004091a0
 void FUN_004091a0(struct ListContainer *container, struct ListNode *node) {
@@ -353,7 +379,18 @@ void FUN_00409220(struct ListContainer *container, struct ListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00409270
-void FUN_00409270(void) { STUB(); }
+void FUN_00409270(struct ListContainer *other, struct ListContainer *container) {
+    struct ListNode *node = container->tail_2c;
+    struct ListNode *prev;
+    while (node != NULL) {
+        prev = node->prev;
+        FUN_004091a0(container, node);
+        free(node);
+        node = prev;
+    }
+    FUN_00409220(other, (struct ListNode *)container);
+    free(container);
+}
 
 // FUNCTION: LEGOLAND 0x004092b0
 void FUN_004092b0(void) { STUB(); }
@@ -502,7 +539,19 @@ void FUN_00409740(struct StateNode *node) { STUB(); }
 void FUN_004097a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00409a50
-void FUN_00409a50(void *param) { STUB(); }
+void FUN_00409a50(struct ModeNode *node) {
+    switch (node->mode_1c) {
+    case 0:
+    case 2:
+        node->mode_1c = 0;
+        break;
+    case 1:
+    case 3:
+        node->mode_1c = 1;
+        break;
+    }
+    node->flag_18 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x00409a90
 void FUN_00409a90(void *edi_ptr[4], struct StateNode *esi_ptr[4]) {
@@ -636,7 +685,15 @@ void FUN_0040a230(struct StateNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0040a2a0
-void FUN_0040a2a0(void) { STUB(); }
+void FUN_0040a2a0(void *other, struct StateNode **ctx) {
+    FUN_00409410((unsigned int *)ctx);
+    if (other != NULL) {
+        FUN_0040a0f0(ctx[0]);
+        FUN_0040a160(ctx[1]);
+        FUN_0040a1d0(ctx[2]);
+        FUN_0040a230(ctx[3]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040a2e0
 void FUN_0040a2e0(void) { STUB(); }
@@ -973,7 +1030,14 @@ unsigned int FUN_0040cf30(unsigned int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0040cf50
-void FUN_0040cf50(void) { STUB(); }
+void FUN_0040cf50(unsigned int arg, struct Slot **slots) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (slots[i] != NULL && slots[i]->key != arg) {
+            slots[i] = NULL;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040cf80
 unsigned int FUN_0040cf80(struct Slot **arg) {
