@@ -23,12 +23,6 @@
 
 #pragma intrinsic(memset, memcpy, strcpy, strlen)
 
-struct ProfileSprite {
-    unsigned char pad_0[0xc];
-    short field_c;
-    short field_e;
-};
-
 struct RideState {
     unsigned char pad_0[0x18];
     unsigned char var_18;
@@ -365,7 +359,7 @@ LEGO_EXPORT void DeleteProfileList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00491bd0
-LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
+LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite) {
     char cursor_str[10];
     unsigned char count;
     char input;
@@ -399,8 +393,8 @@ LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
             }
         }
     }
-    top = sprite->field_e + 7;
-    left = sprite->field_c + 0x14;
+    top = sprite->y + 7;
+    left = sprite->x + 0x14;
     bottom = top + 0x13;
     right = left + 0xc0;
     if (count != 0) {
@@ -414,7 +408,7 @@ LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
         center_x = (right + left) >> 1;
     }
     DAT_00798894 = (center_x - ((right + left) >> 1)) * 2;
-    top = sprite->field_e + 5;
+    top = sprite->y + 5;
     blink = "|";
     if (GetBlink() == 0) {
         // STRING: LEGOLAND 0x004b8ad4

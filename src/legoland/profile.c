@@ -320,7 +320,84 @@ LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048cf10
-LEGO_EXPORT void PrintProfileDetails(void) { STUB(); }
+LEGO_EXPORT void PrintProfileDetails(void) {
+    struct IconNode *icon;
+    struct IconNode *last;
+    char *name;
+    int y;
+    int x;
+    unsigned char sel;
+    int show;
+
+    y = 0x72;
+    DAT_007cb360->flags |= 0x400;
+    icon = DAT_006687c8;
+    FUN_00455e50(DAT_007cb340, 0x8d, y, 0xf0, 0x2e, 3, 0x25, 0xffffff, 0);
+    while (icon != NULL) {
+        sel = 1;
+        show = 1;
+        if ((icon->flags & 0x400) == 0 && (icon->field_20b & 1)) {
+            if (DAT_00813a44.x >= icon->x - 0x18 && DAT_00813a44.x < icon->x && DAT_00813a44.y >= icon->slot * 0x26 + 0x86 &&
+                DAT_00813a44.y < icon->field_10 + icon->y) {
+                DAT_004bdd00 = 2;
+                DAT_004bdd04 = (struct Bloke *)icon;
+            }
+            if (DAT_0080ffe3 == icon->slot) {
+                if (DAT_007986e4 != 0) {
+                    FUN_0046d680(icon, DAT_007986b8);
+                    last = icon;
+                    icon->y = icon->slot * 0x26 + 0x6b;
+                    y = icon->y + 0x22;
+                } else if (DAT_007986e8 != 0) {
+                    EnterNewProfile(icon);
+                    show = 0;
+                    last = icon;
+                } else {
+                    FUN_0046d680(icon, DAT_007986bc);
+                    icon->y = icon->slot * 0x26 + 0x6b;
+                    y = icon->y + 0x22;
+                    LightUpthisDeleteIcon(icon, 1);
+                    last = icon;
+                }
+            } else {
+                FUN_0046d680(icon, FUN_0048c5e0(icon->slot));
+                sel = 0;
+                icon->y = icon->slot * 0x26 + 0x86;
+                y = icon->y + 7;
+            }
+            x = icon->x + 0x14;
+            name = (char *)icon->field_18p;
+            if (name != NULL && show) {
+                if (DAT_0080ffe3 - 1 != icon->slot || (DAT_007986e4 == 0 && DAT_007986e8 == 0)) {
+                    if (sel) {
+                        FUN_00455e50(name, x, y, 0xe0, 0x13, 2, 0x25, 0, 0xffffff);
+                    } else {
+                        FUN_00455e50(name, x, y, 0xe0, 0x13, 2, 0x25, 0xffffff, 0);
+                    }
+                }
+            }
+        }
+        icon = icon->next;
+    }
+    if (DAT_007986e4 != 0) {
+        FUN_00455e50(GetString(0x85), last->x + 0x14, last->y + 7, 0x9b, 0x13, 2, 0x25, 0, 0xffffff);
+    } else if (DAT_007986e8 != 0) {
+        FUN_00455e50(GetString(0x86), last->x + 0x14, last->y - 0x14, 0xe0, 0x13, 2, 0x25, 0, 0xffffff);
+        UpdateProfileCheckBoxIcons();
+    }
+    if (DAT_0080ffe3 != 0 && DAT_007986e4 == 0) {
+        if (DAT_007986e8 != 0) {
+            if (FUN_00491540()) {
+                ((struct IconNode *)DAT_007986e0)->flags &= ~0x400;
+                return;
+            }
+        } else {
+            ((struct IconNode *)DAT_007986e0)->flags &= ~0x400;
+            return;
+        }
+    }
+    ((struct IconNode *)DAT_007986e0)->flags |= 0x400;
+}
 
 // FUNCTION: LEGOLAND 0x0048d230
 void FUN_0048d230(void) {

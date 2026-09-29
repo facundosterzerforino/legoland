@@ -17,6 +17,10 @@ LEGO_EXPORT void DeleteProfileList(void);
 LEGO_EXPORT void NewPrintCent(char *text, int font, RECT rc, int color_flag);
 int FUN_00491e40(char *text, int font, RECT rc, int color_flag);
 
+struct IconNode;
+LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite);
+unsigned int FUN_00491540(void);
+
 struct ProfileNode {
     /* 0x00 */ struct ProfileNode *next;
     /* 0x04 */ struct ProfileData data;
