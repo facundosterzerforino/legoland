@@ -268,7 +268,21 @@ unsigned char FUN_0048cc30(void *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048cd50
-LEGO_EXPORT void LightUpthisDeleteIcon(void) { STUB(); }
+LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
+    DAT_007cb360->flags &= ~0x400;
+    if (param_2 != 0) {
+        DAT_007cb360->y = icon->y + 0x1b;
+        DAT_007cb360->x = icon->x + 0xe1;
+    } else {
+        DAT_007cb360->y = icon->y + (DAT_007986e4 != 0 ? 0x1b : 0);
+        DAT_007cb360->x = icon->x + 0xff;
+    }
+    FUN_0046d680(DAT_007cb360, DAT_00798690);
+    if (DAT_00813a44.x < DAT_007cb360->x + 0x24 && DAT_007cb360->x < DAT_00813a44.x &&
+        DAT_00813a44.y < DAT_007cb360->y + 0x1b && DAT_007cb360->y < DAT_00813a44.y) {
+        FUN_0046d680(DAT_007cb360, DAT_0079868c);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048ce20
 LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) { STUB(); }

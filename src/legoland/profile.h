@@ -10,6 +10,7 @@ LEGO_EXPORT void InitListProfiles(void);
 LEGO_EXPORT void PrintProfileDetails(void);
 LEGO_EXPORT void EnterNewProfileCheckBoxIcons(struct IconNode *param_1);
 LEGO_EXPORT void InitProfileCheckBoxIcons(struct IconNode *param_1);
+LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2);
 LEGO_EXPORT void UpdateProfileCheckBoxIcons(void);
 struct Sprite *FUN_0048c5e0(signed char param_1);
 void FUN_0048c860(struct IconNode *param_1);
