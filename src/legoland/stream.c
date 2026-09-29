@@ -261,7 +261,67 @@ int FUN_004983a0(unsigned char *dst, int count) {
 }
 
 // FUNCTION: LEGOLAND 0x00498420
-void FUN_00498420(void) { STUB(); }
+int FUN_00498420(void) {
+    unsigned int size;
+    unsigned int tag;
+    unsigned int *p;
+
+    _lseek(DAT_007caca8, 0, 0);
+    if (_read(DAT_007caca8, &tag, 4) != 4) {
+        return 0;
+    }
+    if (tag != 0x46464952) {
+        return 0;
+    }
+    if (_read(DAT_007caca8, &size, 4) != 4) {
+        return 0;
+    }
+    if (_read(DAT_007caca8, &tag, 4) != 4) {
+        return 0;
+    }
+    if (tag != 0x45564157) {
+        return 0;
+    }
+    if (_read(DAT_007caca8, &tag, 4) != 4) {
+        return 0;
+    }
+    if (_read(DAT_007caca8, &size, 4) != 4) {
+        return 0;
+    }
+    if (size < 0x12) {
+        DAT_007cacb0 = malloc(0x12);
+    } else {
+        DAT_007cacb0 = malloc(size);
+    }
+    if (_read(DAT_007caca8, DAT_007cacb0, size) != size) {
+        return 0;
+    }
+    if (size <= 0x12) {
+        *(short *)((char *)DAT_007cacb0 + 0x10) = 0;
+    }
+    while (_read(DAT_007caca8, &tag, 4) == 4) {
+        if (tag == 0x61746164) {
+            break;
+        }
+        if (_read(DAT_007caca8, &size, 4) != 4) {
+            return 0;
+        }
+        p = (unsigned int *)malloc(size);
+        if (_read(DAT_007caca8, p, size) != size) {
+            free(p);
+            return 0;
+        }
+        free(p);
+    }
+    if (tag != 0x61746164) {
+        return 0;
+    }
+    if (_read(DAT_007caca8, &DAT_0079ac04, 4) != 4) {
+        return 0;
+    }
+    DAT_007cacb4 = _tell(DAT_007caca8);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00498630
 void FUN_00498630(const char *param_1) { STUB(); }
