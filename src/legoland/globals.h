@@ -1562,6 +1562,12 @@ extern struct Cursor DAT_00622320[4];
 extern int DAT_006159c8[90][4];
 // 0x00615f6c
 extern unsigned int DAT_00615f6c;
+// 0x00615f84
+extern void *DAT_00615f84;
+// 0x00615f90
+extern int DAT_00615f90;
+// 0x00615fd4
+extern float DAT_00615fd4;
 // 0x00615f98
 extern unsigned int DAT_00615f98;
 // 0x00616000

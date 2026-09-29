@@ -5325,8 +5325,23 @@ void FUN_00429bb0(void *a, int b, int c, float scale, float *d) {
     d[2] = d[2] - v[2] * scale;
 }
 
+struct Out429c10 {
+    int type;
+    float x;
+    float y;
+    float z;
+};
+
 // FUNCTION: LEGOLAND 0x00429c10
-void FUN_00429c10(void) { STUB(); }
+void FUN_00429c10(int c, struct Out429c10 *out) {
+    struct FVec3 v;
+
+    FUN_00429bb0(DAT_00615f84, DAT_00615f90, c, DAT_00615fd4, (float *)&v);
+    out->x = v.x;
+    out->y = v.y;
+    out->z = v.z;
+    out->type = 3;
+}
 
 // FUNCTION: LEGOLAND 0x00429c60
 void FUN_00429c60(unsigned char *obj, int a, unsigned int b, float c, struct FVec3 *out) { STUB(); }
