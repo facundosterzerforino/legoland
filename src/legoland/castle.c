@@ -3126,15 +3126,47 @@ void FUN_00423de0(void) {
     DAT_0060f924[DAT_00610a08 * 9] = 0;
 }
 
-// FUNCTION: LEGOLAND 0x00423e20
-void FUN_00423e20(void) { STUB(); }
+struct LSub {
+    char pad0[0x10];
+    struct LSub *next;
+    char pad14[0x10];
+};
 
 struct LNode {
     char pad0[0x1c];
     struct LNode *next1c;
     char pad20[8];
     struct LNode *next28;
+    struct LSub sub;
 };
+
+// FUNCTION: LEGOLAND 0x00423e20
+void FUN_00423e20(void) {
+    struct LNode *n;
+    struct LSub *tail;
+
+    DAT_00829a80 = *(struct EditFootPrint *)(DAT_00829bf8 + 0x3c);
+    DAT_00829a80.field_10 = &DAT_0060f938;
+    DAT_0060f924[DAT_00610a08 * 9] = 0;
+    tail = (struct LSub *)((char *)&DAT_0060f924[DAT_00610a08 * 9] - 0x10);
+    if (DAT_00829ae0 == 2) {
+        for (n = (struct LNode *)DAT_00829b0c; n != (struct LNode *)&DAT_00829ae4; n = n->next28) {
+            tail->next = &n->sub;
+            tail = &n->sub;
+        }
+        tail->next = 0;
+        return;
+    }
+    for (n = (struct LNode *)DAT_00829b0c; n != 0; n = n->next28) {
+        tail->next = &n->sub;
+        tail = &n->sub;
+    }
+    for (n = (struct LNode *)DAT_00829af8[2]; n != 0; n = n->next1c) {
+        tail->next = &n->sub;
+        tail = &n->sub;
+    }
+    tail->next = 0;
+}
 
 // FUNCTION: LEGOLAND 0x00423ec0
 void FUN_00423ec0(char *param1) {
