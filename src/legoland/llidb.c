@@ -105,7 +105,82 @@ struct ODFObject {
 };
 
 // FUNCTION: LEGOLAND 0x0047aff0
-LEGO_EXPORT void LLIDB_LoadICM(void) { STUB(); }
+LEGO_EXPORT int LLIDB_LoadICM(void) {
+    int fd;
+    int fd2;
+    unsigned int page;
+    unsigned int i;
+    unsigned int remaining;
+    unsigned int n;
+    int len;
+    int zero;
+    struct Element *e;
+
+    fd = _open("LEGOLAND.ICM", _O_RDONLY | _O_BINARY);
+    if (fd == -1) {
+        fd2 = _open("LEGOLAND.ICM", _O_RDWR | _O_CREAT | _O_TRUNC | _O_BINARY, _S_IREAD | _S_IWRITE);
+        if (fd2 == fd) {
+            return LLIDB_ERR_ICMWRITE;
+        }
+        zero = 0;
+        _write(fd2, &zero, 4);
+        _close(fd2);
+        return 0;
+    }
+    _read(fd, &DAT_006691a4, 4);
+    DAT_006691a0 = (DAT_006691a4 + 0xff) & 0xffffff00;
+    DAT_006691a8 = malloc((DAT_006691a0 >> 8) * 4);
+    for (page = 0; page < (DAT_006691a0 >> 8); page++) {
+        DAT_006691a8[page] = malloc(0x100 * sizeof(struct Element));
+    }
+    remaining = DAT_006691a4;
+    for (page = 0; page < (DAT_006691a0 >> 8); page++, remaining -= 0x100) {
+        if (remaining >= 0x100) {
+            n = 0x100;
+        } else {
+            n = remaining;
+        }
+        _read(fd, DAT_006691a8[page], n * sizeof(struct Element));
+    }
+    remaining = DAT_006691a4;
+    for (page = 0; page < (DAT_006691a0 >> 8); page++, remaining -= 0x100) {
+        if (remaining >= 0x100) {
+            n = 0x100;
+        } else if (remaining <= 0) {
+            continue;
+        } else {
+            n = remaining;
+        }
+        for (i = 0; i < n; i++) {
+            DAT_006691a8[page][i].flags &= ~0xa;
+            _read(fd, &len, 4);
+            if (len == 0) {
+                DAT_006691a8[page][i].name = NULL;
+            } else {
+                DAT_006691a8[page][i].name = malloc(len + 1);
+                DAT_006691a8[page][i].name[len] = '\0';
+                _read(fd, DAT_006691a8[page][i].name, len);
+            }
+            _read(fd, &len, 4);
+            if (len == 0) {
+                DAT_006691a8[page][i].path = NULL;
+            } else {
+                DAT_006691a8[page][i].path = malloc(len + 1);
+                DAT_006691a8[page][i].path[len] = '\0';
+                _read(fd, DAT_006691a8[page][i].path, len);
+            }
+            DAT_006691a8[page][i].flags &= ~1;
+            DAT_006691a8[page][i].field_10 = 0;
+        }
+    }
+    _close(fd);
+    // STRING: LEGOLAND 0x004bc114
+    e = ElemID("LANGUAGE");
+    if (e != NULL) {
+        strcpy(DAT_004bc0ec, e->path);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047b2d0
 LEGO_EXPORT unsigned int LLIDB_GetCount(void) {
@@ -649,8 +724,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
             RES_ReadFile(file, &size, 4);
             RES_ReadFile(file, name, size);
             name[size] = '\0';
-            // STRING: LEGOLAND 0x004bc0ec
-            if (i == 0 || _stricmp("english", name) == 0) {
+            if (i == 0 || _stricmp(DAT_004bc0ec, name) == 0) {
                 if (obj->data_78 != NULL) {
                     free(obj->data_78);
                 }
