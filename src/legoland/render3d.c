@@ -85,7 +85,17 @@ struct RenderListNode *FUN_004418c0(int param_1, struct ViewportEntry *param_2, 
 }
 
 // FUNCTION: LEGOLAND 0x00441910
-void FUN_00441910(void) { STUB(); }
+void FUN_00441910(int *param_1, float *param_2, int *param_3) {
+    float v[3];
+    v[0] = param_2[0];
+    v[1] = param_2[1];
+    v[0] -= DAT_004ab4c0;
+    v[1] -= DAT_004ab4bc;
+    param_3[0] = (int)v[0] / 2;
+    param_3[1] = (int)v[1] / 2;
+    param_3[0] += param_1[7];
+    param_3[1] += param_1[8];
+}
 
 // FUNCTION: LEGOLAND 0x00441980
 void FUN_00441980(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) { STUB(); }
