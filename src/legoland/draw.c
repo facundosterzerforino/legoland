@@ -816,7 +816,81 @@ void FUN_00467b00(void) { STUB(); }
 void FUN_00467d10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467f00
-void FUN_00467f00(void) { STUB(); }
+void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip) {
+    unsigned int m;
+    unsigned int c;
+    unsigned int n;
+    unsigned short *p;
+    unsigned short v;
+
+    m = 3;
+    if (skip != 0) {
+        do {
+            for (;;) {
+                c = *mask & m;
+                m = _rotl(m, 2);
+                mask += m & 1;
+                if (!(c & 0xaaaaaaaa)) {
+                    src++;
+                } else if (c & 0x55555555) {
+                    n = *runs++;
+                    if (n == 0) {
+                        break;
+                    }
+                    c = *mask & m;
+                    m = _rotl(m, 2);
+                    mask += m & 1;
+                    if (!(c & 0xaaaaaaaa)) {
+                        if (c & 0x55555555) {
+                            src++;
+                        } else {
+                            src += n;
+                        }
+                    }
+                }
+            }
+        } while (--skip > 0);
+    }
+    p = dst;
+    do {
+        for (;;) {
+            c = *mask & m;
+            m = _rotl(m, 2);
+            mask += m & 1;
+            if (c & 0xaaaaaaaa) {
+                p++;
+                if (c & 0x55555555) {
+                    p--;
+                    n = *runs++;
+                    if (n == 0) {
+                        break;
+                    }
+                    c = *mask & m;
+                    m = _rotl(m, 2);
+                    mask += m & 1;
+                    if (!(c & 0xaaaaaaaa)) {
+                        if (!(c & 0x55555555)) {
+                            do {
+                                *p++ = *src++;
+                            } while (--n);
+                        } else {
+                            v = *src++;
+                            do {
+                                *p++ = v;
+                            } while (--n);
+                        }
+                    } else {
+                        p += n;
+                    }
+                }
+            } else {
+                *p++ = *src++;
+            }
+        }
+        dst = (unsigned short *)((char *)dst + stride);
+        p = dst;
+    } while (--h != 0);
+}
 
 // FUNCTION: LEGOLAND 0x00468040
 void FUN_00468040(void) { STUB(); }
