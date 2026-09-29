@@ -1261,16 +1261,16 @@ LEGO_EXPORT int SetGardenerWorkOrderAtPostion(Bloke *worker, int x, int y) {
 
 // FUNCTION: LEGOLAND 0x0049b350
 MapElement *FUN_0049b350(Bloke *worker, int x, int y) {
-    const int (*offset)[2];
+    const int *offset;
     MapElement *tile;
     MapElement *target;
     Ride *ride;
     int tx;
     int ty;
 
-    for (offset = DAT_004bff28; offset < &DAT_004bff28[12]; offset++) {
-        tx = (*offset)[0] + x;
-        ty = (*offset)[1] + y;
+    for (offset = &DAT_004bff28[0][1]; offset < &DAT_004bff28[12][1]; offset += 2) {
+        tx = offset[-1] + x;
+        ty = offset[0] + y;
         if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
             tile = &GameMap[ty][tx];
         } else {
@@ -1296,6 +1296,7 @@ MapElement *FUN_0049b350(Bloke *worker, int x, int y) {
 
 // FUNCTION: LEGOLAND 0x0049b430
 LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y) {
+    Element *el;
     WorkOrder *order;
     MapElement *target;
 
@@ -1303,7 +1304,8 @@ LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y) {
     if (order == NULL) {
         target = FUN_0049b350(worker, x, y);
         if (target != NULL) {
-            order = AddRepairOrderForObject(target->field_0->ride, target->anchor.pos.x, target->anchor.pos.y);
+            el = target->field_0;
+            order = AddRepairOrderForObject(el->ride, target->anchor.pos.x, target->anchor.pos.y);
             if (order != NULL) {
                 target->flags |= 0x4000;
                 FUN_00499b60(worker, order);
