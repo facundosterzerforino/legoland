@@ -35,6 +35,7 @@ struct QueueTable;
 struct Bloke;
 void FUN_004122a0(struct RideSlotArg *param_1, struct RideSlot *slot);
 void FUN_004122d0(struct RideSlotArg *param_1, struct RideSlot *slot);
+struct RideSlotArg *FUN_004122f0(struct RideSlot *slot);
 void FUN_00412300(struct QueueTable *table, int x, int y, struct Bloke *bloke);
 void *FUN_004125f0(unsigned int a, unsigned int b);
 struct RideQueueEntry *FUN_004125a0(int x, int y);

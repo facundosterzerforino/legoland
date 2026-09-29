@@ -712,7 +712,133 @@ void FUN_00404bc0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00404be0
-void FUN_00404be0(void) { STUB(); }
+void FUN_00404be0(struct Element *elem) {
+    unsigned int x;
+    unsigned int y;
+    struct Bloke *b;
+    struct CopterNode *cn;
+    struct CopterChainNode *link;
+    struct Ride *ride = elem->ride;
+    struct RideNode *next;
+    struct RideNode *node;
+    int spr;
+    int spr2;
+
+    FUN_00404bc0();
+    node = ride->riders;
+    while (node != NULL) {
+        next = node->next;
+        b = node->rider;
+        cn = FUN_00403d00((struct CopterSource *)&node->tile);
+        if (cn == NULL) {
+            break;
+        }
+        x = node->tile.pos.x + ride->x;
+        y = node->tile.pos.y + ride->y;
+        if (b->field_e == 0) {
+            switch (b->param_action) {
+            case 0:
+                b->flags |= 8;
+                link = (struct CopterChainNode *)node;
+                cn->layer[FUN_00404f20(link, (struct CopterSource *)&node->tile)].rider = node;
+                cn->field_10++;
+                cn->field_14 = 0xb4;
+                b->field_58 = 0;
+                b->param_action++;
+                break;
+            case 1:
+                link = (struct CopterChainNode *)node;
+                switch (FUN_00404f20(link, (struct CopterSource *)&node->tile)) {
+                case 0:
+                    spr = DAT_004c1124[2];
+                    break;
+                case 1:
+                    spr = DAT_004c1124[0];
+                    break;
+                case 2:
+                    spr = DAT_004c1124[1];
+                    break;
+                case 3:
+                    spr = DAT_004c1124[3];
+                    break;
+                case 4:
+                    spr = DAT_004c1124[4];
+                    break;
+                }
+                FUN_004122d0((struct RideSlotArg *)spr, (struct RideSlot *)b);
+                FUN_00403d30((struct CopterItem *)link);
+                break;
+            case 2:
+                FUN_00412300((struct QueueTable *)DAT_004c1124[(int)FUN_004122f0((struct RideSlot *)b)], x, y, b);
+                break;
+            case 3:
+            case 7:
+                b->param_action++;
+                break;
+            case 4:
+                b->param_action++;
+                cn->field_2++;
+                if ((short)cn->field_2 == ride->seats) {
+                    FUN_004048b0((struct CopterSfxNode *)cn);
+                }
+                break;
+            case 5:
+                b->flags |= 0x80;
+                BlokeSitAnim(b);
+                BlokeSetFrame(b, 0);
+                break;
+            case 6:
+                BlokeWalkAnim(b);
+                BlokeSetFrame(b, 0);
+                b->flags &= 0xff7f;
+                b->param_action++;
+                break;
+            case 8:
+                link = (struct CopterChainNode *)node;
+                switch (FUN_00404f20(link, (struct CopterSource *)&node->tile)) {
+                case 0:
+                    spr2 = DAT_004c1124[2];
+                    break;
+                case 1:
+                    spr2 = DAT_004c1124[0];
+                    break;
+                case 2:
+                    spr2 = DAT_004c1124[1];
+                    break;
+                case 3:
+                    spr2 = DAT_004c1124[3];
+                    break;
+                case 4:
+                    spr2 = DAT_004c1124[4];
+                    break;
+                }
+                FUN_004122a0((struct RideSlotArg *)spr2, (struct RideSlot *)b);
+                FUN_00403d30((struct CopterItem *)link);
+                break;
+            case 9:
+                FUN_00412300((struct QueueTable *)DAT_004c1124[(int)FUN_004122f0((struct RideSlot *)b)], x, y, b);
+                break;
+            case 10:
+                b->dest.x = (x << 8) + 0x80;
+                b->dest.y = (y << 8) + 0x80;
+                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->field_e = 7;
+                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                b->param_action++;
+                break;
+            case 11:
+                RemoveBlokeFromRide(ride, node);
+                b->flags &= 0xfff7;
+                cn->field_3--;
+                if (cn->field_3 == 0) {
+                    Ride_ClearFlagToNotLetAnyoneOn(cn);
+                }
+                break;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00404f20
 unsigned int FUN_00404f20(struct CopterChainNode *node, struct CopterSource *id) {

@@ -39,6 +39,9 @@ struct CopterNode {
     /* 0x18 */ struct CopterLayer layer[6];
 };
 
+struct CopterChainNode;
+struct CopterSource;
+unsigned int FUN_00404f20(struct CopterChainNode *node, struct CopterSource *id);
 void FUN_00403e90(struct CopterNode *node);
 void FUN_004040f0(struct CopterNode *node, int index, unsigned int param_3);
 void FUN_004049a0(struct CopterNode *node, int param);
