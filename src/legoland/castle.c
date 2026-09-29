@@ -521,7 +521,7 @@ void FUN_0041d1b0(unsigned int *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d1c0
-void FUN_0041d1c0(struct DirPoints *pts) {
+void FUN_0041d1c0(void *pts) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d1d0
@@ -677,6 +677,7 @@ void FUN_0041d440(struct SprObj *obj, struct SprEnt *ent) {
 struct SprKey {
     unsigned char pad_0[0x28];
     void (*method_28)(struct SprObj *self);
+    void (*method_2c)(struct SprObj *self);
 };
 
 // FUNCTION: LEGOLAND 0x0041d5b0
@@ -778,7 +779,45 @@ unsigned int FUN_0041d7c0(unsigned int value) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d7f0
-void FUN_0041d7f0(void *arg) { STUB(); }
+void FUN_0041d7f0(void *arg) {
+    struct SprObj *obj = arg;
+    struct SprOwner *owner = obj->owner;
+
+    if (obj != NULL) {
+        FUN_0041d760((unsigned char *)obj);
+        FUN_0041d6d0(-1);
+        if (owner->flags == 2) {
+            FUN_0041ce10((struct Anim *)&obj->next->dir_a);
+            FUN_0041ce10((struct Anim *)&obj->prev->dir_b);
+            owner->f_a8 = obj->prev;
+            FUN_0041d170(obj->prev, (unsigned int)&DAT_00829b8c);
+            owner->f_c0 = obj->next;
+            FUN_0041d190(obj->next, (unsigned int)&DAT_00829ba4);
+            FUN_004299e0((struct PathSeg *)owner->f_a8);
+            FUN_00429a30((struct PathSeg *)owner->f_c0);
+            FUN_0041cfc0((struct HandlerHost1 *)owner->f_a8);
+            FUN_0041cfc0((struct HandlerHost1 *)owner->f_c0);
+            owner->flags = 1;
+            FUN_00424e70(owner);
+        } else if (obj == owner->f_a8) {
+            FUN_0041ce10((struct Anim *)&obj->prev->dir_b);
+            owner->f_a8 = obj->prev;
+            FUN_0041d170(obj->prev, (unsigned int)&DAT_00829b8c);
+            FUN_004299e0((struct PathSeg *)owner->f_a8);
+            FUN_0041cfc0((struct HandlerHost1 *)owner->f_a8);
+        } else {
+            FUN_0041ce10((struct Anim *)&obj->next->dir_a);
+            owner->f_c0 = obj->next;
+            FUN_0041d190(obj->next, (unsigned int)&DAT_00829ba4);
+            FUN_00429a30((struct PathSeg *)owner->f_c0);
+            FUN_0041cfc0((struct HandlerHost1 *)owner->f_c0);
+        }
+        FUN_0041d1c0(&DAT_00829b8c);
+        FUN_0041d1c0(&DAT_00829ba4);
+        ((struct SprKey *)obj->key)->method_2c(obj);
+        FUN_004775d0(obj);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0041d950
 void FUN_0041d950(void *obj, unsigned int val, void *tmp) { STUB(); }
@@ -3668,7 +3707,7 @@ void FUN_00424e60(struct SprOwner *owner) {
 }
 
 // FUNCTION: LEGOLAND 0x00424e70
-void FUN_00424e70(void) {
+void FUN_00424e70(struct SprOwner *owner) {
     FUN_00424ab0((struct CastleSub *)&DAT_00829ae0);
 }
 
