@@ -11,15 +11,32 @@
 
 #include "image_sprite.h"
 #include "stream.h"
+#include "timer.h"
 
 // FUNCTION: LEGOLAND 0x0048b7e0
 LEGO_EXPORT void InitProgressScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bb60
-void FUN_0048bb60(void) { STUB(); }
+unsigned char FUN_0048bb60(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
+    DAT_00798660 = 1;
+    if ((arg1 & 2) != 0) {
+        if ((int)(GetTicks() - DAT_0079866c) < 500 && arg0[0x18] == DAT_004bec98) {
+            if (DAT_00798664 != 0) {
+                return FUN_0048bf90(arg0, arg1, arg2, arg3);
+            }
+            return FUN_0048bc20(arg0, arg1, arg2, arg3);
+        }
+        DAT_0079866c = GetTicks();
+        DAT_004bec98 = arg0[0x18];
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        lpConfig->field_28 = arg0[0x18] + 1;
+        DAT_0080ff80.unk4 = 0xffffffff;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048bc20
-void FUN_0048bc20(void) { STUB(); }
+unsigned char FUN_0048bc20(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bd00
 void FUN_0048bd00(void) {
@@ -63,7 +80,7 @@ void FUN_0048bd70(void) {
 void FUN_0048bde0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bf90
-unsigned char FUN_0048bf90(unsigned int arg0, unsigned int arg1) {
+unsigned char FUN_0048bf90(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
     if ((arg1 & 2) != 0) {
         DAT_006687c0 = 0;
         DAT_006687bc = 0;
