@@ -2497,6 +2497,8 @@ extern unsigned int DAT_0066924c;
 extern int DAT_00669250;
 // 0x00669254
 extern unsigned int DAT_00669254;
+// 0x004bcec0
+extern struct Point DAT_004bcec0;
 // 0x00669258
 extern unsigned int DAT_00669258[1152];
 // 0x0066a45c
