@@ -4013,6 +4013,12 @@ struct IconNode *DAT_007fdfe8;
 // GLOBAL: LEGOLAND 0x007fdff0
 void *DAT_007fdff0;
 
+// GLOBAL: LEGOLAND 0x007fdff4
+int DAT_007fdff4;
+
+// GLOBAL: LEGOLAND 0x007fdff8
+int DAT_007fdff8;
+
 // GLOBAL: LEGOLAND 0x007fdffc
 unsigned int DAT_007fdffc;
 

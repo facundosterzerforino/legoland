@@ -3019,6 +3019,10 @@ extern struct Sprite *DAT_007fdfe4;
 extern struct IconNode *DAT_007fdfe8;
 // 0x007fdff0
 extern void *DAT_007fdff0;
+// 0x007fdff4
+extern int DAT_007fdff4;
+// 0x007fdff8
+extern int DAT_007fdff8;
 // 0x007fdffc
 extern unsigned int DAT_007fdffc;
 // 0x007fe000

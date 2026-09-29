@@ -1,4 +1,5 @@
 #include "worker_mouse.h"
+#include "bloke.h"
 #include "globals.h"
 #include "icon.h"
 #include "legoland.h"
@@ -85,7 +86,24 @@ LEGO_EXPORT void RenderWorkerOnMouse(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004708d0
-LEGO_EXPORT void ResetWorkersOldCoords(void) { STUB(); }
+LEGO_EXPORT void ResetWorkersOldCoords(void) {
+    struct Bloke *bloke;
+
+    bloke = DAT_007fdff0;
+    if (bloke != NULL) {
+        bloke->pos.x = DAT_007fdff4;
+        bloke = DAT_007fdff0;
+        bloke->pos.y = DAT_007fdff8;
+        bloke = DAT_007fdff0;
+        bloke->field_50 = 0;
+        if (DAT_007fdffc == 0x307) {
+            NewLongTermAction(DAT_007fdff0, 0x10);
+        } else {
+            NewLongTermAction(DAT_007fdff0, 0x11);
+        }
+        ResetMoveAWorkerStruct();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00470930
 LEGO_EXPORT void ResetMoveAWorkerStruct(void) {
