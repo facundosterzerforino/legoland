@@ -48,7 +48,15 @@ void FUN_0043bdb0(void *param1) {
 void FUN_0043be00(struct BarrelNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043be40
-void FUN_0043be40(void) { STUB(); }
+struct BarrelNode *FUN_0043be40(unsigned short *key) {
+    struct BarrelNode *node;
+    for (node = DAT_0062fe08; node != NULL; node = node->next) {
+        if (node->field_4 == *key) {
+            break;
+        }
+    }
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x0043be70
 void FUN_0043be70(void) { STUB(); }
@@ -93,10 +101,23 @@ void FUN_0043c4d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c4f0
-void FUN_0043c4f0(void) { STUB(); }
+void FUN_0043c4f0(Element *editObj, TileId tile, struct Cursor *cursor) {
+    struct BarrelNode *node = FUN_0043be40(&tile.id);
+    if (node != NULL) {
+        FUN_0043be00(node);
+    }
+    StandardRemoveObject(editObj, tile, cursor);
+    RemoveAllBlokesFromRide(editObj->ride, tile);
+}
 
 // FUNCTION: LEGOLAND 0x0043c540
-void FUN_0043c540(void) { STUB(); }
+void FUN_0043c540(Element *editObj, int *coords) {
+    TileId tile;
+    tile.pos.x = (unsigned char)coords[0];
+    tile.pos.y = (unsigned char)coords[1];
+    AddBasicObject(editObj, coords);
+    FUN_0043bdb0(&tile);
+}
 
 // FUNCTION: LEGOLAND 0x0043c570
 unsigned int *FUN_0043c570(struct BarrelRoot *ride, unsigned short param2) {
