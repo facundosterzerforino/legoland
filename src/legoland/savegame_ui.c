@@ -417,7 +417,33 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e280
-LEGO_EXPORT void InitNewSaveGamePOPUP(void *icon) { STUB(); }
+LEGO_EXPORT void InitNewSaveGamePOPUP(struct IconNode *icon) {
+    // STRING: LEGOLAND 0x004baa70
+    DAT_00798678 = LoadSprite("PU_OK.lls", 4);
+    // STRING: LEGOLAND 0x004baa64
+    DAT_00798674 = LoadSprite("PU_OKON.lls", 4);
+    // STRING: LEGOLAND 0x004bf148
+    DAT_0079867c = LoadSprite("RegClose.lls", 4);
+    // STRING: LEGOLAND 0x004bf2d4
+    DAT_00798680 = LoadSprite("RegCloseOn.lls", 4);
+
+    DAT_007986d8 = InsertIcon(icon->x + 0xbd, icon->y - 0x18, 7, DAT_00798678);
+    DAT_007986d8->string_id = 0x2f;
+    DAT_007986d8->string = GetString(0x2f);
+    DAT_007986d8->flags |= 0x2000;
+    DAT_007986d8->flags |= 0x4002;
+    DAT_007986d8->event_handler = (void *)FUN_0048e720;
+    DAT_006687bc = (unsigned int)DAT_007986d8->event_handler;
+
+    DAT_007986dc = InsertIcon(icon->x + 0xe1, icon->y - 0x18, 7, DAT_0079867c);
+    DAT_007986dc->string_id = 4;
+    DAT_007986dc->string = GetString(4);
+    DAT_007986dc->flags |= 0x2000;
+    DAT_007986dc->flags |= 0x4002;
+    DAT_007986dc->event_handler = (void *)FUN_0048e810;
+    DAT_006687c0 = (unsigned int)DAT_007986dc->event_handler;
+    DAT_007986f0 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0048e3d0
 void FUN_0048e3d0(const char *name) {
