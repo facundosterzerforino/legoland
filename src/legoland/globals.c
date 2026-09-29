@@ -4656,8 +4656,14 @@ float DAT_008299d4;
 // GLOBAL: LEGOLAND 0x008299fc
 unsigned int DAT_008299fc;
 
+// GLOBAL: LEGOLAND 0x008299ac
+unsigned int DAT_008299ac;
+
 // GLOBAL: LEGOLAND 0x00829a3c
 struct ListLink DAT_00829a3c;
+
+// GLOBAL: LEGOLAND 0x00829a54
+struct ListLink *DAT_00829a54;
 
 // GLOBAL: LEGOLAND 0x00829a58
 void (*DAT_00829a58)(void);

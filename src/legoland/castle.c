@@ -59,6 +59,13 @@ struct EdgeSet {
     struct EdgePair *pairs;
 };
 
+struct FlagNode {
+    unsigned char pad_0[0x10];
+    int kind;
+    unsigned int pad_14;
+    struct FlagNode *next;
+};
+
 #include "image_sprite.h"
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int FUN_0041cc50(unsigned int dir) {
@@ -2588,10 +2595,29 @@ void FUN_00426460(unsigned int *dst, void *src) {
 }
 
 // FUNCTION: LEGOLAND 0x00426490
-void FUN_00426490(void) { STUB(); }
+void FUN_00426490(unsigned int *src, unsigned int dst[4][4]) {
+    int i;
+    int j;
+
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            dst[j][i] = *src++;
+        }
+        dst[3][i] = 0;
+    }
+    dst[2][3] = 0;
+    dst[1][3] = 0;
+    dst[0][3] = 0;
+    dst[3][3] = 0x3f800000;
+}
 
 // FUNCTION: LEGOLAND 0x004264e0
-void FUN_004264e0(void) { STUB(); }
+void FUN_004264e0(unsigned int *t, unsigned int *m3, unsigned int dst[4][4]) {
+    FUN_00426490(m3, dst);
+    dst[0][3] = t[0];
+    dst[1][3] = t[1];
+    dst[2][3] = t[2];
+}
 
 // FUNCTION: LEGOLAND 0x00426510
 void FUN_00426510(void) { STUB(); }
@@ -2636,7 +2662,17 @@ int FUN_004265d0(struct RectI *a, struct RectI *b) {
 }
 
 // FUNCTION: LEGOLAND 0x00426650
-unsigned int FUN_00426650(void) { STUB(); }
+unsigned int FUN_00426650(void) {
+    struct FlagNode *n = (struct FlagNode *)DAT_00829a54;
+
+    while (n != (struct FlagNode *)&DAT_00829a3c) {
+        if (n->kind == 0xf) {
+            return 1;
+        }
+        n = n->next;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004266b0
 void FUN_004266b0(struct ListLink *param_1) {
@@ -2661,7 +2697,10 @@ void FUN_004266e0(struct ListLink *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00426700
-void FUN_00426700(void) { STUB(); }
+void FUN_00426700(struct RectI *dst, struct RectI *src) {
+    *dst = *src;
+    ((int *)dst)[4] = FUN_004265d0(dst, (struct RectI *)&DAT_008299ac);
+}
 
 // FUNCTION: LEGOLAND 0x00426740
 void FUN_00426740(void) {
@@ -2986,7 +3025,11 @@ void FUN_004270c0(struct Struct4270c0Host *a1, struct Struct427050Dst *a2) {
 }
 
 // FUNCTION: LEGOLAND 0x00427100
-void FUN_00427100(void) { STUB(); }
+void FUN_00427100(struct Struct427070Src *arr, int count, struct Struct427070Obj *obj) {
+    for (; count > 0; count--) {
+        FUN_00427070(arr++, obj);
+    }
+}
 
 struct Struct427130Node {
     /* 0x00 */ unsigned char pad_0[0x14];

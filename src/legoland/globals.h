@@ -3425,8 +3425,12 @@ extern float DAT_0082999c;
 extern float DAT_008299d4;
 // 0x008299fc
 extern unsigned int DAT_008299fc;
+// 0x008299ac
+extern unsigned int DAT_008299ac;
 // 0x00829a3c
 extern struct ListLink DAT_00829a3c;
+// 0x00829a54
+extern struct ListLink *DAT_00829a54;
 // 0x00829a58
 extern void (*DAT_00829a58)(void);
 // 0x00829a5c
