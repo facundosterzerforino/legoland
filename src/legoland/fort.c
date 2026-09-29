@@ -10,6 +10,7 @@
 #include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "render3d.h"
 
 #include "image_sprite.h"
 
@@ -84,7 +85,79 @@ void FUN_004064d0(RideNode *node, Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00406660
-void FUN_00406660(void) { STUB(); }
+void FUN_00406660(Element *elem) {
+    struct Ride *ride = elem->ride;
+    struct Sprite *spr;
+    short *lls;
+    RideNode *node;
+    RideNode *next;
+    Bloke *bloke;
+    int x, y;
+    unsigned char tx;
+    char dir;
+
+    spr = GetSpriteForLayer(DAT_004c11d8, 2);
+    if (spr != NULL) {
+        lls = (short *)GetLLSForSprite((struct SpriteLLS *)spr);
+        if (lls != NULL) {
+            if (++lls[0] >= lls[8]) {
+                lls[0] = 0;
+            }
+        }
+    }
+    node = ride->riders;
+    if (node != NULL) {
+        do {
+            next = node->next;
+            bloke = node->rider;
+            x = ride->x;
+            tx = node->tile.pos.x;
+            x += tx;
+            y = ride->y + node->tile.pos.y;
+            if (bloke->field_e == 0) {
+                switch (bloke->param_action) {
+                case 0:
+                    bloke->flags |= 8;
+                    bloke->dest.x = (x - 4) << 8;
+                    bloke->dest.y = y << 8;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->field_40 = 2;
+                    bloke->param_action++;
+                    break;
+                case 1:
+                    FUN_004064d0(node, bloke);
+                    break;
+                case 2:
+                    bloke->dest.x = (tx << 8) + 0x80;
+                    bloke->dest.y = (node->tile.pos.y << 8) + 0x80;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->param_action++;
+                    break;
+                case 3:
+                    bloke->dest.x = (x << 8) + 0x80;
+                    bloke->dest.y = (y << 8) + 0x80;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->param_action++;
+                    break;
+                case 4:
+                    RemoveBlokeFromRide(ride, node);
+                    bloke->flags &= ~8;
+                    break;
+                }
+            }
+            node = next;
+        } while (node != NULL);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00406820
 void FUN_00406820(void) {
