@@ -555,10 +555,57 @@ void FUN_00401e00(struct HistBuf *p) {
 }
 
 // FUNCTION: LEGOLAND 0x00401f30
-void FUN_00401f30(void) { STUB(); }
+int FUN_00401f30(unsigned short id, struct PathPair *p, int dir) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00402150
-void FUN_00402150(void) { STUB(); }
+int FUN_00402150(unsigned short id, struct PathPair *p, int dir) {
+    struct RideQueueEntry *e;
+    struct RideQueueEntry *q;
+    struct RideQueueEntry *s;
+    struct PathPair pt;
+
+    e = (struct RideQueueEntry *)FUN_004125f0(p->a, p->b);
+    if (e != NULL) {
+        if (e->field_18 == NULL) {
+            return FUN_00401f30(id, p, dir);
+        }
+        FUN_004808d0(&e->x, &pt.a, dir);
+        q = FUN_004125a0(pt.a, pt.b);
+        if (q == NULL) {
+            return FUN_00401f30(id, p, dir);
+        }
+        if (q->field_8 != id) {
+            return FUN_00401f30(id, p, dir);
+        }
+        if ((q->field_14 & 0xf) == 6) {
+            return 5;
+        }
+        s = FUN_00412650(id);
+        if ((s->y != q->y || s->x + 4 != q->x) && (q->field_14 & 0xf) != 4 && (q->field_14 & 0xf) != 5) {
+            return FUN_00401f30(id, p, dir);
+        }
+        s = q->field_18;
+        FUN_004808d0(&e->x, &pt.a, dir);
+        FUN_004808d0(&pt.a, &pt.a, (dir - 2) & 7);
+        if (s->x == pt.a && s->y == pt.b) {
+            return 1;
+        }
+        FUN_004808d0(&e->x, &pt.a, dir);
+        FUN_004808d0(&pt.a, &pt.a, (dir + 2) & 7);
+        if (s->x == pt.a && s->y == pt.b) {
+            return 3;
+        }
+        FUN_004808d0(&e->x, &pt.a, dir);
+        FUN_004808d0(&pt.a, &pt.a, dir);
+        if (s->x == pt.a && s->y == pt.b) {
+            return 2;
+        }
+        if (s->x == e->x && s->y == e->y) {
+            return 2;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00402340
 int FUN_00402340(int a1) {
