@@ -97,6 +97,7 @@ LEGO_EXPORT void RefundGardener(void);
 LEGO_EXPORT void RefundMechanic(void);
 LEGO_EXPORT void RemoveAMechanic(Bloke *worker);
 LEGO_EXPORT void IterateNoneWorkersRepairOrders(void);
+LEGO_EXPORT void PutWorkerOnRide(Bloke *worker, MapElement *tile);
 LEGO_EXPORT WorkOrder *GetGardenerWorkOrderAt(int x, int y);
 LEGO_EXPORT WorkOrder *GetMechanicWorkOrderAt(int x, int y);
 LEGO_EXPORT void RemoveGardenersWorkOrderAt(int x, int y);

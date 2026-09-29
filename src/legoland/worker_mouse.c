@@ -97,7 +97,43 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00470270
-void FUN_00470270(void) { STUB(); }
+int FUN_00470270(void) {
+    unsigned int v = DAT_004bdd08 & 0xffff;
+    int x = v & 0xff;
+    int y = v >> 8;
+    MapElement *elem;
+    Ride *ride;
+
+    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        elem = &GameMap[y][x];
+    } else {
+        elem = NULL;
+    }
+    ride = elem->field_0->ride;
+    if (ride->element == (Element *)DAT_007fdfb0 && DAT_007fdffc == 0x307) {
+        PutWorkerOnRide(DAT_007fdff0, elem);
+        DAT_007fdff0->pos.x = (ride->x + x) << 8;
+        DAT_007fdff0->dest.x = DAT_007fdff0->pos.x;
+        DAT_007fdff0->pos.y = (ride->y + y) << 8;
+        DAT_007fdff0->dest.y = DAT_007fdff0->pos.y;
+        DAT_007fdff0->action = 5;
+        DAT_007fdff0->param_action = 100;
+        PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
+        return 1;
+    }
+    if (ride->element == (Element *)DAT_007fdfb4 && DAT_007fdffc == 0x308) {
+        PutWorkerOnRide(DAT_007fdff0, elem);
+        DAT_007fdff0->pos.x = ((ride->x + x) << 8) + 0x80;
+        DAT_007fdff0->dest.x = DAT_007fdff0->pos.x;
+        DAT_007fdff0->pos.y = (ride->y + y) << 8;
+        DAT_007fdff0->dest.y = DAT_007fdff0->pos.y;
+        DAT_007fdff0->action = 5;
+        DAT_007fdff0->param_action = 100;
+        PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
+        return 1;
+    }
+    return ride->element == (Element *)DAT_007fdfb8;
+}
 
 // FUNCTION: LEGOLAND 0x00470410
 WorkOrder *FUN_00470410(Point *out) {
