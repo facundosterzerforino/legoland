@@ -254,7 +254,9 @@ struct FlumeBytes {
 
 struct FlumeEntry {
     struct FlumeEntry *next;
-    unsigned char pad_4[0xc];
+    unsigned char pad_4[4];
+    struct FlumeEntry *parent;
+    unsigned char pad_c[4];
     struct FlumeEntry *sub;
     TileId tile;
     unsigned char pad_16[2];
@@ -267,6 +269,11 @@ struct FlumeEntry {
     struct FlumeEntry *sub2;
     unsigned char pad_30[0xd0 - 0x30];
     int field_d0;
+};
+
+struct FlumeHolder {
+    unsigned char pad_0[0x14];
+    struct FlumeEntry *entry;
 };
 
 // FUNCTION: LEGOLAND 0x00408e40
@@ -558,10 +565,62 @@ void FUN_00409270(struct Node *other, struct Node *container) {
 }
 
 // FUNCTION: LEGOLAND 0x004092b0
-void FUN_004092b0(void) { STUB(); }
+int FUN_004092b0(struct FlumeHolder *holder) {
+    struct FlumeEntry *e = holder->entry;
+    int mode = e->mode;
+    TileId t;
+    int dx;
+    int dy;
+
+    if (mode > 0) {
+        if (mode > 2) {
+            if (mode == 3) {
+                switch (e->submode) {
+                case 0:
+                    return 1;
+                case 1:
+                    return 3;
+                case 2:
+                    return 5;
+                case 3:
+                    return 7;
+                }
+            }
+        } else {
+            t = e->parent->tile;
+            dx = t.pos.x - e->tile.pos.x;
+            dy = t.pos.y - e->tile.pos.y;
+            if (dx < 0) {
+                return 7;
+            } else if (dx > 0) {
+                return 3;
+            } else if (dy >= 0 && dy > 0) {
+                return 5;
+            }
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00409360
-void FUN_00409360(unsigned int param_1) { STUB(); }
+void FUN_00409360(TileId tile) {
+    struct SubBuf buf;
+    int w = DAT_004b4730 - DAT_004b4728;
+    int h = DAT_004b4734 - DAT_004b472c;
+
+    buf.b0 = tile.pos.x;
+    buf.b1 = tile.pos.y - h;
+    DAT_004cbe20 = FUN_00408f30(&buf);
+    buf.b0 = tile.pos.x + w;
+    buf.b1 = tile.pos.y;
+    DAT_004cbe24 = FUN_00408f30(&buf);
+    buf.b0 = tile.pos.x;
+    buf.b1 = tile.pos.y + h;
+    DAT_004cbe28 = FUN_00408f30(&buf);
+    buf.b0 = tile.pos.x - w;
+    buf.b1 = tile.pos.y;
+    DAT_004cbe2c = FUN_00408f30(&buf);
+}
 
 // FUNCTION: LEGOLAND 0x00409410
 int FUN_00409410(unsigned int *ctx) {
@@ -582,7 +641,7 @@ int FUN_00409410(unsigned int *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00409440
-void FUN_00409440(unsigned int param_1, void **param_2) {
+void FUN_00409440(TileId param_1, void **param_2) {
     DAT_004cbe20 = 0;
     DAT_004cbe24 = 0;
     DAT_004cbe28 = 0;
@@ -642,7 +701,25 @@ void FUN_00409510(struct StateSlots *slots) {
 }
 
 // FUNCTION: LEGOLAND 0x00409580
-void FUN_00409580(void) { STUB(); }
+int FUN_00409580(int code, struct StateSlots *slots) {
+    int result = 0;
+    if (code == 1 || code == 4 || code == 0x10 || code == 0x40 || code == 0x11 || code == 0x44 || code == 5 || code == 0x14 || code == 0x50 || code == 0x41) {
+        result = 1;
+        if (slots->slot0 != NULL && slots->slot0->state != 3 && slots->slot0->state != 4) {
+            result = 0;
+        }
+        if (slots->slot1 != NULL && slots->slot1->state != 3 && slots->slot1->state != 4) {
+            result = 0;
+        }
+        if (slots->slot2 != NULL && slots->slot2->state != 3 && slots->slot2->state != 4) {
+            result = 0;
+        }
+        if (slots->slot3 != NULL && slots->slot3->state != 3 && slots->slot3->state != 4) {
+            result = 0;
+        }
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00409620
 void FUN_00409620(struct StateNode *node) {
