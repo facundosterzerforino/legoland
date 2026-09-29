@@ -1,13 +1,16 @@
 #include "legoland.h"
 
 #include "build.h"
+#include "gfx.h"
 #include "globals.h"
 #include "image_sprite.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "render.h"
 #include "render3d.h"
+#include "tilemap.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
 LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) {
@@ -59,7 +62,7 @@ LEGO_EXPORT int GetBuildTime(Ride *objClass) {
 }
 
 // FUNCTION: LEGOLAND 0x00450c70
-unsigned int FUN_00450c70(void) {
+unsigned int FUN_00450c70(Ride *ride) {
     return 0;
 }
 
@@ -121,7 +124,48 @@ LEGO_EXPORT int GetBuildAnimFrame(Ride *ride, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00450d90
-LEGO_EXPORT void DoBuildEffects(void) { STUB(); }
+LEGO_EXPORT void DoBuildEffects(Ride *ride, TileId coords) {
+    Point pt;
+    int b[4];
+    int i;
+    int x;
+    int y;
+    int cx;
+    int cy;
+    int w;
+    int h;
+    int ty;
+    int left;
+    BuildObj *o;
+
+    if (FUN_00450c70(ride) && DAT_0066895c == 0) {
+        pt.x = ride->footprint.x0 + coords.pos.x;
+        pt.y = ride->footprint.y1 + coords.pos.y;
+        GetTileBounds(&pt, b);
+        left = b[0];
+        ty = b[1];
+        pt.x = ride->footprint.x1 + coords.pos.x;
+        pt.y = ride->footprint.y0 + coords.pos.y;
+        GetTileBounds(&pt, b);
+        cx = (b[2] + left) / 2;
+        cy = (ty + b[3]) / 2;
+        x = cx - 32;
+        y = cy - 5;
+        w = cx - x + 33;
+        h = cy - y + 6;
+        i = 0;
+        for (o = DAT_006664f8; (int)&o->coords < (int)&DAT_006670fc; o++, i++) {
+            if (o->coords.id == coords.id) {
+                if (i < 256) {
+                    RenderBlock(x, y, w, h, 0);
+                    RenderBox(x, y, w, h, GetNearestColour(255, 255, 255));
+                    RenderBlock(x + 1, y + 1, DAT_006664f8[i].elapsed * (w - 2) / GetBuildTime(ride), h - 2, GetNearestColour(0, 255, 0));
+                }
+                return;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00450f10
 LEGO_EXPORT void ClearBuildObjList(void) {
