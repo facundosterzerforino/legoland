@@ -23,6 +23,25 @@ struct RideFX {
     unsigned char refcount;
 };
 
+struct RideMover {
+    unsigned char pad_0[0x10];
+    int x;
+    int y;
+    unsigned char pad_18[0x28 - 0x18];
+    int velX;
+    int velY;
+    int destX;
+    int destY;
+    unsigned char pad_38[0xb0 - 0x38];
+    float dirX;
+    float dirY;
+    unsigned char dir;
+    unsigned char pad_b9[2];
+    unsigned char moving;
+    unsigned char pad_bc[0xc8 - 0xbc];
+    unsigned short speed;
+};
+
 struct RideBloke {
     struct RideBloke *next;
     unsigned char pad_4[0xcc - 0x4];
@@ -262,7 +281,45 @@ int *FUN_00401970(int *param_1, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x004019c0
-void FUN_004019c0(void) { STUB(); }
+void FUN_004019c0(struct RideMover *m) {
+    unsigned char oldDir = m->dir;
+    unsigned char moving = m->moving;
+    int dy, dx, dist, diff;
+    unsigned char newDir;
+
+    if (moving) {
+        dx = m->destX - m->x;
+        dy = m->destY - m->y;
+        dist = (int)sqrt((float)dx * (float)dx + (float)dy * (float)dy);
+        if (dist != 0) {
+            m->dirX = (float)dx / dist;
+            m->dirY = (float)dy / dist;
+            newDir = (ArcTan256(dx, dy) + 8) >> 4 & 15;
+            m->dir = newDir;
+            diff = (newDir - oldDir) & 15;
+            if (diff & 8)
+                diff |= -16;
+            if (diff < -2 || diff > 2) {
+                if (diff & 8)
+                    oldDir--;
+                else
+                    oldDir++;
+                m->dir = oldDir;
+                m->dir = oldDir & 15;
+            }
+            m->velX = m->speed * dx / dist;
+            m->velY = m->speed * dy / dist;
+        } else {
+            m->velX = 0;
+            m->dirX = 0;
+            m->dirY = 0;
+            m->velY = 0;
+        }
+    } else {
+        m->velX = 0;
+        m->velY = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00401ae0
 int FUN_00401ae0(unsigned short id, int bloke) { STUB(); }
