@@ -4,6 +4,7 @@
 #include "debug_alloc.h"
 #include "globals.h"
 #include "legoland.h"
+#include "profile_io.h"
 #include "sound_music.h"
 #include "stream.h"
 

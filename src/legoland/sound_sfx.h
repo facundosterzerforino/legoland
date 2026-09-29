@@ -60,7 +60,6 @@ struct Sample {
 };
 
 LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path);
-void *FUN_00492110(void);
 LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def);
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);
 LEGO_EXPORT int PauseSingleSample(struct Sample *sample);
