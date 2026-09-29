@@ -13,7 +13,18 @@
 #include "sound_sfx.h"
 
 struct PlaneRideNode {
-    unsigned char pad_0[0x20];
+    unsigned char b0;
+    unsigned char b1;
+    unsigned char b2;
+    unsigned char b3;
+    unsigned char b4;
+    unsigned char pad_5[3];
+    unsigned int flags;
+    unsigned char b12;
+    unsigned char pad_d[3];
+    unsigned int f10;
+    unsigned char b14;
+    unsigned char pad_15[0xb];
     struct PlaneRideNode *next;
 };
 
@@ -67,13 +78,48 @@ void FUN_0043d940(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d960
-unsigned int FUN_0043d960(struct PlaneRideObject **arg) { STUB(); }
+unsigned int FUN_0043d960(struct PlaneRideObject **arg) {
+    struct PlaneRideNode *cur;
+
+    for (cur = (struct PlaneRideNode *)DAT_0062fe9c; cur != NULL; cur = cur->next) {
+        if (*(unsigned short *)cur == *(unsigned short *)arg) {
+            return (unsigned int)cur;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0043d990
-void FUN_0043d990(void) { STUB(); }
+void FUN_0043d990(struct PlaneRideNode *node) {
+    int cfg[4];
+
+    cfg[0] = 2;
+    node->flags &= ~0x4000;
+    node->b3 = node->b2;
+    node->flags |= 1;
+    node->b2 = 0;
+    node->b4 = 0;
+    node->f10 = 0;
+    cfg[2] = node->b0;
+    cfg[3] = node->b1;
+    PlayInstanceOfSample(*(void **)(DAT_004b79d0 + 8), 1, 1, cfg);
+}
 
 // FUNCTION: LEGOLAND 0x0043d9f0
-void FUN_0043d9f0(void *param_1) { STUB(); }
+void FUN_0043d9f0(struct PlaneRideNode *node) {
+    int cfg[4];
+
+    node->f10 = 0;
+    node->b4 = 0;
+    node->b12 = rand() % 2 != 0 ? 2 : 1;
+    node->b14 = 0;
+    node->b2 = 0;
+    node->flags &= ~0x4001;
+    cfg[0] = 2;
+    cfg[2] = node->b0;
+    cfg[3] = node->b1;
+    UnSourceAndFadeAllSamplesFromSource(cfg, -200);
+}
 
 // FUNCTION: LEGOLAND 0x0043da60
 void FUN_0043da60(void) { STUB(); }
@@ -119,7 +165,14 @@ void FUN_0043df90(struct PlaneRideObject *a1, TileId a2, struct PlaneRideObject 
 }
 
 // FUNCTION: LEGOLAND 0x0043dfe0
-void FUN_0043dfe0(void) { STUB(); }
+void FUN_0043dfe0(Element *a, int *p) {
+    unsigned char c[2];
+
+    c[0] = *(unsigned char *)p;
+    c[1] = ((unsigned char *)p)[4];
+    AddBasicObject(a, p);
+    FUN_0043d880(c);
+}
 
 // FUNCTION: LEGOLAND 0x0043e010
 unsigned int *FUN_0043e010(struct PlaneRideRoot *param1, unsigned short param2) {
