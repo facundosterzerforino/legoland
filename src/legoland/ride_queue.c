@@ -1,14 +1,30 @@
 #include <stdlib.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "globals.h"
+#include "math.h"
 #include "ride_queue.h"
 
 struct QueueItemInner {
     unsigned char pad_0[0xe];
     unsigned short field_e;
-    unsigned char pad_10[0x38 - 0x10];
+    unsigned char pad_10[0x24 - 0x10];
+    int field_24;
+    int field_28;
+    unsigned char pad_2c[0x38 - 0x2c];
     short field_38;
+    unsigned char pad_3a[0x60 - 0x3a];
+    unsigned char field_60;
+    unsigned char pad_61;
+    unsigned short field_62;
+    unsigned char pad_64[0x68 - 0x64];
+    int field_68;
+    int field_6c;
+    unsigned char pad_70[0x73 - 0x70];
+    unsigned char field_73;
+    unsigned char pad_74[0x98 - 0x74];
+    struct Navigator field_98;
 };
 
 struct QueueItemMid {
@@ -21,8 +37,19 @@ struct QueueNode {
     struct QueueItemMid *field_4;
 };
 
+struct QueueStep {
+    int dx;
+    int dy;
+    int pad;
+};
+
+struct QueueTable {
+    int count;
+    struct QueueStep *steps;
+};
+
 struct Queue {
-    unsigned int *count;
+    struct QueueTable *count;
     struct QueueNode *head;
     struct QueueNode *tail;
 };
@@ -65,7 +92,7 @@ unsigned int FUN_00411e60(struct Queue *queue) {
             count++;
             node = node->next;
         }
-        if (count == *queue->count) {
+        if (count == (unsigned int)queue->count->count) {
             return 1;
         }
     }
@@ -82,7 +109,7 @@ int FUN_00411ea0(struct Queue *queue) {
     struct QueueNode *head = queue->head;
     if (head != NULL) {
         short value = head->field_4->field_8->field_38;
-        if (value == (int)(*queue->count - 1)) {
+        if (value == (queue->count->count - 1)) {
             return 1;
         }
     }
@@ -111,13 +138,73 @@ void FUN_00411f00(struct Queue *queue) {
 }
 
 // FUNCTION: LEGOLAND 0x00411f20
-void FUN_00411f20(void) { STUB(); }
+void FUN_00411f20(struct Queue *queue, struct QueueItemMid *mid) {
+    struct QueueNode *node = (struct QueueNode *)malloc(8);
+    if (node != NULL) {
+        node->next = NULL;
+        node->field_4 = NULL;
+        node->field_4 = mid;
+        mid->field_8->field_62 |= 0x40;
+        mid->field_8->field_38 = 0;
+        mid->field_8->field_60++;
+        FUN_00411e30(queue, node);
+    }
+}
+
+// FUNCTION: LEGOLAND 0x00411f70
+int FUN_00411f70(struct Queue *queue, struct QueueItemInner *inner) {
+    struct QueueNode *head = queue->head;
+    if (head != NULL && head->field_4->field_8 == inner) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00411fa0
-void FUN_00411fa0(struct Queue *queue, unsigned int param_2, unsigned int param_3, struct QueueItemInner *param_4) { STUB(); }
+void FUN_00411fa0(struct Queue *queue, int param_2, int param_3, struct QueueItemInner *inner) {
+    struct QueueTable *table = queue->count;
+    struct QueueStep *step = &table->steps[inner->field_38];
+    struct QueueNode *node;
+    short cur;
+    char dir;
+    int x;
+    int y;
+
+    x = (step->dx + param_2) << 8;
+    y = (step->dy + param_3) << 8;
+    inner->field_24 = x;
+    inner->field_28 = y;
+    dir = CalcMoveLine(*(struct Point *)&inner->field_68, *(struct Point *)&inner->field_24, &inner->field_98);
+    inner->field_e = 7;
+    inner->field_73 = dir + 0x10;
+    NewDirForAction((Bloke *)inner, (unsigned char)(inner->field_73 >> 5) + 3);
+    inner->field_38++;
+    cur = inner->field_38;
+    if (cur >= table->count) {
+        inner->field_38 = (short)(table->count - 1);
+        return;
+    }
+    for (node = queue->head; node != NULL; node = node->next) {
+        struct QueueItemInner *other = node->field_4->field_8;
+        if (other->field_38 == cur && other != inner) {
+            inner->field_38 = cur - 1;
+            return;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00412060
-void FUN_00412060(void) { STUB(); }
+void FUN_00412060(struct Queue *queue, struct QueueItemMid **out) {
+    struct QueueNode *node = queue->head;
+    if (node != NULL) {
+        struct QueueItemInner *inner = node->field_4->field_8;
+        inner->field_62 &= ~0x40;
+        inner->field_60++;
+        *out = node->field_4;
+        FUN_00411f00(queue);
+        free(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004120a0
 void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_3) {
@@ -188,7 +275,13 @@ unsigned int FUN_004123a0(struct QueueNode *start, struct QueueNode *stop) {
 void FUN_004123c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00412470
-void FUN_00412470(void) { STUB(); }
+struct QueueNode *FUN_00412470(struct QueueNode *node, int n) {
+    int i = n;
+    while (i-- != 0) {
+        node = node->next;
+    }
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x00412490
 void FUN_00412490(void) { STUB(); }
@@ -221,7 +314,33 @@ struct RideQueueEntry *FUN_004125a0(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004125f0
-void *FUN_004125f0(unsigned int a, unsigned int b) { STUB(); }
+void *FUN_004125f0(unsigned int a, unsigned int b) {
+    struct RideQueueEntry *entry = DAT_004cbeac;
+    int x = a;
+    int y = b;
+    if (x < 0) {
+        return NULL;
+    }
+    if (x >= (unsigned short)lpConfig->width) {
+        return NULL;
+    }
+    if (y < 0) {
+        return NULL;
+    }
+    if (y >= (unsigned short)lpConfig->height) {
+        return NULL;
+    }
+    if (entry == NULL) {
+        return NULL;
+    }
+    while (entry != NULL) {
+        if ((unsigned int)(x - entry->x) < 4 && (unsigned int)(y - entry->y) < 4) {
+            return entry;
+        }
+        entry = entry->next;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00412650
 struct RideQueueEntry *FUN_00412650(unsigned short param_1) {
