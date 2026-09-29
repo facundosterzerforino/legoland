@@ -7,6 +7,7 @@
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
 #include "string.h"
 #include "text.h"
 #include "title.h"
@@ -25,7 +26,99 @@ struct Profile {
 #include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0048c260
-LEGO_EXPORT void InitListProfiles(void) { STUB(); }
+LEGO_EXPORT void InitListProfiles(void) {
+    struct ProfileNode *node;
+    struct IconNode *icon;
+    char *str;
+
+    UpdateSoundVols();
+    DeleteProfileList();
+    LoadProfilesFormDisk();
+    node = (struct ProfileNode *)DAT_00798890;
+    // STRING: LEGOLAND 0x004bf124
+    SPRITE_TitleScreenBk = LoadSprite("Reg_ScreenBK.lls", 0);
+    // STRING: LEGOLAND 0x004bf114
+    DAT_0079868c = LoadSprite("RegDeleteOn.lls", 4);
+    // STRING: LEGOLAND 0x004bf104
+    DAT_00798690 = LoadSprite("RegDelete.lls", 4);
+    // STRING: LEGOLAND 0x004bf0f0
+    DAT_007986b4 = LoadSprite("RegProfileON.lls", 4);
+    // STRING: LEGOLAND 0x004bf0dc
+    DAT_00798694 = LoadSprite("RegProfileOff_1.lls", 4);
+    // STRING: LEGOLAND 0x004bf0c8
+    DAT_00798698 = LoadSprite("RegProfileOff_2.lls", 4);
+    // STRING: LEGOLAND 0x004bf0b4
+    DAT_0079869c = LoadSprite("RegProfileOff_3.lls", 4);
+    // STRING: LEGOLAND 0x004bf0a0
+    DAT_007986a0 = LoadSprite("RegProfileOff_4.lls", 4);
+    // STRING: LEGOLAND 0x004bf08c
+    DAT_007986a4 = LoadSprite("RegProfileOff_5.lls", 4);
+    // STRING: LEGOLAND 0x004bf078
+    DAT_007986a8 = LoadSprite("RegProfileOff_6.lls", 4);
+    // STRING: LEGOLAND 0x004bf064
+    DAT_007986ac = LoadSprite("RegProfileOff_7.lls", 4);
+    // STRING: LEGOLAND 0x004bf050
+    DAT_007986b0 = LoadSprite("RegProfileOff_8.lls", 4);
+    // STRING: LEGOLAND 0x004bf038
+    DAT_007986b8 = LoadSprite("Reg_Delete_PopUp.lls", 4);
+    // STRING: LEGOLAND 0x004bf024
+    DAT_007986bc = LoadSprite("Reg_Diff_PopUp.lls", 4);
+    // STRING: LEGOLAND 0x004bf014
+    DAT_007986c0 = LoadSprite("Reg_Easy_On.lls", 4);
+    // STRING: LEGOLAND 0x004bf000
+    DAT_007986c4 = LoadSprite("Reg_Easy_Off.lls", 4);
+    // STRING: LEGOLAND 0x004beff0
+    DAT_007986c8 = LoadSprite("Reg_Mid_On.lls", 4);
+    // STRING: LEGOLAND 0x004befe0
+    DAT_007986cc = LoadSprite("Reg_Mid_Off.lls", 4);
+    // STRING: LEGOLAND 0x004befd0
+    DAT_007986d0 = LoadSprite("Reg_Hard_On.lls", 4);
+    // STRING: LEGOLAND 0x004befbc
+    DAT_007986d4 = LoadSprite("Reg_Hard_Off.lls", 4);
+
+    // STRING: LEGOLAND 0x004befa8
+    DAT_007986e0 = (unsigned int)LoadSpriteIcon("Accept_On_Reg.lls", 4, 0x1ef, 0x14f, 7);
+    ((struct IconNode *)DAT_007986e0)->string_id = 6;
+    ((struct IconNode *)DAT_007986e0)->string = GetString(6);
+    ((struct IconNode *)DAT_007986e0)->flags |= 0x2000;
+    ((struct IconNode *)DAT_007986e0)->flags |= 0x4002;
+    ((struct IconNode *)DAT_007986e0)->flags |= 0x400;
+    ((struct IconNode *)DAT_007986e0)->event_handler = (void *)FUN_0048d300;
+    DAT_006687bc = (unsigned int)FUN_0048d300;
+    DAT_006687c0 = (unsigned int)FUN_004920a0;
+    strcpy(DAT_007cb340, GetString(0x84));
+
+    for (; node != NULL; node = node->next) {
+        if (node->has_header) {
+            icon = InsertIcon(0x80, node->slot * 0x26 + 0x86, 7, FUN_0048c5e0(node->slot));
+            icon->string_id = 0;
+            str = GetString(0);
+            icon->flags |= 0x6002;
+            icon->string = str;
+            icon->event_handler = (void *)FUN_0048d390;
+            icon->field_18p = &node->data;
+            icon->slot = node->slot;
+        } else {
+            icon = InsertIcon(0x80, node->slot * 0x26 + 0x86, 7, FUN_0048c5e0(node->slot));
+            icon->string_id = 1;
+            str = GetString(1);
+            icon->flags |= 0x6002;
+            icon->string = str;
+            icon->event_handler = (void *)FUN_0048d3c0;
+            icon->field_18p = "EMPTY";
+            icon->slot = node->slot;
+        }
+        icon->field_20b |= 1;
+    }
+
+    DAT_007cb360 = InsertIcon(0, 0, 7, DAT_00798690);
+    DAT_007cb360->string_id = 2;
+    DAT_007cb360->string = GetString(2);
+    DAT_007cb360->flags |= 0x2000;
+    DAT_007cb360->flags |= 0x4002;
+    DAT_007cb360->flags |= 0x400;
+    DAT_007cb360->event_handler = (void *)FUN_0048cc30;
+}
 
 // FUNCTION: LEGOLAND 0x0048c5e0
 struct Sprite *FUN_0048c5e0(signed char param_1) {
