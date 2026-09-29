@@ -4,7 +4,8 @@
 
 struct SafariNode {
     unsigned short field_0;
-    unsigned char pad_2[14];
+    unsigned char pad_2[10];
+    int frame;
     struct SafariNode *next;
     unsigned char pad_14[0x14];
 };

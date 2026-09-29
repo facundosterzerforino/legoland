@@ -1385,6 +1385,9 @@ void *DAT_004cbec0;
 // GLOBAL: LEGOLAND 0x004cbec8
 struct Sprite *DAT_004cbec8;
 
+// GLOBAL: LEGOLAND 0x004cbecc
+struct RenderItemNode *DAT_004cbecc;
+
 // GLOBAL: LEGOLAND 0x004cbee8
 int DAT_004cbee8;
 

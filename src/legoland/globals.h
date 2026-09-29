@@ -1273,6 +1273,8 @@ extern unsigned short DAT_004cbedc;
 extern void *DAT_004cbec0;
 // 0x004cbec8
 extern struct Sprite *DAT_004cbec8;
+// 0x004cbecc
+extern struct RenderItemNode *DAT_004cbecc;
 // 0x004cbee8
 extern int DAT_004cbee8;
 // 0x004cbeec
