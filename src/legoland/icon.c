@@ -1526,10 +1526,11 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
     if (icon != NULL) {
         struct Sprite *sprite = src->field_14;
         unsigned int flags;
-        if (sprite == NULL) {
-            sprite = NULL;
+        if (sprite != NULL) {
+            FUN_0046d680(icon, sprite);
+        } else {
+            FUN_0046d680(icon, NULL);
         }
-        FUN_0046d680(icon, sprite);
         flags = icon->flags;
         icon->field_28 = (void *)RenderGBarSpriteIcon;
         icon->string = (char *)src->field_10;
