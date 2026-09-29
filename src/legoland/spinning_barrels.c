@@ -1,13 +1,17 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
 #include "binv.h"
+#include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "objclass.h"
+#include "render3d.h"
 #include "spinning_barrels.h"
 
 struct BarrelSource {
@@ -299,7 +303,56 @@ void FUN_0043c760(struct ClassNode *str, struct CallbackTable *ride) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c7f0
-void FUN_0043c7f0(struct BarrelNode *node) { STUB(); }
+void FUN_0043c7f0(struct BarrelNode *node) {
+    struct RideNode *r = ((struct Ride *)DAT_0062fde4)->riders;
+    unsigned int flags;
+
+    node->field_20++;
+    if (node->field_20 >= 0x20) {
+        node->field_20 = 0;
+    }
+    flags = node->field_c;
+    if (flags & 1) {
+        unsigned char c;
+        int v = ++node->field_14;
+        c = node->field_10;
+        if (c == 0) {
+            if (GetAllBlokesOffRide((struct Ride *)DAT_0062fde4, node->field_4) == 0) {
+                return;
+            }
+            FUN_0043c2f0(node);
+            return;
+        }
+        if (v > 2) {
+            node->field_14 = 0;
+            node->field_8++;
+            if (node->field_8 >= 0x40) {
+                node->field_8 = 0;
+                node->field_10 = c - 1;
+            }
+        }
+    } else if (flags & 0x4000) {
+        if (node->field_6 == node->field_18) {
+            node->field_c = flags & 0xffffbfff;
+            FUN_0043c320(node);
+            return;
+        }
+    } else if (node->field_6 != 0) {
+        if (node->field_1c == 0) {
+            node->field_c = flags | 0x4000;
+            Ride_SetFlagToNotLetAnyoneOn(&node->field_4);
+        } else {
+            node->field_1c--;
+        }
+    }
+    for (; r != NULL; r = r->next) {
+        if (node->field_4 == r->tile.id && r->rider->field_35 == 1) {
+            sprintf(&DAT_004b78b4[8], "%02d", r->rider->field_36);
+            SetBlokePositionFromBNV(DAT_0062fde8, r->rider, DAT_004b78b4, node->field_8, -1617922.25f, -1618065.75f, 0);
+        }
+    }
+    *(short *)*((struct Sprite *)DAT_0062fe00[0])->lls = (short)node->field_8;
+}
 
 // FUNCTION: LEGOLAND 0x0043c930
 void FUN_0043c930(void) {
