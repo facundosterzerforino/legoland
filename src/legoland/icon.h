@@ -30,6 +30,7 @@ struct IconNode {
     /* 0x1c */ union {
         void *field_1c;
         unsigned char slot;
+        unsigned char field_1cb;
     };
     /* 0x20 */ union {
         struct {
