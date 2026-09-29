@@ -111,7 +111,28 @@ struct JoustNode *FUN_00407a20(TileId *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00407a50
-void FUN_00407a50(struct JoustNode *node) { STUB(); }
+void FUN_00407a50(struct JoustNode *node) {
+    struct JoustNode *prev;
+    struct JoustNode *cur;
+
+    if (DAT_004c1250 == node) {
+        DAT_004c1250 = node->next;
+    } else {
+        cur = DAT_004c1250->next;
+        prev = DAT_004c1250;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x00407ab0
 void FUN_00407ab0(void) {

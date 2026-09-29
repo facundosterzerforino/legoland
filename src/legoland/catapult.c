@@ -130,7 +130,28 @@ struct CatapultNode *FUN_004030f0(const unsigned short *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00403130
-void FUN_00403130(struct CatapultNode *node) { STUB(); }
+void FUN_00403130(struct CatapultNode *node) {
+    struct CatapultNode *prev;
+    struct CatapultNode *cur;
+
+    if (DAT_004c1118 == node) {
+        DAT_004c1118 = node->next;
+    } else {
+        cur = DAT_004c1118->next;
+        prev = DAT_004c1118;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x00403190
 void FUN_00403190(void) {

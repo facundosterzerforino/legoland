@@ -66,26 +66,47 @@ int FUN_004158f0(struct SpiderNode *arg0) {
     }
     memset(node, 0, 0x30);
     node->field_0 = arg0->field_0;
-    node->next = (struct SpiderNode *)DAT_004cbf58;
+    node->next = DAT_004cbf58;
     DAT_004cbf58 = node;
     return FUN_00415a90(node);
 }
 
 // FUNCTION: LEGOLAND 0x00415930
-void FUN_00415930(struct SpiderNode *node) { STUB(); }
+void FUN_00415930(struct SpiderNode *node) {
+    struct SpiderNode *prev;
+    struct SpiderNode *cur;
+
+    if (DAT_004cbf58 == node) {
+        DAT_004cbf58 = node->next;
+    } else {
+        cur = DAT_004cbf58->next;
+        prev = DAT_004cbf58;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x00415990
 void FUN_00415990(void) {
-    struct SpiderNode *node = (struct SpiderNode *)DAT_004cbf58;
+    struct SpiderNode *node = DAT_004cbf58;
     while (node != NULL) {
         FUN_00415930(node);
-        node = (struct SpiderNode *)DAT_004cbf58;
+        node = DAT_004cbf58;
     }
 }
 
 // FUNCTION: LEGOLAND 0x004159b0
 struct SpiderNode *FUN_004159b0(unsigned short *key) {
-    struct SpiderNode *cur = (struct SpiderNode *)DAT_004cbf58;
+    struct SpiderNode *cur = DAT_004cbf58;
 
     if (cur != NULL) {
         do {
@@ -214,7 +235,7 @@ void FUN_004161f0(struct SpiderNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416310
 void FUN_00416310(void) {
-    struct SpiderNode *node = (struct SpiderNode *)DAT_004cbf58;
+    struct SpiderNode *node = DAT_004cbf58;
     while (node != NULL) {
         FUN_004161f0(node);
         node = node->next;
@@ -245,7 +266,7 @@ int FUN_00416830(struct SlotOwner *owner, struct SlotArray *arr, signed char cou
 
 // FUNCTION: LEGOLAND 0x00416880
 LEGO_EXPORT int SaveSpider(void) {
-    struct SpiderNode *node = (struct SpiderNode *)DAT_004cbf58;
+    struct SpiderNode *node = DAT_004cbf58;
     unsigned int one = 1;
     unsigned int zero = 0;
 

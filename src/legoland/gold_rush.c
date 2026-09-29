@@ -128,7 +128,28 @@ void FUN_00406920(struct GoldNode *src) {
 }
 
 // FUNCTION: LEGOLAND 0x00406960
-void FUN_00406960(struct GoldNode *node) { STUB(); }
+void FUN_00406960(struct GoldNode *node) {
+    struct GoldNode *prev;
+    struct GoldNode *cur;
+
+    if (DAT_004c1204 == node) {
+        DAT_004c1204 = node->next;
+    } else {
+        cur = DAT_004c1204->next;
+        prev = DAT_004c1204;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x004069c0
 void FUN_004069c0(void) {

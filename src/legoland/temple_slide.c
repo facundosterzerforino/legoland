@@ -22,7 +22,8 @@ struct SlideNode {
     unsigned short key;
     unsigned char pad_2[6];
     struct SlideNode *next;
-    unsigned char pad_c[0x14];
+    unsigned char pad_c[4];
+    unsigned int slots[4];
 };
 
 struct SlideCar {
@@ -41,12 +42,6 @@ struct SlideTrack {
 struct SlideContext {
     unsigned char pad_0[0xc];
     struct SlideTrack *var_c;
-};
-
-struct SaveNode {
-    unsigned char pad_0[8];
-    struct SaveNode *var_8;
-    unsigned char pad_c[0x14];
 };
 
 struct BlokeRender {
@@ -91,23 +86,44 @@ void FUN_00416ec0(TileId *key) {
     if (node != NULL) {
         memset(node, 0, 0x20);
         node->key = key->id;
-        node->next = (struct SlideNode *)DAT_004cbfd4;
+        node->next = DAT_004cbfd4;
         DAT_004cbfd4 = node;
         FUN_00417130((struct TempleRide *)node);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00416f00
-void FUN_00416f00(void *arg) { STUB(); }
+void FUN_00416f00(struct SlideNode *node) {
+    struct SlideNode *prev;
+    struct SlideNode *cur;
+
+    if (DAT_004cbfd4 == node) {
+        DAT_004cbfd4 = node->next;
+    } else {
+        cur = DAT_004cbfd4->next;
+        prev = DAT_004cbfd4;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x00416f60
-unsigned char *FUN_00416f60(void *arg) {
-    struct SlideNode *cur = (struct SlideNode *)DAT_004cbfd4;
+struct SlideNode *FUN_00416f60(void *arg) {
+    struct SlideNode *cur = DAT_004cbfd4;
 
     if (cur != NULL) {
         do {
             if (memcmp(&cur->key, arg, 2) == 0) {
-                return (unsigned char *)cur;
+                return cur;
             }
             cur = cur->next;
         } while (cur != NULL);
@@ -152,7 +168,7 @@ void FUN_00417240(void) {
 
 // FUNCTION: LEGOLAND 0x00417280
 void FUN_00417280(struct SlideObject *obj, TileId tile, struct Cursor *cursor) {
-    unsigned char *node = FUN_00416f60(&tile);
+    struct SlideNode *node = FUN_00416f60(&tile);
     if (node != NULL) {
         FUN_00416f00(node);
     }
@@ -187,7 +203,7 @@ unsigned int *FUN_00417300(struct SlideContext *ctx, unsigned short param) {
 
 // FUNCTION: LEGOLAND 0x00417340
 void FUN_00417340(void *arg) {
-    unsigned int *array = (unsigned int *)(FUN_00416f60(arg) + 0x10);
+    unsigned int *array = FUN_00416f60(arg)->slots;
     int i = 0;
 
     while (i < 4) {
@@ -205,11 +221,11 @@ int FUN_00417380(void *arg) {
     int avail[4];
     int count = 0;
     int pick;
-    unsigned char *node = FUN_00416f60(arg);
+    struct SlideNode *node = FUN_00416f60(arg);
     unsigned int *slots;
 
     if (node != NULL) {
-        slots = (unsigned int *)(node + 0x10);
+        slots = node->slots;
         if (slots[0] == 0) {
             avail[count] = count;
             count = 1;
@@ -232,10 +248,10 @@ int FUN_00417380(void *arg) {
 
 // FUNCTION: LEGOLAND 0x00417400
 void FUN_00417400(unsigned int index, void *arg) {
-    unsigned char *result = FUN_00416f60(arg);
+    struct SlideNode *result = FUN_00416f60(arg);
 
     if (result != NULL) {
-        ((unsigned int *)(result + 0x10))[index] = 0;
+        result->slots[index] = 0;
     }
     FUN_00417340(arg);
 }
@@ -247,7 +263,7 @@ void FUN_00417430(void) { STUB(); }
 LEGO_EXPORT int SaveTempleSlide(void) {
     int one = 1;
     int zero = 0;
-    struct SaveNode *p;
+    struct SlideNode *p;
 
     p = DAT_004cbfd4;
     while (p != NULL) {
@@ -257,7 +273,7 @@ LEGO_EXPORT int SaveTempleSlide(void) {
         if (SaveGameWrite(p, 0x20) == 0) {
             return 0;
         }
-        p = p->var_8;
+        p = p->next;
     }
     return SaveGameWrite(&zero, 4) != 0;
 }
@@ -265,7 +281,7 @@ LEGO_EXPORT int SaveTempleSlide(void) {
 // FUNCTION: LEGOLAND 0x00417930
 LEGO_EXPORT int LoadTempleSlide(struct SlideObject *obj) {
     struct SlideRide *ride = obj->ride;
-    struct SaveNode *last = NULL;
+    struct SlideNode *last = NULL;
     struct SlideRideNode *node;
     unsigned int marker;
 
@@ -274,13 +290,13 @@ LEGO_EXPORT int LoadTempleSlide(struct SlideObject *obj) {
     }
 
     while (marker != 0) {
-        struct SaveNode *save = (struct SaveNode *)malloc(0x20);
+        struct SlideNode *save = malloc(0x20);
         if (!SaveGameRead(save, 0x20)) {
             return 0;
         }
-        save->var_8 = NULL;
+        save->next = NULL;
         if (last != NULL) {
-            last->var_8 = save;
+            last->next = save;
         } else {
             DAT_004cbfd4 = save;
         }

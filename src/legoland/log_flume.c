@@ -15,16 +15,6 @@ struct Sprite;
 
 #include "image_sprite.h"
 
-struct ChainNode {
-    struct ChainNode *next;
-};
-
-struct CleanupNode {
-    struct CleanupNode *next;
-    unsigned char pad_4[0x10 - 0x4];
-    struct ChainNode *chain;
-};
-
 struct EmitNode {
     unsigned char pad_0[0xc];
     struct EmitNode *next;
@@ -259,17 +249,38 @@ void FUN_00408e40(TileId tile) {
     if (entry != NULL) {
         memset(entry, 0, sizeof(struct FlumeEntry));
         entry->tile = tile;
-        entry->next = (struct FlumeEntry *)DAT_004cbe84;
+        entry->next = DAT_004cbe84;
         DAT_004cbe84 = entry;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00408e80
-void FUN_00408e80(struct FlumeEntry *entry) { STUB(); }
+void FUN_00408e80(struct FlumeEntry *entry) {
+    struct FlumeEntry *prev;
+    struct FlumeEntry *cur;
+
+    if (DAT_004cbe84 == entry) {
+        DAT_004cbe84 = entry->next;
+    } else {
+        cur = DAT_004cbe84->next;
+        prev = DAT_004cbe84;
+        while (cur != entry) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = entry->next;
+        }
+    }
+    free(entry);
+}
 
 // FUNCTION: LEGOLAND 0x00408ec0
 struct FlumeEntry *FUN_00408ec0(TileId *tile) {
-    struct FlumeEntry *cur = (struct FlumeEntry *)DAT_004cbe84;
+    struct FlumeEntry *cur = DAT_004cbe84;
     if (cur == NULL) {
         return NULL;
     }
@@ -284,7 +295,7 @@ struct FlumeEntry *FUN_00408ec0(TileId *tile) {
 
 // FUNCTION: LEGOLAND 0x00408ef0
 struct FlumeEntry *FUN_00408ef0(TileId *tile) {
-    struct FlumeEntry *outer = (struct FlumeEntry *)DAT_004cbe84;
+    struct FlumeEntry *outer = DAT_004cbe84;
     struct FlumeEntry *cur;
 
     if (outer == NULL) {
@@ -876,7 +887,7 @@ void FUN_0040a2e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040a410
 void FUN_0040a410(void) {
-    struct CleanupNode *current;
+    struct FlumeEntry *current;
 
     if (DAT_004cbe4c) {
         KillSprite(DAT_004cbe4c);
@@ -915,13 +926,13 @@ void FUN_0040a410(void) {
         KillSprite(DAT_004cbe80);
     }
 
-    current = (struct CleanupNode *)DAT_004cbe84;
+    current = DAT_004cbe84;
     if (current != NULL) {
         while (current != NULL) {
-            struct CleanupNode *next = current->next;
-            struct ChainNode *chain = current->chain;
+            struct FlumeEntry *next = current->next;
+            struct FlumeEntry *chain = current->sub;
             while (chain != NULL) {
-                struct ChainNode *next_chain = chain->next;
+                struct FlumeEntry *next_chain = chain->next;
                 free(chain);
                 chain = next_chain;
             }
@@ -1098,11 +1109,11 @@ void FUN_0040bbb0(void) { STUB(); }
 void FUN_0040bd40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040be00
-void FUN_0040be00(struct ChainNode *param_1) { STUB(); }
+void FUN_0040be00(struct FlumeEntry *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040bf50
 void FUN_0040bf50(void) {
-    struct ChainNode *current = (struct ChainNode *)DAT_004cbe84;
+    struct FlumeEntry *current = DAT_004cbe84;
     while (current != NULL) {
         FUN_0040be00(current);
         current = current->next;

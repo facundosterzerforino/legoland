@@ -68,7 +68,33 @@ void FUN_0043d880(void *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d8c0
-void FUN_0043d8c0(void *param_1) { STUB(); }
+void FUN_0043d8c0(struct PlaneRideNode *node) {
+    struct PlaneRideNode *prev;
+    struct PlaneRideNode *cur;
+    struct SampleSource src;
+
+    if (DAT_0062fe9c == node) {
+        DAT_0062fe9c = node->next;
+    } else {
+        cur = DAT_0062fe9c->next;
+        prev = DAT_0062fe9c;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
+        }
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
+    }
+    src.type = 2;
+    src.field_8 = node->b0;
+    src.field_c = node->b1;
+    UnSourceAndFadeAllSamplesFromSource(&src, -200);
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x0043d940
 void FUN_0043d940(void) {
@@ -79,7 +105,7 @@ void FUN_0043d940(void) {
 
 // FUNCTION: LEGOLAND 0x0043d960
 unsigned int FUN_0043d960(struct PlaneRideObject **arg) {
-    struct PlaneRideNode *cur = (struct PlaneRideNode *)DAT_0062fe9c;
+    struct PlaneRideNode *cur = DAT_0062fe9c;
 
     if (cur != NULL) {
         do {
