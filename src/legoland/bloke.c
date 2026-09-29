@@ -1321,7 +1321,7 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, struct BNVPath *path) {
 }
 
 // FUNCTION: LEGOLAND 0x00484ff0
-LEGO_EXPORT unsigned int BNVPath_GetDFrame(BNVPath *path) {
+LEGO_EXPORT int BNVPath_GetDFrame(BNVPath *path) {
     return path->frame_index;
 }
 

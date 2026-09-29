@@ -86,6 +86,7 @@ struct Bloke {
     union {
         unsigned int field_54;
         struct BNVRef *bnv; /* ride code: BNV file slot of the bloke's path */
+        struct BNVPath *path; /* ride code: the bloke's live BNV path */
     };
     int field_58;
     int field_5c;
@@ -150,6 +151,8 @@ int CheckForPeople(struct MapRect *rect);
 LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient);
 LEGO_EXPORT BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
 LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path);
+LEGO_EXPORT int BNVPath_GetDFrame(BNVPath *path);
+LEGO_EXPORT void BNVPath_SetDFrame(Bloke *bloke, BNVPath *path, int frame);
 Point FUN_004831a0(unsigned char dir, short dist);
 LEGO_EXPORT Point GetTileInDir(Point pos, unsigned char dir);
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
