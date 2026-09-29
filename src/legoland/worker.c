@@ -670,8 +670,8 @@ LEGO_EXPORT Bloke *GenerateGardener(int *coords, int in_hut) {
         }
         DAT_00668610 |= 0x80;
     } else {
-    // STRING: LEGOLAND 0x004c0060
-    DBPrintf("   Failed to Generate Gardener\n");
+        // STRING: LEGOLAND 0x004c0060
+        DBPrintf("   Failed to Generate Gardener\n");
     }
     return worker;
 }
