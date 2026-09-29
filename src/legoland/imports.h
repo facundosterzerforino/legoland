@@ -22,3 +22,4 @@ int __stdcall acmStreamPrepareHeader(void *has, void *pash, unsigned int fdwPrep
 int __stdcall acmStreamConvert(void *has, void *pash, unsigned int fdwConvert);
 void __stdcall acmStreamUnprepareHeader(void *has, void *hdr, unsigned int flags);
 void __stdcall AVIStreamRead(void *stream, int start, int samples, void *buffer, int buffer_size, int *bytes, int *samples_out);
+int __stdcall EnumPrintersA(unsigned long flags, char *name, unsigned long level, unsigned char *buf, unsigned long cb, unsigned long *needed, unsigned long *returned);

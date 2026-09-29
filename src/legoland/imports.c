@@ -147,7 +147,10 @@ int __stdcall AVIStreamStart(void *stream) {
 void __stdcall AVIStreamRead(void *stream, int start, int samples, void *buffer, int buffer_size, int *bytes, int *samples_out) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e442
-void EnumPrintersA(void) { STUB(); }
+int __stdcall EnumPrintersA(unsigned long flags, char *name, unsigned long level, unsigned char *buf, unsigned long cb, unsigned long *needed, unsigned long *returned) {
+    STUB();
+    return 0;
+}
 
 // STUB: LEGOLAND 0x0049e448
 void FUN_0049e448(void) { STUB(); }
