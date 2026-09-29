@@ -59,7 +59,48 @@ int FUN_00497fb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00498000
-void FUN_00498000(void) { STUB(); }
+void FUN_00498000(void) {
+    int n;
+    int r;
+    unsigned int idx;
+    unsigned char mask;
+
+    if (DAT_007cacac == 0) {
+        return;
+    }
+    n = FUN_00497f60();
+    if (n == 0) {
+        return;
+    }
+    mask = 4;
+    while (n != 0) {
+        while (n != 0) {
+            if (n > (int)DAT_007cacac) {
+                r = _read(DAT_007caca8, &DAT_0079ac20[DAT_0079a7dc], DAT_007cacac);
+            } else {
+                r = _read(DAT_007caca8, &DAT_0079ac20[DAT_0079a7dc], n);
+            }
+            idx = DAT_0079a7e0;
+            if (r != -1) {
+                DAT_007cacac -= r;
+                DAT_0079a7e4[idx] += r;
+                DAT_0079a7dc = (DAT_0079a7dc + r) & 0xffff;
+            }
+            if (r < n) {
+                if (!(DAT_0079a83c & mask)) {
+                    DAT_0079a7e0 = idx + 1;
+                    return;
+                }
+                if (DAT_007cacac == 0) {
+                    FUN_00498100();
+                    DAT_0079a7e0++;
+                }
+            }
+            n -= r;
+        }
+        n = FUN_00497f60();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00498100
 void FUN_00498100(void) {

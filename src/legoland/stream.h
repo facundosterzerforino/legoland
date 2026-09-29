@@ -16,6 +16,7 @@ struct KLIBAUDIO_Object {
     void *vtable;
 };
 
+void FUN_00498100(void);
 void FUN_00498120(void);
 void FUN_00498630(const char *param_1);
 int FUN_004988c0(void);
