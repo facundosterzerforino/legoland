@@ -4,11 +4,16 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "bloke.h"
 #include "gamemap.h"
 #include "joust.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
+#include "render3d.h"
 #include "sound_music.h"
 
 #pragma pack(push, 1)
@@ -196,7 +201,186 @@ unsigned int FUN_00407c20(unsigned char param_1) {
 void FUN_00407c30(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00408580
-void FUN_00408580(void) { STUB(); }
+void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+    struct Ride *ride;
+    struct RideNode *r;
+    struct JoustNode *node;
+    struct Bloke *bloke;
+    struct Person *person;
+    struct Point off;
+    struct Point coords;
+    char frame;
+    char i;
+
+    ride = element->ride;
+    r = ride->riders;
+    {
+        struct Bloke *riders[8] = {0};
+        char n = 0;
+        node = FUN_00407a20(tile);
+        if (node == NULL) {
+            return;
+        }
+        frame = node->sub18.c;
+        coords = GetScreenCoordsForObject(tile, ride);
+        if (r != NULL) {
+            for (; r != NULL; r = r->next) {
+                if (tile->id == r->tile.id) {
+                    riders[n++] = r->rider;
+                }
+            }
+            if (n != 0) {
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x18) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x19) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x1a) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x1b) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x1c) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 0);
+                AdjustOffsetForViewMode(&off);
+                PrintSprite(DAT_004c1248, coords.x + off.x, coords.y + off.y, param_6, 0);
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0xc) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0xd) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0xe) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0xf) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 0);
+                AdjustOffsetForViewMode(&off);
+                PrintSprite(DAT_004c124c, coords.x + off.x, coords.y + off.y, param_6, 0);
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x16) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x17) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x1d) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                LLSSetFrame(GetLLSForLayer((struct Sprite *)DAT_004c1214, 1), frame);
+                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 1);
+                AdjustOffsetForViewMode(&off);
+                PrintSprite(GetSpriteForLayer((struct Sprite *)DAT_004c1214, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
+                for (r = ride->riders; r != NULL; r = r->next) {
+                    if (tile->id == r->tile.id) {
+                        bloke = r->rider;
+                        if (bloke->flags & 0x80) {
+                            struct Point poff;
+                            person = bloke->person;
+                            poff.x = 0;
+                            poff.y = -48;
+                            person->offset.x = bloke->screen_x;
+                            person->offset.y = bloke->screen_y;
+                            AdjustBlokePosition(&person->offset);
+                            AdjustOffsetForViewMode(&poff);
+                            person->screen.x = bloke->screen_x + poff.x + coords.x;
+                            person->screen.y = bloke->screen_y + coords.y + poff.y;
+                            AdjustBlokePosition(&person->screen);
+                            IP_RenderBlokeIn3DNow(r->rider);
+                        }
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x10) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0xb) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0xa) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 1) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 2) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 3) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 7) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x14) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x15) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                for (i = 0; i < n; i++) {
+                    if (riders[i]->param_action == 0x1e) {
+                        IP_RenderBlokeIn3DNow(riders[i]);
+                    }
+                }
+                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 1);
+                AdjustOffsetForViewMode(&off);
+                PrintSprite(DAT_004c1244, coords.x + off.x, coords.y + off.y, param_6, 0);
+                return;
+            }
+        }
+        LLSSetFrame(GetLLSForLayer((struct Sprite *)DAT_004c1214, 1), frame);
+        off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer((struct Sprite *)DAT_004c1214, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00408bc0
 void FUN_00408bc0(void) {
