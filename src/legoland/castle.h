@@ -14,6 +14,14 @@ void FUN_00425cb0(const struct Int16Pair *in, float f, struct FVec3 *out);
 float lego_sqrtf(float x);
 void FUN_004237f0(void *a, void *b, int c);
 
+struct Slot;
+struct SlotHost;
+
+struct Slot *FUN_0041e760(struct SlotHost *host);
+void *FUN_0041eb30(unsigned int arg);
+void FUN_0041eb60(unsigned int param_1);
+void FUN_0041ed90(unsigned int param1, unsigned int param2);
+
 unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3);
 void FUN_0041e500(void *obj);
 void FUN_0041e630(struct FlagWord *obj);
