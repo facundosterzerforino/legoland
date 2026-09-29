@@ -2837,7 +2837,7 @@ extern struct Element *DAT_0079abfc;
 // 0x0079ac04
 extern unsigned int DAT_0079ac04;
 // 0x0079ac08
-extern void *DAT_0079ac08;
+extern unsigned char *DAT_0079ac08;
 // 0x0079ac0c
 extern void *DAT_0079ac0c;
 
@@ -2846,10 +2846,25 @@ extern unsigned char DAT_0079ac20[0x10000];
 // 0x007aac24
 extern int DAT_007aac24;
 // 0x007aac40
-extern unsigned char DAT_007aac40[0x20];
+struct AcmHdr {
+    unsigned int cbStruct;
+    unsigned int fdwStatus;
+    unsigned int dwUser;
+    unsigned char *pbSrc;
+    int cbSrcLength;
+    int cbSrcLengthUsed;
+    unsigned int dwSrcUser;
+    unsigned char *pbDst;
+    int cbDstLength;
+    int cbDstLengthUsed;
+    unsigned char pad[0x8];
+};
+extern struct AcmHdr DAT_007aac40;
 
 // 0x007aaca0
 extern unsigned char DAT_007aaca0[0x20000];
+// 0x007caca0
+extern int DAT_007caca0;
 // 0x007caca4
 extern int DAT_007caca4;
 // 0x007caca8

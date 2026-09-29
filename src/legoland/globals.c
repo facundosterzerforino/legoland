@@ -3738,7 +3738,7 @@ struct Element *DAT_0079abfc;
 unsigned int DAT_0079ac04;
 
 // GLOBAL: LEGOLAND 0x0079ac08
-void *DAT_0079ac08;
+unsigned char *DAT_0079ac08;
 
 // GLOBAL: LEGOLAND 0x0079ac0c
 void *DAT_0079ac0c;
@@ -3750,10 +3750,13 @@ unsigned char DAT_0079ac20[0x10000];
 int DAT_007aac24;
 
 // GLOBAL: LEGOLAND 0x007aac40
-unsigned char DAT_007aac40[0x20];
+struct AcmHdr DAT_007aac40;
 
 // GLOBAL: LEGOLAND 0x007aaca0
 unsigned char DAT_007aaca0[0x20000];
+
+// GLOBAL: LEGOLAND 0x007caca0
+int DAT_007caca0;
 
 // GLOBAL: LEGOLAND 0x007caca4
 int DAT_007caca4;

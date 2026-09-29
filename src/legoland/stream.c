@@ -182,7 +182,51 @@ unsigned int FUN_00498230(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00498250
-void FUN_00498250(void) { STUB(); }
+void FUN_00498250(void) {
+    int n;
+    int chunk;
+    int len;
+
+    FUN_00498000();
+    n = FUN_004981e0();
+    while (n != 0) {
+        while (n != 0) {
+            chunk = DAT_007caca4 - DAT_007aac24;
+            if (chunk == 0) {
+                if (n != 0) {
+                    len = DAT_0079a7e4[0];
+                    if (len >= DAT_007caca0) {
+                        len = DAT_007caca0;
+                    }
+                    DAT_007aac40.cbSrcLength = len;
+                    FUN_00498150(DAT_0079ac0c, len);
+                    acmStreamConvert(DAT_007cacb8, &DAT_007aac40, 0x10);
+                    DAT_007aac24 = 0;
+                    DAT_007caca4 = DAT_007aac40.cbDstLengthUsed;
+                    if (DAT_007aac40.cbDstLengthUsed < n) {
+                        memcpy(&DAT_007aaca0[DAT_0079a838], DAT_0079ac08, DAT_007aac40.cbDstLengthUsed);
+                        DAT_007aac24 = DAT_007aac40.cbDstLengthUsed;
+                        DAT_0079a838 += DAT_007aac40.cbDstLengthUsed;
+                        return;
+                    }
+                    memcpy(&DAT_007aaca0[DAT_0079a838], DAT_0079ac08, n);
+                    DAT_007aac24 = n;
+                    DAT_0079a838 = (DAT_0079a838 + n) & 0x1ffff;
+                }
+                break;
+            }
+            if (n < chunk) {
+                chunk = n;
+            }
+            memcpy(&DAT_007aaca0[DAT_0079a838], DAT_0079ac08 + DAT_007aac24, chunk);
+            DAT_0079a838 = (DAT_0079a838 + chunk) & 0x1ffff;
+            n -= chunk;
+            DAT_007aac24 += chunk;
+        }
+        n = FUN_004981e0();
+    }
+    FUN_00498000();
+}
 
 // FUNCTION: LEGOLAND 0x004983a0
 int FUN_004983a0(unsigned char *dst, int count) {
@@ -261,7 +305,7 @@ int FUN_00498920(void) {
         return 0;
     }
     FUN_004988c0();
-    acmStreamUnprepareHeader(DAT_007cacb8, DAT_007aac40, 0);
+    acmStreamUnprepareHeader(DAT_007cacb8, &DAT_007aac40, 0);
     acmStreamClose(DAT_007cacb8, 0);
     _close(DAT_007caca8);
     KLIBAUDIO_DestroyAVISoundBuffer((struct AVISoundBuffer *)DAT_0079a848);
