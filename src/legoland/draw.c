@@ -457,7 +457,7 @@ void FUN_00464480(void) { STUB(); }
 LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464ee0
-void FUN_00464ee0(void *rect) { STUB(); }
+void __fastcall FUN_00464ee0(struct Sprite *sprite, RECT *rect, int *off) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004651d0
 LEGO_EXPORT void SoftPrint_Clear(void) { STUB(); }
