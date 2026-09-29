@@ -8,6 +8,7 @@
 #include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "render3d.h"
@@ -160,7 +161,60 @@ void FUN_00414b10(struct SafariNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00414b80
-void FUN_00414b80(void) { STUB(); }
+void FUN_00414b80(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node = ride->riders;
+    struct SafariNode *sn;
+    struct Point pos;
+    struct Point off1;
+    struct Point off2;
+    char found = 0;
+
+    sn = FUN_00414a80((struct SafariKey *)tile);
+    if (sn != NULL) {
+        RenderItems_New();
+        DAT_004cbecc = NULL;
+        pos = GetScreenCoordsForObject((TileId *)tile, ride);
+        for (; node != NULL; node = node->next) {
+            if (*tile == node->tile.id) {
+                found = 1;
+                break;
+            }
+        }
+        *(short *)*DAT_0082c66c->lls = (short)sn->frame;
+        if (found) {
+            LLSSetFrame(GetLLSForLayer(DAT_004cbec8, 0), sn->frame);
+            PrintSprite(GetSpriteForLayer(DAT_004cbec8, 0), pos.x, pos.y, clip, 0);
+            for (node = ride->riders; node != NULL; node = node->next) {
+                if (*tile == node->tile.id) {
+                    struct Bloke *bloke = node->rider;
+                    struct Person *person;
+
+                    if ((bloke->flags & 0x80) != 0) {
+                        off2.x = DAT_0082c670;
+                        off2.y = DAT_0082c674;
+                        person = bloke->person;
+                        off1.x = DAT_004cbee8;
+                        off1.y = DAT_004cbeec;
+                        AdjustOffsetForViewMode(&off1);
+                        person->offset.x = bloke->screen_x + off1.x;
+                        person->offset.y = bloke->screen_y + off1.y;
+                        AdjustBlokePosition(&person->offset);
+                        AdjustOffsetForViewMode(&off2);
+                        person->screen.x = off1.x + off2.x + bloke->screen_x + pos.x;
+                        person->screen.y = off1.y + off2.y + bloke->screen_y + pos.y;
+                        AdjustBlokePosition(&person->screen);
+                    }
+                    AddBlokeToRenderList(&DAT_004cbecc, (struct BlokeRenderSrc *)node, node->person->field_20);
+                }
+            }
+        } else {
+            LLSSetFrame(GetLLSForLayer(DAT_004cbec8, 0), sn->frame);
+            PrintSprite(GetSpriteForLayer(DAT_004cbec8, 0), pos.x, pos.y, clip, 0);
+        }
+        RenderBlokeList((struct BlokeListHead *)&DAT_004cbecc);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00414d90
 void FUN_00414d90(struct SafariObject *a1) {
