@@ -277,6 +277,22 @@ struct FlumeSlotSet {
     struct FlumeSlot slots[1];
 };
 
+struct FlumeRunNode {
+    struct FlumeRunNode *prev;
+    struct FlumeRunNode *next;
+};
+
+struct FlumeStage {
+    unsigned char pad_0[4];
+    int count;
+    struct Sprite *sprite;
+};
+
+struct FlumeStageList {
+    unsigned char pad_0[4];
+    unsigned char *stages;
+};
+
 struct FlumeEntry {
     struct FlumeEntry *next;
     unsigned char pad_4[4];
@@ -297,7 +313,9 @@ struct FlumeEntry {
     struct FlumeSlotSet *slots;
     int field_28;
     struct FlumeEntry *sub2;
-    unsigned char pad_30[0xd0 - 0x30];
+    struct FlumeRunNode *first;
+    struct FlumeRunNode *last;
+    unsigned char pad_38[0xd0 - 0x38];
     int field_d0;
 };
 
@@ -1521,7 +1539,47 @@ unsigned char FUN_0040b270(unsigned int *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040b290
-void FUN_0040b290(void) { STUB(); }
+void FUN_0040b290(struct FlumeEntry *entry, int x, int y, struct FlumeStageList *list, int reverse) {
+    struct FlumeSlotSet *set = entry->slots;
+    int i = 0;
+    int j;
+    int off;
+    struct FlumeRunNode *node;
+    struct FlumeStage *stage;
+
+    if (reverse == 0) {
+        node = entry->first;
+    } else {
+        node = entry->last;
+    }
+    stage = (struct FlumeStage *)list->stages;
+    if (node != NULL) {
+        off = 0;
+        do {
+            for (j = 0; j < set->count; j++) {
+                if (FUN_0040b210((struct FlumeWeighted *)&set->slots[j], (struct FlumeWeighted *)node)) {
+                    FUN_0040ae90((unsigned int)&set->slots[j], (int)node, 1);
+                }
+            }
+            if (reverse == 0) {
+                node = node->next;
+            } else {
+                node = node->prev;
+            }
+            i++;
+            if (i >= stage->count) {
+                if (stage->sprite != NULL) {
+                    PrintSprite(stage->sprite, x, y, 0, 0);
+                }
+                off += 12;
+                stage = (struct FlumeStage *)(list->stages + off);
+            }
+        } while (node != NULL);
+    }
+    if (stage->sprite != NULL) {
+        PrintSprite(stage->sprite, x, y, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040b390
 int FUN_0040b390(struct FlumeEntry *entry) {
