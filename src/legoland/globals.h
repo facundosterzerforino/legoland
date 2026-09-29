@@ -4031,3 +4031,6 @@ extern int *DAT_004d87c4;
 extern int *DAT_004d884c[32];
 // 0x004d88cc
 extern unsigned int *DAT_004d88cc[5];
+
+// 0x004b5660
+extern float DAT_004b5660[4][2];

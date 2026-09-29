@@ -43,6 +43,7 @@ struct Slot;
 struct Struct42a5e0Obj;
 struct Struct42a5e0Data;
 struct SlotHost;
+struct LmsFile;
 
 unsigned int FUN_0041e720(struct SlotHost *host, unsigned int arg);
 struct Slot *FUN_0041e760(struct SlotHost *host);
@@ -68,6 +69,16 @@ unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsi
 void FUN_00429af0(int a, void *b);
 void FUN_004274b0(struct Struct4274b0Obj *obj, const struct Struct4274b0Src *src);
 void FUN_0041f7f0(void);
+unsigned int FUN_00420530(const char *param);
+void FUN_004226c0(const char *s);
+unsigned int FUN_004225d0(void);
+void FUN_004225b0(unsigned int param_1, char *param_2);
+struct LmsFile *FUN_00420640(const char *name);
+int FUN_004206d0(const char *name, unsigned int *param2);
+unsigned int FUN_00422640(void);
+void FUN_00422620(int value, char *buffer);
+int FUN_00420750(const char *name);
+int FUN_004207a0(void);
 int FUN_0041f4e0(void (*fn)(float, unsigned int), void *a, float b, float c, void *d);
 int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes);
 void FUN_0041f790(float x, unsigned int out);

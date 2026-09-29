@@ -5450,3 +5450,6 @@ int *DAT_004d884c[32];
 
 // GLOBAL: LEGOLAND 0x004d88cc
 unsigned int *DAT_004d88cc[5];
+
+// GLOBAL: LEGOLAND 0x004b5660
+float DAT_004b5660[4][2];
