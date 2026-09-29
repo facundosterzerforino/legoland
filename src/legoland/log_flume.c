@@ -235,7 +235,9 @@ struct FlumeEntry {
     unsigned char pad_16[2];
     int mode;
     int submode;
-    unsigned char pad_20[0xd0 - 0x20];
+    unsigned char pad_20[0x2c - 0x20];
+    struct FlumeEntry *sub2;
+    unsigned char pad_30[0xd0 - 0x30];
     int field_d0;
 };
 
@@ -311,7 +313,33 @@ struct FlumeEntry *FUN_00408ef0(TileId *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x00408f30
-unsigned int FUN_00408f30(struct SubBuf *buf) { STUB(); }
+unsigned int FUN_00408f30(struct SubBuf *buf) {
+    struct FlumeEntry *first = DAT_004cbe84;
+    struct FlumeEntry *outer;
+    struct FlumeEntry *mid;
+    struct FlumeEntry *cur;
+
+    if (first != NULL) {
+        for (outer = first; outer != NULL; outer = outer->next) {
+            for (mid = outer->sub; mid != NULL; mid = mid->next) {
+                cur = mid->sub2;
+                if (cur == NULL) {
+                    if (memcmp(&mid->tile, buf, sizeof(TileId)) == 0) {
+                        return (unsigned int)mid;
+                    }
+                } else {
+                    do {
+                        if (memcmp(&cur->tile, buf, sizeof(TileId)) == 0) {
+                            return (unsigned int)cur;
+                        }
+                        cur = cur->next;
+                    } while (cur != NULL);
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00408f90
 void FUN_00408f90(void) { STUB(); }
