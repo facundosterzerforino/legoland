@@ -21,7 +21,13 @@ struct CopterLayer {
 };
 
 struct CopterNode {
-    /* 0x00 */ unsigned short field_0;
+    union {
+        /* 0x00 */ unsigned short field_0;
+        struct {
+            unsigned char pad_0;
+            /* 0x01 */ unsigned char field_1;
+        };
+    };
     /* 0x02 */ unsigned char field_2;
     /* 0x03 */ unsigned char field_3;
     /* 0x04 */ struct CopterNode *next;
