@@ -631,17 +631,26 @@ void FUN_0041e240(struct Timed *timed) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e260
-void FUN_0041e260(void) { STUB(); }
+unsigned int FUN_0041e260(struct RingHost *host, unsigned int arg) {
+    struct RingNode *node = &host->head;
+
+    while (FUN_0041e720((struct SlotHost *)node, arg) == 0) {
+        node = node->next;
+        if (node == &host->head) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0041e2b0
 unsigned int FUN_0041e2b0(struct RingHost *host) {
-    struct RingNode *head = &host->head;
-    struct RingNode *node = head;
+    struct RingNode *node = &host->head;
     unsigned int r;
 
     while ((r = (unsigned int)FUN_0041e760((struct SlotHost *)node)) == 0) {
         node = node->next;
-        if (node == head) {
+        if (node == &host->head) {
             return 0;
         }
     }
@@ -649,7 +658,17 @@ unsigned int FUN_0041e2b0(struct RingHost *host) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e2f0
-void FUN_0041e2f0(void) { STUB(); }
+unsigned int FUN_0041e2f0(struct RingHost *host) {
+    struct RingNode *node = &host->head;
+    unsigned int r;
+    while ((r = FUN_0041e790((struct SlotHost *)node)) == 0) {
+        node = node->next;
+        if (node == &host->head) {
+            return 0;
+        }
+    }
+    return r;
+}
 
 // FUNCTION: LEGOLAND 0x0041e330
 void FUN_0041e330(struct RingHost *host, void (*visit)()) {
@@ -771,7 +790,20 @@ struct CastleObj *FUN_0041e570(unsigned int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e5d0
-void FUN_0041e5d0(struct CastleObj **param_1) { STUB(); }
+void FUN_0041e5d0(struct CastleObj **param_1) {
+    struct RingHost *host = (struct RingHost *)*param_1;
+    struct RingNode *node = &host->head;
+    struct RingNode *next;
+
+    FUN_0041e380(host);
+    do {
+        next = node->next;
+        FUN_0041e460(node, host);
+        node = next;
+    } while (next != &host->head);
+    FUN_004775d0(*param_1);
+    *param_1 = NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0041e620
 void FUN_0041e620(void) {
@@ -845,17 +877,19 @@ struct Slot *FUN_0041e760(struct SlotHost *host) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e790
-void FUN_0041e790(struct SlotHost *host) {
+unsigned int FUN_0041e790(struct SlotHost *host) {
     struct Slot *slot = &host->slots[0];
     int i = 0;
+    unsigned int r;
     while (i <= 1) {
-        if (slot->method_10(slot) != 0) {
-            FUN_004273e0(slot);
-            break;
+        r = slot->method_10(slot);
+        if (r != 0) {
+            return FUN_004273e0(slot);
         }
         i++;
         slot++;
     }
+    return r;
 }
 
 struct Slot2 {
@@ -1084,11 +1118,92 @@ void FUN_0041edb0(unsigned int param1, unsigned int param2, unsigned int param3)
     }
 }
 
+struct KindInfo {
+    unsigned char pad_0[0x1c];
+    unsigned int field_1c;
+};
+
+struct KindOwner {
+    unsigned char pad_0[0xc];
+    struct KindInfo *field_c;
+};
+
+struct KindObj {
+    struct KindOwner *owner;
+    unsigned char pad_4[0x8];
+    unsigned short flags;
+};
+
 // FUNCTION: LEGOLAND 0x0041ede0
-void FUN_0041ede0(void) { STUB(); }
+unsigned int FUN_0041ede0(struct KindObj *obj) {
+    struct KindOwner *owner;
+    struct KindInfo *info;
+    unsigned short flags;
+
+    if (obj == NULL) {
+        return 1;
+    }
+    flags = obj->flags;
+    if ((flags & 0x8f8) == 0) {
+        return 0;
+    }
+    if (flags & 0x40) {
+        return 1;
+    }
+    owner = obj->owner;
+    if (owner != NULL) {
+        info = owner->field_c;
+    } else {
+        info = NULL;
+    }
+    if ((flags & 0x8) && owner != NULL && info == DAT_007fd624) {
+        return 0;
+    }
+    if (flags & 0x800) {
+        return 0;
+    }
+    if ((flags & 0x88) && info != NULL && (info->field_1c & 0x200000)) {
+        return 0;
+    }
+    return 1;
+}
+
+struct AreaNode {
+    int x;
+    int y;
+    int w;
+    int h;
+    struct AreaNode *next;
+};
 
 // FUNCTION: LEGOLAND 0x0041ee40
-unsigned int FUN_0041ee40(unsigned int a, unsigned int b) { STUB(); }
+unsigned int FUN_0041ee40(unsigned int a, unsigned int b) {
+    short *pos = (short *)a;
+    struct AreaNode *node;
+    struct MapElement *elem;
+    int x;
+    int y;
+
+    if (DAT_004b55f4 != 0) {
+        node = (struct AreaNode *)b;
+        do {
+            for (y = node->y + pos[1]; y < node->h + pos[1]; y++) {
+                for (x = node->x + pos[0]; x < node->w + pos[0]; x++) {
+                    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                        elem = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+                    } else {
+                        elem = NULL;
+                    }
+                    if (FUN_0041ede0((struct KindObj *)elem) != 0) {
+                        return 0;
+                    }
+                }
+            }
+            node = node->next;
+        } while (node != NULL);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0041ef00
 int FUN_0041ef00(void) {
