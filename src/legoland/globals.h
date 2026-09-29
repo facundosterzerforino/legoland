@@ -1712,7 +1712,7 @@ extern struct RideLayer *DAT_0062fe50;
 // 0x0062fe54
 extern struct Sprite *DAT_0062fe54;
 // 0x0062fe58
-extern unsigned int DAT_0062fe58;
+extern struct Ride *DAT_0062fe58;
 // 0x0062fe60
 extern unsigned int DAT_0062fe60;
 // 0x0062fe64
@@ -1723,12 +1723,16 @@ extern unsigned int DAT_0062fe68;
 extern unsigned short DAT_0062fe6c;
 // 0x0062fe78
 extern void *DAT_0062fe78;
+// 0x0062fe7c
+extern struct Sprite *DAT_0062fe7c;
 // 0x0062fe84
 extern void *DAT_0062fe84[3];
 // 0x0062fe90
 extern void *DAT_0062fe90;
 // 0x0062fe94
 extern void *DAT_0062fe94;
+// 0x0062fe98
+extern struct Sprite *DAT_0062fe98;
 // 0x0062fe9c
 extern struct PlaneRideNode *DAT_0062fe9c;
 // 0x0062fea4
@@ -3457,6 +3461,10 @@ extern unsigned int DAT_0081c8d8;
 extern unsigned int DAT_0081c8dc;
 // 0x0081cae0
 extern struct Sprite *DAT_0081cae0;
+// 0x0081cae8
+extern int DAT_0081cae8;
+// 0x0081caec
+extern int DAT_0081caec;
 // 0x0081caf0
 extern struct Ride *DAT_0081caf0;
 // 0x0081caf4
