@@ -363,7 +363,27 @@ unsigned int FUN_00408f30(struct SubBuf *buf) {
 }
 
 // FUNCTION: LEGOLAND 0x00408f90
-void FUN_00408f90(void) { STUB(); }
+struct FlumeEntry *FUN_00408f90(int x, int y) {
+    struct FlumeEntry *outer;
+    struct FlumeEntry *cur;
+    int h = DAT_004b4734 - DAT_004b472c;
+    int w = DAT_004b4730 - DAT_004b4728;
+
+    outer = DAT_004cbe84;
+    if (outer != NULL) {
+        do {
+            for (cur = outer->sub; cur != NULL; cur = cur->next) {
+                int tx = cur->tile.pos.x;
+                int ty = cur->tile.pos.y;
+                if (x >= tx && x <= tx + w && y >= ty && y <= ty + h) {
+                    return cur;
+                }
+            }
+            outer = outer->next;
+        } while (outer != NULL);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00409010
 void *FUN_00409010(void) {
