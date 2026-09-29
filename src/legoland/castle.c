@@ -1533,6 +1533,11 @@ int FUN_0041ef00(void) {
     return 1;
 }
 
+struct PlaneSet {
+    int count;
+    float p[4][3];
+};
+
 // FUNCTION: LEGOLAND 0x0041ef20
 void FUN_0041ef20(int a, int b, int c, int d) {
     struct RectI r;
@@ -1545,7 +1550,30 @@ void FUN_0041ef20(int a, int b, int c, int d) {
 }
 
 // FUNCTION: LEGOLAND 0x0041ef60
-void FUN_0041ef60(void) { STUB(); }
+void *FUN_0041ef60(void *verts, int *out, unsigned int code, int n) {
+    int sel = 0;
+
+    if (code == 0xf) {
+        *out = 3;
+        return verts;
+    }
+    FUN_0041f030(n + 1);
+    if ((char)(code & 3) < 3) {
+        sel = 1;
+    }
+    if ((char)(code & 0xc) < 0xc) {
+        sel |= 2;
+    }
+    switch (sel) {
+    case 3:
+        return FUN_0041f2b0(3, verts, out, 4, DAT_004b55fc->p[0]);
+    case 2:
+        return FUN_0041f2b0(3, verts, out, 2, DAT_004b55fc->p[2]);
+    case 1:
+        return FUN_0041f2b0(3, verts, out, 2, DAT_004b55fc->p[0]);
+    }
+    return out;
+}
 
 // FUNCTION: LEGOLAND 0x0041f030
 void FUN_0041f030(unsigned int param) {
@@ -1575,11 +1603,6 @@ int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes
     *outCount = n;
     return DAT_004b5600[i & 1];
 }
-
-struct PlaneSet {
-    int count;
-    float p[4][3];
-};
 
 struct Arith {
     void (*mul)(unsigned int, unsigned int, unsigned int);

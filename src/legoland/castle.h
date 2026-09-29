@@ -80,6 +80,7 @@ unsigned int FUN_00422640(void);
 void FUN_00422620(int value, char *buffer);
 int FUN_00420750(const char *name);
 int FUN_004207a0(void);
+void FUN_0041f030(unsigned int param);
 int FUN_0041f4e0(void (*fn)(float, unsigned int), void *a, float b, float c, void *d);
 int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes);
 void FUN_0041f790(float x, unsigned int out);
