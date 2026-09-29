@@ -1116,7 +1116,7 @@ struct Ride *DAT_004c11dc;
 struct Sprite *DAT_004c11e4;
 
 // GLOBAL: LEGOLAND 0x004c11e8
-void *DAT_004c11e8;
+struct Sprite *DAT_004c11e8;
 
 // GLOBAL: LEGOLAND 0x004c11f0
 void *DAT_004c11f0;
@@ -1135,6 +1135,9 @@ struct Sprite *DAT_004c1200;
 
 // GLOBAL: LEGOLAND 0x004c1204
 struct GoldNode *DAT_004c1204;
+
+// GLOBAL: LEGOLAND 0x004c1208
+struct RenderItemNode *DAT_004c1208;
 
 // GLOBAL: LEGOLAND 0x004c1210
 struct Sprite *DAT_004c1210;
