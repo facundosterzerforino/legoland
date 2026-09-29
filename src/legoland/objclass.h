@@ -84,17 +84,30 @@ void FUN_00481170(void);
 void *FUN_00481720(void);
 LEGO_EXPORT void SetEditObject(struct EditObject *obj);
 struct BestNode *FUN_00481730(void);
+struct BestBox {
+    int x_min;
+    int y_min;
+    int x_max;
+    int y_max;
+    int field_18;
+};
 struct BestNode {
     struct BestNode *next;
     unsigned int pad_4;
-    unsigned int x_min;
-    unsigned int y_min;
-    unsigned int x_max;
-    unsigned int y_max;
-    unsigned int field_18;
+    union {
+        struct BestBox box;
+        struct {
+            unsigned int x_min;
+            unsigned int y_min;
+            unsigned int x_max;
+            unsigned int y_max;
+            unsigned int field_18;
+        };
+    };
     unsigned int field_1c;
     unsigned int field_20;
 };
+void FUN_00481750(struct BestNode *node);
 typedef struct BestNode BestNode;
 struct BestNode *FUN_00481790(struct Point *pos);
 void FUN_004819a0(int *param_1);

@@ -75,7 +75,49 @@ LEGO_EXPORT void AddPathSquare(struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00481c90
-LEGO_EXPORT void RemovePathSquare(struct Point *pos) { STUB(); }
+LEGO_EXPORT void RemovePathSquare(struct Point *pos) {
+    struct BestNode *found;
+    struct BestNode *node;
+    struct BestBox box;
+
+    found = FUN_00481790(pos);
+    if (found == NULL) {
+        return;
+    }
+    box = found->box;
+    FUN_00481750(found);
+
+    if (box.y_min < pos->y) {
+        node = FUN_00481730();
+        node->y_min = box.y_min;
+        node->y_max = pos->y - 1;
+        node->x_min = box.x_min;
+        node->x_max = box.x_max;
+        FUN_00481b10(node);
+    }
+    if (box.y_max > pos->y) {
+        node = FUN_00481730();
+        node->y_min = pos->y + 1;
+        node->y_max = box.y_max;
+        node->x_min = box.x_min;
+        node->x_max = box.x_max;
+        FUN_00481b10(node);
+    }
+    if (box.x_min < pos->x) {
+        node = FUN_00481730();
+        node->y_min = node->y_max = pos->y;
+        node->x_min = box.x_min;
+        node->x_max = pos->x - 1;
+        FUN_00481b10(node);
+    }
+    if (box.x_max > pos->x) {
+        node = FUN_00481730();
+        node->y_min = node->y_max = pos->y;
+        node->x_min = pos->x + 1;
+        node->x_max = box.x_max;
+        FUN_00481b10(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00481e60
 void FUN_00481e60(struct PathQuery *query, struct PathBox *box) {
