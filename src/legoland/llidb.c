@@ -80,7 +80,9 @@ struct ODFObject {
     unsigned int data_8;
     unsigned char pad_c[0x1c - 0xc];
     unsigned int flags;
-    unsigned char pad_20[0x2a - 0x20];
+    unsigned char pad_20[0x26 - 0x20];
+    short key_26;
+    unsigned char pad_28[0x2a - 0x28];
     short order;
     unsigned char pad_2c[0x4c - 0x2c];
     unsigned int data_4c;
@@ -974,7 +976,115 @@ void FUN_0047c6a0(struct LLIDBHead *head) {
 }
 
 // FUNCTION: LEGOLAND 0x0047c7f0
-struct Sprite *FUN_0047c7f0(struct Element *elem, char **name2, int *key, char ***after) { STUB(); }
+struct Sprite *FUN_0047c7f0(struct Element *elem, char **name2, int *key, char ***after) {
+    char filename[0x100];
+    char buf2[0x100];
+    char buf1[0x100];
+    char name[0x100];
+    struct Sprite *sprite;
+    int size;
+    struct ResFile *file;
+    struct ODFObject *obj;
+    struct Element *e;
+    char *text;
+
+    // STRING: LEGOLAND 0x004bc39c
+    sprintf(filename, "Objdesc\\%s", elem->path);
+    file = RES_OpenFile(filename);
+    if (file == NULL) {
+        return NULL;
+    }
+
+    obj = (struct ODFObject *)malloc(0xd0);
+    memset(obj, 0, 0xd0);
+    if (obj == NULL) {
+        RES_CloseFile(file);
+        return NULL;
+    }
+
+    obj->cleanup_arg = elem;
+    elem->data = NULL;
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, &obj->data_4, size - 4);
+    RES_ReadFile(file, &size, 4);
+    if (size != 0) {
+        obj->desc = malloc(size);
+        RES_ReadFile(file, obj->desc, size);
+        free(obj->desc);
+    }
+    obj->desc = NULL;
+    RES_ReadFile(file, &size, 4);
+    if (size != 0) {
+        obj->script = malloc(size);
+        RES_ReadFile(file, obj->script, size);
+        free(obj->script);
+    } else {
+        obj->script = NULL;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, buf1, size);
+    buf1[size] = '\0';
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        e = ElemID(name);
+        *after = (char **)e;
+        if ((e->flags & 0x10) == 0) {
+            *after = NULL;
+        }
+    } else {
+        *after = NULL;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, buf2, size);
+    buf2[size] = '\0';
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        LLIDB_FindElement(name, (unsigned int *)&DAT_007cb3bc, 0);
+        RES_ReadFile(file, &size, 4);
+        RES_ReadFile(file, name, size);
+        RES_ReadFile(file, &size, 4);
+        RES_ReadFile(file, name, size);
+        name[size] = '\0';
+        RES_ReadFile(file, &size, 4);
+        RES_ReadFile(file, DAT_007fdba0, size);
+        DAT_007fdba0[size] = '\0';
+        sprite = NULL;
+        if (DAT_007fdba0[0] != '\0') {
+            sprite = LoadSprite(DAT_007fdba0, 4);
+        }
+        if (sprite == NULL) {
+            // STRING: LEGOLAND 0x004bc34c
+            sprite = LoadSprite("InstituteIcon.lls", 4);
+        }
+        RES_ReadFile(file, &size, 4);
+        RES_ReadFile(file, name, size);
+        name[size] = '\0';
+        RES_ReadFile(file, &size, 4);
+        RES_ReadFile(file, name, size);
+        name[size] = '\0';
+        RES_ReadFile(file, &size, 4);
+        RES_ReadFile(file, name, size);
+        name[size] = '\0';
+        RES_ReadFile(file, &size, 4);
+        text = (char *)malloc(size + 1);
+        RES_ReadFile(file, text, size);
+        text[size] = '\0';
+        RES_CloseFile(file);
+        *name2 = text;
+        *key = obj->key_26;
+        free(obj);
+        return sprite;
+    }
+    RES_CloseFile(file);
+    free(obj);
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0047cba0
 LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {

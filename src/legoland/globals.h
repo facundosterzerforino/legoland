@@ -3059,6 +3059,9 @@ extern unsigned int DAT_007fd660[329];
 extern int DAT_007fdb84;
 // 0x007fdb88
 extern unsigned int DAT_007fdb88;
+// 0x007fdba0
+extern char DAT_007fdba0[0x100];
+
 // 0x007fdca0
 extern int DAT_007fdca0;
 // 0x007fdca4
