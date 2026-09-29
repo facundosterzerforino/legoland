@@ -800,8 +800,8 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
     y = node->y;
     ctx.field_8 = 0;
     if (y >= 0 && y <= 0x12c) {
-        sprite = node->sprite;
         if ((char)node->field_18 != 1) {
+            sprite = node->sprite;
             if (sprite != NULL) {
                 FUN_0048a840((unsigned int)node->field_1c, 0);
                 if (FUN_0048aef0(node->field_1c, node->field_20p) != 0) {
@@ -812,6 +812,7 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
                 return 0;
             }
         } else {
+            sprite = node->sprite;
             if (sprite != NULL) {
                 PrintSprite(sprite, node->x, y, 0, (int *)&ctx);
             }
@@ -1525,10 +1526,11 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
     if (icon != NULL) {
         struct Sprite *sprite = src->field_14;
         unsigned int flags;
-        if (sprite == NULL) {
-            sprite = NULL;
+        if (sprite != NULL) {
+            FUN_0046d680(icon, sprite);
+        } else {
+            FUN_0046d680(icon, NULL);
         }
-        FUN_0046d680(icon, sprite);
         flags = icon->flags;
         icon->field_28 = (void *)RenderGBarSpriteIcon;
         icon->string = (char *)src->field_10;
