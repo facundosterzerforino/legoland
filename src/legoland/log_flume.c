@@ -95,6 +95,14 @@ struct ModeNode {
     unsigned int mode_1c;
 };
 
+struct EdgeNode {
+    unsigned char pad_0[0x1c];
+    unsigned int mode_1c;
+    unsigned char pad_20[0x10];
+    int a_30;
+    int b_34;
+};
+
 struct SubBuf {
     unsigned char b0;
     unsigned char b1;
@@ -1493,10 +1501,10 @@ void FUN_0040d420(void) { STUB(); }
 void FUN_0040d520(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d6f0
-unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, void (*param_5)(void), void (*param_6)(void)) { STUB(); }
+unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, void (*param_5)(void), void (*param_6)(struct EdgeNode *, int *)) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d900
-unsigned int FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), void (*param_5)(void), void (*param_6)(void)) { STUB(); }
+unsigned int FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), void (*param_5)(void), void (*param_6)(struct EdgeNode *, int *)) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040da10
 void FUN_0040da10(struct Context *a, struct LinkList *list) {
@@ -1577,7 +1585,30 @@ void FUN_0040dbb0(void) {
 void FUN_0040dc00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040e340
-void FUN_0040e340(void) { STUB(); }
+void FUN_0040e340(struct EdgeNode *node, int *out) {
+    out[0] = 0;
+    out[1] = 0;
+    out[2] = 0;
+    out[3] = 0;
+    switch (node->mode_1c) {
+    case 0:
+        out[0] = node->a_30;
+        out[1] = node->b_34;
+        break;
+    case 1:
+        out[1] = node->a_30;
+        out[2] = node->b_34;
+        break;
+    case 2:
+        out[2] = node->a_30;
+        out[3] = node->b_34;
+        break;
+    case 3:
+        out[3] = node->a_30;
+        out[0] = node->b_34;
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040e3b0
 void FUN_0040e3b0(void) { STUB(); }
