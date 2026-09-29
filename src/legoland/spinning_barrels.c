@@ -8,9 +8,11 @@
 #include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "spinning_barrels.h"
 
@@ -88,7 +90,102 @@ struct BarrelNode *FUN_0043be40(unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x0043be70
-void FUN_0043be70(void) { STUB(); }
+void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
+    Ride *ride = obj->ride;
+    RideNode *elem = ride->riders;
+    RideNode *riders;
+    char count = 0;
+    Bloke *blokes[16] = {0};
+    Bloke *bloke;
+    Person *person;
+    struct BarrelNode *state;
+    Point screen;
+    Point off;
+    Point seat;
+    LayerResult layer;
+    char i;
+
+    state = FUN_0043be40(&tile->id);
+    if (state == NULL) {
+        return;
+    }
+    screen = GetScreenCoordsForObject(tile, ride);
+    GetLayer(ride->layer, &layer, 3);
+    layer.field_10 = 0;
+    for (; elem != NULL; elem = elem->next) {
+        if (tile->id == elem->tile.id) {
+            blokes[count++] = elem->rider;
+        }
+    }
+    if (count != 0) {
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->field_8);
+        off = GetRenderOffsetForLayer(DAT_0062fde0, 3);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 3), screen.x + off.x, screen.y + off.y, 0, 0);
+        riders = ride->riders;
+        (*((struct Sprite *)DAT_0062fe00[0])->lls)->frame = state->field_8;
+        for (; riders != NULL; riders = riders->next) {
+            if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
+                bloke = riders->rider;
+                person = bloke->person;
+                seat.x = DAT_0062fdd8;
+                seat.y = DAT_0062fddc;
+                person->offset.x = bloke->screen_x;
+                person->offset.y = bloke->screen_y;
+                AdjustBlokePosition(&person->offset);
+                AdjustOffsetForViewMode(&seat);
+                person->screen.x = bloke->screen_x + seat.x + screen.x;
+                person->screen.y = bloke->screen_y + seat.y + screen.y;
+                AdjustBlokePosition(&person->screen);
+                IP_RenderBlokeIn3DNow(riders->rider);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 0) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 1) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 15) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        off = GetRenderOffsetForLayer(DAT_0062fde0, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_0062fdd0, screen.x + off.x, screen.y + off.y, 0, 0);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->field_20);
+        off = GetRenderOffsetForLayer(DAT_0062fde0, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off.x, screen.y + off.y, 0, 0);
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 16) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 17) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        off = GetRenderOffsetForLayer(DAT_0062fde0, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_0062fdcc, screen.x + off.x, screen.y + off.y, 0, 0);
+    } else {
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->field_8);
+        off = GetRenderOffsetForLayer(DAT_0062fde0, 3);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 3), screen.x + off.x, screen.y + off.y, 0, 0);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->field_20);
+        off = GetRenderOffsetForLayer(DAT_0062fde0, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off.x, screen.y + off.y, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043c2f0
 void FUN_0043c2f0(struct BarrelNode *node) {
