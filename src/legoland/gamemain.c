@@ -17,6 +17,7 @@
 #include "nerps.h"
 #include "objclass.h"
 #include "objectives.h"
+#include "path_control.h"
 #include "pathfind.h"
 #include "resource.h"
 #include "string.h"
@@ -26,7 +27,7 @@
 
 struct GameMainNode {
     struct GameMainNode *next;
-    int field_4;
+    struct GameMainNode *field_4;
     int field_8;
     int field_c;
     int field_10;
@@ -342,7 +343,173 @@ void FUN_004779d0(struct Point *p) {
 }
 
 // FUNCTION: LEGOLAND 0x00477bd0
-void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }
+void FUN_00477bd0(int x, int y, int a, int b) {
+    struct GameMainNode *best;
+    struct GameMainNode *cur;
+    struct GameMainNode *nb;
+    struct Element *id;
+    struct MapElement *tile;
+    struct Point pos;
+    int result;
+    struct Point *pp;
+    int cost;
+
+    DAT_004bb598.x = x;
+    DAT_004bb598.y = y;
+    best = NULL;
+    DAT_004bb5a0 = a;
+    DAT_004bb5a4 = b;
+    nb = FUN_004777f0(&DAT_004bb598, &result);
+    nb->field_14 = 0;
+    FUN_004776e0((struct EventNode *)nb);
+    while ((cur = DAT_00668fc0) != NULL) {
+        DAT_00668fc0 = cur->next;
+
+        if ((cur->field_8 == DAT_004bb5a0 && cur->field_c == DAT_004bb5a4) || cur->field_20 == 1) {
+            best = cur;
+        } else {
+            pos.x = cur->field_8;
+            pos.y = cur->field_c - 1;
+            if (FUN_00477680(pos.x, pos.y)) {
+                nb = FUN_004777f0(&pos, &result);
+                if (nb->field_10 != -1) {
+                    if (nb->field_20 != 0 && nb->field_20 != 1) {
+                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c)) + cur->field_14 + nb->field_10;
+                    } else {
+                        cost = cur->field_14 + nb->field_10;
+                    }
+                    if (result == 0) {
+                        if (best != NULL && cost > best->field_14) {
+                            FUN_004776c0((struct QueryNode *)nb);
+                        } else {
+                            nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                            nb->field_4 = cur;
+                            nb->field_14 = cost;
+                            nb->field_1c = nb->field_18 + cost;
+                            if (result == 2) {
+                                FUN_00477760((struct QueryNode *)nb);
+                            }
+                            if (result == 1) {
+                                FUN_00477790((struct EventNode *)nb);
+                            }
+                            FUN_004776e0((struct EventNode *)nb);
+                        }
+                    }
+                }
+            }
+            pos.x = cur->field_8 + 1;
+            pos.y = cur->field_c;
+            if (FUN_00477680(pos.x, pos.y)) {
+                nb = FUN_004777f0(&pos, &result);
+                nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                if (nb->field_10 != -1) {
+                    if (nb->field_20 != 0 && nb->field_20 != 1) {
+                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c)) + cur->field_14 + nb->field_10;
+                    } else {
+                        cost = cur->field_14 + nb->field_10;
+                    }
+                    if (result == 0) {
+                        if (best != NULL && cost > best->field_14) {
+                            FUN_004776c0((struct QueryNode *)nb);
+                        } else {
+                            nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                            nb->field_4 = cur;
+                            nb->field_14 = cost;
+                            nb->field_1c = nb->field_18 + cost;
+                            if (result == 2) {
+                                FUN_00477760((struct QueryNode *)nb);
+                            }
+                            if (result == 1) {
+                                FUN_00477790((struct EventNode *)nb);
+                            }
+                            FUN_004776e0((struct EventNode *)nb);
+                        }
+                    }
+                }
+            }
+            pos.x = cur->field_8;
+            pos.y = cur->field_c + 1;
+            if (FUN_00477680(pos.x, pos.y)) {
+                nb = FUN_004777f0(&pos, &result);
+                nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                if (nb->field_10 != -1) {
+                    if (nb->field_20 != 0 && nb->field_20 != 1) {
+                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c)) + cur->field_14 + nb->field_10;
+                    } else {
+                        cost = cur->field_14 + nb->field_10;
+                    }
+                    if (result == 0) {
+                        if (best != NULL && cost > best->field_14) {
+                            FUN_004776c0((struct QueryNode *)nb);
+                        } else {
+                            nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                            nb->field_4 = cur;
+                            nb->field_14 = cost;
+                            nb->field_1c = nb->field_18 + cost;
+                            if (result == 2) {
+                                FUN_00477760((struct QueryNode *)nb);
+                            }
+                            if (result == 1) {
+                                FUN_00477790((struct EventNode *)nb);
+                            }
+                            FUN_004776e0((struct EventNode *)nb);
+                        }
+                    }
+                }
+            }
+            pos.x = cur->field_8 - 1;
+            pos.y = cur->field_c;
+            if (FUN_00477680(pos.x, pos.y)) {
+                nb = FUN_004777f0(&pos, &result);
+                nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                if (nb->field_10 != -1) {
+                    if (nb->field_20 != 0 && nb->field_20 != 1) {
+                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c)) + cur->field_14 + nb->field_10;
+                    } else {
+                        cost = cur->field_14 + nb->field_10;
+                    }
+                    if (result == 0) {
+                        if (best != NULL && cost > best->field_14) {
+                            FUN_004776c0((struct QueryNode *)nb);
+                        } else {
+                            nb->field_24 = FUN_004779a0(cur->field_8, cur->field_c, nb->field_8, nb->field_c);
+                            nb->field_4 = cur;
+                            nb->field_14 = cost;
+                            nb->field_1c = nb->field_18 + cost;
+                            if (result == 2) {
+                                FUN_00477760((struct QueryNode *)nb);
+                            }
+                            if (result == 1) {
+                                FUN_00477790((struct EventNode *)nb);
+                            }
+                            FUN_004776e0((struct EventNode *)nb);
+                        }
+                    }
+                }
+            }
+        }
+        FUN_004776c0((struct QueryNode *)cur);
+    }
+    // STRING: LEGOLAND 0x004b8a70
+    id = ElemID("PATH CONTROL");
+    while (best != NULL) {
+        nb = best;
+        pp = (struct Point *)&nb->field_8;
+        if (pp->x >= 0 && pp->x < lpConfig->width && pp->y >= 0 && pp->y < lpConfig->height) {
+            tile = &GameMap[pp->y][pp->x];
+        } else {
+            tile = NULL;
+        }
+        if (!(tile->flags & 0x10) && (tile->field_10 & 3) != 3) {
+            FUN_004779d0(pp);
+            AddBasicPath((struct EditObject *)id, (int *)pp);
+        }
+        nb = nb->field_4;
+    }
+    while (DAT_00668fc4 != NULL) {
+        FUN_00477760((struct QueryNode *)DAT_00668fc4);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00478110
 int FUN_00478110(char *str, const char *delims, char **out) {

@@ -963,6 +963,10 @@ extern float DAT_004bb4dc;
 extern BITMAPINFOHEADER DAT_004bb4e0;
 // 0x004bb588
 // 0x004bb58c
+// 0x004bb598
+extern struct Point DAT_004bb598;
+// 0x004bb598
+extern struct Point DAT_004bb598;
 // 0x004bb5a0
 extern int DAT_004bb5a0;
 // 0x004bb5a4
