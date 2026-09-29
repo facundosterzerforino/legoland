@@ -392,6 +392,8 @@ extern float DAT_004ab3f4;
 extern float DAT_004ab3f8;
 // 0x004ab3fc
 extern float DAT_004ab3fc;
+// 0x004ab478
+extern double DOUBLE_004ab478;
 // 0x004ab4a0
 extern float DAT_004ab4a0;
 // 0x004ab4a8
@@ -1381,6 +1383,8 @@ extern unsigned int DAT_00611710[16];
 extern unsigned int DAT_00611958;
 // 0x00612178
 extern char DAT_00612178[1];
+// 0x006122a0
+extern float DAT_006122a0[90][3];
 // 0x00614858
 extern struct CastleFloatEnt DAT_00614858[8];
 
@@ -1388,6 +1392,8 @@ extern struct CastleFloatEnt DAT_00614858[8];
 extern struct Cursor DAT_00616180[8];
 // 0x00622320
 extern struct Cursor DAT_00622320[4];
+// 0x006159c8
+extern int DAT_006159c8[90][4];
 // 0x00615f6c
 extern unsigned int DAT_00615f6c;
 // 0x00615f98
@@ -3480,6 +3486,8 @@ extern void *DAT_0081cdec;
 extern unsigned int DAT_00828fe0[2];
 // 0x00829980
 extern void *DAT_00829980;
+// 0x00829990
+extern float DAT_00829990[3];
 // 0x0082999c
 extern float DAT_0082999c;
 // 0x008299d4

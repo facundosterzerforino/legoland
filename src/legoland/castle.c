@@ -3360,7 +3360,7 @@ void FUN_00426510(unsigned int *m3, struct Mat4x4 *out) {
 }
 
 // FUNCTION: LEGOLAND 0x00426560
-void FUN_00426560(void) { STUB(); }
+void FUN_00426560(struct FVec3 *dir, struct FVec3 *basis) { STUB(); }
 
 struct RectI {
     int var_0;
@@ -4389,8 +4389,51 @@ void FUN_00428b70(void) {
     FUN_004294b0();
 }
 
+struct Curve;
+
+struct CurveVt {
+    void (*method_0)(struct Curve *self, float t, float *out);
+    void *pad_4;
+    void (*method_8)(struct Curve *self, float t, float *out);
+    void (*method_c)(struct Curve *self, float t, float *out);
+    void (*method_10)(struct Curve *self, float t, float *out);
+};
+
+struct Curve {
+    unsigned char pad_0[0x44];
+    float start;
+    float end;
+    struct CurveVt *vt;
+};
+
 // FUNCTION: LEGOLAND 0x00428b80
-void FUN_00428b80(void) { STUB(); }
+void FUN_00428b80(struct Curve *curve, float *off) {
+    float step = (curve->end - curve->start) * FLOAT_004ab44c;
+    float t = curve->start;
+    int i;
+    int k = 0;
+
+    for (i = 0; i < 30; i++) {
+        curve->vt->method_8(curve, t, DAT_006122a0[k]);
+        DAT_006122a0[k][0] += off[0];
+        DAT_006122a0[k][1] += off[1];
+        DAT_006122a0[k][2] += off[2];
+        k++;
+        curve->vt->method_0(curve, t, DAT_006122a0[k]);
+        DAT_006122a0[k][0] += off[0];
+        DAT_006122a0[k][1] += off[1];
+        DAT_006122a0[k][2] += off[2];
+        k++;
+        curve->vt->method_10(curve, t, DAT_006122a0[k]);
+        DAT_006122a0[k][0] += off[0];
+        DAT_006122a0[k][1] += off[1];
+        DAT_006122a0[k][2] += off[2];
+        k++;
+        t = t + step;
+    }
+    FUN_00426230((unsigned int)DAT_006122a0, (unsigned int)DAT_006159c8, 0x5a);
+    FUN_004238a0(&DAT_006159c8[0][0], 0x5a, -1);
+}
 
 // FUNCTION: LEGOLAND 0x00428cb0
 void FUN_00428cb0(void *p, unsigned int a, unsigned int b, unsigned int c, const char *name) { STUB(); }
@@ -4417,13 +4460,40 @@ void FUN_00428ec0(void) { STUB(); }
 void FUN_00428f00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00429150
-void FUN_00429150(void) { STUB(); }
+void FUN_00429150(struct Curve *curve, float *off, int flag) {
+    struct FVec3 pos;
+    struct FVec3 dir;
+    struct FVec3 basis[3];
+    float t = (curve->end + curve->start) * 0.5f;
+
+    curve->vt->method_c(curve, t, &dir.x);
+    FUN_00426560(&dir, basis);
+    curve->vt->method_8(curve, t, &pos.x);
+    pos.x += off[0];
+    pos.y += off[1];
+    pos.z += off[2];
+    if (pos.z > DOUBLE_004ab478) {
+        FUN_00429490((unsigned int)&pos, (unsigned int)basis);
+        return;
+    }
+    if (FUN_00425d30((struct FVec3 *)DAT_00829990, &basis[2]) < FLOAT_004ab390) {
+        if (flag != 1) {
+            FUN_004292f0(&pos, basis);
+        }
+        FUN_00429490((unsigned int)&pos, (unsigned int)basis);
+    } else {
+        FUN_00429490((unsigned int)&pos, (unsigned int)basis);
+        if (flag != 1) {
+            FUN_004292f0(&pos, basis);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00429270
 void FUN_00429270(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004292f0
-void FUN_004292f0(void) { STUB(); }
+void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00429490
 void FUN_00429490(unsigned int param_1, unsigned int param_2) {
