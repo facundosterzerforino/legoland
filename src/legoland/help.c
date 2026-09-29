@@ -111,7 +111,27 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046cff0
-void FUN_0046cff0(void) { STUB(); }
+void FUN_0046cff0(void) {
+    RECT rect;
+    struct IconNode *icon;
+
+    icon = (struct IconNode *)FocussedIconPtr;
+    if (icon != NULL && (icon->flags & 0x2000) != 0 && DAT_00668954 == 0) {
+        int y = DAT_00813a44.y;
+        int x = DAT_00813a44.x;
+        rect.left = x;
+        rect.top = y - 10;
+        rect.right = x;
+        rect.bottom = y;
+        HTBubbleHelp(&rect, icon->string, 2);
+        icon = (struct IconNode *)FocussedIconPtr;
+        if ((icon->flags & 0x1000) != 0) {
+            FUN_0046d2f0(**(unsigned int **)((char *)icon->field_8 + 0xc4));
+        } else {
+            FUN_0046d230(icon->string_id);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d080
 LEGO_EXPORT void ProcessFrontEndHelp(void) {
