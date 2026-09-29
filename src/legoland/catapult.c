@@ -7,9 +7,11 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "sound_music.h"
 
@@ -31,8 +33,10 @@ struct CatapultItem {
     unsigned char field_1;
     unsigned char pad_2[6];
     unsigned int field_8;
-    unsigned char pad_c[1];
+    signed char field_c;
     signed char field_d;
+    unsigned char pad_e[0x12];
+    unsigned char active[4];
 };
 
 struct CatapultLayer {
@@ -69,6 +73,9 @@ struct CatapultRideNode {
 
 struct ChainNode {
     struct ChainNode *next;
+    unsigned char pad_4[4];
+    struct Bloke *bloke;
+    unsigned short id;
 };
 
 struct CatapultRide {
@@ -186,7 +193,49 @@ void FUN_00403250(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403270
-void FUN_00403270(void) { STUB(); }
+void FUN_00403270(struct ChainNode *chain, int unused, int unused2, TileId *tile, int unused3, int arg5) {
+    struct CatapultItem *item;
+    struct Ride *ride = ((struct Element *)chain)->ride;
+    struct Point off;
+    struct Point pos;
+    int i;
+    unsigned int *lp;
+    unsigned char *fp;
+
+    chain = ((struct CatapultRide *)ride)->chain;
+    item = (struct CatapultItem *)FUN_004031b0((unsigned short *)tile);
+    if (item != NULL) {
+        pos = GetScreenCoordsForObject(tile, ride);
+        if (item->field_8 & 1) {
+            LLSSetFrame(GetLLSForLayer(DAT_004c10f0, 1), item->field_d);
+            off = GetRenderOffsetForLayer(DAT_004c10f0, 1);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(GetSpriteForLayer(DAT_004c10f0, 1), pos.x + off.x, pos.y + off.y, arg5, 0);
+        } else {
+            LLSSetFrame(GetLLSForLayer(DAT_004c10f0, 0), item->field_c);
+            off = GetRenderOffsetForLayer(DAT_004c10f0, 0);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(GetSpriteForLayer(DAT_004c10f0, 0), pos.x + off.x, pos.y + off.y, arg5, 0);
+        }
+        lp = DAT_004b40a4;
+        fp = item->active;
+        for (i = 4; i != 0; i--) {
+            if (*fp & 1) {
+                off = GetRenderOffsetForLayer(DAT_004c10f0, *lp);
+                AdjustOffsetForViewMode(&off);
+                PrintSprite(GetSpriteForLayer(DAT_004c10f0, *lp), pos.x + off.x, pos.y + off.y, arg5, 0);
+            }
+            fp++;
+            lp++;
+        }
+        while (chain != NULL) {
+            if (tile->id == chain->id) {
+                IP_RenderBlokeIn3DNow(chain->bloke);
+            }
+            chain = chain->next;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00403430
 void FUN_00403430(struct CatapultItem *node) {
