@@ -94,7 +94,7 @@ void FUN_0041e9e0(unsigned char *obj, float *out);
 void FUN_0041ef20(int a, int b, int c, int d);
 void FUN_0041f380(const int *r, struct PlaneSet *out);
 float FUN_0041dd00(unsigned char *param, float result);
-void FUN_00429c60(unsigned char *obj, int a, unsigned int b, float c, struct FVec3 *out);
+void FUN_00429c60(void *obj, int a, unsigned int b, float c, struct FVec3 *out);
 void FUN_0041e8f0(unsigned char *obj, unsigned int a, unsigned int b);
 void FUN_0042a5e0(struct Struct42a5e0Obj *o, struct Struct42a5e0Data *src, unsigned int param_5);
 void FUN_0041e820(unsigned char *obj, unsigned int a, unsigned int b);

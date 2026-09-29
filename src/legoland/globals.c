@@ -1848,7 +1848,7 @@ int DAT_006159c8[90][4];
 unsigned int DAT_00615f6c;
 
 // GLOBAL: LEGOLAND 0x00615f80
-unsigned char *DAT_00615f80;
+void *DAT_00615f80;
 
 // GLOBAL: LEGOLAND 0x00615ff0
 int DAT_00615ff0;
