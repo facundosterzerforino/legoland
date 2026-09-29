@@ -466,7 +466,39 @@ void FUN_00414020(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
 }
 
 // FUNCTION: LEGOLAND 0x00414220
-void FUN_00414220(void) { STUB(); }
+void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor) {
+    struct NeighborResult r;
+    struct RoadQueueEntry **q = (struct RoadQueueEntry **)&r;
+    int x = cursor->field_1404;
+    int y = cursor->field_1408;
+    struct RoadQueueEntry *entry;
+
+    BGFullUpdate = 1;
+    StandardRemoveObject(edit, tile, cursor);
+    entry = (struct RoadQueueEntry *)FUN_004125a0(x, y);
+    tile.id = entry->field_8;
+    if (entry->field_14 & 0x10) {
+        IncrementObjectCount((struct ObjectCount *)edit->data);
+        DecrementObjectCount((struct ObjectCount *)DAT_0082c678);
+        entry->field_14 &= 0xef;
+        FUN_00413650(tile.id, x, y);
+        AddBricks(GetObjCost((struct Ride *)DAT_0082c678));
+        return;
+    }
+    FUN_00406020(tile.id, -1);
+    FUN_004133e0(x, y);
+    FUN_00405310(tile);
+    FUN_004135d0(x, y, &r);
+    FUN_00413450(x, y, (struct RideQueueEntry **)&r);
+    if (q[0] && q[0]->field_8 == tile.id && (q[0]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x, y - 4);
+    if (q[1] && q[1]->field_8 == tile.id && (q[1]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x + 4, y - 4);
+    if (q[2] && q[2]->field_8 == tile.id && (q[2]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x + 4, y);
+    if (q[3] && q[3]->field_8 == tile.id && (q[3]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x + 4, y + 4);
+    if (q[4] && q[4]->field_8 == tile.id && (q[4]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x, y + 4);
+    if (q[5] && q[5]->field_8 == tile.id && (q[5]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x - 4, y + 4);
+    if (q[6] && q[6]->field_8 == tile.id && (q[6]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x - 4, y);
+    if (q[7] && q[7]->field_8 == tile.id && (q[7]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x - 4, y - 4);
+}
 
 // FUNCTION: LEGOLAND 0x00414440
 void FUN_00414440(void) { STUB(); }
