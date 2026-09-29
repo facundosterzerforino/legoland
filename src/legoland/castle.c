@@ -2726,7 +2726,15 @@ void FUN_004264e0(unsigned int *t, unsigned int *m3, unsigned int dst[4][4]) {
 }
 
 // FUNCTION: LEGOLAND 0x00426510
-void FUN_00426510(void) { STUB(); }
+void FUN_00426510(unsigned int *m3, struct Mat4x4 *out) {
+    float t[3];
+    unsigned int dst[4][4];
+    t[0] = 0.0f;
+    t[1] = 0.0f;
+    t[2] = 0.0f;
+    FUN_004264e0((unsigned int *)t, m3, dst);
+    FUN_00426190((struct Mat4x4 *)dst, out);
+}
 
 // FUNCTION: LEGOLAND 0x00426560
 void FUN_00426560(void) { STUB(); }
@@ -2998,8 +3006,29 @@ struct SearchNode *FUN_00426ea0(unsigned char *param_1, struct SearchHost *param
     return FUN_0041d060(param_2, (unsigned int *)(param_1 + 4));
 }
 
+struct Struct426ec0Node {
+    unsigned char pad_0[0x50];
+    struct Struct426ec0Node *next;
+};
+
 // FUNCTION: LEGOLAND 0x00426ec0
-void FUN_00426ec0(unsigned int *arg0, unsigned int *arg1) { STUB(); }
+void FUN_00426ec0(unsigned int *arg0, unsigned int *arg1) {
+    unsigned int local[3];
+    struct Struct426ec0Node *cur;
+    struct Struct426ec0Node *end;
+    unsigned int count = 0;
+
+    FUN_00426e80((struct Struct426e80Src *)arg0[0], (struct Struct426e80Dst *)arg1);
+    cur = (struct Struct426ec0Node *)FUN_0041cff0(arg0[0], local);
+    end = (struct Struct426ec0Node *)arg0[1];
+    while (cur != end) {
+        cur = cur->next;
+        if (cur == NULL)
+            break;
+        count++;
+    }
+    arg1[2] = count;
+}
 
 struct Struct426f10Out {
     struct SearchNode *field_0;
@@ -3103,7 +3132,17 @@ struct Struct427070Obj {
 };
 
 // FUNCTION: LEGOLAND 0x00427070
-void FUN_00427070(struct Struct427070Src *param_1, struct Struct427070Obj *param_2) { STUB(); }
+void FUN_00427070(struct Struct427070Src *param_1, struct Struct427070Obj *param_2) {
+    struct TimerNode *node;
+    unsigned int kind;
+    unsigned int index = FUN_00427020(param_1->field_4);
+    node = FUN_00421930(index, (struct Timer *)param_2);
+    kind = param_1->field_0;
+    node->field_0 = kind;
+    if (kind == 2) {
+        FUN_00421590((struct Struct1590 *)node, FUN_0041e2b0((struct RingHost *)param_2->field_d8));
+    }
+}
 
 struct Struct4270c0Node {
     /* 0x00 */ unsigned char pad_0[0x14];
@@ -3263,8 +3302,30 @@ void FUN_004273f0(struct Struct4273f0Host *param_1) {
 // FUNCTION: LEGOLAND 0x00427410
 void FUN_00427410(void) { STUB(); }
 
+struct Struct4274b0Src {
+    unsigned int x;
+    unsigned int y;
+    unsigned int z;
+};
+
+struct Struct4274b0Obj {
+    struct Struct4274b0Src pos;
+    unsigned int field_c;
+    void (*fn_10)(void);
+    void (*fn_14)(void);
+    void (*fn_18)(void);
+    void (*fn_1c)(void);
+};
+
 // FUNCTION: LEGOLAND 0x004274b0
-void FUN_004274b0(void) { STUB(); }
+void FUN_004274b0(struct Struct4274b0Obj *obj, const struct Struct4274b0Src *src) {
+    obj->pos = *src;
+    obj->field_c = 0;
+    obj->fn_10 = (void (*)(void))FUN_004273c0;
+    obj->fn_14 = (void (*)(void))FUN_004273d0;
+    obj->fn_18 = (void (*)(void))FUN_004273f0;
+    obj->fn_1c = (void (*)(void))FUN_00427410;
+}
 
 struct MapHeader {
     unsigned short field_0;
@@ -3316,8 +3377,21 @@ void FUN_004279f0(void) {
     FUN_0041d7f0(DAT_0081cdec);
 }
 
+struct Struct427a00Pair {
+    unsigned short a;
+    unsigned short b;
+};
+
 // FUNCTION: LEGOLAND 0x00427a00
-void FUN_00427a00(void) { STUB(); }
+void FUN_00427a00(unsigned int unused0, unsigned int unused1, unsigned int unused2, const unsigned char *src) {
+    struct CastleOuter *node;
+    struct Struct427a00Pair tile;
+    tile.a = src[0];
+    tile.b = src[1];
+    node = (struct CastleOuter *)FUN_0041d060((struct SearchHost *)&DAT_00829ae0, (unsigned int *)&tile);
+    FUN_00428700(node);
+    FUN_00424a20(node);
+}
 
 struct Struct427a40 {
     unsigned char pad_0[0x14];
@@ -3367,11 +3441,38 @@ void FUN_00427af0(void) {
 // FUNCTION: LEGOLAND 0x00427b20
 void FUN_00427b20(void) { STUB(); }
 
+struct Struct427bc0Src {
+    short field_0;
+    short pad_2;
+    short field_4;
+};
+
+struct Struct427bc0Pair {
+    short a;
+    short b;
+};
+
 // FUNCTION: LEGOLAND 0x00427bc0
-void FUN_00427bc0(void) { STUB(); }
+void FUN_00427bc0(unsigned int unused, const struct Struct427bc0Src *src) {
+    struct Struct427bc0Pair pair;
+    unsigned int *entry;
+    pair.a = src->field_0;
+    pair.b = src->field_4;
+    entry = (unsigned int *)FUN_0041d700(DAT_00829c08, DAT_004b5d20, (unsigned int)&pair);
+    if (entry != NULL) {
+        *entry |= 6;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00427c00
-void FUN_00427c00(void) { STUB(); }
+unsigned int FUN_00427c00(unsigned int key) {
+    int i;
+    for (i = 0; i < (int)DAT_00611958; i++) {
+        if (*(unsigned int *)((unsigned char *)&DAT_00611688 + i * 8) == key)
+            return *(unsigned int *)((unsigned char *)&DAT_0061168c + i * 8);
+    }
+    return 0;
+}
 
 struct Struct427c30 {
     unsigned char pad_0[0x14];
@@ -3423,11 +3524,41 @@ void FUN_00427c90(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00427ea0
 void FUN_00427ea0(void) { STUB(); }
 
+struct CastleCarNode {
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned char pad_14[0x50];
+    /* 0x64 */ struct CastleCarNode *next;
+};
+
+struct CastleRideObj {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct CastleCarNode *car;
+};
+
 // FUNCTION: LEGOLAND 0x00427ef0
-void FUN_00427ef0(void) { STUB(); }
+void FUN_00427ef0(struct CastleRideObj *param_1) {
+    struct CastleCarNode *a = param_1->car;
+    struct CastleCarNode *b;
+    DAT_00829bfc = (unsigned int)a;
+    b = a->next;
+    b->field_10 |= 0x2000;
+    *(unsigned int *)((unsigned char *)&DAT_00611688 + DAT_00611958 * 8) = (unsigned int)param_1;
+    *(unsigned int *)((unsigned char *)&DAT_0061168c + DAT_00611958 * 8) = (unsigned int)DAT_004b5d58;
+    DAT_00611958++;
+}
 
 // FUNCTION: LEGOLAND 0x00427f30
-void FUN_00427f30(void) { STUB(); }
+void FUN_00427f30(struct CastleRideObj *param_1) {
+    struct CastleCarNode *a = param_1->car;
+    struct CastleCarNode *b;
+    DAT_00829a64 = (unsigned int)a;
+    b = a->next;
+    b->field_10 |= 0x2000;
+    *(unsigned int *)((unsigned char *)&DAT_00611688 + DAT_00611958 * 8) = (unsigned int)param_1;
+    *(unsigned int *)((unsigned char *)&DAT_0061168c + DAT_00611958 * 8) = (unsigned int)DAT_004b5d90;
+    DAT_00611958++;
+}
 
 struct Struct427f70Arg {
     unsigned char pad_0[4];
@@ -3484,18 +3615,6 @@ void FUN_00427ff0(struct Struct427ff0Point *point) {
     AddRollerCoasterPath(coords);
 }
 
-struct CastleCarNode {
-    /* 0x00 */ unsigned char pad_0[0x10];
-    /* 0x10 */ unsigned int field_10;
-    /* 0x14 */ unsigned char pad_14[0x50];
-    /* 0x64 */ struct CastleCarNode *next;
-};
-
-struct CastleRideObj {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct CastleCarNode *car;
-};
-
 // FUNCTION: LEGOLAND 0x00428070
 void FUN_00428070(struct CastleRideObj *param_1) {
     struct CastleCarNode *a = param_1->car;
@@ -3534,7 +3653,7 @@ struct Struct4286e0Element *FUN_004286e0(void *param1) {
 }
 
 // FUNCTION: LEGOLAND 0x00428700
-void FUN_00428700(void) { STUB(); }
+void FUN_00428700(void *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00428750
 void FUN_00428750(void) { STUB(); }
@@ -3715,8 +3834,28 @@ void FUN_00429a80(struct Struct429a80A *a, int param0, int param2, struct Struct
     b->x8 += a->x10;
 }
 
+struct Struct429ac0Obj;
+
+struct Struct429ac0Entry {
+    unsigned int pad;
+    void (*fn)(struct Struct429ac0Obj *self, int c, void *d);
+};
+
+struct Struct429ac0Obj {
+    unsigned char pad_0[0x4c];
+    struct Struct429ac0Entry *table;
+};
+
+struct Struct429ac0Host {
+    unsigned int pad;
+    struct Struct429ac0Obj *obj;
+};
+
 // FUNCTION: LEGOLAND 0x00429ac0
-void FUN_00429ac0(int a, int b, int c, void *d) { STUB(); }
+void FUN_00429ac0(int a, int b, int c, void *d) {
+    struct Struct429ac0Obj *obj = ((struct Struct429ac0Host *)a)->obj;
+    obj->table[b].fn(obj, c, d);
+}
 
 // FUNCTION: LEGOLAND 0x00429af0
 void FUN_00429af0(int a, void *b) { STUB(); }

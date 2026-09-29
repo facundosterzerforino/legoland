@@ -274,11 +274,23 @@ unsigned int DAT_004b5cc4;
 // GLOBAL: LEGOLAND 0x004b5cc8
 unsigned int DAT_004b5cc8;
 
+// GLOBAL: LEGOLAND 0x004b5d20
+const unsigned char DAT_004b5d20[1];
+
+// GLOBAL: LEGOLAND 0x004b5d58
+const unsigned char DAT_004b5d58[1];
+
+// GLOBAL: LEGOLAND 0x004b5d90
+const unsigned char DAT_004b5d90[1];
+
 // GLOBAL: LEGOLAND 0x004b5dc8
 const unsigned char DAT_004b5dc8[1];
 
 // GLOBAL: LEGOLAND 0x004b5f60
 unsigned char DAT_004b5f60[1];
+
+// GLOBAL: LEGOLAND 0x004b61e0
+struct CastleFloatEnt DAT_004b61e0[8];
 
 // GLOBAL: LEGOLAND 0x004b62f0
 unsigned int DAT_004b62f0;
@@ -1529,6 +1541,9 @@ unsigned int DAT_00611958;
 
 // GLOBAL: LEGOLAND 0x00612178
 char DAT_00612178[1];
+
+// GLOBAL: LEGOLAND 0x00614858
+struct CastleFloatEnt DAT_00614858[8];
 
 // GLOBAL: LEGOLAND 0x00616180
 struct Cursor DAT_00616180[8];
@@ -4677,6 +4692,9 @@ void (*DAT_00829a5c)(void);
 // GLOBAL: LEGOLAND 0x00829a60
 float DAT_00829a60;
 
+// GLOBAL: LEGOLAND 0x00829a64
+unsigned int DAT_00829a64;
+
 // GLOBAL: LEGOLAND 0x00829a80
 struct EditFootPrint DAT_00829a80;
 
@@ -4713,11 +4731,17 @@ void *DAT_00829bf4;
 // GLOBAL: LEGOLAND 0x00829bf8
 unsigned int DAT_00829bf8;
 
+// GLOBAL: LEGOLAND 0x00829bfc
+unsigned int DAT_00829bfc;
+
 // GLOBAL: LEGOLAND 0x00829c00
 int DAT_00829c00;
 
 // GLOBAL: LEGOLAND 0x00829c04
 struct Sprite *DAT_00829c04;
+
+// GLOBAL: LEGOLAND 0x00829c08
+unsigned int DAT_00829c08;
 
 // GLOBAL: LEGOLAND 0x00829c34
 int DAT_00829c34;

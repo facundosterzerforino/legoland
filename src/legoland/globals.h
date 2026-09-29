@@ -244,6 +244,12 @@ struct ListLink {
     struct ListLink *var_18;
 };
 
+struct CastleFloatEnt {
+    float a;
+    float b;
+    int c;
+};
+
 struct EditFootPrint {
     unsigned char data[16];
     void *field_10;
@@ -534,10 +540,22 @@ extern unsigned int DAT_004b5cc0;
 extern unsigned int DAT_004b5cc4;
 // 0x004b5cc8
 extern unsigned int DAT_004b5cc8;
+// 0x004b5d20
+extern const unsigned char DAT_004b5d20[1];
+
+// 0x004b5d58
+extern const unsigned char DAT_004b5d58[1];
+
+// 0x004b5d90
+extern const unsigned char DAT_004b5d90[1];
+
 // 0x004b5dc8
 extern const unsigned char DAT_004b5dc8[1];
 // 0x004b5f60
 extern unsigned char DAT_004b5f60[1];
+// 0x004b61e0
+extern struct CastleFloatEnt DAT_004b61e0[8];
+
 // 0x004b62f0
 extern unsigned int DAT_004b62f0;
 // 0x004b6300
@@ -1335,6 +1353,9 @@ extern unsigned int DAT_0061168c;
 extern unsigned int DAT_00611958;
 // 0x00612178
 extern char DAT_00612178[1];
+// 0x00614858
+extern struct CastleFloatEnt DAT_00614858[8];
+
 // 0x00616180
 extern struct Cursor DAT_00616180[8];
 // 0x00622320
@@ -3439,6 +3460,9 @@ extern void (*DAT_00829a58)(void);
 extern void (*DAT_00829a5c)(void);
 // 0x00829a60
 extern float DAT_00829a60;
+// 0x00829a64
+extern unsigned int DAT_00829a64;
+
 // 0x00829a80
 extern struct EditFootPrint DAT_00829a80;
 // 0x00829ae0
@@ -3463,10 +3487,16 @@ extern void *DAT_00829bf0;
 extern void *DAT_00829bf4;
 // 0x00829bf8
 extern unsigned int DAT_00829bf8;
+// 0x00829bfc
+extern unsigned int DAT_00829bfc;
+
 // 0x00829c00
 extern int DAT_00829c00;
 // 0x00829c04
 extern struct Sprite *DAT_00829c04;
+// 0x00829c08
+extern unsigned int DAT_00829c08;
+
 // 0x00829c34
 extern int DAT_00829c34;
 // 0x0082ac60

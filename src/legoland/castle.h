@@ -53,6 +53,7 @@ unsigned int FUN_00427130(struct Struct427130Main *main);
 unsigned int FUN_00427150(struct Struct426d80Y *arg);
 void FUN_004273d0(unsigned int param_1, void *param_2);
 unsigned int FUN_004273e0(void *obj);
+void FUN_00428700(void *node);
 void FUN_00428f00(void);
 void FUN_00429270(void);
 void FUN_004294b0(void);
