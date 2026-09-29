@@ -8,6 +8,7 @@
 #include "savegame_ui.h"
 #include "sound_music.h"
 #include "string.h"
+#include "text.h"
 #include "title.h"
 
 struct ProfileFlags {

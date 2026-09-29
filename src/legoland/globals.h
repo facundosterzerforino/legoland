@@ -975,7 +975,7 @@ extern unsigned int DAT_004bb6bc;
 // 0x004bb6d4
 extern unsigned int DAT_004bb6d4;
 // 0x004bb6f8
-extern unsigned int DAT_004bb6f8;
+extern struct ScriptCommand DAT_004bb6f8[0x5d];
 // 0x004bcba4
 extern const char *DAT_004bcba4[3];
 // 0x004bcbf4

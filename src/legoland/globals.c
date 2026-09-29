@@ -887,7 +887,7 @@ unsigned int DAT_004bb6bc;
 unsigned int DAT_004bb6d4;
 
 // GLOBAL: LEGOLAND 0x004bb6f8
-unsigned int DAT_004bb6f8;
+struct ScriptCommand DAT_004bb6f8[0x5d];
 
 // GLOBAL: LEGOLAND 0x004bcba4
 const char *DAT_004bcba4[3] = {

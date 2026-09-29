@@ -121,3 +121,5 @@ int FUN_00499550(void);
 int FUN_00499560(void);
 LEGO_EXPORT void ClearAMechanicsWorkList(Bloke *value);
 LEGO_EXPORT void ClearAGardenersWorkList(Bloke *param);
+LEGO_EXPORT int SetGardenerWorkOrderAtPostion(Bloke *worker, int x, int y);
+LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y);

@@ -6,8 +6,10 @@
 #include "interface.h"
 #include "legoland.h"
 #include "options.h"
+#include "profile_io.h"
 #include "screens.h"
 #include "sound_music.h"
+#include "string.h"
 
 #include "image_sprite.h"
 #include "stream.h"

@@ -21,4 +21,10 @@ typedef union TileId {
     } pos;
 } TileId;
 
+typedef int (*ScriptCommandFn)(char **args, int nargs, int flags);
+struct ScriptCommand {
+    const char *name;
+    ScriptCommandFn fn;
+};
+
 #endif

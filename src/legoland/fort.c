@@ -12,6 +12,7 @@
 #include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 
 #include "image_sprite.h"

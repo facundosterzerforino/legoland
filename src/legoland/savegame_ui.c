@@ -12,6 +12,7 @@
 #include "main.h"
 #include "math.h"
 #include "options.h"
+#include "print_sprite.h"
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"

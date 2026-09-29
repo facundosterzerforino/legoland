@@ -1742,7 +1742,7 @@ int FUN_0047afb0(const char *param_1) {
     FUN_00492980();
     LLIDB_ClearOnLevel();
     FUN_004784c0();
-    result = FUN_004781f0(param_1, &DAT_004bb6f8, 0x5d, 0);
+    result = FUN_004781f0(param_1, DAT_004bb6f8, 0x5d, 0);
     FUN_00492990();
     v1 = (result >= 0) - 1;
     return v1 & 2;
