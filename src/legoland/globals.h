@@ -895,6 +895,10 @@ extern unsigned char DAT_004beba0;
 extern unsigned int DAT_004becac;
 // 0x004becb0
 extern int DAT_004becb0[1];
+// 0x004becb4
+extern struct FreePlaySpriteSlot DAT_004becb4[5];
+// 0x004bed44
+extern unsigned int DAT_004bed44;
 // 0x004bef9c
 extern unsigned int DAT_004bef9c;
 // 0x004bf670
@@ -2617,6 +2621,10 @@ extern int DAT_0079a834;
 extern int DAT_0079a838;
 // 0x0079a83c
 extern unsigned int DAT_0079a83c;
+// 0x0079a840
+extern int DAT_0079a840;
+// 0x0079a844
+extern int DAT_0079a844;
 // 0x0079a848
 extern void *DAT_0079a848;
 // 0x0079a84c
@@ -2663,6 +2671,10 @@ extern struct RepairOrder *DAT_0079a8d4;
 extern struct Element *DAT_0079abfc;
 // 0x0079ac04
 extern unsigned int DAT_0079ac04;
+// 0x007aac24
+extern int DAT_007aac24;
+// 0x007caca4
+extern int DAT_007caca4;
 // 0x007caca8
 extern unsigned int DAT_007caca8;
 // 0x007cacac
@@ -2683,6 +2695,8 @@ extern void *DAT_007cad40;
 extern void *DAT_007cad44;
 // 0x007cad48
 extern unsigned int DAT_007cad48;
+// 0x007cad4c
+extern void *DAT_007cad4c;
 // 0x007cad60
 extern struct ProfileData DAT_007cad60;
 // 0x007cae80

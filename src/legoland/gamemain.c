@@ -181,7 +181,6 @@ unsigned int FUN_00477980(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x004779a0
 void FUN_004779a0(void) { STUB(); }
-
 // FUNCTION: LEGOLAND 0x004779d0
 void FUN_004779d0(void) { STUB(); }
 
@@ -192,8 +191,16 @@ void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }
 void FUN_00478110(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004781b0
-int FUN_004781b0(const char *param_1, const void *param_2, int param_3) { STUB(); }
+int FUN_004781b0(const char *param_1, const void *param_2, int param_3) {
+    int i;
 
+    for (i = 0; i < param_3; i++) {
+        if (_strcmpi(param_1, ((const char **)param_2)[i]) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 // FUNCTION: LEGOLAND 0x004781f0
 int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4) { STUB(); }
 

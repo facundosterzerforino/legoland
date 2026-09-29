@@ -845,6 +845,12 @@ unsigned int DAT_004becac;
 // GLOBAL: LEGOLAND 0x004becb0
 int DAT_004becb0[1];
 
+// GLOBAL: LEGOLAND 0x004becb4
+struct FreePlaySpriteSlot DAT_004becb4[5];
+
+// GLOBAL: LEGOLAND 0x004bed44
+unsigned int DAT_004bed44;
+
 // GLOBAL: LEGOLAND 0x004bef9c
 unsigned int DAT_004bef9c;
 
@@ -3426,6 +3432,12 @@ int DAT_0079a838;
 // GLOBAL: LEGOLAND 0x0079a83c
 unsigned int DAT_0079a83c;
 
+// GLOBAL: LEGOLAND 0x0079a840
+int DAT_0079a840;
+
+// GLOBAL: LEGOLAND 0x0079a844
+int DAT_0079a844;
+
 // GLOBAL: LEGOLAND 0x0079a848
 void *DAT_0079a848;
 
@@ -3495,6 +3507,12 @@ struct Element *DAT_0079abfc;
 // GLOBAL: LEGOLAND 0x0079ac04
 unsigned int DAT_0079ac04;
 
+// GLOBAL: LEGOLAND 0x007aac24
+int DAT_007aac24;
+
+// GLOBAL: LEGOLAND 0x007caca4
+int DAT_007caca4;
+
 // GLOBAL: LEGOLAND 0x007caca8
 unsigned int DAT_007caca8;
 
@@ -3524,6 +3542,9 @@ void *DAT_007cad44;
 
 // GLOBAL: LEGOLAND 0x007cad48
 unsigned int DAT_007cad48;
+
+// GLOBAL: LEGOLAND 0x007cad4c
+void *DAT_007cad4c;
 
 // GLOBAL: LEGOLAND 0x007cad60
 struct ProfileData DAT_007cad60;

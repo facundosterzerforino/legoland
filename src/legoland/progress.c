@@ -22,10 +22,17 @@ void FUN_0048bc20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bd00
 void FUN_0048bd00(void) { STUB(); }
-
 // FUNCTION: LEGOLAND 0x0048bd40
-void FUN_0048bd40(void) { STUB(); }
+void FUN_0048bd40(void) {
+    int *esi;
 
+    esi = (int *)&DAT_004becb4[0].field_4;
+    do {
+        ReferenceSprite((struct Sprite *)esi[-1]);
+        ReferenceSprite((struct Sprite *)esi[0]);
+        esi += 7;
+    } while ((int)esi < (int)&DAT_004bed44);
+}
 // FUNCTION: LEGOLAND 0x0048bd70
 void FUN_0048bd70(void) { STUB(); }
 

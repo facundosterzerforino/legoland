@@ -385,7 +385,6 @@ void FUN_0048b6d0(void) {
 
 // FUNCTION: LEGOLAND 0x0048b700
 void FUN_0048b700(void) { STUB(); }
-
 // FUNCTION: LEGOLAND 0x0048b740
 void FUN_0048b740(void) {
     int *esi;

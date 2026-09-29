@@ -120,8 +120,18 @@ void FUN_00498420(void) { STUB(); }
 void FUN_00498630(const char *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00498870
-void FUN_00498870(void) { STUB(); }
-
+void FUN_00498870(void) {
+    DAT_0079a7d8 = 0;
+    DAT_0079a7dc = 0;
+    DAT_0079a7e0 = 0;
+    memset(DAT_0079a7e4, 0, sizeof(DAT_0079a7e4));
+    DAT_0079a834 = 0;
+    DAT_0079a838 = 0;
+    DAT_0079a840 = 0;
+    DAT_0079a844 = 0;
+    DAT_007caca4 = 0;
+    DAT_007aac24 = 0;
+}
 // FUNCTION: LEGOLAND 0x004988c0
 int FUN_004988c0(void) {
     if (DAT_0079a84c == 0 || DAT_0079a84c == 1) {

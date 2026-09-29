@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
+#include "sound_music.h"
+#include "stream.h"
 
 struct DirectSoundObj;
 struct DirectMusicObj;
@@ -102,11 +104,30 @@ LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x004927b0
-int FUN_004927b0(struct Sample *sample) { STUB(); }
-
+int FUN_004927b0(struct Sample *sample) {
+    if (DAT_007988c0 == 0) {
+        return 0;
+    }
+    if (sample == 0) {
+        return 0;
+    }
+    if (sample->active == 0) {
+        return 0;
+    }
+    if (sample->buffer->vtable->method_0x48(sample->buffer) != 0) {
+        return 0;
+    }
+    sample->flags |= 2;
+    return 1;
+}
 // FUNCTION: LEGOLAND 0x00492800
-LEGO_EXPORT void PauseSingleSample(struct Sample *sample) { STUB(); }
-
+LEGO_EXPORT int PauseSingleSample(struct Sample *sample) {
+    if ((sample->flags & 1) == 0 && FUN_004927b0(sample) != 0) {
+        sample->flags |= 1;
+        return 1;
+    }
+    return 0;
+}
 // FUNCTION: LEGOLAND 0x00492830
 void FUN_00492830(void) {
     struct Sample *sample;
@@ -403,11 +424,30 @@ int FUN_00495a10(void *hwnd) {
 }
 
 // FUNCTION: LEGOLAND 0x00495a50
-void FUN_00495a50(void) { STUB(); }
+int FUN_00495a50(int param_1) {
+    int v;
 
+    v = param_1 * 4000 / 100 - 4000;
+    if (v == -4000) {
+        v = -10000;
+    }
+    return v;
+}
 // FUNCTION: LEGOLAND 0x00495a90
-LEGO_EXPORT void UpdateSoundVols(void) { STUB(); }
+LEGO_EXPORT int UpdateSoundVols(void) {
+    int vol;
 
+    if (DAT_007988c0 != 0) {
+        if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
+            vol = FUN_00495a50(DAT_0080ffc8);
+            ((struct SampleBuffer *)DAT_007cad4c)->vtable->method_0x3c((struct SampleBuffer *)DAT_007cad4c, vol);
+        }
+        DAT_007988a0 = FUN_00495a50(DAT_0080ffcc);
+        FUN_004967b0();
+        FUN_00498900(FUN_00495a50(DAT_0080ffc4));
+    }
+    return 0;
+}
 // FUNCTION: LEGOLAND 0x00495b00
 int FUN_00495b00(void) {
     if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
