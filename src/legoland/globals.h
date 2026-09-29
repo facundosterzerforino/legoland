@@ -33,6 +33,10 @@ struct CtrlBuffer;
 // layout comes from gamemap.h, used by the EditCursor / QueryCursor instances.)
 // ---------------------------------------------------------------------------
 struct Sprite;
+struct FlumeTemplate {
+    int count;
+    void *table;
+};
 struct BinVFile;
 struct BalloonNode;
 struct Ride;
@@ -542,10 +546,14 @@ extern struct Sprite *DAT_004b4804;
 extern struct Sprite *DAT_004b4818;
 // 0x004b4824
 extern struct Sprite *DAT_004b4824;
+// 0x004b4828
+extern struct FlumeTemplate DAT_004b4828;
 // 0x004b4838
 extern struct Sprite *DAT_004b4838;
 // 0x004b4850
 extern struct Sprite *DAT_004b4850;
+// 0x004b4858
+extern struct FlumeTemplate DAT_004b4858;
 // 0x004b4bd0
 extern unsigned char DAT_004b4bd0[0x14];
 // 0x004b4bf0

@@ -226,11 +226,17 @@ struct Sprite *DAT_004b4818;
 // GLOBAL: LEGOLAND 0x004b4824
 struct Sprite *DAT_004b4824;
 
+// GLOBAL: LEGOLAND 0x004b4828
+struct FlumeTemplate DAT_004b4828;
+
 // GLOBAL: LEGOLAND 0x004b4838
 struct Sprite *DAT_004b4838;
 
 // GLOBAL: LEGOLAND 0x004b4850
 struct Sprite *DAT_004b4850;
+
+// GLOBAL: LEGOLAND 0x004b4858
+struct FlumeTemplate DAT_004b4858;
 
 // GLOBAL: LEGOLAND 0x004b4bd0
 unsigned char DAT_004b4bd0[0x14];
