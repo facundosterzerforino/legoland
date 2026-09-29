@@ -13,8 +13,6 @@
 #include "render3d.h"
 #include "sound_music.h"
 
-struct CatapultEntry;
-
 struct CatapultNode {
     unsigned short field_0;
     unsigned char pad_2[2];
@@ -22,7 +20,7 @@ struct CatapultNode {
     void *field_8;
     signed char mode;
     unsigned char pad_d[3];
-    struct CatapultEntry *slots[4];
+    struct RideNode *slots[4];
     unsigned char active[4];
     signed char frame[4];
     unsigned int flags[4];
@@ -62,14 +60,9 @@ struct CatapultFX {
     /* 0x08 */ void *field_8[(0x70 - 8) / 4];
 };
 
-struct CatapultEntry {
-    unsigned char pad_0[8];
-    struct Bloke *sub;
-};
-
 struct CatapultRideNode {
     unsigned char pad_0[0x10];
-    struct CatapultEntry *slots[4];
+    struct RideNode *slots[4];
     unsigned char pad_20[8];
     unsigned int flags[4];
 };
@@ -262,7 +255,7 @@ void FUN_00403580(void *arg, unsigned int index) {
 // FUNCTION: LEGOLAND 0x004035a0
 void FUN_004035a0(struct CatapultNode *node) {
     int i;
-    struct CatapultEntry *entry;
+    struct RideNode *entry;
 
     node->mode = node->mode + 1;
     if (node->mode >= 0x10) {
@@ -270,7 +263,7 @@ void FUN_004035a0(struct CatapultNode *node) {
     }
 
     for (i = 0; i < 4; i++) {
-        struct CatapultEntry **pentry = &node->slots[i];
+        struct RideNode **pentry = &node->slots[i];
         entry = *pentry;
         if (entry == NULL) {
             continue;
@@ -279,25 +272,25 @@ void FUN_004035a0(struct CatapultNode *node) {
             continue;
         }
 
-        entry->sub->field_72 = 7;
-        entry->sub->field_58 = entry->sub->field_58 - 1;
-        if (entry->sub->field_58 > 0) {
+        entry->rider->field_72 = 7;
+        entry->rider->field_58 = entry->rider->field_58 - 1;
+        if (entry->rider->field_58 > 0) {
             continue;
         }
 
-        entry->sub->field_58 = rand() % 0x14 + 0x32;
-        entry->sub->field_3a = entry->sub->field_3a - 1;
+        entry->rider->field_58 = rand() % 0x14 + 0x32;
+        entry->rider->field_3a = entry->rider->field_3a - 1;
         if ((rand() % 0x64) <= 0x2d) {
             FUN_004034c0((unsigned char *)node, i);
             if (node->field_8 == NULL) {
                 FUN_00403430((struct CatapultItem *)node);
             }
         }
-        entry->sub->field_3a = entry->sub->field_3a - 1;
-        if (entry->sub->field_3a > 0) {
+        entry->rider->field_3a = entry->rider->field_3a - 1;
+        if (entry->rider->field_3a > 0) {
             continue;
         }
-        entry->sub->param_action = entry->sub->param_action + 1;
+        entry->rider->param_action = entry->rider->param_action + 1;
         FUN_00403580(node, i);
     }
 
@@ -331,8 +324,8 @@ signed char FUN_004036b0(struct CatapultRideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004036f0
-void FUN_004036f0(const unsigned short *key, struct CatapultEntry *entry, int x, int y) {
-    struct Bloke *bloke = entry->sub;
+void FUN_004036f0(const unsigned short *key, struct RideNode *entry, int x, int y) {
+    struct Bloke *bloke = entry->rider;
     struct CatapultRideNode *node = FUN_004031b0(key);
     signed char slot;
     char dir;
@@ -353,7 +346,7 @@ void FUN_004036f0(const unsigned short *key, struct CatapultEntry *entry, int x,
 }
 
 // FUNCTION: LEGOLAND 0x004037d0
-void FUN_004037d0(const unsigned short *key, struct CatapultEntry *entry) {
+void FUN_004037d0(const unsigned short *key, struct RideNode *entry) {
     struct CatapultRideNode *node = FUN_004031b0(key);
     int i;
 
@@ -367,12 +360,54 @@ void FUN_004037d0(const unsigned short *key, struct CatapultEntry *entry) {
         }
     }
 
-    entry->sub->field_58 = (rand() & 0x1f) + 3;
-    entry->sub->field_3a = 3;
+    entry->rider->field_58 = (rand() & 0x1f) + 3;
+    entry->rider->field_3a = 3;
 }
 
 // FUNCTION: LEGOLAND 0x00403820
-void FUN_00403820(void) { STUB(); }
+void FUN_00403820(struct Element *elem) {
+    struct Ride *ride = elem->ride;
+    struct RideNode *node;
+    struct RideNode *next;
+
+    FUN_00403690();
+    for (node = ride->riders; node != NULL; node = next) {
+        struct Bloke *bloke = node->rider;
+        TileId *tile = &node->tile;
+        int x, y;
+        char dir;
+
+        next = node->next;
+        x = tile->pos.x + ride->x;
+        y = tile->pos.y + ride->y;
+        if (bloke->field_e != 0) {
+            continue;
+        }
+        switch (bloke->param_action) {
+        case 0:
+            bloke->flags |= 8;
+            FUN_004036f0(&tile->id, node, x, y);
+            break;
+        case 1:
+            FUN_004037d0(&tile->id, node);
+            bloke->param_action++;
+            break;
+        case 3:
+            bloke->dest.x = (x << 8) + 0x80;
+            bloke->dest.y = (y << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+            bloke->param_action++;
+            break;
+        case 4:
+            RemoveBlokeFromRide(ride, node);
+            bloke->flags &= 0xfff7;
+            break;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00403930
 void FUN_00403930(void) {
