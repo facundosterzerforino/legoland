@@ -255,7 +255,10 @@ struct FlumeBytes {
 struct FlumeEntry {
     struct FlumeEntry *next;
     unsigned char pad_4[0xc];
-    struct FlumeEntry *sub;
+    union {
+        struct FlumeEntry *sub;
+        unsigned int flags;
+    };
     TileId tile;
     unsigned char pad_16[2];
     union {
@@ -1472,7 +1475,34 @@ void FUN_0040c780(void) { STUB(); }
 void FUN_0040c8d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c970
-unsigned int *FUN_0040c970(void) { STUB(); }
+struct RideSpriteInfo *FUN_0040c970(int unused, TileId tile) {
+    struct FlumeEntry *entry;
+    struct Sprite *spr;
+    unsigned int lls;
+    int idx;
+
+    DAT_004c74d8.id = tile.id;
+    entry = (struct FlumeEntry *)FUN_00408f30((struct SubBuf *)&tile);
+    if (entry != NULL) {
+        if (entry->flags & 4) {
+            return NULL;
+        }
+        idx = FUN_0040ad50((struct StateNode *)entry);
+        spr = DAT_004c2b68->sprites[(unsigned char)idx];
+        DAT_004c74d8.sprite = spr;
+        DAT_004c74d8.x = DAT_004c2b68->offset_x[(unsigned char)idx] >> 1;
+        DAT_004c74d8.y = DAT_004c2b68->offset_y[(unsigned char)idx] >> 1;
+        DAT_004c74d8.field_10 = 0;
+        lls = GetLLSForSprite((struct SpriteLLS *)spr);
+        if (lls != 0) {
+            LLSStop(lls);
+            LLSSetFrame((struct LLS *)lls, entry->parent->submode);
+        }
+        ((struct Sprite *)DAT_004c74d8.sprite)->flags |= 0x2000;
+        DAT_004c74d8.field_10 = 0;
+    }
+    return &DAT_004c74d8;
+}
 
 // FUNCTION: LEGOLAND 0x0040ca30
 void FUN_0040ca30(void *a1, int a2) {
