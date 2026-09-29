@@ -907,6 +907,9 @@ struct FreePlaySpriteSlot DAT_004beb94[10];
 // GLOBAL: LEGOLAND 0x004beba0
 unsigned char DAT_004beba0;
 
+// GLOBAL: LEGOLAND 0x004bec98
+int DAT_004bec98;
+
 // GLOBAL: LEGOLAND 0x004becac
 unsigned int DAT_004becac;
 
@@ -3277,6 +3280,9 @@ unsigned int DAT_00798660;
 
 // GLOBAL: LEGOLAND 0x00798664
 unsigned int DAT_00798664;
+
+// GLOBAL: LEGOLAND 0x0079866c
+unsigned long DAT_0079866c;
 
 // GLOBAL: LEGOLAND 0x00798668
 unsigned int DAT_00798668;
