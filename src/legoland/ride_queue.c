@@ -3,6 +3,7 @@
 
 #include "bloke.h"
 #include "globals.h"
+#include "llidb.h"
 #include "math.h"
 #include "ride_queue.h"
 
@@ -291,7 +292,24 @@ unsigned int FUN_004123a0(struct QueueNode *start, struct QueueNode *stop) {
 }
 
 // FUNCTION: LEGOLAND 0x004123c0
-void FUN_004123c0(void) { STUB(); }
+void FUN_004123c0(struct QueueNode *start, struct Queue *queue) {
+    struct QueueNode *node;
+    int n;
+
+    SaveGameWrite(queue->count, 4);
+    for (n = 0; n < queue->count->count; n++) {
+        SaveGameWrite(&queue->count->steps[n], 12);
+    }
+    n = 0;
+    for (node = queue->head; node != NULL; node = node->next) {
+        n++;
+    }
+    SaveGameWrite(&n, 4);
+    for (node = queue->head; node != NULL; node = node->next) {
+        n = FUN_004123a0(start, (struct QueueNode *)node->field_4);
+        SaveGameWrite(&n, 4);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00412470
 struct QueueNode *FUN_00412470(struct QueueNode *node, int n) {
