@@ -256,6 +256,24 @@ char DAT_004b4d94[] = "manbox??";
 // GLOBAL: LEGOLAND 0x004b4e20
 Point DAT_004b4e20;
 
+// GLOBAL: LEGOLAND 0x004b4f08
+char *DAT_004b4f08[4] = {
+    // STRING: LEGOLAND 0x004b4f44
+    "manbox01",
+    // STRING: LEGOLAND 0x004b4f38
+    "manbox02",
+    // STRING: LEGOLAND 0x004b4f2c
+    "manbox03",
+    // STRING: LEGOLAND 0x004b4f20
+    "manbox04",
+};
+
+// GLOBAL: LEGOLAND 0x004b4f18
+signed char DAT_004b4f18[4] = {0x40, 0x45, 0x3f, 0x3c};
+
+// GLOBAL: LEGOLAND 0x004b4f1c
+signed char DAT_004b4f1c[4] = {0x51, 0x53, 0x53, 0x50};
+
 // GLOBAL: LEGOLAND 0x004b4fa8
 unsigned char WATERWORKS_SFX[0x24];
 
@@ -1542,10 +1560,10 @@ unsigned int DAT_004cbfb8[3];
 void *DAT_004cbfc4;
 
 // GLOBAL: LEGOLAND 0x004cbfc8
-unsigned int DAT_004cbfc8;
+int DAT_004cbfc8;
 
 // GLOBAL: LEGOLAND 0x004cbfcc
-unsigned int DAT_004cbfcc[1];
+int DAT_004cbfcc[1];
 
 // GLOBAL: LEGOLAND 0x004cbfd0
 struct Sprite *DAT_004cbfd0;
