@@ -5228,3 +5228,6 @@ float DAT_004b559c[3];
 
 // GLOBAL: LEGOLAND 0x004b55a8
 float FLOAT_004b55a8;
+
+// GLOBAL: LEGOLAND 0x004b4cac
+char DAT_004b4cac[] = "manbox??";
