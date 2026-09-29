@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bricks.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "log_flume.h"
@@ -15,6 +16,7 @@
 #include "print_sprite.h"
 #include "render3d.h"
 #include "ride_queue.h"
+#include "tilemap.h"
 
 struct Sprite;
 
@@ -1999,7 +2001,70 @@ void FUN_0040d520(struct FlumeEntry **list, struct Cursor *first) {
 }
 
 // FUNCTION: LEGOLAND 0x0040d6f0
-unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, void (*param_5)(void), void (*param_6)(struct EdgeNode *, int *)) { STUB(); }
+unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, FlumeCallback param_5, int (*param_6)(unsigned int *)) {
+    struct FlumeXY t;
+
+    unsigned int buf[9];
+
+    unsigned int *list;
+    struct MapRect rect;
+    int cost;
+    unsigned int key;
+    int r;
+
+    EditCursor.footprint = *(struct Footprint *)param_4;
+    ScreenToMapRef((int *)param_2, &EditCursor.field_1404, param_3);
+    EditCursor.field_1830 = 0;
+    FUN_0045f460(&EditCursor);
+    ValidateCursor(&EditCursor, (unsigned int)param_1);
+    t.x = (unsigned char)EditCursor.field_1404;
+    t.y = (unsigned char)EditCursor.field_1408;
+    param_5(t, buf);
+    FUN_0040d420(buf);
+    EditCursor.next = &DAT_004c4468;
+    cost = GetObjCost((struct Ride *)param_1);
+    if (GetBrickCount() < cost) {
+        FUN_0045f480(&EditCursor, 2);
+    }
+    if (FUN_0045f4b0(&EditCursor)) {
+        t.x = (unsigned char)EditCursor.field_1404;
+        t.y = (unsigned char)EditCursor.field_1408;
+        param_5(t, buf);
+        FUN_0040cf10((struct InputBuffer *)buf, &list);
+        FUN_0040cfa0((struct StateNode * (*)[4]) list);
+        if (FUN_0040cf30(list) == 0) {
+            FUN_0045f480(&EditCursor, 0xe);
+        } else {
+            FUN_0045f460(&EditCursor);
+            key = FUN_0040cf80((struct Slot **)list);
+            FUN_0040cf50(key, (struct Slot **)list);
+            if (FUN_0040cf30(list) == 0) {
+                FUN_0045f480(&EditCursor, 0xe);
+            } else if (param_6(list)) {
+                FUN_0045f460(&EditCursor);
+                FUN_0040d520((struct FlumeEntry **)list, EditCursor.next->next);
+            } else {
+                FUN_0045f480(&EditCursor, 0xd);
+            }
+        }
+    }
+    if (FUN_0045f4b0(&EditCursor)) {
+        rect.x0 = EditCursor.field_1404 + EditCursor.footprint.x0;
+        rect.y0 = EditCursor.field_1408 + EditCursor.footprint.y0;
+        rect.x1 = EditCursor.footprint.x1 + EditCursor.field_1404;
+        rect.y1 = EditCursor.footprint.y1 + EditCursor.field_1408;
+        r = CheckForPeople(&rect);
+        switch (r) {
+        case -1:
+            FUN_0045f480(&EditCursor, 4);
+            break;
+        case 1:
+            FUN_0045f480(&EditCursor, 3);
+            break;
+        }
+    }
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x0040d900
 unsigned int FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), void (*param_5)(void), void (*param_6)(struct EdgeNode *, int *)) { STUB(); }
@@ -2156,7 +2221,7 @@ int FUN_0040e3b0(unsigned int *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e440
-void FUN_0040e440(unsigned int *buf, void *res) { STUB(); }
+void FUN_0040e440(struct FlumeXY p, unsigned int *result) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040e630
 void FUN_0040e630(void) {
