@@ -6,6 +6,8 @@
 #include "fort.h"
 #include "gamemap.h"
 #include "globals.h"
+#include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "math.h"
 #include "obj_instance.h"
@@ -38,7 +40,66 @@ void FUN_004062a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004062c0
-void FUN_004062c0(void) { STUB(); }
+void FUN_004062c0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, void *param_5, unsigned int clip) {
+    struct Ride *ride = elem->ride;
+    struct Point pos = GetScreenCoordsForObject(tile, ride);
+    int base = ride->x + tile->pos.x;
+    struct RideNode *node;
+    struct LLS *lls;
+    struct Sprite *sprite;
+    int frame;
+
+    RenderItems_New();
+    DAT_004c11e0 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && (node->rider->pos.x >> 8) <= base - 4) {
+            AddBlokeToRenderList(&DAT_004c11e0, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004c11e0);
+    if (DAT_004c11d8 != NULL) {
+        struct Point off;
+        sprite = GetSpriteForLayer(DAT_004c11d8, 2);
+        if (sprite != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+            if (lls != NULL) {
+                LLSStop((unsigned int)lls);
+            }
+        }
+        off = GetRenderOffsetForLayer(DAT_004c11d8, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_004c11d8, 2), pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+    RenderItems_New();
+    DAT_004c11e0 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && (node->rider->pos.x >> 8) > base - 4) {
+            AddBlokeToRenderList(&DAT_004c11e0, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004c11e0);
+    if (DAT_004c11cc != NULL) {
+        struct Point off2;
+        off2.x = 0x173;
+        off2.y = -0x7b;
+        AdjustOffsetForViewMode(&off2);
+        lls = NULL;
+        sprite = GetSpriteForLayer(DAT_004c11d8, 2);
+        if (sprite != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        }
+        if (lls != NULL) {
+            frame = lls->frame;
+        } else {
+            frame = clip;
+        }
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c11cc);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        PrintSprite(DAT_004c11cc, pos.x + off2.x, pos.y + off2.y, clip, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004064d0
 void FUN_004064d0(RideNode *node, Bloke *bloke) {
