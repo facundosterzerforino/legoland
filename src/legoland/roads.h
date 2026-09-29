@@ -13,7 +13,7 @@ void FUN_004132a0(TileId tile, int param_2, int param_3, unsigned int param_4, u
 void FUN_004133e0(int param_1, int param_2);
 void FUN_00413650(short param_1, int param_2, int param_3);
 
-void FUN_00413450();
+int FUN_00413450(int x, int y, struct RideQueueEntry **out);
 struct RoadTile *FUN_004134f0(int arg1, int arg2, struct RoadTile *tile);
 int FUN_00413520(int x, int y, struct NeighborResult *out);
 int FUN_004135d0(int x, int y, struct NeighborResult *out);
