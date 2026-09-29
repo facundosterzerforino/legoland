@@ -3852,6 +3852,14 @@ extern unsigned int DAT_00829af8[3];
 extern unsigned int DAT_00829b04[3];
 // 0x00829b0c
 extern unsigned int DAT_00829b0c;
+// 0x00829aec
+extern unsigned int DAT_00829aec;
+// 0x00829af0
+extern unsigned int DAT_00829af0;
+// 0x00829af4
+extern unsigned int DAT_00829af4;
+// 0x004b5b48
+extern unsigned int DAT_004b5b48;
 // 0x00829b88
 extern unsigned int DAT_00829b88;
 // 0x00829b8c

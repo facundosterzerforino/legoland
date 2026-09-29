@@ -503,7 +503,7 @@ void FUN_0041d1b0(unsigned int *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d1c0
-void FUN_0041d1c0(void) {
+void FUN_0041d1c0(void *unused) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d1d0
@@ -3282,7 +3282,36 @@ void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00424320
-void FUN_00424320(void) { STUB(); }
+void FUN_00424320(unsigned int obj, short *pt) {
+    short v[2];
+
+    FUN_0041d6c0(0);
+    FUN_0041ed90(obj, (unsigned int)pt);
+    v[0] = pt[0];
+    v[1] = pt[2];
+    FUN_004245b0(v);
+    FUN_0041ce30((struct AnimPair *)&DAT_00829ae4);
+    DAT_00829ae0 = 1;
+    DAT_00829ae8[0] = pt[0];
+    DAT_00829ae8[1] = pt[2];
+    DAT_00829af0 = (unsigned int)&DAT_004b5b48;
+    DAT_00829af4 = (unsigned int)&DAT_00829ae0;
+    DAT_00829aec = DAT_00829bf8;
+    DAT_00829b88 = (unsigned int)&DAT_00829ae4;
+    DAT_00829ba0 = (unsigned int)&DAT_00829ae4;
+    DAT_00829b8c = 0;
+    DAT_00829ba4 = 0;
+    FUN_0041d170((struct Indexed *)&DAT_00829ae4, (unsigned int)&DAT_00829b8c);
+    FUN_0041d190((struct Indexed *)&DAT_00829ae4, (unsigned int)&DAT_00829ba4);
+    FUN_0041d1c0(&DAT_00829b8c);
+    FUN_0041d1c0(&DAT_00829ba4);
+    FUN_0041cfc0((struct HandlerHost1 *)&DAT_00829ae4);
+    FUN_0041cfd0((struct HandlerHost2 *)&DAT_00829ae4, 0);
+    FUN_004249e0((struct CastleSub *)&DAT_00829ae0);
+    FUN_00424b10((struct ListHost *)&DAT_00829ae0);
+    DAT_00829ae4 |= 6;
+    DAT_00610a04 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x00424440
 void FUN_00424440(unsigned int param_1, unsigned int param_2) {
