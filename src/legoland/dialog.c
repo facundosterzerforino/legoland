@@ -73,4 +73,31 @@ int FUN_0043f460(RECT *rc, int unused, char *buf, int maxlen, int *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f4f0
-void FUN_0043f4f0(void) { STUB(); }
+int FUN_0043f4f0(struct Sprite *bg, RECT *box, char *title, char *buf, int maxlen) {
+    int pos;
+    RECT rc;
+    int done;
+
+    pos = strlen(buf);
+    rc.left = box->left + 8;
+    rc.top = box->top + 0x20;
+    rc.right = box->right + box->left - 9;
+    rc.bottom = box->top + box->bottom - 9;
+    while (!ProcessSystemEvents()) {
+        ReadGameButtons();
+        PushRenderingStatusAndLockVideoSurface();
+        PrintSprite(bg, 0, 0, 0, 0);
+        RenderBlock(box->left, box->top, box->right, box->bottom, GetNearestColour(0xef, 0xef, 0xef));
+        RenderThickBox(box->left, box->top, box->right, box->bottom, 2, 0);
+        RenderBlock(box->left + 2, box->top + 2, box->right - 4, 0x18, GetNearestColour(0, 0x3f, 0x7f));
+        PrintLimitedText(box->left + 2, box->top + 2, box->right - 4, title, 0, 0xefefef, 0);
+        RenderThickBox(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 2, 0);
+        done = FUN_0043f460(&rc, 0, buf, maxlen, &pos);
+        RenderingComplete();
+        PopRenderingStatus();
+        if (done) {
+            break;
+        }
+    }
+    return pos;
+}
