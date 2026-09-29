@@ -105,23 +105,19 @@ void FUN_0042bc90(struct CarouselNode *node) {
 
 // FUNCTION: LEGOLAND 0x0042c210
 void FUN_0042c210(struct CarouselNode *node) {
-    unsigned int r;
+    int r;
     struct SampleParams params;
 
     node->field_14 = 0;
     node->field_8 = 0;
-    r = rand();
-    r = r & 0x80000001;
-    if ((int)r < 0) {
-        r = (r - 1 | 0xfffffffe) + 1;
-    }
+    r = rand() % 2;
     node->field_18 = 0;
     node->field_10 = (char)r + '\x03';
     node->field_6 = 0;
-    params.field_8 = *(unsigned char *)((char *)node + 4);
-    params.field_c = *(unsigned char *)((char *)node + 5);
     node->flags = node->flags & 0xffffbffe;
     params.field_0 = 2;
+    params.field_8 = *(unsigned char *)((char *)node + 4);
+    params.field_c = *(unsigned char *)((char *)node + 5);
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
 
@@ -130,8 +126,7 @@ void FUN_0042c280(struct CarouselRideObj *param_1) {
     struct LayerResult layer;
 
     DAT_006160bc = param_1->ride;
-    // STRING: LEGOLAND 0x004b650c
-    Load_FXList((const unsigned char *)"Carousel.wav", 2);
+    Load_FXList(CAROUSSEL_SFX, 2);
     DAT_006160bc->flags |= 0x420;
     DAT_00616068 = DAT_006160bc->layer;
     *(unsigned int *)((char *)DAT_00616068 + 0x10) |= 0x2000;
