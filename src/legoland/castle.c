@@ -14,6 +14,7 @@
 #include "map_object.h"
 #include "obj_instance.h"
 #include "path_control.h"
+#include "tilemap.h"
 #include "timer.h"
 
 struct LookupResult;
@@ -2181,7 +2182,29 @@ void *FUN_00424140(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00424150
-void FUN_00424150(void) { STUB(); }
+void FUN_00424150(struct Element *param_1) {
+    DAT_00610a04 = 0;
+    FUN_00477400();
+    DAT_00829abc = param_1;
+    DAT_00829bf8 = (unsigned int)param_1->ride;
+    if (((struct Ride *)DAT_00829bf8)->layer != NULL) {
+        ((struct Ride *)DAT_00829bf8)->layer->flags |= 0x2000;
+    }
+    ((struct Ride *)DAT_00829bf8)->flags |= 0x20;
+    DAT_00829c04 = LoadSprite("Castle Matte.lls", 1);
+    FUN_00425a50();
+    FUN_00421470();
+    FUN_00420440();
+    FUN_00423740();
+    FUN_00422210();
+    FUN_00428b70();
+    FUN_0041ef00();
+    FUN_0042a2e0();
+    FUN_00423db0();
+    FUN_0041e620();
+    FUN_0041eb70();
+    FUN_0042a780();
+}
 
 // FUNCTION: LEGOLAND 0x004241e0
 void FUN_004241e0(void) {
@@ -2210,22 +2233,114 @@ unsigned int FUN_00424240(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00424280
-void FUN_00424280(void) { STUB(); }
+void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3) {
+    struct Cursor *cursor;
+
+    FUN_00423de0();
+    SetEditCursorFootPrint(&DAT_00829a80);
+    ScreenToMapRef((int *)param_2, (int *)&EditCursor.field_1404, param_3);
+    EditCursor.field_1830 = 0;
+    cursor = FUN_0045f540(&EditCursor);
+    if (cursor != NULL) {
+        cursor->field_1414[1]++;
+        cursor->field_1414[0]++;
+    }
+    FUN_0045f460(&EditCursor);
+    ValidateCursor(&EditCursor, (unsigned int)param_1->data);
+    if (DAT_00610a04 != 0) {
+        FUN_0045f480(&EditCursor, 0xf);
+        FUN_0045f4d0(&EditCursor);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00424320
 void FUN_00424320(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00424440
-void FUN_00424440(unsigned int param_1, unsigned int param_2) { STUB(); }
+void FUN_00424440(unsigned int param_1, unsigned int param_2) {
+    int x;
+    int y;
+
+    FUN_00423e20();
+    x = DAT_00829ae8[0];
+    memcpy(QueryCursor.field_1414, &DAT_00829a80, 20);
+    y = DAT_00829ae8[1];
+    QueryCursor.field_1404 = x;
+    QueryCursor.field_1408 = y;
+    // STRING: LEGOLAND 0x004b5b7c
+    if ((void *)QueryClass != ElemID("CASTLE_DUMMY")->data) {
+        FUN_0045f460(&QueryCursor);
+        return;
+    }
+    QueryCursor.field_140c = 0;
+}
 
 // FUNCTION: LEGOLAND 0x004244b0
-void FUN_004244b0(void) { STUB(); }
+void FUN_004244b0(unsigned int param_1, TileId param_2, unsigned int param_3) {
+    struct Cursor cursor;
+    TileId tile;
+    unsigned int handle;
+    unsigned int packed;
+
+    if (DAT_00610a04 != 0) {
+        tile.pos.x = DAT_00829ae8[0];
+        tile.pos.y = DAT_00829ae8[1];
+        cursor.field_1404 = tile.pos.x;
+        cursor.field_1408 = tile.pos.y;
+        packed = *(unsigned int *)&tile;
+        cursor.footprint = *(struct Footprint *)(DAT_00829bf8 + 0x3c);
+        cursor.field_1414[4] = 0;
+        FUN_00424ab0((struct CastleSub *)&DAT_00829ae0);
+        FUN_00423ec0(&DAT_00829ae0);
+        FUN_0041d1b0(&DAT_00829b8c);
+        FUN_0041d1b0(&DAT_00829ba4);
+        DAT_00829b88 = 0;
+        DAT_00829ba0 = 0;
+        FUN_00424a00((struct CastleSub *)&DAT_00829ae0);
+        FUN_00424df0((struct ListHost *)&DAT_00829ae0);
+        FUN_00424e20();
+        handle = FUN_0041ec40(0);
+        FUN_0041edb0(handle, packed, (unsigned int)&cursor);
+        FUN_00424620(DAT_00829ae8);
+        DAT_00610a04 = 0;
+        FUN_004775f0();
+        FUN_00477410();
+        FUN_0041d6c0(0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004245b0
-void FUN_004245b0(void) { STUB(); }
+void FUN_004245b0(short *param_1) {
+    int pt[2];
+    int i;
+
+    for (i = 0; i < (int)DAT_00610a08; i++) {
+        short *q = (short *)((unsigned char *)DAT_0060f924 + 6 + i * 0x24);
+        pt[0] = q[-1] + param_1[0];
+        pt[1] = param_1[1] + q[0];
+        FUN_0041ed90(DAT_00829c00, (unsigned int)pt);
+    }
+    FUN_0041d6d0(DAT_00610a08);
+}
 
 // FUNCTION: LEGOLAND 0x00424620
-void FUN_00424620(void) { STUB(); }
+void FUN_00424620(short *param_1) {
+    struct Cursor cursor;
+    TileId tile;
+    int i;
+
+    for (i = 0; i < (int)DAT_00610a08; i++) {
+        short *q = (short *)((unsigned char *)DAT_0060f924 + 6 + i * 0x24);
+        tile.pos.x = q[-1] + param_1[0];
+        tile.pos.y = q[0] + param_1[1];
+        cursor.field_1404 = tile.pos.x;
+        cursor.field_1408 = tile.pos.y;
+        cursor.footprint = *(struct Footprint *)(DAT_00829c34 + 0x3c);
+        cursor.field_1414[4] = 0;
+        FUN_0041edb0(DAT_00829c00, *(unsigned int *)&tile, (unsigned int)&cursor);
+    }
+    FUN_0041d6d0(-(int)DAT_00610a08);
+}
 
 // FUNCTION: LEGOLAND 0x004246e0
 unsigned int FUN_004246e0(unsigned int param_1, unsigned int param_2) {
@@ -2239,7 +2354,13 @@ unsigned int FUN_004246e0(unsigned int param_1, unsigned int param_2) {
 void FUN_00424700(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00424800
-void FUN_00424800(void) { STUB(); }
+void FUN_00424800(void) {
+    TileId tile;
+
+    tile.pos.x = 0;
+    tile.pos.y = 0;
+    FUN_004244b0(0, tile, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00424820
 void FUN_00424820(void) {
@@ -2282,15 +2403,30 @@ int FUN_00424960(int *param_1) {
     return 0;
 }
 
-// FUNCTION: LEGOLAND 0x00424990
-void FUN_00424990(void) { STUB(); }
-
 struct CastleSub {
     unsigned char pad_0[0xd8];
     struct CastleObj *field_d8;
     unsigned char pad_dc[0xe0 - 0xdc];
     unsigned int field_e0;
 };
+
+struct CastleActor {
+    unsigned char pad_0[0x34];
+    unsigned int field_34;
+    unsigned char pad_38[0x6c - 0x38];
+    struct CastleSub *field_6c;
+};
+
+// FUNCTION: LEGOLAND 0x00424990
+float FUN_00424990(struct CastleActor *self, float value) {
+    if (FUN_00424960((int *)self) != 0) {
+        FUN_00424ab0(self->field_6c);
+        self->field_6c->field_e0 = GetGameTimer();
+        return value;
+    }
+    self->field_34 = (unsigned int)FUN_004248b0;
+    FUN_0041e000((unsigned int)self, *(unsigned int *)&value);
+}
 
 // FUNCTION: LEGOLAND 0x004249e0
 void FUN_004249e0(struct CastleSub *param_1) {
@@ -2317,7 +2453,18 @@ void FUN_00424a20(struct CastleOuter *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00424a50
-void FUN_00424a50(void) { STUB(); }
+void FUN_00424a50(struct CastleSub *param_1) {
+    struct RingHost *host = (struct RingHost *)param_1->field_d8;
+
+    FUN_0041e400(host);
+    if (FUN_0041e4a0((struct FlagWord *)param_1->field_d8) != 0) {
+        if (FUN_0041e4b0((struct FlagWord *)param_1->field_d8) != 0) {
+            FUN_0041e240((struct Timed *)host);
+        }
+        FUN_0041e130(host);
+    }
+    FUN_0041e3a0(host);
+}
 
 // FUNCTION: LEGOLAND 0x00424ab0
 void FUN_00424ab0(struct CastleSub *this) {
@@ -3358,6 +3505,7 @@ void FUN_00427aa0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00427af0
 void FUN_00427af0(void) {
     unsigned int handle;
+    unsigned int packed;
     // STRING: LEGOLAND 0x004b5f34
     if (LLIDB_FindElement("BASIC TILES 1", &handle, 0) == 0) {
         LLIDB_UnLoadData(handle);

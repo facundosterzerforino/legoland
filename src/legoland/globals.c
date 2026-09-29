@@ -1483,7 +1483,7 @@ unsigned int DAT_004dd868;
 unsigned int DAT_004dd86c;
 
 // GLOBAL: LEGOLAND 0x0060f924
-unsigned int DAT_0060f924[1];
+unsigned int DAT_0060f924[9 * 16];
 
 // GLOBAL: LEGOLAND 0x0060f938
 unsigned int DAT_0060f938;
@@ -4680,8 +4680,14 @@ float DAT_00829a60;
 // GLOBAL: LEGOLAND 0x00829a80
 struct EditFootPrint DAT_00829a80;
 
+// GLOBAL: LEGOLAND 0x00829abc
+struct Element *DAT_00829abc;
+
 // GLOBAL: LEGOLAND 0x00829ae0
 unsigned int DAT_00829ae0;
+
+// GLOBAL: LEGOLAND 0x00829ae8
+short DAT_00829ae8[2];
 
 // GLOBAL: LEGOLAND 0x00829af8
 unsigned int DAT_00829af8[3];
