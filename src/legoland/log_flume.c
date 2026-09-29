@@ -1494,8 +1494,22 @@ int FUN_0040f330(unsigned int *param_1) {
     return 0;
 }
 
+struct FlumeXY {
+    unsigned char x;
+    unsigned char y;
+};
 // FUNCTION: LEGOLAND 0x0040f360
-void FUN_0040f360(unsigned char a1, unsigned char a2, void *a3) { STUB(); }
+void FUN_0040f360(struct FlumeXY p, unsigned int *result) {
+    unsigned int w = DAT_004b4734 - DAT_004b472c;
+
+    p.x += (unsigned char)DAT_004cbe18->var_3c[0];
+    p.y += (unsigned char)DAT_004cbe18->var_3c[1];
+    result[0] = 5;
+    result[1] = p.x + 6;
+    result[2] = p.y;
+    result[5] = p.x + 2;
+    result[6] = DAT_004cbe18->var_3c[3] - DAT_004cbe18->var_3c[1] - w + p.y + 1;
+}
 
 // FUNCTION: LEGOLAND 0x0040f3e0
 void FUN_0040f3e0(struct Obj *obj_ptr) {
@@ -1772,7 +1786,17 @@ int FUN_00410310(struct FlumeInput *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00410360
-void FUN_00410360(unsigned char a, unsigned char b, unsigned int *result, unsigned char c) { STUB(); }
+void FUN_00410360(struct FlumeXY p, unsigned int *result) {
+    unsigned int w = DAT_004b4734 - DAT_004b472c;
+
+    p.x += (unsigned char)DAT_004c8d6c->var_3c[0];
+    p.y += (unsigned char)DAT_004c8d6c->var_3c[1];
+    result[0] = 5;
+    result[1] = p.x + 2;
+    result[2] = p.y;
+    result[5] = p.x + 2;
+    result[6] = DAT_004c8d6c->var_3c[3] - DAT_004c8d6c->var_3c[1] - w + p.y + 1;
+}
 
 // FUNCTION: LEGOLAND 0x004103e0
 struct Sprite *FUN_004103e0(struct Obj *obj_ptr) {
