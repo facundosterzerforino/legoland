@@ -3207,6 +3207,17 @@ extern LEGO_EXPORT unsigned short NEWFLC_Repeat;
 extern LEGO_EXPORT struct EditState EditMode;
 // 0x008119bc
 extern unsigned int DAT_008119bc;
+struct MapMarker {
+    unsigned int x, y;
+};
+// 0x008119c0
+extern struct MapMarker DAT_008119c0[31][32];
+// 0x008138c0
+extern struct MapMarker DAT_008138c0[32];
+// 0x008139c8
+extern unsigned int DAT_008139c8;
+// 0x008139cc
+extern unsigned int DAT_008139cc;
 // 0x008139e0
 extern struct Sprite *DAT_008139e0;
 // 0x008139e4

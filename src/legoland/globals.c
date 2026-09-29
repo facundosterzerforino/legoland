@@ -4298,6 +4298,18 @@ LEGO_EXPORT struct EditState EditMode;
 // GLOBAL: LEGOLAND 0x008119bc
 unsigned int DAT_008119bc;
 
+// GLOBAL: LEGOLAND 0x008119c0
+struct MapMarker DAT_008119c0[31][32];
+
+// GLOBAL: LEGOLAND 0x008138c0
+struct MapMarker DAT_008138c0[32];
+
+// GLOBAL: LEGOLAND 0x008139c8
+unsigned int DAT_008139c8;
+
+// GLOBAL: LEGOLAND 0x008139cc
+unsigned int DAT_008139cc;
+
 // GLOBAL: LEGOLAND 0x008139e0
 struct Sprite *DAT_008139e0;
 

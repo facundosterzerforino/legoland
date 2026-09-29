@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "interface.h"
 #include "mapscreen.h"
+#include "print_sprite.h"
 
 struct MapPoint {
     int field0;
@@ -63,7 +64,24 @@ LEGO_EXPORT void RenderMouseBounds(void) { STUB(); }
 LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004566f0
-LEGO_EXPORT void DrawMapScreen(void) { STUB(); }
+LEGO_EXPORT void DrawMapScreen(void) {
+    struct MapMarker(*row)[32];
+    struct MapMarker *m;
+    int j;
+
+    PrintSprite(DAT_00667c2c, DAT_008139c8, DAT_008139cc, 0, 0);
+    if (DAT_008119a4 & 0x10) {
+        for (row = DAT_008119c0; (int)row < (int)DAT_008138c0; row++) {
+            m = *row;
+            for (j = 0; j < 31; j++, m++) {
+                if (m->x != 0 || m->y != 0) {
+                    PrintSprite(DAT_00667c34, m->x, m->y, 0, 0);
+                }
+            }
+        }
+    }
+    FUN_004563b0();
+}
 
 // FUNCTION: LEGOLAND 0x00456770
 void FUN_00456770(struct MapPoint *arg) {
