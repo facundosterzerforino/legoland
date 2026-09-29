@@ -7,9 +7,12 @@
 struct SampleBuffer;
 
 struct SampleDef {
-    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ int refcount;
+    /* 0x08 */ unsigned char pad_8[0x10 - 0x8];
     /* 0x10 */ void *field_10;
-    /* 0x14 */ unsigned char pad_14[0x2c - 0x14];
+    /* 0x14 */ unsigned char pad_14[0x28 - 0x14];
+    /* 0x28 */ struct SampleDef *parent;
     /* 0x2c */ struct SampleBuffer *buffer;
     /* 0x30 */ void *block_30;
     /* 0x34 */ void *block_34;
@@ -44,7 +47,7 @@ struct SampleBuffer {
  * object, same offsets. */
 struct Sample {
     struct Sample *next;
-    unsigned char pad_4[0x8 - 0x4];
+    int refcount;
     unsigned int fade;
     unsigned int field_c;
     void *field_10;
@@ -52,12 +55,13 @@ struct Sample {
     unsigned int field_18;
     unsigned short flags;
     unsigned char pad_1e[0x28 - 0x1e];
-    unsigned int active;
+    struct SampleDef *active;
     struct SampleBuffer *buffer;
 };
 
 LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path);
-LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def);
+void *FUN_00492110(void);
+LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def);
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);
 LEGO_EXPORT int PauseSingleSample(struct Sample *sample);
 void FUN_00492830(void);

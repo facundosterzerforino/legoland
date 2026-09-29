@@ -537,10 +537,11 @@ struct ProfileObj *FUN_004920e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492110
-void FUN_00492110(void) {
+void *FUN_00492110(void) {
     struct ProfileObj *obj = FUN_004920e0();
     obj->next = (struct ProfileObj *)DAT_007988cc;
     DAT_007988cc = obj;
+    return obj;
 }
 
 // FUNCTION: LEGOLAND 0x00492130
