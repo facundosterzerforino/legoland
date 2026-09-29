@@ -85,6 +85,7 @@ struct Bloke {
     };
     union {
         unsigned int field_54;
+        struct BNVPath *path; /* ride code: scripted path being walked */
         struct BNVRef *bnv; /* ride code: BNV file slot of the bloke's path */
         struct BNVPath *path; /* ride code: animated BNV path being walked */
     };
