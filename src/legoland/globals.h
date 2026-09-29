@@ -461,6 +461,9 @@ extern float FLOAT_004ab43c;
 extern float FLOAT_004ab444;
 // 0x004ab550
 extern float FLOAT_004ab550;
+// 0x004b4860
+extern struct Point DAT_004b4860;
+
 // 0x004c2b00
 extern struct FlumeShape DAT_004c2b00;
 

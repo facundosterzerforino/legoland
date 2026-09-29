@@ -268,6 +268,19 @@ struct FlumeSlot {
     unsigned char pad_18[0x24 - 0x18];
 };
 
+struct FlumeMover {
+    unsigned char pad_0[4];
+    unsigned int flags;
+    unsigned char pad_8[4];
+    int x;
+    int y;
+    struct FlumeNode *node;
+    float f18;
+    int i1c;
+    float f20;
+    int i24;
+};
+
 struct FlumeEntry {
     struct FlumeEntry *next;
     unsigned int flags;
@@ -282,7 +295,7 @@ struct FlumeEntry {
     };
     int submode;
     unsigned char pad_20[4];
-    int field_24;
+    struct FlumeMover *field_24;
     int field_28;
     union {
         struct FlumeEntry *sub2;
@@ -2824,7 +2837,72 @@ void FUN_00410450(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004104b0
-void FUN_004104b0(void) { STUB(); }
+void FUN_004104b0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = elem->ride;
+    struct FlumeEntry *entry;
+    struct Sprite *sprite;
+    struct LLS *lls;
+    struct Point off;
+    unsigned __int64 pos;
+    int frame;
+
+    entry = FUN_00408ef0(tile);
+    if (FUN_0040cdf0(tile) && entry != NULL) {
+        if (DAT_004c2af0 != NULL && DAT_004c2aec != NULL) {
+            frame = 0;
+            sprite = GetSpriteForLayer(ride->layer, 0);
+            if (sprite != NULL) {
+                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+                if (lls != NULL) {
+                    frame = lls->frame;
+                }
+            }
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c2af0);
+            if (lls != NULL) {
+                LLSSetFrame(lls, frame);
+            }
+            sprite = GetSpriteForLayer(ride->layer, 1);
+            if (sprite != NULL) {
+                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+                if (lls != NULL) {
+                    frame = lls->frame;
+                }
+            }
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c2aec);
+            if (lls != NULL) {
+                LLSSetFrame(lls, frame);
+            }
+        }
+        pos = FUN_0040cfd0(entry);
+        if (DAT_004c2af0 != NULL) {
+            off = GetRenderOffsetForLayer(ride->layer, 0);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(DAT_004c2af0, off.x + (unsigned int)pos, off.y + (unsigned int)(pos >> 32), clip, 0);
+        }
+        if (DAT_004c2aec != NULL) {
+            off = GetRenderOffsetForLayer(ride->layer, 1);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(DAT_004c2aec, off.x + (unsigned int)pos, off.y + (unsigned int)(pos >> 32), clip, 0);
+        }
+        if (entry->field_24 != NULL && (entry->field_24->flags & 2)) {
+            pos = FUN_0040cfd0(entry);
+            off = GetRenderOffsetForLayer(ride->layer, 1);
+            off.x += DAT_004b4860.x;
+            off.y += DAT_004b4860.y;
+            AdjustOffsetForViewMode(&off);
+            if (DAT_004c2b64 != NULL) {
+                frame = entry->field_24->i24;
+                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c2b64);
+                if (lls != NULL) {
+                    LLSStop((unsigned int)lls);
+                    LLSSetFrame(lls, frame);
+                }
+                PrintSprite(DAT_004c2b64, off.x + (unsigned int)pos, off.y + (unsigned int)(pos >> 32), clip, 0);
+            }
+        }
+    }
+    FUN_0040cd70((struct PairHolder *)entry, 1);
+}
 
 // FUNCTION: LEGOLAND 0x004106e0
 unsigned int FUN_004106e0(void) {
@@ -3395,18 +3473,6 @@ int FUN_00411650(struct FlumeObjC *obj) {
     }
     return 0;
 }
-
-struct FlumeMover {
-    unsigned char pad_0[4];
-    unsigned int flags;
-    unsigned char pad_8[4];
-    int x;
-    int y;
-    struct FlumeNode *node;
-    float f18;
-    int i1c;
-    float f20;
-};
 
 // FUNCTION: LEGOLAND 0x00411680
 int FUN_00411680(struct FlumeMover *mover) {
