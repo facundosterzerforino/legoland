@@ -6,8 +6,10 @@
 #include "man3d.h"
 #include "math.h"
 #include "render3d.h"
+#include "sound_music.h"
 #include "string.h"
 #include "tilemap.h"
+#include "worker.h"
 
 struct WorkerInner {
     unsigned char pad_0[0x1c];
@@ -72,7 +74,31 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
 void FUN_00470270(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470410
-void FUN_00470410(void) { STUB(); }
+WorkOrder *FUN_00470410(Point *out) {
+    WorkOrder *order;
+    unsigned int v = DAT_004bdd08 & 0xffff;
+    int x = v & 0xff;
+    int y = v >> 8;
+
+    if (DAT_007fdffc == 0x307) {
+        order = GetGardenerWorkOrderAt(x, y);
+    } else {
+        order = GetMechanicWorkOrderAt(x, y);
+    }
+    if (order != NULL) {
+        if (out != NULL) {
+            out->x = order->pos.x + order->footprints->x0;
+            out->y = order->footprints->y1 + order->pos.y;
+        }
+        if (DAT_007fdffc == 0x307) {
+            PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
+        } else {
+            PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
+        }
+        return order;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x004704b0
 void FUN_004704b0(void) { STUB(); }
