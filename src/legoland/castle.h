@@ -19,7 +19,9 @@ void FUN_004237f0(void *a, void *b, int c);
 struct Slot;
 struct SlotHost;
 
+unsigned int FUN_0041e720(struct SlotHost *host, unsigned int arg);
 struct Slot *FUN_0041e760(struct SlotHost *host);
+unsigned int FUN_0041e790(struct SlotHost *host);
 void *FUN_0041eb30(unsigned int arg);
 void FUN_0041eb60(unsigned int param_1);
 void FUN_0041ed90(unsigned int param1, unsigned int param2);
