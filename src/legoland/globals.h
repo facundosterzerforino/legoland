@@ -564,6 +564,12 @@ extern char DAT_004b4d94[];
 extern Point DAT_004b4e20;
 // 0x004b78b4
 extern char DAT_004b78b4[];
+// 0x004b4f08
+extern char *DAT_004b4f08[4];
+// 0x004b4f18
+extern signed char DAT_004b4f18[4];
+// 0x004b4f1c
+extern signed char DAT_004b4f1c[4];
 // 0x004b4fa8
 extern unsigned char WATERWORKS_SFX[0x24];
 // 0x004b5118
@@ -1386,9 +1392,9 @@ extern unsigned int DAT_004cbfb8[3];
 // 0x004cbfc4
 extern void *DAT_004cbfc4;
 // 0x004cbfc8
-extern unsigned int DAT_004cbfc8;
+extern int DAT_004cbfc8;
 // 0x004cbfcc
-extern unsigned int DAT_004cbfcc[1];
+extern int DAT_004cbfcc[1];
 // 0x004cbfd0
 extern struct Sprite *DAT_004cbfd0;
 // 0x004cbfd4

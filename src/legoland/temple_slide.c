@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "legoland.h"
@@ -9,6 +10,8 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "render3d.h"
 #include "temple_slide.h"
@@ -322,7 +325,173 @@ void FUN_00417400(unsigned int index, void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417430
-void FUN_00417430(void) { STUB(); }
+void FUN_00417430(Element *obj) {
+    Ride *ride;
+    Bloke *bloke;
+    TileId *tile;
+    unsigned int x;
+    unsigned int y;
+    unsigned char dir;
+    int cx;
+    int cy;
+    int f;
+    short sx;
+    short sy;
+    int off[4];
+    Point coords;
+    int dy;
+    int dx;
+    RideNode *next;
+    int th;
+    int tw;
+    RideNode *node;
+
+    ride = obj->ride;
+    node = ride->riders;
+    while (node != NULL) {
+        next = node->next;
+        bloke = node->rider;
+        tile = &node->tile;
+        x = ride->x + tile->pos.x;
+        y = tile->pos.y + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                bloke->flags |= 8;
+                bloke->param_action++;
+                bloke->field_36 = FUN_00417380(tile);
+                if (bloke->field_36 > 1) {
+                    x = (x << 8) + 0x380;
+                    y = (y << 8) - 0x280;
+                    bloke->dest.x = x;
+                    bloke->dest.y = y;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                    bloke->param_action++;
+                } else {
+                    y -= 5;
+                    x = (x << 8) + 0x80;
+                    y <<= 8;
+                    bloke->dest.x = x;
+                    bloke->dest.y = y;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                    bloke->param_action = 3;
+                }
+                break;
+            case 2:
+                bloke->dest.x = (ride->footprint.x0 + tile->pos.x + 4) << 8;
+                bloke->dest.y = (ride->footprint.y0 + tile->pos.y + 2) << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 3:
+                coords = GetScreenCoordsForObject(tile, ride);
+                {
+                    int py = bloke->pos.y;
+                    int px = bloke->pos.x;
+                    GetTileDimensions(&tw, &th);
+                    cy = (px + py) * th;
+                    tw = (px - py) * tw;
+                    tw >>= 9;
+                    cy >>= 9;
+                }
+                sx = Get_XScroll();
+                cx = (lpConfig->field_20 - sx) + tw;
+                sy = Get_YScroll();
+                cy = cy + (lpConfig->field_22 - sy);
+                cx = cx - DAT_004cbfc8 / 2 - coords.x;
+                bloke->flags |= 0x80;
+                cy = cy - DAT_004cbfcc[0] / 2 - coords.y;
+                off[0] = cx * 2;
+                off[1] = cy * 2;
+                bloke->person->sprite = DAT_004cbfd0;
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617664.875f, -1617913.0f);
+                bloke->field_35 = 0;
+                bloke->path = NewBNVPath((struct BinVFile *)DAT_004cbfb8[0], 0, DAT_004b4f08[bloke->field_36], -1617664.875f, -1617913.0f, off);
+                BNVPath_SetDFrame(bloke, bloke->path, 0);
+                UpdateBlokeFromBNVPath(bloke, bloke->path);
+                bloke->param_action++;
+                break;
+            case 4:
+                if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                    bloke->field_35 = 1;
+                    bloke->param_action = 5;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                BlokeSetFrame(bloke, bloke->field_74);
+                if (bloke->path != NULL) {
+                    f = BNVPath_GetDFrame(bloke->path);
+                    if (f == DAT_004b4f18[bloke->field_36]) {
+                        BlokeWalkAnim(bloke);
+                        bloke->field_44 = bloke->field_7f;
+                        bloke->field_7f = 0x18;
+                    } else if (f == DAT_004b4f1c[bloke->field_36]) {
+                        bloke->field_35 = 1;
+                        bloke->param_action = 5;
+                        free(bloke->path);
+                        bloke->path = NULL;
+                    } else if (f >= DAT_004b4f18[bloke->field_36] && f <= DAT_004b4f1c[bloke->field_36]) {
+                        BlokeSetFrame(bloke, 0);
+                    }
+                }
+                break;
+            case 5:
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->flags &= 0xff7f;
+                bloke->person->sprite = NULL;
+                bloke->person->field_30 = 0;
+                bloke->field_7f = (unsigned char)bloke->field_44;
+                switch (bloke->field_36) {
+                case 0:
+                    dx = -0x280;
+                    dy = 0x700;
+                    break;
+                case 1:
+                    dx = -0x180;
+                    dy = 0x180;
+                    break;
+                case 2:
+                    dx = -0x180;
+                    dy = 0;
+                    break;
+                case 3:
+                    dx = -0x280;
+                    dy = -0x500;
+                    break;
+                }
+                x = ride->field_24 + tile->pos.x;
+                y = ride->field_25 + tile->pos.y;
+                bloke->pos.x = dx + (x << 8);
+                bloke->pos.y = dy + (y << 8);
+                bloke->dest.x = (x << 8) + 0x80;
+                bloke->dest.y = (y << 8) + 0x80;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 6:
+                FUN_00417400(bloke->field_36, tile);
+                RemoveBlokeFromRide(ride, node);
+                bloke->flags &= 0xfff7;
+                break;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004178c0
 LEGO_EXPORT int SaveTempleSlide(void) {
