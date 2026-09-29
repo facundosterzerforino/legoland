@@ -3902,6 +3902,9 @@ unsigned int DAT_007cb324;
 // GLOBAL: LEGOLAND 0x007cb328
 unsigned int DAT_007cb328;
 
+// GLOBAL: LEGOLAND 0x007cb340
+char DAT_007cb340[0x20];
+
 // GLOBAL: LEGOLAND 0x007cb360
 struct IconNode *DAT_007cb360;
 
