@@ -502,6 +502,10 @@ extern unsigned char PTR_s_Boat_Noise_wav[0x18];
 extern struct Footprint DAT_004b53c0;
 // 0x004b53d4
 extern unsigned char DAT_004b53d4[0x190];
+// 0x004b5570
+extern unsigned int DAT_004b5570[5];
+// 0x004b5584
+extern short DAT_004b5584[4][2];
 // 0x004b55f4
 extern unsigned int DAT_004b55f4;
 // 0x004b5608

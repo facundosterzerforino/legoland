@@ -9,6 +9,8 @@ struct Struct426d80Y;
 struct Struct427130Main;
 struct Int16Pair;
 struct FVec3;
+struct FloatAtC4;
+struct FloatHolder;
 
 void FUN_00425cb0(const struct Int16Pair *in, float f, struct FVec3 *out);
 float lego_sqrtf(float x);
@@ -23,6 +25,8 @@ void FUN_0041eb60(unsigned int param_1);
 void FUN_0041ed90(unsigned int param1, unsigned int param2);
 
 unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3);
+float FUN_0041e7e0(unsigned char *obj);
+float FUN_0041e810(struct FloatAtC4 *obj);
 void FUN_0041e500(void *obj);
 void FUN_0041e630(struct FlagWord *obj);
 void FUN_0041e6a0(unsigned int *param, unsigned int value);

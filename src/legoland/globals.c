@@ -226,6 +226,12 @@ struct Footprint DAT_004b53c0;
 // GLOBAL: LEGOLAND 0x004b53d4
 unsigned char DAT_004b53d4[0x190];
 
+// GLOBAL: LEGOLAND 0x004b5570
+unsigned int DAT_004b5570[5] = {0, 0, 2, 2, 0};
+
+// GLOBAL: LEGOLAND 0x004b5584
+short DAT_004b5584[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
+
 // GLOBAL: LEGOLAND 0x004b55f4
 unsigned int DAT_004b55f4;
 
