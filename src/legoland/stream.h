@@ -12,10 +12,21 @@ struct KLIBAUDIO_Stop {
     void(__stdcall *func_48)(struct KLIBAUDIO_Object *self);
 };
 
+struct KLIBAUDIO_Buf {
+    unsigned char pad_0[0x2c];
+    int(__stdcall *Lock)(void *self, unsigned int off, unsigned int bytes, void **p1, unsigned int *s1, void **p2, unsigned int *s2, unsigned int flags);
+    unsigned char pad_30[4];
+    void(__stdcall *SetPos)(void *self, unsigned int pos);
+    unsigned char pad_38[0x48 - 0x38];
+    void(__stdcall *Stop)(void *self);
+    void(__stdcall *Unlock)(void *self, void *p1, unsigned int s1, void *p2, unsigned int s2);
+};
+
 struct KLIBAUDIO_Object {
     void *vtable;
 };
 
+int FUN_004989b0(void);
 void FUN_00498100(void);
 void FUN_00498120(void);
 void FUN_00498630(const char *param_1);
