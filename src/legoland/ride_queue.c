@@ -141,8 +141,7 @@ void FUN_00411f00(struct Queue *queue) {
 void FUN_00411f20(struct Queue *queue, struct QueueItemMid *mid) {
     struct QueueNode *node = (struct QueueNode *)malloc(8);
     if (node != NULL) {
-        node->next = NULL;
-        node->field_4 = NULL;
+        memset(node, 0, sizeof(*node));
         node->field_4 = mid;
         mid->field_8->field_62 |= 0x40;
         mid->field_8->field_38 = 0;
