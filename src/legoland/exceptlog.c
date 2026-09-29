@@ -54,7 +54,18 @@ void FUN_004542e0(HANDLE file) {
 void FUN_00454380(HANDLE file, DWORD base) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454500
-void FUN_00454500(void) { STUB(); }
+void FUN_00454500(char *buffer, FILETIME ft) {
+    WORD date;
+    WORD time;
+
+    if (FileTimeToLocalFileTime(&ft, &ft) && FileTimeToDosDateTime(&ft, &date, &time)) {
+        // STRING: LEGOLAND 0x004b8d18
+        wsprintfA(buffer, "%d/%d/%d %02d:%02d:%02d", (date >> 5) & 0xf, date & 0x1f, (date >> 9) + 1980,
+            time >> 11, (time >> 5) & 0x3f, (time & 0x1f) * 2);
+    } else {
+        buffer[0] = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004545a0
 void FUN_004545a0(void) { STUB(); }
