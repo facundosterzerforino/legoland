@@ -5166,8 +5166,29 @@ unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c) {
     return 0;
 }
 
+struct Struct429940 {
+    unsigned char pad_0[0xc];
+    unsigned int *field_c;
+    unsigned char pad_10[0x14 - 0x10];
+    unsigned int field_14;
+    unsigned char pad_18[0x1c - 0x18];
+    struct Struct429940 *next;
+    unsigned int field_20;
+};
+
 // FUNCTION: LEGOLAND 0x00429940
-unsigned int FUN_00429940(void *n, void *out) { STUB(); }
+unsigned int FUN_00429940(struct Struct429940 *n, struct Struct429940 **out) {
+    unsigned int count = 0;
+
+    while (!(*n->field_c & 1)) {
+        if (FUN_00429910(n->field_c, n->field_14, n->field_20)) {
+            count++;
+        }
+        n = n->next;
+    }
+    *out = n;
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x00429990
 int FUN_00429990(struct PathSeg *seg, int *out) { STUB(); }

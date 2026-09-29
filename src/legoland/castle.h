@@ -153,7 +153,8 @@ void FUN_00428f00(void);
 void FUN_00429270(void);
 void FUN_004294b0(void);
 unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
-unsigned int FUN_00429940(void *n, void *out);
+struct Struct429940;
+unsigned int FUN_00429940(struct Struct429940 *n, struct Struct429940 **out);
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
 
 void FUN_004254d0();
