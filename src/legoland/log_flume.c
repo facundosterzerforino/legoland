@@ -69,6 +69,19 @@ struct WalkNode {
     struct WalkNode *var_8;
 };
 
+struct FlumeRideSrc {
+    unsigned char pad_0[0x14];
+    unsigned int field_14;
+    unsigned int field_18;
+    unsigned char pad_1c[0x64 - 0x1c];
+    void *field_64;
+};
+
+struct FlumeRideArg {
+    unsigned char pad_0[0xc];
+    struct FlumeRideSrc *field_c;
+};
+
 struct PairHolder {
     unsigned char pad_0[0x2c];
     unsigned int var_2c;
@@ -1276,7 +1289,7 @@ int FUN_0040cc50(int a, int b, int c, TileId *tile, int e, int arg) {
 unsigned long FUN_0040cca0(struct StateNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040cd70
-void FUN_0040cd70(struct PairHolder *p, int param1, unsigned long param2, unsigned long param3, unsigned long param4) {
+void FUN_0040cd70(struct PairHolder *p, int param1) {
     struct StateNode *first;
     struct StateNode *second;
     unsigned int phase;
@@ -1834,7 +1847,19 @@ void FUN_0040ed20(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0040ed50
-unsigned int *FUN_0040ed50(void) { STUB(); }
+struct RideSpriteInfo *FUN_0040ed50(struct FlumeRideArg *arg1, TileId arg2) {
+    struct FlumeRideSrc *src = arg1->field_c;
+    struct FlumeEntry *entry = FUN_00408ef0(&arg2);
+    if (entry != NULL) {
+        FUN_0040cd70((struct PairHolder *)entry, 0);
+        DAT_004cbe58.id = arg2.id;
+        DAT_004cbe58.sprite = src->field_64;
+        DAT_004cbe58.x = src->field_14;
+        DAT_004cbe58.y = src->field_18;
+        DAT_004cbe58.field_10 = 0;
+    }
+    return &DAT_004cbe58;
+}
 
 // FUNCTION: LEGOLAND 0x0040edb0
 void FUN_0040edb0(void) { STUB(); }

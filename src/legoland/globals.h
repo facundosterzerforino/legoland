@@ -1218,6 +1218,8 @@ extern struct Sprite *DAT_004cbe78;
 extern struct Sprite *DAT_004cbe7c;
 // 0x004cbe80
 extern struct Sprite *DAT_004cbe80;
+// 0x004cbe58
+extern struct RideSpriteInfo DAT_004cbe58;
 // 0x004cbe84
 extern struct FlumeEntry *DAT_004cbe84;
 // 0x004cbe88
