@@ -1197,8 +1197,40 @@ void FUN_0040bf70(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0040c250
 void FUN_0040c250(void) { STUB(); }
 
+struct FlumeChainNode {
+    struct FlumeChainNode *next;
+};
+
+struct FlumeChainOwner {
+    unsigned char pad_0[0x24];
+    struct FlumeSlotSet *slots;
+    unsigned char pad_28[4];
+    struct FlumeChainNode *chain;
+};
+
 // FUNCTION: LEGOLAND 0x0040c2e0
-void FUN_0040c2e0(void) { STUB(); }
+int FUN_0040c2e0(struct FlumeChainOwner *owner) {
+    struct FlumeSlotSet *set = owner->slots;
+    int i;
+    struct FlumeChainNode *node;
+
+    for (i = 0; i < set->count; i++) {
+        node = owner->chain;
+        if (node == NULL) {
+            if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)owner)) {
+                return 1;
+            }
+        } else {
+            do {
+                if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)node)) {
+                    return 1;
+                }
+                node = node->next;
+            } while (node != NULL);
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0040c350
 void FUN_0040c350(void) { STUB(); }
