@@ -528,10 +528,40 @@ struct SprInfo {
     unsigned char pad_0[4];
     unsigned int f4;
     unsigned int f8;
-    unsigned char pad_c[0x1c - 0xc];
+    unsigned char pad_c[0x10 - 0xc];
+    short x10;
+    short y10;
+    unsigned char pad_14[0x18 - 0x14];
+    short x18;
+    short y18;
 };
 // FUNCTION: LEGOLAND 0x0041d210
-int FUN_0041d210(short *pos, struct SprEnt *ent, struct SprInfo *info) { STUB(); }
+int FUN_0041d210(short *pos, struct SprEnt *ent, struct SprInfo *info) {
+    short p[2];
+    int r;
+
+    if (DAT_00829ae0 != 2) {
+        ent->owner = (struct SprOwner *)&DAT_00829ae0;
+        p[0] = info->x18 + pos[0];
+        p[1] = info->y18 + pos[1];
+        r = FUN_0041cd40((unsigned int *)p, &DAT_00829b8c);
+        ent->id_a = r;
+        if (r != -1) {
+            *(unsigned int *)(DAT_00829b88 + 0x20) = FUN_0041cc90(r);
+        }
+        p[0] = info->x10 + pos[0];
+        p[1] = info->y10 + pos[1];
+        r = FUN_0041cd40((unsigned int *)p, &DAT_00829ba4);
+        ent->id_b = r;
+        if (r != -1) {
+            *(unsigned int *)(DAT_00829ba0 + 0x14) = FUN_0041cc90(r);
+        }
+        if (ent->id_a != -1 || ent->id_b != -1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0041d2e0
 int FUN_0041d2e0(struct SprInfo *info, short *pos, struct SprEnt *ent) {
@@ -743,9 +773,9 @@ float FUN_0041dd00(unsigned char *param, float result) {
 }
 
 // FUNCTION: LEGOLAND 0x0041dd50
-void FUN_0041dd50(unsigned char *param) {
+float FUN_0041dd50(unsigned char *param) {
     float result = FUN_0041dca0(param);
-    FUN_0041dd00(param, result);
+    return FUN_0041dd00(param, result);
 }
 
 // FUNCTION: LEGOLAND 0x0041dd70
@@ -1340,7 +1370,10 @@ void FUN_0041eb70(void) {
 
 struct DispatchRow {
     unsigned int field_0;
-    unsigned char pad_4[0x18 - 0x4];
+    void (*fn_4)(unsigned int);
+    void (*fn_8)(unsigned int, unsigned int, unsigned int);
+    void (*fn_c)(unsigned int, unsigned int);
+    unsigned char pad_10[0x18 - 0x10];
 };
 
 struct DispatchTarget {
@@ -1390,12 +1423,12 @@ unsigned int FUN_0041ec40(unsigned int param) {
 
 // FUNCTION: LEGOLAND 0x0041ec50
 void FUN_0041ec50(unsigned int obj) {
-    ((void (*)(unsigned int)) * (unsigned int *)(DAT_0082ad20 + FUN_0041ec20(obj) * 24 + 4))(obj);
+    ((struct DispatchRow *)DAT_0082ad20)[FUN_0041ec20(obj)].fn_4(obj);
 }
 
 // FUNCTION: LEGOLAND 0x0041ec70
 void FUN_0041ec70(unsigned int obj, unsigned int a, unsigned int b) {
-    ((void (*)(unsigned int, unsigned int, unsigned int)) * (unsigned int *)(DAT_0082ad20 + FUN_0041ec20(obj) * 24 + 8))(obj, a, b);
+    ((struct DispatchRow *)DAT_0082ad20)[FUN_0041ec20(obj)].fn_8(obj, a, b);
 }
 
 // FUNCTION: LEGOLAND 0x0041eca0
@@ -1404,7 +1437,7 @@ void FUN_0041eca0(unsigned int idx, short *p) {
 
     v[0] = p[0];
     v[1] = p[1];
-    ((void (*)(unsigned int, unsigned int)) * (unsigned int *)(DAT_0082ad20 + idx * 24 + 0xc))(((struct DispatchRow *)DAT_0082ad20)[idx].field_0, (unsigned int)v);
+    ((struct DispatchRow *)DAT_0082ad20)[idx].fn_c(((struct DispatchRow *)DAT_0082ad20)[idx].field_0, (unsigned int)v);
 }
 
 // FUNCTION: LEGOLAND 0x0041ece0
