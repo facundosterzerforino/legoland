@@ -250,8 +250,8 @@ void FUN_004589a0(void) {
     CONTROLLERBUFFER->field_c = lpConfig->field_2 >> 1;
     SystemParametersInfoA(3, 0, work, 0);
     CONTROLLERBUFFER->field_1c = work[0];
-    CONTROLLERBUFFER->field_20 = work[2];
-    CONTROLLERBUFFER->field_24 = work[3];
+    CONTROLLERBUFFER->field_20 = work[1];
+    CONTROLLERBUFFER->field_24 = work[2];
     SetPointer(5);
 }
 
@@ -366,7 +366,7 @@ int FUN_00458c00(void) {
         FUN_00492830();
         if (DAT_00667c80 != 0) {
             DeletePlayableSamples(0);
-            sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, DAT_0080ffa0.field_44 & 0xff);
+            sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, *(unsigned int *)&DAT_0080ffe4 & 0xff);
             FUN_00466360(0, 0);
             LoadGame(path);
             DAT_00667c80 = 0;
