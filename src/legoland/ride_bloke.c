@@ -52,7 +52,8 @@ struct NewBloke {
     int py;
     int tx;
     int ty;
-    unsigned char pad_28[0xb8 - 0x28];
+    unsigned char pad_28[8];
+    struct Point wp[17];
     unsigned char f_b8;
     unsigned char pad_b9;
     unsigned char f_ba;
@@ -168,10 +169,126 @@ __int64 FUN_00401000(int x, int y, int rot) {
 }
 
 // FUNCTION: LEGOLAND 0x00401080
-void FUN_00401080(struct NewBloke *b) { STUB(); }
+void FUN_00401080(struct NewBloke *b) {
+    struct Point local;
+    unsigned int frame;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
+
+    local.x = b->tx;
+    local.y = b->ty;
+    frame = b->f_bb;
+    if (DAT_004c11c0 != 0) {
+        FUN_00480840(&local, &local, b->f_ba);
+        r.i = FUN_00401000(104, 0, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(268, 88, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(424, 244, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(512, 408, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        FUN_00480840(&local, &local, b->f_ba);
+        FUN_00480840(&local, &local, b->f_ba = (b->f_ba + 2) & 7);
+        b->wp[frame].x = local.x << 16;
+        b->wp[frame].y = local.y << 16;
+    } else {
+        r.i = FUN_00401000(104, 0, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(268, 44, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(424, 122, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(512, 204, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        FUN_00480840(&local, &local, b->f_ba);
+        b->f_ba = (b->f_ba + 2) & 7;
+    }
+    b->tx = local.x;
+    b->ty = local.y;
+    b->f_bb = frame + 1;
+}
 
 // FUNCTION: LEGOLAND 0x00401320
-void FUN_00401320(void) { STUB(); }
+void FUN_00401320(struct NewBloke *b) {
+    struct Point local;
+    unsigned int frame;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
+
+    local.x = b->tx;
+    local.y = b->ty;
+    frame = b->f_bb;
+    if (DAT_004c11c0 != 0) {
+        r.i = FUN_00401000(104, 0, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(268, -44, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(424, -122, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(512, -204, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        FUN_00480840(&local, &local, b->f_ba);
+        b->f_ba = (b->f_ba - 2) & 7;
+    } else {
+        FUN_00480840(&local, &local, b->f_ba);
+        r.i = FUN_00401000(104, 0, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(268, -88, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(424, -244, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(512, -408, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        FUN_00480840(&local, &local, b->f_ba);
+        FUN_00480840(&local, &local, b->f_ba = (b->f_ba - 2) & 7);
+        b->wp[frame].x = local.x << 16;
+        b->wp[frame].y = local.y << 16;
+    }
+    b->tx = local.x;
+    b->ty = local.y;
+    b->f_bb = frame + 1;
+}
 
 // FUNCTION: LEGOLAND 0x004015c0
 LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) {
@@ -197,9 +314,10 @@ void FUN_004015e0(unsigned char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00401660
-void FUN_00401660(unsigned char *param_1) {
+void FUN_00401660(struct NewBloke *b) {
     struct Point local;
     unsigned int frame;
+    unsigned char d;
     union {
         __int64 i;
         struct {
@@ -208,38 +326,37 @@ void FUN_00401660(unsigned char *param_1) {
         } p;
     } r;
 
-    local.x = *(int *)(param_1 + 0x20);
-    local.y = *(int *)(param_1 + 0x24);
-    frame = *(unsigned char *)(param_1 + 0xbb);
+    local.x = b->tx;
+    local.y = b->ty;
+    frame = b->f_bb;
     if (DAT_004c11c0 != 0) {
-        r.i = FUN_00401000(13, 40, *(unsigned char *)(param_1 + 0xba));
-        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
-        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        r.i = FUN_00401000(13, 40, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
-        r.i = FUN_00401000(33, 84, *(unsigned char *)(param_1 + 0xba));
-        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
-        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        r.i = FUN_00401000(33, 84, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
-        *(unsigned char *)(param_1 + 0xba) = *(unsigned char *)(param_1 + 0xba) + 2;
+        d = b->f_ba + 2;
     } else {
-        r.i = FUN_00401000(13, -40, *(unsigned char *)(param_1 + 0xba));
-        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
-        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        r.i = FUN_00401000(13, -40, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
-        r.i = FUN_00401000(33, -84, *(unsigned char *)(param_1 + 0xba));
-        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
-        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        r.i = FUN_00401000(33, -84, b->f_ba);
+        b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
+        b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
-        *(unsigned char *)(param_1 + 0xba) = *(unsigned char *)(param_1 + 0xba) - 2;
+        d = b->f_ba - 2;
     }
-    *(unsigned char *)(param_1 + 0xba) &= 7;
-    FUN_00480840(&local, &local, *(unsigned char *)(param_1 + 0xba));
-    *(int *)(param_1 + 0x30 + frame * 8) = local.x << 16;
-    *(int *)(param_1 + 0x34 + frame * 8) = local.y << 16;
-    *(int *)(param_1 + 0x20) = local.x;
-    *(int *)(param_1 + 0x24) = local.y;
-    *(unsigned char *)(param_1 + 0xbb) = frame + 1;
-    *(unsigned char *)(param_1 + 0xc2) = 1;
+    FUN_00480840(&local, &local, b->f_ba = d & 7);
+    b->wp[frame].x = local.x << 16;
+    b->wp[frame].y = local.y << 16;
+    b->tx = local.x;
+    b->ty = local.y;
+    b->f_bb = frame + 1;
+    b->f_c2 = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004017c0
@@ -555,7 +672,71 @@ void FUN_00401e00(struct HistBuf *p) {
 }
 
 // FUNCTION: LEGOLAND 0x00401f30
-int FUN_00401f30(unsigned short id, struct PathPair *p, int dir) { STUB(); }
+int FUN_00401f30(unsigned short id, struct PathPair *p, int dir) {
+    struct RideQueueEntry *e;
+    struct RideQueueEntry *q;
+    struct RideQueueEntry *t1;
+    struct RideQueueEntry *t2;
+    struct RideQueueEntry *t3;
+    struct PathPair pt;
+    char r;
+    int mask;
+
+    e = (struct RideQueueEntry *)FUN_004125f0(p->a, p->b);
+    r = rand() & 3;
+    mask = 0;
+    if (e == NULL) {
+        return 0;
+    }
+    FUN_004808d0(&e->x, &pt.a, dir);
+    q = FUN_004125a0(pt.a, pt.b);
+    if (q != NULL && q->field_8 == id && (q->field_14 & 0xf) != 6) {
+        FUN_004808d0(&q->x, &pt.a, dir);
+        t1 = FUN_004125a0(pt.a, pt.b);
+        if (t1 != NULL && (t1->field_8 != id || (t1->field_14 & 0xf) == 6)) {
+            t1 = NULL;
+        }
+        FUN_004808d0(&q->x, &pt.a, (dir - 2) & 7);
+        t2 = FUN_004125a0(pt.a, pt.b);
+        if (t2 != NULL && (t2->field_8 != id || (t2->field_14 & 0xf) == 6)) {
+            t2 = NULL;
+        }
+        FUN_004808d0(&q->x, &pt.a, (dir + 2) & 7);
+        t3 = FUN_004125a0(pt.a, pt.b);
+        if (t3 != NULL && (t3->field_8 != id || (t3->field_14 & 0xf) == 6)) {
+            t3 = NULL;
+        }
+        if (t2 != NULL) {
+            mask = 1;
+        }
+        if (t3 != NULL) {
+            mask |= 4;
+        }
+        if (t1 != NULL) {
+            mask |= 2;
+        }
+        switch (mask) {
+        case 1:
+            return 1;
+        case 4:
+            return 3;
+        case 5:
+            return (~r & 2) | 1;
+        case 3:
+            return ((r & 2) != 0) + 1;
+        case 6:
+            return ((~r & 2) | 4) >> 1;
+        case 7:
+            if ((r & 2) != 0) {
+                return 2;
+            }
+            return ((~r & 1) << 1) | 1;
+        default:
+            return 2;
+        }
+    }
+    return 4;
+}
 
 // FUNCTION: LEGOLAND 0x00402150
 int FUN_00402150(unsigned short id, struct PathPair *p, int dir) {
