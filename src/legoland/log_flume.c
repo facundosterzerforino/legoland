@@ -1503,22 +1503,7 @@ void FUN_0040c6c0(int unused, struct Point *pt) {
 void FUN_0040c780(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c8d0
-void FUN_0040c8d0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    struct FlumeEntry *entry;
-
-    memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
-    DAT_004cbe30->footprint.x1 = DAT_004cbe30->footprint.x1 - 1;
-    DAT_004cbe30->footprint.y1 = DAT_004cbe30->footprint.y1 - 1;
-    StandardRemoveObject((Element *)param_1, *(TileId *)&param_2, (struct Cursor *)param_3);
-    entry = FUN_00408ef0((TileId *)&param_2);
-    FUN_004119a0((struct ParticleEmitter *)entry->parent, -1);
-    if (entry != NULL) {
-        FUN_00409440(param_1, (void **)&param_2);
-        FUN_0040da10((struct Context *)entry, (struct LinkList *)param_3);
-        FUN_0040a2a0(entry, (struct StateNode **)param_3);
-        FUN_00409270((struct Node *)entry->parent, (struct Node *)entry);
-    }
-}
+void FUN_0040c8d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c970
 struct RideSpriteInfo *FUN_0040c970(int unused, TileId tile) {
@@ -2250,7 +2235,49 @@ int FUN_0040e3b0(unsigned int *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e440
-void FUN_0040e440(struct FlumeXY p, unsigned int *result) { STUB(); }
+void FUN_0040e440(struct FlumeXY p, unsigned int *result) {
+    unsigned int w = DAT_004b4730 - DAT_004b4728;
+    unsigned int h = DAT_004b4734 - DAT_004b472c;
+
+    switch (DAT_004c2af4) {
+    case 0:
+        p.x += (unsigned char)DAT_004c445c->var_3c[0];
+        p.y += (unsigned char)DAT_004c445c->var_3c[1];
+        result[0] = 3;
+        result[1] = p.x + 3;
+        result[2] = p.y;
+        result[3] = DAT_004c445c->var_3c[2] - DAT_004c445c->var_3c[0] - w + p.x + 1;
+        result[4] = p.y + 4;
+        break;
+    case 1:
+        p.x += (unsigned char)DAT_004c2aa0->var_3c[0];
+        p.y += (unsigned char)DAT_004c2aa0->var_3c[1];
+        result[0] = 6;
+        result[3] = DAT_004c2aa0->var_3c[2] - DAT_004c2aa0->var_3c[0] - w + p.x + 1;
+        result[5] = p.x + 2;
+        result[4] = p.y + 2;
+        result[6] = DAT_004c2aa0->var_3c[3] - DAT_004c2aa0->var_3c[1] - h + p.y + 1;
+        break;
+    case 2:
+        p.x += (unsigned char)DAT_004c2b0c->var_3c[0];
+        p.y += (unsigned char)DAT_004c2b0c->var_3c[1];
+        result[0] = 12;
+        result[5] = p.x + 4;
+        result[7] = p.x;
+        result[6] = DAT_004c2b0c->var_3c[3] - DAT_004c2b0c->var_3c[1] - h + p.y + 1;
+        result[8] = p.y + 3;
+        break;
+    case 3:
+        p.x += (unsigned char)DAT_004c74d4->var_3c[0];
+        p.y += (unsigned char)DAT_004c74d4->var_3c[1];
+        result[7] = p.x;
+        result[1] = p.x + 4;
+        result[0] = 9;
+        result[8] = p.y + 4;
+        result[2] = p.y;
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040e630
 void FUN_0040e630(void) {
