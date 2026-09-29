@@ -4516,9 +4516,12 @@ struct SegBlob {
 struct PathSeg {
     /* 0x00 */ unsigned int flags;
     /* 0x04 */ struct Int16Pair pos;
-    /* 0x08 */ unsigned char pad_8[0x14 - 0x8];
+    /* 0x08 */ unsigned char pad_8[0xc - 0x8];
+    /* 0x0c */ unsigned int *info;
+    /* 0x10 */ unsigned char pad_10[0x14 - 0x10];
     /* 0x14 */ unsigned int dir_in;
-    /* 0x18 */ unsigned char pad_18[0x20 - 0x18];
+    /* 0x18 */ unsigned char pad_18[0x1c - 0x18];
+    /* 0x1c */ struct PathSeg *last;
     /* 0x20 */ unsigned int dir_out;
     /* 0x24 */ unsigned int pad_24;
     /* 0x28 */ struct PathSeg *next;
@@ -4563,7 +4566,7 @@ void FUN_00429560(struct PathSeg *seg, struct PathSeg *end, int count, float h, 
 }
 
 // FUNCTION: LEGOLAND 0x00429690
-void FUN_00429690(void) { STUB(); }
+struct PathSeg *FUN_00429690(struct PathSeg *cur, float h, struct PathSeg *end) { STUB(); }
 
 struct Struct4296f0Node {
     unsigned char pad_0[0xc];
@@ -4600,7 +4603,7 @@ unsigned int FUN_004296f0(struct Struct4296f0Host *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00429750
-void FUN_00429750(void) { STUB(); }
+void FUN_00429750(struct PathSeg *seg, struct PathSeg *end) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00429840
 void FUN_00429840(void) { STUB(); }
@@ -4624,7 +4627,7 @@ unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c) {
 void FUN_00429940(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00429990
-void FUN_00429990(void) { STUB(); }
+int FUN_00429990(struct PathSeg *seg, int *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004299e0
 void FUN_004299e0(void) { STUB(); }
