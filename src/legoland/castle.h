@@ -1,6 +1,6 @@
 #pragma once
 
-struct Indexed;
+struct SprObj;
 struct FlagWord;
 struct ObjAtC8;
 struct ListLink;
@@ -53,7 +53,7 @@ void *FUN_0041eb30(unsigned int arg);
 void FUN_0041eb60(unsigned int param_1);
 void FUN_0041ed90(unsigned int param1, unsigned int param2);
 
-unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3);
+unsigned int FUN_0041d1d0(struct SprObj *obj, unsigned int param2, unsigned int param3);
 float FUN_0041e7e0(unsigned char *obj);
 float FUN_0041e810(struct FloatAtC4 *obj);
 void FUN_0041e500(struct ObjE500 *obj);
@@ -70,7 +70,7 @@ unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsi
 void FUN_00429af0(int a, void *b);
 void FUN_004274b0(struct Struct4274b0Obj *obj, const struct Struct4274b0Src *src);
 void FUN_0041f7f0(void);
-void FUN_0041f4e0(void (*fn)(float, unsigned int *), void *a, float b, float c, void *d);
+void FUN_0041f4e0(void (*fn)(), void *a, float b, float c, void *d);
 void FUN_0041f790(float x, unsigned int *out);
 void FUN_00421470(void);
 int FUN_0041f720(double (*fn)(float), float p2, float p3, float *out);
@@ -78,11 +78,11 @@ struct FitRes *FUN_0041f650(double (*fn)(float), int n, float a, float b);
 double FUN_0041f7e0(float param);
 void FUN_0041f710(unsigned int param);
 float FUN_0041ddb0(unsigned char *param_1, float param_2);
-void FUN_0041d950(void *obj, unsigned int val, void *tmp);
-void FUN_0041db20(unsigned int a, float *out);
-void FUN_0041da10(void *obj, unsigned int val, void *b);
+void FUN_0041d950(void *obj, float val, void *tmp);
+void FUN_0041db20(float a, float *out);
+void FUN_0041da10(void *obj, float val, void *b);
 unsigned int FUN_0041e930(struct ObjAt40 *obj, unsigned int param);
-void FUN_00429f30(unsigned int *out, float a, struct Elem20 *in, unsigned int val, float b, struct Elem20 *res, void **ctx);
+void FUN_00429f30(unsigned int *out, float a, struct Elem20 *in, float val, float b, struct Elem20 *res, float *ctx);
 void FUN_0041e7f0(unsigned char *obj, unsigned int *out);
 int FUN_004298a0(struct SprInfo *info, struct SprOwner *owner, unsigned int *a, unsigned int *b);
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
@@ -105,9 +105,9 @@ void FUN_0041f380(const int *r, struct PlaneSet *out);
 float FUN_0041dd00(unsigned char *param, float result);
 float FUN_0041dd50(unsigned char *param);
 void FUN_00429c60(unsigned char *obj, int a, unsigned int b, float c, struct FVec3 *out);
-void FUN_0041e8f0(unsigned char *obj, unsigned int a, unsigned int b);
+void FUN_0041e8f0(unsigned char *obj, struct Elem20 *e, float t);
 void FUN_0042a5e0(struct Struct42a5e0Obj *o, struct Struct42a5e0Data *src, unsigned int param_5);
-void FUN_0041e820(unsigned char *obj, unsigned int a, unsigned int b);
+void FUN_0041e820(unsigned char *obj, struct Elem20 *e, float t);
 void FUN_00420410(void *param, unsigned int count);
 unsigned int FUN_004206b0(const char *s);
 unsigned int FUN_00420710(const char *s);

@@ -1499,6 +1499,8 @@ extern struct SprEnt DAT_004d8250;
 extern unsigned int DAT_004d8268;
 // 0x004d8270
 extern unsigned int DAT_004d8270;
+extern float DAT_004d829c[64];
+extern unsigned int DAT_004d83c0;
 // 0x004d88f4
 extern unsigned char DAT_004d88f4[0x80];
 // 0x004d8974
