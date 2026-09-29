@@ -173,13 +173,13 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
         } while (node);
     }
 
-    DAT_007cb360 = (unsigned int)InsertIcon(0, 0, 7, DAT_00798690);
-    ((struct SaveScreenIcon *)DAT_007cb360)->field_3c = 5;
-    ((struct SaveScreenIcon *)DAT_007cb360)->field_38 = GetString(5);
-    ((struct SaveScreenIcon *)DAT_007cb360)->field_34 |= 0x2000;
-    ((struct SaveScreenIcon *)DAT_007cb360)->field_34 |= 0x4002;
-    ((struct SaveScreenIcon *)DAT_007cb360)->field_34 |= 0x400;
-    ((struct SaveScreenIcon *)DAT_007cb360)->field_2c = (void *)FUN_0048cc30;
+    DAT_007cb360 = InsertIcon(0, 0, 7, DAT_00798690);
+    DAT_007cb360->string_id = 5;
+    DAT_007cb360->string = GetString(5);
+    DAT_007cb360->flags |= 0x2000;
+    DAT_007cb360->flags |= 0x4002;
+    DAT_007cb360->flags |= 0x400;
+    DAT_007cb360->event_handler = (void *)FUN_0048cc30;
 }
 
 // FUNCTION: LEGOLAND 0x0048d8f0
