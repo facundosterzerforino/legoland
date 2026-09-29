@@ -3,11 +3,15 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include <stdio.h>
 #include "binv.h"
+#include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "objclass.h"
+#include "render3d.h"
 #include "sound_music.h"
 #include "spider_ride.h"
 
@@ -19,17 +23,18 @@ struct FadeParams {
 };
 
 struct SpiderState {
-    unsigned char field_0;
-    unsigned char field_1;
+    unsigned short id;
     unsigned char field_2;
     unsigned char field_3;
-    unsigned char field_4;
+    char field_4;
     unsigned char pad_5[3];
     unsigned int field_8;
     unsigned char field_c;
     unsigned char pad_d[3];
     unsigned int field_10;
     unsigned char field_14;
+    unsigned char pad_15[3];
+    int field_18;
 };
 
 struct CarNode {
@@ -247,7 +252,51 @@ void SpiderRide(struct ClassNode *name_ptr, struct CallbackTable *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x004161f0
-void FUN_004161f0(struct SpiderNode *node) { STUB(); }
+void FUN_004161f0(struct SpiderNode *node) {
+    struct SpiderState *s = (struct SpiderState *)node;
+    struct RideNode *r = ((struct Ride *)DAT_004cbf20)->riders;
+    unsigned int flags = s->field_8;
+
+    if (flags & 1) {
+        unsigned char c;
+        int v = ++s->field_10;
+        c = s->field_c;
+        if (c == 0) {
+            if (GetAllBlokesOffRide((struct Ride *)DAT_004cbf20, s->id) == 0) {
+                return;
+            }
+            FUN_00415a90(node);
+            return;
+        }
+        if (v >= 2) {
+            s->field_10 = 0;
+            s->field_4++;
+            if (s->field_4 >= 0x20) {
+                s->field_4 = 0;
+                s->field_c = c - 1;
+            }
+        }
+    } else if (flags & 0x4000) {
+        if (s->field_2 == s->field_14) {
+            s->field_8 = flags & 0xffffbfff;
+            FUN_00415a60(s);
+            return;
+        }
+    } else if (s->field_2 != 0) {
+        if (s->field_18 == 0) {
+            s->field_8 = flags | 0x4000;
+            Ride_SetFlagToNotLetAnyoneOn(s);
+        }
+        s->field_18--;
+    }
+    for (; r != NULL; r = r->next) {
+        if (s->id == r->tile.id && r->rider->field_35 == 1) {
+            sprintf(DAT_004b4d94 + 6, "%02d", r->rider->field_36);
+            SetBlokePositionFromBNV(DAT_004cbf10, r->rider, DAT_004b4d94, s->field_4, -1617787.75f, -1618096.5f, 0);
+        }
+    }
+    *(short *)*DAT_0082c668->lls = (short)s->field_4;
+}
 
 // FUNCTION: LEGOLAND 0x00416310
 void FUN_00416310(void) {
