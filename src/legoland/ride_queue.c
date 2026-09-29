@@ -321,7 +321,33 @@ struct QueueNode *FUN_00412470(struct QueueNode *node, int n) {
 }
 
 // FUNCTION: LEGOLAND 0x00412490
-void FUN_00412490(void) { STUB(); }
+void FUN_00412490(struct QueueNode *start, struct Queue *queue) {
+    int n;
+    int idx;
+
+    SaveGameRead(&n, 4);
+    queue->count = (struct QueueTable *)malloc(n * 12 + 8);
+    queue->count->count = n;
+    queue->count->steps = (struct QueueStep *)(queue->count + 1);
+    for (n = 0; n < queue->count->count; n++) {
+        SaveGameRead(&queue->count->steps[n], 12);
+    }
+    queue->head = NULL;
+    queue->tail = NULL;
+    SaveGameRead(&n, 4);
+    while (n-- != 0) {
+        if (queue->tail == NULL) {
+            queue->tail = (struct QueueNode *)malloc(8);
+            queue->head = queue->tail;
+        } else {
+            queue->tail->next = (struct QueueNode *)malloc(8);
+            queue->tail = queue->tail->next;
+        }
+        queue->tail->next = NULL;
+        SaveGameRead(&idx, 4);
+        queue->tail->field_4 = (struct QueueItemMid *)FUN_00412470(start, idx);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004125a0
 struct RideQueueEntry *FUN_004125a0(int x, int y) {
