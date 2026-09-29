@@ -13,7 +13,9 @@ struct KLIBAUDIO_Stop {
 };
 
 struct KLIBAUDIO_Buf {
-    unsigned char pad_0[0x2c];
+    unsigned char pad_0[0x10];
+    int(__stdcall *GetCurrentPosition)(void *self, int *play, unsigned int *write);
+    unsigned char pad_14[0x2c - 0x14];
     int(__stdcall *Lock)(void *self, unsigned int off, unsigned int bytes, void **p1, unsigned int *s1, void **p2, unsigned int *s2, unsigned int flags);
     unsigned char pad_30[4];
     void(__stdcall *SetPos)(void *self, unsigned int pos);
@@ -33,6 +35,6 @@ void FUN_00498630(const char *param_1);
 int FUN_004988c0(void);
 int FUN_00498920(void);
 int FUN_00498b00(void);
-void FUN_00498b40(void);
+int FUN_00498b40(void);
 int FUN_00498cf0(void);
 void FUN_00498900(unsigned int param_1);
