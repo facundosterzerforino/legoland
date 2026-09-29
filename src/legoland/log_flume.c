@@ -1873,7 +1873,68 @@ int FUN_0040bb50(struct FlumeSlotSet *set, struct FlumeSlot **out) {
 }
 
 // FUNCTION: LEGOLAND 0x0040bbb0
-void FUN_0040bbb0(void) { STUB(); }
+void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
+    struct FlumeSlot *slot = &set->slots[index];
+
+    if (slot != NULL) {
+        if (slot->flags & 2) {
+            FUN_00411810(slot);
+            return;
+        }
+        if (slot->flags & 1) {
+            if (slot->owner->a != NULL) {
+                if (FUN_0040bab0(set, index)) {
+                    if (FUN_00411680(slot)) {
+                        slot->owner = slot->owner->a;
+                        if (FUN_00411650(slot)) {
+                            slot->flags |= 2;
+                            return;
+                        }
+                        if (slot->owner == set->field_c->a) {
+                            if (slot->busy != NULL) {
+                                slot->busy->counter->count++;
+                                slot->busy = NULL;
+                                slot->timer = 0x32;
+                                slot->flags &= ~1;
+                            }
+                        }
+                        if (slot->owner == set->inner->a) {
+                            slot->timer = 0x32;
+                            slot->flags &= ~1;
+                        }
+                    }
+                }
+            }
+        } else {
+            slot->timer--;
+            if (slot->timer < 0) {
+                if (!(set->flags & 1)) {
+                    if (slot->owner->a != NULL) {
+                        if (FUN_0040bab0(set, index)) {
+                            slot->flags |= 1;
+                            if (FUN_00411680(slot)) {
+                                slot->owner = slot->owner->a;
+                                if (slot->owner == set->field_c->a) {
+                                    if (slot->busy != NULL) {
+                                        slot->busy->counter->count++;
+                                        slot->busy = NULL;
+                                        slot->timer = 0x32;
+                                        slot->flags &= ~1;
+                                    }
+                                }
+                                if (slot->owner == set->inner->a) {
+                                    slot->timer = 0x32;
+                                    slot->flags &= ~1;
+                                }
+                            }
+                        }
+                    }
+                }
+                slot->timer = 1;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040bd40
 void FUN_0040bd40(struct FlumeSlotSet *set, int index) {
@@ -3465,13 +3526,9 @@ struct FlumeObjB {
     unsigned char pad_0[0x20];
     struct CursorSource *var_20;
 };
-struct FlumeObjC {
-    unsigned char pad_0[0x14];
-    struct FlumeObjA *var_14;
-};
 // FUNCTION: LEGOLAND 0x00411650
-int FUN_00411650(struct FlumeObjC *obj) {
-    struct FlumeObjB *p = obj->var_14->var_28;
+int FUN_00411650(struct FlumeSlot *slot) {
+    struct FlumeObjB *p = ((struct FlumeObjA *)slot->owner)->var_28;
 
     if (p != NULL && p != (struct FlumeObjB *)-1 && p->var_20 == DAT_004c8d6c) {
         return 1;
@@ -3480,7 +3537,7 @@ int FUN_00411650(struct FlumeObjC *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00411680
-void FUN_00411680(void) { STUB(); }
+int FUN_00411680(struct FlumeSlot *slot) { STUB(); }
 
 struct FlumeLink {
     unsigned char pad_0[0x8];
@@ -3515,7 +3572,7 @@ int FUN_004117e0(struct FlumeObjD *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00411810
-void FUN_00411810(void) { STUB(); }
+void FUN_00411810(struct FlumeSlot *slot) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004119a0
 void FUN_004119a0(struct ParticleEmitter *param_1, unsigned int param_2) {
