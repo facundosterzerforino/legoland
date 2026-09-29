@@ -49,13 +49,17 @@ void FUN_0043be00(struct BarrelNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043be40
 struct BarrelNode *FUN_0043be40(unsigned short *key) {
-    struct BarrelNode *node;
-    for (node = DAT_0062fe08; node != NULL; node = node->next) {
-        if (node->field_4 == *key) {
-            break;
-        }
+    struct BarrelNode *cur = (struct BarrelNode *)DAT_0062fe08;
+
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->field_4, key, 2) == 0) {
+                return cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
     }
-    return node;
+    return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x0043be70

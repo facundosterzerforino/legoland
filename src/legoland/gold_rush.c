@@ -138,7 +138,19 @@ void FUN_004069c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004069e0
-void *FUN_004069e0(void *param) { STUB(); }
+void *FUN_004069e0(void *param) {
+    struct GoldNode *cur = DAT_004c1204;
+
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->key, param, 2) == 0) {
+                return cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00406a10
 void FUN_00406a10(struct GoldObj *obj) {

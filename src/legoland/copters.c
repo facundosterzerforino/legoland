@@ -574,10 +574,12 @@ unsigned int FUN_00404f20(struct CopterChainNode *node, struct CopterSource *id)
 
     for (cur = ((struct CopterChainRide *)DAT_004c1198)->chain; cur != NULL; cur = cur->next) {
         struct CopterSource *p = (struct CopterSource *)((char *)cur + 0xc);
-        if (p->field_0 == id->field_0 && cur == node) {
-            return idx;
+        if (memcmp(p, id, 2) == 0) {
+            if (cur == node) {
+                return idx;
+            }
+            idx++;
         }
-        idx++;
     }
     return 0;
 }

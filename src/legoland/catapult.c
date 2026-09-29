@@ -140,7 +140,19 @@ void FUN_00403190(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004031b0
-struct CatapultRideNode *FUN_004031b0(const unsigned short *key) { STUB(); }
+struct CatapultRideNode *FUN_004031b0(const unsigned short *key) {
+    struct CatapultNode *cur = DAT_004c1118;
+
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->field_0, key, 2) == 0) {
+                return (struct CatapultRideNode *)cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x004031e0
 void FUN_004031e0(struct CatapultLayer *param1) {

@@ -84,7 +84,19 @@ void FUN_00415990(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004159b0
-void FUN_004159b0(void) { STUB(); }
+struct SpiderNode *FUN_004159b0(unsigned short *key) {
+    struct SpiderNode *cur = (struct SpiderNode *)DAT_004cbf58;
+
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->field_0, key, 2) == 0) {
+                return cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x004159e0
 void FUN_004159e0(const unsigned char *arg0) {

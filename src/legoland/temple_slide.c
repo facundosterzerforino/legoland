@@ -102,11 +102,15 @@ void FUN_00416f00(void *arg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416f60
 unsigned char *FUN_00416f60(void *arg) {
-    struct SlideNode *node;
-    for (node = (struct SlideNode *)DAT_004cbfd4; node != NULL; node = node->next) {
-        if (node->key == ((TileId *)arg)->id) {
-            return (unsigned char *)node;
-        }
+    struct SlideNode *cur = (struct SlideNode *)DAT_004cbfd4;
+
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->key, arg, 2) == 0) {
+                return (unsigned char *)cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
     }
     return NULL;
 }

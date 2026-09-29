@@ -108,10 +108,15 @@ void FUN_004079e0(Element *editObj, int *coords) {
 struct JoustNode *FUN_00407a20(TileId *key) {
     struct JoustNode *cur = DAT_004c1250;
 
-    while (cur != NULL && cur->id.id != key->id) {
-        cur = cur->next;
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->id, key, 2) == 0) {
+                return cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
     }
-    return cur;
+    return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00407a50

@@ -79,12 +79,15 @@ void FUN_0043d940(void) {
 
 // FUNCTION: LEGOLAND 0x0043d960
 unsigned int FUN_0043d960(struct PlaneRideObject **arg) {
-    struct PlaneRideNode *cur;
+    struct PlaneRideNode *cur = (struct PlaneRideNode *)DAT_0062fe9c;
 
-    for (cur = (struct PlaneRideNode *)DAT_0062fe9c; cur != NULL; cur = cur->next) {
-        if (*(unsigned short *)cur == *(unsigned short *)arg) {
-            return (unsigned int)cur;
-        }
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->b0, arg, 2) == 0) {
+                return (unsigned int)cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
     }
     return 0;
 }

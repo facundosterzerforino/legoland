@@ -78,7 +78,19 @@ struct SafariKey {
 };
 
 // FUNCTION: LEGOLAND 0x00414a80
-void *FUN_00414a80(struct SafariKey *key) { STUB(); }
+void *FUN_00414a80(struct SafariKey *key) {
+    struct SafariNode *cur = (struct SafariNode *)DAT_004cbf0c;
+
+    if (cur != NULL) {
+        do {
+            if (memcmp(&cur->field_0, key, 2) == 0) {
+                return cur;
+            }
+            cur = cur->next;
+        } while (cur != NULL);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00414ab0
 void FUN_00414ab0(struct SafariSample *a1) {
