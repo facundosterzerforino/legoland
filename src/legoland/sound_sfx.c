@@ -66,7 +66,35 @@ void FUN_004921c0(void) { STUB(); }
 LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492690
-LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def) { STUB(); }
+LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def) {
+    struct SampleDef *src = def;
+    struct Sample *sample;
+
+    if (DAT_007988c0 == 0) {
+        return 0;
+    }
+    if (src == 0) {
+        return 0;
+    }
+    while (src->parent != 0) {
+        src = src->parent;
+    }
+    if (((LPDIRECTSOUND)DAT_007cad40)
+            ->lpVtbl->DuplicateSoundBuffer((LPDIRECTSOUND)DAT_007cad40, (LPDIRECTSOUNDBUFFER)src->buffer,
+                (LPDIRECTSOUNDBUFFER *)&def) != 0) {
+        return 0;
+    }
+    sample = FUN_00492110();
+    if (sample == 0) {
+        ((LPDIRECTSOUNDBUFFER)def)->lpVtbl->Release((LPDIRECTSOUNDBUFFER)def);
+        return 0;
+    }
+    src->refcount++;
+    sample->refcount++;
+    sample->active = src;
+    sample->buffer = (struct SampleBuffer *)def;
+    return sample;
+}
 
 // FUNCTION: LEGOLAND 0x00492710
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot) {
@@ -356,7 +384,7 @@ LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1) {
     }
     do {
         next = current->next;
-        if (param_1 == 0 || current->active == param_1) {
+        if (param_1 == 0 || (unsigned int)current->active == param_1) {
             if (previous != 0) {
                 previous->next = next;
             } else {
