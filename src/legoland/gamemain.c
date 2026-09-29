@@ -202,7 +202,45 @@ void FUN_004779d0(struct Point *p) { STUB(); }
 void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00478110
-void FUN_00478110(void) { STUB(); }
+int FUN_00478110(char *str, const char *delims, char **out) {
+    int count = 0;
+    char *p;
+    int n;
+
+    while (*str) {
+        str += strspn(str, delims);
+        if (*str) {
+            if (*str == '"') {
+                *str = 0;
+                str++;
+                *out = str;
+                count++;
+                out++;
+                p = strchr(str, '"');
+                if (!p)
+                    return count;
+                *p = 0;
+                str = p + 1;
+            } else {
+                *out = str;
+                count++;
+                out++;
+                n = strcspn(str, delims);
+                p = strchr(str, '"');
+                if (p && p - str < n) {
+                    str = p;
+                } else {
+                    str += n;
+                    if (!*str)
+                        return count;
+                    *str = 0;
+                    str++;
+                }
+            }
+        }
+    }
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x004781b0
 int FUN_004781b0(const char *param_1, const void *param_2, int param_3) {
