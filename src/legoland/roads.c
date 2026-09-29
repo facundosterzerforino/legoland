@@ -138,7 +138,43 @@ void FUN_004133e0(int param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00413450
-void FUN_00413450(void) { STUB(); }
+int FUN_00413450(int x, int y, struct RideQueueEntry **out) {
+    int count = 0;
+    struct RideQueueEntry *e;
+    int x1 = x + 4;
+    int y0 = y - 4;
+    e = FUN_004125a0(x1, y0);
+    if (e != NULL) {
+        count = 1;
+    }
+    if (out != NULL) {
+        out[1] = e;
+    }
+    y += 4;
+    e = FUN_004125a0(x1, y);
+    if (e != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out[3] = e;
+    }
+    x1 = x - 4;
+    e = FUN_004125a0(x1, y);
+    if (e != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out[5] = e;
+    }
+    e = FUN_004125a0(x1, y0);
+    if (e != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out[7] = e;
+    }
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x004134f0
 struct RoadTile *FUN_004134f0(int arg1, int arg2, struct RoadTile *tile) {
