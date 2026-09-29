@@ -49,12 +49,6 @@ struct QueueTable {
     struct QueueStep *steps;
 };
 
-struct Queue {
-    struct QueueTable *count;
-    struct QueueNode *head;
-    struct QueueNode *tail;
-};
-
 struct RideSlotArg {
     unsigned short field_0;
 };
