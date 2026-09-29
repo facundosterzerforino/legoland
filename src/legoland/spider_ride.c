@@ -168,7 +168,37 @@ int FUN_00415a90(struct SpiderNode *node) {
 void FUN_00415ae0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00415e80
-void FUN_00415e80(void) { STUB(); }
+void FUN_00415e80(struct CarNode *param_1) {
+    DAT_004cbf20 = ((unsigned int *)param_1)[3];
+    ((unsigned int *)DAT_004cbf20)[7] |= 0x420;
+    DAT_004cbf28 = (struct Sprite *)((unsigned int *)DAT_004cbf20)[25];
+    DAT_004cbf28->flags |= 0x2000;
+    // STRING: LEGOLAND 0x004b4ea0
+    DAT_004cbf10 = LoadBinV("Zbuffers\\spiderrun.bnv");
+    // STRING: LEGOLAND 0x004b4e88
+    DAT_004cbf24 = LoadBinV("Zbuffers\\spideron.bnv");
+    // STRING: LEGOLAND 0x004b4e70
+    DAT_004cbf18 = LoadBinV("Zbuffers\\spideroff.bnv");
+    // STRING: LEGOLAND 0x004b4e5c
+    DAT_004cbf14 = LoadSprite("SpiderHutMask1.lls", 1);
+    // STRING: LEGOLAND 0x004b4e48
+    DAT_004cbf1c = LoadSprite("SpiderHutMask2.lls", 1);
+    // STRING: LEGOLAND 0x004b4e38
+    DAT_0082c668 = LoadSprite("z_spider.lls", 1);
+    DAT_004cbf30[0] = DAT_004cbf10;
+    DAT_0082c660 = -1;
+    DAT_0082c664 = 2;
+    DAT_004cbf3c = DAT_0082c668;
+    DAT_004cbf30[1] = DAT_004cbf24;
+    DAT_004cbf38[0] = DAT_004cbf18;
+    HideLayer(DAT_004cbf28, 2);
+    StopLayerPlaying(DAT_004cbf28, 2);
+    LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 2), 0);
+    HideLayer(DAT_004cbf28, 1);
+    StopLayerPlaying(DAT_004cbf28, 1);
+    LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), 0);
+    Load_FXList(SpiderRide_SFX, 1);
+}
 
 // FUNCTION: LEGOLAND 0x00415fd0
 void FUN_00415fd0(struct CarNode *param_1) {
