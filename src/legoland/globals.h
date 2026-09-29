@@ -674,6 +674,10 @@ extern unsigned char CAROUSSEL_SFX[12];
 extern int DAT_004b65c0[8];
 // 0x004b6638
 extern char DAT_004b6638[4];
+// 0x004b6654
+extern int ENTRANCE_DEST_RIGHT[2];
+// 0x004b665c
+extern int ENTRANCE_DEST_LEFT[2];
 // 0x004b6668
 extern unsigned char ENTRANCE_SFX[0x1c];
 // 0x004b66e8
@@ -1620,6 +1624,8 @@ extern struct EarthNode *DAT_006160e8;
 extern struct Ride *DAT_006160f4;
 // 0x006160f0
 extern struct Sprite *DAT_006160f0;
+// 0x00616110
+extern int DAT_00616110;
 // 0x006160fc
 extern struct Sprite *DAT_006160fc;
 // 0x00616100
