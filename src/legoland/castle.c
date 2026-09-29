@@ -4558,8 +4558,34 @@ void FUN_004273f0(struct Struct4273f0Host *param_1) {
     }
 }
 
+struct Struct427410Xform {
+    struct FVec3 pos;
+    float m[9];
+};
+
+struct Struct427410Target {
+    unsigned char pad_0[0x20];
+    void (*method_20)(struct Struct427410Target *self, struct Struct427410Xform *xf);
+};
+
+struct Struct427410Obj {
+    struct FVec3 pos;
+    struct Struct427410Target *target;
+};
+
 // FUNCTION: LEGOLAND 0x00427410
-void FUN_00427410(void) { STUB(); }
+void FUN_00427410(struct Struct427410Obj *obj, struct Struct427410Xform *xf) {
+    struct FVec3 old;
+
+    if (obj->target != 0) {
+        old = xf->pos;
+        xf->pos.x = xf->m[6] * obj->pos.z + xf->m[0] * obj->pos.x + xf->m[3] * obj->pos.y + old.x;
+        xf->pos.y = xf->m[7] * obj->pos.z + xf->m[1] * obj->pos.x + xf->m[4] * obj->pos.y + old.y;
+        xf->pos.z = xf->m[8] * obj->pos.z + xf->m[2] * obj->pos.x + xf->m[5] * obj->pos.y + old.z;
+        obj->target->method_20(obj->target, xf);
+        xf->pos = old;
+    }
+}
 
 struct Struct4274b0Src {
     unsigned int x;
@@ -4968,7 +4994,14 @@ void FUN_00428300(Element *obj, const struct Struct427bc0Src *src) {
 }
 
 // FUNCTION: LEGOLAND 0x00428350
-void FUN_00428350(void) { STUB(); }
+void FUN_00428350(int a, int b, int c, struct Obj421ab0 *obj, int d) {
+    Vector3 pt;
+
+    pt.x = DAT_006117c0[b].x;
+    pt.y = DAT_006117c0[b].y;
+    pt.z = DAT_006117c0[b].z - (float)(c * 6);
+    FUN_00421ab0(obj, &DAT_006117c0[a].x, &pt.x, (struct Words3 *)&DAT_00611658[d]);
+}
 
 // FUNCTION: LEGOLAND 0x004283c0
 unsigned int FUN_004283c0(struct AnimPair *pair) {

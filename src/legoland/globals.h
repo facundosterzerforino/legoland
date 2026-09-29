@@ -1561,12 +1561,16 @@ extern unsigned int DAT_00611648;
 extern float DAT_0061164c;
 // 0x00611650
 extern float DAT_00611650;
+// 0x00611658
+extern Vector3 DAT_00611658[4];
 // 0x00611688
 extern unsigned int DAT_00611688;
 // 0x0061168c
 extern unsigned int DAT_0061168c;
 // 0x00611710
 extern unsigned int DAT_00611710[16];
+// 0x006117c0
+extern Vector3 DAT_006117c0[34];
 // 0x00611958
 extern unsigned int DAT_00611958;
 // 0x00612178
