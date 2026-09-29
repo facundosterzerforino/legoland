@@ -1955,6 +1955,9 @@ struct Position *DAT_006160e4;
 // GLOBAL: LEGOLAND 0x006160e8
 struct EarthNode *DAT_006160e8;
 
+// GLOBAL: LEGOLAND 0x006160ec
+struct RenderItemNode *DAT_006160ec;
+
 // GLOBAL: LEGOLAND 0x006160f4
 struct Ride *DAT_006160f4;
 

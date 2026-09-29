@@ -10,9 +10,12 @@
 
 #include "image_sprite.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "math.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
+#include "render3d.h"
 
 // FUNCTION: LEGOLAND 0x0042d970
 void FUN_0042d970(TileId *tile, unsigned int arg) {
@@ -27,7 +30,103 @@ void FUN_0042d970(TileId *tile, unsigned int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d9c0
-void FUN_0042d9c0(void) { STUB(); }
+void FUN_0042d9c0(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct Point pos;
+    struct Point off;
+    struct Point off1;
+    struct Sprite *spr;
+    int lo;
+    int hi;
+
+    pos = GetScreenCoordsForObject(tile, ride);
+    off = GetRenderOffsetForLayer(ride->layer, 3);
+    AdjustOffsetForViewMode(&off);
+    hi = (tile->pos.y + ride->footprint.y0) << 8;
+    lo = (tile->pos.x + ride->footprint.x1) << 8;
+
+    RenderItems_New();
+    DAT_006160ec = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && node->rider->pos.x < lo) {
+            AddBlokeToRenderList(&DAT_006160ec, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_006160ec);
+
+    off1 = GetRenderOffsetForLayer(ride->layer, 1);
+    AdjustOffsetForViewMode(&off1);
+    spr = GetSpriteForLayer(ride->layer, 1);
+    PrintSprite(spr, pos.x + off1.x, pos.y + off1.y, clip, 0);
+    off1 = GetRenderOffsetForLayer(ride->layer, 2);
+    AdjustOffsetForViewMode(&off1);
+    spr = GetSpriteForLayer(ride->layer, 2);
+    PrintSprite(spr, pos.x + off1.x, pos.y + off1.y, 0, 0);
+
+    RenderItems_New();
+    DAT_006160ec = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && node->rider->pos.x >= lo && node->rider->pos.y >= hi + 0x820 && node->rider->pos.y <= hi + 0x8d0) {
+            AddBlokeToRenderList(&DAT_006160ec, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_006160ec);
+    if (DAT_00616108 != NULL) {
+        PrintSprite(DAT_00616108, pos.x + off.x, pos.y + off.y, 0, 0);
+    }
+
+    RenderItems_New();
+    DAT_006160ec = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && node->rider->pos.x >= lo && node->rider->pos.y >= hi + 0x920 && node->rider->pos.y <= hi + 0x9d0) {
+            AddBlokeToRenderList(&DAT_006160ec, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_006160ec);
+    if (DAT_00616104 != NULL) {
+        PrintSprite(DAT_00616104, pos.x + off.x, pos.y + off.y, 0, 0);
+    }
+
+    RenderItems_New();
+    DAT_006160ec = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && node->rider->pos.x >= lo && node->rider->pos.y >= hi + 0xc20 && node->rider->pos.y <= hi + 0xcd0) {
+            AddBlokeToRenderList(&DAT_006160ec, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_006160ec);
+    if (DAT_00616100 != NULL) {
+        PrintSprite(DAT_00616100, pos.x + off.x, pos.y + off.y, 0, 0);
+    }
+
+    RenderItems_New();
+    DAT_006160ec = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && node->rider->pos.x >= lo && node->rider->pos.y >= hi + 0xd20 && node->rider->pos.y <= hi + 0xdd0) {
+            AddBlokeToRenderList(&DAT_006160ec, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_006160ec);
+    if (DAT_006160fc != NULL) {
+        PrintSprite(DAT_006160fc, pos.x + off.x, pos.y + off.y, 0, 0);
+    }
+
+    RenderItems_New();
+    DAT_006160ec = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && node->rider->pos.x >= lo) {
+            int y = node->rider->pos.y;
+            if ((y < hi + 0x820 || y > hi + 0x8d0) && (y < hi + 0x920 || y > hi + 0x9d0) && (y < hi + 0xc20 || y > hi + 0xcd0) && (y < hi + 0xd20 || y > hi + 0xdd0)) {
+                AddBlokeToRenderList(&DAT_006160ec, (struct BlokeRenderSrc *)node, node->person->field_20);
+            }
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_006160ec);
+    if (DAT_0061610c != NULL) {
+        PrintSprite(DAT_0061610c, pos.x + off.x, pos.y + off.y, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042de50
 void FUN_0042de50(Element *param) {
