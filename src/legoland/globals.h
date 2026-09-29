@@ -1810,6 +1810,8 @@ extern void *DAT_0062fe94;
 extern struct Sprite *DAT_0062fe98;
 // 0x0062fe9c
 extern struct PlaneRideNode *DAT_0062fe9c;
+// 0x0062fea0
+extern int DAT_0062fea0;
 // 0x0062fea4
 extern int DAT_0062fea4;
 // 0x0062fea8

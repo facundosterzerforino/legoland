@@ -2195,6 +2195,9 @@ void *DAT_0062fe94;
 // GLOBAL: LEGOLAND 0x0062fe9c
 struct PlaneRideNode *DAT_0062fe9c;
 
+// GLOBAL: LEGOLAND 0x0062fea0
+int DAT_0062fea0;
+
 // GLOBAL: LEGOLAND 0x0062fea4
 int DAT_0062fea4;
 
