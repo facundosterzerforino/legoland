@@ -68,8 +68,9 @@ unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsi
 void FUN_00429af0(int a, void *b);
 void FUN_004274b0(struct Struct4274b0Obj *obj, const struct Struct4274b0Src *src);
 void FUN_0041f7f0(void);
-void FUN_0041f4e0(void (*fn)(float, unsigned int *), void *a, float b, float c, void *d);
-void FUN_0041f790(float x, unsigned int *out);
+int FUN_0041f4e0(void (*fn)(float, unsigned int), void *a, float b, float c, void *d);
+int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes);
+void FUN_0041f790(float x, unsigned int out);
 void FUN_00421470(void);
 int FUN_0041f720(double (*fn)(float), float p2, float p3, float *out);
 struct FitRes *FUN_0041f650(double (*fn)(float), int n, float a, float b);
