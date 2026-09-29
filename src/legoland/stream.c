@@ -293,7 +293,7 @@ int FUN_00498420(void) {
     } else {
         DAT_007cacb0 = malloc(size);
     }
-    if (_read(DAT_007caca8, DAT_007cacb0, size) != size) {
+    if (_read(DAT_007caca8, DAT_007cacb0, size) != (int)size) {
         return 0;
     }
     if (size <= 0x12) {
@@ -307,7 +307,7 @@ int FUN_00498420(void) {
             return 0;
         }
         p = (unsigned int *)malloc(size);
-        if (_read(DAT_007caca8, p, size) != size) {
+        if (_read(DAT_007caca8, p, size) != (int)size) {
             free(p);
             return 0;
         }

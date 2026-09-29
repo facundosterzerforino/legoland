@@ -19,3 +19,6 @@ LEGO_EXPORT int SaveSpider(void);
 LEGO_EXPORT int LoadSpider(void);
 
 void SpiderRide(struct ClassNode *head, struct CallbackTable *iface);
+struct SlotOwner;
+struct SlotArray;
+int FUN_00416830(struct SlotOwner *owner, struct SlotArray *arr, signed char count);

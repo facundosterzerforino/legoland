@@ -669,7 +669,7 @@ void FUN_0043e410(struct Element *elem) {
                 bloke->person->sprite = NULL;
                 bloke->person->field_30 = 0;
                 UnAdjustBlokePosition(&bloke->person->screen);
-                ScreenToMapRef(&bloke->person->screen, &bloke->pos, 0);
+                ScreenToMapRef((int *)&bloke->person->screen, (int *)&bloke->pos, 0);
                 bloke->person->field_34 = 0;
                 bloke->pos.x <<= 8;
                 bloke->pos.y <<= 8;

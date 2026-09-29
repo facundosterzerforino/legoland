@@ -17,6 +17,7 @@
 #include "render3d.h"
 #include "sound_music.h"
 #include "spider_ride.h"
+#include "tilemap.h"
 
 struct FadeParams {
     unsigned int field_0;
@@ -498,7 +499,7 @@ void FUN_00416330(Element *obj) {
                 bloke->param_action++;
                 state->field_2++;
                 if ((short)(char)state->field_2 == ((struct Ride *)DAT_004cbf20)->seats) {
-                    FUN_00415a60((struct SpiderNode *)state);
+                    FUN_00415a60(state);
                 }
                 break;
             case 7:
