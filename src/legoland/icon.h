@@ -46,6 +46,7 @@ struct IconNode {
 };
 
 LEGO_EXPORT void RenderIcons(void);
+LEGO_EXPORT int RenderFlashingSpriteIcon(struct IconNode *node);
 LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3);
 LEGO_EXPORT unsigned char CheckFocussedIcon(void);
 LEGO_EXPORT void UpdateFocussedIconPtr(void);

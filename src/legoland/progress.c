@@ -14,7 +14,121 @@
 #include "timer.h"
 
 // FUNCTION: LEGOLAND 0x0048b7e0
-LEGO_EXPORT void InitProgressScreen(void) { STUB(); }
+LEGO_EXPORT void InitProgressScreen(void) {
+    struct IconNode *icon;
+    unsigned int flags;
+    int i;
+
+    if ((int)lpConfig->field_28 < 1) {
+        lpConfig->field_28 = 1;
+    }
+    if (DAT_00798660 == 0) {
+        FUN_0048b6d0();
+        if (MapStats.field_3a0 == 0) {
+            if (DAT_00798668 == 0) {
+                lpConfig->field_28 = DAT_007cb394 + 1;
+            }
+        }
+        if (MapStats.field_3a0 == 1 && (int)lpConfig->field_28 <= 0xf) {
+            DAT_0080ffd3[lpConfig->field_28] = 1;
+            UpDateCurrentProfile();
+        }
+    }
+    if ((int)lpConfig->field_28 <= 5) {
+        FUN_0048bde0();
+        return;
+    }
+    if ((int)lpConfig->field_28 > 0xf) {
+        DAT_00668e38 = 1;
+        SPRITE_TitleScreenBk = NULL;
+        EditMode.unk4 = 2;
+        DAT_0080ff80.unk4 = 0xffffffff;
+        DAT_0080ff80.unk8 = 8;
+        GamePad &= ~0x20;
+        return;
+    }
+    DAT_00798664 = 0;
+    // STRING: LEGOLAND 0x004bef44
+    SPRITE_TitleScreenBk = LoadSprite("Progress_ScreenBK.lls", 4);
+    flags = 0x6002;
+    if (DAT_00798660 == 0) {
+        if (MapStats.field_3a0 == 1 && lpConfig->field_28 == 6) {
+            MapStats.field_3a0 = 2;
+        }
+        FUN_0048b700();
+        // STRING: LEGOLAND 0x004bef2c
+        icon = LoadSpriteIcon("Accept_on_Progress.lls", 4, 0x20e, 0x16f, 0x23);
+        icon->string_id = 0x262;
+        icon->string = GetString(0x262);
+        icon->flags |= flags;
+        icon->event_handler = (void *)FUN_0048bc20;
+        // STRING: LEGOLAND 0x004bef14
+        icon = LoadSpriteIcon("GoBack_on_Progress.lls", 4, 0x208, 0xb, 0x23);
+        icon->string_id = 0x26;
+        icon->string = GetString(0x26);
+        icon->flags |= flags;
+        icon->event_handler = (void *)FUN_0048c020;
+        if (MapStats.field_3a0 != 1) {
+            // STRING: LEGOLAND 0x004beef8
+            icon = LoadSpriteIcon("Tutorial_On_Progress.lls", 4, 0x174, 0x16d, 0x23);
+            icon->string_id = 0x258;
+            icon->string = GetString(0x258);
+            icon->flags |= flags;
+            icon->event_handler = (void *)FUN_0048c090;
+        }
+    }
+    FUN_0048b740();
+    RemoveIconGroup(0x1c);
+    if (MapStats.field_3a0 == 1) {
+        flags = 0x200a;
+
+        for (i = 0; i < 10; i++) {
+            if (i + 5 == (int)lpConfig->field_28 - 1) {
+                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite0);
+                if (icon) {
+                    icon->field_28 = (void *)RenderFlashingSpriteIcon;
+                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string = GetString(icon->string_id);
+                    icon->field_18 = i + 5;
+                    icon->event_handler = (void *)FUN_0048bb60;
+                    icon->flags |= flags;
+                }
+            } else if (i + 5 < (int)lpConfig->field_28 - 1) {
+                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite1);
+                if (icon) {
+                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string = GetString(icon->string_id);
+                    icon->flags |= 0x2000;
+                }
+            }
+        }
+    } else {
+        for (i = 0; i < 10; i++) {
+            if (i + 5 == (int)lpConfig->field_28 - 1) {
+                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite0);
+                if (icon) {
+                    icon->field_28 = (void *)RenderFlashingSpriteIcon;
+                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string = GetString(icon->string_id);
+                    icon->field_18 = i + 5;
+                    icon->event_handler = (void *)FUN_0048bb60;
+                    icon->flags |= 0x600a;
+                }
+            } else if (DAT_0080ffd4[i + 5] == 1) {
+                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite1);
+                if (icon) {
+                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string = GetString(icon->string_id);
+                    icon->field_18 = i + 5;
+                    icon->event_handler = (void *)FUN_0048bb60;
+                    icon->flags |= flags;
+                }
+            }
+        }
+    }
+    DAT_006687bc = (unsigned int)FUN_0048bc20;
+    DAT_006687c0 = (unsigned int)FUN_0048c020;
+}
 
 // FUNCTION: LEGOLAND 0x0048bb60
 unsigned char FUN_0048bb60(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
