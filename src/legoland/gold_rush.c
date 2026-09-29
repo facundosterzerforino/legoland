@@ -367,7 +367,98 @@ void FUN_00407250(struct GoldBlokeRef *ref) {
 }
 
 // FUNCTION: LEGOLAND 0x004072b0
-void FUN_004072b0(void) { STUB(); }
+void FUN_004072b0(struct Element *elem) {
+    struct Ride *ride = elem->ride;
+    struct RideNode *node = ride->riders;
+    struct RideNode *next;
+    struct Bloke *b;
+    unsigned char *t;
+    int x;
+    int y;
+
+    while (node != NULL) {
+        next = node->next;
+        t = (unsigned char *)&node->tile;
+        b = node->rider;
+        x = t[0] + ride->x;
+        y = t[1] + ride->y;
+        if (b->field_e == 0) {
+            switch (b->param_action) {
+            case 0:
+                b->flags |= 8;
+                FUN_00406ec0((struct GoldItem *)node, t);
+                FUN_00406f30(t);
+                FUN_004122d0((struct RideSlotArg *)DAT_004c11e4, (struct RideSlot *)b);
+                break;
+            case 1:
+                FUN_00412300((struct QueueTable *)DAT_004c11e4, x, y, b);
+                if ((b->pos.x >> 8) == t[0] + 5 && (b->pos.y >> 8) == t[1] - 3) {
+                    BlokeWalkWithPan(b);
+                }
+                break;
+            case 2:
+                b->param_action++;
+                b->dest.x = (t[0] << 8) + 0x480;
+                b->dest.y = (t[1] << 8) - 0x180;
+                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->field_e = 7;
+                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                break;
+            case 3:
+            case 8:
+                FUN_00406f60((struct GoldWalkItem *)node, t);
+                b->param_action++;
+                break;
+            case 4:
+                FUN_00407000((struct GoldWalkItem *)node, t);
+                b->param_action++;
+                break;
+            case 5:
+                FUN_004070b0((struct GoldWalkItem *)node, t);
+                FUN_00407230((struct GoldRandItem *)node);
+                b->param_action++;
+                break;
+            case 6:
+                FUN_00407250((struct GoldBlokeRef *)node);
+                break;
+            case 7:
+                FUN_00407170((struct GoldWalkItem *)node, t);
+                b->param_action++;
+                break;
+            case 9:
+                b->dest.x = (t[0] << 8) + 0x480;
+                b->dest.y = (t[1] << 8) - 0x180;
+                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->field_e = 7;
+                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                b->param_action++;
+                break;
+            case 10:
+                FUN_004122a0((struct RideSlotArg *)DAT_004c11e4, (struct RideSlot *)b);
+                break;
+            case 11:
+                FUN_00412300((struct QueueTable *)DAT_004c11e4, x, y, b);
+                if ((b->pos.x >> 8) == t[0] + 5 && (b->pos.y >> 8) == t[1] - 3) {
+                    BlokeWalkAnim(b);
+                }
+                break;
+            case 12:
+                b->dest.x = (x << 8) + 0x80;
+                b->dest.y = (y << 8) + 0x80;
+                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->field_e = 7;
+                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                b->param_action++;
+                break;
+            case 13:
+                RemoveBlokeFromRide(ride, node);
+                b->flags &= 0xfff7;
+                break;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004075b0
 void FUN_004075b0(void) {
