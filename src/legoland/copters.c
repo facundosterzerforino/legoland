@@ -451,7 +451,7 @@ void FUN_00404600(Element *obj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00404630
-void FUN_00404630(void) { STUB(); }
+void FUN_00404630(struct CopterNode *node, int index) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404860
 void FUN_00404860(struct CopterNode *node, int index) {
@@ -550,7 +550,47 @@ void FUN_004049a0(struct CopterNode *node, int param) {
 }
 
 // FUNCTION: LEGOLAND 0x00404a90
-void FUN_00404a90(struct CopterNode *node) { STUB(); }
+void FUN_00404a90(struct CopterNode *node) {
+    node->field_c = node->field_c - 1;
+    if (node->field_c < 0) {
+        node->field_c = 2;
+        FUN_00404860(node, 1);
+        FUN_00404860(node, 0);
+        FUN_00404860(node, 2);
+        FUN_00404860(node, 3);
+        FUN_00404860(node, 4);
+        if ((node->field_8 & 1) && !(node->layer[1].flags & 1) && !(node->layer[0].flags & 1) &&
+            !(node->layer[2].flags & 1) && !(node->layer[3].flags & 1) &&
+            !(node->layer[4].flags & 1)) {
+            if (GetAllBlokesOffRide(DAT_004c1198, node->field_0) != 0) {
+                FUN_004049a0(node, 0);
+            }
+            return;
+        }
+    }
+    FUN_00404630(node, 1);
+    FUN_00404630(node, 0);
+    FUN_00404630(node, 2);
+    FUN_00404630(node, 3);
+    FUN_00404630(node, 4);
+    if (!(node->field_8 & 1)) {
+        if (node->field_8 & 0x4000) {
+            if (node->field_2 == node->field_10) {
+                node->field_8 &= ~0x4000u;
+                FUN_004048b0((struct CopterSfxNode *)node);
+                return;
+            }
+        } else if (node->field_2 != 0) {
+            if (node->field_14 == 0) {
+                node->field_8 |= 0x4000;
+                Ride_SetFlagToNotLetAnyoneOn(node);
+            } else {
+                node->field_14 = node->field_14 - 1;
+            }
+        }
+    }
+    Put3DBlokesOnRide2(DAT_004c1198, (Element *)node);
+}
 
 // FUNCTION: LEGOLAND 0x00404bc0
 void FUN_00404bc0(void) {
