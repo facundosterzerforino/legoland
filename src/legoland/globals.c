@@ -921,8 +921,11 @@ struct RideQueueEntry *DAT_004c11c8;
 // GLOBAL: LEGOLAND 0x004c11cc
 struct Sprite *DAT_004c11cc;
 
+// GLOBAL: LEGOLAND 0x004c11d8
+struct Sprite *DAT_004c11d8;
+
 // GLOBAL: LEGOLAND 0x004c11dc
-unsigned int DAT_004c11dc;
+struct Ride *DAT_004c11dc;
 
 // GLOBAL: LEGOLAND 0x004c11e4
 struct Sprite *DAT_004c11e4;
