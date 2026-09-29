@@ -5188,7 +5188,23 @@ unsigned int FUN_00429990(struct PathSeg *n, struct PathSeg **out) {
 }
 
 // FUNCTION: LEGOLAND 0x004299e0
-void FUN_004299e0(void) { STUB(); }
+void FUN_004299e0(struct PathSeg *n) {
+    struct PathSeg *p = n;
+    float v;
+
+    while (!(*p->info & 1)) {
+        p = p->last;
+    }
+    v = (float)(int)p->info[1];
+    p = p->next;
+    while (p != n->next) {
+        unsigned int fl = p->flags & ~1u;
+        p->f18 = v;
+        p->f24 = v;
+        p->flags = fl;
+        p = p->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00429a30
 void FUN_00429a30(void) { STUB(); }
