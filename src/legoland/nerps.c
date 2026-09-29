@@ -654,7 +654,7 @@ unsigned int FUN_0046aae0(struct NerpsArg *arg) {
     int sum;
 
     node = ObjectClassList;
-    if (ObjCount((struct ObjCountWrap *)arg->field_4) < 1) {
+    if ((int)ObjCount((struct ObjCountWrap *)arg->field_4) < 1) {
         FUN_00468d80(arg, arg->field_4, 1);
         return 0;
     }
@@ -930,7 +930,6 @@ unsigned int FUN_0046af39(int target, int current, struct NerpsArg *arg) {
 unsigned int FUN_0046af60(struct NerpsArg *arg) {
     struct Bloke *bloke;
     int count;
-    int target;
 
     count = 0;
     if (FirstBloke != NULL) {
@@ -946,14 +945,13 @@ unsigned int FUN_0046af60(struct NerpsArg *arg) {
             bloke = bloke->next;
         } while (bloke != NULL);
     }
-    target = arg->field_1c;
     if (arg->field_18 != 0) {
-        if (count > target) {
-            FUN_00469140(arg, count - target, arg->field_14);
+        if (count > (int)arg->field_1c) {
+            FUN_00469140(arg, count - arg->field_1c, arg->field_14);
             return 0;
         }
-    } else if (count < target) {
-        FUN_00469190(arg, target - count, arg->field_14);
+    } else if (count < (int)arg->field_1c) {
+        FUN_00469190(arg, arg->field_1c - count, arg->field_14);
         return 0;
     }
     return 1;
