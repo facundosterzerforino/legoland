@@ -2046,7 +2046,16 @@ struct Sprite *DAT_0062fdcc;
 struct Sprite *DAT_0062fdd0;
 
 // GLOBAL: LEGOLAND 0x0062fde4
-unsigned int DAT_0062fde4;
+struct Ride *DAT_0062fde4;
+
+// GLOBAL: LEGOLAND 0x0062fde0
+struct Sprite *DAT_0062fde0;
+
+// GLOBAL: LEGOLAND 0x0062fdd8
+int DAT_0062fdd8;
+
+// GLOBAL: LEGOLAND 0x0062fddc
+int DAT_0062fddc;
 
 // GLOBAL: LEGOLAND 0x0062fde8
 void *DAT_0062fde8;

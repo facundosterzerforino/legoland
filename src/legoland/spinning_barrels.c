@@ -112,12 +112,40 @@ void FUN_0043c320(struct BarrelNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c340
-void FUN_0043c340(void) { STUB(); }
+void FUN_0043c340(struct Element *elem) {
+    struct LayerResult layer;
+
+    DAT_0062fde4 = elem->ride;
+    DAT_0062fde4->flags |= 0x420;
+    DAT_0062fde0 = DAT_0062fde4->layer;
+    DAT_0062fde0->flags |= 0x2000;
+    // STRING: LEGOLAND 0x004b7960
+    DAT_0062fe04 = DAT_0062fe00[0] = LoadSprite("z_SpinningBarrels.lls", 1);
+    // STRING: LEGOLAND 0x004b7944
+    DAT_0062fdfc = DAT_0062fdf0[0] = LoadBinV("Zbuffers\\BoxBlokesOn1.bnv");
+    // STRING: LEGOLAND 0x004b7924
+    DAT_0062fde8 = DAT_0062fdf0[1] = LoadBinV("Zbuffers\\SpinningBarrels.bnv");
+    // STRING: LEGOLAND 0x004b7908
+    DAT_0062fdc8 = DAT_0062fdf0[2] = LoadBinV("Zbuffers\\BoxBlokesOff.bnv");
+    HideLayer(DAT_0062fde0, 3);
+    StopLayerPlaying(DAT_0062fde0, 3);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), 0);
+    HideLayer(DAT_0062fde0, 2);
+    StopLayerPlaying(DAT_0062fde0, 2);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), 0);
+    GetLayer(DAT_0062fde4->layer, &layer, 3);
+    DAT_0062fdd8 = layer.x - 103;
+    DAT_0062fddc = layer.y - 55;
+    // STRING: LEGOLAND 0x004b78e4
+    DAT_0062fdd0 = LoadSprite("SpinningBarrelsEntranceMatte.lls", 1);
+    // STRING: LEGOLAND 0x004b78c0
+    DAT_0062fdcc = LoadSprite("SpinningBarrelsEntranceMatte2.lls", 1);
+}
 
 // FUNCTION: LEGOLAND 0x0043c490
 void FUN_0043c490(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = (void *)DAT_0062fde4;
+    EditMode.unk8 = DAT_0062fde4;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((unsigned int *)((unsigned int)EditMode.unk8 + 0x3c));
 }
@@ -304,7 +332,7 @@ void FUN_0043c760(struct ClassNode *str, struct CallbackTable *ride) {
 
 // FUNCTION: LEGOLAND 0x0043c7f0
 void FUN_0043c7f0(struct BarrelNode *node) {
-    struct RideNode *r = ((struct Ride *)DAT_0062fde4)->riders;
+    struct RideNode *r = DAT_0062fde4->riders;
     unsigned int flags;
 
     node->field_20++;
@@ -317,7 +345,7 @@ void FUN_0043c7f0(struct BarrelNode *node) {
         int v = ++node->field_14;
         c = node->field_10;
         if (c == 0) {
-            if (GetAllBlokesOffRide((struct Ride *)DAT_0062fde4, node->field_4) == 0) {
+            if (GetAllBlokesOffRide(DAT_0062fde4, node->field_4) == 0) {
                 return;
             }
             FUN_0043c2f0(node);
