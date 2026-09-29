@@ -368,8 +368,6 @@ struct MapStats {
     /* 0x3e0 */ int field_3e0[4];
 };
 
-// 0x004ab38c
-extern float FLOAT_004ab38c;
 // 0x004ab390
 extern float FLOAT_004ab390;
 // 0x004ab398
@@ -392,6 +390,8 @@ extern float DAT_004ab3f4;
 extern float DAT_004ab3f8;
 // 0x004ab3fc
 extern float DAT_004ab3fc;
+// 0x004ab478
+extern double DOUBLE_004ab478;
 // 0x004ab4a0
 extern float DAT_004ab4a0;
 // 0x004ab4a8
@@ -580,6 +580,10 @@ extern struct CastleFloatEnt DAT_004b61e0[8];
 extern unsigned int DAT_004b62f0;
 // 0x004b6300
 extern unsigned int DAT_004b6300;
+// 0x004b6398
+extern float DAT_004b6398[4][3];
+// 0x004b63c8
+extern float DAT_004b63c8[4][3];
 // 0x004b64d4
 extern char DAT_004b64d4[4];
 // 0x004b64d8
@@ -1375,10 +1379,14 @@ extern float DAT_00611650;
 extern unsigned int DAT_00611688;
 // 0x0061168c
 extern unsigned int DAT_0061168c;
+// 0x00611710
+extern unsigned int DAT_00611710[16];
 // 0x00611958
 extern unsigned int DAT_00611958;
 // 0x00612178
 extern char DAT_00612178[1];
+// 0x006122a0
+extern float DAT_006122a0[90][3];
 // 0x00614858
 extern struct CastleFloatEnt DAT_00614858[8];
 
@@ -1386,6 +1394,8 @@ extern struct CastleFloatEnt DAT_00614858[8];
 extern struct Cursor DAT_00616180[8];
 // 0x00622320
 extern struct Cursor DAT_00622320[4];
+// 0x006159c8
+extern int DAT_006159c8[90][4];
 // 0x00615f6c
 extern unsigned int DAT_00615f6c;
 // 0x00615f98
@@ -3478,6 +3488,8 @@ extern void *DAT_0081cdec;
 extern unsigned int DAT_00828fe0[2];
 // 0x00829980
 extern void *DAT_00829980;
+// 0x00829990
+extern float DAT_00829990[3];
 // 0x0082999c
 extern float DAT_0082999c;
 // 0x008299d4

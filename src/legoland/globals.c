@@ -6,9 +6,6 @@
 #include "math.h"
 #include "objclass.h"
 
-// GLOBAL: LEGOLAND 0x004ab38c
-float FLOAT_004ab38c;
-
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
 
@@ -41,6 +38,9 @@ float DAT_004ab3f8;
 
 // GLOBAL: LEGOLAND 0x004ab3fc
 float DAT_004ab3fc;
+
+// GLOBAL: LEGOLAND 0x004ab478
+double DOUBLE_004ab478;
 
 // GLOBAL: LEGOLAND 0x004ab4a0
 float DAT_004ab4a0;
@@ -327,6 +327,12 @@ unsigned int DAT_004b62f0;
 
 // GLOBAL: LEGOLAND 0x004b6300
 unsigned int DAT_004b6300;
+
+// GLOBAL: LEGOLAND 0x004b6398
+float DAT_004b6398[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 40.0f, 0.0f}, {0.0f, 20.0f, 0.0f}};
+
+// GLOBAL: LEGOLAND 0x004b63c8
+float DAT_004b63c8[4][3] = {{10.0f, 0.0f, 0.0f}, {0.0f, 10.0f, 0.0f}, {-10.0f, 0.0f, 0.0f}, {0.0f, -10.0f, 0.0f}};
 
 // GLOBAL: LEGOLAND 0x004b64d4
 char DAT_004b64d4[4];
@@ -1575,11 +1581,17 @@ unsigned int DAT_00611688;
 // GLOBAL: LEGOLAND 0x0061168c
 unsigned int DAT_0061168c;
 
+// GLOBAL: LEGOLAND 0x00611710
+unsigned int DAT_00611710[16];
+
 // GLOBAL: LEGOLAND 0x00611958
 unsigned int DAT_00611958;
 
 // GLOBAL: LEGOLAND 0x00612178
 char DAT_00612178[1];
+
+// GLOBAL: LEGOLAND 0x006122a0
+float DAT_006122a0[90][3];
 
 // GLOBAL: LEGOLAND 0x00614858
 struct CastleFloatEnt DAT_00614858[8];
@@ -1589,6 +1601,9 @@ struct Cursor DAT_00616180[8];
 
 // GLOBAL: LEGOLAND 0x00622320
 struct Cursor DAT_00622320[4];
+
+// GLOBAL: LEGOLAND 0x006159c8
+int DAT_006159c8[90][4];
 
 // GLOBAL: LEGOLAND 0x00615f6c
 unsigned int DAT_00615f6c;
@@ -4718,6 +4733,9 @@ unsigned int DAT_00828fe0[2];
 
 // GLOBAL: LEGOLAND 0x00829980
 void *DAT_00829980;
+
+// GLOBAL: LEGOLAND 0x00829990
+float DAT_00829990[3];
 
 // GLOBAL: LEGOLAND 0x0082999c
 float DAT_0082999c;
