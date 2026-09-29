@@ -20,7 +20,7 @@ struct MidiFile {
 
 struct MidiTrack {
     struct MidiFile *parent;
-    unsigned char pad_4[4];
+    int length;
     unsigned char *data;
     int pos;
     unsigned int status;
@@ -95,7 +95,80 @@ unsigned int FUN_004802f0(struct MidiTrack *track) {
 }
 
 // FUNCTION: LEGOLAND 0x00480330
-unsigned int FUN_00480330(struct MidiTrack *track) { STUB(); }
+unsigned int FUN_00480330(struct MidiTrack *track) {
+    int ev;
+    unsigned int len;
+
+    if (track->pos >= track->length || track->field_18 != 1) {
+        return 0;
+    }
+    for (;;) {
+        if (track->field_1a != 0) {
+            track->field_14 += FUN_004802c0(track);
+            track->field_1a = 0;
+        }
+        if ((unsigned int)track->parent->field_8 >> 8 < (unsigned int)track->field_14) {
+            return 1;
+        }
+        track->field_1a = 1;
+        ev = FUN_004802f0(track);
+        switch (ev) {
+        case 0xff2f:
+            track->field_18 = 0;
+            track->pos++;
+            return 0;
+        case 0xf0:
+        case 0xf7:
+            len = track->data[track->pos++];
+            while (len-- != 0) {
+                track->pos++;
+            }
+            break;
+        case 0xff51: {
+            unsigned int hi;
+            track->pos++;
+            hi = track->data[track->pos++] << 8;
+            hi |= track->data[track->pos];
+            track->pos += 2;
+            track->parent->field_4 = track->parent->field_0 / hi;
+            break;
+        }
+        default:
+            switch (ev & 0xf0) {
+            case 0x80:
+            case 0x90:
+            case 0xb0:
+            case 0xe0:
+                ev |= track->data[track->pos] << 8;
+                track->pos++;
+                ev |= track->data[track->pos] << 16;
+                track->pos++;
+                midiOutShortMsg((HMIDIOUT)DAT_007fd638, ev);
+                break;
+            case 0xa0:
+                track->pos += 2;
+                break;
+            case 0xc0:
+                ev |= track->data[track->pos] << 8;
+                track->pos++;
+                midiOutShortMsg((HMIDIOUT)DAT_007fd638, ev);
+                break;
+            case 0xd0:
+                track->pos++;
+                break;
+            default:
+                if ((ev & 0xff00) == 0xff00) {
+                    len = track->data[track->pos++];
+                    while (len-- != 0) {
+                        track->pos++;
+                    }
+                }
+                break;
+            }
+            break;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00480570
 void __stdcall FUN_00480570(unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4, unsigned int p5) {
