@@ -751,7 +751,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     char save_path[256];
     void *file;
 
-    sprintf(save_path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, DAT_0080ffe4 & 0xff);
+    sprintf(save_path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, *(unsigned int *)&DAT_0080ffe4 & 0xff);
     FUN_00466360(0, 0);
     FUN_0047f810();
     if (SaveGame(save_path) == 0) {
@@ -765,12 +765,12 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     FUN_004663c0();
 
     DAT_007cad60.field_24 = DAT_0080ffe5;
-    DAT_007cad60.field_20 = DAT_0080ffa0.field_20;
-    DAT_007cad60.field_28 = DAT_0080ffa0.field_24;
-    DAT_007cad60.field_2c = DAT_0080ffa0.field_28;
-    DAT_007cad60.field_30 = DAT_0080ffa0.field_2c;
+    DAT_007cad60.field_20 = DAT_0080ffc0;
+    DAT_007cad60.field_28 = DAT_0080ffc4;
+    DAT_007cad60.field_2c = DAT_0080ffc8;
+    DAT_007cad60.field_30 = DAT_0080ffcc;
 
-    sprintf(header_path, "profiles\\%dsave%d.sh", DAT_0080ffe3, DAT_0080ffe4 & 0xff);
+    sprintf(header_path, "profiles\\%dsave%d.sh", DAT_0080ffe3, *(unsigned int *)&DAT_0080ffe4 & 0xff);
     if (!Goto_ProfileDir()) {
         // STRING: LEGOLAND 0x004bf33c
         FUN_00453ce0("Failed to move to profile folder");
