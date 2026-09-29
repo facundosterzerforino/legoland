@@ -4,6 +4,7 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "driving_school.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
@@ -431,7 +432,38 @@ void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00414020
-void FUN_00414020(void) { STUB(); }
+void FUN_00414020(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
+    struct NeighborResult r;
+    struct RoadQueueEntry **q = (struct RoadQueueEntry **)&r;
+    TileId id;
+    int x = place->field_0;
+    int y = place->field_4;
+
+    FUN_00413520(x, y, &r);
+    if (r.field_0) {
+        id.id = r.field_0->field_8;
+    } else if (r.field_8) {
+        id.id = r.field_8->field_8;
+    } else if (r.field_10) {
+        id.id = r.field_10->field_8;
+    } else if (r.field_18) {
+        id.id = r.field_18->field_8;
+    }
+    FUN_004132a0(id, x, y, 0, 0);
+    FUN_00413650(id.id, x, y);
+    FUN_00405310(id);
+    FUN_00413450(x, y, (struct RideQueueEntry **)&r);
+    if (q[0] && q[0]->field_8 == id.id && (q[0]->field_14 & 0xf) != 6) FUN_00413650(id.id, x, y - 4);
+    if (q[1] && q[1]->field_8 == id.id && (q[1]->field_14 & 0xf) != 6) FUN_00413650(id.id, x + 4, y - 4);
+    if (q[2] && q[2]->field_8 == id.id && (q[2]->field_14 & 0xf) != 6) FUN_00413650(id.id, x + 4, y);
+    if (q[3] && q[3]->field_8 == id.id && (q[3]->field_14 & 0xf) != 6) FUN_00413650(id.id, x + 4, y + 4);
+    if (q[4] && q[4]->field_8 == id.id && (q[4]->field_14 & 0xf) != 6) FUN_00413650(id.id, x, y + 4);
+    if (q[5] && q[5]->field_8 == id.id && (q[5]->field_14 & 0xf) != 6) FUN_00413650(id.id, x - 4, y + 4);
+    if (q[6] && q[6]->field_8 == id.id && (q[6]->field_14 & 0xf) != 6) FUN_00413650(id.id, x - 4, y);
+    if (q[7] && q[7]->field_8 == id.id && (q[7]->field_14 & 0xf) != 6) FUN_00413650(id.id, x - 4, y - 4);
+    FUN_00406020(id.id, 1);
+    IncrementObjectCount((struct ObjectCount *)edit->field_c);
+}
 
 // FUNCTION: LEGOLAND 0x00414220
 void FUN_00414220(void) { STUB(); }

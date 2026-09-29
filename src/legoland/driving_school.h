@@ -7,6 +7,8 @@
 struct DSHead;
 struct DSRenderRoot;
 
+void FUN_00405310(TileId tile);
+void FUN_00406020(unsigned short arg1, unsigned int arg2);
 void FUN_00405370(struct DSHead *param_1);
 void FUN_00405460();
 void FUN_00405570();
