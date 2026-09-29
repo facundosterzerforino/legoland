@@ -240,55 +240,50 @@ LEGO_EXPORT void MarkSpriteResized(struct Sprite *sprite) {
 LEGO_EXPORT void RemakeAllDetailDependentSprites(void) {
     struct Sprite *sprite;
     struct Sprite *node;
-    const unsigned int mask = 0x400;
 
     sprite = sprite_list;
-    sprite = (struct Sprite *)((unsigned int)sprite | (mask & 0));
     node = sprite_list;
     if (sprite != NULL) {
         do {
-            if ((node->flags & mask) == 0) {
-                struct LayerHost *host = node->surface;
-                if (host != NULL) {
-                    host->vtable->func_8(host);
-                    sprite = sprite_list;
-                }
+            if ((node->flags & 0x400) == 0 && node->surface != NULL) {
+                node->surface->lpVtbl->Release(node->surface);
+                sprite = sprite_list;
             }
             node = node->next;
         } while (node != NULL);
-        for (; sprite != NULL; sprite = sprite->next) {
-            if ((sprite->flags & mask) == 0) {
-                *(short *)&sprite->src_x >>= 1;
-                *(short *)&sprite->width >>= 1;
-                *(short *)&sprite->height >>= 1;
-                *(short *)&sprite->src_y >>= 1;
-                if ((short)sprite->src_x < 0) {
-                    sprite->width = sprite->width + sprite->src_x;
-                    sprite->src_x = 0;
-                }
-                if ((int)(short)sprite->src_x + (int)(short)sprite->width > (int)sprite->image->width) {
-                    if ((int)(short)sprite->src_x > (int)sprite->image->width - 1) {
-                        sprite->src_x = sprite->image->width - 1;
-                    }
-                    sprite->width = sprite->image->width - sprite->src_x;
-                }
-                if ((short)sprite->src_y < 0) {
-                    sprite->height = sprite->height + sprite->src_y;
-                    sprite->src_y = 0;
-                }
-                if ((int)(short)sprite->src_y + (int)(short)sprite->height > (int)sprite->image->height) {
-                    if ((int)(short)sprite->src_y > (int)sprite->image->height - 1) {
-                        sprite->src_y = sprite->image->height - 1;
-                    }
-                    sprite->height = sprite->image->height - sprite->src_y;
-                }
-                if (sprite->surface != 0) {
-                    sprite->surface = 0;
-                    FUN_00499500(sprite);
-                }
+    }
+    for (; sprite != NULL; sprite = sprite->next) {
+        if ((sprite->flags & 0x400) == 0) {
+            *(short *)&sprite->src_x >>= 1;
+            *(short *)&sprite->width >>= 1;
+            *(short *)&sprite->height >>= 1;
+            *(short *)&sprite->src_y >>= 1;
+            if ((short)sprite->src_x < 0) {
+                sprite->width = sprite->width + sprite->src_x;
+                sprite->src_x = 0;
             }
-            MarkSpriteResized(sprite);
+            if ((int)(short)sprite->src_x + (int)(short)sprite->width > (int)sprite->image->width) {
+                if ((int)(short)sprite->src_x > (int)sprite->image->width - 1) {
+                    sprite->src_x = sprite->image->width - 1;
+                }
+                sprite->width = sprite->image->width - sprite->src_x;
+            }
+            if ((short)sprite->src_y < 0) {
+                sprite->height = sprite->height + sprite->src_y;
+                sprite->src_y = 0;
+            }
+            if ((int)(short)sprite->src_y + (int)(short)sprite->height > (int)sprite->image->height) {
+                if ((int)(short)sprite->src_y > (int)sprite->image->height - 1) {
+                    sprite->src_y = sprite->image->height - 1;
+                }
+                sprite->height = sprite->image->height - sprite->src_y;
+            }
+            if (sprite->surface != 0) {
+                sprite->surface = 0;
+                FUN_00499500(sprite);
+            }
         }
+        MarkSpriteResized(sprite);
     }
 }
 

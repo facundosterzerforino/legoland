@@ -40,7 +40,7 @@ LEGO_EXPORT struct MidiFile *LoadMIDIFile(const char *filename) {
     unsigned short formatType;
     int i;
 
-    header = 0;
+    division = 0;
     midi = (struct MidiFile *)malloc(0x18);
     file = RES_OpenFile(filename);
     RES_ReadFile(file, &header, 4);

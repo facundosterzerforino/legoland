@@ -889,8 +889,8 @@ void FUN_00438960(Element *obj) {
             switch (bloke->param_action) {
             case 0:
                 bloke->flags |= 8;
-                bloke->dest.y = (y << 8) - 0x100;
                 bloke->dest.x = (x << 8) + 0x80;
+                bloke->dest.y = (y << 8) - 0x100;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
