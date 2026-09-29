@@ -3,9 +3,11 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "bloke.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
 #include "render3d.h"
@@ -51,14 +53,14 @@ struct BlokeRender {
     unsigned int field_30;
 };
 
-struct BNVPath {
+struct SlidePath {
     unsigned int field_0;
     unsigned int field_4;
 };
 
 struct BlokeData {
     unsigned char pad_0[0x54];
-    struct BNVPath *path;
+    struct SlidePath *path;
 };
 
 struct SlideRideNode {
@@ -138,7 +140,49 @@ void FUN_00416f90(struct TempleRide *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00416fa0
-void FUN_00416fa0(void) { STUB(); }
+void FUN_00416fa0(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct Point pos;
+    struct Point off1;
+
+    FUN_00416f60(tile);
+    pos = GetScreenCoordsForObject((TileId *)tile, ride);
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && (node->rider->flags & 0x80) == 0) {
+            IP_RenderBlokeIn3DNow(node->rider);
+        }
+    }
+    PrintSprite(DAT_004cbf78, pos.x, pos.y, clip, 0);
+    RenderItems_New();
+    DAT_004cbf84 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && (node->rider->flags & 0x80) != 0) {
+            struct Bloke *bloke = node->rider;
+            struct Person *person;
+
+            struct Point off2;
+
+            off1.x = DAT_004cbfc8;
+            off1.y = DAT_004cbfcc[0];
+            AdjustOffsetForViewMode(&off1);
+            off2.x = DAT_004cbf88;
+            off2.y = DAT_004cbf8c;
+            AdjustOffsetForViewMode(&off2);
+            person = bloke->person;
+            person->offset.x = bloke->screen_x;
+            person->offset.y = bloke->screen_y;
+            person->offset.x += off1.x;
+            person->offset.y += off1.y;
+            AdjustBlokePosition(&person->offset);
+            person->screen.x = bloke->screen_x + off1.x + off2.x + pos.x;
+            person->screen.y = bloke->screen_y + off1.y + off2.y + pos.y;
+            AdjustBlokePosition(&person->screen);
+            AddBlokeToRenderList(&DAT_004cbf84, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbf84);
+}
 
 // FUNCTION: LEGOLAND 0x00417130
 void FUN_00417130(struct TempleRide *arg) {
@@ -330,7 +374,7 @@ LEGO_EXPORT int LoadTempleSlide(struct SlideObject *obj) {
     for (node = ride->blokes; node != NULL; node = node->next) {
         struct BlokeRender *render = node->render;
         struct BlokeData *bloke;
-        struct BNVPath *path;
+        struct SlidePath *path;
 
         if (render->field_30 != 0) {
             render->field_2c = DAT_004cbfcc[render->field_30];

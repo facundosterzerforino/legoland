@@ -1329,6 +1329,8 @@ extern struct SlideCar *DAT_004cbf7c;
 extern struct Sprite *DAT_004cbf78;
 // 0x004cbf80
 extern struct SlideTrack *DAT_004cbf80;
+// 0x004cbf84
+extern struct RenderItemNode *DAT_004cbf84;
 // 0x004cbf88
 extern unsigned int DAT_004cbf88;
 // 0x004cbf8c

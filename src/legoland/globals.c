@@ -1490,6 +1490,9 @@ unsigned int DAT_004cbfa0;
 // GLOBAL: LEGOLAND 0x004cbfa4
 unsigned short DAT_004cbfa4;
 
+// GLOBAL: LEGOLAND 0x004cbf84
+struct RenderItemNode *DAT_004cbf84;
+
 // GLOBAL: LEGOLAND 0x004cbf88
 unsigned int DAT_004cbf88;
 
