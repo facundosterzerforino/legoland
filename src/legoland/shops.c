@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include "globals.h"
 #include "legoland.h"
@@ -384,7 +385,68 @@ void FUN_0043a180(struct ShopObject *obj, unsigned int param2, unsigned int para
 }
 
 // FUNCTION: LEGOLAND 0x0043a1e0
-void FUN_0043a1e0(void) { STUB(); }
+void FUN_0043a1e0(struct Element *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *elem = ride->riders;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    int x;
+    int y;
+
+    while (elem != NULL) {
+        next = elem->next;
+        bloke = elem->rider;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                bloke->flags |= 8;
+                bloke->dest.x = elem->tile.pos.x << 8;
+                bloke->dest.y = (elem->tile.pos.y + 1) << 8;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 1:
+                bloke->dest.x = elem->tile.pos.x << 8;
+                bloke->dest.y = (elem->tile.pos.y + 2) << 8;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                bloke->field_58 = rand() % 70 + 20;
+                break;
+            case 2:
+                if (bloke->field_58 == 0) {
+                    bloke->param_action++;
+                }
+                bloke->field_58--;
+                break;
+            case 3:
+                bloke->dest.x = elem->tile.pos.x << 8;
+                bloke->dest.y = (elem->tile.pos.y + 1) << 8;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 4:
+                bloke->dest.y = ((elem->tile.pos.y + ride->y) << 8) + 0x80;
+                bloke->dest.x = ((ride->x + elem->tile.pos.x) << 8) + 0x80;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 5:
+                RemoveBlokeFromRide(ride, elem);
+                bloke->flags &= 0xfff7;
+                break;
+            }
+        }
+        elem = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043a390
 unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
