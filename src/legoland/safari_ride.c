@@ -14,6 +14,7 @@
 #include "render3d.h"
 #include "safari_ride.h"
 #include "sound_music.h"
+#include "tilemap.h"
 
 #include "image_sprite.h"
 
@@ -409,7 +410,157 @@ void FUN_00415200(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00415220
-void FUN_00415220(void) { STUB(); }
+void FUN_00415220(Element *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    struct SafariNode *s;
+    TileId *tile;
+    int x;
+    int y;
+    int w;
+    int h;
+    int coords[4];
+    int coords2[4];
+    struct Point pos;
+    char dir;
+
+    FUN_00415200();
+    for (node = ride->riders; node != NULL; node = next) {
+        tile = &node->tile;
+        next = node->next;
+        bloke = node->rider;
+        s = (struct SafariNode *)FUN_00414a80((struct SafariKey *)tile);
+        if (s == NULL) {
+            return;
+        }
+        y = ride->field_25 + tile->pos.y;
+        x = ride->field_24 + tile->pos.x;
+        if (bloke->field_e != 0) {
+            continue;
+        }
+        switch (bloke->param_action) {
+        case 0:
+            s->field_20++;
+            s->field_24 = 0xb4;
+            bloke->param_action++;
+            bloke->flags |= 8;
+            bloke->field_58 = 0;
+            break;
+        case 1:
+            pos = GetScreenCoordsForObject(tile, ride);
+            GetTileDimensions(&w, &h);
+            {
+                int px = bloke->pos.x;
+                int py = bloke->pos.y;
+                int sx = ((px - py) * w) >> 9;
+                int sy = ((px + py) * h) >> 9;
+                coords[0] = ((unsigned short)lpConfig->field_20 - (short)Get_XScroll() + sx - DAT_0082c670 / 2 - pos.x) * 2;
+                coords[1] = ((unsigned short)lpConfig->field_22 - (short)Get_YScroll() + sy - DAT_0082c674 / 2 - pos.y) * 2;
+            }
+            bloke->person->sprite = DAT_004cbf08;
+            bloke->person->field_30 = 1;
+            bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
+            bloke->field_35 = 0;
+            // STRING: LEGOLAND 0x004b4704
+            sprintf(DAT_004b4cac + 6, "%02d", (FUN_00415760((struct SafariListEntry *)node, &node->tile.id) >> 1) + 1);
+            bloke->path = NewBNVPath(DAT_004cbefc, 1, DAT_004b4cac, -1617787.0f, -1618006.0f, coords);
+            UpdateBlokeFromBNVPath(bloke, bloke->path);
+            BNVPath_SetDFrame(bloke, bloke->path, 0);
+            bloke->param_action++;
+            break;
+        case 2:
+            bloke->flags |= 0x80;
+            if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                bloke->field_35 = 1;
+                bloke->param_action = 5;
+                free(bloke->path);
+                bloke->field_54 = 0;
+            }
+            if (bloke->path != NULL) {
+                if ((int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4cc4[bloke->field_36]) {
+                    bloke->field_35 = 1;
+                    bloke->param_action = 5;
+                    free(bloke->path);
+                    bloke->field_54 = 0;
+                }
+            }
+            BlokeSetFrame(bloke, bloke->field_74);
+            break;
+        case 5:
+            bloke->flags |= 0x80;
+            BlokeSitAnim(bloke);
+            BlokeSetFrame(bloke, 0);
+            bloke->field_35 = 1;
+            bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
+            bloke->param_action++;
+            s->field_4++;
+            if (s->field_4 == ((struct Ride *)DAT_004cbec4)->seats) {
+                FUN_00414ab0((struct SafariSample *)s);
+            }
+            break;
+        case 7:
+            bloke->flags |= 0x80;
+            coords2[0] = bloke->screen_x * 2;
+            coords2[1] = bloke->screen_y * 2;
+            BlokeWalkAnim(bloke);
+            BlokeSetFrame(bloke, 0);
+            bloke->person->sprite = DAT_004cbf08;
+            bloke->person->field_30 = 1;
+            bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
+            bloke->field_35 = 2;
+            sprintf(DAT_004b4cac + 6, "%02d", (bloke->field_36 >> 1) + 1);
+            node->rider->path = NewBNVPath(DAT_004cbf00, 2, DAT_004b4cac, -1617787.0f, -1618006.0f, coords2);
+            BNVPath_SetDFrame(bloke, bloke->path, 0);
+            UpdateBlokeFromBNVPath(bloke, bloke->path);
+            bloke->param_action++;
+            break;
+        case 8:
+            if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                bloke->field_35 = 2;
+                bloke->param_action = 13;
+                free(node->rider->path);
+                bloke->field_54 = 0;
+            }
+            if (bloke->path != NULL) {
+                if ((int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4ce4[bloke->field_36]) {
+                    bloke->field_35 = 2;
+                    bloke->param_action = 13;
+                    free(bloke->path);
+                    bloke->field_54 = 0;
+                }
+            }
+            BlokeSetFrame(bloke, bloke->field_74);
+            break;
+        case 13:
+            bloke->flags &= ~0x80;
+            bloke->person->sprite = NULL;
+            bloke->person->field_30 = 0;
+            UnAdjustBlokePosition(&bloke->person->screen);
+            ScreenToMapRef((int *)&bloke->person->screen, (int *)&bloke->pos, 0);
+            bloke->person->field_34 = 0;
+            bloke->pos.x <<= 8;
+            bloke->pos.y <<= 8;
+            bloke->dest.x = (x << 8) + 0x80;
+            bloke->dest.y = (y << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+            bloke->param_action++;
+            break;
+        case 14:
+            RemoveBlokeFromRide(ride, node);
+            bloke->flags &= ~8;
+            if (--s->field_8 == 0) {
+                s->field_4 = 0;
+                Ride_ClearFlagToNotLetAnyoneOn(s);
+            }
+            break;
+        }
+    }
+}
 
 struct SafariSlotData {
     unsigned char pad_0[0x36];
