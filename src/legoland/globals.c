@@ -5132,6 +5132,9 @@ struct Sprite *DAT_0081cde8;
 // GLOBAL: LEGOLAND 0x0081cdec
 void *DAT_0081cdec;
 
+// GLOBAL: LEGOLAND 0x0081ce00
+struct Cursor DAT_0081ce00[8];
+
 // GLOBAL: LEGOLAND 0x00828fe0
 unsigned int DAT_00828fe0[2];
 
@@ -5214,6 +5217,12 @@ unsigned int DAT_00829ba0;
 
 // GLOBAL: LEGOLAND 0x00829ba4
 unsigned int DAT_00829ba4;
+
+// GLOBAL: LEGOLAND 0x00829b90
+short DAT_00829b90[4][2];
+
+// GLOBAL: LEGOLAND 0x00829ba8
+short DAT_00829ba8[4][2];
 
 // GLOBAL: LEGOLAND 0x00829bec
 void *DAT_00829bec;

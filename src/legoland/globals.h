@@ -3800,6 +3800,8 @@ extern struct Ride *DAT_0081cde4;
 extern struct Sprite *DAT_0081cde8;
 // 0x0081cdec
 extern void *DAT_0081cdec;
+// 0x0081ce00
+extern struct Cursor DAT_0081ce00[8];
 // 0x00828fe0
 extern unsigned int DAT_00828fe0[2];
 // 0x00829980
@@ -3857,6 +3859,10 @@ extern unsigned int DAT_00829b8c;
 extern unsigned int DAT_00829ba0;
 // 0x00829ba4
 extern unsigned int DAT_00829ba4;
+// 0x00829b90
+extern short DAT_00829b90[4][2];
+// 0x00829ba8
+extern short DAT_00829ba8[4][2];
 // 0x00829bec
 extern void *DAT_00829bec;
 // 0x00829bf0

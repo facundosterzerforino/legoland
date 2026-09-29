@@ -300,7 +300,7 @@ struct CountSource2 {
 };
 
 // FUNCTION: LEGOLAND 0x0041cf70
-void FUN_0041cf70(struct CountSource2 *src, unsigned int *out_a, unsigned int *out_b) {
+void FUN_0041cf70(struct CountSource2 *src, int *out_a, int *out_b) {
     *out_a = 0;
     *out_b = 0;
     if (src->mode == 2) return;
@@ -613,6 +613,7 @@ unsigned int FUN_0041d6f0(void) {
 
 struct LookupResult {
     unsigned int field_0;
+    struct CountSource2 *field_4;
 };
 
 // FUNCTION: LEGOLAND 0x0041d700
@@ -4859,7 +4860,64 @@ void FUN_00427c70(struct Struct427c70 *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00427c90
-void FUN_00427c90(void) { STUB(); }
+void FUN_00427c90(Element *obj, int x, unsigned int y) {
+    struct Struct427970Pair pair;
+    struct LookupResult *result;
+    unsigned int key;
+    unsigned int bit;
+    int n;
+    unsigned int base = (unsigned int)obj->data;
+    struct Footprint *fp = (struct Footprint *)(base + 0x3c);
+    int i;
+
+    SetEditCursorFootPrint(fp);
+    EditCursor.field_1830 = 0;
+    ScreenToMapRef((int *)x, (int *)&EditCursor.field_1404, y);
+    n = 0;
+    bit = 1;
+    for (i = 0; i <= 3; i++) {
+        if (bit & DAT_00829b8c) {
+            DefaultCursor(&DAT_0081ce00[n]);
+            DAT_0081ce00[n].next = EditCursor.next;
+            EditCursor.next = &DAT_0081ce00[n];
+            DAT_0081ce00[n].field_1404 = DAT_00829b90[i][0];
+            DAT_0081ce00[n].field_1408 = DAT_00829b90[i][1];
+            DAT_0081ce00[n].footprint = *fp;
+            DAT_0081ce00[n].field_1828 = 0x2032;
+            FUN_0045f460(&DAT_0081ce00[n]);
+            n++;
+        }
+        bit <<= 1;
+    }
+    bit = 1;
+    for (i = 0; i <= 3; i++) {
+        if (bit & DAT_00829ba4) {
+            DefaultCursor(&DAT_0081ce00[n]);
+            DAT_0081ce00[n].next = EditCursor.next;
+            EditCursor.next = &DAT_0081ce00[n];
+            DAT_0081ce00[n].field_1404 = DAT_00829ba8[i][0];
+            DAT_0081ce00[n].field_1408 = DAT_00829ba8[i][1];
+            DAT_0081ce00[n].footprint = *fp;
+            DAT_0081ce00[n].field_1828 = 0x2032;
+            FUN_0045f460(&DAT_0081ce00[n]);
+            n++;
+        }
+        bit <<= 1;
+    }
+    ValidateCursor(&EditCursor, (unsigned int)obj->data);
+    pair.a = (unsigned short)EditCursor.field_1404;
+    pair.b = (unsigned short)EditCursor.field_1408;
+    EditCursor.field_1828 |= 8;
+    key = FUN_00427c00((unsigned int)obj);
+    if (key != 0) {
+        result = FUN_0041d3b0((const unsigned char *)key, (unsigned int)&pair);
+        if (result->field_0 != 0) {
+            FUN_0045f460(&EditCursor);
+        } else {
+            FUN_0045f480(&EditCursor, 0xe);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00427ea0
 void FUN_00427ea0(Element *obj, const struct Struct427bc0Src *src) {
@@ -4977,7 +5035,78 @@ void FUN_00428070(struct CastleRideObj *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004280b0
-void FUN_004280b0(void) { STUB(); }
+void FUN_004280b0(Element *obj, int x, unsigned int y) {
+    int total = 0;
+    struct Struct427970Pair pair;
+    int a;
+    int b;
+    struct LookupResult *result;
+    unsigned int key;
+    unsigned int bit;
+    int n;
+    unsigned int base = (unsigned int)obj->data;
+    struct Footprint *fp = (struct Footprint *)(base + 0x3c);
+    int i;
+
+    SetEditCursorFootPrint(fp);
+    EditCursor.field_1830 = 0;
+    ScreenToMapRef((int *)x, (int *)&EditCursor.field_1404, y);
+    n = 0;
+    bit = 1;
+    for (i = 0; i <= 3; i++) {
+        if (bit & DAT_00829b8c) {
+            DefaultCursor(&DAT_0081ce00[n]);
+            DAT_0081ce00[n].next = EditCursor.next;
+            EditCursor.next = &DAT_0081ce00[n];
+            DAT_0081ce00[n].field_1404 = DAT_00829b90[i][0];
+            DAT_0081ce00[n].field_1408 = DAT_00829b90[i][1];
+            DAT_0081ce00[n].footprint = *fp;
+            DAT_0081ce00[n].field_1828 = 0x2032;
+            FUN_0045f460(&DAT_0081ce00[n]);
+            n++;
+        }
+        bit <<= 1;
+    }
+    bit = 1;
+    for (i = 0; i <= 3; i++) {
+        if (bit & DAT_00829ba4) {
+            DefaultCursor(&DAT_0081ce00[n]);
+            DAT_0081ce00[n].next = EditCursor.next;
+            EditCursor.next = &DAT_0081ce00[n];
+            DAT_0081ce00[n].field_1404 = DAT_00829ba8[i][0];
+            DAT_0081ce00[n].field_1408 = DAT_00829ba8[i][1];
+            DAT_0081ce00[n].footprint = *fp;
+            DAT_0081ce00[n].field_1828 = 0x2032;
+            FUN_0045f460(&DAT_0081ce00[n]);
+            n++;
+        }
+        bit <<= 1;
+    }
+    ValidateCursor(&EditCursor, (unsigned int)obj->data);
+    pair.a = (unsigned short)EditCursor.field_1404;
+    pair.b = (unsigned short)EditCursor.field_1408;
+    EditCursor.field_1828 |= 8;
+    key = FUN_00427c00((unsigned int)obj);
+    if (key != 0) {
+        result = FUN_0041d3b0((const unsigned char *)key, (unsigned int)&pair);
+        if (result->field_0 == 0) {
+            FUN_0045f480(&EditCursor, 0xe);
+        } else {
+            FUN_0041cf70(result->field_4, &a, &b);
+            if (a >= 0) {
+                total = a;
+            }
+            if (b >= 0) {
+                total += b;
+            }
+            if (total >= 2) {
+                FUN_0045f480(&EditCursor, 0xb);
+            } else {
+                FUN_0045f460(&EditCursor);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00428300
 void FUN_00428300(Element *obj, const struct Struct427bc0Src *src) {
