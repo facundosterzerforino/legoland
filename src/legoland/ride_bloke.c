@@ -408,7 +408,25 @@ void FUN_00401cd0(struct TimerStruct *p) {
 }
 
 // FUNCTION: LEGOLAND 0x00401e00
-void FUN_00401e00(void) { STUB(); }
+void FUN_00401e00(struct HistBuf *p) {
+    p->e[16] = p->e[15];
+    p->e[15] = p->e[14];
+    p->e[14] = p->e[13];
+    p->e[13] = p->e[12];
+    p->e[12] = p->e[11];
+    p->e[11] = p->e[10];
+    p->e[10] = p->e[9];
+    p->e[9] = p->e[8];
+    p->e[8] = p->e[7];
+    p->e[7] = p->e[6];
+    p->e[6] = p->e[5];
+    p->e[5] = p->e[4];
+    p->e[4] = p->e[3];
+    p->e[3] = p->e[2];
+    p->e[2] = p->e[1];
+    p->e[1] = p->e[0];
+    p->count++;
+}
 
 // FUNCTION: LEGOLAND 0x00401f30
 void FUN_00401f30(void) { STUB(); }
