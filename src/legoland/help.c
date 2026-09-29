@@ -12,6 +12,7 @@
 #include "popupinfo.h"
 #include "text.h"
 #include "timer.h"
+#include "tooltip.h"
 
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
@@ -113,7 +114,30 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
 void FUN_0046cff0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d080
-LEGO_EXPORT void ProcessFrontEndHelp(void) { STUB(); }
+LEGO_EXPORT void ProcessFrontEndHelp(void) {
+    RECT rect;
+    struct IconNode *icon;
+
+    RenderHelpIcons();
+    icon = (struct IconNode *)FocussedIconPtr;
+    if (icon != NULL) {
+        int y = DAT_00813a44.y;
+        int x = DAT_00813a44.x;
+        rect.left = x;
+        rect.top = y - 10;
+        rect.right = x;
+        rect.bottom = y;
+        if ((icon->flags & 0x2000) != 0) {
+            HTBubbleHelp(&rect, icon->string, 2);
+            icon = (struct IconNode *)FocussedIconPtr;
+            if ((icon->flags & 0x1000) != 0) {
+                FUN_0046d340(*(unsigned int *)icon->field_8);
+            } else {
+                FUN_0046d230(icon->string_id);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d100
 LEGO_EXPORT void KillHelp(void) { FUN_0046c5c0(); }
