@@ -283,12 +283,25 @@ struct FlumeSlot {
     unsigned char pad_1c[0x24 - 0x1c];
 };
 
+struct FlumeQueueItem {
+    unsigned char pad_0[8];
+    struct FlumeSlot *slot;
+};
+
 struct FlumeSlotSet {
     unsigned char pad_0[4];
     unsigned int flags;
     struct FlumeWeighted *inner;
     struct FlumeWeighted *field_c;
-    unsigned char pad_10[0x3c - 0x10];
+    unsigned char pad_10[4];
+    TileId tile;
+    unsigned char pad_16[6];
+    int dir;
+    int timer;
+    int ticks;
+    int limit;
+    unsigned int queue[3];
+    struct FlumeSlot *target;
     int count;
     struct FlumeSlot slots[1];
 };
@@ -1974,13 +1987,55 @@ void FUN_0040bd40(struct FlumeSlotSet *set, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0040be00
-void FUN_0040be00(struct FlumeEntry *param_1) { STUB(); }
+void FUN_0040be00(struct FlumeSlotSet *set) {
+    struct FlumeSlot *slot;
+    struct FlumeQueueItem *item;
+    int i;
+
+    if (set->flags & 2) {
+        if (++set->ticks >= set->limit) {
+            set->flags &= ~2;
+        }
+    }
+    if (FUN_0040ba80((struct Node *)set)) {
+        set->timer--;
+        if (set->timer < 0) {
+            set->timer = 2;
+            for (i = 0; i < set->count; i++) {
+                FUN_0040bbb0(set, i);
+            }
+            if (!(set->flags & 1)) {
+                slot = NULL;
+                if (FUN_0040bb50(set, &slot)) {
+                    item = NULL;
+                    set->target = slot;
+                    if (FUN_00411e90((struct Queue *)set->queue)) {
+                        if (FUN_00411ea0((struct Queue *)set->queue)) {
+                            set->flags |= 1;
+                            FUN_00412060((struct Queue *)set->queue, (struct QueueItemMid **)&item);
+                            item->slot = slot;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        FUN_0040a580((struct ParticleEmitter *)set);
+    }
+    FUN_004120a0((struct Queue *)set->queue, DAT_004c2b9c->x + set->tile.pos.x, DAT_004c2b9c->y + set->tile.pos.y);
+    if (FUN_00411e60((struct Queue *)set->queue)) {
+        Ride_SetFlagToNotLetAnyoneOn(&set->tile);
+    } else {
+        Ride_ClearFlagToNotLetAnyoneOn(&set->tile);
+    }
+    set->dir = (set->dir + 1) & 0xf;
+}
 
 // FUNCTION: LEGOLAND 0x0040bf50
 void FUN_0040bf50(void) {
     struct FlumeEntry *current = DAT_004cbe84;
     while (current != NULL) {
-        FUN_0040be00(current);
+        FUN_0040be00((struct FlumeSlotSet *)current);
         current = current->next;
     }
 }
