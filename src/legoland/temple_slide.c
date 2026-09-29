@@ -18,6 +18,13 @@ struct TempleRide {
     unsigned int var_c;
 };
 
+struct SlideNode {
+    unsigned short key;
+    unsigned char pad_2[6];
+    struct SlideNode *next;
+    unsigned char pad_c[0x14];
+};
+
 struct SlideCar {
     unsigned char pad_0[0x10];
     unsigned int var_10;
@@ -79,13 +86,30 @@ struct SlideObject {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00416ec0
-void FUN_00416ec0(void) { STUB(); }
+void FUN_00416ec0(TileId *key) {
+    struct SlideNode *node = (struct SlideNode *)malloc(0x20);
+    if (node != NULL) {
+        memset(node, 0, 0x20);
+        node->key = key->id;
+        node->next = (struct SlideNode *)DAT_004cbfd4;
+        DAT_004cbfd4 = node;
+        FUN_00417130((struct TempleRide *)node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00416f00
-void FUN_00416f00(void) { STUB(); }
+void FUN_00416f00(void *arg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416f60
-unsigned char *FUN_00416f60(void *arg) { STUB(); }
+unsigned char *FUN_00416f60(void *arg) {
+    struct SlideNode *node;
+    for (node = (struct SlideNode *)DAT_004cbfd4; node != NULL; node = node->next) {
+        if (node->key == ((TileId *)arg)->id) {
+            return (unsigned char *)node;
+        }
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00416f90
 void FUN_00416f90(struct TempleRide *arg) {
@@ -123,10 +147,23 @@ void FUN_00417240(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417280
-void FUN_00417280(void) { STUB(); }
+void FUN_00417280(struct SlideObject *obj, TileId tile, struct Cursor *cursor) {
+    unsigned char *node = FUN_00416f60(&tile);
+    if (node != NULL) {
+        FUN_00416f00(node);
+    }
+    StandardRemoveObject((Element *)obj, tile, cursor);
+    RemoveAllBlokesFromRide((struct Ride *)obj->ride, tile);
+}
 
 // FUNCTION: LEGOLAND 0x004172d0
-void FUN_004172d0(void) { STUB(); }
+void FUN_004172d0(Element *obj, int *coords) {
+    TileId tile;
+    tile.pos.x = (unsigned char)coords[0];
+    tile.pos.y = (unsigned char)coords[1];
+    AddBasicObject(obj, coords);
+    FUN_00416ec0(&tile);
+}
 
 // FUNCTION: LEGOLAND 0x00417300
 unsigned int *FUN_00417300(struct SlideContext *ctx, unsigned short param) {
@@ -160,7 +197,34 @@ void FUN_00417340(void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417380
-void FUN_00417380(void) { STUB(); }
+int FUN_00417380(void *arg) {
+    int avail[4];
+    int count = 0;
+    int pick;
+    unsigned char *node = FUN_00416f60(arg);
+    unsigned int *slots;
+
+    if (node != NULL) {
+        slots = (unsigned int *)(node + 0x10);
+        if (slots[0] == 0) {
+            avail[count] = count;
+            count = 1;
+        }
+        if (slots[3] == 0) {
+            avail[count++] = 3;
+        }
+        if (count != 0) {
+            pick = avail[0];
+            slots[pick] = 1;
+            FUN_00417340(arg);
+            return pick;
+        }
+        slots[0] = 1;
+        FUN_00417340(arg);
+        return 0;
+    }
+    return -1;
+}
 
 // FUNCTION: LEGOLAND 0x00417400
 void FUN_00417400(unsigned int index, void *arg) {
