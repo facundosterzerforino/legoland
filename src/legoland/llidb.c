@@ -1,10 +1,12 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include <fcntl.h>
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include "debug.h"
 #include "debug_alloc.h"
@@ -374,7 +376,49 @@ LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, struct Element **output) 
 }
 
 // FUNCTION: LEGOLAND 0x0047bc80
-LEGO_EXPORT void LLIDB_SaveICM(void) { STUB(); }
+LEGO_EXPORT int LLIDB_SaveICM(void) {
+    int fd;
+    unsigned int page;
+    unsigned int i;
+    unsigned int remaining;
+    unsigned int n;
+    int len;
+
+    // STRING: LEGOLAND 0x004bc120
+    fd = _open("LEGOLAND.ICM", _O_RDWR | _O_CREAT | _O_TRUNC | _O_BINARY, _S_IREAD | _S_IWRITE);
+    if (fd == -1) {
+        return LLIDB_ERR_ICMWRITE;
+    }
+    _write(fd, &DAT_006691a4, 4);
+    remaining = DAT_006691a4;
+    for (page = 0; page < (DAT_006691a0 >> 8); page++) {
+        if (remaining >= 0x100) {
+            n = 0x100;
+        } else {
+            n = remaining;
+        }
+        _write(fd, DAT_006691a8[page], n * sizeof(struct Element));
+        remaining -= 0x100;
+    }
+    remaining = DAT_006691a4;
+    for (page = 0; page < (DAT_006691a0 >> 8); page++, remaining -= 0x100) {
+        if (remaining >= 0x100) {
+            n = 0x100;
+        } else {
+            n = remaining;
+        }
+        for (i = 0; i < n; i++) {
+            len = mystrlen(DAT_006691a8[page][i].name);
+            _write(fd, &len, 4);
+            _write(fd, DAT_006691a8[page][i].name, len);
+            len = mystrlen(DAT_006691a8[page][i].path);
+            _write(fd, &len, 4);
+            _write(fd, DAT_006691a8[page][i].path, len);
+        }
+    }
+    _close(fd);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047be00
 LEGO_EXPORT int LLIDB_CloseICM(void) {
