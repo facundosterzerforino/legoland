@@ -14,6 +14,7 @@
 #include "map_object.h"
 #include "obj_instance.h"
 #include "path_control.h"
+#include "render3d.h"
 #include "tilemap.h"
 #include "timer.h"
 
