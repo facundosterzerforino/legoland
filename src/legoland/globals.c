@@ -372,6 +372,14 @@ float DAT_004b6398[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 4
 
 // GLOBAL: LEGOLAND 0x004b63c8
 float DAT_004b63c8[4][3] = {{10.0f, 0.0f, 0.0f}, {0.0f, 10.0f, 0.0f}, {-10.0f, 0.0f, 0.0f}, {0.0f, -10.0f, 0.0f}};
+// GLOBAL: LEGOLAND 0x004b6408
+int DAT_004b6408[3] = {0, 2, 1};
+
+// GLOBAL: LEGOLAND 0x004ab490
+float FLOAT_004ab490;
+
+// GLOBAL: LEGOLAND 0x004ab494
+float FLOAT_004ab494;
 
 // GLOBAL: LEGOLAND 0x004b64d4
 char DAT_004b64d4[4];

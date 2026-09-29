@@ -620,6 +620,12 @@ extern unsigned int DAT_004b6300;
 extern float DAT_004b6398[4][3];
 // 0x004b63c8
 extern float DAT_004b63c8[4][3];
+// 0x004b6408
+extern int DAT_004b6408[3];
+// 0x004ab490
+extern float FLOAT_004ab490;
+// 0x004ab494
+extern float FLOAT_004ab494;
 // 0x004b64d4
 extern char DAT_004b64d4[4];
 // 0x004b64d8
