@@ -4034,3 +4034,18 @@ extern unsigned int *DAT_004d88cc[5];
 
 // 0x004b5660
 extern float DAT_004b5660[4][2];
+
+// 0x004dd75c
+extern unsigned int DAT_004dd75c;
+// 0x004dd864
+extern unsigned int DAT_004dd864;
+
+struct Struct1e40;
+// 0x004dd644
+extern struct Struct1e40 *DAT_004dd644;
+// 0x004dd648
+extern struct Struct1e40 *DAT_004dd648;
+// 0x004dd64c
+extern float *DAT_004dd64c;
+// 0x004dd650
+extern int DAT_004dd650;

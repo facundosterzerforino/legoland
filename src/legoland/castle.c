@@ -2732,6 +2732,9 @@ struct Struct1e40 {
     float field_28;
     float field_2c;
     float field_30;
+    unsigned char pad_34[0x44 - 0x34];
+    float field_44;
+    float field_48;
 };
 
 // FUNCTION: LEGOLAND 0x00421e40
@@ -2748,10 +2751,75 @@ void FUN_00421e40(struct Struct1e40 *ptr1, float multiplier, struct Floats3 *ptr
 }
 
 // FUNCTION: LEGOLAND 0x00421e90
-void FUN_00421e90(void) { STUB(); }
+void FUN_00421e90(float x0, float y0, float x1, float y1) {
+    float roots[2];
+    float b;
+    float by;
+    float bx;
+    float m;
+    float best = 1.17549435e-38f;
+    struct Struct1e40 *o = DAT_004dd648;
+    int i;
+
+    m = (y1 - y0) / (x1 - x0);
+    b = y0 - m * x0;
+    {
+        float a = 3.0f * o->field_24;
+        float b2 = o->field_28 + o->field_28;
+        float sq;
+        float c = o->field_2c - m;
+        sq = (float)sqrt(b2 * b2 - c * a * 4.0f);
+        roots[0] = (sq - b2) / (a + a);
+        roots[1] = (-b2 - sq) / (a + a);
+    }
+    for (i = 0; i < 2; i++) {
+        float y;
+        float d;
+        if (roots[i] >= x0 && roots[i] <= x1) {
+            y = roots[i] * o->field_24 + o->field_28;
+            y = y * roots[i] + o->field_2c;
+            y = y * roots[i] + o->field_30;
+            d = (float)fabs(y - m * roots[i] - b);
+            if (d > best) {
+                bx = roots[i];
+                by = y;
+                best = d;
+            }
+        }
+    }
+    if (fabs(best) > 1.0) {
+        *DAT_004dd64c++ = bx;
+        DAT_004dd650++;
+        FUN_00421e90(x0, y0, bx, by);
+        FUN_00421e90(bx, by, x1, y1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00422000
-void FUN_00422000(void) { STUB(); }
+void FUN_00422000(struct Struct1e40 *o, float *out) {
+    int i;
+    int j;
+    float t;
+
+    DAT_004dd644 = o;
+    DAT_004dd648 = o;
+    DAT_004dd650 = 2;
+    DAT_004dd64c = out;
+    *DAT_004dd64c = o->field_44;
+    DAT_004dd64c++;
+    *DAT_004dd64c = o->field_48;
+    DAT_004dd64c++;
+    FUN_00421e90(o->field_44, ((o->field_44 * o->field_24 + o->field_28) * o->field_44 + o->field_2c) * o->field_44 + o->field_30, o->field_48, ((o->field_48 * o->field_24 + o->field_28) * o->field_48 + o->field_2c) * o->field_48 + o->field_30);
+    for (i = DAT_004dd650 - 1; i >= 0; i--) {
+        for (j = 0; j < i; j++) {
+            if (out[j] > out[j + 1]) {
+                t = out[j];
+                out[j] = out[j + 1];
+                out[j + 1] = t;
+            }
+        }
+    }
+}
 
 struct V3 {
     float x, y, z;
@@ -2992,7 +3060,27 @@ unsigned int FUN_00422640(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004226c0
-void FUN_004226c0(const char *s) { STUB(); }
+int FUN_004226c0(const char *name) {
+    char buffer[256];
+
+    // STRING: LEGOLAND 0x004b5b04
+    wsprintfA(buffer, "%s.obj", name);
+    DAT_004dd860 = (unsigned int)FUN_00422470(buffer, &DAT_004dd864);
+    if (DAT_004dd860 == 0) {
+        return 0;
+    }
+    // STRING: LEGOLAND 0x004b5b0c
+    wsprintfA(buffer, "%s.txt", name);
+    DAT_004dd758 = (unsigned int)FUN_00422470(buffer, &DAT_004dd75c);
+    if (DAT_004dd758 == 0) {
+        FUN_004775d0((void *)DAT_004dd860);
+        return 0;
+    }
+    DAT_004dd868 = FUN_004223c0(&DAT_004dd860);
+    DAT_004dd86c = FUN_004223c0(&DAT_004dd758);
+    strcpy(DAT_004dd760, name);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004227a0
 void FUN_004227a0(void) {

@@ -5453,3 +5453,21 @@ unsigned int *DAT_004d88cc[5];
 
 // GLOBAL: LEGOLAND 0x004b5660
 float DAT_004b5660[4][2];
+
+// GLOBAL: LEGOLAND 0x004dd75c
+unsigned int DAT_004dd75c;
+
+// GLOBAL: LEGOLAND 0x004dd864
+unsigned int DAT_004dd864;
+
+// GLOBAL: LEGOLAND 0x004dd644
+struct Struct1e40 *DAT_004dd644;
+
+// GLOBAL: LEGOLAND 0x004dd648
+struct Struct1e40 *DAT_004dd648;
+
+// GLOBAL: LEGOLAND 0x004dd64c
+float *DAT_004dd64c;
+
+// GLOBAL: LEGOLAND 0x004dd650
+int DAT_004dd650;
