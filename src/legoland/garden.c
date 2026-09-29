@@ -1,10 +1,14 @@
 #include "legoland.h"
 
+#include <string.h>
 #include "gamemap.h"
 #include "garden.h"
 #include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "objclass.h"
+
+#pragma intrinsic(strcmp)
 
 struct GardenLayer {
     unsigned char pad_0[0xc];
@@ -157,4 +161,23 @@ struct RideSpriteInfo *FUN_00432960(int unused, TileId tile) {
 }
 
 // FUNCTION: LEGOLAND 0x004329c0
-void FUN_004329c0(void) { STUB(); }
+void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
+    // STRING: LEGOLAND 0x004b7138
+    if (strcmp(head->name, "HEDGE") == 0) {
+        iface->cb_a4 = FUN_00432480;
+        iface->cb_8c = FUN_004324d0;
+        iface->cb_98 = FUN_004325e0;
+        iface->cb_9c = FUN_00432700;
+        iface->cb_a0 = FUN_00432810;
+        iface->cb_ac = FUN_004324c0;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b7130
+    if (strcmp(head->name, "FLOWERS") == 0) {
+        iface->cb_a4 = FUN_00432870;
+        iface->cb_8c = FUN_004328c0;
+        iface->cb_98 = FUN_00432900;
+        iface->cb_a0 = FUN_00432960;
+        iface->cb_ac = FUN_004328b0;
+    }
+}

@@ -2,4 +2,6 @@
 
 #include "legoland.h"
 
-void FUN_004329c0();
+#include "objclass.h"
+
+void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface);
