@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "gamemap.h"
 #include "man3d.h"
 #include "map_object.h"
@@ -277,7 +278,62 @@ void FUN_00439d00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00439d40
-void FUN_00439d40(void) { STUB(); }
+void FUN_00439d40(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, unsigned int param5, unsigned int param1) {
+    struct ShopBuilding *building = obj->building;
+    char count = 0;
+    char i;
+    struct BlokeNode *node = building->blokes;
+    struct Bloke *blokes[10] = {0};
+    struct Point pos;
+
+    while (node != 0) {
+        if (*ride == node->uid) {
+            blokes[count++] = node->bloke;
+        }
+        node = node->next;
+    }
+    if (count == 0) {
+        return;
+    }
+    pos = GetScreenCoordsForObject((unsigned char *)ride, building);
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 2) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 3) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 4) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 5) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    PrintSprite(DAT_0081cb50, pos.x, pos.y, param1, 0);
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 0) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 1) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 6) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    PrintSprite(DAT_0081cb48, pos.x, pos.y, param1, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00439ef0
 void FUN_00439ef0(void) { STUB(); }
