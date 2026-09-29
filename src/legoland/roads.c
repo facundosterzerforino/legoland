@@ -360,7 +360,45 @@ void FUN_00413ad0(void) {
 void FUN_00413b50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00413e30
-void FUN_00413e30(void) { STUB(); }
+struct RoadTile *FUN_00413e30(struct Cursor *cur) {
+    struct RoadTile *t = FUN_004125f0(cur->field_1404, cur->field_1408);
+    struct RoadTile *a;
+    struct RoadTile *b;
+    struct RoadTile *c;
+    struct RoadTile *d;
+    struct RoadTile *r;
+    if (t) {
+        cur->field_1404 = t->x;
+        cur->field_1408 = t->y;
+    }
+    a = FUN_004125f0(cur->field_1404, cur->field_1408 - 4);
+    if (a && (a->flags & 0xf) == 6) a = NULL;
+    b = FUN_004125f0(cur->field_1404 + 4, cur->field_1408);
+    if (b && (b->flags & 0xf) == 6) b = NULL;
+    c = FUN_004125f0(cur->field_1404, cur->field_1408 + 4);
+    if (c && (c->flags & 0xf) == 6) c = NULL;
+    d = FUN_004125f0(cur->field_1404 - 4, cur->field_1408);
+    if (d && (d->flags & 0xf) == 6) d = NULL;
+    r = NULL;
+    if (a) {
+        cur->field_1404 = a->x;
+        cur->field_1408 = a->y + 4;
+        r = a;
+    } else if (b) {
+        cur->field_1404 = b->x - 4;
+        cur->field_1408 = b->y;
+        r = b;
+    } else if (c) {
+        cur->field_1404 = c->x;
+        cur->field_1408 = c->y - 4;
+        r = c;
+    } else if (d) {
+        cur->field_1404 = d->x + 4;
+        cur->field_1408 = d->y;
+        r = d;
+    }
+    return r;
+}
 
 // FUNCTION: LEGOLAND 0x00413fa0
 void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param) {

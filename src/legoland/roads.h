@@ -22,6 +22,7 @@ void FUN_00413a10(struct LLIDB_Head *head);
 void FUN_00413a80();
 void FUN_00413ad0();
 void FUN_00413b50();
+struct RoadTile *FUN_00413e30(struct Cursor *cur);
 void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param);
 void FUN_00414020();
 void FUN_00414220();
