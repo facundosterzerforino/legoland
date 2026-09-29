@@ -664,6 +664,7 @@ extern unsigned int DAT_004b5cc4;
 // 0x004b5cc8
 extern unsigned int DAT_004b5cc8;
 // 0x004b5d20
+extern char DAT_004b5cf4[32];
 extern const unsigned char DAT_004b5d20[1];
 
 // 0x004b5d58

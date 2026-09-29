@@ -4466,12 +4466,60 @@ struct SaveRec *FUN_00427240(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004272a0
-void FUN_004272a0(void) { STUB(); }
+int FUN_004272a0(unsigned int *data) {
+    unsigned int size = *data;
+    unsigned int written;
+    HANDLE hFile;
+
+    if (DAT_004b5cf4 && data) {
+        hFile = CreateFileA(DAT_004b5cf4, 0x40000000, 0, 0, 2, 0x8000000, 0);
+        if (hFile != (HANDLE)-1) {
+            WriteFile(hFile, data, size, &written, 0);
+            if (written != size) {
+                CloseHandle(hFile);
+            } else {
+                CloseHandle(hFile);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 struct Struct4273c0 {
     unsigned char pad_0[0xc];
     unsigned int field_c;
 };
+
+// FUNCTION: LEGOLAND 0x00427310
+void *FUN_00427310(void) {
+    unsigned int bytesRead;
+    HANDLE hFile;
+    unsigned int fileSize;
+    void *buffer;
+
+    if (!DAT_004b5cf4) {
+        return 0;
+    }
+    hFile = CreateFileA(DAT_004b5cf4, 0x80000000, 1, 0, 3, 0x8000000, 0);
+    if (hFile == (HANDLE)-1) {
+        return 0;
+    }
+    fileSize = GetFileSize(hFile, 0);
+    buffer = FUN_004775b0(fileSize, 0, (unsigned int)DAT_004d8bb0, 0);
+    if (buffer == 0) {
+        CloseHandle(hFile);
+        return 0;
+    }
+    ReadFile(hFile, buffer, fileSize, &bytesRead, 0);
+    if (bytesRead != fileSize) {
+        FUN_004775d0(buffer);
+        CloseHandle(hFile);
+        return 0;
+    }
+    CloseHandle(hFile);
+    return buffer;
+}
 
 // FUNCTION: LEGOLAND 0x004273c0
 unsigned char FUN_004273c0(struct Struct4273c0 *param_1) {

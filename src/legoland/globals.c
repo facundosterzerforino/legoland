@@ -409,6 +409,9 @@ unsigned int DAT_004b5cc4;
 // GLOBAL: LEGOLAND 0x004b5cc8
 unsigned int DAT_004b5cc8;
 
+// GLOBAL: LEGOLAND 0x004b5cf4
+char DAT_004b5cf4[32] = "RollerCoaster\\RollerCoaster.sav";
+
 // GLOBAL: LEGOLAND 0x004b5d20
 const unsigned char DAT_004b5d20[1];
 
