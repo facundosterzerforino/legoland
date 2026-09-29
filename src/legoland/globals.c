@@ -955,6 +955,9 @@ unsigned int DAT_004bdd08;
 // GLOBAL: LEGOLAND 0x004bdea0
 LEGO_EXPORT RECT SPRITE_ClipRect;
 
+// GLOBAL: LEGOLAND 0x004beb88
+struct ProgressEntry DAT_004beb88[10];
+
 // GLOBAL: LEGOLAND 0x004beb94
 struct FreePlaySpriteSlot DAT_004beb94[10];
 
@@ -4423,6 +4426,9 @@ int DAT_0080ffc8;
 
 // GLOBAL: LEGOLAND 0x0080ffcc
 int DAT_0080ffcc;
+
+// GLOBAL: LEGOLAND 0x0080ffd3
+unsigned char DAT_0080ffd3[16];
 
 // GLOBAL: LEGOLAND 0x0080ffd4
 unsigned char DAT_0080ffd4[5];

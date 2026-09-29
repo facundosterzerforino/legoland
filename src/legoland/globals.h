@@ -190,6 +190,16 @@ struct FreePlaySpriteSlot {
     unsigned char pad_8[0x14];
 };
 
+struct ProgressEntry {
+    int id;
+    int x;
+    int y;
+    struct Sprite *sprite0;
+    struct Sprite *sprite1;
+    const char *name0;
+    const char *name1;
+};
+
 struct InfoTimedEntry {
     /* 0x00 */ unsigned int sample;
     /* 0x04 */ int interval;
@@ -986,6 +996,8 @@ extern struct Bloke *DAT_004bdd04;
 extern unsigned int DAT_004bdd08;
 // 0x004bdea0
 extern LEGO_EXPORT RECT SPRITE_ClipRect;
+// 0x004beb88
+extern struct ProgressEntry DAT_004beb88[10];
 // 0x004beb94
 extern struct FreePlaySpriteSlot DAT_004beb94[10];
 // 0x004beba0
@@ -3316,6 +3328,8 @@ extern int DAT_0080ffc4;
 extern int DAT_0080ffc8;
 // 0x0080ffcc
 extern int DAT_0080ffcc;
+// 0x0080ffd3
+extern unsigned char DAT_0080ffd3[16];
 // 0x0080ffd4
 extern unsigned char DAT_0080ffd4[5];
 // 0x0080ffd9
