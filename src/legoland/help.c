@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
@@ -163,7 +164,50 @@ LEGO_EXPORT void ProcessFrontEndHelp(void) {
 LEGO_EXPORT void KillHelp(void) { FUN_0046c5c0(); }
 
 // FUNCTION: LEGOLAND 0x0046d110
-void FUN_0046d110(void) { STUB(); }
+void FUN_0046d110(void) {
+    char buf[256];
+
+    if (DAT_006687a8 == 0) {
+        DAT_004b9f8c = 0xffffffff;
+    }
+    if (DAT_006687ac == 0 && DAT_006687b0 != 0) {
+        DAT_006687b0 = DAT_006687b0 - 1;
+        return;
+    }
+    if ((int)DAT_006687a4 < 3 && DAT_006687a8 != 0) {
+        unsigned int prev = DAT_004b9f88;
+        DAT_006687a8 = 0;
+        if (prev != 0) {
+            if (GetTickCount() - DAT_007fe920 < 500 && DAT_006687ac == 0) {
+                DAT_006687b4 = 1;
+                return;
+            }
+            DAT_006687b4 = 0;
+            DAT_004b9f88 = 0;
+            DAT_006687ac = 0;
+            DAT_007fe920 = GetTickCount();
+            FUN_00498920();
+            if (DAT_004b9f8c != 0xffffffff) {
+                switch (DAT_006687a4) {
+                case 0:
+                    // STRING: LEGOLAND 0x004ba858
+                    sprintf(buf, "Text%04d.wav", DAT_004b9f8c);
+                    break;
+                case 1:
+                    // STRING: LEGOLAND 0x004ba868
+                    sprintf(buf, "%s.wav", DAT_004b9f8c);
+                    break;
+                case 2:
+                    // STRING: LEGOLAND 0x004ba870
+                    sprintf(buf, "%sz.wav", DAT_004b9f8c);
+                    break;
+                }
+                FUN_00498630(buf);
+                FUN_00498b00();
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d230
 void FUN_0046d230(unsigned int a1) {
