@@ -2,11 +2,13 @@
 #include "legoland.h"
 
 #include <ctype.h>
+#include <stdio.h>
 #include <string.h>
 #include "cdcheck.h"
 #include "debug.h"
 #include "globals.h"
 #include "saveload.h"
+#include "wndenv.h"
 
 // FUNCTION: LEGOLAND 0x00450f30
 int FUN_00450f30(char *cd_volume) {
@@ -240,4 +242,61 @@ BOOL __stdcall FUN_00451550(HANDLE h, int drive) {
 }
 
 // FUNCTION: LEGOLAND 0x004515e0
-int FUN_004515e0(int param_1) { STUB(); }
+int FUN_004515e0(int param_1) {
+    char text[256];
+    int minimised;
+
+    minimised = 0;
+    if (param_1 != 0) {
+        // STRING: LEGOLAND 0x004b86d0
+        while (!FUN_00450f30("LEGOLAND")) {
+            if (!minimised) {
+                // STRING: LEGOLAND 0x004b86c0
+                FUN_0047f870("Minimising Game");
+                FUN_0047f850();
+                FUN_0047fe70();
+                minimised = 1;
+            }
+            if (MessageBoxA(WNDENV_Gethwnd(),
+                    // STRING: LEGOLAND 0x004b8680
+                    "Please insert the LEGOLAND CD-ROM into the CD drive",
+                    // STRING: LEGOLAND 0x004b86b4
+                    "CD Missing", 0x50015) == IDCANCEL) {
+                // STRING: LEGOLAND 0x004b8670
+                FUN_0047f870("Maximising Game");
+                FUN_0047f850();
+                FUN_0047fe80();
+                return 0;
+            }
+        }
+        if (minimised) {
+            FUN_0047f870("Maximising Game");
+            FUN_0047f850();
+            FUN_0047fe80();
+        }
+        return 1;
+    } else {
+        while (!FUN_004510e0("LEGOLAND")) {
+            if (!minimised) {
+                FUN_0047f870("Minimising Game");
+                FUN_0047f850();
+                FUN_0047fe70();
+                minimised = 1;
+            }
+            // STRING: LEGOLAND 0x004b8640
+            sprintf(text, "Please insert the LEGOLAND CD-ROM into drive %s", DAT_00813b04);
+            if (MessageBoxA(WNDENV_Gethwnd(), text, "CD Missing", 0x50015) == IDCANCEL) {
+                FUN_0047f870("Maximising Game");
+                FUN_0047f850();
+                FUN_0047fe80();
+                return 0;
+            }
+        }
+        if (minimised) {
+            FUN_0047f870("Maximising Game");
+            FUN_0047f850();
+            FUN_0047fe80();
+        }
+        return 1;
+    }
+}
