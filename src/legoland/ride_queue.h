@@ -27,7 +27,14 @@ struct RideQueueEntry {
     /* 0x18 */ struct RideQueueEntry *field_18;
 };
 
+unsigned int FUN_00411e60(struct Queue *queue);
+unsigned int FUN_00411e90(struct Queue *queue);
+int FUN_00411ea0(struct Queue *queue);
+void FUN_00411ed0(struct Queue *queue);
 void FUN_00411f00(struct Queue *queue);
+struct QueueItemMid;
+void FUN_00412060(struct Queue *queue, struct QueueItemMid **out);
+void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_3);
 void FUN_00412290(void *param_1);
 struct RideSlotArg;
 struct RideSlot;

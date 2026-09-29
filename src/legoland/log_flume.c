@@ -1398,7 +1398,7 @@ void FUN_0040a5d0(struct ParticleEmitter *param) {
 void FUN_0040a600(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040a930
-void FUN_0040a930(Element *elem, unsigned int param_2, unsigned int param_3) {
+void FUN_0040a930(Element *elem, int *param_2, unsigned int param_3) {
     struct Ride *ride;
     int h;
     int x;
@@ -1854,7 +1854,7 @@ int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
                             f = other->weight - weight;
                         }
                         if (other->owner == link->a) {
-                            f = other->weight + 1.0 - weight;
+                            f = (float)(other->weight + 1.0 - weight);
                         }
                         if (f > 0.0f && f < 0.8) {
                             return 0;
