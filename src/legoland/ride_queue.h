@@ -1,6 +1,18 @@
 #pragma once
 
-struct Queue;
+struct QueueTable;
+struct QueueNode;
+
+struct Queue {
+    struct QueueTable *count;
+    struct QueueNode *head;
+    struct QueueNode *tail;
+};
+
+unsigned int FUN_004123a0(struct QueueNode *start, struct QueueNode *stop);
+void FUN_004123c0(struct QueueNode *start, struct Queue *queue);
+struct QueueNode *FUN_00412470(struct QueueNode *node, int n);
+void FUN_00412490(struct QueueNode *start, struct Queue *queue);
 
 struct PathPair {
     /* 0x00 */ int a;
