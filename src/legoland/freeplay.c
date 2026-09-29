@@ -216,7 +216,72 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ad00
-LEGO_EXPORT void InitFreePlayLists(void) { STUB(); }
+LEGO_EXPORT void InitFreePlayLists(void) {
+    int t2 = 0;
+    struct Element *t1 = 0;
+    char **t3;
+    char *t4;
+    struct Element *build = 0;
+    struct Element *common = 0;
+    struct Element *legoland = 0;
+    struct Element *adventurers = 0;
+    struct Element *castle = 0;
+    struct Element *western = 0;
+    unsigned char i;
+    unsigned char *p;
+    int idx;
+    struct Sprite *sprite;
+    struct ClipQueryResult *entry;
+
+    if (LLIDB_FindElement("BUILD MENU", (unsigned int *)&build, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("COMMON THEME", (unsigned int *)&common, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("LEGOLAND THEME", (unsigned int *)&legoland, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("ADVENTURERS THEME", (unsigned int *)&adventurers, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("CASTLE THEME", (unsigned int *)&castle, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("WESTERN THEME", (unsigned int *)&western, 0) != 0) {
+        exit(1);
+    }
+    for (i = 0, p = DAT_0080ffe6; i < 200; i++, p++) {
+        if (*p == 0) {
+            continue;
+        }
+        idx = 0;
+        for (entry = DAT_004bdeb8; (int)entry < (int)&DAT_004bdeb8[0x86]; entry++, idx++) {
+            if (entry->id == i && LLIDB_FindElement(entry->name, (unsigned int *)&t1, 0) == 0) {
+                break;
+            }
+        }
+        if (idx == 0x86) {
+            continue;
+        }
+        sprite = FUN_0047c7f0(t1, &t4, &t2, &t3);
+        if (sprite == 0) {
+            continue;
+        }
+        if (DAT_007cb3bc->name == legoland->name || DAT_007cb3bc->name == common->name) {
+            Add2FreePlayPanelLists((int)sprite, &t1->name, t4, t2, t3, 200);
+        } else if (DAT_007cb3bc->name == adventurers->name) {
+            Add2FreePlayPanelLists((int)sprite, &t1->name, t4, t2, t3, 300);
+        } else if (DAT_007cb3bc->name == castle->name) {
+            Add2FreePlayPanelLists((int)sprite, &t1->name, t4, t2, t3, 400);
+        } else if (DAT_007cb3bc->name == western->name) {
+            Add2FreePlayPanelLists((int)sprite, &t1->name, t4, t2, t3, 500);
+        } else {
+            KillSprite(sprite);
+        }
+        free(t4);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048aef0
 unsigned int FUN_0048aef0(unsigned int arg1, struct Element *arg2) {

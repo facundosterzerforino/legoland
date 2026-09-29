@@ -13,7 +13,7 @@ struct ClippedObject {
 };
 
 // GLOBAL: LEGOLAND 0x004bdeb8
-struct ClipQueryResult DAT_004bdeb8[16];
+struct ClipQueryResult DAT_004bdeb8[0x86];
 
 struct ObjectClassNode {
     struct ObjectClassNode *next;

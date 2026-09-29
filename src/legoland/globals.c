@@ -3917,6 +3917,9 @@ struct Sprite *DAT_007cb3b4;
 // GLOBAL: LEGOLAND 0x007cb3b8
 struct PanelNode *DAT_007cb3b8;
 
+// GLOBAL: LEGOLAND 0x007cb3bc
+struct Element *DAT_007cb3bc;
+
 // GLOBAL: LEGOLAND 0x007cb3c0
 struct Sprite *DAT_007cb3c0;
 

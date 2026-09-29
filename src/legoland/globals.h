@@ -2979,6 +2979,8 @@ extern struct Sprite *DAT_007cb3b0;
 extern struct Sprite *DAT_007cb3b4;
 // 0x007cb3b8
 extern struct PanelNode *DAT_007cb3b8;
+// 0x007cb3bc
+extern struct Element *DAT_007cb3bc;
 // 0x007cb3c0
 extern struct Sprite *DAT_007cb3c0;
 // 0x007cb3c4

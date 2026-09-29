@@ -785,7 +785,7 @@ void FUN_0047c6a0(struct LLIDBHead *head) {
 }
 
 // FUNCTION: LEGOLAND 0x0047c7f0
-void FUN_0047c7f0(void) { STUB(); }
+struct Sprite *FUN_0047c7f0(struct Element *elem, char **name2, int *key, char ***after) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cba0
 LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
