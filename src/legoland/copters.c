@@ -380,7 +380,61 @@ void FUN_00404040(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004040f0
-void FUN_004040f0(void) { STUB(); }
+void FUN_004040f0(struct CopterNode *node, int index, unsigned int param_3) {
+    struct CopterLayer *layer;
+    struct LLS *lls;
+    struct Point off;
+    struct Point sc;
+    struct Sprite *sprite;
+    int a;
+    int b;
+
+    layer = &node->layer[index];
+    if (layer->flags & 1) {
+        b = layer->field_c;
+        a = layer->field_14;
+    } else {
+        b = layer->field_8;
+        a = layer->field_10;
+    }
+    lls = GetLLSForLayer(DAT_004c1138, layer->field_8);
+    if (lls != NULL) {
+        LLSStop((unsigned int)lls);
+        LLSSetFrame(lls, 0);
+    }
+    lls = GetLLSForLayer(DAT_004c1138, layer->field_10);
+    if (lls != NULL) {
+        LLSStop((unsigned int)lls);
+        LLSSetFrame(lls, 0);
+    }
+    lls = GetLLSForLayer(DAT_004c1138, layer->field_c);
+    if (lls != NULL) {
+        LLSStop((unsigned int)lls);
+        LLSSetFrame(lls, 0);
+    }
+    sc = GetScreenCoordsForObject((TileId *)node, (struct Ride *)DAT_004c1198);
+    off = GetRenderOffsetForLayer(((struct Ride *)DAT_004c1198)->layer, b);
+    AdjustOffsetForViewMode(&off);
+    sprite = GetSpriteForLayer(((struct Ride *)DAT_004c1198)->layer, b);
+    if (sprite != NULL) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        if (lls != NULL) {
+            LLSSetFrame(lls, layer->field_4);
+        }
+    }
+    PrintSprite(sprite, sc.x + off.x, sc.y + off.y, param_3, NULL);
+    if (layer->rider != NULL) {
+        IP_RenderBlokeIn3DNow(layer->rider->rider);
+    }
+    sprite = DAT_004c113c[a];
+    if (sprite != NULL) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        if (lls != NULL) {
+            LLSSetFrame(lls, layer->field_4);
+        }
+        PrintSprite(sprite, sc.x + off.x, sc.y + off.y, param_3, NULL);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00404290
 void FUN_00404290(void) { STUB(); }
