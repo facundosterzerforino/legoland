@@ -169,7 +169,6 @@ void FUN_00459970(void) {
             return;
         }
         DAT_00667d08 = 0;
-        DAT_00667d00 = 0;
     }
 }
 
@@ -313,6 +312,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
     DAT_00668610 = DAT_00668610 | 4;
 }
 
+// GLOBAL: LEGOLAND 0x004b9340
 static const struct PowerEntry PTR_s_Small_Power_Station_004b9340[] = {
     {"Small Power Station", 800},
     {"Crystal Power Station", 2500},
