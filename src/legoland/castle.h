@@ -21,6 +21,16 @@ struct RectI;
 struct FloatAtC4;
 struct FloatHolder;
 struct LinkInput;
+struct Struct426f40Dst;
+struct Struct426d80Y;
+struct Struct427070Src;
+struct Struct427070Obj;
+struct Struct427050Dst;
+struct Struct4270c0Host;
+struct Struct426d80X;
+struct SaveRec;
+struct Struct426f40Src;
+struct Struct426e80Dst;
 struct BlokeSex0;
 void FUN_00421980(struct LinkInput *p);
 
@@ -152,3 +162,13 @@ unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
 
 void FUN_004254d0();
 void FUN_00425e20(void);
+
+struct SaveRec *FUN_00427240(void);
+void FUN_00426f90(struct Struct426f40Dst *src, struct Struct426d80Y *obj);
+void FUN_00427100(struct Struct427070Src *arr, int count, struct Struct427070Obj *obj);
+void FUN_00426d80(struct Struct426d80Y *param1, struct Struct426d80X *param2);
+void FUN_00426de0(struct Struct426d80X *src, struct SaveRec *dst);
+void FUN_004270c0(struct Struct4270c0Host *a1, struct Struct427050Dst *a2);
+void FUN_00427220(unsigned int *param_1);
+void FUN_00427190(struct Struct426d80Y *obj, struct Struct426e80Dst *out);
+void FUN_00426f40(struct Struct426f40Src *src, struct Struct426f40Dst *dst);
