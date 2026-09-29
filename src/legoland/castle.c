@@ -4485,7 +4485,18 @@ void FUN_00427a80(struct Struct427a80 *param_1, float param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00427aa0
-void FUN_00427aa0(void) { STUB(); }
+void FUN_00427aa0(Element *obj) {
+    unsigned int handle;
+
+    DAT_00829c08 = (unsigned int)obj->ride;
+    ((struct Ride *)DAT_00829c08)->layer->flags |= 0x2000;
+    // STRING: LEGOLAND 0x004b5f34
+    if (LLIDB_FindElement("BASIC TILES 1", &handle, 0) == 0) {
+        DAT_00829980 = LLIDB_LoadData((void *)handle);
+    }
+    FUN_004284d0();
+    FUN_00428750();
+}
 
 // FUNCTION: LEGOLAND 0x00427af0
 void FUN_00427af0(void) {
@@ -4581,7 +4592,18 @@ void FUN_00427c70(struct Struct427c70 *param_1) {
 void FUN_00427c90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00427ea0
-void FUN_00427ea0(void) { STUB(); }
+void FUN_00427ea0(Element *obj, const struct Struct427bc0Src *src) {
+    struct Struct427bc0Pair pair;
+    unsigned int ride = (unsigned int)obj->ride;
+    unsigned int key;
+
+    pair.a = src->field_0;
+    pair.b = src->field_4;
+    key = FUN_00427c00((unsigned int)obj);
+    if (key != 0) {
+        *(unsigned int *)FUN_0041d700(ride, (const unsigned char *)key, (unsigned int)&pair) |= 6;
+    }
+}
 
 struct CastleCarNode {
     /* 0x00 */ unsigned char pad_0[0x10];
@@ -4688,7 +4710,18 @@ void FUN_00428070(struct CastleRideObj *param_1) {
 void FUN_004280b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00428300
-void FUN_00428300(void) { STUB(); }
+void FUN_00428300(Element *obj, const struct Struct427bc0Src *src) {
+    struct Struct427bc0Pair pair;
+    unsigned int ride = (unsigned int)obj->ride;
+    unsigned int key;
+
+    pair.a = src->field_0;
+    pair.b = src->field_4;
+    key = FUN_00427c00((unsigned int)obj);
+    if (key != 0) {
+        *(unsigned int *)FUN_0041d700(ride, (const unsigned char *)key, (unsigned int)&pair) &= ~6;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00428350
 void FUN_00428350(void) { STUB(); }

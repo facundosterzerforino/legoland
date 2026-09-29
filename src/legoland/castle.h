@@ -141,6 +141,8 @@ unsigned int FUN_00426750(void *ptr, unsigned int a, unsigned int b, unsigned in
 unsigned int FUN_00427130(struct Struct427130Main *main);
 unsigned int FUN_00427150(struct Struct426d80Y *arg);
 void FUN_00428b70(void);
+void FUN_004284d0(void);
+void FUN_00428750(void);
 void FUN_0042a2e0(void);
 void FUN_0042a780(void);
 void FUN_004273d0(unsigned int param_1, void *param_2);
