@@ -377,7 +377,29 @@ LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, struct Element **output) 
 LEGO_EXPORT void LLIDB_SaveICM(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047be00
-LEGO_EXPORT void LLIDB_CloseICM(void) { STUB(); }
+LEGO_EXPORT int LLIDB_CloseICM(void) {
+    unsigned int chunk;
+    unsigned int remaining = DAT_006691a4;
+    unsigned int i;
+    unsigned int n;
+
+    for (chunk = 0; chunk < (DAT_006691a0 >> 8); chunk++, remaining -= 0x100) {
+        n = remaining >= 0x100 ? 0x100 : remaining;
+        for (i = 0; i < n; i++) {
+            if (DAT_006691a8[chunk][i].name != NULL) {
+                free(DAT_006691a8[chunk][i].name);
+            }
+            if (DAT_006691a8[chunk][i].path != NULL) {
+                free(DAT_006691a8[chunk][i].path);
+            }
+        }
+    }
+    for (i = 0; i < (DAT_006691a0 >> 8); i++) {
+        free(DAT_006691a8[i]);
+    }
+    free(DAT_006691a8);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047bef0
 LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
