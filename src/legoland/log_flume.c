@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "bloke.h"
+#include "bricks.h"
 #include "globals.h"
 #include "legoland.h"
 
@@ -14,6 +15,7 @@
 #include "print_sprite.h"
 #include "render3d.h"
 #include "ride_queue.h"
+#include "tilemap.h"
 
 struct Sprite;
 
@@ -257,7 +259,10 @@ struct FlumeEntry {
     unsigned char pad_4[4];
     struct FlumeEntry *parent;
     unsigned char pad_c[4];
-    struct FlumeEntry *sub;
+    union {
+        struct FlumeEntry *sub;
+        unsigned char flags10;
+    };
     TileId tile;
     unsigned char pad_16[2];
     union {
@@ -265,7 +270,8 @@ struct FlumeEntry {
         struct FlumeEntry *link;
     };
     int submode;
-    unsigned char pad_20[0x2c - 0x20];
+    unsigned char pad_20[0x28 - 0x20];
+    int field_28;
     struct FlumeEntry *sub2;
     unsigned char pad_30[0xd0 - 0x30];
     int field_d0;
@@ -1341,10 +1347,78 @@ void FUN_0040a930(Element *elem, unsigned int param_2, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0040aac0
-void FUN_0040aac0(void) { STUB(); }
+void FUN_0040aac0(unsigned int param_1, struct Point *param_2) {
+    struct FlumeEntry *entry;
+    struct FlumeEntry *cur;
+    struct Footprint *fp;
+
+    BasicObjectDCalcCursor(param_1, param_2);
+    DefaultCursor(&DAT_004c74f8);
+    entry = FUN_00408ec0(&QueryObj);
+    if (entry != NULL) {
+        for (cur = entry->sub; cur != NULL; cur = cur->next) {
+            if (cur->field_28 != -1) {
+                int unused;
+                FUN_0040d090(cur, &fp, &unused);
+                if (fp == NULL) {
+                    continue;
+                }
+                memcpy(DAT_004c74f8.footprint.v, fp, 20);
+                DAT_004c74f8.field_1404 = cur->tile.pos.x;
+                DAT_004c74f8.field_1408 = cur->tile.pos.y;
+            }
+            DAT_004c74f8.field_1828 = 0x18;
+            FUN_0045f460(&DAT_004c74f8);
+            BuildCursorPtr(&DAT_004c74f8, 0, 0);
+            RenderCursor(&DAT_004c74f8);
+        }
+        PathCursor.field_1404 = DAT_004c74f8.field_1404;
+        PathCursor.field_1408 = DAT_004c74f8.field_1408;
+        PathCursor.footprint.y0 = DAT_004c74f8.footprint.y0 - 1;
+        PathCursor.footprint.x0 = DAT_004c74f8.footprint.x0 + 3;
+        PathCursor.footprint.x1 = DAT_004c74f8.footprint.x1 + 1;
+        PathCursor.footprint.y1 = DAT_004c74f8.footprint.y1 + 1;
+        PathCursor.footprint.next = NULL;
+        PathCursor.field_1828 = 0x1000;
+        PathCursor.next = DAT_004c74f8.next;
+        DAT_004c74f8.next = &PathCursor;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040abf0
-void FUN_0040abf0(void) { STUB(); }
+void FUN_0040abf0(Element *obj, TileId tile, struct Cursor *cursor_arg) {
+    struct Cursor cursor;
+    struct FlumeEntry *entry;
+    struct FlumeEntry *cur;
+    struct FlumeEntry *next;
+
+    StandardRemoveObject(obj, tile, cursor_arg);
+    entry = FUN_00408ec0(&tile);
+    if (entry != NULL) {
+        cur = entry->sub;
+        if (cur != NULL) {
+            do {
+                next = cur->next;
+                memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, 20);
+                DAT_004cbe30->footprint.x1--;
+                DAT_004cbe30->footprint.y1--;
+                cursor.field_1404 = cur->tile.pos.x + DAT_004b4728;
+                cursor.field_1408 = cur->tile.pos.y + DAT_004b4730;
+                memcpy(cursor.footprint.v, &DAT_004cbe30->footprint, 20);
+                StandardRemoveObject(DAT_004cbe30->element, cur->tile, &cursor);
+                if (cur->flags10 & 2) {
+                    UseBricks(GetObjCost(DAT_004cbe30));
+                }
+                FUN_00409270((struct Node *)entry, (struct Node *)cur);
+                cur = next;
+            } while (next != NULL);
+        }
+        FUN_00411ed0((struct Queue *)&entry->sub2);
+        FUN_00408e80(entry);
+        DAT_004cbe30->field_8++;
+    }
+    RemoveAllBlokesFromRide(obj->ride, tile);
+}
 
 // FUNCTION: LEGOLAND 0x0040ad50
 int FUN_0040ad50(struct StateNode *node) {
@@ -1920,7 +1994,7 @@ void FUN_0040cfa0(struct StateNode *(*arr)[4]) {
 unsigned __int64 FUN_0040cfd0(struct FlumeEntry *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d090
-void FUN_0040d090(void) { STUB(); }
+void FUN_0040d090(struct FlumeEntry *entry, struct Footprint **fp, int *unused) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d210
 void FUN_0040d210(void) { STUB(); }

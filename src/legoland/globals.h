@@ -1228,6 +1228,8 @@ extern void *DAT_004c4460;
 extern unsigned int DAT_004c5c90;
 // 0x004c74c8
 extern unsigned int DAT_004c74c8;
+// 0x004c74f8
+extern struct Cursor DAT_004c74f8;
 // 0x004c74d4
 extern struct CursorSource *DAT_004c74d4;
 // 0x004c8d2c
@@ -1269,7 +1271,7 @@ extern unsigned int DAT_004cbe28;
 // 0x004cbe2c
 extern unsigned int DAT_004cbe2c;
 // 0x004cbe30
-extern struct CursorSource *DAT_004cbe30;
+extern struct Ride *DAT_004cbe30;
 // 0x004cbe48
 extern void *DAT_004cbe48;
 // 0x004cbe4c
