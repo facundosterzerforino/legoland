@@ -1094,7 +1094,7 @@ extern struct RenderItemNode *DAT_004c11e0;
 // 0x004c11e4
 extern struct Sprite *DAT_004c11e4;
 // 0x004c11e8
-extern void *DAT_004c11e8;
+extern struct Sprite *DAT_004c11e8;
 // 0x004c11f0
 extern void *DAT_004c11f0;
 // 0x004c11f4
@@ -1107,6 +1107,8 @@ extern struct Sprite *DAT_004c11fc;
 extern struct Sprite *DAT_004c1200;
 // 0x004c1204
 extern struct GoldNode *DAT_004c1204;
+// 0x004c1208
+extern struct RenderItemNode *DAT_004c1208;
 // 0x004c1210
 extern struct Sprite *DAT_004c1210;
 // 0x004c1214

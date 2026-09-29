@@ -12,6 +12,7 @@
 #include "obj_instance.h"
 #include "objclass.h"
 #include "path_control.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "ride_queue.h"
 #include "tilemap.h"
@@ -182,7 +183,7 @@ void FUN_00406a10(struct GoldObj *obj) {
         inner->flags |= 0x20;
         if (((struct GoldInner *)DAT_004c11f0)->layer != NULL) {
             ((struct GoldInner *)DAT_004c11f0)->layer->flags |= 0x2000;
-            DAT_004c11e8 = ((struct GoldInner *)DAT_004c11f0)->layer;
+            DAT_004c11e8 = (struct Sprite *)((struct GoldInner *)DAT_004c11f0)->layer;
         }
     }
 
@@ -218,7 +219,84 @@ void FUN_00406ab0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406b10
-void FUN_00406b10(void) { STUB(); }
+void FUN_00406b10(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct Point pos;
+    int frame;
+    struct Sprite *spr;
+    struct LLS *lls;
+
+    pos = GetScreenCoordsForObject((TileId *)tile, ride);
+    RenderItems_New();
+    DAT_004c1208 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && node->rider->pos.x <= (((unsigned char *)tile)[0] << 8) + 0x780 && node->rider->pos.y <= (((unsigned char *)tile)[1] << 8) - 0x280) {
+            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    if (DAT_004c11f4 != NULL) {
+        struct Point off;
+        frame = 0;
+        spr = GetSpriteForLayer(DAT_004c11e8, 1);
+        if (spr != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)spr);
+            if (lls != NULL) {
+                frame = *(short *)lls % 8;
+            }
+        }
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c11f4);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        off = GetRenderOffsetForLayer(DAT_004c11e8, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_004c11f4, pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+    RenderItems_New();
+    DAT_004c1208 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && node->rider->pos.x <= (((unsigned char *)tile)[0] << 8) + 0x780 && node->rider->pos.y >= (((unsigned char *)tile)[1] << 8) - 0x280) {
+            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    if (DAT_004c1200 != NULL) {
+        struct Point off;
+        off = GetRenderOffsetForLayer(DAT_004c11e8, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_004c1200, pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+    RenderItems_New();
+    DAT_004c1208 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && node->rider->pos.x > (((unsigned char *)tile)[0] << 8) + 0x780) {
+            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    if (DAT_004c11f8 != NULL) {
+        struct Point off;
+        off = GetRenderOffsetForLayer(DAT_004c11e8, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_004c11f8, pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+    RenderItems_New();
+    DAT_004c1208 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && (node->rider->pos.x >> 8) > ((unsigned char *)tile)[0] + 8) {
+            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    if (DAT_004c11e8 != NULL) {
+        struct Point off;
+        off = GetRenderOffsetForLayer(DAT_004c11e8, 3);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_004c11e8, 3), pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00406e90
 unsigned int FUN_00406e90(void *param) {
