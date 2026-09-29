@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <stdarg.h>
 #include <string.h>
+#include "globals.h"
 #include "legoland.h"
 
 struct ExceptionEntry {
@@ -68,7 +69,45 @@ void FUN_00454500(char *buffer, FILETIME ft) {
 }
 
 // FUNCTION: LEGOLAND 0x004545a0
-void FUN_004545a0(void) { STUB(); }
+void FUN_004545a0(HANDLE file) {
+    FILETIME ft;
+    char timestr[100];
+    char path[MAX_PATH];
+    char user[200];
+    char computer[200];
+    SYSTEM_INFO si;
+    MEMORYSTATUS ms;
+    DWORD usize;
+    DWORD csize;
+
+    GetSystemTimeAsFileTime(&ft);
+    FUN_00454500(timestr, ft);
+    // STRING: LEGOLAND 0x004b8d9c
+    FUN_00454290(file, "Error occurred at %s.\r\n", timestr);
+    if (GetModuleFileNameA(NULL, path, MAX_PATH) <= 0) {
+        // STRING: LEGOLAND 0x004b8c88
+        lstrcpyA(path, "Unknown");
+    }
+    usize = 200;
+    if (!GetUserNameA(user, &usize)) {
+        lstrcpyA(user, "Unknown");
+    }
+    csize = 200;
+    if (!GetComputerNameA(computer, &csize)) {
+        lstrcpyA(computer, "Unknown");
+    }
+    // STRING: LEGOLAND 0x004b8d88
+    FUN_00454290(file, "%s (Version %s)\r\n", path, (char *)&DAT_0066752c);
+    // STRING: LEGOLAND 0x004b8d6c
+    FUN_00454290(file, "Run by %s on machine %s.\r\n", user, computer);
+    GetSystemInfo(&si);
+    // STRING: LEGOLAND 0x004b8d50
+    FUN_00454290(file, "%d processor(s), type %d.\r\n", si.dwNumberOfProcessors, si.dwProcessorType);
+    ms.dwLength = sizeof(ms);
+    GlobalMemoryStatus(&ms);
+    // STRING: LEGOLAND 0x004b8d30
+    FUN_00454290(file, "%d MBytes physical memory.\r\n", (ms.dwTotalPhys + 0xfffff) >> 20);
+}
 
 // FUNCTION: LEGOLAND 0x00454700
 const char *FUN_00454700(unsigned int code) {
