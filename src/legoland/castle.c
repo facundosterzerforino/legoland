@@ -2237,7 +2237,7 @@ void FUN_004220e0(float *obj, float t, float *out) {
 }
 
 // FUNCTION: LEGOLAND 0x00422180
-void FUN_00422180(void) { STUB(); }
+void FUN_00422180(struct FVec3 *a, struct FVec3 *b, float *dir, void *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00422210
 void FUN_00422210(void) {
@@ -3244,7 +3244,7 @@ unsigned int FUN_00425da0(const float *a, const float *b) {
 
 // FUNCTION: LEGOLAND 0x00425de0
 void FUN_00425de0(float *a) {
-    float inv = FLOAT_004ab38c / (a[0] * a[3] - a[1] * a[2]);
+    float inv = 1.0f / (a[0] * a[3] - a[1] * a[2]);
     float t = a[0];
 
     a[0] = inv * a[3];
@@ -4506,8 +4506,61 @@ void FUN_004294b0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004294f0
 void FUN_004294f0(void) { STUB(); }
 
+struct SegBlob {
+    /* 0x00 */ unsigned int v[17];
+    /* 0x44 */ float t0;
+    /* 0x48 */ float t1;
+    /* 0x4c */ unsigned int w[3];
+};
+
+struct PathSeg {
+    /* 0x00 */ unsigned int flags;
+    /* 0x04 */ struct Int16Pair pos;
+    /* 0x08 */ unsigned char pad_8[0x14 - 0x8];
+    /* 0x14 */ unsigned int dir_in;
+    /* 0x18 */ unsigned char pad_18[0x20 - 0x18];
+    /* 0x20 */ unsigned int dir_out;
+    /* 0x24 */ unsigned int pad_24;
+    /* 0x28 */ struct PathSeg *next;
+    /* 0x2c */ unsigned char pad_2c[0x40 - 0x2c];
+    /* 0x40 */ unsigned int field_40;
+    /* 0x44 */ unsigned int field_44;
+    /* 0x48 */ unsigned int field_48;
+    /* 0x4c */ struct SegBlob blob;
+};
+
 // FUNCTION: LEGOLAND 0x00429560
-void FUN_00429560(void) { STUB(); }
+void FUN_00429560(struct PathSeg *seg, struct PathSeg *end, int count, float h, float dh) {
+    float t;
+    float step;
+    struct FVec3 b;
+    struct FVec3 a;
+    struct SegBlob blob;
+    unsigned int di = FUN_0041cca0(seg->dir_in);
+    unsigned int dout = FUN_0041cca0(end->dir_out);
+    int i;
+
+    step = 1.0f / (float)count;
+    t = 0.0f;
+    FUN_00425cb0(&seg->pos, h, &a);
+    a.x += DAT_004b6398[di][0];
+    a.y += DAT_004b6398[di][1];
+    FUN_00425cb0(&end->pos, h + dh, &b);
+    b.x += DAT_004b6398[dout][0];
+    b.y += DAT_004b6398[dout][1];
+    FUN_00422180(&a, &b, DAT_004b63c8[di], &blob);
+    for (i = 0; i < count; i++) {
+        seg->flags |= 1;
+        seg->blob = blob;
+        seg->blob.t0 = t;
+        t += step;
+        seg->blob.t1 = t;
+        seg->field_40 = 0;
+        seg->field_44 = 0;
+        seg->field_48 = 0;
+        seg = seg->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00429690
 void FUN_00429690(void) { STUB(); }

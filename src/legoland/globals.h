@@ -368,8 +368,6 @@ struct MapStats {
     /* 0x3e0 */ int field_3e0[4];
 };
 
-// 0x004ab38c
-extern float FLOAT_004ab38c;
 // 0x004ab390
 extern float FLOAT_004ab390;
 // 0x004ab398
@@ -582,6 +580,10 @@ extern struct CastleFloatEnt DAT_004b61e0[8];
 extern unsigned int DAT_004b62f0;
 // 0x004b6300
 extern unsigned int DAT_004b6300;
+// 0x004b6398
+extern float DAT_004b6398[4][3];
+// 0x004b63c8
+extern float DAT_004b63c8[4][3];
 // 0x004b64d4
 extern char DAT_004b64d4[4];
 // 0x004b64d8
