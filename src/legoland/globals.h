@@ -559,7 +559,12 @@ extern unsigned char SpiderRide_SFX[8];
 // 0x004b4d90
 extern void *DAT_004b4d90;
 // 0x004b4d94
-extern char DAT_004b4d94[];
+struct SpiderBnv {
+    char name[8];
+    int tab1[16];
+    int tab2[17];
+};
+extern struct SpiderBnv DAT_004b4d94;
 // 0x004b4e20
 extern Point DAT_004b4e20;
 // 0x004b78b4

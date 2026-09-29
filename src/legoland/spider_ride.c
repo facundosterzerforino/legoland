@@ -402,8 +402,8 @@ void FUN_004161f0(struct SpiderNode *node) {
     }
     for (; r != NULL; r = r->next) {
         if (s->id == r->tile.id && r->rider->field_35 == 1) {
-            sprintf(DAT_004b4d94 + 6, "%02d", r->rider->field_36);
-            SetBlokePositionFromBNV(DAT_004cbf10, r->rider, DAT_004b4d94, s->field_4, -1617787.75f, -1618096.5f, 0);
+            sprintf(DAT_004b4d94.name + 6, "%02d", r->rider->field_36);
+            SetBlokePositionFromBNV(DAT_004cbf10, r->rider, DAT_004b4d94.name, s->field_4, -1617787.75f, -1618096.5f, 0);
         }
     }
     *(short *)*DAT_0082c668->lls = (short)s->field_4;
@@ -419,7 +419,153 @@ void FUN_00416310(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00416330
-void FUN_00416330(void) { STUB(); }
+void FUN_00416330(Element *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *elem = ride->riders;
+    struct SpiderState *state;
+    struct Bloke *bloke;
+    TileId *tile;
+    struct RideNode *next;
+    struct Point sc;
+    int h, w;
+    int ex, ey;
+    int coords[2];
+    int walk[2];
+    int dx, dy;
+    char dir;
+    int ox, oy;
+
+    FUN_00416310();
+    while (elem != NULL) {
+        next = elem->next;
+        bloke = elem->rider;
+        tile = &elem->tile;
+        state = (struct SpiderState *)FUN_004159b0(tile);
+        if (state == NULL) {
+            return;
+        }
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                state->field_14++;
+                state->field_18 = 0xb4;
+                bloke->flags |= 8;
+                sc = GetScreenCoordsForObject(tile, ride);
+                dy = bloke->pos.y;
+                dx = bloke->pos.x;
+                GetTileDimensions(&w, &h);
+                ey = (dx + dy) * h >> 9;
+                ex = (dx - dy) * w >> 9;
+                ox = lpConfig->field_20 - (short)Get_XScroll() + ex;
+                oy = ey + (lpConfig->field_22 - (short)Get_YScroll());
+                coords[0] = (ox - DAT_0082c660.x / 2 - sc.x) * 2;
+                coords[1] = (oy - DAT_0082c660.y / 2 - sc.y) * 2;
+                bloke->flags |= 0x80;
+                bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
+                bloke->field_35 = 0;
+                // STRING: LEGOLAND 0x004b4704
+                sprintf(DAT_004b4d94.name + 6, "%02d", FUN_00416830((struct SlotOwner *)elem, (struct SlotArray *)state, ((struct Ride *)DAT_004cbf20)->seats));
+                bloke->path = NewBNVPath(DAT_004cbf30[1], 1, DAT_004b4d94.name, -1617787.75f, -1618096.5f, coords);
+                UpdateBlokeFromBNVPath(bloke, bloke->path);
+                bloke->field_58 = 0;
+                bloke->param_action++;
+                break;
+            case 1:
+                if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                    bloke->field_35 = 1;
+                    bloke->param_action = 5;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4d94.tab1[bloke->field_36]) {
+                    bloke->field_35 = 1;
+                    bloke->param_action = 5;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                BlokeSetFrame(bloke, bloke->field_74);
+                break;
+            case 5:
+                bloke->flags |= 0x80;
+                BlokeSitAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
+                bloke->field_35 = 1;
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
+                bloke->param_action++;
+                state->field_2++;
+                if ((short)(char)state->field_2 == ((struct Ride *)DAT_004cbf20)->seats) {
+                    FUN_00415a60((struct SpiderNode *)state);
+                }
+                break;
+            case 7:
+                walk[0] = bloke->field_38 << 1;
+                walk[1] = bloke->field_3a << 1;
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->flags |= 0x80;
+                bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
+                bloke->field_35 = 2;
+                sprintf(DAT_004b4d94.name + 6, "%02d", bloke->field_36);
+                bloke->path = NewBNVPath(DAT_004cbf38[0], 2, DAT_004b4d94.name, -1617787.75f, -1618096.5f, walk);
+                BNVPath_SetDFrame(bloke, bloke->path, 0);
+                UpdateBlokeFromBNVPath(bloke, bloke->path);
+                bloke->param_action++;
+                break;
+            case 8:
+                if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                    bloke->field_35 = 2;
+                    bloke->param_action = 0xd;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4d94.tab2[bloke->field_36]) {
+                    bloke->field_35 = 2;
+                    bloke->param_action = 0xd;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                BlokeSetFrame(bloke, bloke->field_74);
+                break;
+            case 0xd:
+                ex = ride->field_24 + tile->pos.x;
+                ey = tile->pos.y + ride->field_25;
+                ((unsigned char *)state)[0x1b + bloke->field_36] = 0;
+                bloke->flags &= 0xff7f;
+                bloke->person->sprite = NULL;
+                bloke->person->field_30 = 0;
+                UnAdjustBlokePosition(&bloke->person->screen);
+                ScreenToMapRef((int *)&bloke->person->screen, (int *)&bloke->pos, 0);
+                bloke->person->field_34 = 0;
+                bloke->dest.y = ey << 8;
+                bloke->pos.y <<= 8;
+                bloke->pos.x <<= 8;
+                bloke->dest.x = ex << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 0xe:
+                RemoveBlokeFromRide(ride, elem);
+                bloke->flags &= 0xfff7;
+                state->field_3--;
+                if (state->field_3 == 0) {
+                    state->field_2 = 0;
+                    Ride_ClearFlagToNotLetAnyoneOn(state);
+                }
+                break;
+            }
+        }
+        elem = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00416830
 int FUN_00416830(struct SlotOwner *owner, struct SlotArray *arr, signed char count) {
