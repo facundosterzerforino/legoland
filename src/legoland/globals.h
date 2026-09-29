@@ -1700,7 +1700,13 @@ extern struct Sprite *DAT_0062fdcc;
 // 0x0062fdd0
 extern struct Sprite *DAT_0062fdd0;
 // 0x0062fde4
-extern unsigned int DAT_0062fde4;
+extern struct Ride *DAT_0062fde4;
+// 0x0062fde0
+extern struct Sprite *DAT_0062fde0;
+// 0x0062fdd8
+extern int DAT_0062fdd8;
+// 0x0062fddc
+extern int DAT_0062fddc;
 // 0x0062fde8
 extern void *DAT_0062fde8;
 // 0x0062fdf0
