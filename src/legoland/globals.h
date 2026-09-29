@@ -560,6 +560,8 @@ extern unsigned char SpiderRide_SFX[8];
 extern void *DAT_004b4d90;
 // 0x004b4d94
 extern char DAT_004b4d94[];
+// 0x004b4e20
+extern Point DAT_004b4e20;
 // 0x004b78b4
 extern char DAT_004b78b4[];
 // 0x004b4fa8
@@ -1334,9 +1336,7 @@ extern void *DAT_004cbf24;
 // 0x004cbf28
 extern struct Sprite *DAT_004cbf28;
 // 0x0082c660
-extern int DAT_0082c660;
-// 0x0082c664
-extern int DAT_0082c664;
+extern Point DAT_0082c660;
 // 0x004cbf30
 extern void *DAT_004cbf30[2];
 // 0x004cbf38

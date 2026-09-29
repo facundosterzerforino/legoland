@@ -8,9 +8,12 @@
 #include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "sound_music.h"
 #include "spider_ride.h"
@@ -165,7 +168,85 @@ int FUN_00415a90(struct SpiderNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00415ae0
-void FUN_00415ae0(void) { STUB(); }
+void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+    Ride *ride = obj->ride;
+    RideNode *elem = ride->riders;
+    Bloke *blokes[16] = {0};
+    struct SpiderNode *state;
+    Point off;
+    Point screen;
+    char count = 0;
+    char i;
+    unsigned short id;
+
+    state = FUN_004159b0(tile);
+    if (state == NULL) {
+        return;
+    }
+    screen = GetScreenCoordsForObject(tile, ride);
+    if (elem != NULL) {
+        do {
+            id = tile->id;
+            if (id == elem->tile.id) {
+                blokes[count++] = elem->rider;
+            }
+            elem = elem->next;
+        } while (elem != NULL);
+        if (count != 0) {
+            for (i = 0; i < count; i++) {
+                if (blokes[i]->param_action == 14) {
+                    IP_RenderBlokeIn3DNow(blokes[i]);
+                }
+            }
+            LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->field_4);
+            off = GetRenderOffsetForLayer(DAT_004cbf28, 1);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(GetSpriteForLayer(DAT_004cbf28, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+            off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(DAT_004cbf1c, screen.x + off.x, screen.y + off.y, param_6, 0);
+            *(short *)*DAT_0082c668->lls = state->field_4;
+            for (elem = ride->riders; elem != NULL; elem = elem->next) {
+                Bloke *b;
+                if (tile->id == elem->tile.id && ((b = elem->rider)->flags & 0x80) != 0) {
+                    Person *p = b->person;
+                    Point base;
+                    Point adj;
+                    base = DAT_0082c660;
+                    adj.x = 0;
+                    adj.y = 0;
+                    if (b->field_35 == 1) {
+                        adj = DAT_004b4e20;
+                        AdjustOffsetForViewMode(&adj);
+                    }
+                    p->offset.x = b->screen_x;
+                    p->offset.y = b->screen_y;
+                    AdjustBlokePosition(&p->offset);
+                    AdjustOffsetForViewMode(&base);
+                    p->screen.x = b->screen_x + base.x + screen.x;
+                    p->screen.y = b->screen_y + base.y + screen.y;
+                    p->screen.x += adj.x;
+                    p->screen.y += adj.y;
+                    AdjustBlokePosition(&p->screen);
+                    IP_RenderBlokeIn3DNow(elem->rider);
+                }
+            }
+            off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(DAT_004cbf14, screen.x + off.x, screen.y + off.y, param_6, 0);
+            return;
+        }
+    }
+    {
+        LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->field_4);
+        off = GetRenderOffsetForLayer(DAT_004cbf28, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_004cbf28, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+        off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_004cbf28, 2), screen.x + off.x, screen.y + off.y, param_6, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00415e80
 void FUN_00415e80(struct CarNode *param_1) {
@@ -186,8 +267,8 @@ void FUN_00415e80(struct CarNode *param_1) {
     // STRING: LEGOLAND 0x004b4e38
     DAT_0082c668 = LoadSprite("z_spider.lls", 1);
     DAT_004cbf30[0] = DAT_004cbf10;
-    DAT_0082c660 = -1;
-    DAT_0082c664 = 2;
+    DAT_0082c660.x = -1;
+    DAT_0082c660.y = 2;
     DAT_004cbf38[1] = DAT_0082c668;
     DAT_004cbf30[1] = DAT_004cbf24;
     DAT_004cbf38[0] = DAT_004cbf18;
