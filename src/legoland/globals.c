@@ -3873,10 +3873,13 @@ unsigned int DAT_007caca8;
 unsigned int DAT_007cacac;
 
 // GLOBAL: LEGOLAND 0x007cacb0
-void *DAT_007cacb0;
+WAVEFORMATEX *DAT_007cacb0;
 
 // GLOBAL: LEGOLAND 0x007cacb8
 void *DAT_007cacb8;
+
+// GLOBAL: LEGOLAND 0x007cacc0
+WAVEFORMATEX DAT_007cacc0;
 
 // GLOBAL: LEGOLAND 0x007cacb4
 unsigned int DAT_007cacb4;

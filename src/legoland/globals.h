@@ -2959,9 +2959,11 @@ extern unsigned int DAT_007caca8;
 // 0x007cacac
 extern unsigned int DAT_007cacac;
 // 0x007cacb0
-extern void *DAT_007cacb0;
+extern WAVEFORMATEX *DAT_007cacb0;
 // 0x007cacb8
 extern void *DAT_007cacb8;
+// 0x007cacc0
+extern WAVEFORMATEX DAT_007cacc0;
 // 0x007cacb4
 extern unsigned int DAT_007cacb4;
 // 0x007cacd4

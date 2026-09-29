@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <io.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
@@ -324,7 +325,57 @@ int FUN_00498420(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00498630
-void FUN_00498630(const char *param_1) { STUB(); }
+int FUN_00498630(const char *param_1) {
+    char path[0x400];
+    unsigned int out_size;
+
+    if (DAT_007988c0 != 0) {
+        // STRING: LEGOLAND 0x004bfeec
+        strcpy(path, "speech\\");
+        strcat(path, param_1);
+        if (DAT_0079a84c == 0) {
+            DAT_007caca8 = _open(path, 0x8000);
+            if (DAT_007caca8 == -1) {
+                // STRING: LEGOLAND 0x004bfee4
+                sprintf(path, "%s%s%s", DAT_00813b04, "speech\\", param_1);
+                DAT_007caca8 = _open(path, 0x8000);
+                if (DAT_007caca8 == -1) {
+                    return 0;
+                }
+            }
+            if (FUN_00498420() != 0) {
+                FUN_00498120();
+                DAT_007caca0 = DAT_007cacb0->nBlockAlign * 10;
+                DAT_0079ac0c = malloc(DAT_007caca0);
+                DAT_0079ac08 = NULL;
+                DAT_007cacc0.wFormatTag = 1;
+                DAT_007cacc0.nChannels = DAT_007cacb0->nChannels;
+                DAT_007cacc0.nSamplesPerSec = DAT_007cacb0->nSamplesPerSec;
+                DAT_007cacc0.wBitsPerSample = 16;
+                DAT_007cacc0.nBlockAlign = DAT_007cacc0.nChannels * 2;
+                DAT_007cacc0.nAvgBytesPerSec = DAT_007cacc0.nBlockAlign * DAT_007cacc0.nSamplesPerSec;
+                DAT_007cacc0.cbSize = 0;
+                acmStreamOpen(&DAT_007cacb8, NULL, DAT_007cacb0, &DAT_007cacc0, NULL, 0, 0, 4);
+                acmStreamSize(DAT_007cacb8, DAT_007caca0, &out_size, 0);
+                DAT_0079ac08 = malloc(out_size);
+                DAT_007aac40.cbStruct = 0x54;
+                DAT_007aac40.fdwStatus = 0;
+                DAT_007aac40.pbSrc = DAT_0079ac0c;
+                DAT_007aac40.cbSrcLength = DAT_007caca0;
+                DAT_007aac40.pbDst = DAT_0079ac08;
+                DAT_007aac40.cbDstLength = out_size;
+                acmStreamPrepareHeader(DAT_007cacb8, &DAT_007aac40, 0);
+                DAT_0079a848 = KLIBAUDIO_CreateAVISoundBuffer(&DAT_007cacc0, 0xa000);
+                ((struct KLIBAUDIO_Vtbl *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->func_3c(DAT_0079a848, DAT_0079a7d0);
+                DAT_0079a84c = 1;
+                FUN_00498870();
+                return 1;
+            }
+            _close(DAT_007caca8);
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00498870
 void FUN_00498870(void) {

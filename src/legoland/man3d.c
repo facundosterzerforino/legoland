@@ -508,6 +508,8 @@ void *FUN_004402d0(const char *param_1, const char *param_2) {
 // FUNCTION: LEGOLAND 0x00440350
 LEGO_EXPORT void InitMan(void) {
     unsigned int ctx;
+    // STRING: LEGOLAND 0x004b7bb0
+    const char *proj = "NewProject.txt";
 
     FUN_00485fc0((DAT_00668088 == 2) + 5);
     ctx = FUN_00443710();
@@ -541,9 +543,9 @@ LEGO_EXPORT void InitMan(void) {
     // STRING: LEGOLAND 0x004b7bc0
     DAT_0062febc[4] = FUN_0043fa80("ManPan.ManPan.3d", "visitor", ctx);
     // STRING: LEGOLAND 0x004b7ba4
-    FUN_00442980("altman.txt", "NewProject.txt", "visitor", 0, ctx);
+    FUN_00442980("altman.txt", proj, "visitor", 0, ctx);
     // STRING: LEGOLAND 0x004b7b94
-    FUN_00442980("altwoman.txt", "NewProject.txt", "visitor", 1, ctx);
+    FUN_00442980("altwoman.txt", proj, "visitor", 1, ctx);
     DAT_00630100 = FUN_004402d0("visitor", "altman.txt");
     DAT_0062feac = FUN_004402d0("visitor", "altwoman.txt");
     ctx = FUN_00443710();
