@@ -670,6 +670,7 @@ extern unsigned int DAT_004b5cc4;
 // 0x004b5cc8
 extern unsigned int DAT_004b5cc8;
 // 0x004b5d20
+extern char DAT_004b5cf4[32];
 extern const unsigned char DAT_004b5d20[1];
 
 // 0x004b5d58
@@ -680,6 +681,24 @@ extern const unsigned char DAT_004b5d90[1];
 
 // 0x004b5dc8
 extern const unsigned char DAT_004b5dc8[1];
+// 0x004b5df0
+extern unsigned int DAT_004b5df0[4];
+// 0x004b5e00
+extern float DAT_004b5e00[4][3];
+// 0x004b5e30
+extern float DAT_004b5e30[4][3];
+// 0x004b5e60
+extern float DAT_004b5e60[4][3];
+// 0x004b5e90
+extern float DAT_004b5e90[4][3];
+// 0x004b5ec0
+extern int DAT_004b5ec0[4];
+// 0x004b5ee0
+extern int DAT_004b5ee0[5];
+// 0x004b5ef4
+extern unsigned int DAT_004b5ef4[4][2];
+// 0x004b5f14
+extern unsigned int DAT_004b5f14[4][2];
 // 0x004b5f60
 extern unsigned char DAT_004b5f60[1];
 // 0x004b61e0
@@ -1577,12 +1596,26 @@ extern unsigned int DAT_00611648;
 extern float DAT_0061164c;
 // 0x00611650
 extern float DAT_00611650;
+// 0x00611654
+extern float DAT_00611654;
+// 0x00611658
+extern Vector3 DAT_00611658[4];
 // 0x00611688
 extern unsigned int DAT_00611688;
 // 0x0061168c
 extern unsigned int DAT_0061168c;
+// 0x00611690
+extern unsigned char DAT_00611690[0x50];
+// 0x006116e0
+extern Vector3 DAT_006116e0[4];
 // 0x00611710
 extern unsigned int DAT_00611710[16];
+// 0x00611750
+extern Vector3 DAT_00611750[4];
+// 0x00611780
+extern unsigned char DAT_00611780[0x40];
+// 0x006117c0
+extern Vector3 DAT_006117c0[34];
 // 0x00611958
 extern unsigned int DAT_00611958;
 // 0x00612178
@@ -3814,6 +3847,8 @@ extern struct Ride *DAT_0081cde4;
 extern struct Sprite *DAT_0081cde8;
 // 0x0081cdec
 extern void *DAT_0081cdec;
+// 0x0081ce00
+extern struct Cursor DAT_0081ce00[8];
 // 0x00828fe0
 extern unsigned int DAT_00828fe0[2];
 // 0x00829980
@@ -3881,6 +3916,10 @@ extern unsigned int DAT_00829b8c;
 extern unsigned int DAT_00829ba0;
 // 0x00829ba4
 extern unsigned int DAT_00829ba4;
+// 0x00829b90
+extern short DAT_00829b90[4][2];
+// 0x00829ba8
+extern short DAT_00829ba8[4][2];
 // 0x00829bec
 extern void *DAT_00829bec;
 // 0x00829bf0
