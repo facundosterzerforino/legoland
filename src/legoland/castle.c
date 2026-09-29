@@ -543,7 +543,6 @@ unsigned int FUN_0041d1d0(struct SprObj *obj, unsigned int param2, unsigned int 
     FUN_0041cd80(sum, (struct DirPoints *)param3, *(unsigned int *)rec);
 }
 
-
 struct SprInfo {
     unsigned char pad_0[4];
     unsigned int f4;
@@ -1087,6 +1086,11 @@ void FUN_0041dec0(struct Animator *self) {
     self->field_20 = 2;
 }
 
+struct BisectPair {
+    float p;
+    unsigned int q;
+};
+
 struct BisectOut {
     float p;
     unsigned int q;
@@ -1096,7 +1100,7 @@ struct BisectOut {
 
 // FUNCTION: LEGOLAND 0x0041df00
 float FUN_0041df00(unsigned char *obj, float t) {
-    struct BisectOut s;
+    struct BisectPair s;
     struct AnimOut *state = (struct AnimOut *)(obj + 0x20);
     float f4;
     float f8;
