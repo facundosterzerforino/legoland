@@ -822,7 +822,102 @@ void FUN_00409740(struct StateNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004097a0
-void FUN_004097a0(void) { STUB(); }
+void FUN_004097a0(struct FlumeEntry *entry, struct StateSlots *slots) {
+    int mask = FUN_00409410((unsigned int *)slots);
+    struct FlumeEntry *sub;
+
+    if (entry != NULL) {
+        sub = entry->sub2;
+        if (sub == NULL) {
+            switch (mask) {
+            case 0x01:
+            case 0x04:
+            case 0x10:
+            case 0x40:
+                entry->mode = 3;
+                break;
+            case 0x11:
+            case 0x44:
+                entry->mode = 1;
+                break;
+            case 0x05:
+            case 0x14:
+            case 0x41:
+            case 0x50:
+                entry->mode = 2;
+                break;
+            }
+        }
+        switch (mask) {
+        case 0x01:
+            if (sub == NULL) {
+                entry->submode = 2;
+            }
+            FUN_00409620(slots->slot0);
+            break;
+        case 0x10:
+            if (sub == NULL) {
+                entry->submode = 0;
+            }
+            FUN_00409680(slots->slot2);
+            break;
+        case 0x04:
+            if (sub == NULL) {
+                entry->submode = 3;
+            }
+            FUN_004096e0(slots->slot1);
+            break;
+        case 0x40:
+            if (sub == NULL) {
+                entry->submode = 1;
+            }
+            FUN_00409740(slots->slot3);
+            break;
+        case 0x11:
+            if (sub == NULL) {
+                entry->submode = 0;
+            }
+            FUN_00409620(slots->slot0);
+            FUN_00409680(slots->slot2);
+            break;
+        case 0x44:
+            if (sub == NULL) {
+                entry->submode = 1;
+            }
+            FUN_004096e0(slots->slot1);
+            FUN_00409740(slots->slot3);
+            break;
+        case 0x05:
+            if (sub == NULL) {
+                entry->submode = 0;
+            }
+            FUN_00409620(slots->slot0);
+            FUN_004096e0(slots->slot1);
+            break;
+        case 0x14:
+            if (sub == NULL) {
+                entry->submode = 1;
+            }
+            FUN_004096e0(slots->slot1);
+            FUN_00409680(slots->slot2);
+            break;
+        case 0x50:
+            if (sub == NULL) {
+                entry->submode = 2;
+            }
+            FUN_00409680(slots->slot2);
+            FUN_00409740(slots->slot3);
+            break;
+        case 0x41:
+            if (sub == NULL) {
+                entry->submode = 3;
+            }
+            FUN_00409740(slots->slot3);
+            FUN_00409620(slots->slot0);
+            break;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00409a50
 void FUN_00409a50(struct ModeNode *node) {
