@@ -5020,10 +5020,10 @@ struct PathSeg {
     /* 0x0c */ unsigned int *info;
     /* 0x10 */ unsigned char pad_10[0x14 - 0x10];
     /* 0x14 */ unsigned int dir_in;
-    /* 0x18 */ unsigned char pad_18[0x1c - 0x18];
+    /* 0x18 */ float f18;
     /* 0x1c */ struct PathSeg *last;
     /* 0x20 */ unsigned int dir_out;
-    /* 0x24 */ unsigned int pad_24;
+    /* 0x24 */ float f24;
     /* 0x28 */ struct PathSeg *next;
     /* 0x2c */ unsigned char pad_2c[0x40 - 0x2c];
     /* 0x40 */ unsigned int field_40;
@@ -5123,29 +5123,21 @@ unsigned int FUN_004296f0(struct Struct4296f0Host *param_1, int *param_2) {
 // FUNCTION: LEGOLAND 0x00429750
 void FUN_00429750(struct PathSeg *seg, struct PathSeg *end) { STUB(); }
 
-struct Struct429840 {
-    unsigned char pad_0[0x18];
-    float field_18;
-    unsigned char pad_1c[8];
-    float field_24;
-    struct Struct429840 *next;
-};
-
 // FUNCTION: LEGOLAND 0x00429840
-struct Struct429840 *FUN_00429840(struct Struct429840 *n, int x) {
-    struct Struct429840 *r;
+struct PathSeg *FUN_00429840(struct PathSeg *n, int x) {
+    struct PathSeg *r;
     unsigned int ok;
 
     if (n->next == 0) {
         ok = FUN_00429940(n, &n);
         r = n;
-        if (!ok && (float)x != r->field_24) {
+        if (!ok && (float)x != r->f24) {
             return 0;
         }
     } else {
         ok = FUN_00429990(n, &n);
         r = n;
-        if (!ok && (float)x != r->field_18) {
+        if (!ok && (float)x != r->f18) {
             return 0;
         }
     }
@@ -5167,22 +5159,26 @@ unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c) {
     return 0;
 }
 
-struct Struct429940 {
-    unsigned char pad_0[0xc];
-    unsigned int *field_c;
-    unsigned char pad_10[0x14 - 0x10];
-    unsigned int field_14;
-    unsigned char pad_18[0x1c - 0x18];
-    struct Struct429940 *next;
-    unsigned int field_20;
-};
-
 // FUNCTION: LEGOLAND 0x00429940
-unsigned int FUN_00429940(struct Struct429940 *n, struct Struct429940 **out) {
+unsigned int FUN_00429940(struct PathSeg *n, struct PathSeg **out) {
     unsigned int count = 0;
 
-    while (!(*n->field_c & 1)) {
-        if (FUN_00429910(n->field_c, n->field_14, n->field_20)) {
+    while (!(*n->info & 1)) {
+        if (FUN_00429910(n->info, n->dir_in, n->dir_out)) {
+            count++;
+        }
+        n = n->last;
+    }
+    *out = n;
+    return count;
+}
+
+// FUNCTION: LEGOLAND 0x00429990
+unsigned int FUN_00429990(struct PathSeg *n, struct PathSeg **out) {
+    unsigned int count = 0;
+
+    while (!(*n->info & 1)) {
+        if (FUN_00429910(n->info, n->dir_in, n->dir_out)) {
             count++;
         }
         n = n->next;
@@ -5190,9 +5186,6 @@ unsigned int FUN_00429940(struct Struct429940 *n, struct Struct429940 **out) {
     *out = n;
     return count;
 }
-
-// FUNCTION: LEGOLAND 0x00429990
-int FUN_00429990(struct PathSeg *seg, int *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004299e0
 void FUN_004299e0(void) { STUB(); }
