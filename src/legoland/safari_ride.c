@@ -31,6 +31,17 @@ struct SafariRoot {
     struct SafariBlock *field_c;
 };
 
+struct SafariListEntry;
+
+struct SafariOwner {
+    unsigned char pad_0[0x1c];
+    unsigned int field_1c;
+    unsigned char pad_20[0x44];
+    struct Sprite *layer;
+    unsigned char pad_68[0x64];
+    struct SafariListEntry *head;
+};
+
 struct SafariObject {
     unsigned char pad_0[0xc];
     struct SafariOwner *field_c;
@@ -149,7 +160,32 @@ void FUN_00414b10(struct SafariNode *node) {
 void FUN_00414b80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00414d90
-void FUN_00414d90(void) { STUB(); }
+void FUN_00414d90(struct SafariObject *a1) {
+    DAT_004cbec4 = a1->field_c;
+    DAT_004cbec4->field_1c |= 0x420;
+    DAT_004cbec8 = DAT_004cbec4->layer;
+    DAT_004cbec8->flags |= 0x2000;
+    // STRING: LEGOLAND 0x004b4d5c
+    DAT_004cbef4 = LoadBinV("Zbuffers\\Safarirun.bnv");
+    // STRING: LEGOLAND 0x004b4d44
+    DAT_004cbf04[0] = LoadBinV("Zbuffers\\Safarion.bnv");
+    // STRING: LEGOLAND 0x004b4d2c
+    DAT_004cbec0 = LoadBinV("Zbuffers\\Safarioff.bnv");
+    // STRING: LEGOLAND 0x004b4d1c
+    DAT_0082c66c = LoadSprite("z_Safari.lls", 1);
+    DAT_0082c670 = 0;
+    DAT_0082c674 = -1;
+    DAT_004cbee8 = -41;
+    DAT_004cbeec = -95;
+    HideLayer(DAT_004cbec8, 0);
+    StopLayerPlaying(DAT_004cbec8, 0);
+    LLSSetFrame(GetLLSForLayer(DAT_004cbec8, 0), 0);
+    DAT_004cbef8 = DAT_004cbef4;
+    DAT_004cbefc = DAT_004cbf04[0];
+    DAT_004cbf00 = DAT_004cbec0;
+    DAT_004cbf08 = DAT_0082c66c;
+    Load_FXList(SAFARI_SFX, 1);
+}
 
 // FUNCTION: LEGOLAND 0x00414ea0
 void FUN_00414ea0(struct SafariObject *a1) {
@@ -264,11 +300,6 @@ struct SafariListEntry {
     unsigned char pad_4[4];
     struct SafariSlotData *data;
     unsigned short key;
-};
-
-struct SafariOwner {
-    unsigned char pad_0[0xcc];
-    struct SafariListEntry *head;
 };
 
 // FUNCTION: LEGOLAND 0x00415760
