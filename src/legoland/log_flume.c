@@ -1297,7 +1297,48 @@ void FUN_0040a5d0(struct ParticleEmitter *param) {
 void FUN_0040a600(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040a930
-void FUN_0040a930(void) { STUB(); }
+void FUN_0040a930(Element *elem, unsigned int param_2, unsigned int param_3) {
+    struct Ride *ride;
+    int h;
+    int x;
+    int y;
+
+    ride = elem->ride;
+    h = DAT_004b4734 - DAT_004b472c;
+
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint(&ride->footprint);
+    PathCursor.field_1404 = EditCursor.field_1404;
+    PathCursor.field_1408 = EditCursor.field_1408;
+    PathCursor.footprint.y0 = EditCursor.footprint.y0 - 1;
+    PathCursor.footprint.x0 = EditCursor.footprint.x0 + 3;
+    EditCursor.next = &DAT_004c8d78;
+    DAT_004c8d78.next = &DAT_004c2c18;
+    DAT_004c2c18.next = &PathCursor;
+    PathCursor.next = NULL;
+    PathCursor.footprint.x1 = EditCursor.footprint.x1 + 1;
+    PathCursor.footprint.y1 = EditCursor.footprint.y1 + 1;
+    PathCursor.footprint.next = NULL;
+    PathCursor.field_1828 = 0x1000;
+    FUN_0045f460(&PathCursor);
+    memcpy(DAT_004c8d78.footprint.v, &DAT_004b4728, 20);
+    DAT_004c8d78.footprint.x1 = DAT_004b4730 - 1;
+    DAT_004c8d78.footprint.y1 = DAT_004c8d78.footprint.y1 - 1;
+    FUN_0045f460(&DAT_004c8d78);
+    x = EditCursor.field_1404;
+    y = EditCursor.field_1408;
+    DAT_004c8d78.field_1404 = DAT_004c2b9c->footprint.x0 + x;
+    DAT_004c8d78.field_1408 = DAT_004c2b9c->footprint.y0 + y - h;
+    DAT_004c8d78.field_1404++;
+    DAT_004c2c18.field_1404 = DAT_004c2b9c->footprint.x0 + x;
+    DAT_004c2c18.field_1408 = DAT_004c2b9c->footprint.y1 + y - 1 + h;
+    DAT_004c2c18.field_1404++;
+    memcpy(DAT_004c2c18.footprint.v, DAT_004c8d78.footprint.v, 20);
+    FUN_0045f460(&DAT_004c2c18);
+    ValidateCursor(&EditCursor, (unsigned int)ride);
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x0040aac0
 void FUN_0040aac0(void) { STUB(); }
