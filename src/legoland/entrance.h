@@ -10,4 +10,4 @@ void FUN_0042d9c0();
 void FUN_0042de50(struct Element *param);
 void FUN_0042def0(struct Element *param);
 void FUN_0042df70(struct Element *obj, TileId tile, struct Cursor *cursor);
-void FUN_0042dfa0();
+void FUN_0042dfa0(struct Element *elem);
