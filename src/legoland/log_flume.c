@@ -1064,8 +1064,29 @@ void FUN_0040adb0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0040ae90
 void FUN_0040ae90(unsigned int param_1, int param_2, int param_3) { STUB(); }
 
+struct FlumeWeighted {
+    unsigned char pad_0[8];
+    struct FlumeWeighted *a;
+    struct FlumeWeighted *b;
+    unsigned char pad_10[4];
+    struct FlumeWeighted *link;
+    float weight;
+};
+
 // FUNCTION: LEGOLAND 0x0040b210
-void FUN_0040b210(void) { STUB(); }
+int FUN_0040b210(struct FlumeWeighted *self, struct FlumeWeighted *other) {
+    struct FlumeWeighted *link = self->link;
+    if (link == other) {
+        return 1;
+    }
+    if (self->weight >= 0.5 && link->a == other) {
+        return 1;
+    }
+    if (self->weight < 0.5 && link->b == other) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0040b270
 unsigned char FUN_0040b270(unsigned int *param_1, unsigned int param_2) {
