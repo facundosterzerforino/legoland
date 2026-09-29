@@ -45,7 +45,25 @@ void FUN_0043bdb0(void *param1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043be00
-void FUN_0043be00(struct BarrelNode *node) { STUB(); }
+void FUN_0043be00(struct BarrelNode *node) {
+    struct BarrelNode *cur;
+
+    if (DAT_0062fe08 == node) {
+        DAT_0062fe08 = node->next;
+    } else {
+        cur = DAT_0062fe08;
+        while (cur->next != node) {
+            cur = *(struct BarrelNode *volatile *)&cur->next;
+            if (cur == NULL) {
+                break;
+            }
+        }
+        if (cur != NULL) {
+            cur->next = node->next;
+        }
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x0043be40
 struct BarrelNode *FUN_0043be40(unsigned short *key) {

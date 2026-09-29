@@ -183,3 +183,37 @@ Other tricks that decided matches
 - Float constants: whether to use an `extern float` at the exe address or a literal depends on whether
   the address is listed in `data/floats.csv`; a wrong choice shows as `(FLOAT)` vs `(DATA)` and costs a few %.
 - Not reachable in pure C (skipped): `push ebp` frames, `fstcw`/`fldcw`/`rdtsc`, inline x87 exp sequences.
+
+## Worked example 3: the linked-list unlink (`FUN_0043be00`, spinning_barrels.c)
+
+Unlink-by-pointer had defeated ~70 earlier variants. Solving it by hand, in order:
+
+1. **Decode the original.** Head case (`head == node` -> `head = node->next; free`), otherwise walk with
+   `cmp [eax],ecx` (compare `cur->next` against the node **in memory**), advance with a separate
+   `mov eax,[eax]`, null-test the new `cur`, unlink with `mov edx,[ecx]; mov [eax],edx`, then `free`.
+2. **First attempt scored 17%.** The diff showed the one structural difference: ours loaded `cur->next`
+   once into a register (`mov ecx,[eax]; cmp ecx,edx; ... mov eax,ecx`), the original loaded it twice.
+   MSVC6 was common-subexpression-eliminating the compare's load into the advance, which also pushed the
+   node from ecx to edx. So the question was "how do I stop the CSE?", not "what is the loop shape?".
+3. **A small standalone test file** (a struct, a global head, one function, compiled with the project's
+   `cl` wrapper and `/Fa` to read the asm) made each experiment take about a second. About 15 source forms
+   were tried in batches and scored against three checks: memory `cmp [eax],ecx` present, separate
+   `mov eax,[eax]` present, node in ecx.
+4. **What did not help:** for/while/do-while/`for(;;)` rewrites, `&&` in the condition, integer casts,
+   two pointer variables, `pp = &cur->next`, nested head special-casing.
+5. **What worked:** make only the *advance* load `volatile`, so it can't reuse the compare's value while
+   the compare's own load stays a normal single-use load that folds into `cmp mem, reg`:
+   ```c
+   while (cur->next != node) {
+       cur = *(struct T *volatile *)&cur->next;
+       if (cur == NULL) break;
+   }
+   ```
+   (`volatile` on the *field* got the layout right too, but volatile loads don't fold into `cmp`.)
+6. **Last difference:** the head case ended `add esp,4` instead of `pop ecx`. Using `if/else` with a single
+   `free(node)` after it fixed it. The compiler still emits two call sites, like the original.
+
+Result: 100.00%, no asterisk. `volatile` here is a matching device, not a claim about the original source;
+behaviour is identical in single-threaded code. The same idea should apply to the other unlink functions
+(catapult, gold_rush, spider_ride, safari_ride, plane_ride, joust, temple_slide, log_flume), where the
+`next` offset is non-zero, so the address expression would be `&cur->next` as above.
