@@ -68,13 +68,20 @@ struct FlagNode {
 };
 
 struct RingNode {
-    unsigned char pad_0[0xe4];
+    unsigned char pad_0[0x40];
+    unsigned int f40;
+    struct Elem20 e44;
+    unsigned char pad_58[0xe4 - 0x58];
     struct RingNode *prev;
     struct RingNode *next;
 };
 
 struct RingHost {
-    unsigned char pad_0[0x70];
+    unsigned char pad_0[0xc];
+    struct Elem20 elem_c;
+    unsigned char pad_20[4];
+    unsigned int field_24;
+    unsigned char pad_28[0x70 - 0x28];
     struct RingNode head;
 };
 
@@ -820,10 +827,58 @@ void FUN_0041d7f0(void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d950
-void FUN_0041d950(void *obj, unsigned int val, void *tmp) { STUB(); }
+void FUN_0041d950(void *obj, unsigned int val, void *b) {
+    struct RingHost *host = obj;
+    struct RingNode *head;
+    struct RingNode *cur;
+    struct RingNode *next;
+    struct Elem20 elem;
+    struct Elem20 out;
+    unsigned int tmp[3];
+
+    next = host->head.next;
+    head = &host->head;
+    cur = head;
+    host->field_24 = val;
+    host->elem_c = *(struct Elem20 *)b;
+    FUN_0041e8f0((unsigned char *)head, (unsigned int)b, val);
+    while (next != head) {
+        val = cur->f40;
+        elem = cur->e44;
+        FUN_0041e930((struct ObjAt40 *)cur, (unsigned int)tmp);
+        FUN_00429f30(tmp, 30.0f, &elem, val, 4.8f, &out, &b);
+        FUN_0041e8f0((unsigned char *)next, (unsigned int)&out, (unsigned int)b);
+        cur = next;
+        next = next->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0041da10
-void FUN_0041da10(struct RingHost *obj, unsigned int a, void *b) { STUB(); }
+void FUN_0041da10(void *obj, unsigned int val, void *b) {
+    struct RingHost *host = obj;
+    struct RingNode *head;
+    struct RingNode *cur;
+    struct RingNode *next;
+    struct Elem20 elem;
+    struct Elem20 out;
+    unsigned int tmp[3];
+
+    next = host->head.next;
+    head = &host->head;
+    cur = head;
+    host->field_24 = val;
+    host->elem_c = *(struct Elem20 *)b;
+    FUN_0041e820((unsigned char *)head, (unsigned int)b, val);
+    while (next != head) {
+        val = cur->f40;
+        elem = cur->e44;
+        FUN_0041e930((struct ObjAt40 *)cur, (unsigned int)tmp);
+        FUN_00429f30(tmp, 30.0f, &elem, val, 4.8f, &out, &b);
+        FUN_0041e820((unsigned char *)next, (unsigned int)&out, (unsigned int)b);
+        cur = next;
+        next = next->next;
+    }
+}
 
 struct FloatHolder {
     unsigned char pad_0[0x28];
@@ -5519,7 +5574,7 @@ void FUN_00429cf0(void) { STUB(); }
 void FUN_00429e20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00429f30
-void FUN_00429f30(void) { STUB(); }
+void FUN_00429f30(unsigned int *out, float a, struct Elem20 *in, unsigned int val, float b, struct Elem20 *res, void **ctx) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042a020
 void FUN_0042a020(void) { STUB(); }
