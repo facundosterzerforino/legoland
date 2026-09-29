@@ -6,6 +6,9 @@
 #include "math.h"
 #include "objclass.h"
 
+// GLOBAL: LEGOLAND 0x004ab38c
+float FLOAT_004ab38c;
+
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
 
@@ -234,6 +237,9 @@ unsigned int DAT_004b560c;
 
 // GLOBAL: LEGOLAND 0x004b5b20
 void *DAT_004b5b20;
+
+// GLOBAL: LEGOLAND 0x004b5b24
+unsigned short *DAT_004b5b24;
 
 // GLOBAL: LEGOLAND 0x004b5b28
 int DAT_004b5b28;

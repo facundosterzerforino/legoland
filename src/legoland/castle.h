@@ -7,6 +7,12 @@ struct ListLink;
 struct ListHost;
 struct Struct426d80Y;
 struct Struct427130Main;
+struct Int16Pair;
+struct FVec3;
+
+void FUN_00425cb0(const struct Int16Pair *in, float f, struct FVec3 *out);
+float lego_sqrtf(float x);
+void FUN_004237f0(void *a, void *b, int c);
 
 unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3);
 void FUN_0041e500(void *obj);
