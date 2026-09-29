@@ -3298,9 +3298,9 @@ extern int DAT_008139c0;
 // 0x008139c4
 extern int DAT_008139c4;
 // 0x008139c8
-extern unsigned int DAT_008139c8;
+extern int DAT_008139c8;
 // 0x008139cc
-extern unsigned int DAT_008139cc;
+extern int DAT_008139cc;
 // 0x008139e0
 extern struct Sprite *DAT_008139e0;
 // 0x008139e4
