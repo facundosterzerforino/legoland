@@ -1725,16 +1725,22 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
     struct RideNode *node;
     struct LLS *lls;
     struct Sprite *sprite;
-    int frame;
+    int ok;
 
     base.x = ride->x + tile->pos.x;
     base.y = ride->y + tile->pos.y;
     entry = FUN_00408ec0(tile);
     coords = GetScreenCoordsForObject(tile, ride);
-    if (entry != NULL ? FUN_0040b390(entry->link) : (int)tile) {
+    if (entry != NULL) {
+        ok = FUN_0040b390(entry->link);
+    }
+    if (ok) {
         struct Point off;
+        int frame;
         lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer(ride->layer, 0));
-        frame = lls != NULL ? lls->frame : (int)tile;
+        if (lls != NULL) {
+            frame = lls->frame;
+        }
         lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe4c);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
@@ -1774,6 +1780,7 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
     RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
     if (DAT_004cbe94 != NULL) {
         struct Point off;
+        int frame;
         off.x = -100;
         off.y = -0xd1;
         lls = NULL;
@@ -1781,7 +1788,9 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
         if (sprite != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
         }
-        frame = lls != NULL ? lls->frame : (int)tile;
+        if (lls != NULL) {
+            frame = lls->frame;
+        }
         AdjustOffsetForViewMode(&off);
         lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe94);
         if (lls != NULL) {
@@ -1803,6 +1812,7 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
     RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
     if (DAT_004cbe98 != NULL) {
         struct Point off;
+        int frame;
         off.x = 8;
         off.y = -0x71;
         lls = NULL;
@@ -1810,7 +1820,9 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
         if (sprite != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
         }
-        frame = lls != NULL ? lls->frame : (int)tile;
+        if (lls != NULL) {
+            frame = lls->frame;
+        }
         AdjustOffsetForViewMode(&off);
         lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe98);
         if (lls != NULL) {
@@ -1829,6 +1841,7 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
     RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
     if (DAT_004cbe90 != NULL) {
         struct Point off;
+        int frame;
         off.x = -100;
         off.y = -0xd1;
         lls = NULL;
@@ -1836,7 +1849,9 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
         if (sprite != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
         }
-        frame = lls != NULL ? lls->frame : (int)tile;
+        if (lls != NULL) {
+            frame = lls->frame;
+        }
         AdjustOffsetForViewMode(&off);
         lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe90);
         if (lls != NULL) {
@@ -1858,6 +1873,7 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
     RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
     if (DAT_004cbe8c != NULL) {
         struct Point off;
+        int frame;
         off.x = -100;
         off.y = -0xd1;
         AdjustOffsetForViewMode(&off);
@@ -1866,7 +1882,9 @@ void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, Til
         if (sprite != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
         }
-        frame = lls != NULL ? lls->frame : (int)tile;
+        if (lls != NULL) {
+            frame = lls->frame;
+        }
         lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe8c);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
@@ -3728,8 +3746,6 @@ void FUN_0040f920(Element *elem, unsigned int param_2, unsigned int param_3, Til
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer(ride->layer, 1));
             if (lls != NULL) {
                 frame = lls->frame;
-            } else {
-                frame = (int)elem;
             }
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe14);
             if (lls != NULL) {
