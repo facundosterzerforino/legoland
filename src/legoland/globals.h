@@ -795,6 +795,8 @@ extern void *DAT_004b929c;
 extern void *PTR_004b92c0;
 extern void *PTR_004b9314;
 extern void *PTR_004b9338;
+// 0x004b92cc
+extern void *DAT_004b92cc;
 // 0x004b92d8
 extern void *DAT_004b92d8;
 // 0x004b92e4
