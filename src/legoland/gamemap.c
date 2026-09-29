@@ -169,7 +169,6 @@ void FUN_00459970(void) {
             return;
         }
         DAT_00667d08 = 0;
-        DAT_00667d00 = 0;
     }
 }
 
