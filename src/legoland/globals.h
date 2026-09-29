@@ -394,6 +394,12 @@ extern double DAT_004ab4a8;
 extern double DAT_004ab4b0;
 // 0x004ab430
 extern float DAT_004ab430;
+// 0x004ab418
+extern double DAT_004ab418;
+// 0x004ab43c
+extern float FLOAT_004ab43c;
+// 0x004ab44c
+extern float FLOAT_004ab44c;
 // 0x004ab454
 extern float FLOAT_004ab454;
 // 0x004ab458
@@ -3443,10 +3449,14 @@ extern float DAT_00829a60;
 extern struct EditFootPrint DAT_00829a80;
 // 0x00829ae0
 extern unsigned int DAT_00829ae0;
+// 0x00829ae4
+extern unsigned int DAT_00829ae4;
 // 0x00829af8
 extern unsigned int DAT_00829af8[3];
 // 0x00829b04
 extern unsigned int DAT_00829b04[3];
+// 0x00829b0c
+extern unsigned int DAT_00829b0c;
 // 0x00829b88
 extern unsigned int DAT_00829b88;
 // 0x00829b8c
@@ -3469,6 +3479,10 @@ extern int DAT_00829c00;
 extern struct Sprite *DAT_00829c04;
 // 0x00829c34
 extern int DAT_00829c34;
+// 0x00829c54
+extern char *DAT_00829c54;
+// 0x00829c60
+extern void *DAT_00829c60[32];
 // 0x0082ac60
 extern void *DAT_0082ac60[1];
 // 0x0082ad20
