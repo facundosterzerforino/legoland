@@ -285,7 +285,39 @@ LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ce20
-LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) { STUB(); }
+LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
+    struct IconNode *a;
+    struct IconNode *b;
+    int x;
+    int y;
+
+    if (DAT_007986d8) {
+        FUN_0046d680(DAT_007986d8, DAT_00798678);
+    }
+    if (DAT_007986e8) {
+        FUN_0046d680(DAT_007986dc, DAT_00798684);
+    } else {
+        FUN_0046d680(DAT_007986dc, DAT_0079867c);
+    }
+    a = DAT_007986d8;
+    if (a) {
+        x = a->x;
+        y = a->y;
+        if (DAT_00813a44.x < x + 0x24 && x < DAT_00813a44.x && DAT_00813a44.y < y + 0x1b && y < DAT_00813a44.y) {
+            FUN_0046d680(a, DAT_00798674);
+        }
+    }
+    b = DAT_007986dc;
+    x = b->x;
+    y = b->y;
+    if (DAT_00813a44.x < x + 0x24 && x < DAT_00813a44.x && DAT_00813a44.y < y + 0x1b && y < DAT_00813a44.y) {
+        if (DAT_007986e8) {
+            FUN_0046d680(b, DAT_00798688);
+            return;
+        }
+        FUN_0046d680(b, DAT_00798680);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048cf10
 LEGO_EXPORT void PrintProfileDetails(void) { STUB(); }
