@@ -1058,6 +1058,10 @@ extern struct Sprite *DAT_004c11fc;
 extern struct Sprite *DAT_004c1200;
 // 0x004c1204
 extern struct GoldNode *DAT_004c1204;
+// 0x004c1210
+extern struct Sprite *DAT_004c1210;
+// 0x004c1214
+extern unsigned int DAT_004c1214;
 // 0x004c1218
 extern void *DAT_004c1218;
 // 0x004c121c
