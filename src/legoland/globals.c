@@ -3683,11 +3683,20 @@ struct Element *DAT_0079abfc;
 // GLOBAL: LEGOLAND 0x0079ac04
 unsigned int DAT_0079ac04;
 
+// GLOBAL: LEGOLAND 0x0079ac08
+void *DAT_0079ac08;
+
+// GLOBAL: LEGOLAND 0x0079ac0c
+void *DAT_0079ac0c;
+
 // GLOBAL: LEGOLAND 0x0079ac20
 unsigned char DAT_0079ac20[0x10000];
 
 // GLOBAL: LEGOLAND 0x007aac24
 int DAT_007aac24;
+
+// GLOBAL: LEGOLAND 0x007aac40
+unsigned char DAT_007aac40[0x20];
 
 // GLOBAL: LEGOLAND 0x007aaca0
 unsigned char DAT_007aaca0[0x20000];
@@ -3700,6 +3709,12 @@ unsigned int DAT_007caca8;
 
 // GLOBAL: LEGOLAND 0x007cacac
 unsigned int DAT_007cacac;
+
+// GLOBAL: LEGOLAND 0x007cacb0
+void *DAT_007cacb0;
+
+// GLOBAL: LEGOLAND 0x007cacb8
+void *DAT_007cacb8;
 
 // GLOBAL: LEGOLAND 0x007cacb4
 unsigned int DAT_007cacb4;

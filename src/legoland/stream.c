@@ -1,8 +1,11 @@
 #include <windows.h>
 #include <io.h>
+#include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "imports.h"
 #include "legoland.h"
+#include "sound_music.h"
 
 #include "stream.h"
 
@@ -212,7 +215,22 @@ void FUN_00498900(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00498920
-void FUN_00498920(void) { STUB(); }
+int FUN_00498920(void) {
+    if (DAT_0079a84c == 0) {
+        return 0;
+    }
+    FUN_004988c0();
+    acmStreamUnprepareHeader(DAT_007cacb8, DAT_007aac40, 0);
+    acmStreamClose(DAT_007cacb8, 0);
+    _close(DAT_007caca8);
+    KLIBAUDIO_DestroyAVISoundBuffer((struct AVISoundBuffer *)DAT_0079a848);
+    DAT_0079a848 = NULL;
+    free(DAT_0079ac0c);
+    free(DAT_0079ac08);
+    free(DAT_007cacb0);
+    DAT_0079a84c = 0;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004989b0
 void FUN_004989b0(void) { STUB(); }
