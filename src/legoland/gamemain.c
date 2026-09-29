@@ -17,9 +17,15 @@
 
 struct GameMainNode {
     struct GameMainNode *next;
-    unsigned char pad_4[0x4];
-    unsigned int field_8;
-    unsigned int field_c;
+    int field_4;
+    int field_8;
+    int field_c;
+    int field_10;
+    int field_14;
+    int field_18;
+    int field_1c;
+    int field_20;
+    int field_24;
 };
 
 struct GameMainArg {
@@ -97,15 +103,15 @@ void FUN_004776e0(struct EventNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00477730
-struct QueryNode *FUN_00477730(struct QueryNode *ctx) {
-    struct QueryNode *node;
+struct GameMainNode *FUN_00477730(struct Point *ctx) {
+    struct GameMainNode *node;
 
-    node = (struct QueryNode *)DAT_00668fc4;
+    node = (struct GameMainNode *)DAT_00668fc4;
     if (node == NULL) {
         return NULL;
     }
     while (node != NULL) {
-        if (node->field_8 == *(unsigned int *)ctx && node->field_c == *((unsigned int *)ctx + 1)) {
+        if (node->field_8 == ctx->x && node->field_c == ctx->y) {
             return node;
         }
         node = node->next;
@@ -156,16 +162,16 @@ void FUN_00477790(struct EventNode *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004777c0
-struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {
+struct GameMainNode *FUN_004777c0(struct Point *arg) {
     struct GameMainNode *node = DAT_00668fc0;
-    unsigned int first;
+    int first;
 
     if (node == NULL) {
         return NULL;
     }
-    first = arg->field_0;
+    first = arg->x;
     do {
-        if (node->field_8 == first && node->field_c == arg->field_4) {
+        if (node->field_8 == first && node->field_c == arg->y) {
             return node;
         }
         node = node->next;
@@ -174,7 +180,74 @@ struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x004777f0
-void FUN_004777f0(void) { STUB(); }
+struct GameMainNode *FUN_004777f0(struct Point *pos, int *result) {
+    struct GameMainNode *node;
+    struct MapElement *tile;
+    struct Ride *ride;
+    unsigned short flags;
+    int dx;
+    int dy;
+
+    node = FUN_00477730(pos);
+    if (node != NULL) {
+        *result = 2;
+        return node;
+    }
+    node = FUN_004777c0(pos);
+    if (node != NULL) {
+        *result = 1;
+        return node;
+    }
+    *result = 0;
+    node = (struct GameMainNode *)malloc(0x28);
+    if (pos->x >= 0 && pos->x < lpConfig->width && pos->y >= 0 && pos->y < lpConfig->height) {
+        tile = &GameMap[pos->y][pos->x];
+    } else {
+        tile = NULL;
+    }
+    flags = tile->flags;
+    if ((flags & 0x10) || (tile->field_10 & 1)) {
+        if (FUN_00482b60(pos)) {
+            node->field_20 = 1;
+        } else {
+            node->field_20 = 0;
+        }
+        node->field_10 = 1;
+    } else if (flags & 0x40) {
+        node->field_20 = 5;
+        node->field_10 = -1;
+    } else if (flags & 0x8a0) {
+        ride = tile->field_0->ride;
+        if (ride->flags & 0x200000) {
+            if (ride->range > 1) {
+                node->field_20 = 4;
+                node->field_10 = 0x14;
+            } else {
+                node->field_20 = 3;
+                node->field_10 = 9;
+            }
+        } else {
+            node->field_20 = 5;
+            node->field_10 = -1;
+        }
+    } else if (tile->field_10 & 2) {
+        node->field_20 = 5;
+        node->field_10 = -1;
+    } else {
+        node->field_20 = 2;
+        node->field_10 = 3;
+    }
+    node->field_8 = pos->x;
+    node->field_c = pos->y;
+    node->field_14 = 0x7fffffff;
+    dy = abs(pos->y - DAT_004bb5a4);
+    dx = abs(pos->x - DAT_004bb5a0);
+    node->field_4 = 0;
+    node->field_24 = 0;
+    node->field_18 = dx + dy;
+    node->field_1c = node->field_10 + node->field_18;
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x00477980
 unsigned int FUN_00477980(unsigned int param_1, unsigned int param_2) {
