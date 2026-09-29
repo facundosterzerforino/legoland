@@ -2836,17 +2836,104 @@ void FUN_00422e40(int param1, char *entry) { STUB(); }
 // FUNCTION: LEGOLAND 0x00422fe0
 void FUN_00422fe0(void) { STUB(); }
 
+#pragma pack(push, 2)
+struct RecEnt {
+    short w;
+    int d;
+    short s0n;
+};
+
+struct RecBuf {
+    int n;
+    int x;
+    short s0_first;
+    struct RecEnt ent[1];
+};
+#pragma pack(pop)
+
+struct RecIdx {
+    int v;
+    int k;
+};
+
+struct RecSrc {
+    int f0;
+    int flag;
+    int fx;
+    int f0c;
+    int f10;
+    int f14;
+    int f18;
+    int d;
+    int f20;
+    int f24;
+    int f28;
+    int f2c;
+};
+
 // FUNCTION: LEGOLAND 0x00423140
 void FUN_00423140(int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00423200
-void FUN_00423200(void) { STUB(); }
+void FUN_00423200(int n, int x, struct RecIdx *idx, struct RecSrc *src) {
+    short *p = (short *)DAT_004b5b3c;
+    struct RecBuf *saved = (struct RecBuf *)p;
+    int i;
+
+    DAT_0060f908++;
+    if ((char *)p + 0x10 > DAT_004e3870) {
+        DAT_0060f90c = 1;
+        return;
+    }
+    if (n) {
+        *(int *)p = n;
+        saved->x = x;
+        i = 0;
+        if (n > 0) {
+            p = (short *)saved + 5;
+            for (i = 0; i < n; i++) {
+                struct RecSrc *s = &src[idx->k];
+                p[-1] = s->fx >> 16;
+                *(int *)(p + 1) = s->d;
+                p[0] = (short)idx->v;
+                idx++;
+                if (s->flag == 1) {
+                    p[0] = -p[0];
+                }
+                p += 4;
+            }
+        }
+        DAT_004b5b3c = (struct RecBuf *)((char *)saved + i * 8 + 8);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004232b0
-void FUN_004232b0(void) { STUB(); }
+void FUN_004232b0(struct RecBuf *rb) {
+    struct RecIdx idx[8];
+    struct RecSrc src[8];
+    int n = rb->n;
+    int i;
+
+    for (i = 0; i < n; i++) {
+        short w = rb->ent[i].w;
+
+        if (w < 0) {
+            src[i].flag = 1;
+            idx[i].v = -w;
+        } else {
+            src[i].flag = 0;
+            idx[i].v = w;
+        }
+        idx[i].k = i;
+        src[i].fx = rb->ent[i - 1].s0n << 16;
+        src[i].d = rb->ent[i].d;
+    }
+    *(short *)((char *)idx + i * 0x30 + 0x12) = (short)(rb->x - 1);
+    FUN_00423350(n, idx, src);
+}
 
 // FUNCTION: LEGOLAND 0x00423350
-void FUN_00423350(void) { STUB(); }
+void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *src) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00423480
 void FUN_00423480(struct ClearRect *r) {
