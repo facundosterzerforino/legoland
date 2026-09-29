@@ -1059,6 +1059,8 @@ extern struct RenderItemNode *DAT_004c11b0;
 extern struct CopterNode *DAT_004c11b4;
 // 0x004c11bc
 extern void *DAT_004c11bc;
+// 0x004c11c0
+extern int DAT_004c11c0;
 // 0x004c11c4
 extern struct RideQueueEntry *DAT_004c11c4;
 // 0x004c11c8

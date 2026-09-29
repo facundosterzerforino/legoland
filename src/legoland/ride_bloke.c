@@ -169,7 +169,50 @@ void FUN_004015e0(unsigned char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00401660
-void FUN_00401660(void) { STUB(); }
+void FUN_00401660(unsigned char *param_1) {
+    struct Point local;
+    unsigned int frame;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
+
+    local.x = *(int *)(param_1 + 0x20);
+    local.y = *(int *)(param_1 + 0x24);
+    frame = *(unsigned char *)(param_1 + 0xbb);
+    if (DAT_004c11c0 != 0) {
+        r.i = FUN_00401000(13, 40, *(unsigned char *)(param_1 + 0xba));
+        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
+        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(33, 84, *(unsigned char *)(param_1 + 0xba));
+        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
+        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        *(unsigned char *)(param_1 + 0xba) = *(unsigned char *)(param_1 + 0xba) + 2;
+    } else {
+        r.i = FUN_00401000(13, -40, *(unsigned char *)(param_1 + 0xba));
+        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
+        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        r.i = FUN_00401000(33, -84, *(unsigned char *)(param_1 + 0xba));
+        *(int *)(param_1 + 0x30 + frame * 8) = ((local.x << 8) + r.p.lo) << 8;
+        *(int *)(param_1 + 0x34 + frame * 8) = ((local.y << 8) + r.p.hi) << 8;
+        frame++;
+        *(unsigned char *)(param_1 + 0xba) = *(unsigned char *)(param_1 + 0xba) - 2;
+    }
+    *(unsigned char *)(param_1 + 0xba) &= 7;
+    FUN_00480840(&local, &local, *(unsigned char *)(param_1 + 0xba));
+    *(int *)(param_1 + 0x30 + frame * 8) = local.x << 16;
+    *(int *)(param_1 + 0x34 + frame * 8) = local.y << 16;
+    *(int *)(param_1 + 0x20) = local.x;
+    *(int *)(param_1 + 0x24) = local.y;
+    *(unsigned char *)(param_1 + 0xbb) = frame + 1;
+    *(unsigned char *)(param_1 + 0xc2) = 1;
+}
 
 // FUNCTION: LEGOLAND 0x004017c0
 LEGO_EXPORT __int64 MapToPlayfield(int param_1, int param_2) {
