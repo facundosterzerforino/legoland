@@ -5207,7 +5207,23 @@ void FUN_004299e0(struct PathSeg *n) {
 }
 
 // FUNCTION: LEGOLAND 0x00429a30
-void FUN_00429a30(void) { STUB(); }
+void FUN_00429a30(struct PathSeg *n) {
+    struct PathSeg *p = n;
+    float v;
+
+    while (!(*p->info & 1)) {
+        p = p->next;
+    }
+    v = (float)(int)p->info[2];
+    p = p->last;
+    while (p != n->last) {
+        unsigned int fl = p->flags & ~1u;
+        p->f18 = v;
+        p->f24 = v;
+        p->flags = fl;
+        p = p->last;
+    }
+}
 
 struct Struct429a80B {
     float x0;
