@@ -24,10 +24,34 @@ void FUN_00454290(HANDLE file, const char *format, ...) {
 }
 
 // FUNCTION: LEGOLAND 0x004542e0
-void FUN_004542e0(void) { STUB(); }
+void FUN_004542e0(HANDLE file) {
+    SYSTEM_INFO si;
+    MEMORY_BASIC_INFORMATION mbi;
+    DWORD pagesize;
+    DWORD limit;
+    DWORD i = 0;
+    DWORD prev = 0;
+
+    // STRING: LEGOLAND 0x004b8c90
+    FUN_00454290(file, "\r\n\tModule list: names, addresses, sizes, time stamps and file times:\r\n");
+    GetSystemInfo(&si);
+    pagesize = si.dwPageSize;
+    limit = (0x40000000 / pagesize) << 2;
+    while (i < limit) {
+        if (VirtualQuery((LPCVOID)(pagesize * i), &mbi, sizeof(mbi)) && mbi.RegionSize > 0) {
+            i += mbi.RegionSize / pagesize;
+            if (mbi.State == MEM_COMMIT && (DWORD)mbi.AllocationBase > prev) {
+                prev = (DWORD)mbi.AllocationBase;
+                FUN_00454380(file, prev);
+            }
+        } else {
+            i += 0x10000 / pagesize;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00454380
-void FUN_00454380(void) { STUB(); }
+void FUN_00454380(HANDLE file, DWORD base) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454500
 void FUN_00454500(void) { STUB(); }
