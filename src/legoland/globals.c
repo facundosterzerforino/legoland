@@ -4953,3 +4953,24 @@ struct RideSpriteInfo DAT_0062fe30;
 
 // GLOBAL: LEGOLAND 0x0062fe10
 struct RideSpriteInfo DAT_0062fe10;
+
+// GLOBAL: LEGOLAND 0x004ab404
+float FLOAT_004ab404;
+
+// GLOBAL: LEGOLAND 0x004b55fc
+struct PlaneSet *DAT_004b55fc;
+
+// GLOBAL: LEGOLAND 0x004d83b4
+struct RingHost *DAT_004d83b4;
+
+// GLOBAL: LEGOLAND 0x004d83a0
+unsigned int DAT_004d83a0[5];
+
+// GLOBAL: LEGOLAND 0x004b5634
+float FLOAT_004b5634;
+
+// GLOBAL: LEGOLAND 0x004b559c
+float DAT_004b559c[3];
+
+// GLOBAL: LEGOLAND 0x004b55a8
+float FLOAT_004b55a8;

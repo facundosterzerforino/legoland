@@ -3635,3 +3635,25 @@ extern struct RideSpriteInfo DAT_006160a0;
 extern struct RideSpriteInfo DAT_0062fe30;
 // 0x0062fe10
 extern struct RideSpriteInfo DAT_0062fe10;
+
+// 0x004ab404
+extern float FLOAT_004ab404;
+
+// 0x004b55fc
+struct PlaneSet;
+extern struct PlaneSet *DAT_004b55fc;
+
+// 0x004d83b4
+extern struct RingHost *DAT_004d83b4;
+
+// 0x004d83a0
+extern unsigned int DAT_004d83a0[5];
+
+// 0x004b5634
+extern float FLOAT_004b5634;
+
+// 0x004b559c
+extern float DAT_004b559c[3];
+
+// 0x004b55a8
+extern float FLOAT_004b55a8;
