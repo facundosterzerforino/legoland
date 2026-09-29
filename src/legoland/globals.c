@@ -183,6 +183,9 @@ unsigned int DAT_004b4458[5];
 // GLOBAL: LEGOLAND 0x004b4470
 unsigned int DAT_004b4470[5];
 
+// GLOBAL: LEGOLAND 0x004b4580
+struct FortRect DAT_004b4580 = {-1, -3, 3, 3};
+
 // GLOBAL: LEGOLAND 0x004b4688
 unsigned char JOUST_SFX[12];
 
