@@ -4,12 +4,14 @@
 
 struct Sprite;
 struct SaveIcon;
+struct EditSprite;
 
 LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2);
 LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void);
 LEGO_EXPORT void RemoveSaveGame(unsigned char slot);
 LEGO_EXPORT void InitSavedGameScreen(void);
 LEGO_EXPORT void PrintSavedGameDetails(void);
+LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite);
 LEGO_EXPORT void KillSaveScreenSprites(void);
 LEGO_EXPORT void DeleteSavedGameList(void);
 LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot);

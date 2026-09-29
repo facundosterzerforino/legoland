@@ -350,7 +350,113 @@ LEGO_EXPORT void KillSaveScreenSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048dd00
-LEGO_EXPORT void PrintSavedGameDetails(void) { STUB(); }
+LEGO_EXPORT void PrintSavedGameDetails(void) {
+    struct IconNode *node = DAT_006687c8;
+    struct IconNode *selected;
+    struct IconNode *btn;
+    RECT rc;
+    int draw;
+    int by;
+
+    if (DAT_007cb360 != NULL) {
+        DAT_007cb360->flags |= 0x400;
+    }
+    rc.left = 0x5c;
+    rc.top = 0x24;
+    rc.right = 0x14e;
+    rc.bottom = 0x56;
+    NewPrintCent(GetString(DAT_007cb328 != 0 ? 0x4b0 : 0x4ba), 0, rc, 1);
+    rc.top = 0x38;
+    rc.bottom = 0x6a;
+    NewPrintCent((char *)&DAT_0080ffa0, 1, rc, 1);
+
+    while (node != NULL) {
+        draw = 1;
+        if ((node->flags & 0x1400) == 0 && (node->field_20b & 1) != 0) {
+            for (;;) {
+                if (DAT_0080ffe4 == node->field_1cb) {
+                    selected = node;
+                    if (DAT_007986e4 != 0) {
+                        FUN_0046d680(node, DAT_007986b8);
+                        node->y = (short)(node->field_1cb * 0x26 + 0x54);
+                        rc.top = node->y + 0x22;
+                        by = node->y + 0x1b;
+                        LightUpthisDeleteIcon(node, 0);
+                    } else if (DAT_00798700 != 0) {
+                        FUN_0046d680(node, DAT_007986b8);
+                        node->y = (short)(node->field_1cb * 0x26 + 0x54);
+                        by = node->y;
+                        rc.top = by + 0x22;
+                        EnterSaveGameDetails((struct EditSprite *)node);
+                        draw = 0;
+                        if (DAT_0080ffe5 == 1) {
+                            PrintSprite(DAT_00798728, node->x + 7, by + 0x21, 0, 0);
+                        }
+                        if (DAT_0080ffe5 == 2) {
+                            PrintSprite(DAT_0079872c, node->x + 7, by + 0x21, 0, 0);
+                        }
+                        break;
+                    } else {
+                        FUN_0046d680(node, DAT_00798704);
+                        node->y = (short)(node->field_1cb * 0x26 + 0x6f);
+                        by = node->y;
+                        rc.top = by + 7;
+                        if (DAT_007cb328 != 0) {
+                            LightUpthisDeleteIcon(node, 0);
+                        }
+                    }
+                } else {
+                    FUN_0046d680(node, GetSavePanelBK(node->field_1cb));
+                    by = node->y;
+                    rc.top = by + 7;
+                }
+                if ((node->field_20b & 2) != 0) {
+                    PrintSprite(DAT_00798728, node->x + 7, by + 6, 0, 0);
+                }
+                if ((node->field_20b & 4) != 0) {
+                    PrintSprite(DAT_0079872c, node->x + 7, by + 6, 0, 0);
+                }
+                break;
+            }
+            rc.left = node->x + 0x28;
+            rc.right = rc.left + 0xd7;
+            rc.bottom = rc.top + 0x13;
+            if (node->field_18p != NULL && draw != 0) {
+                if (DAT_0080ffe4 - 1 != node->field_1cb || (DAT_007986e4 == 0 && DAT_00798700 == 0)) {
+                    NewPrintCent((char *)node->field_18p, 2, rc, 1);
+                }
+            }
+        }
+        node = node->next;
+    }
+
+    if (DAT_00798700 != 0) {
+        PrintSprite(DAT_00798730, selected->x, selected->y, 0, 0);
+        rc.left = selected->x + 8;
+        rc.top = selected->y + 7;
+        rc.right = rc.left + 0xae;
+        rc.bottom = rc.top + 0x13;
+        NewPrintCent(GetString(DAT_007986f0 != 0 ? 0xc44 : 0x8c), 2, rc, 1);
+        UpdateProfileCheckBoxIcons();
+    } else if (DAT_007986e4 != 0) {
+        PrintSprite(DAT_00798730, selected->x, selected->y, 0, 0);
+        rc.left = selected->x + 0x14;
+        rc.top = selected->y + 7;
+        rc.right = rc.left + 0x9b;
+        rc.bottom = rc.top + 0x13;
+        NewPrintCent(GetString(0x85), 2, rc, 1);
+        UpdateProfileCheckBoxIcons();
+    }
+
+    btn = (struct IconNode *)DAT_007986e0;
+    if (btn != NULL) {
+        if (DAT_0080ffe4 == 0) {
+            btn->flags |= 0x400;
+        } else {
+            btn->flags &= ~0x400;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048e0c0
 void FUN_0048e0c0(int has_header, struct ProfileData *header, unsigned char slot) {
