@@ -1897,13 +1897,49 @@ unsigned int FUN_0040d3b0(void *param_1, unsigned int *param_2) {
     SetEditCursorFootPrint((void *)param_2);
     DAT_004cbdd8 = 0x2034;
     DAT_004c2a88 = 0x2034;
-    DAT_004c5c90 = 0x2034;
-    DAT_004c74c8 = 0x2034;
+    DAT_004c4468.field_1828 = 0x2034;
+    DAT_004c5ca0.field_1828 = 0x2034;
     return 0x2034;
 }
 
 // FUNCTION: LEGOLAND 0x0040d420
-void FUN_0040d420(void) { STUB(); }
+void FUN_0040d420(unsigned int *res) {
+    unsigned int flags = res[0];
+    struct Cursor *cur = NULL;
+    int n;
+
+    DAT_004c4468.next = &DAT_004c5ca0;
+    memcpy(&DAT_004c4468.footprint, &DAT_004b4728, sizeof(struct Footprint));
+    DAT_004c4468.footprint.x1 = DAT_004b4730 - 1;
+    DAT_004c4468.footprint.y1 = DAT_004c4468.footprint.y1 - 1;
+    DAT_004c5ca0.next = NULL;
+    DAT_004c5ca0.footprint = DAT_004c4468.footprint;
+    for (n = 2; n != 0; n--) {
+        if (cur == NULL) {
+            cur = &DAT_004c4468;
+        } else {
+            cur = &DAT_004c5ca0;
+        }
+        if (flags & 1) {
+            cur->field_1404 = res[1];
+            cur->field_1408 = res[2];
+            flags &= ~1;
+        } else if (flags & 2) {
+            cur->field_1404 = res[3];
+            cur->field_1408 = res[4];
+            flags &= ~2;
+        } else if (flags & 4) {
+            cur->field_1404 = res[5];
+            cur->field_1408 = res[6];
+            flags &= ~4;
+        } else if (flags & 8) {
+            cur->field_1404 = res[7];
+            cur->field_1408 = res[8];
+            flags &= ~8;
+        }
+        FUN_0045f460(cur);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040d520
 void FUN_0040d520(void) { STUB(); }

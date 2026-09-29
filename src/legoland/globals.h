@@ -1226,10 +1226,10 @@ extern struct CursorSource *DAT_004c2bf0;
 extern struct CursorSource *DAT_004c445c;
 // 0x004c4460
 extern void *DAT_004c4460;
-// 0x004c5c90
-extern unsigned int DAT_004c5c90;
-// 0x004c74c8
-extern unsigned int DAT_004c74c8;
+// 0x004c4468
+extern struct Cursor DAT_004c4468;
+// 0x004c5ca0
+extern struct Cursor DAT_004c5ca0;
 // 0x004c74d4
 extern struct CursorSource *DAT_004c74d4;
 // 0x004c74d8
