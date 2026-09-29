@@ -62,7 +62,25 @@ struct TextureDesc {
 };
 
 // FUNCTION: LEGOLAND 0x004860f0
-void FUN_004860f0(void) { STUB(); }
+void FUN_004860f0(void) {
+    int i;
+    unsigned int n;
+    unsigned int sh;
+    unsigned int mask;
+    unsigned short v;
+    float f;
+
+    n = *(unsigned int *)&DAT_007cb5e0;
+    sh = n + 5;
+    mask = 0xffu >> (8 - n);
+    for (i = 0; i < 256; i++) {
+        f = i * FLOAT_004ab550;
+        v = (unsigned short)(int)(f * FLOAT_004ab444);
+        DAT_0066b638[i].shifted = v << sh;
+        DAT_0066b638[i].scaled = (int)(f * mask) << 5;
+        DAT_0066b638[i].value = v;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00486190
 unsigned int FUN_00486190(struct CursorKey *key) {
