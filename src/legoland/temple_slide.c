@@ -35,7 +35,8 @@ struct SlideTrack {
     unsigned char pad_0[0x14];
     unsigned int var_14;
     unsigned int var_18;
-    unsigned char pad_1c[0x48];
+    unsigned int var_1c;
+    unsigned char pad_20[0x44];
     struct SlideCar *var_64;
 };
 
@@ -146,10 +147,30 @@ void FUN_00417130(struct TempleRide *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417150
-void FUN_00417150(void) { STUB(); }
+void FUN_00417150(struct SlideContext *arg) {
+    DAT_004cbf80 = arg->var_c;
+    DAT_004cbf80->var_1c |= 0x20;
+    DAT_004cbf7c = DAT_004cbf80->var_64;
+    DAT_004cbf7c->var_10 |= 0x2000;
+    DAT_004cbfd0 = LoadSprite(
+        // STRING: LEGOLAND 0x004b4f7c
+        "z_tempslide.lls", 1);
+    DAT_004cbfc4 = LoadBinV(
+        // STRING: LEGOLAND 0x004b4f64
+        "Zbuffers\\tempslide.bnv");
+    GetLLSForSprite((struct SpriteLLS *)DAT_004cbf80->var_64);
+    DAT_004cbfc8 = 0;
+    DAT_004cbfcc[0] = 1;
+    DAT_004cbf88 = 13;
+    DAT_004cbf8c = 93;
+    DAT_004cbf78 = LoadSprite(
+        // STRING: LEGOLAND 0x004b4f50
+        "tempslide_matte.lls", 1);
+    DAT_004cbfb8[0] = (unsigned int)DAT_004cbfc4;
+}
 
 // FUNCTION: LEGOLAND 0x00417200
-void FUN_00417200(struct TempleRide *arg) {
+void FUN_00417200(struct SlideContext *arg) {
     DAT_004cbf80 = arg->var_c;
     if (DAT_004cbf78 != 0) {
         KillSprite(DAT_004cbf78);

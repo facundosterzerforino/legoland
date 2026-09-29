@@ -1388,11 +1388,14 @@ struct Sprite *DAT_004cbf6c;
 // GLOBAL: LEGOLAND 0x004cbf70
 struct RenderItemNode *DAT_004cbf70;
 
+// GLOBAL: LEGOLAND 0x004cbf7c
+struct SlideCar *DAT_004cbf7c;
+
 // GLOBAL: LEGOLAND 0x004cbf78
 struct Sprite *DAT_004cbf78;
 
 // GLOBAL: LEGOLAND 0x004cbf80
-unsigned int DAT_004cbf80;
+struct SlideTrack *DAT_004cbf80;
 
 // GLOBAL: LEGOLAND 0x004cbf98
 unsigned int DAT_004cbf98;
@@ -1406,11 +1409,20 @@ unsigned int DAT_004cbfa0;
 // GLOBAL: LEGOLAND 0x004cbfa4
 unsigned short DAT_004cbfa4;
 
+// GLOBAL: LEGOLAND 0x004cbf88
+unsigned int DAT_004cbf88;
+
+// GLOBAL: LEGOLAND 0x004cbf8c
+unsigned int DAT_004cbf8c;
+
 // GLOBAL: LEGOLAND 0x004cbfb8
 unsigned int DAT_004cbfb8[3];
 
 // GLOBAL: LEGOLAND 0x004cbfc4
 void *DAT_004cbfc4;
+
+// GLOBAL: LEGOLAND 0x004cbfc8
+unsigned int DAT_004cbfc8;
 
 // GLOBAL: LEGOLAND 0x004cbfcc
 unsigned int DAT_004cbfcc[1];

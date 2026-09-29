@@ -1267,10 +1267,16 @@ extern struct Sprite *DAT_004cbf68;
 extern struct Sprite *DAT_004cbf6c;
 // 0x004cbf70
 extern struct RenderItemNode *DAT_004cbf70;
+// 0x004cbf7c
+extern struct SlideCar *DAT_004cbf7c;
 // 0x004cbf78
 extern struct Sprite *DAT_004cbf78;
 // 0x004cbf80
-extern unsigned int DAT_004cbf80;
+extern struct SlideTrack *DAT_004cbf80;
+// 0x004cbf88
+extern unsigned int DAT_004cbf88;
+// 0x004cbf8c
+extern unsigned int DAT_004cbf8c;
 // 0x004cbf98
 extern unsigned int DAT_004cbf98;
 // 0x004cbf9c
@@ -1283,6 +1289,8 @@ extern unsigned short DAT_004cbfa4;
 extern unsigned int DAT_004cbfb8[3];
 // 0x004cbfc4
 extern void *DAT_004cbfc4;
+// 0x004cbfc8
+extern unsigned int DAT_004cbfc8;
 // 0x004cbfcc
 extern unsigned int DAT_004cbfcc[1];
 // 0x004cbfd0
