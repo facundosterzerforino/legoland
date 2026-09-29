@@ -145,6 +145,7 @@ void FUN_00428700(void *node);
 void FUN_004294f0(unsigned int a, unsigned int *b, unsigned int c, unsigned int d);
 void FUN_00428f00(void);
 void FUN_00429270(void);
+float FUN_0042a150(unsigned int b);
 void FUN_004294b0(void);
 unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
 unsigned int FUN_00429940(struct PathSeg *n, struct PathSeg **out);

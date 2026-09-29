@@ -1585,6 +1585,11 @@ extern int DAT_006159c8[90][4];
 extern unsigned int DAT_00615f6c;
 // 0x00615f84
 extern void *DAT_00615f84;
+extern unsigned char *DAT_00615f80;
+extern int DAT_00615ff0;
+extern float DAT_00615ff4;
+extern struct CastleFloatEnt DAT_004b5f80[3][4];
+extern struct CastleFloatEnt DAT_00612210[3][4];
 // 0x00615f90
 extern int DAT_00615f90;
 // 0x00615fd4
