@@ -2064,7 +2064,7 @@ struct RideLayer *DAT_0062fe50;
 struct Sprite *DAT_0062fe54;
 
 // GLOBAL: LEGOLAND 0x0062fe58
-unsigned int DAT_0062fe58;
+struct Ride *DAT_0062fe58;
 
 // GLOBAL: LEGOLAND 0x0062fe60
 unsigned int DAT_0062fe60;
@@ -2080,6 +2080,12 @@ unsigned short DAT_0062fe6c;
 
 // GLOBAL: LEGOLAND 0x0062fe78
 void *DAT_0062fe78;
+
+// GLOBAL: LEGOLAND 0x0062fe7c
+struct Sprite *DAT_0062fe7c;
+
+// GLOBAL: LEGOLAND 0x0062fe98
+struct Sprite *DAT_0062fe98;
 
 // GLOBAL: LEGOLAND 0x0062fe84
 void *DAT_0062fe84[3];
@@ -4702,6 +4708,12 @@ unsigned int DAT_0081c8dc;
 
 // GLOBAL: LEGOLAND 0x0081cae0
 struct Sprite *DAT_0081cae0;
+
+// GLOBAL: LEGOLAND 0x0081cae8
+int DAT_0081cae8;
+
+// GLOBAL: LEGOLAND 0x0081caec
+int DAT_0081caec;
 
 // GLOBAL: LEGOLAND 0x0081caf0
 struct Ride *DAT_0081caf0;

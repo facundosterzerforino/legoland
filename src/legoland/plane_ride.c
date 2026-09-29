@@ -154,11 +154,39 @@ void FUN_0043d9f0(struct PlaneRideNode *node) {
 void FUN_0043da60(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043dda0
-void FUN_0043dda0(void) { STUB(); }
+void FUN_0043dda0(Element *input) {
+    struct LayerResult layer;
+
+    DAT_0062fe58 = input->ride;
+    DAT_0062fe58->flags |= 0x420;
+    DAT_0062fe7c = DAT_0062fe58->layer;
+    DAT_0062fe7c->flags |= 0x2000;
+    // STRING: LEGOLAND 0x004b7a54
+    DAT_0062fe90 = LoadBinV("Zbuffers\\Zoomeride.bnv");
+    // STRING: LEGOLAND 0x004b7a3c
+    DAT_0062fe94 = LoadBinV("Zbuffers\\Zoomer0n.bnv");
+    // STRING: LEGOLAND 0x004b7a24
+    DAT_0062fe78 = LoadBinV("Zbuffers\\Zoomer0ff.bnv");
+    // STRING: LEGOLAND 0x004b7a14
+    DAT_0062fe98 = DAT_0081cae0 = LoadSprite("z_Zoomer.lls", 1);
+    DAT_0081cae8 = -10;
+    DAT_0081caec = -0x6b;
+    DAT_0062fe84[0] = DAT_0062fe90;
+    DAT_0062fe84[1] = DAT_0062fe94;
+    DAT_0062fe84[2] = DAT_0062fe78;
+    Load_FXList(DAT_004b79d0, 2);
+    HideLayer(DAT_0062fe7c, 1);
+    StopLayerPlaying(DAT_0062fe7c, 1);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fe7c, 1), 0);
+    HideLayer(DAT_0062fe7c, 2);
+    StopLayerPlaying(DAT_0062fe7c, 2);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fe7c, 2), 0);
+    GetLayer(DAT_0062fe58->layer, &layer, 1);
+}
 
 // FUNCTION: LEGOLAND 0x0043dee0
 void FUN_0043dee0(struct PlaneRideObject *input) {
-    DAT_0062fe58 = input->field_c;
+    DAT_0062fe58 = (struct Ride *)input->field_c;
     if (DAT_0081cae0) {
         KillSprite(DAT_0081cae0);
     }
