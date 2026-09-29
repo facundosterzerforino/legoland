@@ -138,7 +138,7 @@ struct MapElement {
     /* 0x0e */ unsigned char pad_e[0x10 - 0xe];
     /* 0x10 */ unsigned char field_10;
     /* 0x11 */ unsigned char field_11;
-    /* 0x12 */ unsigned char pad_12[0x14 - 0x12];
+    /* 0x12 */ unsigned short field_12;
 };
 
 struct LegoConfig {

@@ -2343,7 +2343,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     for (row = 0; row < lpConfig->height; row++) {
         for (col = 0; col < lpConfig->width; col++) {
             GameMap[row][col].flags = 0;
-            *(unsigned short *)GameMap[row][col].pad_12 = 0;
+            GameMap[row][col].field_12 = 0;
         }
     }
     DAT_00801a68 = malloc(DAT_00801b28 * 4);
