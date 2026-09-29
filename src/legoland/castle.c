@@ -126,10 +126,11 @@ unsigned int FUN_0041cca0(unsigned int dir) {
 
 // FUNCTION: LEGOLAND 0x0041cce0
 void FUN_0041cce0(short *pt, unsigned char *r, int *out) {
-    out[0] = pt[0] + *(int *)(r + 0x3c);
-    out[2] = *(int *)(r + 0x44) + pt[0];
-    out[1] = *(int *)(r + 0x40) + pt[1];
-    out[3] = *(int *)(r + 0x48) + pt[1];
+    int *rect = (int *)(r + 0x3c);
+    out[0] = pt[0] + rect[0];
+    out[2] = pt[0] + rect[2];
+    out[1] = pt[1] + rect[1];
+    out[3] = pt[1] + rect[3];
 }
 
 // FUNCTION: LEGOLAND 0x0041cd20
@@ -976,16 +977,15 @@ struct Slot *FUN_0041e760(struct SlotHost *host) {
 unsigned int FUN_0041e790(struct SlotHost *host) {
     struct Slot *slot = &host->slots[0];
     int i = 0;
-    unsigned int r;
+
     while (i <= 1) {
-        r = slot->method_10(slot);
-        if (r != 0) {
+        if (slot->method_10(slot) != 0) {
             return FUN_004273e0(slot);
         }
         i++;
         slot++;
     }
-    return r;
+    return 0;
 }
 
 struct Slot2 {
@@ -1208,9 +1208,9 @@ void FUN_0041ed90(unsigned int param1, unsigned int param2) {
 }
 
 // FUNCTION: LEGOLAND 0x0041edb0
-void FUN_0041edb0(unsigned int param1, unsigned int param2, unsigned int param3) {
+void FUN_0041edb0(unsigned int param1, TileId param2, unsigned int param3) {
     if (DAT_004b55f4 != 0) {
-        StandardRemoveObject(param1, *(TileId *)&param2, param3);
+        StandardRemoveObject(param1, param2, param3);
     }
 }
 
@@ -2287,9 +2287,9 @@ unsigned char *FUN_00422300(unsigned char *src, unsigned char *dst) {
 
 // FUNCTION: LEGOLAND 0x00422340
 unsigned char *FUN_00422340(unsigned int *range, int count) {
+    int n = 0;
     unsigned char *p = (unsigned char *)range[0];
     unsigned char *end = p + range[1];
-    int n = 0;
 
     if (count == 0) {
         return p;
@@ -2756,14 +2756,12 @@ void FUN_004244b0(unsigned int param_1, TileId param_2, unsigned int param_3) {
     struct Cursor cursor;
     TileId tile;
     unsigned int handle;
-    unsigned int packed;
 
     if (DAT_00610a04 != 0) {
         tile.pos.x = DAT_00829ae8[0];
         tile.pos.y = DAT_00829ae8[1];
         cursor.field_1404 = tile.pos.x;
         cursor.field_1408 = tile.pos.y;
-        packed = *(unsigned int *)&tile;
         cursor.footprint = *(struct Footprint *)(DAT_00829bf8 + 0x3c);
         cursor.field_1414[4] = 0;
         FUN_00424ab0((struct CastleSub *)&DAT_00829ae0);
@@ -2776,7 +2774,7 @@ void FUN_004244b0(unsigned int param_1, TileId param_2, unsigned int param_3) {
         FUN_00424df0((struct ListHost *)&DAT_00829ae0);
         FUN_00424e20();
         handle = FUN_0041ec40(0);
-        FUN_0041edb0(handle, packed, (unsigned int)&cursor);
+        FUN_0041edb0(handle, tile, (unsigned int)&cursor);
         FUN_00424620(DAT_00829ae8);
         DAT_00610a04 = 0;
         FUN_004775f0();
@@ -2806,14 +2804,13 @@ void FUN_00424620(short *param_1) {
     int i;
 
     for (i = 0; i < (int)DAT_00610a08; i++) {
-        short *q = (short *)((unsigned char *)DAT_0060f924 + 6 + i * 0x24);
-        tile.pos.x = q[-1] + param_1[0];
-        tile.pos.y = q[0] + param_1[1];
+        tile.pos.x = ((short *)DAT_0060f924)[i * 18 + 2] + param_1[0];
+        tile.pos.y = ((short *)DAT_0060f924)[i * 18 + 3] + param_1[1];
         cursor.field_1404 = tile.pos.x;
         cursor.field_1408 = tile.pos.y;
         cursor.footprint = *(struct Footprint *)(DAT_00829c34 + 0x3c);
         cursor.field_1414[4] = 0;
-        FUN_0041edb0(DAT_00829c00, *(unsigned int *)&tile, (unsigned int)&cursor);
+        FUN_0041edb0(DAT_00829c00, tile, (unsigned int)&cursor);
     }
     FUN_0041d6d0(-(int)DAT_00610a08);
 }
@@ -3330,7 +3327,7 @@ void FUN_00426490(unsigned int *src, unsigned int dst[4][4]) {
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            dst[j][i] = *src++;
+            dst[j][i] = src[i * 3 + j];
         }
         dst[3][i] = 0;
     }
