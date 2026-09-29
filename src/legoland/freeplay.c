@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "globals.h"
 #include "legoland.h"
@@ -28,8 +29,11 @@
 struct PanelNode {
     struct PanelNode *next;
     void *buffer1;
-    unsigned char pad_8[8];
+    char **name;
+    char **after;
     void *buffer2;
+    int a;
+    int key;
 };
 
 struct GameListNode {
@@ -301,7 +305,66 @@ unsigned char FUN_0048b000(struct IconNode *icon, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048b110
-LEGO_EXPORT void Add2FreePlayPanelLists(void) { STUB(); }
+LEGO_EXPORT void Add2FreePlayPanelLists(int a, char **name, char *name2, int key, char **after, int type) {
+    struct PanelNode *cur = 0;
+    struct PanelNode *prev = 0;
+    struct PanelNode **head = 0;
+    struct PanelNode *node = (struct PanelNode *)malloc(sizeof(struct PanelNode));
+
+    if (type == 200) {
+        cur = DAT_007cb3d0;
+        head = &DAT_007cb3d0;
+    } else if (type == 300) {
+        cur = DAT_007cb39c;
+        head = &DAT_007cb39c;
+    } else if (type == 400) {
+        cur = DAT_007cb3b8;
+        head = &DAT_007cb3b8;
+    } else if (type == 500) {
+        cur = DAT_007cb3a4;
+        head = &DAT_007cb3a4;
+    }
+    node->buffer2 = malloc(strlen(name2) + 1);
+    strcpy(node->buffer2, name2);
+    node->buffer1 = malloc(strlen(*name) + 1);
+    strcpy(node->buffer1, *name);
+    node->name = name;
+    node->a = a;
+    node->after = after;
+    node->key = key;
+    node->next = 0;
+    if (after != 0) {
+        while (cur != 0) {
+            if (cur->name == after) {
+                break;
+            }
+            cur = cur->next;
+        }
+        if (cur == 0) {
+            free(node->buffer1);
+            free(node->buffer2);
+            free(node);
+            return;
+        }
+        prev = cur;
+        cur = cur->next;
+    } else {
+        while (cur != 0) {
+            if (cur->key > key) {
+                break;
+            }
+            prev = cur;
+            cur = cur->next;
+        }
+    }
+    if (prev != 0) {
+        prev->next = node;
+        node->next = cur;
+    } else {
+        *head = node;
+        node->next = cur;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048b2a0
 LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) { STUB(); }
