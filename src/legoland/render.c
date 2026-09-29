@@ -138,7 +138,61 @@ void FUN_00486250(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00486280
-unsigned int FUN_00486280(int param_1, void *param_2) { STUB(); }
+unsigned int FUN_00486280(int param_1, void *param_2) {
+    struct CursorKey *key = (struct CursorKey *)param_2;
+    struct TextureFrame *frame;
+    unsigned int cached;
+    float fb, fg, fr;
+    float sb, sg, sr;
+    float ab, ag, ar;
+    int i;
+
+    cached = FUN_00486190(key);
+    if (cached != 0) {
+        return cached;
+    }
+    frame = (struct TextureFrame *)malloc(8);
+    if (frame != 0) {
+        frame->field_0 = (void *)param_1;
+        frame->data = (unsigned short *)malloc(param_1 * 2);
+        fb = key->b;
+        fg = key->g;
+        fr = key->r;
+        param_1 >>= 1;
+        ab = FLOAT_004ab390;
+        ag = FLOAT_004ab390;
+        ar = FLOAT_004ab390;
+        sb = fb / param_1;
+        sg = fg / param_1;
+        sr = fr / param_1;
+        i = 0;
+        if (param_1 > 0) {
+            do {
+                frame->data[i++] = DAT_0066b638[(unsigned char)(int)ar].value | DAT_0066b638[(unsigned char)(int)ag].scaled | DAT_0066b638[(unsigned char)(int)ab].shifted;
+                ab += sb;
+                ag += sg;
+                ar += sr;
+            } while (i < param_1);
+        }
+        sb = (255.0f - fb) / param_1;
+        sg = (255.0f - fg) / param_1;
+        sr = (255.0f - fr) / param_1;
+        ab = fb;
+        ag = fg;
+        ar = fr;
+        if (param_1 > 0) {
+            i = param_1;
+            do {
+                frame->data[i++] = DAT_0066b638[(unsigned char)(int)ar].value | DAT_0066b638[(unsigned char)(int)ag].scaled | DAT_0066b638[(unsigned char)(int)ab].shifted;
+                ab += sb;
+                ag += sg;
+                ar += sr;
+            } while (--param_1 != 0);
+        }
+    }
+    FUN_004861d0((unsigned int)frame, (unsigned char *)key);
+    return (unsigned int)frame;
+}
 
 // FUNCTION: LEGOLAND 0x004864e0
 void FUN_004864e0(unsigned int param_1) {
