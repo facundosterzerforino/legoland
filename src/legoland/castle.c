@@ -5146,7 +5146,33 @@ unsigned int FUN_004296f0(struct Struct4296f0Host *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00429750
-void FUN_00429750(struct PathSeg *seg, struct PathSeg *end) { STUB(); }
+void FUN_00429750(struct PathSeg *seg, struct PathSeg *end) {
+    struct PathSeg *n;
+    struct PathSeg *node;
+    unsigned int count;
+    float base;
+    float step;
+
+    count = FUN_00429990(seg->next, &n);
+    base = (float)(int)seg->info[1];
+    if (count) {
+        step = (float)(int)(end->info[2] - seg->info[1]) / (int)count;
+        n = seg->next;
+        while (n != end) {
+            if (FUN_00429910(n->info, n->dir_in, n->dir_out)) {
+                int k;
+                float h;
+                node = (struct PathSeg *)FUN_004296f0((struct Struct4296f0Host *)n, &k);
+                h = (float)k * step;
+                FUN_00429560(n, node, k, base, h);
+                base = h + base;
+                n = node->next;
+            } else {
+                n = (struct PathSeg *)FUN_00429690((struct Struct429690 *)n, *(unsigned int *)&base, (struct Struct429690 *)end);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00429840
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x) {
