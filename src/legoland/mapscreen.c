@@ -55,7 +55,14 @@ LEGO_EXPORT void KillMapScreen(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004563b0
-void FUN_004563b0(void) { STUB(); }
+void FUN_004563b0(void) {
+    int x = ((ScrollX >> 8) - DAT_00667c00) * DAT_008139c4 / DAT_00667c1c;
+    int y = ((ScrollY >> 8) - DAT_00667c04) * DAT_008139c4 / DAT_00667c18 / 2 + DAT_00667c20;
+    int w = DAT_008139c4 * DAT_008139c4 / DAT_00667c1c;
+    int h = DAT_008139c0 * DAT_008139c4 / DAT_00667c18 / 2;
+
+    RenderThickBox(DAT_008139c8 + x, DAT_008139cc + y, w, h, 2, GetNearestColour(255, 255, 255));
+}
 
 // FUNCTION: LEGOLAND 0x00456460
 LEGO_EXPORT void RenderMouseBounds(void) { STUB(); }

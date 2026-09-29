@@ -1929,6 +1929,16 @@ extern unsigned int DAT_006675b4;
 extern int DAT_006675b8;
 // 0x006675c0
 extern struct TextCell DAT_006675c0[50];
+// 0x00667c00
+extern int DAT_00667c00;
+// 0x00667c04
+extern int DAT_00667c04;
+// 0x00667c18
+extern int DAT_00667c18;
+// 0x00667c1c
+extern int DAT_00667c1c;
+// 0x00667c20
+extern int DAT_00667c20;
 // 0x00667c10
 extern unsigned int DAT_00667c10;
 // 0x00667c28
@@ -3271,6 +3281,10 @@ struct MapMarker {
 extern struct MapMarker DAT_008119c0[31][32];
 // 0x008138c0
 extern struct MapMarker DAT_008138c0[32];
+// 0x008139c0
+extern int DAT_008139c0;
+// 0x008139c4
+extern int DAT_008139c4;
 // 0x008139c8
 extern unsigned int DAT_008139c8;
 // 0x008139cc
