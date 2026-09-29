@@ -5466,7 +5466,7 @@ float FUN_00429cf0(unsigned int x) {
     v[2] = v[2] - c[2];
     if (v[2] * v[2] + v[1] * v[1] + v[0] * v[0] > DAT_00615fdc) {
         DAT_00615fe4++;
-        return FLOAT_004ab38c;
+        return 1.0f;
     }
     if (DAT_00615fd0 > DAT_00615fd4 && v[2] * v[2] + v[1] * v[1] + v[0] * v[0] < DAT_00615fe0) {
         return FLOAT_004ab468;

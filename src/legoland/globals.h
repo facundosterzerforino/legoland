@@ -407,7 +407,6 @@ extern struct FortRect DAT_004b4580;
 
 // 0x004ab390
 extern float FLOAT_004ab390;
-extern float FLOAT_004ab38c;
 extern float FLOAT_004ab468;
 // 0x004ab398
 extern double DOUBLE_004ab398;
