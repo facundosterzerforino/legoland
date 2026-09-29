@@ -732,7 +732,106 @@ unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00442980
-void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) { STUB(); }
+void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) {
+    int idx = 0;
+    int count1;
+    int count2;
+    char *list_mid;
+    char *list1;
+    char *name;
+    char *list2;
+    int *out_b;
+    char *data;
+    int *out_a;
+    int *arr2;
+    int *arr1;
+    int v1, v2, v3, v4, v5;
+    char word[128];
+    char line[512];
+    char path[256];
+    struct ResFile *file;
+    char *p;
+    char *q;
+    char *dst;
+    char c;
+    int r;
+
+    data = (char *)FUN_004402d0(param_3, param_1);
+    if (data != NULL) {
+        name = data;
+        p = data + strlen(data) + 1;
+        count1 = *(int *)p;
+        list1 = p + 4;
+        if (count1 != 0) {
+            q = list1;
+            do {
+                q = q + strlen(q) + 1;
+            } while (strlen(q) != 0);
+            q = q + 1;
+            list_mid = q;
+            q = q + strlen(q) + 1;
+            count2 = *(int *)q;
+            list2 = q + 4;
+        }
+    } else {
+        count1 = 0;
+    }
+    sprintf(path, ".\\3ddata\\new\\%s\\%s", param_3, param_2);
+    if (param_4 == 0) {
+        DAT_0063810c = count1;
+        DAT_00655a38 = (int *)malloc(count1 * 4);
+        DAT_0062feb8[0] = count2;
+        DAT_0062fea8 = (int *)malloc(count2 * 4);
+        arr1 = DAT_00655a38;
+        arr2 = DAT_0062fea8;
+        out_b = &DAT_0064cd90;
+        out_a = &DAT_00641000;
+    } else {
+        DAT_0064cd88 = count1;
+        DAT_0062fef8 = (int *)malloc(count1 * 4);
+        DAT_0063835c = count2;
+        DAT_0064cd8c = (int *)malloc(count2 * 4);
+        arr1 = DAT_0062fef8;
+        arr2 = DAT_0064cd8c;
+        out_b = &DAT_00638108;
+        out_a = &DAT_00638110;
+    }
+    file = RES_OpenFile(path);
+    if (file != NULL) {
+        FUN_004427e0(file, line, 512);
+        FUN_004427e0(file, line, 512);
+        if (FUN_004427e0(file, line, 512) != NULL) {
+            do {
+                p = line;
+                dst = path;
+                do {
+                    c = (char)tolower(*p);
+                    p++;
+                    if (c == '.') c = 0;
+                    *dst = c;
+                    dst++;
+                } while (c != 0);
+                sscanf(p, "%s %i %i %i %i %i", word, &v5, &v4, &v3, &v2, &v1);
+                if (strcmp(name, path) == 0) {
+                    *out_a = idx;
+                } else if (strcmp(list_mid, path) == 0) {
+                    *out_b = idx;
+                }
+                if (count1 != 0) {
+                    r = FUN_00442860(list1, path);
+                    if (r != -1) arr1[r] = idx;
+                }
+                if (count2 != 0) {
+                    r = FUN_00442860(list2, path);
+                    if (r != -1) arr2[r] = idx;
+                }
+                idx++;
+            } while (FUN_004427e0(file, line, 512) != NULL);
+        }
+    }
+    RES_CloseFile(file);
+    free(data);
+}
 
 // FUNCTION: LEGOLAND 0x00442c70
 unsigned int FUN_00442c70(void) {
