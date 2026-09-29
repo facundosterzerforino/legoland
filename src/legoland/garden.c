@@ -21,6 +21,13 @@ struct EditTarget {
     unsigned int field_3c;
 };
 
+struct GardenTable {
+    unsigned char pad_0[8];
+    int *a;
+    int *b;
+    int *c;
+};
+
 // FUNCTION: LEGOLAND 0x00432480
 void FUN_00432480(struct GardenLayer *arg0) {
     struct GardenInner *temp = arg0->field_c;
@@ -48,7 +55,35 @@ void FUN_004324d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432510
-void FUN_00432510(void) { STUB(); }
+void FUN_00432510(int x, int y) {
+    int pos[2];
+    int mask = 0;
+
+    pos[0] = x;
+    pos[1] = y - 1;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        mask = 1;
+    }
+    pos[0] = x + 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        mask |= 2;
+    }
+    pos[0] = x;
+    pos[1] = y + 1;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        mask |= 4;
+    }
+    pos[0] = x - 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        mask |= 8;
+    }
+    if (mask == 0) {
+        mask = 0xf;
+    }
+    Set_UserFlags(x << 8, y << 8, mask - 1);
+}
 
 // FUNCTION: LEGOLAND 0x004325e0
 void FUN_004325e0(void) { STUB(); }
@@ -57,7 +92,17 @@ void FUN_004325e0(void) { STUB(); }
 void FUN_00432700(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00432810
-void FUN_00432810(void) { STUB(); }
+struct RideSpriteInfo *FUN_00432810(int unused, TileId tile) {
+    struct GardenTable *t;
+    int i;
+
+    i = Get_UserFlags(tile.pos.x << 8, tile.pos.y << 8) & 0xffff;
+    t = (struct GardenTable *)DAT_0061614c;
+    DAT_0082c6a0.sprite = (void *)t->a[(unsigned char)i];
+    DAT_0082c6a0.x = t->b[(unsigned char)i] >> 1;
+    DAT_0082c6a0.y = t->c[(unsigned char)i] >> 1;
+    return &DAT_0082c6a0;
+}
 
 // FUNCTION: LEGOLAND 0x00432870
 void FUN_00432870(struct GardenLayer *param) {
@@ -98,7 +143,17 @@ void FUN_00432900(int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00432960
-void FUN_00432960(void) { STUB(); }
+struct RideSpriteInfo *FUN_00432960(int unused, TileId tile) {
+    struct GardenTable *t;
+    int i;
+
+    i = Get_UserFlags(tile.pos.x << 8, tile.pos.y << 8) & 0xffff;
+    t = (struct GardenTable *)DAT_00616158;
+    DAT_0082c6a0.sprite = (void *)t->a[(unsigned char)i];
+    DAT_0082c6a0.x = t->b[(unsigned char)i] >> 1;
+    DAT_0082c6a0.y = t->c[(unsigned char)i] >> 1;
+    return &DAT_0082c6a0;
+}
 
 // FUNCTION: LEGOLAND 0x004329c0
 void FUN_004329c0(void) { STUB(); }
