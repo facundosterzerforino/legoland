@@ -943,8 +943,6 @@ LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cu
     struct FootprintNode rect;
     int x;
     int y;
-    TileId id;
-    struct ObjInstance *instance;
 
     pos.x = coords.pos.x;
     pos.y = coords.pos.y;
@@ -981,6 +979,8 @@ LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cu
         }
     }
     if (obj->type != 2) {
+        TileId id;
+        struct ObjInstance *instance;
         id.pos.x = (unsigned char)pos.x;
         id.pos.y = (unsigned char)pos.y;
         if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
