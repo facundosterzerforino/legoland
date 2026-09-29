@@ -5171,7 +5171,58 @@ unsigned int FUN_004283c0(struct AnimPair *pair) {
 }
 
 // FUNCTION: LEGOLAND 0x004284d0
-void FUN_004284d0(void) { STUB(); }
+void FUN_004284d0(void) {
+    struct Obj421ce0 *base;
+    struct Obj421ce0 *cur;
+    struct Words3 *p;
+    struct Words3 *q;
+    unsigned int x;
+    unsigned int y;
+    int i;
+    int j;
+    int k;
+    int n = 0;
+
+    for (i = 0; i <= 3; i++) {
+        DAT_006117c0[i].x = DAT_004b5e00[i][0] * 20.0f;
+        DAT_006117c0[i].y = DAT_004b5e00[i][1] * 20.0f;
+        DAT_006117c0[i].z = DAT_004b5e00[i][2] * 20.0f;
+    }
+    for (i = 0; i <= 3; i++) {
+        DAT_00611658[i].x = DAT_004b5e30[i][0] * 20.0f;
+        DAT_00611658[i].y = DAT_004b5e30[i][1] * 20.0f;
+        DAT_00611658[i].z = DAT_004b5e30[i][2] * 20.0f;
+    }
+    for (i = 0; i <= 3; i++) {
+        DAT_00611750[i].x = DAT_004b5e60[i][0] * 20.0f;
+        DAT_00611750[i].y = DAT_004b5e60[i][1] * 20.0f;
+        DAT_00611750[i].z = DAT_004b5e60[i][2] * 20.0f;
+    }
+    for (i = 0; i <= 3; i++) {
+        DAT_006116e0[i].x = DAT_004b5e90[i][0] * 20.0f;
+        DAT_006116e0[i].y = DAT_004b5e90[i][1] * 20.0f;
+        DAT_006116e0[i].z = DAT_004b5e90[i][2] * 20.0f;
+    }
+    for (i = 0; i <= 3; i++) {
+        x = DAT_004b5f14[i][0];
+        y = DAT_004b5f14[i][1];
+        q = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][1]];
+        p = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][0]];
+        FUN_00421ce0(p, q, (struct Words3 *)&DAT_006116e0[i], &((struct Obj421ce0 *)DAT_00828fe0)[n++], x, y);
+        if (n == 5) {
+            n = 5;
+        }
+        FUN_00421ce0(q, p, (struct Words3 *)&DAT_006116e0[i], &((struct Obj421ce0 *)DAT_00828fe0)[n++], y, x);
+    }
+    base = &((struct Obj421ce0 *)DAT_00828fe0)[n];
+    for (j = 0; j <= 3; j++) {
+        cur = base;
+        base += 5;
+        for (k = 0; k < 5; k++) {
+            FUN_00428350(DAT_004b5ec0[j], (DAT_004b5ec0[j] - 2) & 3, DAT_004b5ee0[k], (struct Obj421ab0 *)cur++, j);
+        }
+    }
+}
 
 struct Struct4286e0Element {
     unsigned int field_0;
