@@ -2067,7 +2067,36 @@ unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, un
 }
 
 // FUNCTION: LEGOLAND 0x0040d900
-unsigned int FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), void (*param_5)(void), void (*param_6)(struct EdgeNode *, int *)) { STUB(); }
+void FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), FlumeCallback param_5, void (*param_6)(struct EdgeNode *, int *)) {
+    struct FlumeEntry *entry = FUN_00409010();
+    unsigned int buf[9];
+    unsigned int *list;
+    int coords[4];
+    unsigned int key;
+
+    if (entry != NULL) {
+        entry->tile.pos.x = (unsigned char)param_1;
+        entry->tile.pos.y = ((unsigned char *)&param_1)[1];
+        entry->ride = ((Element *)param_3)->ride;
+        entry->link28 = NULL;
+        ((void (*)(unsigned int, unsigned int *))param_5)(param_1, buf);
+        FUN_0040cf10((struct InputBuffer *)buf, &list);
+        FUN_0040cfa0((struct StateNode * (*)[4]) list);
+        key = FUN_0040cf80((struct Slot **)list);
+        FUN_004119a0((struct ParticleEmitter *)key, 3);
+        entry->parent = (struct FlumeEntry *)key;
+        FUN_0040cf50(key, (struct Slot **)list);
+        ((void (*)(struct FlumeEntry *))param_4)(entry);
+        FUN_004091f0((struct Node *)key, (struct ListNode *)entry);
+        coords[1] = ((unsigned char *)&param_1)[1];
+        coords[0] = (unsigned char)param_1;
+        memcpy(&((Element *)param_3)->ride->footprint, param_2, sizeof(struct Footprint));
+        AddBasicObject((Element *)param_3, coords);
+        param_6((struct EdgeNode *)entry, coords);
+        FUN_0040a080((struct Node **)coords, (struct Node **)list);
+        FUN_00409a90((void **)coords, (struct StateNode **)list);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040da10
 void FUN_0040da10(struct Context *a, struct LinkList *list) {
@@ -2934,7 +2963,7 @@ unsigned int FUN_00410700(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00410730
-void FUN_00410730(unsigned int param_1, unsigned int param_2) {
+void FUN_00410730(unsigned int param_1, struct Point *param_2) {
     FUN_0040d2d0(param_2);
 }
 
