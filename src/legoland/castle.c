@@ -5318,7 +5318,7 @@ void FUN_00426f90(struct Struct426f40Dst *src, struct Struct426d80Y *obj) {
 
     dst->field_0 = src->field_0;
     FUN_00426f10((unsigned char *)&src->field_14, (struct Struct426f10Out *)&dst->field_c, (struct SearchHost *)obj);
-    FUN_0041da10((struct RingHost *)dst, src->field_4, &dst->field_c);
+    FUN_0041da10((struct RingHost *)dst, *(float *)&src->field_4, &dst->field_c);
     FUN_0041dad0((struct FloatHolder *)dst, *(float *)&src->field_8);
     dst->field_4 = GetGameTimer() - src->field_c;
     dst->field_8 = GetGameTimer() + src->field_10;
