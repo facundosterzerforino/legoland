@@ -647,8 +647,8 @@ LEGO_EXPORT Bloke *GenerateGardener(int *coords, int in_hut) {
         worker->field_75 = 1;
         worker->field_7f = 0x18;
         worker->next = GardenerList;
-        DAT_0079a8bc++;
         GardenerList = worker;
+        DAT_0079a8bc++;
         if (in_hut != 0) {
             if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
                 cell = &GameMap[coords[1]][coords[0]];
@@ -669,10 +669,10 @@ LEGO_EXPORT Bloke *GenerateGardener(int *coords, int in_hut) {
             NewLongTermAction(worker, 0x10);
         }
         DAT_00668610 |= 0x80;
-        return worker;
-    }
+    } else {
     // STRING: LEGOLAND 0x004c0060
     DBPrintf("   Failed to Generate Gardener\n");
+    }
     return worker;
 }
 
@@ -729,11 +729,11 @@ LEGO_EXPORT Bloke *GenerateMechanic(int *coords, int in_hut) {
         worker->dest.x = worker->pos.x = (coords[0] << 8) - 0x80;
         worker->dest.y = worker->pos.y = coords[1] << 8;
         NewLongTermAction(worker, 5);
-        return worker;
+    } else {
+        worker->pos.x = coords[0] << 8;
+        worker->pos.y = coords[1] << 8;
+        NewLongTermAction(worker, 0x11);
     }
-    worker->pos.x = coords[0] << 8;
-    worker->pos.y = coords[1] << 8;
-    NewLongTermAction(worker, 0x11);
     return worker;
 }
 
