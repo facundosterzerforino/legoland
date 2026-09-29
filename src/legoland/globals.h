@@ -33,6 +33,16 @@ struct CtrlBuffer;
 // layout comes from gamemap.h, used by the EditCursor / QueryCursor instances.)
 // ---------------------------------------------------------------------------
 struct Sprite;
+struct FlumeDims {
+    int field1;
+    int field2;
+};
+
+struct FlumeShape {
+    int count;
+    struct FlumeDims *pts;
+};
+
 struct FlumeTemplate {
     int count;
     void *table;
@@ -451,6 +461,42 @@ extern float FLOAT_004ab43c;
 extern float FLOAT_004ab444;
 // 0x004ab550
 extern float FLOAT_004ab550;
+// 0x004c2b00
+extern struct FlumeShape DAT_004c2b00;
+
+// 0x004c2b30
+extern struct FlumeDims DAT_004c2b30[4];
+
+// 0x004c2b58
+extern struct FlumeShape DAT_004c2b58;
+
+// 0x004c2b78
+extern struct FlumeDims DAT_004c2b78[4];
+
+// 0x004c2bc0
+extern struct FlumeShape DAT_004c2bc0;
+
+// 0x004c2bc8
+extern struct FlumeDims DAT_004c2bc8[4];
+
+// 0x004c2be8
+extern struct FlumeShape DAT_004c2be8;
+
+// 0x004c2c08
+extern struct FlumeShape DAT_004c2c08;
+
+// 0x004c2c10
+extern struct FlumeShape DAT_004c2c10;
+
+// 0x004c8d58
+extern struct FlumeDims DAT_004c8d58[2];
+
+// 0x004cbde8
+extern struct FlumeDims DAT_004cbde8[4];
+
+// 0x004cbe38
+extern struct FlumeDims DAT_004cbe38[2];
+
 // 0x0066b638
 extern struct ColorLutEntry DAT_0066b638[256];
 // 0x004ab44c

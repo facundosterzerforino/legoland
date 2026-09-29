@@ -12,6 +12,42 @@ float FLOAT_004ab444;
 // GLOBAL: LEGOLAND 0x004ab550
 float FLOAT_004ab550;
 
+// GLOBAL: LEGOLAND 0x004c2b00
+struct FlumeShape DAT_004c2b00;
+
+// GLOBAL: LEGOLAND 0x004c2b30
+struct FlumeDims DAT_004c2b30[4];
+
+// GLOBAL: LEGOLAND 0x004c2b58
+struct FlumeShape DAT_004c2b58;
+
+// GLOBAL: LEGOLAND 0x004c2b78
+struct FlumeDims DAT_004c2b78[4];
+
+// GLOBAL: LEGOLAND 0x004c2bc0
+struct FlumeShape DAT_004c2bc0;
+
+// GLOBAL: LEGOLAND 0x004c2bc8
+struct FlumeDims DAT_004c2bc8[4];
+
+// GLOBAL: LEGOLAND 0x004c2be8
+struct FlumeShape DAT_004c2be8;
+
+// GLOBAL: LEGOLAND 0x004c2c08
+struct FlumeShape DAT_004c2c08;
+
+// GLOBAL: LEGOLAND 0x004c2c10
+struct FlumeShape DAT_004c2c10;
+
+// GLOBAL: LEGOLAND 0x004c8d58
+struct FlumeDims DAT_004c8d58[2];
+
+// GLOBAL: LEGOLAND 0x004cbde8
+struct FlumeDims DAT_004cbde8[4];
+
+// GLOBAL: LEGOLAND 0x004cbe38
+struct FlumeDims DAT_004cbe38[2];
+
 // GLOBAL: LEGOLAND 0x0066b638
 struct ColorLutEntry DAT_0066b638[256];
 

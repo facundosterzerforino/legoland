@@ -4,6 +4,7 @@
 #include "bloke.h"
 #include "globals.h"
 #include "legoland.h"
+#include "math.h"
 
 #include "gamemap.h"
 #include "llidb.h"
@@ -251,11 +252,6 @@ struct FlumeNode {
     unsigned int field_34;
 };
 
-struct FlumeDims {
-    int field1;
-    int field2;
-};
-
 struct FlumeBytes {
     unsigned char b0;
     unsigned char pad_1[3];
@@ -274,7 +270,7 @@ struct FlumeSlot {
 
 struct FlumeEntry {
     struct FlumeEntry *next;
-    unsigned char pad_4[4];
+    unsigned int flags;
     struct FlumeNode *field_8;
     struct FlumeNode *field_c;
     struct FlumeEntry *sub;
@@ -285,7 +281,9 @@ struct FlumeEntry {
         struct FlumeEntry *link;
     };
     int submode;
-    unsigned char pad_20[0x2c - 0x20];
+    unsigned char pad_20[4];
+    int field_24;
+    int field_28;
     union {
         struct FlumeEntry *sub2;
         struct Queue queue;
@@ -3296,10 +3294,85 @@ struct FlumeDims FUN_004112c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004112f0
-void FUN_004112f0(void) { STUB(); }
+struct FlumeDims FUN_004112f0(struct FlumeShape *shape, float t, int reverse) {
+    float step = 1.0f / (shape->count - 1);
+    int idx = (int)floor(t / step);
+    int next = idx + 1;
+    struct FlumeDims p0;
+    struct FlumeDims p1;
+    struct FlumeDims result;
+
+    if (reverse == 0) {
+        p0 = shape->pts[idx];
+        p1 = shape->pts[next];
+    } else {
+        p0 = shape->pts[shape->count - idx - 1];
+        p1 = shape->pts[shape->count - next - 1];
+    }
+    result.field1 = (int)((p1.field1 - p0.field1) * ((t - idx * step) / step) + p0.field1);
+    result.field2 = (int)((p1.field2 - p0.field2) * ((t - idx * step) / step) + p0.field2);
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004113d0
-void FUN_004113d0(void) { STUB(); }
+void FUN_004113d0(void) {
+    int w;
+    int h;
+    int dx;
+    int dy;
+
+    GetTileDimensions(&w, &h);
+    w = w << 1;
+    h = h << 1;
+    dy = h >> 2;
+    dx = w >> 2;
+
+    DAT_004c2b58.count = 2;
+    DAT_004c2b58.pts = DAT_004cbe38;
+    DAT_004c2b58.pts[0] = FUN_00411220();
+    DAT_004c2b58.pts[1] = FUN_004112c0();
+
+    DAT_004c2b00.count = 2;
+    DAT_004c2b00.pts = DAT_004c8d58;
+    DAT_004c2b00.pts[0] = FUN_00411250();
+    DAT_004c2b00.pts[1] = FUN_00411290();
+
+    DAT_004c2be8.count = 4;
+    DAT_004c2be8.pts = DAT_004cbde8;
+    DAT_004c2be8.pts[0] = FUN_00411220();
+    DAT_004c2be8.pts[3] = FUN_00411250();
+    DAT_004c2be8.pts[1].field1 = DAT_004c2be8.pts[0].field1 - dx;
+    DAT_004c2be8.pts[1].field2 = DAT_004c2be8.pts[0].field2 + dy;
+    DAT_004c2be8.pts[2].field1 = DAT_004c2be8.pts[3].field1 - dx;
+    DAT_004c2be8.pts[2].field2 = DAT_004c2be8.pts[3].field2 - dy;
+
+    DAT_004c2bc0.count = 4;
+    DAT_004c2bc0.pts = DAT_004c2b30;
+    DAT_004c2bc0.pts[0] = FUN_00411250();
+    DAT_004c2bc0.pts[3] = FUN_004112c0();
+    DAT_004c2bc0.pts[1].field1 = DAT_004c2bc0.pts[0].field1 - dx;
+    DAT_004c2bc0.pts[1].field2 = DAT_004c2bc0.pts[0].field2 - dy;
+    DAT_004c2bc0.pts[2].field1 = DAT_004c2bc0.pts[3].field1 + dx;
+    DAT_004c2bc0.pts[2].field2 = DAT_004c2bc0.pts[3].field2 - dy;
+
+    DAT_004c2c10.count = 4;
+    DAT_004c2c10.pts = DAT_004c2bc8;
+    DAT_004c2c10.pts[0] = FUN_004112c0();
+    DAT_004c2c10.pts[3] = FUN_00411290();
+    DAT_004c2c10.pts[1].field1 = DAT_004c2c10.pts[0].field1 + dx;
+    DAT_004c2c10.pts[1].field2 = DAT_004c2c10.pts[0].field2 - dy;
+    DAT_004c2c10.pts[2].field1 = DAT_004c2c10.pts[3].field1 + dx;
+    DAT_004c2c10.pts[2].field2 = DAT_004c2c10.pts[3].field2 + dy;
+
+    DAT_004c2c08.count = 4;
+    DAT_004c2c08.pts = DAT_004c2b78;
+    DAT_004c2c08.pts[0] = FUN_00411290();
+    DAT_004c2c08.pts[3] = FUN_00411220();
+    DAT_004c2c08.pts[1].field1 = DAT_004c2c08.pts[0].field1 + dx;
+    DAT_004c2c08.pts[1].field2 = DAT_004c2c08.pts[0].field2 + dy;
+    DAT_004c2c08.pts[2].field1 = DAT_004c2c08.pts[3].field1 - dx;
+    DAT_004c2c08.pts[2].field2 = DAT_004c2c08.pts[3].field2 + dy;
+}
 
 struct FlumeObjA {
     unsigned char pad_0[0x28];
@@ -3323,8 +3396,111 @@ int FUN_00411650(struct FlumeObjC *obj) {
     return 0;
 }
 
+struct FlumeMover {
+    unsigned char pad_0[4];
+    unsigned int flags;
+    unsigned char pad_8[4];
+    int x;
+    int y;
+    struct FlumeNode *node;
+    float f18;
+    int i1c;
+    float f20;
+};
+
 // FUNCTION: LEGOLAND 0x00411680
-void FUN_00411680(void) { STUB(); }
+int FUN_00411680(struct FlumeMover *mover) {
+    struct FlumeNode *node = mover->node;
+    struct FlumeNode *next;
+    int rev = 0;
+    struct FlumeShape *shape = NULL;
+    int flag;
+    struct FlumeDims r;
+    TileId tile;
+    float f;
+    int dir;
+    int dx;
+    int dy;
+    int sub;
+
+    flag = 0;
+    f = mover->f20 + mover->f18;
+    if (f > 1.0) {
+        f -= 1.0f;
+        node = (struct FlumeNode *)node->field_8;
+        flag = 1;
+    }
+    next = (struct FlumeNode *)node->field_8;
+    if (next == NULL) {
+        return 0;
+    }
+    tile = next->tile;
+    dx = tile.pos.x - node->tile.pos.x;
+    dy = tile.pos.y - node->tile.pos.y;
+    if (dx < 0) {
+        dir = 7;
+    }
+    if (dx > 0) {
+        dir = 3;
+    }
+    if (dy < 0) {
+        dir = 1;
+    }
+    if (dy > 0) {
+        dir = 5;
+    }
+    switch (node->mode) {
+    case 1:
+        sub = node->submode;
+        if (sub == 1) {
+            shape = &DAT_004c2b00;
+            if (dir == 3) {
+                rev = 1;
+            }
+        }
+        if (sub == 0) {
+            shape = &DAT_004c2b58;
+            if (dir == 1) {
+                rev = 1;
+            }
+        }
+        break;
+    case 2:
+        sub = node->submode;
+        if (sub == 3) {
+            shape = &DAT_004c2c08;
+            if (dir == 7) {
+                rev = 1;
+            }
+        }
+        if (sub == 0) {
+            shape = &DAT_004c2be8;
+            if (dir == 1) {
+                rev = 1;
+            }
+        }
+        if (sub == 1) {
+            shape = &DAT_004c2bc0;
+            if (dir == 3) {
+                rev = 1;
+            }
+        }
+        if (sub == 2) {
+            shape = &DAT_004c2c10;
+            if (dir == 5) {
+                rev = 1;
+            }
+        }
+        break;
+    }
+    if (shape != NULL) {
+        r = FUN_004112f0(shape, f, rev);
+    }
+    mover->x = r.field1;
+    mover->y = r.field2;
+    mover->f18 = f;
+    return flag;
+}
 
 struct FlumeLink {
     unsigned char pad_0[0x8];
@@ -3359,7 +3535,61 @@ int FUN_004117e0(struct FlumeObjD *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00411810
-void FUN_00411810(void) { STUB(); }
+void FUN_00411810(struct FlumeMover *m) {
+    struct FlumeNode *entry;
+    struct FlumeEntry *owner;
+    struct LLS *lls;
+    float f;
+    int idx;
+
+    if (!(m->flags & 2)) {
+        return;
+    }
+    entry = m->node->entry;
+    if (FUN_00411680(m)) {
+        m->node = (struct FlumeNode *)m->node->field_8;
+        if (m->node == (struct FlumeNode *)((struct FlumeNode *)entry->field_34)->field_8) {
+            m->flags &= ~2;
+            return;
+        }
+    }
+    idx = FUN_004117e0((struct FlumeObjD *)m);
+    f = (float)idx + m->f18;
+    if (f < 2.0f) {
+        m->i1c = 0;
+    } else if (f < 4.0f) {
+        m->i1c = (int)(120.0f * ((f - 2.0f) * 0.5f));
+        m->f20 = 0.05f;
+    }
+    if (f >= 4.0f && f <= 5.0f) {
+        m->i1c = 120;
+        m->f20 = 0.1f;
+    }
+    if (f >= 5.0f && f <= 10.0f) {
+        m->i1c = 120 - (int)(120.0f * ((f - 5.0f) * 0.2f));
+        m->f20 += 0.05f;
+        if (f >= 9.0f) {
+            m->flags &= ~4;
+        } else {
+            m->flags |= 4;
+        }
+    }
+    if (f >= 10.0f) {
+        m->i1c = 0;
+        m->f20 = 0.1f;
+        if (f < 10.5) {
+            owner = m->node->owner;
+            if (owner != NULL && !(owner->flags & 2)) {
+                owner->flags |= 2;
+                owner->field_24 = 0;
+                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c2b64);
+                if (lls != NULL) {
+                    owner->field_28 = lls->frame_count;
+                }
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004119a0
 void FUN_004119a0(struct ParticleEmitter *param_1, unsigned int param_2) {
