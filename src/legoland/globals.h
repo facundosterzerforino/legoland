@@ -3259,6 +3259,8 @@ extern int DAT_0080ffc4;
 extern int DAT_0080ffc8;
 // 0x0080ffcc
 extern int DAT_0080ffcc;
+// 0x0080ffd4
+extern unsigned char DAT_0080ffd4[5];
 // 0x0080ffd9
 extern unsigned char DAT_0080ffd9;
 // 0x0080ffe3

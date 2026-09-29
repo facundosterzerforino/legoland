@@ -170,4 +170,42 @@ unsigned char FUN_0048c090(void *param1, unsigned char param2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048c100
-void FUN_0048c100(void) { STUB(); }
+void FUN_0048c100(void) {
+    RECT rc;
+    unsigned int *mapping;
+    int *entry;
+    int i;
+    char *text;
+
+    if (DAT_00798664 != 0) {
+        rc.top = 0x45;
+        rc.bottom = 0x6c;
+        rc.left = 10;
+        rc.right = 0x1d6;
+        NewPrintCent(GetString(0x28a), 3, rc, 0);
+        i = 0;
+        mapping = (unsigned int *)0x7cb380;
+        entry = (int *)&DAT_004becac;
+        do {
+            text = GetString(entry[-1]);
+            rc.left = entry[0] + 0x32;
+            rc.top = entry[1] + 6;
+            rc.right = rc.left + 0x190;
+            rc.bottom = rc.top + 0x16;
+            if (i == (int)lpConfig->field_28 - 1) {
+                FUN_00454d80(text, 2, rc, 0);
+            } else if (DAT_0080ffd4[i] == 1) {
+                FUN_00454d80(text, 2, rc, 0x323232);
+            } else {
+                FUN_00454d80(text, 2, rc, 0xa0a0a0);
+            }
+            if (DAT_0080ffd4[i] == 1 && DAT_00813a44.x >= rc.left && DAT_00813a44.x < rc.right && DAT_00813a44.y >= rc.top && DAT_00813a44.y < rc.bottom) {
+                DAT_004bdd00 = 2;
+                DAT_004bdd04 = (struct Bloke *)*mapping;
+            }
+            i++;
+            entry += 7;
+            mapping++;
+        } while ((int)entry < (int)&DAT_004becb4[4].pad_8[12]);
+    }
+}
