@@ -394,6 +394,8 @@ extern double DAT_004ab4a8;
 extern double DAT_004ab4b0;
 // 0x004ab430
 extern float DAT_004ab430;
+// 0x004ab43c
+extern float FLOAT_004ab43c;
 // 0x004ab454
 extern float FLOAT_004ab454;
 // 0x004ab458
