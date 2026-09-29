@@ -1131,6 +1131,9 @@ unsigned int DAT_004cbe28;
 // GLOBAL: LEGOLAND 0x004cbe2c
 unsigned int DAT_004cbe2c;
 
+// GLOBAL: LEGOLAND 0x004cbe30
+struct CursorSource *DAT_004cbe30;
+
 // GLOBAL: LEGOLAND 0x004cbe48
 void *DAT_004cbe48;
 

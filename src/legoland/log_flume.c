@@ -1167,7 +1167,15 @@ void FUN_0040da10(struct Context *a, struct LinkList *list) {
 unsigned int FUN_0040db00(unsigned int param_1, unsigned int param_2, unsigned int param_3, FlumeCallback param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040dbb0
-void FUN_0040dbb0(void) { STUB(); }
+void FUN_0040dbb0(void) {
+    unsigned int local[5];
+    unsigned int v = DAT_004b4730;
+
+    memcpy(local, &DAT_004b4728, sizeof(local));
+    local[2] = v - 1;
+    local[3] = local[3] - 1;
+    FUN_0040d3b0(DAT_004cbe30, local);
+}
 
 // FUNCTION: LEGOLAND 0x0040dc00
 void FUN_0040dc00(void) { STUB(); }
@@ -1844,7 +1852,23 @@ unsigned int FUN_00410790(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x004107b0
-void FUN_004107b0(void) { STUB(); }
+int FUN_004107b0(struct FlumeNode *node, struct FlumeNode *target) {
+    int idx = 1;
+    int r;
+
+    while (node != NULL) {
+        if (node == target) {
+            return idx;
+        }
+        r = FUN_004107b0(node->field_2c, target);
+        if (r != -1) {
+            return (r << 16) | idx;
+        }
+        node = node->next;
+        idx++;
+    }
+    return -1;
+}
 
 // FUNCTION: LEGOLAND 0x00410800
 void FUN_00410800(void) { STUB(); }
@@ -1872,7 +1896,40 @@ void FUN_00410930(void) { STUB(); }
 void FUN_00410a50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00410b60
-void *FUN_00410b60(void *base, unsigned int packed) { STUB(); }
+void *FUN_00410b60(void *base, unsigned int packed) {
+    unsigned int hi;
+    unsigned int lo;
+    unsigned int i;
+    struct FlumeNode *n;
+
+    lo = packed & 0xffff;
+    hi = packed >> 16;
+
+    if (lo == 0) {
+        return NULL;
+    }
+    if (lo == 0xffff) {
+        return NULL;
+    }
+    lo--;
+    if (lo != 0) {
+        i = lo;
+        n = (struct FlumeNode *)base;
+        do {
+            n = n->next;
+        } while (--i != 0);
+    } else {
+        n = (struct FlumeNode *)base;
+    }
+    if (hi == 0 || hi == 0xffff) {
+        return n;
+    }
+    n = n->field_2c;
+    while (--hi != 0) {
+        n = n->next;
+    }
+    return n;
+}
 
 // FUNCTION: LEGOLAND 0x00410bb0
 void FUN_00410bb0(void *arg0, struct FlumeNode *arg1) {
@@ -2034,7 +2091,21 @@ void FUN_00410d60(struct ClassNode *flume, struct CallbackTable *vtbl) {
 }
 
 // FUNCTION: LEGOLAND 0x00411220
-void FUN_00411220(void) { STUB(); }
+struct FlumeDims FUN_00411220(void) {
+    int dim1;
+    int dim2;
+    struct FlumeDims result;
+
+    GetTileDimensions(&dim1, &dim2);
+
+    dim1 = dim1 << 1;
+    dim2 = dim2 << 1;
+
+    result.field1 = (dim1 >> 1) + dim1;
+    result.field2 = dim2 >> 1;
+
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00411250
 struct FlumeDims FUN_00411250(void) {
@@ -2062,10 +2133,38 @@ struct FlumeDims FUN_00411250(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00411290
-void FUN_00411290(void) { STUB(); }
+struct FlumeDims FUN_00411290(void) {
+    int dim1;
+    int dim2;
+    struct FlumeDims result;
+
+    GetTileDimensions(&dim1, &dim2);
+
+    dim1 = dim1 << 1;
+    dim2 = dim2 << 1;
+
+    result.field1 = dim1 >> 1;
+    result.field2 = dim2 >> 1;
+
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004112c0
-void FUN_004112c0(void) { STUB(); }
+struct FlumeDims FUN_004112c0(void) {
+    int dim1;
+    int dim2;
+    struct FlumeDims result;
+
+    GetTileDimensions(&dim1, &dim2);
+
+    dim1 = dim1 << 1;
+    dim2 = dim2 << 1;
+
+    result.field1 = dim1 >> 1;
+    result.field2 = (dim2 >> 1) + dim2;
+
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004112f0
 void FUN_004112f0(void) { STUB(); }
@@ -2073,14 +2172,62 @@ void FUN_004112f0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004113d0
 void FUN_004113d0(void) { STUB(); }
 
+struct FlumeObjA {
+    unsigned char pad_0[0x28];
+    struct FlumeObjB *var_28;
+};
+struct FlumeObjB {
+    unsigned char pad_0[0x20];
+    struct CursorSource *var_20;
+};
+struct FlumeObjC {
+    unsigned char pad_0[0x14];
+    struct FlumeObjA *var_14;
+};
 // FUNCTION: LEGOLAND 0x00411650
-void FUN_00411650(void) { STUB(); }
+int FUN_00411650(struct FlumeObjC *obj) {
+    struct FlumeObjB *p = obj->var_14->var_28;
+
+    if (p != NULL && p != (struct FlumeObjB *)-1 && p->var_20 == DAT_004c8d6c) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00411680
 void FUN_00411680(void) { STUB(); }
 
+struct FlumeLink {
+    unsigned char pad_0[0x8];
+    struct FlumeLink *next;
+};
+struct FlumeHead {
+    unsigned char pad_0[0x28];
+    struct FlumeHeadB *var_28;
+};
+struct FlumeHeadB {
+    unsigned char pad_0[0x30];
+    struct FlumeLink *var_30;
+};
+struct FlumeObjD {
+    unsigned char pad_0[0x14];
+    struct FlumeHead *var_14;
+};
 // FUNCTION: LEGOLAND 0x004117e0
-void FUN_004117e0(void) { STUB(); }
+int FUN_004117e0(struct FlumeObjD *obj) {
+    int idx = 0;
+    struct FlumeHead *head = obj->var_14;
+    struct FlumeLink *cur = head->var_28->var_30;
+
+    while (cur != NULL) {
+        if ((struct FlumeHead *)cur == head) {
+            return idx;
+        }
+        cur = cur->next;
+        idx++;
+    }
+    return -1;
+}
 
 // FUNCTION: LEGOLAND 0x00411810
 void FUN_00411810(void) { STUB(); }

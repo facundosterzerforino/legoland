@@ -1075,6 +1075,8 @@ extern unsigned int DAT_004cbe24;
 extern unsigned int DAT_004cbe28;
 // 0x004cbe2c
 extern unsigned int DAT_004cbe2c;
+// 0x004cbe30
+extern struct CursorSource *DAT_004cbe30;
 // 0x004cbe48
 extern void *DAT_004cbe48;
 // 0x004cbe4c
