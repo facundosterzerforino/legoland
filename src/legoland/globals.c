@@ -196,6 +196,12 @@ struct Sprite *DAT_004b47f8;
 // GLOBAL: LEGOLAND 0x004b4804
 struct Sprite *DAT_004b4804;
 
+// GLOBAL: LEGOLAND 0x004b4818
+struct Sprite *DAT_004b4818;
+
+// GLOBAL: LEGOLAND 0x004b4824
+struct Sprite *DAT_004b4824;
+
 // GLOBAL: LEGOLAND 0x004b4838
 struct Sprite *DAT_004b4838;
 
@@ -903,6 +909,9 @@ int DAT_004becb0[1];
 
 // GLOBAL: LEGOLAND 0x004becb4
 struct FreePlaySpriteSlot DAT_004becb4[5];
+
+// GLOBAL: LEGOLAND 0x004bed40
+unsigned int DAT_004bed40;
 
 // GLOBAL: LEGOLAND 0x004bed44
 unsigned int DAT_004bed44;

@@ -1624,7 +1624,32 @@ void FUN_0040e920(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e970
-void FUN_0040e970(void) { STUB(); }
+void FUN_0040e970(struct Obj *obj_ptr) {
+    struct ResA *resA;
+    struct ResB *resB;
+
+    DAT_004c2b0c = (struct CursorSource *)obj_ptr->field_0c;
+    resA = (struct ResA *)DAT_004c2b0c;
+    resA->flags_1c |= 0x400;
+
+    resA = (struct ResA *)DAT_004c2b0c;
+    if (resA != NULL) {
+        resB = resA->ptr_64;
+        if (resB != NULL) {
+            resB->flags_10 |= 0x2000;
+        }
+    }
+
+    DAT_004c8d50 = (unsigned int)obj_ptr;
+
+    // STRING: LEGOLAND 0x004b4a7c
+    DAT_004cbe0c = LoadSprite("fc3_m1.lls", 1);
+    // STRING: LEGOLAND 0x004b4a70
+    DAT_004cbe08 = LoadSprite("fc3_m2.lls", 1);
+
+    DAT_004b4818 = DAT_004cbe0c;
+    DAT_004b4824 = DAT_004cbe08;
+}
 
 // FUNCTION: LEGOLAND 0x0040e9e0
 void FUN_0040e9e0(struct Obj *obj_ptr) {

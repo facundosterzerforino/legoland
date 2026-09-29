@@ -2,6 +2,7 @@
 #include "draw.h"
 #include "freeplay.h"
 #include "globals.h"
+#include "icon.h"
 #include "interface.h"
 #include "legoland.h"
 #include "options.h"
@@ -34,7 +35,22 @@ void FUN_0048bd40(void) {
     } while ((int)esi < (int)&DAT_004bed44);
 }
 // FUNCTION: LEGOLAND 0x0048bd70
-void FUN_0048bd70(void) { STUB(); }
+void FUN_0048bd70(void) {
+    struct FreePlaySpriteSlot *slot;
+
+    RemoveIconGroup(0x1c);
+    RemoveIconGroup(0x23);
+    slot = DAT_004becb4;
+    while ((int)slot < (int)&DAT_004bed40) {
+        while (KillSprite(slot->field_0) == 0) {
+        }
+        while (KillSprite(slot->field_4) == 0) {
+        }
+        slot->field_4 = NULL;
+        slot->field_0 = NULL;
+        slot++;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048bde0
 void FUN_0048bde0(void) { STUB(); }

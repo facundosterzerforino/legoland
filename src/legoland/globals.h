@@ -498,6 +498,10 @@ extern int DAT_004b4764;
 extern struct Sprite *DAT_004b47f8;
 // 0x004b4804
 extern struct Sprite *DAT_004b4804;
+// 0x004b4818
+extern struct Sprite *DAT_004b4818;
+// 0x004b4824
+extern struct Sprite *DAT_004b4824;
 // 0x004b4838
 extern struct Sprite *DAT_004b4838;
 // 0x004b4850
@@ -945,6 +949,8 @@ extern unsigned int DAT_004becac;
 extern int DAT_004becb0[1];
 // 0x004becb4
 extern struct FreePlaySpriteSlot DAT_004becb4[5];
+// 0x004bed40
+extern unsigned int DAT_004bed40;
 // 0x004bed44
 extern unsigned int DAT_004bed44;
 // 0x004bef9c

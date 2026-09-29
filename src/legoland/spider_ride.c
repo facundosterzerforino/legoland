@@ -59,13 +59,13 @@ struct SlotArray {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004158f0
-int FUN_004158f0(struct SpiderNode *arg0) {
+int FUN_004158f0(TileId *key) {
     struct SpiderNode *node = (struct SpiderNode *)malloc(0x30);
     if (node == NULL) {
         return;
     }
     memset(node, 0, 0x30);
-    node->field_0 = arg0->field_0;
+    node->field_0 = key->id;
     node->next = DAT_004cbf58;
     DAT_004cbf58 = node;
     return FUN_00415a90(node);
@@ -199,7 +199,14 @@ void FUN_00416060(void) {
 void FUN_004160a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004160f0
-void FUN_004160f0(void) { STUB(); }
+void FUN_004160f0(Element *editObj, int *coords) {
+    TileId key;
+
+    key.pos.x = coords[0];
+    key.pos.y = coords[1];
+    AddBasicObject(editObj, coords);
+    FUN_004158f0(&key);
+}
 
 // FUNCTION: LEGOLAND 0x00416120
 unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2) {
