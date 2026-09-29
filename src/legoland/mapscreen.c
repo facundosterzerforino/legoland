@@ -1,10 +1,12 @@
 #include "legoland.h"
 
+#include "gfx.h"
 #include "globals.h"
 #include "interface.h"
 #include "map_object.h"
 #include "mapscreen.h"
 #include "print_sprite.h"
+#include "render.h"
 #include "tilemap.h"
 
 struct MapPoint {
@@ -67,7 +69,25 @@ void FUN_004563b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00456460
-LEGO_EXPORT void RenderMouseBounds(void) { STUB(); }
+LEGO_EXPORT void RenderMouseBounds(void) {
+    int in[2];
+    int out[2];
+    int x;
+    int y;
+    int w;
+    int h;
+
+    in[0] = (DAT_00813a44.x - DAT_008139c8) * DAT_00667c1c / DAT_008139c4 + DAT_00667c00;
+    in[1] = (DAT_00813a44.y - DAT_008139cc - DAT_00667c20 + 1) * DAT_00667c18 * 2 / DAT_008139c4 + DAT_00667c04;
+    PointToIsoPlane(in, out);
+    if (out[0] >= 0 && out[1] >= 0 && out[0] < DAT_008139c4 && out[1] < DAT_008139c0) {
+        x = DAT_00813a44.x - DAT_008139c4 / 2 * DAT_008139c4 / DAT_00667c1c - DAT_008139c8;
+        y = DAT_00813a44.y - DAT_008139c0 / 2 * DAT_008139c4 / DAT_00667c18 / 2 - DAT_008139cc;
+        w = DAT_008139c4 * DAT_008139c4 / DAT_00667c1c;
+        h = DAT_008139c0 * DAT_008139c4 / (DAT_00667c18 * 2);
+        RenderBox(DAT_008139c8 + x, DAT_008139cc + y, w, h, GetNearestColour(0, 255, 0));
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004565b0
 LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point) {
