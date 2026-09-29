@@ -128,7 +128,17 @@ void FUN_004864e0(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00486540
-void FUN_00486540(void) { STUB(); }
+int FUN_00486540(void) {
+    int i;
+    float f;
+
+    for (i = 1; i < 100; i++) {
+        f = (float)i;
+        DAT_00797e70[i] = 1.0f / f;
+        DAT_00798000[i] = (int)(DOUBLE_004ab558 / f);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00486590
 void FUN_00486590(void) { STUB(); }

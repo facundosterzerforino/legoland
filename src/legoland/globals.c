@@ -93,6 +93,9 @@ double DOUBLE_004ab530;
 // GLOBAL: LEGOLAND 0x004ab538
 double DOUBLE_004ab538;
 
+// GLOBAL: LEGOLAND 0x004ab558
+double DOUBLE_004ab558;
+
 // GLOBAL: LEGOLAND 0x004ab560
 const DIDATAFORMAT c_dfDIKeyboard;
 
@@ -1299,7 +1302,7 @@ int DAT_004cbeb0;
 int DAT_004cbeb4;
 
 // GLOBAL: LEGOLAND 0x004cbec4
-unsigned int DAT_004cbec4;
+struct SafariOwner *DAT_004cbec4;
 
 // GLOBAL: LEGOLAND 0x004cbed0
 unsigned int DAT_004cbed0;
@@ -3199,6 +3202,12 @@ unsigned int DAT_00797e68;
 
 // GLOBAL: LEGOLAND 0x00797e6c
 void *DAT_00797e6c;
+
+// GLOBAL: LEGOLAND 0x00797e70
+float DAT_00797e70[100];
+
+// GLOBAL: LEGOLAND 0x00798000
+int DAT_00798000[100];
 
 // GLOBAL: LEGOLAND 0x00798190
 void *DAT_00798190[256];

@@ -105,7 +105,7 @@ void FUN_00415990(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004159b0
-struct SpiderNode *FUN_004159b0(unsigned short *key) {
+struct SpiderNode *FUN_004159b0(TileId *key) {
     struct SpiderNode *cur = DAT_004cbf58;
 
     if (cur != NULL) {
@@ -129,11 +129,11 @@ void FUN_004159e0(const unsigned char *arg0) {
 }
 
 // FUNCTION: LEGOLAND 0x00415a20
-void FUN_00415a20(const unsigned char *src) {
+void FUN_00415a20(TileId *tile) {
     struct FadeParams params;
     params.field_0 = 2;
-    params.field_8 = src[0];
-    params.field_c = src[1];
+    params.field_8 = tile->pos.x;
+    params.field_c = tile->pos.y;
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
 
@@ -156,7 +156,7 @@ int FUN_00415a90(struct SpiderNode *node) {
     a->field_8 &= 0xffffbffe;
     a->field_14 = 0;
     a->field_2 = 0;
-    FUN_00415a20((const unsigned char *)a);
+    FUN_00415a20((TileId *)node);
 }
 
 // FUNCTION: LEGOLAND 0x00415ae0
@@ -196,7 +196,16 @@ void FUN_00416060(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004160a0
-void FUN_004160a0(void) { STUB(); }
+void FUN_004160a0(Element *obj, TileId tile, struct Cursor *cursor) {
+    struct SpiderNode *node = FUN_004159b0(&tile);
+
+    if (node != NULL) {
+        FUN_00415930(node);
+    }
+    FUN_00415a20(&tile);
+    StandardRemoveObject(obj, tile, cursor);
+    RemoveAllBlokesFromRide(obj->ride, tile);
+}
 
 // FUNCTION: LEGOLAND 0x004160f0
 void FUN_004160f0(Element *editObj, int *coords) {

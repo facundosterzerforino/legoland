@@ -33,7 +33,7 @@ struct SafariRoot {
 
 struct SafariObject {
     unsigned char pad_0[0xc];
-    unsigned int field_c;
+    struct SafariOwner *field_c;
 };
 
 struct SafariSample {
@@ -272,7 +272,21 @@ struct SafariOwner {
 };
 
 // FUNCTION: LEGOLAND 0x00415760
-int FUN_00415760(struct SafariListEntry *node, unsigned short *key) { STUB(); }
+int FUN_00415760(struct SafariListEntry *node, unsigned short *key) {
+    struct SafariListEntry *cur;
+    int n = 0;
+
+    for (cur = DAT_004cbec4->head; cur != NULL; cur = cur->next) {
+        if (memcmp(&cur->key, key, 2) == 0) {
+            if (cur == node) {
+                node->data->index = (unsigned char)n;
+                return n;
+            }
+            n++;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004157b0
 LEGO_EXPORT int SaveSafariRide(void) {

@@ -235,7 +235,8 @@ struct FlumeEntry {
     unsigned char pad_16[2];
     int mode;
     int submode;
-    unsigned char pad_20[0xd4 - 0x20];
+    unsigned char pad_20[0xd0 - 0x20];
+    int field_d0;
 };
 
 // FUNCTION: LEGOLAND 0x00408e40
@@ -2590,4 +2591,17 @@ void FUN_004119a0(struct ParticleEmitter *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004119c0
-void FUN_004119c0(void) { STUB(); }
+int FUN_004119c0(Element *obj, int filter) {
+    struct FlumeEntry *entry = DAT_004cbe84;
+    int best = 0;
+
+    while (entry != NULL) {
+        if (entry->field_d0 > best) {
+            if (filter == 0 || FUN_0040ba80((struct Node *)entry) != 0) {
+                best = entry->field_d0;
+            }
+        }
+        entry = entry->next;
+    }
+    return best;
+}

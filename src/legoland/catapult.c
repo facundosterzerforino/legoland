@@ -22,7 +22,8 @@ struct CatapultNode {
     signed char mode;
     unsigned char pad_d[3];
     struct CatapultEntry *slots[4];
-    unsigned char pad_20[8];
+    unsigned char active[4];
+    signed char frame[4];
     unsigned int flags[4];
 };
 
@@ -252,7 +253,14 @@ void FUN_004034c0(unsigned char *data, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00403530
-void FUN_00403530(struct CatapultNode *node, unsigned int index) { STUB(); }
+void FUN_00403530(struct CatapultNode *node, unsigned int index) {
+    if (node->active[index] & 1) {
+        if (++node->frame[index] >= 32) {
+            node->active[index] = 0;
+        }
+        LLSSetFrame(GetLLSForLayer(DAT_004c10f0, DAT_004b40a4[index]), node->frame[index]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00403580
 void FUN_00403580(void *arg, unsigned int index) {

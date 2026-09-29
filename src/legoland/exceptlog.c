@@ -1,4 +1,6 @@
 #include "exceptlog.h"
+#include <windows.h>
+#include <stdarg.h>
 #include <string.h>
 #include "legoland.h"
 
@@ -11,7 +13,15 @@ struct ExceptionEntry {
 int stackdump(void *exc_info, const char *filename) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454290
-void FUN_00454290(void) { STUB(); }
+void FUN_00454290(HANDLE file, const char *format, ...) {
+    DWORD written;
+    char buffer[2000];
+    va_list args;
+
+    va_start(args, format);
+    wvsprintfA(buffer, format, args);
+    WriteFile(file, buffer, lstrlenA(buffer), &written, NULL);
+}
 
 // FUNCTION: LEGOLAND 0x004542e0
 void FUN_004542e0(void) { STUB(); }

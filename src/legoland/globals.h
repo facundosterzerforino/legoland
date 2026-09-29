@@ -436,6 +436,8 @@ extern float FLOAT_004ab52c;
 extern double DOUBLE_004ab530;
 // 0x004ab538
 extern double DOUBLE_004ab538;
+// 0x004ab558
+extern double DOUBLE_004ab558;
 // 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
 // 0x004ab5e0
 extern GUID DAT_004ab5e0;
@@ -1208,7 +1210,7 @@ extern int DAT_004cbeb0;
 // 0x004cbeb4
 extern int DAT_004cbeb4;
 // 0x004cbec4
-extern unsigned int DAT_004cbec4;
+extern struct SafariOwner *DAT_004cbec4;
 // 0x004cbed0
 extern unsigned int DAT_004cbed0;
 // 0x004cbed4
@@ -2477,6 +2479,10 @@ extern unsigned short DAT_00701e68[0x4b000];
 extern unsigned int DAT_00797e68;
 // 0x00797e6c
 extern void *DAT_00797e6c;
+// 0x00797e70
+extern float DAT_00797e70[100];
+// 0x00798000
+extern int DAT_00798000[100];
 // 0x00798190
 extern void *DAT_00798190[256];
 // 0x00798590

@@ -26,6 +26,6 @@ void FUN_004860f0(void);
 void FUN_00486250(void);
 unsigned int FUN_00486280(int param_1, void *param_2);
 void FUN_00488700(unsigned int base, struct RenderViewport *vp);
-void FUN_00486540(void);
+int FUN_00486540(void);
 void FUN_00488670(struct Image *image, unsigned int index);
 void FUN_004886a0(void);
