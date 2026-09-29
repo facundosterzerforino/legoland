@@ -42,6 +42,34 @@ struct RideMover {
     unsigned short speed;
 };
 
+struct NewBloke {
+    struct NewBloke *next;
+    unsigned short id;
+    unsigned char pad_6[0x10 - 0x6];
+    int fx;
+    int fy;
+    int px;
+    int py;
+    int tx;
+    int ty;
+    unsigned char pad_28[0xb8 - 0x28];
+    unsigned char f_b8;
+    unsigned char pad_b9;
+    unsigned char f_ba;
+    unsigned char f_bb;
+    unsigned short f_bc;
+    unsigned short f_be;
+    unsigned short f_c0;
+    unsigned char f_c2;
+    unsigned char f_c3;
+    unsigned char f_c4;
+    unsigned char pad_c5;
+    unsigned short f_c6;
+    unsigned short f_c8;
+    unsigned char pad_ca[2];
+    int owner;
+};
+
 struct RideBloke {
     struct RideBloke *next;
     unsigned char pad_4[0xcc - 0x4];
@@ -140,7 +168,7 @@ __int64 FUN_00401000(int x, int y, int rot) {
 }
 
 // FUNCTION: LEGOLAND 0x00401080
-void FUN_00401080(void) { STUB(); }
+void FUN_00401080(struct NewBloke *b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401320
 void FUN_00401320(void) { STUB(); }
@@ -365,7 +393,62 @@ void FUN_004019c0(struct RideMover *m) {
 }
 
 // FUNCTION: LEGOLAND 0x00401ae0
-int FUN_00401ae0(unsigned short id, int bloke) { STUB(); }
+int FUN_00401ae0(unsigned short id, int bloke) {
+    struct RideQueueEntry *e;
+    struct NewBloke *b;
+    int t;
+
+    e = FUN_00412650(id);
+    b = (struct NewBloke *)malloc(0xd0);
+    if (b == 0) {
+        return -1;
+    }
+    b->id = id;
+    b->owner = bloke;
+    if (DAT_004c11c0 != 0) {
+        b->px = e->x;
+        b->fx = e->x << 16;
+    } else {
+        b->px = e->x + 2;
+        b->fx = (e->x + 2) << 16;
+    }
+    b->tx = b->px;
+    b->py = e->y + 4;
+    b->ty = b->py;
+    b->fy = (e->y + 4) << 16;
+    if (FUN_00401970((int *)b, b->px, b->ty) != 0) {
+        free(b);
+        return -2;
+    }
+    b->next = (struct NewBloke *)DAT_004c10d4;
+    DAT_004c10d4 = b;
+    b->f_bb = 0;
+    b->f_b8 = 0;
+    b->f_c2 = 1;
+    b->f_ba = 1;
+    t = rand() & 15;
+    b->f_c8 = 0x1000;
+    t += 16;
+    b->f_bc = 0;
+    b->f_c6 = t << 8;
+    switch (rand() % 3) {
+    case 0:
+        b->f_c3 = 3;
+        break;
+    case 1:
+        b->f_c3 = 1;
+        break;
+    case 2:
+        b->f_c3 = 2;
+        break;
+    }
+    b->f_c4 = 0;
+    b->f_be = 9000;
+    b->f_c0 = 1200;
+    FUN_00401080(b);
+    FUN_004019c0((struct RideMover *)b);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00401c40
 unsigned int FUN_00401c40(unsigned short arg0) {
