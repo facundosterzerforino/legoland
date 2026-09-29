@@ -132,6 +132,11 @@ struct Node {
     unsigned char pad_0[8];
     struct Node *next;
     struct Node *prev;
+    struct ListNode *head_10;
+    unsigned char pad_14[0x24 - 0x14];
+    struct Node *head_24;
+    unsigned char pad_28[0x2c - 0x28];
+    struct ListNode *tail_2c;
 };
 
 struct ListNode {
@@ -139,16 +144,6 @@ struct ListNode {
     struct ListNode *next;
     struct ListNode *up;
     struct ListNode *down;
-};
-
-struct ListContainer {
-    unsigned char pad_0[0xc];
-    struct ListContainer *parent;
-    struct ListNode *head_10;
-    unsigned char pad_14[0x24 - 0x14];
-    struct Node *head_24;
-    unsigned char pad_28[0x2c - 0x28];
-    struct ListNode *tail_2c;
 };
 
 struct Slot {
@@ -363,10 +358,23 @@ void FUN_004090c0(struct Node *node1, struct Node *node2, struct Node *node3) {
 }
 
 // FUNCTION: LEGOLAND 0x004090e0
-struct Node *FUN_004090e0(struct ListContainer *container) { STUB(); }
+struct Node *FUN_004090e0(struct Node *node) {
+    struct Node *start = node;
+
+    while (node->prev != NULL) {
+        node = node->prev;
+        if (node == start) {
+            return start;
+        }
+        if (node == NULL) {
+            return NULL;
+        }
+    }
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x00409110
-void FUN_00409110(struct ListContainer *container) {
+void FUN_00409110(struct Node *container) {
     struct Node *node = FUN_004090e0(container);
     struct Node *next;
     struct Node *prev;
@@ -382,7 +390,7 @@ void FUN_00409110(struct ListContainer *container) {
 }
 
 // FUNCTION: LEGOLAND 0x00409140
-int FUN_00409140(struct ListContainer *container) {
+int FUN_00409140(struct Node *container) {
     struct Node *node = FUN_004090e0(container);
     struct Node *head;
     if (node == NULL) {
@@ -399,7 +407,7 @@ int FUN_00409140(struct ListContainer *container) {
 }
 
 // FUNCTION: LEGOLAND 0x00409170
-void FUN_00409170(struct ListContainer *container, struct ListNode *node) {
+void FUN_00409170(struct Node *container, struct ListNode *node) {
     node->prev = container->tail_2c;
     node->next = NULL;
     if (container->tail_2c != NULL) {
@@ -409,7 +417,7 @@ void FUN_00409170(struct ListContainer *container, struct ListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004091a0
-void FUN_004091a0(struct ListContainer *container, struct ListNode *node) {
+void FUN_004091a0(struct Node *container, struct ListNode *node) {
     if (node->next != NULL) {
         node->next->prev = node->prev;
     }
@@ -428,7 +436,7 @@ void FUN_004091a0(struct ListContainer *container, struct ListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004091f0
-void FUN_004091f0(struct ListContainer *container, struct ListNode *node) {
+void FUN_004091f0(struct Node *container, struct ListNode *node) {
     struct ListNode *head = container->head_10;
     node->next = NULL;
     node->prev = head;
@@ -440,7 +448,7 @@ void FUN_004091f0(struct ListContainer *container, struct ListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00409220
-void FUN_00409220(struct ListContainer *container, struct ListNode *node) {
+void FUN_00409220(struct Node *container, struct ListNode *node) {
     if (node->next != NULL) {
         node->next->prev = node->prev;
     }
@@ -459,7 +467,7 @@ void FUN_00409220(struct ListContainer *container, struct ListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00409270
-void FUN_00409270(struct ListContainer *other, struct ListContainer *container) {
+void FUN_00409270(struct Node *other, struct Node *container) {
     struct ListNode *node = container->tail_2c;
     struct ListNode *prev;
     while (node != NULL) {
@@ -699,7 +707,7 @@ void FUN_00409a90(void *edi_ptr[4], struct StateNode *esi_ptr[4]) {
 }
 
 // FUNCTION: LEGOLAND 0x00409b10
-void FUN_00409b10(struct ListContainer *a, struct ListContainer *b) {
+void FUN_00409b10(struct Node *a, struct Node *b) {
     int a_ok = FUN_00409140(a);
     int b_ok = FUN_00409140(b);
 
@@ -722,18 +730,18 @@ void FUN_00409b70(int i, int j, struct Node **nodes, struct Node *insert) {
 
     // STRING: LEGOLAND 0x004b4910
     printf("going opposite directions!!!!");
-    a_ok = FUN_00409140((struct ListContainer *)nodes[i]);
-    b_ok = FUN_00409140((struct ListContainer *)nodes[j]);
+    a_ok = FUN_00409140(nodes[i]);
+    b_ok = FUN_00409140(nodes[j]);
     if (a_ok != 0 && b_ok != 0) {
         // STRING: LEGOLAND 0x004b48e4
         printf("both pieces are joined to log flume - error");
         return;
     } else if (a_ok == 0 && b_ok == 0) {
-        FUN_00409110((struct ListContainer *)nodes[i]);
+        FUN_00409110(nodes[i]);
     } else if (a_ok != 0 && b_ok == 0) {
-        FUN_00409110((struct ListContainer *)nodes[j]);
+        FUN_00409110(nodes[j]);
     } else {
-        FUN_00409110((struct ListContainer *)nodes[i]);
+        FUN_00409110(nodes[i]);
     }
     if (nodes[i]->next == NULL && nodes[j]->prev == NULL) {
         FUN_004090c0(nodes[i], nodes[j], insert);
@@ -749,7 +757,7 @@ void FUN_00409c20(void) { STUB(); }
 void FUN_0040a010(struct Node *a, struct Node *b) {
     if ((a->next != NULL && b->next != NULL && a->prev == NULL && b->prev == NULL) ||
         (a->next == NULL && b->next == NULL && a->prev != NULL && b->prev != NULL)) {
-        FUN_00409b10((struct ListContainer *)a, (struct ListContainer *)b);
+        FUN_00409b10(a, b);
     }
     if (a->next == NULL) {
         FUN_00409080(a, b);
