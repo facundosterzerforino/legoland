@@ -235,7 +235,7 @@ unsigned char FUN_0048d970(unsigned int a1, unsigned char flags) {
 // FUNCTION: LEGOLAND 0x0048da50
 unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4) {
     if (DAT_004bef9c == 0) {
-        int r = FUN_0048e720(0, flags, a3, a4);
+        unsigned char r = FUN_0048e720(0, flags, a3, a4);
         if (DAT_0080ff80.unk4 != 0xffffffff) {
             return r;
         }
@@ -563,9 +563,31 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e720
-int FUN_0048e720(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4) {
-    STUB();
-    return 0;
+unsigned char FUN_0048e720(struct IconNode *icon, unsigned int a2, unsigned int a3, unsigned int a4) {
+    char buf[16];
+    if (icon == 0) {
+        icon = DAT_007986d8;
+    }
+    FUN_0048e420();
+    FUN_0046d680(icon, DAT_00798674);
+    if (a2 & 2) {
+        if (DAT_007cad60.name[0] == 0) {
+            // STRING: LEGOLAND 0x004bf2e8
+            sprintf(buf, "%s%d", GetString(0x87), *(unsigned int *)&DAT_0080ffe4 & 0xff);
+            strcpy(DAT_007cad60.name, buf);
+            DAT_007cad60.name_len = (unsigned char)strlen(buf);
+            FUN_0048d490();
+            return 1;
+        }
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        StoreNewSaveGameToDisk();
+        DAT_0080ff80.unk4 = 0xffffffff;
+        DAT_00798700 = 0;
+        DAT_004bef9c = 1;
+        FUN_0048d490();
+    }
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0048e810
