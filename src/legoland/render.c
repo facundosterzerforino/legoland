@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <ddraw.h>
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "legoland.h"
@@ -14,12 +15,8 @@
 #include "render.h"
 
 struct ZBlitDesc {
-    /* 0x00 */ int left;
-    /* 0x04 */ int top;
-    /* 0x08 */ int right;
-    /* 0x0c */ int bottom;
-    /* 0x10 */ int w;
-    /* 0x14 */ int h;
+    int off[2];
+    RECT rect;
 };
 
 struct CursorCacheNode {
@@ -293,7 +290,7 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     int w = (short)sprite->width;
     int h = (short)sprite->height;
     struct ZBlitDesc local;
-    unsigned short transp;
+    unsigned int transp;
     int row;
     int yy;
 
@@ -304,26 +301,26 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     DAT_0066b628 = DAT_00668108.right;
     DAT_0066b5b0 = DAT_0066809c;
     DAT_0066b62c = DAT_00668108.bottom;
-    DAT_0066809c.lPitch = w * 2;
     DAT_0066b624 = DAT_00668108.top;
     DAT_0066809c.lpSurface = DAT_0066be54;
-    DAT_00668108.left = 0;
-    DAT_00668108.top = 0;
-    local.left = 0;
-    local.top = 0;
-    local.right = 0;
-    local.bottom = 0;
-    DAT_0066809c.dwHeight = h;
     DAT_0066809c.dwWidth = w;
+    DAT_0066809c.dwHeight = h;
+    DAT_0066809c.lPitch = w * 2;
+    DAT_00668108.left = 0;
     DAT_00668108.right = w;
+    DAT_00668108.top = 0;
     DAT_00668108.bottom = h;
-    local.w = w;
-    local.h = h;
+    local.off[0] = 0;
+    local.off[1] = 0;
+    local.rect.left = 0;
+    local.rect.right = w;
+    local.rect.top = 0;
+    local.rect.bottom = h;
     DAT_007fea44 = GetTransparentColour();
     SoftPrint_Clear();
-    FUN_00464ee0(&local);
+    FUN_00464ee0(param_2, &local.rect, local.off);
     FUN_00485fe0(param_2, param_4, param_5);
-    transp = (unsigned short)GetTransparentColour();
+    transp = GetTransparentColour();
     yy = 0;
     if (0 < h) {
         row = 0;
@@ -405,7 +402,7 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
             src.right = dst.right;
             src.bottom = dst.bottom;
             OffsetRect(&src, -x, -y);
-            FUN_00464ee0(&dst);
+            FUN_00464ee0(sprite, &src, (int *)&dst);
         }
     }
     return 1;
@@ -452,7 +449,102 @@ LEGO_EXPORT unsigned int RenderTiledSprite(struct Sprite *sprite, int param_2, i
 }
 
 // FUNCTION: LEGOLAND 0x00488c80
-unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int *param_6) { STUB(); }
+unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int *param_6) {
+    int off[2];
+    RECT src;
+    RECT dst;
+    RECT clip;
+    RECT r2;
+    DDSURFACEDESC desc1;
+    DDSURFACEDESC desc2;
+    HRESULT hr;
+
+    int x = param_2 + param_6[0];
+    int y = param_3 + param_6[1];
+    dst.left = x;
+    dst.top = y;
+    dst.right = x + param_4 + 1;
+    dst.bottom = y + param_5 + 1;
+    src.top = 0;
+    src.left = 0;
+    src.right = (short)sprite->width;
+    src.bottom = (short)sprite->height;
+    if (DAT_00798620 == 0) {
+        memset(&desc1, 0, sizeof(desc1));
+        DAT_00798620 = 1;
+        desc1.dwSize = 0x6c;
+        if (IDirectDrawSurface_GetSurfaceDesc(renderEngine, &desc1) == 0) {
+            desc1.dwFlags = 0x1007;
+            desc1.ddsCaps.dwCaps = 0x840;
+            desc1.dwWidth = 0x500;
+            desc1.dwHeight = 0x3c0;
+            IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc1, &DAT_0079861c, NULL);
+            off[1] = off[0] = GetTransparentColour();
+            IDirectDrawSurface_SetColorKey(DAT_0079861c, 8, (LPDDCOLORKEY)off);
+        }
+    }
+    DAT_00798608 = DAT_00668108;
+    DAT_00798598 = DAT_0066809c;
+    memset(&desc2, 0, sizeof(desc2));
+    desc2.dwSize = 0x6c;
+    if (IDirectDrawSurface_Lock(DAT_0079861c, NULL, &desc2, 0x21, NULL) == 0) {
+        clip.left = 0;
+        clip.right = desc2.dwWidth;
+        clip.top = 0;
+        clip.bottom = desc2.dwHeight;
+        IntersectRect(&DAT_00668108, &clip, &SPRITE_ClipRect);
+        off[0] = 0;
+        off[1] = 0;
+        DAT_007fea44 = GetTransparentColour();
+        DAT_0066809c.lpSurface = desc2.lpSurface;
+        DAT_0066809c.dwWidth = (short)sprite->width;
+        DAT_0066809c.dwHeight = (short)sprite->height;
+        DAT_0066809c.lPitch = desc2.lPitch;
+        SoftPrint_Clear();
+        r2.left = 0;
+        r2.right = (short)sprite->width;
+        r2.top = 0;
+        r2.bottom = (short)sprite->height;
+        if ((short)sprite->src_x < 0 || (short)sprite->src_y < 0) {
+            // STRING: LEGOLAND 0x004bdd74
+            printf("break");
+        }
+        FUN_00464ee0(sprite, &r2, off);
+        IDirectDrawSurface_Unlock(DAT_0079861c, desc2.lpSurface);
+    }
+    IDirectDrawSurface_SetClipper(renderEngine, DAT_00668080);
+    hr = IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x1008000, NULL);
+    for (;;) {
+        if (hr != 0) {
+            if (hr != 0x887601c2) {
+                break;
+            }
+            if (IDirectDrawSurface_Restore(DAT_0079861c) != 0) {
+                IDirectDrawSurface_SetClipper(renderEngine, NULL);
+                DAT_0066809c = DAT_00798598;
+                DAT_00668108 = DAT_00798608;
+                return 0;
+            }
+            MakeSprite(sprite);
+            if (IDirectDrawSurface_IsLost(DAT_00668070) == 0x887601c2) {
+                if (IDirectDrawSurface_Restore(DAT_00668070) != 0) {
+                    break;
+                }
+            }
+            if (IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x8000, NULL) != 0) {
+                break;
+            }
+        }
+        IDirectDrawSurface_SetClipper(renderEngine, NULL);
+        DAT_0066809c = DAT_00798598;
+        DAT_00668108 = DAT_00798608;
+        return 1;
+    }
+    IDirectDrawSurface_SetClipper(renderEngine, NULL);
+    DAT_0066809c = DAT_00798598;
+    DAT_00668108 = DAT_00798608;
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489080
 LEGO_EXPORT unsigned int RenderScaledSprite(struct Sprite *param_1, int param_2, int param_3, int param_4, int param_5) {
