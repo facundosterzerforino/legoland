@@ -12,6 +12,13 @@ struct LLS {
 };
 typedef struct LLS LLS;
 
+/* An entry of the list of playing animations (DAT_006691ac), advanced by LLSAuto. */
+struct LLSNode {
+    struct LLS *lls;
+    struct LLSNode *next;
+    unsigned int param; /* LLSPlay's second argument */
+};
+
 /* An LLIDB element (0x14 bytes).  For object classes `data` is the class's Ride
    record; placed-object code (map_object.c, the ride TUs) reaches it as `ride`. */
 struct Element {

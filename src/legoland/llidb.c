@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "debug.h"
+#include "debug_alloc.h"
 #include "globals.h"
 #include "llidb.h"
 #include "objclass.h"
@@ -1100,10 +1101,49 @@ LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d4c0
-LEGO_EXPORT int LLSStop(unsigned int handle) { STUB(); }
+LEGO_EXPORT int LLSStop(unsigned int handle) {
+    struct LLSNode *cur;
+    struct LLSNode *prev;
+
+    cur = DAT_006691ac;
+    prev = NULL;
+    while (cur != NULL) {
+        if (cur->lls == (struct LLS *)handle) {
+            if (prev != NULL) {
+                prev->next = cur->next;
+            } else {
+                DAT_006691ac = DAT_006691ac->next;
+            }
+            free(cur);
+            return 1;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047d520
-LEGO_EXPORT void LLSPlay(struct LLS *param_1, unsigned int param_2) { STUB(); }
+// The original breaks into the debugger (`__asm int 3`, which also gives it an
+// ebp frame) when frame_count > 1000; that cannot be written in pure C.
+LEGO_EXPORT void LLSPlay(struct LLS *param_1, unsigned int param_2) {
+    struct LLSNode *node = DAT_006691ac;
+
+    if (param_1 == NULL || param_1->frame_count <= 1) {
+        return;
+    }
+    while (node != NULL) {
+        if (node->lls == param_1) {
+            return;
+        }
+        node = node->next;
+    }
+    node = malloc(sizeof(struct LLSNode));
+    node->lls = param_1;
+    node->param = param_2;
+    node->next = DAT_006691ac;
+    DAT_006691ac = node;
+}
 
 // FUNCTION: LEGOLAND 0x0047d580
 LEGO_EXPORT void LLSPlayOnce(struct LLS *param_1, unsigned int param_2) {
@@ -1150,7 +1190,36 @@ void FUN_0047d610(struct LLS *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d630
-LEGO_EXPORT void LLSAuto(void) { STUB(); }
+LEGO_EXPORT void LLSAuto(void) {
+    struct LLSNode *node;
+    struct LLSNode *next;
+    struct LLS *lls;
+
+    node = DAT_006691ac;
+    while (node != NULL) {
+        lls = node->lls;
+        next = node->next;
+        if (lls != NULL) {
+            if (lls->loop_delay < 2) {
+                lls->frame++;
+                if (lls->frame >= lls->frame_count) {
+                    lls->frame = 0;
+                    if (lls->flags & 4) {
+                        lls->flags &= ~4;
+                        LLSStop((unsigned int)lls);
+                    }
+                }
+                lls->loop_delay = lls->delay;
+            } else {
+                lls->loop_delay -= 2;
+            }
+        } else {
+            // STRING: LEGOLAND 0x004bc3d4
+            DBPrintf("Trying to animate Bad Sprite");
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0047d6a0
 LEGO_EXPORT void LLS555To565(struct LLSImage *param_1) {
