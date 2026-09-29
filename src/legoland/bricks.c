@@ -3,6 +3,7 @@
 #include "bricks.h"
 #include "globals.h"
 #include "llidb.h"
+#include "obj_instance.h"
 
 // FUNCTION: LEGOLAND 0x00457870
 void FUN_00457870(int param_1) {
@@ -58,7 +59,32 @@ int FUN_00457940(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00457970
-void FUN_00457970(void) { STUB(); }
+int FUN_00457970(int dx, int dy) {
+    struct Ride *ride = EditMode.unk8;
+    int x, y;
+    struct MapElement *elem;
+
+    dx += ride->footprint.x0;
+    dy += ride->footprint.y0;
+    for (y = dy; y < dy + (int)DAT_00813a70; y++) {
+        for (x = dx; x < dx + (int)DAT_00813a6c; x++) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                elem = &GameMap[y][x];
+            } else {
+                elem = NULL;
+            }
+            if (elem == NULL) return 0;
+            if (elem->flags & 0x8f8) return 0;
+            if (elem->field_12 != 0) {
+                unsigned int idx;
+                // STRING: LEGOLAND 0x004b8a70
+                LLIDB_FindElement("PATH CONTROL", &idx, 0);
+                if (EditMode.unk8->element != (struct Element *)idx) return 0;
+            }
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00457a70
 void FUN_00457a70(void) { STUB(); }
