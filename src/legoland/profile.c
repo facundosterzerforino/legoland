@@ -291,7 +291,26 @@ LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) { STUB(); }
 LEGO_EXPORT void PrintProfileDetails(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048d230
-void FUN_0048d230(void) { STUB(); }
+void FUN_0048d230(void) {
+    struct ProfileNode *node = (struct ProfileNode *)DAT_00798890;
+
+    while (node != NULL) {
+        if (node->slot == DAT_0080ffe3) {
+            strcpy((char *)&DAT_0080ffa0, node->data.name);
+            DAT_0080ffc0 = node->data.field_20;
+            DAT_0080ffe4 = 0;
+            DAT_0080ffc4 = node->data.field_28;
+            DAT_0080ffc8 = node->data.field_2c;
+            DAT_0080ffcc = node->data.field_30;
+            DAT_0080ffe5 = 0;
+            memcpy(&DAT_0080ffa0.field_34, &node->data.field_34, 15);
+            memcpy(DAT_0080ffe6, node->data.field_43, 200);
+            *(int *)&DAT_0080ffa0.field_30 = *(int *)&node->data.field_10b;
+            return;
+        }
+        node = node->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048d300
 unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
