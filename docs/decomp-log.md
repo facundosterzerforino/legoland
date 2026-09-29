@@ -128,3 +128,58 @@ Result: 100%. Progress 74.53% → 74.69%.
 
 About 8k tokens end to end (stub search, disassembly, two lookups, one edit, build+verify) — cheap when it
 matches first time. The expensive cases are the ones that don't (each retry = edit + build + verify).
+
+---
+
+## Scaling up: batches of agents (Progress 74.5% -> 80.8%)
+
+After the two hand-done examples the work was parallelised. Each agent gets one file (or one address
+range of a big file) in its **own git worktree** with its own build directory, so they never share a
+`build/`. The main tree merges their branches, rebuilds clean, and re-verifies everything: agent-reported
+numbers are only claims until `tools/verify` on the merged tree says so.
+
+Practical setup notes
+- Header changes need `--clean-first` (no header dependency tracking).
+- Shared files (`globals.h`, `globals.c`, `*.h`) use git's `merge=union` (`.git/info/attributes`) so purely
+  additive edits from different agents combine. Real conflicts do still happen when two agents retype the
+  same function: keep the implemented body, fix the header prototype, then rebuild.
+- "Implemented" (share of annotated items with a body) barely moves; **Progress = Implemented x Accuracy**
+  is the number to watch.
+- `100.00%*` means reccmp accepted the function as an effective match with a small difference (typically a
+  register swap or instruction order); a clean 100.00% is exact.
+- Cheap, focused Sonnet agents clear small stubs; the stronger model was used only for the recurring hard
+  cases and near-misses.
+
+## Recipes found (all pure C)
+
+**Linked-list lookup by 16-bit key** (defeated ~7 attempts). The original compares with an inlined
+2-byte `memcmp`, which MSVC6 never hoists out of the loop:
+```c
+struct T *cur = HEAD;
+if (cur != NULL) {
+    do {
+        if (memcmp(&cur->id, key, 2) == 0) return cur;
+        cur = cur->next;
+    } while (cur != NULL);
+}
+return NULL;
+```
+`if (cur) do {...} while (cur)` gives the rotated loop with the compare duplicated; every `==` form gets
+hoisted (`cmp [eax],cx`). Linked-list *unlink* (with a `&cur->next` walker) is still unsolved.
+
+Other tricks that decided matches
+- A 2-byte `TileId` union passed by value is one 4-byte stack slot; pass `&tile` to helpers.
+- `if (x == 0) x = K;` beats a ternary when constants are pushed inside branches; write the final call in
+  both branches so the compiler merges the tail (`push 0xe; jmp`).
+- Flag updates as separate statements (`f &= ~M; ... f |= B;`), not one expression.
+- A parameter used once is loaded at the point of use; used twice it is cached in a callee-saved register
+  (extra push/pop). Use counts change register allocation.
+- `float m[4][4]` parameters indexed `m[i][j]` (vs a flat `float *`) fixed a 27% match.
+- Cast both sides of a pointer-loop bound to `(int)` for the signed `jle` compare.
+- Small clears: `memset(node, 0, sizeof *node)` reproduces the original's inlined memset.
+- A callee returning `edx:eax` can be declared `unsigned __int64` and split with `(unsigned)r` / `(unsigned)(r >> 32)`.
+- Index an array (`tbl[i]`) instead of walking a struct pointer when the original loop compares signed.
+- Struct definitions must sit above the `// FUNCTION` tag, or reccmp reports "Failed to find function symbol".
+- Float constants: whether to use an `extern float` at the exe address or a literal depends on whether
+  the address is listed in `data/floats.csv`; a wrong choice shows as `(FLOAT)` vs `(DATA)` and costs a few %.
+- Not reachable in pure C (skipped): `push ebp` frames, `fstcw`/`fldcw`/`rdtsc`, inline x87 exp sequences.
