@@ -6,6 +6,15 @@
 #include "math.h"
 #include "objclass.h"
 
+// GLOBAL: LEGOLAND 0x004ab444
+float FLOAT_004ab444;
+
+// GLOBAL: LEGOLAND 0x004ab550
+float FLOAT_004ab550;
+
+// GLOBAL: LEGOLAND 0x0066b638
+struct ColorLutEntry DAT_0066b638[256];
+
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
 

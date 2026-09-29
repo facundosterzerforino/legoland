@@ -177,6 +177,13 @@ struct ObjTableEntry {
     unsigned short value;
 };
 
+struct ColorLutEntry {
+    unsigned short shifted;
+    unsigned short scaled;
+    unsigned short value;
+    unsigned short pad;
+};
+
 struct FreePlaySpriteSlot {
     struct Sprite *field_0;
     struct Sprite *field_4;
@@ -416,6 +423,12 @@ extern float FLOAT_004ab43c;
 extern double DAT_004ab418;
 // 0x004ab43c
 extern float FLOAT_004ab43c;
+// 0x004ab444
+extern float FLOAT_004ab444;
+// 0x004ab550
+extern float FLOAT_004ab550;
+// 0x0066b638
+extern struct ColorLutEntry DAT_0066b638[256];
 // 0x004ab44c
 extern float FLOAT_004ab44c;
 // 0x004ab454
