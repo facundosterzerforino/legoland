@@ -1485,11 +1485,22 @@ extern struct PathNode *DAT_004d8240;
 // 0x004d8244
 extern struct PathNode *DAT_004d8244;
 // 0x004d8250
-extern const unsigned char DAT_004d8250[1];
+struct SprOwner;
+struct SprEnt {
+    unsigned int field_0;
+    struct SprOwner *owner;
+    int id_a;
+    unsigned int h_a;
+    int id_b;
+    unsigned int h_b;
+};
+extern struct SprEnt DAT_004d8250;
 // 0x004d8268
 extern unsigned int DAT_004d8268;
 // 0x004d8270
 extern unsigned int DAT_004d8270;
+extern float DAT_004d829c[64];
+extern unsigned int DAT_004d83c0;
 // 0x004d88f4
 extern unsigned char DAT_004d88f4[0x80];
 // 0x004d8974
