@@ -1268,6 +1268,8 @@ extern struct CursorSource *DAT_004cbe30;
 extern void *DAT_004cbe48;
 // 0x004cbe4c
 extern struct Sprite *DAT_004cbe4c;
+// 0x004cbe70
+extern struct RenderItemNode *DAT_004cbe70;
 // 0x004cbe74
 extern struct Sprite *DAT_004cbe74;
 // 0x004cbe78

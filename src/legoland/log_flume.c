@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "bloke.h"
 #include "globals.h"
 #include "legoland.h"
 
 #include "gamemap.h"
 #include "llidb.h"
 #include "log_flume.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "print_sprite.h"
+#include "render3d.h"
 #include "ride_queue.h"
 
 struct Sprite;
@@ -254,7 +258,10 @@ struct FlumeEntry {
     struct FlumeEntry *sub;
     TileId tile;
     unsigned char pad_16[2];
-    int mode;
+    union {
+        int mode;
+        struct FlumeEntry *link;
+    };
     int submode;
     unsigned char pad_20[0x2c - 0x20];
     struct FlumeEntry *sub2;
@@ -1141,7 +1148,170 @@ void FUN_0040b290(void) { STUB(); }
 int FUN_0040b390(struct FlumeEntry *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040b420
-void FUN_0040b420(void) { STUB(); }
+void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = elem->ride;
+    struct Point base;
+    struct FlumeEntry *entry;
+    struct Point coords;
+    struct Point pos;
+    struct RideNode *node;
+    struct LLS *lls;
+    struct Sprite *sprite;
+    int frame;
+
+    base.x = ride->x + tile->pos.x;
+    base.y = ride->y + tile->pos.y;
+    entry = FUN_00408ec0(tile);
+    coords = GetScreenCoordsForObject(tile, ride);
+    if (entry != NULL ? FUN_0040b390(entry->link) : (int)tile) {
+        struct Point off;
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer(ride->layer, 0));
+        frame = lls != NULL ? lls->frame : (int)tile;
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe4c);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        pos = GetScreenCoordsForObject(tile, ride);
+        off = GetRenderOffsetForLayer(ride->layer, 0);
+        AdjustOffsetForViewMode(&off);
+        if (DAT_004cbe4c != NULL) {
+            PrintSprite(DAT_004cbe4c, pos.x + off.x, pos.y + off.y, clip, 0);
+        }
+    }
+    {
+        struct Point off;
+        sprite = GetSpriteForLayer(ride->layer, 1);
+        pos = GetScreenCoordsForObject(tile, ride);
+        off = GetRenderOffsetForLayer(ride->layer, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(sprite, pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+
+    RenderItems_New();
+    DAT_004cbe70 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x <= (base.x << 8) - 0x280) {
+            AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
+
+    RenderItems_New();
+    DAT_004cbe70 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280 && (node->rider->pos.y >> 8) <= base.y - 9) {
+            AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
+    if (DAT_004cbe94 != NULL) {
+        struct Point off;
+        off.x = -100;
+        off.y = -0xd1;
+        lls = NULL;
+        sprite = GetSpriteForLayer(ride->layer, 2);
+        if (sprite != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        }
+        frame = lls != NULL ? lls->frame : (int)tile;
+        AdjustOffsetForViewMode(&off);
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe94);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        PrintSprite(DAT_004cbe94, coords.x + off.x, coords.y + off.y, clip, 0);
+    }
+
+    RenderItems_New();
+    DAT_004cbe70 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280) {
+            int y = node->rider->pos.y >> 8;
+            if (y == base.y - 6 || y == base.y - 7 || y == base.y - 8) {
+                AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+            }
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
+    if (DAT_004cbe98 != NULL) {
+        struct Point off;
+        off.x = 8;
+        off.y = -0x71;
+        lls = NULL;
+        sprite = GetSpriteForLayer(ride->layer, 2);
+        if (sprite != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        }
+        frame = lls != NULL ? lls->frame : (int)tile;
+        AdjustOffsetForViewMode(&off);
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe98);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        PrintSprite(DAT_004cbe98, coords.x + off.x, coords.y + off.y, clip, 0);
+    }
+
+    RenderItems_New();
+    DAT_004cbe70 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280 && (node->rider->pos.y >> 8) == base.y - 3) {
+            AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
+    if (DAT_004cbe90 != NULL) {
+        struct Point off;
+        off.x = -100;
+        off.y = -0xd1;
+        lls = NULL;
+        sprite = GetSpriteForLayer(ride->layer, 2);
+        if (sprite != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        }
+        frame = lls != NULL ? lls->frame : (int)tile;
+        AdjustOffsetForViewMode(&off);
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe90);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        PrintSprite(DAT_004cbe90, coords.x + off.x, coords.y + off.y, clip, 0);
+    }
+
+    RenderItems_New();
+    DAT_004cbe70 = NULL;
+    for (node = ride->riders; node != NULL; node = node->next) {
+        if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280) {
+            int y = node->rider->pos.y >> 8;
+            if (y == base.y - 2 || y == base.y - 1 || y == base.y) {
+                AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+            }
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbe70);
+    if (DAT_004cbe8c != NULL) {
+        struct Point off;
+        off.x = -100;
+        off.y = -0xd1;
+        AdjustOffsetForViewMode(&off);
+        lls = NULL;
+        sprite = GetSpriteForLayer(ride->layer, 2);
+        if (sprite != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        }
+        frame = lls != NULL ? lls->frame : (int)tile;
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe8c);
+        if (lls != NULL) {
+            LLSSetFrame(lls, frame);
+        }
+        PrintSprite(DAT_004cbe8c, coords.x + off.x, coords.y + off.y, clip, 0);
+    }
+    if (DAT_004cbe88 != NULL) {
+        struct Point off;
+        off = GetRenderOffsetForLayer(ride->layer, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_004cbe88, coords.x + off.x, coords.y + off.y, clip, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040ba80
 int FUN_0040ba80(struct Node *arg) {
