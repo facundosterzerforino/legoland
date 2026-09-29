@@ -3133,7 +3133,10 @@ struct LSub {
 };
 
 struct LNode {
-    char pad0[0x1c];
+    char pad0[4];
+    short x;
+    short y;
+    char pad8[0x14];
     struct LNode *next1c;
     char pad20[8];
     struct LNode *next28;
@@ -3198,11 +3201,87 @@ void FUN_00423ec0(char *param1) {
     }
 }
 
+struct Curve;
+
+struct CurveVt {
+    void (*method_0)(struct Curve *self, float t, float *out);
+    void *pad_4;
+    void (*method_8)(struct Curve *self, float t, float *out);
+    void (*method_c)(struct Curve *self, float t, float *out);
+    void (*method_10)(struct Curve *self, float t, float *out);
+};
+
+struct Curve {
+    unsigned char pad_0[0x44];
+    float start;
+    float end;
+    struct CurveVt *vt;
+};
+
 // FUNCTION: LEGOLAND 0x00423f40
-void FUN_00423f40(void) { STUB(); }
+int FUN_00423f40(struct Point *pos, float *a2, struct Point *a3, float *a4, struct LNode *node, int *a6) {
+    struct FVec3 a;
+    struct FVec3 b;
+    struct Curve *c;
+    struct LNode *n2;
+
+    *a6 = node->next1c == (struct LNode *)&DAT_00829ae4;
+    c = (struct Curve *)FUN_0041cff0((unsigned int)node, (unsigned int *)&a);
+    c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
+    b.z += a.z;
+    *a2 = b.z * -2.0f;
+    n2 = node->next28;
+    if (n2 != 0 && n2 != (struct LNode *)&DAT_00829ae4) {
+        c = (struct Curve *)FUN_0041cff0((unsigned int)n2, (unsigned int *)&a);
+        c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
+        b.z += a.z;
+        *a4 = b.z * -2.0f;
+        a3->x = n2->x;
+        a3->y = n2->y;
+        return 1;
+    }
+    *a3 = *pos;
+    if (node->next28 == (struct LNode *)&DAT_00829ae4) {
+        a3->y -= 16;
+    }
+    *a4 = 0.0f;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00424050
-void FUN_00424050(void) { STUB(); }
+int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5) {
+    struct LNode *n;
+    struct LNode *next;
+
+    if (DAT_00829ae0 == 2) {
+        n = (struct LNode *)DAT_00829b0c;
+        while (n != (struct LNode *)&DAT_00829ae4) {
+            next = n->next28;
+            if (n->x == pos->x && n->y == pos->y) {
+                return FUN_00423f40(pos, a2, a3, a4, n, a5);
+            }
+            n = next;
+        }
+        return 0;
+    }
+    n = (struct LNode *)DAT_00829ba0;
+    while (n != (struct LNode *)&DAT_00829ae4) {
+        next = n->next28;
+        if (n->x == pos->x && n->y == pos->y) {
+            return FUN_00423f40(pos, a2, a3, a4, n, a5);
+        }
+        n = next;
+    }
+    n = (struct LNode *)DAT_00829b88;
+    while (n != (struct LNode *)&DAT_00829ae4) {
+        next = n->next1c;
+        if (n->x == pos->x && n->y == pos->y) {
+            return FUN_00423f40(pos, a2, a3, a4, n, a5);
+        }
+        n = next;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00424140
 void *FUN_00424140(void) {
@@ -3404,8 +3483,50 @@ unsigned int FUN_004246e0(unsigned int param_1, unsigned int param_2) {
     return FUN_0041d6f0();
 }
 
+struct Ent {
+    unsigned int first;
+    short x;
+    short y;
+    unsigned int k;
+    unsigned int a;
+    unsigned int b;
+    char pad[0x10];
+};
+
+struct Obj58 {
+    unsigned int f0[0x13];
+    unsigned int f4c;
+    unsigned int f50;
+    unsigned int f54;
+};
+
 // FUNCTION: LEGOLAND 0x00424700
-void FUN_00424700(void) { STUB(); }
+void FUN_00424700(unsigned int a1, unsigned int a2, unsigned int a3, unsigned char *p) {
+    struct FVec3 buf;
+    struct Obj58 obj;
+    struct Ent *ent = (struct Ent *)DAT_0060f924;
+    short key[2];
+    int want;
+    int i;
+    int n = DAT_00610a08;
+
+    FUN_00425cb0((struct Int16Pair *)DAT_00829ae8, (float)DAT_004b5b50, &buf);
+    key[0] = p[0];
+    key[1] = p[1];
+    want = *(int *)key;
+    for (i = 0; i < n; i++) {
+        key[0] = ent[i].x + DAT_00829ae8[0];
+        key[1] = ent[i].y + DAT_00829ae8[1];
+        if (want == *(int *)key) {
+            obj = ((struct Obj58 *)&DAT_006102f8)[ent[i].k];
+            obj.f4c = ent[i].a;
+            obj.f50 = ent[i].b;
+            FUN_004294f0((unsigned int)&obj, (unsigned int *)&buf, 1, 0);
+            break;
+        }
+    }
+    FUN_00424a20((struct CastleOuter *)&DAT_00829ae4);
+}
 
 // FUNCTION: LEGOLAND 0x00424800
 void FUN_00424800(void) {
@@ -4176,7 +4297,7 @@ void FUN_004267b0(unsigned int *t, unsigned int *m3, struct EdgeObj *obj) {
     int i;
 
     FUN_004264e0(t, m3, m);
-    FUN_004261c0(obj->pts, &pts[0][0], (float (*)[4])m, obj->npts);
+    FUN_004261c0(&obj->pts[0][0], &pts[0][0], (float (*)[4])m, obj->npts);
     FUN_00426230(pts, xf, obj->npts);
     for (i = 0; i < obj->nedges; i++) {
         FUN_004237f0(xf[obj->edges[i].a], xf[obj->edges[i].b], obj->color);
@@ -5162,23 +5283,6 @@ void FUN_00428b70(void) {
     FUN_00429270();
     FUN_004294b0();
 }
-
-struct Curve;
-
-struct CurveVt {
-    void (*method_0)(struct Curve *self, float t, float *out);
-    void *pad_4;
-    void (*method_8)(struct Curve *self, float t, float *out);
-    void (*method_c)(struct Curve *self, float t, float *out);
-    void (*method_10)(struct Curve *self, float t, float *out);
-};
-
-struct Curve {
-    unsigned char pad_0[0x44];
-    float start;
-    float end;
-    struct CurveVt *vt;
-};
 
 // FUNCTION: LEGOLAND 0x00428b80
 void FUN_00428b80(struct Curve *curve, float *off) {

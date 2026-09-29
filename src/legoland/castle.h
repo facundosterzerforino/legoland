@@ -19,6 +19,8 @@ struct RingHost;
 struct ObjE500;
 struct RectI;
 struct CastleSub;
+struct CastleOuter;
+void FUN_00424a20(struct CastleOuter *param_1);
 void FUN_004245b0(short *param_1);
 void FUN_004249e0(struct CastleSub *param_1);
 void FUN_00424b10(struct ListHost *param_1);
