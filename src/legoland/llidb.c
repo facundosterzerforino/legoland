@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <commctrl.h>
 #include "legoland.h"
 
 #include <fcntl.h>
@@ -430,7 +431,121 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(const char *param_1, const ch
 }
 
 // FUNCTION: LEGOLAND 0x0047b890
-INT_PTR CALLBACK FUN_0047b890(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) { STUB(); }
+INT_PTR CALLBACK FUN_0047b890(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+    HWND list;
+    int count;
+    unsigned int i;
+    struct Element *elem;
+    LVCOLUMN col;
+    LVITEM item;
+
+    count = 0;
+    switch (msg) {
+    case WM_INITDIALOG:
+        list = GetDlgItem(hwnd, 0x441);
+        col.mask = LVCF_WIDTH | LVCF_TEXT;
+        // STRING: LEGOLAND 0x004bc2e8
+        col.pszText = "ID";
+        col.cx = 180;
+        SendMessageA(list, LVM_INSERTCOLUMN, 0, (LPARAM)&col);
+        col.mask = LVCF_WIDTH | LVCF_TEXT;
+        // STRING: LEGOLAND 0x004bc2e0
+        col.pszText = "File";
+        col.cx = 180;
+        SendMessageA(list, LVM_INSERTCOLUMN, 1, (LPARAM)&col);
+        col.mask = LVCF_WIDTH | LVCF_TEXT;
+        // STRING: LEGOLAND 0x004bc2d8
+        col.pszText = "Type";
+        col.cx = 180;
+        SendMessageA(list, LVM_INSERTCOLUMN, 2, (LPARAM)&col);
+        list = GetDlgItem(hwnd, 0x441);
+        for (i = 0; i < DAT_006691a4; i++) {
+            LLIDB_GetElement(i, &elem);
+            if (elem != NULL && (DAT_007fdb88 & elem->flags) != 0) {
+                item.mask = LVIF_TEXT | LVIF_PARAM;
+                item.iItem = count;
+                item.iSubItem = 0;
+                item.pszText = elem->name;
+                item.lParam = i;
+                SendMessageA(list, LVM_INSERTITEM, 0, (LPARAM)&item);
+                item.mask = LVIF_TEXT;
+                item.iItem = count;
+                item.iSubItem = 1;
+                item.pszText = elem->path;
+                SendMessageA(list, LVM_SETITEM, 0, (LPARAM)&item);
+                item.mask = LVIF_TEXT;
+                item.iItem = count;
+                item.iSubItem = 2;
+                switch (elem->flags & 0xfff0) {
+                case 0x10:
+                    // STRING: LEGOLAND 0x004bc2c4
+                    item.pszText = "Object Description";
+                    break;
+                case 0x20:
+                    // STRING: LEGOLAND 0x004bc2b4
+                    item.pszText = "Tile Mapping";
+                    break;
+                case 0x40:
+                    // STRING: LEGOLAND 0x004bc2a8
+                    item.pszText = "Tile Set";
+                    break;
+                case 0x80:
+                    // STRING: LEGOLAND 0x004bc298
+                    item.pszText = "Level Structure";
+                    break;
+                case 0x100:
+                    // STRING: LEGOLAND 0x004bc28c
+                    item.pszText = "Terrain Map";
+                    break;
+                case 0x200:
+                    // STRING: LEGOLAND 0x004bc26c
+                    item.pszText = "Game Defined Stub";
+                    break;
+                case 0x400:
+                    // STRING: LEGOLAND 0x004bc280
+                    item.pszText = "Image List";
+                    break;
+                case 0x800:
+                    // STRING: LEGOLAND 0x004bc254
+                    item.pszText = "Configuration String";
+                    break;
+                case 0x1010:
+                    // STRING: LEGOLAND 0x004bc238
+                    item.pszText = "Object Control Description";
+                    break;
+                }
+                SendMessageA(list, LVM_SETITEM, 0, (LPARAM)&item);
+                count++;
+            }
+        }
+        return 1;
+    case WM_COMMAND:
+        switch (LOWORD(wparam)) {
+        case IDOK:
+            list = GetDlgItem(hwnd, 0x441);
+            DAT_007fdca0 = SendMessageA(list, LVM_GETNEXTITEM, -1, LVNI_SELECTED);
+            if (DAT_007fdca0 == -1) {
+                EndDialog(hwnd, 0);
+                return 0;
+            }
+            item.mask = LVIF_PARAM;
+            item.iItem = DAT_007fdca0;
+            item.iSubItem = 0;
+            SendMessageA(list, LVM_GETITEM, 0, (LPARAM)&item);
+            DAT_007fdca0 = item.lParam;
+            EndDialog(hwnd, 1);
+            break;
+        case IDCANCEL:
+            EndDialog(hwnd, 0);
+            return 0;
+        case 0x29a:
+            EndDialog(hwnd, -1);
+            return 0;
+        }
+        break;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047bc20
 LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, struct Element **output) {
