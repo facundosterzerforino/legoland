@@ -666,7 +666,74 @@ void FUN_00402550(struct BlokeSprite *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x004025d0
-void FUN_004025d0(void) { STUB(); }
+void FUN_004025d0(struct Person *person, unsigned int direction) {
+    person->field_48 = person->field_40 = 0.0f;
+    switch (direction) {
+    case 0:
+        person->field_44 = -0.78539794683456421f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 1:
+        person->field_44 = -1.1780968904495239f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 2:
+        person->field_44 = 4.7123875617980957f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 3:
+        person->field_44 = 4.3196887969970703f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 4:
+        person->field_44 = 3.9269897937774658f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 5:
+        person->field_44 = 3.5342907905578613f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 6:
+        person->field_44 = 3.1415917873382568f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 7:
+        person->field_44 = 2.7488927841186523f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 8:
+        person->field_44 = 2.3561937808990479f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 9:
+        person->field_44 = 1.9634948968887329f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 10:
+        person->field_44 = 1.5707958936691284f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 11:
+        person->field_44 = 1.1780968904495239f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 12:
+        person->field_44 = 0.78539794683456421f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 13:
+        person->field_44 = 0.3926989734172821f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 14:
+        person->field_44 = 0.0f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 15:
+        person->field_44 = -0.3926989734172821f;
+    }
+    SetPersonRotation(person, &person->field_40);
+}
 
 // FUNCTION: LEGOLAND 0x00402780
 void FUN_00402780(struct DrivingBloke *b) { STUB(); }
