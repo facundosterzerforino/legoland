@@ -223,8 +223,42 @@ struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
 
 // FUNCTION: LEGOLAND 0x00482330
 int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, struct PathLink *d) {
-    STUB();
-    return 0;
+    int cx, cy;
+    int dx0, dy0, dx1, dy1;
+    struct MapElement *e;
+
+    if (b == 0) {
+        return 0;
+    }
+    if (c == 0) {
+        return 0;
+    }
+    cx = c->x;
+    dx0 = b->x - a->x;
+    dy0 = b->y - a->y;
+    dx1 = cx - b->x;
+    cy = c->y;
+    dy1 = cy - b->y;
+    if ((dx1 != 0 && dy0 != 0) || (dy1 != 0 && dx0 != 0)) {
+        e = &GameMap[a->y + dy1][a->x + dx1];
+        if ((e->field_10 & 2) && !(e->flags & 0x800)) {
+            return 0;
+        }
+        return 1;
+    }
+    if (d == 0) {
+        return 0;
+    }
+    dx1 = d->x - cx;
+    dy1 = d->y - cy;
+    if ((dx1 != 0 && dy0 != 0) || (dy1 != 0 && dx0 != 0)) {
+        e = &GameMap[a->y + dy1][a->x + dx1];
+        if ((e->field_10 & 2) && !(e->flags & 0x800)) {
+            return 0;
+        }
+        return 2;
+    }
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00482430
