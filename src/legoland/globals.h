@@ -1286,10 +1286,18 @@ extern struct Sprite *DAT_004cbf1c;
 extern unsigned int DAT_004cbf20;
 // 0x004cbf24
 extern void *DAT_004cbf24;
+// 0x004cbf28
+extern struct Sprite *DAT_004cbf28;
+// 0x0082c660
+extern int DAT_0082c660;
+// 0x0082c664
+extern int DAT_0082c664;
 // 0x004cbf30
 extern void *DAT_004cbf30[2];
 // 0x004cbf38
 extern void *DAT_004cbf38[2];
+// 0x004cbf3c
+extern struct Sprite *DAT_004cbf3c;
 // 0x004cbf40
 extern unsigned int DAT_004cbf40;
 // 0x004cbf44
