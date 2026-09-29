@@ -127,7 +127,50 @@ WorkOrder *FUN_00470410(Point *out) {
 }
 
 // FUNCTION: LEGOLAND 0x004704b0
-void FUN_004704b0(void) { STUB(); }
+WorkOrder *FUN_004704b0(Point *out) {
+    unsigned int v = DAT_004bdd08 & 0xffff;
+    int x = v & 0xff;
+    int y = v >> 8;
+    MapElement *elem;
+    Ride *ride;
+    unsigned short flags;
+    WorkOrder *order = NULL;
+
+    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        elem = &GameMap[y][x];
+    } else {
+        elem = NULL;
+    }
+    flags = elem->flags;
+    if (flags & 0x88) {
+        ride = elem->field_0->ride;
+        if (ride->durability != 0) {
+            if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
+                if (!(0x4000 & flags)) {
+                    order = AddRepairOrderForObject(ride, x, y);
+                }
+            } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
+                if (!(0x4000 & flags)) {
+                    order = AddRepairOrderForObject(ride, x, y);
+                }
+            }
+            if (order != NULL) {
+                elem->flags |= 0x4000;
+                if (out != NULL) {
+                    out->x = order->pos.x + order->footprints->x0;
+                    out->y = order->footprints->y1 + order->pos.y;
+                }
+                if (DAT_007fdffc == 0x307) {
+                    PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
+                } else {
+                    PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
+                }
+            }
+        }
+        return order;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00470620
 LEGO_EXPORT int CheckWorkerOnMouseStatus(int a) { STUB(); }
