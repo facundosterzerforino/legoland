@@ -288,16 +288,14 @@ void FUN_004437d0(struct Image *param_1, struct TextureNode *param_2) {
             dst++;
         }
         for (y = 0; y < param_1->height; y++) {
-            width = param_1->width;
-            for (x = 0; x < width; x++) {
-                src = (unsigned char *)param_1->data + width * y;
-                out = param_2->data_8 + width * y;
+            for (x = 0; x < param_1->width; x++) {
+                src = (unsigned char *)param_1->data + param_1->width * y;
+                out = param_2->data_8 + param_1->width * y;
                 index = src[x];
                 out[x] = index;
                 if (param_2->data_c[index] == 0) {
                     param_2->data_c[index] = FUN_00486280(0x40, &DAT_0081c4c0[index]);
                 }
-                width = param_1->width;
             }
         }
     }

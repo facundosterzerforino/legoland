@@ -162,7 +162,8 @@ void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2)
     ride = (struct SpaceTowerRide *)DAT_0062fd74;
     base.x += (param_2->coord.x + ride->field_c) << 8;
     base.y += (param_2->coord.y + ride->field_10) << 8;
-    param_2->bloke->dest = base;
+    bloke->dest.x = base.x;
+    bloke->dest.y = base.y;
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->field_e = 7;
     bloke->field_73 = dir + 0x10;
