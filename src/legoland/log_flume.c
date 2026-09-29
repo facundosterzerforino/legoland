@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "bloke.h"
+#include "debug_alloc.h"
 #include "globals.h"
 #include "legoland.h"
 
@@ -254,7 +255,9 @@ struct FlumeBytes {
 
 struct FlumeEntry {
     struct FlumeEntry *next;
-    unsigned char pad_4[0xc];
+    unsigned char pad_4[4];
+    void *field_8;
+    void *field_c;
     union {
         struct FlumeEntry *sub;
         unsigned int flags;
@@ -268,7 +271,7 @@ struct FlumeEntry {
     int submode;
     struct Ride *ride;
     struct FlumeEntry *parent;
-    unsigned char pad_28[4];
+    struct FlumeEntry *link28;
     struct FlumeEntry *sub2;
     unsigned char pad_30[0xd0 - 0x30];
     int field_d0;
@@ -1466,7 +1469,26 @@ void FUN_0040c430(void) {
 void FUN_0040c4a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c6c0
-void FUN_0040c6c0(void) { STUB(); }
+void FUN_0040c6c0(int unused, struct Point *pt) {
+    struct FlumeEntry *entry = FUN_0040d210(pt->x, pt->y);
+    unsigned int v;
+
+    if (entry != NULL) {
+        FUN_0045f480(&QueryCursor, 1);
+        QueryCursor.field_1404 = entry->tile.pos.x;
+        QueryCursor.field_1408 = entry->tile.pos.y;
+        v = DAT_004b4730;
+        memcpy(&QueryCursor.footprint, &DAT_004b4728, sizeof(struct Footprint));
+        QueryCursor.footprint.x1 = v - 1;
+        QueryCursor.footprint.y1 = QueryCursor.footprint.y1 - 1;
+        QueryCursor.field_1828 = 8;
+        if (FUN_00409140((struct Node *)entry)) {
+            if ((entry->field_c == NULL || entry->field_8 == NULL || FUN_0040ba80((struct Node *)entry->parent)) && !(entry->flags & 1)) {
+                FUN_0045f460(&QueryCursor);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040c780
 void FUN_0040c780(void) { STUB(); }
@@ -1745,10 +1767,80 @@ struct Point FUN_0040cfd0(struct FlumeEntry *entry) {
 }
 
 // FUNCTION: LEGOLAND 0x0040d090
-void FUN_0040d090(void) { STUB(); }
+void FUN_0040d090(struct FlumeEntry *entry, struct Footprint **out, TileId *tile) {
+    struct FlumeEntry *cur = entry->link28;
+    void *r;
+    unsigned int v;
+
+    if (cur == NULL || cur == (struct FlumeEntry *)-1) {
+        cur = entry;
+    }
+    tile->pos.x = cur->tile.pos.x;
+    tile->pos.y = cur->tile.pos.y;
+    if (cur->link28 == (struct FlumeEntry *)-1) {
+        tile->pos.x = cur->parent->tile.pos.x;
+        tile->pos.y = cur->parent->tile.pos.y;
+        DAT_004c2aa8 = DAT_004c2b9c->footprint;
+        DAT_004c2aa8.x1 = DAT_004c2aa8.x0 + (DAT_004b4730 - DAT_004b4728) * 2;
+        *out = &DAT_004c2aa8;
+        return;
+    }
+    r = cur->ride;
+    if (r == DAT_004cbe30) {
+        v = DAT_004b4730;
+        memcpy(&DAT_004c8d38, &DAT_004b4728, sizeof(struct Footprint));
+        DAT_004c8d38.x1 = v - 1;
+        DAT_004c8d38.y1 = DAT_004c8d38.y1 - 1;
+        *out = &DAT_004c8d38;
+    } else if (r == DAT_004c8d6c) {
+        *out = (struct Footprint *)DAT_004c8d6c->var_3c;
+    } else if (r == DAT_004c2b60) {
+        *out = (struct Footprint *)DAT_004c2b60->var_3c;
+    } else if (r == DAT_004c445c) {
+        *out = (struct Footprint *)DAT_004c445c->var_3c;
+    } else if (r == DAT_004c2aa0) {
+        *out = (struct Footprint *)DAT_004c2aa0->var_3c;
+    } else if (r == DAT_004c2b0c) {
+        *out = (struct Footprint *)DAT_004c2b0c->var_3c;
+    } else if (r == DAT_004c74d4) {
+        *out = (struct Footprint *)DAT_004c74d4->var_3c;
+    } else if (r == DAT_004cbe18) {
+        *out = (struct Footprint *)DAT_004cbe18->var_3c;
+    } else if (r == DAT_004c2bf0) {
+        *out = (struct Footprint *)DAT_004c2bf0->var_3c;
+    } else {
+        *out = NULL;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040d210
-void FUN_0040d210(void) { STUB(); }
+struct FlumeEntry *FUN_0040d210(int x, int y) {
+    struct FlumeEntry *outer;
+    struct FlumeEntry *cur;
+    struct Footprint *fp;
+    TileId t;
+    int tx;
+    int ty;
+
+    for (outer = DAT_004cbe84; outer != NULL; outer = outer->next) {
+        cur = outer->sub;
+        while (cur != NULL) {
+            FUN_0040d090(cur, &fp, &t);
+            if (fp != NULL) {
+                tx = t.pos.x;
+                ty = t.pos.y;
+                if (x >= fp->x0 + tx && x <= fp->x1 + tx && y >= fp->y0 + ty && y <= fp->y1 + ty) {
+                    return cur;
+                }
+            } else {
+                // STRING: LEGOLAND 0x004b4a24
+                DBPrintf("Something wrong in the log flume track\n");
+            }
+            cur = cur->next;
+        }
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0040d2d0
 void FUN_0040d2d0(unsigned int param_1) { STUB(); }

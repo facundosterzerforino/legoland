@@ -7,6 +7,8 @@ struct FlumeDims;
 
 struct FlumeDims FUN_004112c0(void);
 
+struct FlumeEntry *FUN_0040d210(int x, int y);
+
 struct Point FUN_0040cfd0(struct FlumeEntry *entry);
 
 int FUN_004119c0(Element *obj, int filter);

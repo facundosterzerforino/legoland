@@ -1178,6 +1178,8 @@ extern unsigned int DAT_004c2a88;
 extern struct Sprite *DAT_004c2a94;
 // 0x004c2a98
 extern struct Sprite *DAT_004c2a98;
+// 0x004c2aa8
+extern struct Footprint DAT_004c2aa8;
 // 0x004c2aa0
 extern struct CursorSource *DAT_004c2aa0;
 // 0x004c2abc
@@ -1234,6 +1236,8 @@ extern struct CursorSource *DAT_004c74d4;
 extern struct RideSpriteInfo DAT_004c74d8;
 // 0x004c8d2c
 extern struct Sprite *DAT_004c8d2c;
+// 0x004c8d38
+extern struct Footprint DAT_004c8d38;
 // 0x004c8d4c
 extern void *DAT_004c8d4c;
 // 0x004c8d50

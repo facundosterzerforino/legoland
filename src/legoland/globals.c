@@ -1232,6 +1232,9 @@ struct Sprite *DAT_004c2a94;
 // GLOBAL: LEGOLAND 0x004c2a98
 struct Sprite *DAT_004c2a98;
 
+// GLOBAL: LEGOLAND 0x004c2aa8
+struct Footprint DAT_004c2aa8;
+
 // GLOBAL: LEGOLAND 0x004c2aa0
 struct CursorSource *DAT_004c2aa0;
 
@@ -1315,6 +1318,9 @@ struct RideSpriteInfo DAT_004c74d8;
 
 // GLOBAL: LEGOLAND 0x004c8d2c
 struct Sprite *DAT_004c8d2c;
+
+// GLOBAL: LEGOLAND 0x004c8d38
+struct Footprint DAT_004c8d38;
 
 // GLOBAL: LEGOLAND 0x004c8d4c
 void *DAT_004c8d4c;
