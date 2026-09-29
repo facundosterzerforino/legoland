@@ -385,6 +385,16 @@ struct MapStats {
     /* 0x3e0 */ int field_3e0[4];
 };
 
+struct FortRect {
+    int left;
+    int top;
+    int right;
+    int bottom;
+};
+
+// 0x004b4580
+extern struct FortRect DAT_004b4580;
+
 // 0x004ab390
 extern float FLOAT_004ab390;
 // 0x004ab398

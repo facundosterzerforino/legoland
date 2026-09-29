@@ -1,10 +1,13 @@
+#include <stdlib.h>
 #include <string.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "fort.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
 
@@ -37,7 +40,48 @@ void FUN_004062a0(void) {
 void FUN_004062c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004064d0
-void FUN_004064d0(void) { STUB(); }
+void FUN_004064d0(RideNode *node, Bloke *bloke) {
+    int h, r;
+    float fx, fy;
+    char dir;
+
+    switch ((short)bloke->field_40) {
+    case 1:
+        if (--bloke->field_58 <= 0) {
+            bloke->field_40 = bloke->field_42;
+        }
+        break;
+    case 2:
+        r = (DAT_004b4580.right - DAT_004b4580.left) << 8;
+        h = (DAT_004b4580.bottom - DAT_004b4580.top) << 8;
+        fx = (rand() & 0xff) * 0.003921569f;
+        fy = (rand() & 0xff) * 0.003921569f;
+        bloke->dest.x = (int)(((node->tile.pos.x + DAT_004b4580.left) << 8) + r * fx);
+        bloke->dest.y = (int)(((node->tile.pos.y + DAT_004b4580.top) << 8) + h * fy);
+        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+        bloke->field_e = 7;
+        bloke->field_73 = dir + 0x10;
+        NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+        bloke->field_40 = 3;
+        break;
+    case 3:
+        r = rand() & 3;
+        if (r == 0 || r == 1) {
+            bloke->field_72 = rand() & 0xf;
+            bloke->field_58 = (rand() & 0xf) + 3;
+            bloke->field_40 = 1;
+            bloke->field_42 = 3;
+        }
+        if (r == 2) {
+            bloke->field_40 = r;
+            return;
+        }
+        if (r == 3) {
+            bloke->param_action++;
+        }
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00406660
 void FUN_00406660(void) { STUB(); }

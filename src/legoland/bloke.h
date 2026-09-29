@@ -69,7 +69,7 @@ struct Bloke {
     short screen_x;
     short screen_y;
     unsigned short field_40;
-    unsigned char pad_42[0x44 - 0x42];
+    unsigned short field_42;
     short field_44;
     union {
         short field_46;
