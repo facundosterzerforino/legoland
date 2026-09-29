@@ -36,13 +36,22 @@ int __stdcall DirectInputCreateA(void *hinst, unsigned int version, void *out, v
 }
 
 // STUB: LEGOLAND 0x0049e3a0
-void VerQueryValueA(void) { STUB(); }
+int __stdcall VerQueryValueA(const void *block, const char *sub_block, void **buffer, unsigned int *len) {
+    STUB();
+    return 0;
+}
 
 // STUB: LEGOLAND 0x0049e3a6
-void GetFileVersionInfoA(void) { STUB(); }
+int __stdcall GetFileVersionInfoA(const char *filename, unsigned long handle, unsigned long len, void *data) {
+    STUB();
+    return 0;
+}
 
 // STUB: LEGOLAND 0x0049e3ac
-void GetFileVersionInfoSizeA(void) { STUB(); }
+unsigned long __stdcall GetFileVersionInfoSizeA(const char *filename, unsigned long *handle) {
+    STUB();
+    return 0;
+}
 
 // STUB: LEGOLAND 0x0049e3b2
 void __stdcall acmStreamClose(void *has, unsigned int flags) { STUB(); }

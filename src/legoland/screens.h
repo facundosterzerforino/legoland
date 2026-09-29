@@ -1,6 +1,6 @@
 #pragma once
 
-void FUN_00458830(unsigned int param_1);
+void FUN_00458830(char *param_1);
 // FUN_00458930 is the game's own __ftol (compiler float->int conversion helper).
 int _ftol();
 #define FUN_00458930 _ftol

@@ -28,7 +28,7 @@ int __stdcall FUN_00453d10(unsigned int arg1, unsigned int arg2, unsigned int ar
 
     result = -1;
     __try {
-        FUN_00458830((unsigned int)&DAT_0066752c);
+        FUN_00458830((char *)&DAT_0066752c);
         result = (int)wWinMain(arg1, arg2, arg3, arg4);
         // STRING: LEGOLAND 0x004b8a94
     } __except (stackdump((void *)GetExceptionInformation(), "main thread")) {

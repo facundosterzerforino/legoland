@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #pragma intrinsic(strcpy, strlen)
 #include "globals.h"
@@ -180,7 +181,21 @@ void RenderFrontEndScreen(unsigned char param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00458830
-void FUN_00458830(unsigned int param_1) { STUB(); }
+void FUN_00458830(char *param_1) {
+    DWORD size;
+    DWORD handle;
+    char *value;
+    char *buf;
+
+    // STRING: LEGOLAND 0x004b912c
+    size = GetFileVersionInfoSizeA("Legoland.exe", &handle);
+    buf = (char *)malloc(size);
+    GetFileVersionInfoA("Legoland.exe", handle, size, buf);
+    // STRING: LEGOLAND 0x004b9104
+    VerQueryValueA(buf, "\\StringFileInfo\\080904B0\\ProductVersion", (void **)&value, (UINT *)&size);
+    strcpy(param_1, value);
+    free(buf);
+}
 
 // FUNCTION: LEGOLAND 0x004588c0
 void FUN_004588c0(void) {
