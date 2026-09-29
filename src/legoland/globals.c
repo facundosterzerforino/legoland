@@ -147,6 +147,9 @@ int DAT_004b4034[16];
 // GLOBAL: LEGOLAND 0x004b40a4
 unsigned int DAT_004b40a4[4];
 
+// GLOBAL: LEGOLAND 0x004b40b4
+int DAT_004b40b4[4];
+
 // GLOBAL: LEGOLAND 0x004b40c8
 unsigned char Catapult_SFX[0x70];
 

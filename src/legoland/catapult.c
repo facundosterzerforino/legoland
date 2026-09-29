@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "catapult.h"
 #include "gamemap.h"
 #include "globals.h"
@@ -61,20 +62,9 @@ struct CatapultFX {
     /* 0x08 */ void *field_8[(0x70 - 8) / 4];
 };
 
-struct CatapultSub {
-    unsigned char pad_0[0x3a];
-    short field_3a;
-    unsigned char pad_3c[0x58 - 0x3c];
-    int field_58;
-    unsigned char pad_5c[0x60 - 0x5c];
-    unsigned char field_60;
-    unsigned char pad_61[0x72 - 0x61];
-    unsigned char field_72;
-};
-
 struct CatapultEntry {
     unsigned char pad_0[8];
-    struct CatapultSub *sub;
+    struct Bloke *sub;
 };
 
 struct CatapultRideNode {
@@ -307,7 +297,7 @@ void FUN_004035a0(struct CatapultNode *node) {
         if (entry->sub->field_3a > 0) {
             continue;
         }
-        entry->sub->field_60 = entry->sub->field_60 + 1;
+        entry->sub->param_action = entry->sub->param_action + 1;
         FUN_00403580(node, i);
     }
 
@@ -328,7 +318,7 @@ void FUN_00403690(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004036b0
-signed char FUN_004036b0(struct CatapultNode *node) {
+signed char FUN_004036b0(struct CatapultRideNode *node) {
     signed char i = rand() % 4;
 
     while (node->slots[i] != NULL) {
@@ -341,7 +331,26 @@ signed char FUN_004036b0(struct CatapultNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004036f0
-void FUN_004036f0(void) { STUB(); }
+void FUN_004036f0(const unsigned short *key, struct CatapultEntry *entry, int x, int y) {
+    struct Bloke *bloke = entry->sub;
+    struct CatapultRideNode *node = FUN_004031b0(key);
+    signed char slot;
+    char dir;
+
+    if (node == NULL) {
+        return;
+    }
+    slot = FUN_004036b0(node);
+    node->slots[slot] = entry;
+    bloke->field_3a = 3;
+    bloke->dest.x = (x << 8) - (rand() % 2 ? 0x10 : -0x10) - 0xe0;
+    bloke->dest.y = (y << 8) + (rand() % 2 ? 0x20 : -0x20) + DAT_004b40b4[slot];
+    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+    bloke->field_e = 7;
+    bloke->field_73 = dir + 0x10;
+    NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+    bloke->param_action++;
+}
 
 // FUNCTION: LEGOLAND 0x004037d0
 void FUN_004037d0(const unsigned short *key, struct CatapultEntry *entry) {
