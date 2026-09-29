@@ -2,8 +2,9 @@
 
 #include "legoland.h"
 
-LEGO_EXPORT int CheckWorkerOnMouseStatus(int a);
+LEGO_EXPORT void CheckWorkerOnMouseStatus(int a);
 LEGO_EXPORT void ResetMoveAWorkerStruct(void);
+LEGO_EXPORT void ResetWorkersOldCoords(void);
 unsigned int FUN_004700c0(void *object);
 void *FUN_004700f0(void);
 void FUN_00470100(unsigned int type, struct Bloke *worker);

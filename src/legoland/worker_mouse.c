@@ -209,7 +209,100 @@ WorkOrder *FUN_004704b0(Point *out) {
 }
 
 // FUNCTION: LEGOLAND 0x00470620
-LEGO_EXPORT int CheckWorkerOnMouseStatus(int a) { STUB(); }
+LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
+    int result = 0;
+    int isOrder = 0;
+    int pt[2];
+    int x;
+    WorkOrder *order;
+    MapElement *elem;
+
+    if (!(DAT_00813a60 & 2) && a == 0) {
+        if (DAT_00813a50 & 2) {
+            DAT_00667c48 = 1;
+            DAT_00668954 = 0;
+            for (;;) {
+                if (DAT_004bdd00 == 0x103) {
+                    if (FUN_00470270()) {
+                        DAT_00668954 = 0;
+                        return;
+                    }
+                    order = FUN_00470410((Point *)pt);
+                    if (order != NULL) {
+                        x = pt[0];
+                        DAT_00668954 = 0;
+                        isOrder = 1;
+                    } else {
+                        order = FUN_004704b0((Point *)pt);
+                        if (order == NULL) {
+                            break;
+                        }
+                        x = pt[0];
+                        DAT_00668954 = 0;
+                        isOrder = 1;
+                    }
+                } else {
+                    if (DAT_004bdd00 == 0x10a || DAT_004bdd00 == 2 || DAT_00813a44.y < 0x20 || DAT_00813a44.y >= 0x174 || DAT_00813a44.x < lpConfig->field_20 + 9) {
+                        break;
+                    }
+                    ScreenToMapRef(&DAT_00813a44.x, pt, 0);
+                    x = pt[0];
+                    if (x < 0 || x >= lpConfig->width || pt[1] < 0) {
+                        break;
+                    }
+                    if (pt[1] < lpConfig->height) {
+                        elem = &GameMap[pt[1]][x];
+                        if (elem != NULL && (elem->field_10 & 2)) {
+                            DAT_00668954 = 1;
+                            if (DAT_007fdffc == 0x307 && (elem->flags & 0x800)) {
+                                DAT_00668954 = 0;
+                            } else {
+                                SetWorkersPositionAtMouse();
+                                return;
+                            }
+                        } else if (DAT_00668954 != 0) {
+                            SetWorkersPositionAtMouse();
+                            return;
+                        }
+                    } else {
+                        DAT_00668954 = 1;
+                        SetWorkersPositionAtMouse();
+                        return;
+                    }
+                }
+                if (DAT_007fdffc == 0x307) {
+                    DAT_007fdff0->pos.x = (x << 8) + 0x80;
+                    DAT_007fdff0->pos.y = (pt[1] << 8) + 0x80;
+                    result = SetGardenerWorkOrderAtPostion(DAT_007fdff0, pt[0], pt[1]);
+                } else {
+                    if (isOrder) {
+                        DAT_007fdff0->pos.x = ((order->step_x + x) << 8) + 0x80;
+                        DAT_007fdff0->pos.y = ((pt[1] - order->step_y) << 8) + 0x80;
+                    } else {
+                        DAT_007fdff0->pos.x = (x << 8) + 0x80;
+                        DAT_007fdff0->pos.y = (pt[1] << 8) + 0x80;
+                    }
+                    result = SetMechanicsOrderAtPostion(DAT_007fdff0, pt[0], pt[1]);
+                }
+                if (result == 0) {
+                    break;
+                }
+                if (DAT_00668954 != 0) {
+                    SetWorkersPositionAtMouse();
+                }
+                return;
+            }
+            DAT_00668954 = 1;
+            SetWorkersPositionAtMouse();
+            return;
+        }
+    } else {
+        ResetWorkersOldCoords();
+    }
+    if (DAT_00668954 != 0) {
+        SetWorkersPositionAtMouse();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004708c0
 LEGO_EXPORT void RenderWorkerOnMouse(void) {
