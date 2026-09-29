@@ -280,6 +280,33 @@ int DAT_004b5b4c;
 // GLOBAL: LEGOLAND 0x004b5b50
 int DAT_004b5b50;
 
+// GLOBAL: LEGOLAND 0x004b59e8
+char DAT_004b59e8[16] = "sit.logirlsit";
+
+// GLOBAL: LEGOLAND 0x004b59f8
+char DAT_004b59f8[] = "sit.lomansit";
+
+// GLOBAL: LEGOLAND 0x004b5abc
+float DAT_004b5abc[4][4];
+
+// GLOBAL: LEGOLAND 0x004b5b58
+unsigned short DAT_004b5b58;
+
+// GLOBAL: LEGOLAND 0x004b5b5a
+unsigned short DAT_004b5b5a;
+
+// GLOBAL: LEGOLAND 0x004b5b60
+unsigned short DAT_004b5b60;
+
+// GLOBAL: LEGOLAND 0x004b5b62
+unsigned short DAT_004b5b62;
+
+// GLOBAL: LEGOLAND 0x004b5b3c
+struct RecBuf *DAT_004b5b3c;
+
+// GLOBAL: LEGOLAND 0x004b5988
+struct BlokeInfo DAT_004b5988;
+
 // GLOBAL: LEGOLAND 0x004b5c9c
 unsigned int DAT_004b5c9c;
 
@@ -291,6 +318,18 @@ unsigned int DAT_004b5ca4;
 
 // GLOBAL: LEGOLAND 0x004b5ca8
 unsigned int DAT_004b5ca8;
+
+// GLOBAL: LEGOLAND 0x004b5cac
+float DAT_004b5cac;
+
+// GLOBAL: LEGOLAND 0x004b5cb0
+unsigned int DAT_004b5cb0;
+
+// GLOBAL: LEGOLAND 0x004b5cb4
+unsigned int DAT_004b5cb4;
+
+// GLOBAL: LEGOLAND 0x004b5cb8
+unsigned int DAT_004b5cb8;
 
 // GLOBAL: LEGOLAND 0x004b5cbc
 float DAT_004b5cbc;
@@ -1533,6 +1572,15 @@ unsigned int DAT_004dd868;
 // GLOBAL: LEGOLAND 0x004dd86c
 unsigned int DAT_004dd86c;
 
+// GLOBAL: LEGOLAND 0x0060f908
+int DAT_0060f908;
+
+// GLOBAL: LEGOLAND 0x0060f90c
+int DAT_0060f90c;
+
+// GLOBAL: LEGOLAND 0x004e3870
+char DAT_004e3870[16];
+
 // GLOBAL: LEGOLAND 0x0060f924
 unsigned int DAT_0060f924[9 * 16];
 
@@ -1565,6 +1613,9 @@ float sqrtf_exp_table[256];
 
 // GLOBAL: LEGOLAND 0x00611648
 unsigned int DAT_00611648;
+
+// GLOBAL: LEGOLAND 0x0061164c
+float DAT_0061164c;
 
 // GLOBAL: LEGOLAND 0x00611650
 float DAT_00611650;
@@ -4729,7 +4780,16 @@ float DAT_008299d4;
 unsigned int DAT_008299fc;
 
 // GLOBAL: LEGOLAND 0x008299ac
-unsigned int DAT_008299ac;
+int DAT_008299ac;
+
+// GLOBAL: LEGOLAND 0x008299b0
+int DAT_008299b0;
+
+// GLOBAL: LEGOLAND 0x008299b4
+int DAT_008299b4;
+
+// GLOBAL: LEGOLAND 0x008299b8
+int DAT_008299b8;
 
 // GLOBAL: LEGOLAND 0x00829a3c
 struct ListLink DAT_00829a3c;

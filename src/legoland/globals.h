@@ -8,6 +8,16 @@
 #include "math.h"
 
 struct Bloke;
+struct BlokeSex0;
+struct BlokeInfo {
+    unsigned int sex;
+    unsigned int leg;
+    unsigned int arm;
+    char chest[0x14];
+    char face[0x14];
+    struct BlokeSex0 *bloke;
+};
+struct RecBuf;
 
 /* DirectInput stays private to the input subsystem (input.c) + its definitions
  * (globals.c) — both include <dinput.h> directly. globals.h only needs an opaque
@@ -544,6 +554,24 @@ extern int DAT_004b5b28;
 extern int DAT_004b5b4c;
 // 0x004b5b50
 extern int DAT_004b5b50;
+// 0x004b59e8
+extern char DAT_004b59e8[];
+// 0x004b59f8
+extern char DAT_004b59f8[];
+// 0x004b5abc
+extern float DAT_004b5abc[4][4];
+// 0x004b5b58
+extern unsigned short DAT_004b5b58;
+// 0x004b5b5a
+extern unsigned short DAT_004b5b5a;
+// 0x004b5b60
+extern unsigned short DAT_004b5b60;
+// 0x004b5b62
+extern unsigned short DAT_004b5b62;
+// 0x004b5b3c
+extern struct RecBuf *DAT_004b5b3c;
+// 0x004b5988
+extern struct BlokeInfo DAT_004b5988;
 // 0x004b5c9c
 extern unsigned int DAT_004b5c9c;
 // 0x004b5ca0
@@ -552,6 +580,14 @@ extern unsigned int DAT_004b5ca0;
 extern unsigned int DAT_004b5ca4;
 // 0x004b5ca8
 extern unsigned int DAT_004b5ca8;
+// 0x004b5cac
+extern float DAT_004b5cac;
+// 0x004b5cb0
+extern unsigned int DAT_004b5cb0;
+// 0x004b5cb4
+extern unsigned int DAT_004b5cb4;
+// 0x004b5cb8
+extern unsigned int DAT_004b5cb8;
 // 0x004b5cbc
 extern float DAT_004b5cbc;
 // 0x004b5cc0
@@ -1347,6 +1383,12 @@ extern unsigned int DAT_004dd860;
 extern unsigned int DAT_004dd868;
 // 0x004dd86c
 extern unsigned int DAT_004dd86c;
+// 0x0060f908
+extern int DAT_0060f908;
+// 0x0060f90c
+extern int DAT_0060f90c;
+// 0x004e3870
+extern char DAT_004e3870[];
 // 0x0060f924
 extern unsigned int DAT_0060f924[9 * 16];
 // 0x0060f938
@@ -1369,6 +1411,8 @@ extern float invsqrtf_exp_table[256];
 extern float sqrtf_exp_table[256];
 // 0x00611648
 extern unsigned int DAT_00611648;
+// 0x0061164c
+extern float DAT_0061164c;
 // 0x00611650
 extern float DAT_00611650;
 // 0x00611688
@@ -3485,7 +3529,13 @@ extern float DAT_008299d4;
 // 0x008299fc
 extern unsigned int DAT_008299fc;
 // 0x008299ac
-extern unsigned int DAT_008299ac;
+extern int DAT_008299ac;
+// 0x008299b0
+extern int DAT_008299b0;
+// 0x008299b4
+extern int DAT_008299b4;
+// 0x008299b8
+extern int DAT_008299b8;
 // 0x00829a3c
 extern struct ListLink DAT_00829a3c;
 // 0x00829a54
