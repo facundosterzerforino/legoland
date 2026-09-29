@@ -19,3 +19,5 @@ void FUN_00455e50(char *name, unsigned int x, unsigned int y, int width, int hei
 void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y);
 LEGO_EXPORT void Print(int x, int y, const char *text, int font);
 LEGO_EXPORT void PrintLimitedText(int x, int y, int width, const char *text, int font, COLORREF color, UINT format);
+int FUN_004551a0(const char *text, int font, int width);
+void FUN_00455220(int x, int y, const char *text, int font, int width);
