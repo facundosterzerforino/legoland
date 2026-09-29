@@ -20,6 +20,14 @@ struct ObjE500;
 struct RectI;
 struct FloatAtC4;
 struct FloatHolder;
+struct LinkInput;
+struct BlokeSex0;
+LEGO_EXPORT unsigned int GetSexOfBloke(struct BlokeSex0 *param_1);
+LEGO_EXPORT char *GetFaceTextureNameOfBloke(struct BlokeSex0 *param_1);
+LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1);
+LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1);
+LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1);
+void FUN_00421980(struct LinkInput *p);
 
 void FUN_00425cb0(const struct Int16Pair *in, float f, struct FVec3 *out);
 void FUN_00425d50(float *v);
