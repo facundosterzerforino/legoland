@@ -68,6 +68,8 @@ LEGO_EXPORT struct IconNode *FindIcon(unsigned short id);
 LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3);
 LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon);
 LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int param_2, int param_3, int param_4, int param_5, int param_6);
+LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node);
+LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6, void *a7);
 LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6);
 LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
