@@ -75,6 +75,12 @@ float FLOAT_004ab458;
 // GLOBAL: LEGOLAND 0x004ab45c
 float FLOAT_004ab45c;
 
+// GLOBAL: LEGOLAND 0x004ab4bc
+float DAT_004ab4bc;
+
+// GLOBAL: LEGOLAND 0x004ab4c0
+float DAT_004ab4c0;
+
 // GLOBAL: LEGOLAND 0x004ab4c8
 double DAT_004ab4c8;
 
