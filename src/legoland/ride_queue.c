@@ -219,7 +219,60 @@ void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_
 }
 
 // FUNCTION: LEGOLAND 0x00412100
-int FUN_00412100(struct PathTable *param_1) { STUB(); }
+int FUN_00412100(struct PathTable *param_1) {
+    int total = 0;
+    int px;
+    int py;
+    int i;
+    struct QueueTable *table;
+    int k;
+    int j;
+    int sx;
+    int sy;
+    int dx;
+    int dy;
+    int len;
+    int cx;
+    int cy;
+
+    for (i = 0; i < param_1->count; i++) {
+        int y = param_1->pairs[i].b;
+        int x = param_1->pairs[i].a;
+        total += (int)sqrt((double)(y * y + x * x));
+    }
+    table = (struct QueueTable *)malloc(total * 12 + 8);
+    if (table != NULL) {
+        memset(table, 0, total * 12 + 8);
+        table->count = total;
+        table->steps = (struct QueueStep *)(table + 1);
+    }
+    sx = 0;
+    sy = 0;
+    k = 0;
+    for (i = 0; i < param_1->count; i++) {
+        struct PathPair *p = &param_1->pairs[i];
+        dx = p->a;
+        dy = p->b;
+        len = (int)sqrt((double)(dy * dy + dx * dx));
+        px = 0;
+        py = 0;
+        cx = sx;
+        cy = sy;
+        for (j = len; j > 0; j--) {
+            table->steps[k].dx = cx;
+            table->steps[k].dy = cy;
+            k++;
+            cx = sx + px / len;
+            cy = sy + py / len;
+            px += dx;
+            py += dy;
+        }
+
+        sx += dx;
+        sy += dy;
+    }
+    return (int)table;
+}
 
 // FUNCTION: LEGOLAND 0x00412290
 void FUN_00412290(void *param_1) {
