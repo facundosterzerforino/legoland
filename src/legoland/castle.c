@@ -4259,7 +4259,42 @@ void FUN_00428300(void) { STUB(); }
 void FUN_00428350(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004283c0
-unsigned int FUN_004283c0(void *s) { STUB(); }
+unsigned int FUN_004283c0(struct AnimPair *pair) {
+    unsigned int kind = FUN_0041ce60(pair);
+    int v = (((int)*(float *)&pair->anim_20.field_4 - (int)*(float *)&pair->anim_14.field_4) >> 1) + 2;
+
+    if (pair->anim_14.field_0 == FUN_0041cc50(pair->anim_20.field_0)) {
+        if (kind == 8) {
+            v += kind;
+        } else if (kind == 2) {
+            v += 0xd;
+        } else if (kind == 0xd) {
+            v += 0x12;
+        } else if (kind == 7) {
+            v += 0x17;
+        }
+        return v;
+    }
+    switch (kind) {
+    case 12:
+        return 0;
+    case 3:
+        return 1;
+    case 4:
+        return 2;
+    case 1:
+        return 3;
+    case 6:
+        return 4;
+    case 9:
+        return 5;
+    case 14:
+        return 6;
+    case 11:
+        return 7;
+    }
+    return 0xffffffff;
+}
 
 // FUNCTION: LEGOLAND 0x004284d0
 void FUN_004284d0(void) { STUB(); }
@@ -4279,8 +4314,57 @@ struct Struct4286e0Element *FUN_004286e0(void *param1) {
 // FUNCTION: LEGOLAND 0x00428700
 void FUN_00428700(void *node) { STUB(); }
 
+struct DirRule {
+    unsigned int from;
+    unsigned int to;
+    unsigned int kind;
+};
+
+struct AnimPairBuf {
+    struct AnimPair pair;
+    unsigned char pad_2c[0xa4 - 0x2c];
+};
+
 // FUNCTION: LEGOLAND 0x00428750
-void FUN_00428750(void) { STUB(); }
+void FUN_00428750(void) {
+    int n;
+    struct DirRule table[6];
+    struct AnimPairBuf buf;
+
+    table[0].from = 1;
+    table[0].to = 4;
+    table[0].kind = 2;
+    table[1].from = 2;
+    table[1].to = 8;
+    table[1].kind = 2;
+    table[2].from = 1;
+    table[2].to = 2;
+    table[2].kind = 1;
+    table[3].from = 2;
+    table[3].to = 4;
+    table[3].kind = 2;
+    table[4].from = 4;
+    table[4].to = 8;
+    table[4].kind = 1;
+    table[5].from = 8;
+    table[5].to = 1;
+    table[5].kind = 1;
+    for (n = 0; n < 6; n++) {
+        unsigned int idx;
+
+        buf.pair.anim_14.field_0 = table[n].from;
+        buf.pair.anim_20.field_0 = table[n].to;
+        DAT_00611710[FUN_0041ce60(&buf.pair)] = table[n].kind;
+        buf.pair.anim_14.field_0 = table[n].to;
+        buf.pair.anim_20.field_0 = table[n].from;
+        idx = FUN_0041ce60(&buf.pair);
+        if (table[n].kind == 2) {
+            DAT_00611710[idx] = 1;
+        } else {
+            DAT_00611710[idx] = 2;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00428840
 unsigned int FUN_00428840(unsigned int param_1) {

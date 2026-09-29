@@ -1375,6 +1375,8 @@ extern float DAT_00611650;
 extern unsigned int DAT_00611688;
 // 0x0061168c
 extern unsigned int DAT_0061168c;
+// 0x00611710
+extern unsigned int DAT_00611710[16];
 // 0x00611958
 extern unsigned int DAT_00611958;
 // 0x00612178
