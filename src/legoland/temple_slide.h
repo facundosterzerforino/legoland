@@ -4,3 +4,6 @@
 #include "objclass.h"
 
 LEGO_EXPORT void TempleSlide_GetInterfaces(struct ClassNode *head, struct CallbackTable *iface);
+
+struct TempleRide;
+void FUN_00417130(struct TempleRide *arg);
