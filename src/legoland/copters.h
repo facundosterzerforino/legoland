@@ -35,5 +35,6 @@ struct CopterNode {
 
 void FUN_00403e90(struct CopterNode *node);
 void FUN_004049a0(struct CopterNode *node, int param);
+void FUN_00404630(struct CopterNode *node, int index);
 
 void FUN_00405110(struct ClassNode *name, struct CallbackTable *interfaces);
