@@ -3,11 +3,14 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include <stdio.h>
 #include "binv.h"
+#include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "obj_instance.h"
+#include "render3d.h"
 #include "safari_ride.h"
 #include "sound_music.h"
 
@@ -273,8 +276,72 @@ void FUN_00415030(struct ClassNode *name, struct CallbackTable *interfaces) {
     }
 }
 
+struct SafariState {
+    unsigned short id;
+    unsigned char pad_2[2];
+    int field_4;
+    unsigned char pad_8[4];
+    int field_c;
+    unsigned char pad_10[4];
+    unsigned int flags;
+    int field_18;
+    int field_1c;
+    int field_20;
+    int field_24;
+};
+
 // FUNCTION: LEGOLAND 0x004150c0
-void FUN_004150c0(struct SafariNode *node) { STUB(); }
+void FUN_004150c0(struct SafariNode *node) {
+    struct SafariState *s = (struct SafariState *)node;
+    struct RideNode *r = ((struct Ride *)DAT_004cbec4)->riders;
+    unsigned int flags = s->flags;
+
+    if (flags & 1) {
+        int v = ++s->field_1c;
+        int n = s->field_18;
+        if (n == 0) {
+            if (GetAllBlokesOffRide((struct Ride *)DAT_004cbec4, s->id) == 0) {
+                return;
+            }
+            FUN_00414b10(node);
+            return;
+        }
+        if (v >= 2) {
+            s->field_1c = 0;
+            s->field_c++;
+            if (s->field_c >= 0x30) {
+                s->field_c = 0;
+                s->field_18 = n - 1;
+            }
+        }
+    } else {
+        int cur = s->field_4;
+        if (flags & 0x4000) {
+            if (cur == s->field_20) {
+                s->flags = flags & 0xffffbfff;
+                FUN_00414ab0((struct SafariSample *)s);
+                return;
+            }
+        } else if (cur != 0) {
+            int k = s->field_24;
+            if (k == 0) {
+                s->flags = flags | 0x4000;
+                Ride_SetFlagToNotLetAnyoneOn(s);
+            } else {
+                s->field_24 = k - 1;
+            }
+        }
+    }
+    for (; r != NULL; r = r->next) {
+        if (s->id == r->tile.id && r->rider->field_35 == 1) {
+            // STRING: LEGOLAND 0x004b4704
+            sprintf(DAT_004b4cac + 6, "%02d", r->rider->field_36 + 1);
+            SetBlokePositionFromBNV(DAT_004cbef4, r->rider, DAT_004b4cac, s->field_c, -1617787.0f, -1618006.0f, 0);
+        }
+    }
+    *(short *)*DAT_0082c66c->lls = (short)s->field_c;
+    Put3DBlokesOnRide2((Element *)DAT_004cbec4, (Element *)node);
+}
 
 // FUNCTION: LEGOLAND 0x00415200
 void FUN_00415200(void) {
