@@ -233,19 +233,15 @@ struct FlumeInput {
     struct FlumeSlot1 *var_8;
 };
 
-struct FlumeSlots {
-    unsigned char pad_0[0x38];
-    void *target_38;
-    unsigned char pad_3c[4];
-    unsigned char slots_40[1];
-};
-
 struct FlumeNode {
     struct FlumeNode *next;
-    unsigned char pad_4[4];
+    struct FlumeNode *prev;
     unsigned int field_8;
     unsigned int field_c;
-    unsigned char pad_10[0x2c - 0x10];
+    unsigned char pad_10[0x20 - 0x10];
+    struct Ride *ride;
+    struct FlumeEntry *owner;
+    struct FlumeEntry *entry;
     struct FlumeNode *field_2c;
     unsigned int field_30;
     unsigned int field_34;
@@ -262,9 +258,21 @@ struct FlumeBytes {
     unsigned char b4;
 };
 
+struct FlumeSlot {
+    unsigned char pad_0[4];
+    unsigned char flags;
+    unsigned char pad_5[3];
+    int busy;
+    unsigned char pad_c[8];
+    int owner;
+    unsigned char pad_18[0x24 - 0x18];
+};
+
 struct FlumeEntry {
     struct FlumeEntry *next;
-    unsigned char pad_4[0xc];
+    unsigned char pad_4[4];
+    struct FlumeNode *field_8;
+    struct FlumeNode *field_c;
     struct FlumeEntry *sub;
     TileId tile;
     unsigned char pad_16[2];
@@ -274,8 +282,13 @@ struct FlumeEntry {
     };
     int submode;
     unsigned char pad_20[0x2c - 0x20];
-    struct FlumeEntry *sub2;
-    unsigned char pad_30[0xd0 - 0x30];
+    union {
+        struct FlumeEntry *sub2;
+        struct Queue queue;
+    };
+    void *target;
+    unsigned char pad_3c[4];
+    struct FlumeSlot slots[4];
     int field_d0;
 };
 
@@ -1341,16 +1354,6 @@ int FUN_0040ba80(struct Node *arg) {
 // FUNCTION: LEGOLAND 0x0040bab0
 void FUN_0040bab0(void) { STUB(); }
 
-struct FlumeSlot {
-    unsigned char pad_0[4];
-    unsigned char flags;
-    unsigned char pad_5[3];
-    int busy;
-    unsigned char pad_c[8];
-    int owner;
-    unsigned char pad_18[0x24 - 0x18];
-};
-
 struct FlumeInner {
     unsigned char pad_0[8];
     int id;
@@ -2402,7 +2405,37 @@ void FUN_0040f900(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f920
-void FUN_0040f920(void) { STUB(); }
+void FUN_0040f920(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = elem->ride;
+    struct FlumeEntry *entry;
+    struct LLS *lls;
+    struct Point off;
+    unsigned __int64 pos;
+    int frame;
+
+    entry = FUN_00408ef0(tile);
+    if (FUN_0040cdf0(tile)) {
+        if (DAT_004cbe14 != NULL) {
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer(ride->layer, 1));
+            if (lls != NULL) {
+                frame = lls->frame;
+            } else {
+                frame = (int)elem;
+            }
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe14);
+            if (lls != NULL) {
+                LLSSetFrame(lls, frame);
+            }
+        }
+        off = GetRenderOffsetForLayer(ride->layer, 1);
+        pos = FUN_0040cfd0(entry);
+        AdjustOffsetForViewMode(&off);
+        if (DAT_004cbe14 != NULL) {
+            PrintSprite(DAT_004cbe14, (unsigned int)pos + off.x, (unsigned int)(pos >> 32) + off.y, clip, 0);
+        }
+    }
+    FUN_0040cd70((struct PairHolder *)entry, 1);
+}
 
 // FUNCTION: LEGOLAND 0x0040fa00
 void FUN_0040fa00(void) {
@@ -2719,13 +2752,37 @@ int FUN_004107b0(struct FlumeNode *node, struct FlumeNode *target) {
 }
 
 // FUNCTION: LEGOLAND 0x00410800
-void FUN_00410800(void) { STUB(); }
+void FUN_00410800(struct FlumeEntry *owner, struct FlumeNode *node) {
+    int marker = 1;
+    int end = 0;
+
+    if (node != NULL) {
+        do {
+            struct FlumeNode buf;
+            int len;
+
+            SaveGameWrite(&marker, 4);
+            buf = *node;
+            buf.field_8 = FUN_004107b0((struct FlumeNode *)owner->sub, (struct FlumeNode *)buf.field_8);
+            buf.field_c = FUN_004107b0((struct FlumeNode *)owner->sub, (struct FlumeNode *)buf.field_c);
+            buf.field_30 = FUN_004107b0((struct FlumeNode *)owner->sub, (struct FlumeNode *)buf.field_30);
+            buf.field_34 = FUN_004107b0((struct FlumeNode *)owner->sub, (struct FlumeNode *)buf.field_34);
+            SaveGameWrite(&buf, sizeof(buf));
+            len = strlen(buf.ride->element->name);
+            SaveGameWrite(&len, 4);
+            SaveGameWrite(buf.ride->element->name, len);
+            FUN_00410800(owner, node->field_2c);
+            node = node->next;
+        } while (node != NULL);
+    }
+    SaveGameWrite(&end, 4);
+}
 
 // FUNCTION: LEGOLAND 0x00410910
-int FUN_00410910(struct FlumeSlots *param_1) {
+int FUN_00410910(struct FlumeEntry *entry) {
     int count = 0;
-    void *target = param_1->target_38;
-    char *current = (char *)param_1->slots_40;
+    void *target = entry->target;
+    char *current = (char *)entry->slots;
 
     while (count < 4) {
         if (target == (void *)current) {
@@ -2738,10 +2795,75 @@ int FUN_00410910(struct FlumeSlots *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00410930
-void FUN_00410930(void) { STUB(); }
+int FUN_00410930(void) {
+    struct FlumeEntry *entry = DAT_004cbe84;
+    int end = 0;
+    int marker = 1;
+    int i;
+
+    if (entry != NULL) {
+        do {
+            struct FlumeEntry buf;
+            struct FlumeSlot *slot;
+
+            SaveGameWrite(&marker, 4);
+            FUN_00410800(entry, entry->sub);
+            buf = *entry;
+            buf.field_8 = (struct FlumeNode *)FUN_004107b0((struct FlumeNode *)buf.sub, buf.field_8);
+            buf.field_c = (struct FlumeNode *)FUN_004107b0((struct FlumeNode *)buf.sub, buf.field_c);
+            buf.link = (struct FlumeEntry *)FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)buf.link);
+            buf.target = (void *)FUN_00410910(entry);
+            FUN_004123c0((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, &buf.queue);
+            slot = buf.slots;
+            for (i = 4; i != 0; i--) {
+                slot->owner = FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)slot->owner);
+                slot->busy = FUN_004123a0((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, (struct QueueNode *)slot->busy);
+                slot++;
+            }
+            SaveGameWrite(&buf, sizeof(buf));
+            entry = entry->next;
+        } while (entry != NULL);
+    }
+    SaveGameWrite(&end, 4);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00410a50
-void FUN_00410a50(void) { STUB(); }
+struct FlumeNode *FUN_00410a50(struct FlumeEntry *owner, struct FlumeEntry *entry) {
+    struct FlumeNode *head = NULL;
+    struct FlumeNode *cur = NULL;
+    struct FlumeNode *prev = NULL;
+    int marker = 1;
+    int len;
+    unsigned int elem;
+    char name[0x200];
+
+    SaveGameRead(&marker, 4);
+    while (marker != 0) {
+        if (cur == NULL) {
+            cur = malloc(0x38);
+            head = cur;
+        } else {
+            cur->next = malloc(0x38);
+            cur = cur->next;
+        }
+        SaveGameRead(cur, 0x38);
+        cur->prev = prev;
+        cur->owner = owner;
+        cur->entry = entry;
+        SaveGameRead(&len, 4);
+        SaveGameRead(name, len);
+        name[len] = 0;
+        if (name[0] != 0) {
+            LLIDB_FindElement(name, &elem, 0);
+            cur->ride = ((struct Element *)elem)->ride;
+        }
+        cur->field_2c = FUN_00410a50(owner, (struct FlumeEntry *)cur);
+        SaveGameRead(&marker, 4);
+        prev = cur;
+    }
+    return head;
+}
 
 // FUNCTION: LEGOLAND 0x00410b60
 void *FUN_00410b60(void *base, unsigned int packed) {
@@ -2799,7 +2921,44 @@ void FUN_00410bb0(void *arg0, struct FlumeNode *arg1) {
 }
 
 // FUNCTION: LEGOLAND 0x00410c10
-void FUN_00410c10(void) { STUB(); }
+int FUN_00410c10(void) {
+    struct FlumeEntry *cur = NULL;
+    struct FlumeNode *head;
+    struct Queue queue;
+    struct FlumeSlot *slot;
+    int marker = 1;
+    int i;
+
+    SaveGameRead(&marker, 4);
+    while (marker != 0) {
+        if (cur == NULL) {
+            cur = malloc(0xd4);
+            DAT_004cbe84 = cur;
+            cur->next = NULL;
+        } else {
+            cur->next = malloc(0xd4);
+            cur = cur->next;
+        }
+        head = FUN_00410a50(cur, NULL);
+        FUN_00410bb0(head, head);
+        FUN_00412490((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, &queue);
+        SaveGameRead(cur, 0xd4);
+        cur->sub = (struct FlumeEntry *)head;
+        cur->queue = queue;
+        cur->field_8 = (struct FlumeNode *)FUN_00410b60(head, (unsigned int)cur->field_8);
+        cur->field_c = (struct FlumeNode *)FUN_00410b60(cur->sub, (unsigned int)cur->field_c);
+        cur->link = (struct FlumeEntry *)FUN_00410b60(cur->sub, (unsigned int)cur->link);
+        cur->target = &cur->slots[(int)cur->target];
+        slot = cur->slots;
+        for (i = 4; i != 0; i--) {
+            slot->owner = (int)FUN_00410b60(cur->sub, slot->owner);
+            slot->busy = (int)FUN_00412470((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, slot->busy);
+            slot++;
+        }
+        SaveGameRead(&marker, 4);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00410d60
 void FUN_00410d60(struct ClassNode *flume, struct CallbackTable *vtbl) {
