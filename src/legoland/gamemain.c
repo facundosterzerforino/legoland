@@ -180,10 +180,21 @@ unsigned int FUN_00477980(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004779a0
-void FUN_004779a0(void) { STUB(); }
+int FUN_004779a0(int x0, int y0, int x1, int y1) {
+    int dx = x0 - x1;
+    int dy = y0 - y1;
+
+    if (dx != 0 && dy != 0) {
+        return 0;
+    }
+    if (dx != 0) {
+        return 2;
+    }
+    return dy != 0;
+}
 
 // FUNCTION: LEGOLAND 0x004779d0
-void FUN_004779d0(void) { STUB(); }
+void FUN_004779d0(struct Point *p) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00477bd0
 void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }

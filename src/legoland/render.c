@@ -355,7 +355,19 @@ LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsi
 }
 
 // FUNCTION: LEGOLAND 0x00488c50
-LEGO_EXPORT unsigned int RenderTiledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7) { STUB(); }
+// Never implemented: it exits before drawing. The Blt after exit(1) is a
+// reconstruction; the compiler drops it as unreachable, but because it takes
+// &dst the four stores into dst survive, exactly as in the original.
+LEGO_EXPORT unsigned int RenderTiledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7) {
+    RECT dst;
+
+    dst.left = param_2;
+    dst.top = param_3;
+    dst.right = param_2 + param_4;
+    dst.bottom = param_3 + param_5;
+    exit(1);
+    return ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, (LPDIRECTDRAWSURFACE)sprite->surface, NULL, 0x1000000, NULL) == 0;
+}
 
 // FUNCTION: LEGOLAND 0x00488c80
 unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int *param_6) { STUB(); }

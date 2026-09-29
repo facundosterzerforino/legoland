@@ -22,7 +22,14 @@ void FUN_0048bb60(void) { STUB(); }
 void FUN_0048bc20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bd00
-void FUN_0048bd00(void) { STUB(); }
+void FUN_0048bd00(void) {
+    struct FreePlaySpriteSlot *slot;
+
+    for (slot = DAT_004becb4; (int)slot < (int)&DAT_004bed40; slot++) {
+        slot->field_0 = LoadSprite(((const char **)slot)[-5], 4);
+        slot->field_4 = LoadSprite(((const char **)slot)[-4], 4);
+    }
+}
 // FUNCTION: LEGOLAND 0x0048bd40
 void FUN_0048bd40(void) {
     int *esi;
