@@ -193,9 +193,10 @@ void FUN_00403250(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403270
-void FUN_00403270(struct ChainNode *chain, int unused, int unused2, TileId *tile, int unused3, int arg5) {
+void FUN_00403270(struct Element *obj, int unused, int unused2, TileId *tile, int unused3, int arg5) {
     struct CatapultItem *item;
-    struct Ride *ride = ((struct Element *)chain)->ride;
+    struct Ride *ride = obj->ride;
+    struct ChainNode *chain;
     struct Point off;
     struct Point pos;
     int i;
