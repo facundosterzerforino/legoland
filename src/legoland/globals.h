@@ -580,6 +580,12 @@ extern struct CastleFloatEnt DAT_004b61e0[8];
 extern unsigned int DAT_004b62f0;
 // 0x004b6300
 extern unsigned int DAT_004b6300;
+// 0x004b6408
+extern int DAT_004b6408[3];
+// 0x004ab490
+extern float FLOAT_004ab490;
+// 0x004ab494
+extern float FLOAT_004ab494;
 // 0x004b64d4
 extern char DAT_004b64d4[4];
 // 0x004b64d8
