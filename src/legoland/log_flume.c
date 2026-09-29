@@ -25,8 +25,27 @@ struct CleanupNode {
     struct ChainNode *chain;
 };
 
+struct EmitNode {
+    unsigned char pad_0[0xc];
+    struct EmitNode *next;
+};
+
+struct Particle {
+    int x;
+    int y;
+    struct EmitNode *node;
+    float scale;
+    int z;
+    float w;
+    int a;
+    int b;
+    int c;
+};
+
 struct ParticleEmitter {
-    unsigned char pad_0[0x3c];
+    unsigned char pad_0[8];
+    struct EmitNode *head;
+    unsigned char pad_c[0x30];
     unsigned int var_3c;
     unsigned char pad_40[0xd0 - 0x40];
     unsigned int var_d0;
@@ -228,7 +247,10 @@ struct FlumeEntry {
     unsigned char pad_4[0xc];
     struct FlumeEntry *sub;
     TileId tile;
-    unsigned char pad_16[0xd4 - 0x16];
+    unsigned char pad_16[2];
+    int mode;
+    int submode;
+    unsigned char pad_20[0xd4 - 0x20];
 };
 
 // FUNCTION: LEGOLAND 0x00408e40
@@ -921,7 +943,32 @@ void FUN_0040a540(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040a580
-void FUN_0040a580(struct ParticleEmitter *param) { STUB(); }
+void FUN_0040a580(struct ParticleEmitter *param) {
+    int i;
+    struct Particle *p;
+    struct EmitNode *node;
+    struct FlumeDims d;
+
+    node = param->head;
+    i = 0;
+    if ((int)param->var_3c > 0) {
+        p = (struct Particle *)(param->pad_40 + 0xc);
+        do {
+            p->node = node;
+            d = FUN_004112c0();
+            p->x = d.field1;
+            p->y = d.field2;
+            p->z = 0;
+            p->scale = 1.0f;
+            p->w = 0.1f;
+            p[-1].a = 0;
+            p[-1].b = 0;
+            node = node->next;
+            i++;
+            p++;
+        } while (i < (int)param->var_3c);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040a5d0
 void FUN_0040a5d0(struct ParticleEmitter *param) {
@@ -981,7 +1028,7 @@ unsigned char FUN_0040b270(unsigned int *param_1, unsigned int param_2) {
 void FUN_0040b290(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040b390
-void FUN_0040b390(void) { STUB(); }
+int FUN_0040b390(struct FlumeEntry *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040b420
 void FUN_0040b420(void) { STUB(); }
@@ -1127,13 +1174,34 @@ void FUN_0040ca30(void *a1, int a2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ca60
-void FUN_0040ca60(void) { STUB(); }
+int FUN_0040ca60(struct FlumeEntry *entry, int arg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040cc00
-void FUN_0040cc00(void) { STUB(); }
+void FUN_0040cc00(struct FlumeEntry *entry, int arg) {
+    int idx;
+    unsigned __int64 pos;
+    struct Sprite *spr;
+
+    if (FUN_0040b390(entry)) {
+        idx = FUN_0040ad50((struct StateNode *)entry);
+        pos = FUN_0040cfd0(entry);
+        spr = (&DAT_004c2abc)[idx];
+        if (spr != NULL) {
+            PrintSprite(spr, (unsigned int)pos, (unsigned int)(pos >> 32), arg, 0);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040cc50
-void FUN_0040cc50(void) { STUB(); }
+int FUN_0040cc50(int a, int b, int c, TileId *tile, int e, int arg) {
+    struct FlumeEntry *entry = FUN_00408ef0(tile);
+    if (entry != NULL) {
+        if (entry->mode == 2 && (entry->submode == 0 || entry->submode == 2)) {
+            return FUN_0040ca60(entry, arg);
+        }
+        FUN_0040cc00(entry, arg);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040cca0
 unsigned long FUN_0040cca0(struct StateNode *node) { STUB(); }
@@ -1179,7 +1247,14 @@ void FUN_0040cd70(struct PairHolder *p, int param1, unsigned long param2, unsign
 }
 
 // FUNCTION: LEGOLAND 0x0040cdf0
-void FUN_0040cdf0(void) { STUB(); }
+int FUN_0040cdf0(TileId *tile) {
+    int result = 0;
+    struct FlumeEntry *entry = FUN_00408ef0(tile);
+    if (entry != NULL) {
+        return FUN_0040b390(entry);
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0040ce20
 void FUN_0040ce20(struct InputBuffer *esi) {
@@ -1271,7 +1346,7 @@ void FUN_0040cfa0(struct StateNode *(*arr)[4]) {
 }
 
 // FUNCTION: LEGOLAND 0x0040cfd0
-void FUN_0040cfd0(void) { STUB(); }
+unsigned __int64 FUN_0040cfd0(struct FlumeEntry *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d090
 void FUN_0040d090(void) { STUB(); }

@@ -233,8 +233,25 @@ void FUN_00415200(void) {
 // FUNCTION: LEGOLAND 0x00415220
 void FUN_00415220(void) { STUB(); }
 
+struct SafariSlotData {
+    unsigned char pad_0[0x36];
+    unsigned char index;
+};
+
+struct SafariListEntry {
+    struct SafariListEntry *next;
+    unsigned char pad_4[4];
+    struct SafariSlotData *data;
+    unsigned short key;
+};
+
+struct SafariOwner {
+    unsigned char pad_0[0xcc];
+    struct SafariListEntry *head;
+};
+
 // FUNCTION: LEGOLAND 0x00415760
-void FUN_00415760(void) { STUB(); }
+int FUN_00415760(struct SafariListEntry *node, unsigned short *key) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004157b0
 LEGO_EXPORT int SaveSafariRide(void) {

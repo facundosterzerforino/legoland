@@ -181,6 +181,7 @@ unsigned int FUN_00477980(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x004779a0
 void FUN_004779a0(void) { STUB(); }
+
 // FUNCTION: LEGOLAND 0x004779d0
 void FUN_004779d0(void) { STUB(); }
 

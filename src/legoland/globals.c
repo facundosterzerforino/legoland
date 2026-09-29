@@ -141,6 +141,9 @@ GUID DAT_004acf80 = {0xb3a6f3e0, 0x2b43, 0x11cf, {0xa2, 0xde, 0x00, 0xaa, 0x00, 
 // GLOBAL: LEGOLAND 0x004b4034
 int DAT_004b4034[16];
 
+// GLOBAL: LEGOLAND 0x004b40a4
+unsigned int DAT_004b40a4[4];
+
 // GLOBAL: LEGOLAND 0x004b40c8
 unsigned char Catapult_SFX[0x70];
 
