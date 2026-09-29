@@ -69,18 +69,18 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     }
     // STRING: LEGOLAND 0x004b89ac
     if (LLIDB_FindElement("POTTING SHED", &DAT_007fdfb0, 0) != 0) {
-        _exit(1);
+        exit(1);
     }
     // STRING: LEGOLAND 0x004b899c
     if (LLIDB_FindElement("MECHANICS HUT", &DAT_007fdfb4, 0) != 0) {
-        _exit(1);
+        exit(1);
     }
     if (LLIDB_FindElement("PATH CONTROL", &DAT_007fdfb8, 0) != 0) {
-        _exit(1);
+        exit(1);
     }
     // STRING: LEGOLAND 0x004b83d0
     if (LLIDB_FindElement("ENTRANCE 1", &DAT_007fdfbc, 0) != 0) {
-        _exit(1);
+        exit(1);
     }
     if (DAT_00668958 == NULL) {
         DAT_00668958 = (struct Sprite *)1;
