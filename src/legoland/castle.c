@@ -469,22 +469,50 @@ struct HitNode *FUN_0041d100(struct HitHost *host, unsigned int key, short *pt) 
     return 0;
 }
 
-struct Indexed {
-    unsigned char pad_0[4];
-    short x;
-    short y;
-    unsigned char pad_8[4];
-    unsigned int field_c;
+struct SprShape {
+    unsigned char pad_0[0x3c];
+    int rect[4];
+};
+
+struct SprObj;
+
+struct SprOwner {
+    /* 0x00 */ unsigned int flags;
+    /* 0x04 */ unsigned char pad_4[4];
+    /* 0x08 */ short sx;
+    /* 0x0a */ short sy;
+    /* 0x0c */ unsigned char pad_c[0xa8 - 0xc];
+    /* 0xa8 */ struct SprObj *f_a8;
+    /* 0xac */ struct DirPoints pts_a;
+    /* 0xc0 */ struct SprObj *f_c0;
+    /* 0xc4 */ struct DirPoints pts_b;
+};
+
+struct SprObj {
+    /* 0x00 */ unsigned int flags;
+    /* 0x04 */ short x;
+    /* 0x06 */ short y;
+    /* 0x08 */ struct SprShape *shape;
+    /* 0x0c */ unsigned int key;
+    /* 0x10 */ struct SprOwner *owner;
+    /* 0x14 */ unsigned int dir_a;
+    /* 0x18 */ unsigned int f18;
+    /* 0x1c */ struct SprObj *prev;
+    /* 0x20 */ unsigned int dir_b;
+    /* 0x24 */ unsigned int f24;
+    /* 0x28 */ struct SprObj *next;
+    /* 0x2c */ int rect[4];
+    /* 0x3c */ int f3c;
 };
 
 // FUNCTION: LEGOLAND 0x0041d170
-unsigned int FUN_0041d170(struct Indexed *obj, unsigned int param) {
-    return FUN_0041d1d0(obj, obj->field_c + 0xc, param);
+unsigned int FUN_0041d170(struct SprObj *obj, unsigned int param) {
+    return FUN_0041d1d0(obj, obj->key + 0xc, param);
 }
 
 // FUNCTION: LEGOLAND 0x0041d190
-unsigned int FUN_0041d190(struct Indexed *obj, unsigned int param) {
-    return FUN_0041d1d0(obj, obj->field_c + 0x14, param);
+unsigned int FUN_0041d190(struct SprObj *obj, unsigned int param) {
+    return FUN_0041d1d0(obj, obj->key + 0x14, param);
 }
 
 // FUNCTION: LEGOLAND 0x0041d1b0
@@ -493,11 +521,11 @@ void FUN_0041d1b0(unsigned int *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d1c0
-void FUN_0041d1c0(void) {
+void FUN_0041d1c0(struct DirPoints *pts) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d1d0
-unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3) {
+unsigned int FUN_0041d1d0(struct SprObj *obj, unsigned int param2, unsigned int param3) {
     short sum[2];
     short *rec = (short *)param2;
 
@@ -506,13 +534,6 @@ unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int
     sum[1] = obj->y + rec[3];
     FUN_0041cd80(sum, (struct DirPoints *)param3, *(unsigned int *)rec);
 }
-
-struct SprOwner {
-    unsigned char pad_0[0xa8];
-    unsigned int f_a8;
-    unsigned char pad_ac[0xc0 - 0xac];
-    unsigned int f_c0;
-};
 
 
 struct SprInfo {
@@ -558,13 +579,13 @@ int FUN_0041d210(short *pos, struct SprEnt *ent, struct SprInfo *info) {
 int FUN_0041d2e0(struct SprInfo *info, short *pos, struct SprEnt *ent) {
     if (FUN_0041d210(pos, ent, info)) {
         if (ent->id_a != -1) {
-            ent->h_a = FUN_00429840(ent->owner->f_a8, info->f8);
+            ent->h_a = FUN_00429840((struct PathSeg *)ent->owner->f_a8, info->f8);
             if (!ent->h_a) {
                 return 0;
             }
         }
         if (ent->id_b != -1) {
-            ent->h_b = FUN_00429840(ent->owner->f_c0, info->f4);
+            ent->h_b = FUN_00429840((struct PathSeg *)ent->owner->f_c0, info->f4);
             if (!ent->h_b) {
                 return 0;
             }
@@ -608,64 +629,88 @@ struct SprEnt *FUN_0041d3b0(const unsigned char *key, unsigned int param2) {
     return &DAT_004d8250;
 }
 
-struct LinkB;
-
-struct LinkA {
-    unsigned char pad_0[0x28];
-    struct LinkB *field_28;
-};
-
-struct LinkB {
-    unsigned char pad_0[0x1c];
-    struct LinkA *field_1c;
-};
-
 // FUNCTION: LEGOLAND 0x0041d430
-void FUN_0041d430(struct LinkA *a, struct LinkB *b) {
-    a->field_28 = b;
-    b->field_1c = a;
+void FUN_0041d430(struct SprObj *a, struct SprObj *b) {
+    a->next = b;
+    b->prev = a;
 }
 
 // FUNCTION: LEGOLAND 0x0041d440
-void FUN_0041d440(struct AnimPair *obj, struct SprEnt *ent) { STUB(); }
+void FUN_0041d440(struct SprObj *obj, struct SprEnt *ent) {
+    struct SprOwner *owner = ent->owner;
+    int *r;
+
+    obj->owner = owner;
+    if (ent->id_a != -1) {
+        FUN_0041d430(owner->f_a8, obj);
+        owner->f_a8->dir_b = FUN_0041cc90(ent->id_a);
+        obj->dir_a = FUN_0041cc50(owner->f_a8->dir_b);
+        FUN_0041cfd0((struct HandlerHost2 *)obj, owner->f_a8->f24);
+        owner->f_a8 = obj;
+        FUN_0041d170(obj, (unsigned int)&owner->pts_a);
+    }
+    if (ent->id_b != -1) {
+        FUN_0041d430(obj, owner->f_c0);
+        owner->f_c0->dir_a = FUN_0041cc90(ent->id_b);
+        obj->dir_b = FUN_0041cc50(owner->f_c0->dir_a);
+        FUN_0041cfd0((struct HandlerHost2 *)obj, owner->f_c0->f18);
+        owner->f_c0 = obj;
+        FUN_0041d190(obj, (unsigned int)&owner->pts_b);
+    }
+    if (ent->id_a != -1 && ent->id_b != -1) {
+        owner->flags = 2;
+        FUN_00424e60(owner);
+    } else {
+        FUN_0041cfc0((struct HandlerHost1 *)obj);
+        FUN_0041d1c0(&owner->pts_a);
+        FUN_0041d1c0(&owner->pts_b);
+    }
+    FUN_0041ceb0((unsigned char *)obj);
+    r = obj->shape->rect;
+    obj->rect[0] = r[0] - owner->sx + obj->x;
+    obj->rect[2] = r[2] - owner->sx + obj->x;
+    obj->rect[1] = r[1] - owner->sy + obj->y;
+    obj->rect[3] = r[3] - owner->sy + obj->y;
+    obj->f3c = 0;
+}
 
 struct SprKey {
     unsigned char pad_0[0x28];
-    void (*method_28)(struct AnimPair *self);
+    void (*method_28)(struct SprObj *self);
 };
 
 // FUNCTION: LEGOLAND 0x0041d5b0
 unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *ent) {
-    struct AnimPair *obj = FUN_004775b0(0xa4, 0, 0, 0);
+    struct SprObj *obj = FUN_004775b0(0xa4, 0, 0, 0);
 
     if (obj == NULL) {
         return 0;
     }
-    FUN_0041ce30(obj);
-    obj->field_8 = param0;
-    obj->field_10 = (unsigned int)ent->owner;
-    *(unsigned int *)&obj->field_4 = *(unsigned int *)param2;
-    obj->field_c = (unsigned int)key;
+    FUN_0041ce30((struct AnimPair *)obj);
+    obj->shape = (struct SprShape *)param0;
+    obj->owner = ent->owner;
+    *(unsigned int *)&obj->x = *(unsigned int *)param2;
+    obj->key = (unsigned int)key;
     FUN_0041d440(obj, ent);
     if (ent->id_a != -1 && ent->id_b != -1) {
         FUN_00429750((struct PathSeg *)ent->h_a, (struct PathSeg *)ent->h_b);
     }
-    ((struct SprKey *)obj->field_c)->method_28(obj);
+    ((struct SprKey *)obj->key)->method_28(obj);
     return (unsigned int)obj;
 }
 
 // FUNCTION: LEGOLAND 0x0041d630
 unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *ent) {
-    struct AnimPair *obj = FUN_004775b0(0xa4, 0, 0, 0);
+    struct SprObj *obj = FUN_004775b0(0xa4, 0, 0, 0);
 
     if (obj == NULL) {
         return 0;
     }
-    FUN_0041ce30(obj);
-    obj->field_8 = param0;
-    obj->field_10 = (unsigned int)ent->owner;
-    *(unsigned int *)&obj->field_4 = *(unsigned int *)param2;
-    obj->field_c = (unsigned int)key;
+    FUN_0041ce30((struct AnimPair *)obj);
+    obj->shape = (struct SprShape *)param0;
+    obj->owner = ent->owner;
+    *(unsigned int *)&obj->x = *(unsigned int *)param2;
+    obj->key = (unsigned int)key;
     FUN_0041d440(obj, ent);
     if (ent->id_a != -1) {
         FUN_00429750((struct PathSeg *)ent->h_a, (struct PathSeg *)obj);
@@ -673,7 +718,7 @@ unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigne
     if (ent->id_b != -1) {
         FUN_00429750((struct PathSeg *)obj, (struct PathSeg *)ent->h_b);
     }
-    ((struct SprKey *)obj->field_c)->method_28(obj);
+    ((struct SprKey *)obj->key)->method_28(obj);
     return (unsigned int)obj;
 }
 
@@ -3619,7 +3664,7 @@ void FUN_00424e20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00424e60
-void FUN_00424e60(void) {
+void FUN_00424e60(struct SprOwner *owner) {
 }
 
 // FUNCTION: LEGOLAND 0x00424e70
