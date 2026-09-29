@@ -190,7 +190,12 @@ struct StateSlots {
     struct StateNode *slot3;
 };
 
-typedef void (*FlumeCallback)(unsigned int *buf, void *res);
+struct FlumeXY {
+    unsigned char x;
+    unsigned char y;
+};
+
+typedef void (*FlumeCallback)(struct FlumeXY tile, unsigned int *res);
 
 struct FlumePos {
     unsigned char pad_0[0x30];
@@ -1496,19 +1501,19 @@ void FUN_0040c6c0(int unused, struct Point *pt) {
 void FUN_0040c780(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c8d0
-void FUN_0040c8d0(Element *obj, TileId tile, struct Cursor *cursor) {
+void FUN_0040c8d0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     struct FlumeEntry *entry;
 
     memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
-    DAT_004cbe30->footprint.x1--;
-    DAT_004cbe30->footprint.y1--;
-    StandardRemoveObject(obj, tile, cursor);
-    entry = FUN_00408ef0(&tile);
+    DAT_004cbe30->footprint.x1 = DAT_004cbe30->footprint.x1 - 1;
+    DAT_004cbe30->footprint.y1 = DAT_004cbe30->footprint.y1 - 1;
+    StandardRemoveObject((Element *)param_1, *(TileId *)&param_2, (struct Cursor *)param_3);
+    entry = FUN_00408ef0((TileId *)&param_2);
     FUN_004119a0((struct ParticleEmitter *)entry->parent, -1);
     if (entry != NULL) {
-        FUN_00409440((unsigned int)obj, (void **)&tile);
-        FUN_0040da10((struct Context *)entry, (struct LinkList *)cursor);
-        FUN_0040a2a0(entry, (struct StateNode **)cursor);
+        FUN_00409440(param_1, (void **)&param_2);
+        FUN_0040da10((struct Context *)entry, (struct LinkList *)param_3);
+        FUN_0040a2a0(entry, (struct StateNode **)param_3);
         FUN_00409270((struct Node *)entry->parent, (struct Node *)entry);
     }
 }
@@ -1971,7 +1976,25 @@ void FUN_0040da10(struct Context *a, struct LinkList *list) {
 }
 
 // FUNCTION: LEGOLAND 0x0040db00
-unsigned int FUN_0040db00(unsigned int param_1, unsigned int param_2, unsigned int param_3, FlumeCallback param_4) { STUB(); }
+void FUN_0040db00(unsigned int param_1, unsigned int param_2, unsigned int param_3, FlumeCallback param_4) {
+    struct FlumeEntry *entry = FUN_00408ef0((TileId *)&param_2);
+    struct Footprint *fp;
+    TileId t;
+    struct InputBuffer buf;
+    unsigned int *list;
+
+    if (entry != NULL) {
+        FUN_004119a0((struct ParticleEmitter *)entry->parent, -3);
+        FUN_0040d090(entry, &fp, &t);
+        ((struct Cursor *)param_3)->footprint = *fp;
+        StandardRemoveObject((Element *)param_1, t, (struct Cursor *)param_3);
+        param_4(*(struct FlumeXY *)&t, (unsigned int *)&buf);
+        FUN_0040cf10(&buf, &list);
+        FUN_0040da10((struct Context *)entry, (struct LinkList *)list);
+        FUN_0040a2a0(entry, (struct StateNode **)list);
+        FUN_00409270((struct Node *)entry->parent, (struct Node *)entry);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040dbb0
 void FUN_0040dbb0(void) {
@@ -2387,10 +2410,6 @@ int FUN_0040f330(unsigned int *param_1) {
     return 0;
 }
 
-struct FlumeXY {
-    unsigned char x;
-    unsigned char y;
-};
 // FUNCTION: LEGOLAND 0x0040f360
 void FUN_0040f360(struct FlumeXY p, unsigned int *result) {
     unsigned int w = DAT_004b4734 - DAT_004b472c;
@@ -2638,7 +2657,7 @@ unsigned int FUN_004100d0(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00410100
-void FUN_00410100(unsigned int param_1, unsigned int param_2) {
+void FUN_00410100(unsigned int param_1, struct Point *param_2) {
     FUN_0040d2d0(param_2);
 }
 
