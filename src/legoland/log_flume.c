@@ -254,25 +254,40 @@ struct FlumeBytes {
     unsigned char b4;
 };
 
+struct FlumeWeighted {
+    unsigned char pad_0[8];
+    struct FlumeWeighted *a;
+    struct FlumeWeighted *b;
+    unsigned char pad_10[4];
+    struct FlumeWeighted *link;
+    float weight;
+};
+
+struct FlumeCounter {
+    unsigned char pad_0[0x60];
+    unsigned char count;
+};
+
+struct FlumeStatHolder {
+    unsigned char pad_0[8];
+    struct FlumeCounter *counter;
+};
+
 struct FlumeSlot {
-    unsigned char pad_0[4];
-    unsigned char flags;
-    unsigned char pad_5[3];
-    int busy;
+    int timer;
+    unsigned int flags;
+    struct FlumeStatHolder *busy;
     unsigned char pad_c[8];
-    int owner;
+    struct FlumeWeighted *owner;
     unsigned char pad_18[0x24 - 0x18];
 };
 
-struct FlumeInner {
-    unsigned char pad_0[8];
-    int id;
-};
-
 struct FlumeSlotSet {
-    unsigned char pad_0[8];
-    struct FlumeInner *inner;
-    unsigned char pad_c[0x3c - 0xc];
+    unsigned char pad_0[4];
+    unsigned int flags;
+    struct FlumeWeighted *inner;
+    struct FlumeWeighted *field_c;
+    unsigned char pad_10[0x3c - 0x10];
     int count;
     struct FlumeSlot slots[1];
 };
@@ -1533,15 +1548,6 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
 // FUNCTION: LEGOLAND 0x0040ae90
 void FUN_0040ae90(unsigned int param_1, int param_2, int param_3) { STUB(); }
 
-struct FlumeWeighted {
-    unsigned char pad_0[8];
-    struct FlumeWeighted *a;
-    struct FlumeWeighted *b;
-    unsigned char pad_10[4];
-    struct FlumeWeighted *link;
-    float weight;
-};
-
 // FUNCTION: LEGOLAND 0x0040b210
 int FUN_0040b210(struct FlumeWeighted *self, struct FlumeWeighted *other) {
     struct FlumeWeighted *link = self->link;
@@ -1861,7 +1867,7 @@ int FUN_0040bb50(struct FlumeSlotSet *set, struct FlumeSlot **out) {
 
     for (i = 0; i < count; i++) {
         slot = &set->slots[i];
-        if (slot->owner == set->inner->id && slot->busy == 0 && !(slot->flags & 1)) {
+        if (slot->owner == set->inner->a && slot->busy == 0 && !(slot->flags & 1)) {
             *out = slot;
             return 1;
         }
@@ -1874,7 +1880,41 @@ int FUN_0040bb50(struct FlumeSlotSet *set, struct FlumeSlot **out) {
 void FUN_0040bbb0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040bd40
-void FUN_0040bd40(void) { STUB(); }
+void FUN_0040bd40(struct FlumeSlotSet *set, int index) {
+    struct FlumeSlot *slot = &set->slots[index];
+
+    if (slot != NULL) {
+        if (slot->flags & 1) {
+            if (slot->owner == set->field_c) {
+                if (slot->busy != NULL) {
+                    slot->busy->counter->count++;
+                    slot->busy = NULL;
+                }
+            }
+            if (slot->owner == set->inner) {
+                slot->timer = 0x32;
+                slot->flags &= ~1;
+            } else if (slot->owner->a != NULL) {
+                if (FUN_0040bab0(set, index)) {
+                    slot->owner = slot->owner->a;
+                }
+            }
+        } else {
+            slot->timer--;
+            if (slot->timer < 0) {
+                if (!(set->flags & 1)) {
+                    if (slot->owner->a != NULL) {
+                        if (FUN_0040bab0(set, index)) {
+                            slot->flags |= 1;
+                            slot->owner = slot->owner->a;
+                        }
+                    }
+                }
+                slot->timer = 1;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040be00
 void FUN_0040be00(struct FlumeEntry *param_1) { STUB(); }
@@ -1917,12 +1957,12 @@ int FUN_0040c250(struct FlumeEntry *param_1) {
         node = entry->sub2;
         if (node == NULL) {
             if (FUN_0040b270((unsigned int *)&set->slots[i], (unsigned int)entry)) {
-                set->slots[i].owner = (int)param_1;
+                set->slots[i].owner = (struct FlumeWeighted *)param_1;
             }
         } else {
             do {
                 if (FUN_0040b270((unsigned int *)&set->slots[i], (unsigned int)node)) {
-                    set->slots[i].owner = (int)param_1;
+                    set->slots[i].owner = (struct FlumeWeighted *)param_1;
                     break;
                 }
                 node = node->next;
