@@ -5,15 +5,22 @@
 #include "legoland.h"
 
 #include "bloke.h"
+#include "build.h"
 #include "challenge.h"
+#include "controller.h"
 #include "gamemain.h"
 #include "gamemap.h"
 #include "interface.h"
+#include "llidb.h"
 #include "map_object.h"
 #include "nerps.h"
+#include "objclass.h"
 #include "objectives.h"
+#include "pathfind.h"
 #include "resource.h"
+#include "tilemap.h"
 #include "title.h"
+#include "worker.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -269,7 +276,68 @@ int FUN_004779a0(int x0, int y0, int x1, int y1) {
 }
 
 // FUNCTION: LEGOLAND 0x004779d0
-void FUN_004779d0(struct Point *p) { STUB(); }
+void FUN_004779d0(struct Point *p) {
+    struct MapElement *tile;
+    struct Element *elem;
+    struct ObjClass *saved_class;
+    struct Cursor saved;
+    TileId t;
+    struct Point pos;
+    WorkOrder *order;
+
+    if (p->x >= 0 && p->x < lpConfig->width && p->y >= 0 && p->y < lpConfig->height) {
+        tile = &GameMap[p->y][p->x];
+    } else {
+        tile = NULL;
+    }
+    if (tile->flags & 0x40) {
+        return;
+    }
+    if (tile->flags & 0xa0) {
+        elem = tile->field_0;
+        saved_class = QueryClass;
+        memcpy(&saved, &QueryCursor, sizeof(struct Cursor));
+        QueryClass = (struct ObjClass *)elem->data;
+        t.pos.x = tile->field_4;
+        pos.x = t.pos.x;
+        t.pos.y = tile->field_5;
+        pos.y = t.pos.y;
+        QueryClass->method_94((unsigned int *)elem, &pos);
+        if (tile->flags & 0x20) {
+            if (QueryClass->field_1c & 0x200000) {
+                FUN_00450c00(t);
+                FUN_0045e850((struct ObjNode *)elem, &pos.x);
+                IncrementObjectCount((struct ObjectCount *)QueryClass);
+                RemoveObjectFromMap(t);
+            }
+        } else {
+            RemObjFromMap(QueryClass, (unsigned int)elem, t, &QueryCursor);
+        }
+        memcpy(&QueryCursor, &saved, sizeof(struct Cursor));
+        QueryClass = saved_class;
+        return;
+    }
+    if (tile->flags & 0x800) {
+        order = GetGardenerWorkOrderAt(p->x, p->y);
+        if (order != NULL) {
+            FUN_0045e850((struct ObjNode *)order->element, &order->pos.x);
+            FUN_0045d3d0((struct PathFootprint *)order->element->data, &order->pos.x);
+            EraseGardenerOrder(order);
+            return;
+        }
+        order = GetMechanicWorkOrderAt(p->x, p->y);
+        if (order != NULL) {
+            FUN_0045e850((struct ObjNode *)order->element, &order->pos.x);
+            FUN_0045d3d0((struct PathFootprint *)order->element->data, &order->pos.x);
+            EraseMechanicOrder(order);
+            return;
+        }
+    } else if (tile->flags & 8) {
+        RemovePathSquare(p);
+        tile->flags &= 0xfff7;
+        tile->field_10 &= 0xfe;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00477bd0
 void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }
