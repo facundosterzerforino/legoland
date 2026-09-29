@@ -1298,6 +1298,9 @@ void *DAT_004cbe48;
 // GLOBAL: LEGOLAND 0x004cbe4c
 struct Sprite *DAT_004cbe4c;
 
+// GLOBAL: LEGOLAND 0x004cbe58
+struct RideSpriteInfo DAT_004cbe58;
+
 // GLOBAL: LEGOLAND 0x004cbe74
 struct Sprite *DAT_004cbe74;
 
