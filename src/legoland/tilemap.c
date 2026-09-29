@@ -50,10 +50,7 @@ LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int 
             slot++;
             if (run >= count) {
                 cursor = (unsigned int *)&TileSpriteArray[base];
-                for (i = (unsigned int)count; i != 0; i--) {
-                    *cursor = 0;
-                    cursor++;
-                }
+                memset(cursor, 0, (unsigned int)count * 4);
                 for (i = 0; (int)i < count; i++) {
                     TileSpriteInfo[base + i].src = src;
                     if (src != NULL) {
@@ -67,7 +64,7 @@ LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int 
             }
             slot_value = (int)*slot;
         }
-        base = base + 1 + run;
+        base = run + base + 1;
     }
     return NULL;
 }
@@ -189,9 +186,11 @@ LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out) {
 LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out) {
     struct TileSprite *sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
     short size = sprite->size;
+    int y;
 
     out[0] = (short)(((short)(size * 2) + 1) >> 1) * (ref->x - ref->y) + lpConfig->field_20 - (ScrollX >> 8);
-    out[1] = (short)((size + 1) >> 1) * (ref->y + 1 + ref->x) + lpConfig->field_22 - (ScrollY >> 8);
+    y = (short)((size + 1) >> 1) * (ref->y + 1 + ref->x) + lpConfig->field_22;
+    out[1] = y - (ScrollY >> 8);
 }
 
 // FUNCTION: LEGOLAND 0x0045ade0
@@ -409,7 +408,8 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out
     }
     size = sprite->size;
     twice = (short)(size * 2);
-    ix = (((twice + 1 >> 1) - lpConfig->field_20) + (ScrollX >> 8) + screen->x) * (0x100 / twice);
+    ix = ((twice + 1 >> 1) - lpConfig->field_20);
+    ix = (ix + (ScrollX >> 8) + screen->x) * (0x100 / twice);
     iy = (((ScrollY >> 8) - lpConfig->field_22) + screen->y) * (0x100 / (int)size);
     out->x = iy + ix;
     out->y = iy - ix;
