@@ -1,5 +1,8 @@
 #include "dialog.h"
 #include <windows.h>
+#include <direct.h>
+#include <io.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "gfx.h"
@@ -121,7 +124,131 @@ struct Element *FUN_0043eee0(RECT *box, char *title, int sel, unsigned int mask,
 }
 
 // FUNCTION: LEGOLAND 0x0043f0b0
-void FUN_0043f0b0(void) { STUB(); }
+char *FUN_0043f0b0(RECT *box, char *title, int sel, char *path) {
+    struct Sprite *drive;
+    struct Sprite *folder;
+    struct Sprite *file;
+    char cwd[260];
+    char drv[3];
+    char dir[256];
+    char fname[256];
+    char ext[256];
+    char spec[260];
+    struct _finddata_t fd;
+    struct FileNode *head;
+    struct FileNode *tail;
+    struct FileNode *node;
+    struct FileNode *a;
+    struct FileNode *b;
+    struct FileNode **nodes;
+    char **names;
+    struct Sprite **icons;
+    char *result;
+    long h;
+    int count;
+    int chdirFlag;
+    int i;
+    int j;
+    int swapped;
+    int r;
+
+    tail = 0;
+    // STRING: LEGOLAND 0x004b7ab0
+    drive = LoadSprite("Drive.bmp", 0);
+    // STRING: LEGOLAND 0x004b7aa4
+    folder = LoadSprite("Folder.bmp", 0);
+    // STRING: LEGOLAND 0x004b7a98
+    file = LoadSprite("File.bmp", 0);
+    _getcwd(cwd, 260);
+    _splitpath(path, drv, dir, fname, ext);
+    _chdir(dir);
+    // STRING: LEGOLAND 0x004b7a90
+    sprintf(spec, "%s%s", fname, ext);
+    count = 0;
+    chdirFlag = 0;
+    h = _findfirst(spec, &fd);
+    while (h != -1) {
+        do {
+            if (tail) {
+                tail->next = malloc(12);
+                tail = tail->next;
+            } else {
+                head = malloc(12);
+                tail = head;
+            }
+            count++;
+            tail->name = malloc(strlen(fd.name) + 1);
+            strcpy(tail->name, fd.name);
+            tail->attrib = fd.attrib;
+        } while (_findnext(h, &fd) != -1);
+        _findclose(h);
+        h = count;
+        tail->next = 0;
+        names = malloc(h * 4 + 4);
+        icons = malloc(h * 4);
+        nodes = malloc(h * 4);
+        names[h] = 0;
+        node = head;
+        for (i = 0; i < h; i++) {
+            nodes[i] = node;
+            node = node->next;
+        }
+        for (i = 0; i < h - 1; i++) {
+            swapped = 0;
+            for (j = h - 2; j >= i; j--) {
+                a = nodes[j + 1];
+                b = nodes[j];
+                if (((b->attrib ^ a->attrib) >> 4 & 1) != 0) {
+                    if (!(a->attrib & 0x10)) {
+                        continue;
+                    }
+                } else if (_strcmpi(a->name, b->name) >= 0) {
+                    continue;
+                }
+                nodes[j + 1] = b;
+                nodes[j] = a;
+                swapped = 1;
+            }
+            if (!swapped) {
+                break;
+            }
+        }
+        for (i = 0; i < h; i++) {
+            names[i] = nodes[i]->name;
+            icons[i] = (nodes[i]->attrib & 0x10) ? folder : file;
+        }
+        r = FUN_0043ea30(names, box, title, sel, 0, icons, 0x1c, 0x18, 0);
+        if (r != -1) {
+            if (nodes[r]->attrib & 0x10) {
+                chdirFlag = 1;
+            }
+            strcpy(DAT_0081c8e0, names[r]);
+            result = DAT_0081c8e0;
+        } else {
+            result = 0;
+        }
+        free(names);
+        free(icons);
+        for (i = 0; i < h; i++) {
+            free(nodes[i]);
+        }
+        free(nodes);
+        if (chdirFlag == 0) {
+            KillSprite(drive);
+            KillSprite(folder);
+            KillSprite(file);
+            _chdir(cwd);
+            return result;
+        }
+        _chdir(DAT_0081c8e0);
+        chdirFlag = 0;
+        result = 0;
+        count = 0;
+        tail = 0;
+        h = _findfirst(spec, &fd);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0043f460
 int FUN_0043f460(RECT *rc, int unused, char *buf, int maxlen, int *pos) {
