@@ -94,7 +94,33 @@ void FUN_00432510(int x, int y) {
 void FUN_004325e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00432700
-void FUN_00432700(void) { STUB(); }
+void FUN_00432700(Element *obj, TileId tile, struct Cursor *cursor) {
+    int pos[2];
+    int x = tile.pos.x;
+    int y = tile.pos.y;
+
+    StandardRemoveObject(obj, tile, cursor);
+    pos[0] = x;
+    pos[1] = y - 1;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+    pos[0] = x + 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+    pos[0] = x;
+    pos[1] = y + 1;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+    pos[0] = x - 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00432810
 struct RideSpriteInfo *FUN_00432810(int unused, TileId tile) {
