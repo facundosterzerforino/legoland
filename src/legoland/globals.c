@@ -1701,7 +1701,7 @@ struct PathNode *DAT_004d8240;
 struct PathNode *DAT_004d8244;
 
 // GLOBAL: LEGOLAND 0x004d8250
-const unsigned char DAT_004d8250[1];
+struct SprEnt DAT_004d8250;
 
 // GLOBAL: LEGOLAND 0x004d8268
 unsigned int DAT_004d8268;

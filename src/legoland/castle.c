@@ -18,7 +18,6 @@
 #include "tilemap.h"
 #include "timer.h"
 
-struct LookupResult;
 struct CastleObj;
 struct Anim;
 
@@ -515,14 +514,6 @@ struct SprOwner {
     unsigned int f_c0;
 };
 
-struct SprEnt {
-    unsigned char pad_0[4];
-    struct SprOwner *owner;
-    int id_a;
-    unsigned int h_a;
-    int id_b;
-    unsigned int h_b;
-};
 
 struct SprInfo {
     unsigned char pad_0[4];
@@ -595,7 +586,27 @@ int FUN_0041d350(struct SprInfo *info, short *pos, struct SprEnt *ent) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d3b0
-struct LookupResult *FUN_0041d3b0(const unsigned char *key, unsigned int param2) { STUB(); }
+struct SprEnt *FUN_0041d3b0(const unsigned char *key, unsigned int param2) {
+    int r;
+
+    if (key[0] & 1) {
+        r = FUN_0041d2e0((struct SprInfo *)key, (short *)param2, &DAT_004d8250);
+    } else {
+        r = FUN_0041d350((struct SprInfo *)key, (short *)param2, &DAT_004d8250);
+    }
+    DAT_004d8250.field_0 = 0;
+    if (r) {
+        if (DAT_004d8250.id_a != -1) {
+            DAT_004d8250.field_0 = 1;
+        }
+        if (DAT_004d8250.id_b != -1) {
+            DAT_004d8250.field_0 |= 2;
+        }
+        return &DAT_004d8250;
+    }
+    DAT_004d8250.field_0 = 0;
+    return &DAT_004d8250;
+}
 
 struct LinkB;
 
@@ -619,10 +630,10 @@ void FUN_0041d430(struct LinkA *a, struct LinkB *b) {
 void FUN_0041d440(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0041d5b0
-unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, const unsigned char *param3) { STUB(); }
+unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *param3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0041d630
-unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, const unsigned char *param3) { STUB(); }
+unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *param3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0041d6c0
 void FUN_0041d6c0(unsigned int value) {
@@ -640,19 +651,15 @@ unsigned int FUN_0041d6f0(void) {
     return DAT_004d8268;
 }
 
-struct LookupResult {
-    unsigned int field_0;
-};
-
 // FUNCTION: LEGOLAND 0x0041d700
 unsigned int FUN_0041d700(unsigned int param0, const unsigned char *key, unsigned int param2) {
-    struct LookupResult *result = FUN_0041d3b0(key, param2);
+    struct SprEnt *result = FUN_0041d3b0(key, param2);
     if (result->field_0 != 0) {
         FUN_0041d6d0(1);
         if ((key[0] & 1) != 0) {
-            return FUN_0041d630(param0, key, param2, DAT_004d8250);
+            return FUN_0041d630(param0, key, param2, &DAT_004d8250);
         } else {
-            return FUN_0041d5b0(param0, key, param2, DAT_004d8250);
+            return FUN_0041d5b0(param0, key, param2, &DAT_004d8250);
         }
     }
     return 0;
