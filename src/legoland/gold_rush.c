@@ -306,7 +306,22 @@ void FUN_00407000(struct GoldWalkItem *item, unsigned char *p) {
 }
 
 // FUNCTION: LEGOLAND 0x004070b0
-void FUN_004070b0(void) { STUB(); }
+void FUN_004070b0(struct GoldWalkItem *item, unsigned char *p) {
+    struct Bloke *b = item->bloke;
+    struct GoldSlot *s = &Gold_Slots[b->field_36];
+    int slot = s->index;
+    float w = s->weight;
+
+    b->dest.x = Gold_Points[slot].x - 0x280;
+    b->dest.y = Gold_Points[slot].y;
+    b->dest.x += p[0] << 8;
+    b->dest.y += p[1] << 8;
+    b->dest.x += 0x80 - (int)(w * 512.0f);
+    b->dest.y -= 0x50;
+    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+    b->field_e = 7;
+    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+}
 
 // FUNCTION: LEGOLAND 0x00407170
 void FUN_00407170(struct GoldWalkItem *item, unsigned char *p) {
