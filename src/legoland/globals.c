@@ -1274,6 +1274,9 @@ struct CursorSource *DAT_004c2b60;
 // GLOBAL: LEGOLAND 0x004c2b64
 struct Sprite *DAT_004c2b64;
 
+// GLOBAL: LEGOLAND 0x004c2b68
+struct SpriteSet *DAT_004c2b68;
+
 // GLOBAL: LEGOLAND 0x004c2b6c
 struct Sprite *DAT_004c2b6c;
 
@@ -1284,7 +1287,7 @@ struct Sprite *DAT_004c2b70;
 unsigned int DAT_004c2b98;
 
 // GLOBAL: LEGOLAND 0x004c2b9c
-unsigned int DAT_004c2b9c;
+struct Ride *DAT_004c2b9c;
 
 // GLOBAL: LEGOLAND 0x004c2ba0
 void *DAT_004c2ba0;
@@ -1306,6 +1309,9 @@ unsigned int DAT_004c74c8;
 
 // GLOBAL: LEGOLAND 0x004c74d4
 struct CursorSource *DAT_004c74d4;
+
+// GLOBAL: LEGOLAND 0x004c74d8
+struct RideSpriteInfo DAT_004c74d8;
 
 // GLOBAL: LEGOLAND 0x004c8d2c
 struct Sprite *DAT_004c8d2c;
@@ -1359,13 +1365,16 @@ unsigned int DAT_004cbe28;
 unsigned int DAT_004cbe2c;
 
 // GLOBAL: LEGOLAND 0x004cbe30
-struct CursorSource *DAT_004cbe30;
+struct Ride *DAT_004cbe30;
 
 // GLOBAL: LEGOLAND 0x004cbe48
 void *DAT_004cbe48;
 
 // GLOBAL: LEGOLAND 0x004cbe4c
 struct Sprite *DAT_004cbe4c;
+
+// GLOBAL: LEGOLAND 0x004cbe50
+struct SpriteSet *DAT_004cbe50;
 
 // GLOBAL: LEGOLAND 0x004cbe58
 struct RideSpriteInfo DAT_004cbe58;

@@ -263,7 +263,9 @@ struct FlumeEntry {
         struct FlumeEntry *link;
     };
     int submode;
-    unsigned char pad_20[0x2c - 0x20];
+    struct Ride *ride;
+    struct FlumeEntry *parent;
+    unsigned char pad_28[4];
     struct FlumeEntry *sub2;
     unsigned char pad_30[0xd0 - 0x30];
     int field_d0;
@@ -1491,7 +1493,7 @@ int FUN_0040ca60(struct FlumeEntry *entry, int arg) { STUB(); }
 // FUNCTION: LEGOLAND 0x0040cc00
 void FUN_0040cc00(struct FlumeEntry *entry, int arg) {
     int idx;
-    unsigned __int64 pos;
+    struct Point pos;
     struct Sprite *spr;
 
     if (FUN_0040b390(entry)) {
@@ -1499,7 +1501,7 @@ void FUN_0040cc00(struct FlumeEntry *entry, int arg) {
         pos = FUN_0040cfd0(entry);
         spr = (&DAT_004c2abc)[idx];
         if (spr != NULL) {
-            PrintSprite(spr, (unsigned int)pos, (unsigned int)(pos >> 32), arg, 0);
+            PrintSprite(spr, pos.x, pos.y, arg, 0);
         }
     }
 }
@@ -1516,7 +1518,38 @@ int FUN_0040cc50(int a, int b, int c, TileId *tile, int e, int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0040cca0
-unsigned long FUN_0040cca0(struct StateNode *node) { STUB(); }
+void FUN_0040cca0(struct StateNode *node) {
+    struct FlumeEntry *entry = (struct FlumeEntry *)node;
+    struct Point pos;
+    struct Point off;
+    struct Sprite *spr;
+    int idx;
+
+    entry->ride->field_18 = 0;
+    entry->ride->field_14 = 0;
+    pos = GetScreenCoordsForObject(&entry->tile, entry->ride);
+    switch (entry->submode) {
+    case 0:
+        idx = 0;
+        break;
+    case 1:
+        idx = 1;
+        break;
+    case 2:
+        idx = 2;
+        break;
+    case 3:
+        idx = 3;
+        break;
+    }
+    spr = DAT_004cbe50->sprites[(unsigned char)idx];
+    off.x = DAT_004cbe50->offset_x[(unsigned char)idx] >> 1;
+    off.y = DAT_004cbe50->offset_y[(unsigned char)idx] >> 1;
+    AdjustOffsetForViewMode(&off);
+    if (spr != NULL) {
+        PrintSprite(spr, pos.x + off.x, pos.y + off.y, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040cd70
 void FUN_0040cd70(struct PairHolder *p, int param1) {
@@ -1658,7 +1691,28 @@ void FUN_0040cfa0(struct StateNode *(*arr)[4]) {
 }
 
 // FUNCTION: LEGOLAND 0x0040cfd0
-unsigned __int64 FUN_0040cfd0(struct FlumeEntry *entry) { STUB(); }
+struct Point FUN_0040cfd0(struct FlumeEntry *entry) {
+    struct Point pos;
+    struct Point off;
+    int idx;
+
+    if (entry->ride == DAT_004c2b9c) {
+        return GetScreenCoordsForObject(&entry->parent->tile, DAT_004c2b9c);
+    }
+    if (entry->ride == DAT_004cbe30) {
+        entry->ride->field_18 = 0;
+        entry->ride->field_14 = 0;
+        pos = GetScreenCoordsForObject(&entry->tile, entry->ride);
+        idx = FUN_0040ad50((struct StateNode *)entry);
+        off.x = DAT_004c2b68->offset_x[(unsigned char)idx] >> 1;
+        off.y = DAT_004c2b68->offset_y[(unsigned char)idx] >> 1;
+        AdjustOffsetForViewMode(&off);
+        pos.x += off.x;
+        pos.y += off.y;
+        return pos;
+    }
+    return GetScreenCoordsForObject(&entry->tile, entry->ride);
+}
 
 // FUNCTION: LEGOLAND 0x0040d090
 void FUN_0040d090(void) { STUB(); }

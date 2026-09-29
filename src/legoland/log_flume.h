@@ -7,7 +7,7 @@ struct FlumeDims;
 
 struct FlumeDims FUN_004112c0(void);
 
-unsigned __int64 FUN_0040cfd0(struct FlumeEntry *entry);
+struct Point FUN_0040cfd0(struct FlumeEntry *entry);
 
 int FUN_004119c0(Element *obj, int filter);
 
