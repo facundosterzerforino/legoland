@@ -2922,6 +2922,8 @@ extern unsigned int DAT_007cb324;
 extern unsigned int DAT_007cb328;
 // 0x007cb360
 extern struct IconNode *DAT_007cb360;
+// 0x007cb380
+extern unsigned int DAT_007cb380[5];
 // 0x007cb394
 extern unsigned int DAT_007cb394;
 // 0x007cb398

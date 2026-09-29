@@ -184,7 +184,7 @@ void FUN_0048c100(void) {
         rc.right = 0x1d6;
         NewPrintCent(GetString(0x28a), 3, rc, 0);
         i = 0;
-        mapping = (unsigned int *)0x7cb380;
+        mapping = DAT_007cb380;
         entry = (int *)&DAT_004becac;
         do {
             text = GetString(entry[-1]);
