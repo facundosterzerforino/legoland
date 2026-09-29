@@ -238,6 +238,9 @@ unsigned char SpiderRide_SFX[8];
 // GLOBAL: LEGOLAND 0x004b4d90
 void *DAT_004b4d90;
 
+// GLOBAL: LEGOLAND 0x004b4d94
+char DAT_004b4d94[] = "manbox??";
+
 // GLOBAL: LEGOLAND 0x004b4fa8
 unsigned char WATERWORKS_SFX[0x24];
 
