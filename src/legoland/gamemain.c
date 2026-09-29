@@ -395,7 +395,7 @@ int FUN_004781b0(const char *param_1, const void *param_2, int param_3) {
     return -1;
 }
 // FUNCTION: LEGOLAND 0x004781f0
-int FUN_004781f0(const char *name, const void *commands, int count, int flags) {
+int FUN_004781f0(const char *name, struct ScriptCommand *commands, int count, int flags) {
     char path[256];
     struct ResFile *file;
     int result;
@@ -414,7 +414,58 @@ int FUN_004781f0(const char *name, const void *commands, int count, int flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00478280
-int FUN_00478280(struct ResFile *file, const void *commands, int count, int flags) { STUB(); }
+int FUN_00478280(struct ResFile *file, struct ScriptCommand *commands, int count, int flags) {
+    char line[1024];
+    char *tokens[20];
+    char *p;
+    int r = 0;
+    int errors = 0;
+    ScriptCommandFn deflt = NULL;
+    int ntok;
+    int i;
+    char found;
+    struct ScriptCommand *cmd;
+
+    DAT_00668fcc = 0;
+    cmd = commands;
+    if (strcmp(cmd->name, "none") == 0)
+        deflt = cmd->fn;
+    while (FUN_00489e60(file, line, 1024)) {
+        DAT_00668fcc++;
+        FUN_004663f0();
+        p = strchr(line, '#');
+        if (p)
+            *p = 0;
+        ntok = FUN_00478110(line, " ,;:(){}", tokens);
+        if (ntok) {
+            FUN_00499300(tokens[0]);
+            found = 0;
+            for (i = 0; i < count; i++, cmd++) {
+                if (strcmp(tokens[0], cmd->name) == 0) {
+                    found = 1;
+                    r = commands[i].fn(&tokens[1], ntok - 1, flags);
+                    if (r == 0)
+                        errors++;
+                    break;
+                }
+            }
+            cmd = commands;
+            if (!found) {
+                if (deflt)
+                    r = deflt(&tokens[1], ntok - 1, flags);
+            }
+        }
+        if (r < 0)
+            return r;
+    }
+    if (r < 0)
+        return r;
+    if (strcmp(commands[count - 1].name, "check") != 0)
+        r = commands[count - 1].fn(NULL, errors, flags);
+    if (r < 0)
+        return r;
+    return errors;
+}
 
 // FUNCTION: LEGOLAND 0x004784c0
 void FUN_004784c0(void) {

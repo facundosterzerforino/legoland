@@ -3185,6 +3185,9 @@ void *DAT_00668fc0;
 // GLOBAL: LEGOLAND 0x00668fc4
 struct InterfaceQueryNode *DAT_00668fc4;
 
+// GLOBAL: LEGOLAND 0x00668fcc
+int DAT_00668fcc;
+
 // GLOBAL: LEGOLAND 0x00668fd0
 char DAT_00668fd0[128];
 

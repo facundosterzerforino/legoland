@@ -2472,6 +2472,8 @@ extern struct MoviePool *DAT_00668fb8;
 extern void *DAT_00668fc0;
 // 0x00668fc4
 extern struct InterfaceQueryNode *DAT_00668fc4;
+// 0x00668fcc
+extern int DAT_00668fcc;
 // 0x00668fd0
 extern char DAT_00668fd0[128];
 // 0x00669050
