@@ -71,7 +71,37 @@ void FUN_00498120(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00498150
-void FUN_00498150(void) { STUB(); }
+int FUN_00498150(unsigned char *dst, int count) {
+    int avail;
+    int chunk;
+    int n;
+
+    avail = FUN_00497fb0();
+    n = count;
+    if (n > avail) {
+        FUN_00498000();
+        avail = FUN_00497fb0();
+        if (n > avail) {
+            n = avail;
+        }
+    }
+    count = n;
+    if (n != 0) {
+        do {
+            chunk = FUN_00497f90();
+            if (chunk > n) {
+                chunk = n;
+            }
+            memcpy(dst, &DAT_0079ac20[DAT_0079a7d8], chunk);
+            n -= chunk;
+            dst += chunk;
+            DAT_0079a7d8 = (DAT_0079a7d8 + chunk) & 0xffff;
+            DAT_0079a7e4[0] -= chunk;
+        } while (n != 0);
+    }
+    FUN_00498000();
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x004981e0
 unsigned int FUN_004981e0(void) {
@@ -111,7 +141,36 @@ unsigned int FUN_00498230(void) {
 void FUN_00498250(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004983a0
-void FUN_004983a0(void) { STUB(); }
+int FUN_004983a0(unsigned char *dst, int count) {
+    int avail;
+    int chunk;
+    int n;
+
+    avail = FUN_00498230();
+    n = count;
+    if (n > avail) {
+        FUN_00498250();
+        avail = FUN_00498230();
+        if (n > avail) {
+            n = avail;
+        }
+    }
+    count = n;
+    if (n != 0) {
+        do {
+            chunk = FUN_00498210();
+            if (chunk > n) {
+                chunk = n;
+            }
+            memcpy(dst, &DAT_007aaca0[DAT_0079a834], chunk);
+            n -= chunk;
+            dst += chunk;
+            DAT_0079a834 = (DAT_0079a834 + chunk) & 0x1ffff;
+        } while (n != 0);
+    }
+    FUN_00498250();
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x00498420
 void FUN_00498420(void) { STUB(); }

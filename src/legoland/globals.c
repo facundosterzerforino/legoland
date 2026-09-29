@@ -3632,8 +3632,14 @@ struct Element *DAT_0079abfc;
 // GLOBAL: LEGOLAND 0x0079ac04
 unsigned int DAT_0079ac04;
 
+// GLOBAL: LEGOLAND 0x0079ac20
+unsigned char DAT_0079ac20[0x10000];
+
 // GLOBAL: LEGOLAND 0x007aac24
 int DAT_007aac24;
+
+// GLOBAL: LEGOLAND 0x007aaca0
+unsigned char DAT_007aaca0[0x20000];
 
 // GLOBAL: LEGOLAND 0x007caca4
 int DAT_007caca4;

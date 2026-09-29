@@ -2764,8 +2764,14 @@ extern struct RepairOrder *DAT_0079a8d4;
 extern struct Element *DAT_0079abfc;
 // 0x0079ac04
 extern unsigned int DAT_0079ac04;
+
+// 0x0079ac20
+extern unsigned char DAT_0079ac20[0x10000];
 // 0x007aac24
 extern int DAT_007aac24;
+
+// 0x007aaca0
+extern unsigned char DAT_007aaca0[0x20000];
 // 0x007caca4
 extern int DAT_007caca4;
 // 0x007caca8
