@@ -1,9 +1,13 @@
 #include "dialog.h"
 #include <windows.h>
+#include <stdlib.h>
+#include <string.h>
 #include "gfx.h"
 #include "globals.h"
+#include "image_sprite.h"
 #include "input.h"
 #include "legoland.h"
+#include "llidb.h"
 #include "render.h"
 #include "text.h"
 
@@ -34,10 +38,87 @@ int FUN_0043e930(RECT *rc, int min, int max, int value) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ea30
-void FUN_0043ea30(void) { STUB(); }
+int FUN_0043ea30(char **names, RECT *box, char *title, int sel, int unused, struct Sprite **icons, int w, int h, int flag) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043eee0
-void FUN_0043eee0(void) { STUB(); }
+struct Element *FUN_0043eee0(RECT *box, char *title, int sel, unsigned int mask, int flag) {
+    struct Sprite *happy;
+    struct Sprite *poor;
+    struct Element *e;
+    struct Element *t;
+    struct Element *u;
+    struct Element **list;
+    char **names;
+    struct Sprite **icons;
+    struct Element *result;
+    int count;
+    int n;
+    int c;
+    int i;
+    int j;
+    int k;
+    int swapped;
+    int r;
+
+    count = LLIDB_GetCount();
+    c = 0;
+    // STRING: LEGOLAND 0x004b7a84
+    happy = LoadSprite("happy.lls", 0);
+    poor = LoadSprite("poor.lls", 0);
+    for (i = 0; i < count; i++) {
+        LLIDB_GetElement(i, &e);
+        if (e->flags & mask) {
+            c++;
+        }
+    }
+    names = malloc(c * 4 + 4);
+    list = malloc(c * 4);
+    icons = malloc(c * 4);
+    n = 0;
+    for (k = 0; k < count; k++) {
+        LLIDB_GetElement(k, &e);
+        if (e->flags & mask) {
+            list[n] = e;
+            n++;
+        }
+    }
+    names[n] = 0;
+    for (i = 0; i < n - 1; i++) {
+        swapped = 0;
+        for (j = n - 2; j >= i; j--) {
+            if (_strcmpi(list[j + 1]->name, list[j]->name) < 0) {
+                t = list[j];
+                u = list[j + 1];
+                list[j + 1] = t;
+                list[j] = u;
+                swapped = 1;
+            }
+        }
+        if (!swapped) {
+            break;
+        }
+    }
+    for (k = 0; k < n; k++) {
+        names[k] = list[k]->name;
+        if (list[k]->flags & 1) {
+            icons[k] = happy;
+        } else {
+            icons[k] = poor;
+        }
+    }
+    r = FUN_0043ea30(names, box, title, sel, 0, icons, 0x2e, 0x28, flag);
+    if (r != -1) {
+        result = list[r];
+    } else {
+        result = 0;
+    }
+    free(names);
+    free(list);
+    free(icons);
+    KillSprite(happy);
+    KillSprite(poor);
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0043f0b0
 void FUN_0043f0b0(void) { STUB(); }
