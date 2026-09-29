@@ -4146,7 +4146,7 @@ struct Sprite *DAT_007fdfe4;
 struct IconNode *DAT_007fdfe8;
 
 // GLOBAL: LEGOLAND 0x007fdff0
-void *DAT_007fdff0;
+struct Bloke *DAT_007fdff0;
 
 // GLOBAL: LEGOLAND 0x007fdff4
 int DAT_007fdff4;

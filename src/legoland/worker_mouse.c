@@ -44,7 +44,33 @@ void *FUN_004700f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00470100
-void FUN_00470100(void) { STUB(); }
+void FUN_00470100(unsigned int type, Bloke *worker) {
+    // STRING: LEGOLAND 0x004ba9ec
+    DBPrintf("Picking up worker (%x) Workorder = %x\n", worker, worker->order);
+    DAT_007fdff0 = worker;
+    DAT_007fdffc = type;
+    worker->field_e = 0xd;
+    DAT_007fdff4 = DAT_007fdff0->pos.x;
+    DAT_007fdff8 = DAT_007fdff0->pos.y;
+    DAT_007fdff0->field_72 = 5;
+    DAT_00668954 = 1;
+    if (DAT_007fdffc == 0x307) {
+        ClearAGardenersWorkList(DAT_007fdff0);
+        NewLongTermAction(DAT_007fdff0, 0x18);
+        ClearAGardenersWorkList(DAT_007fdff0);
+    } else {
+        ClearAMechanicsWorkList(DAT_007fdff0);
+        NewLongTermAction(DAT_007fdff0, 0x19);
+        ClearAMechanicsWorkList(DAT_007fdff0);
+    }
+    worker->order = 0;
+    DAT_007fdff0->order = 0;
+    if (DAT_007fdffc == 0x307) {
+        NewLongTermAction(DAT_007fdff0, 0x18);
+    } else {
+        NewLongTermAction(DAT_007fdff0, 0x19);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004701f0
 LEGO_EXPORT void SetWorkersPositionAtMouse(void) {

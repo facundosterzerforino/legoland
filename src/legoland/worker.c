@@ -1329,7 +1329,7 @@ LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b510
-LEGO_EXPORT void ClearAMechanicsWorkList(int value) {
+LEGO_EXPORT void ClearAMechanicsWorkList(Bloke *value) {
     WorkOrder *head = DAT_0079a8c0;
     if (head == 0) {
         return;
@@ -1349,7 +1349,7 @@ LEGO_EXPORT void ClearAMechanicsWorkList(int value) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b550
-LEGO_EXPORT void ClearAGardenersWorkList(int param) {
+LEGO_EXPORT void ClearAGardenersWorkList(Bloke *param) {
     WorkOrder *current = DAT_0079a8b0;
     if (current == NULL) {
         return;

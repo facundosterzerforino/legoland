@@ -116,3 +116,5 @@ WorkOrder *FUN_00499780(Element *element, int *coords, int mode);
 LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, int x, int y);
 int FUN_00499550(void);
 int FUN_00499560(void);
+LEGO_EXPORT void ClearAMechanicsWorkList(Bloke *value);
+LEGO_EXPORT void ClearAGardenersWorkList(Bloke *param);

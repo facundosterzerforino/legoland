@@ -3112,7 +3112,7 @@ extern struct Sprite *DAT_007fdfe4;
 // 0x007fdfe8
 extern struct IconNode *DAT_007fdfe8;
 // 0x007fdff0
-extern void *DAT_007fdff0;
+extern struct Bloke *DAT_007fdff0;
 // 0x007fdff4
 extern int DAT_007fdff4;
 // 0x007fdff8
