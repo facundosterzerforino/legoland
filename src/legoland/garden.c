@@ -91,7 +91,34 @@ void FUN_00432510(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004325e0
-void FUN_004325e0(void) { STUB(); }
+void FUN_004325e0(Element *obj, int *param_2) {
+    TileId packed;
+    int pos[2];
+    packed.pos.x = param_2[0];
+    packed.pos.y = param_2[1];
+    AddObjectToMap(obj, packed, 0);
+    FUN_00432510(param_2[0], param_2[1]);
+    pos[0] = param_2[0];
+    pos[1] = param_2[1] - 1;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+    pos[0] = param_2[0] + 1;
+    pos[1] = param_2[1];
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+    pos[0] = param_2[0];
+    pos[1] = param_2[1] + 1;
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+    pos[0] = param_2[0] - 1;
+    pos[1] = param_2[1];
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+        FUN_00432510(pos[0], pos[1]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00432700
 void FUN_00432700(Element *obj, TileId tile, struct Cursor *cursor) {
