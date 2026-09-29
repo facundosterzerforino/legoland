@@ -71,7 +71,7 @@ LEGO_EXPORT int LLIDB_GetElement(unsigned int index, struct Element **output);
 LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned int *index_out);
 LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsigned int *index_out);
 LEGO_EXPORT struct Element *ElemID(const char *name);
-LEGO_EXPORT void LLIDB_LoadICM(void);
+LEGO_EXPORT int LLIDB_LoadICM(void);
 LEGO_EXPORT int LLIDB_CloseICM(void);
 LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const char *param_2, unsigned int param_3);
 LEGO_EXPORT void LLIDB_ClearOnLevel(void);

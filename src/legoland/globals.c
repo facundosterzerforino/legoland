@@ -319,6 +319,9 @@ int DAT_004b5b50;
 // GLOBAL: LEGOLAND 0x004b59e8
 char DAT_004b59e8[16] = "sit.logirlsit";
 
+// GLOBAL: LEGOLAND 0x004bc0ec
+char DAT_004bc0ec[36] = "english";
+
 // GLOBAL: LEGOLAND 0x004b59f8
 char DAT_004b59f8[] = "sit.lomansit";
 
