@@ -126,7 +126,53 @@ void FUN_00481ee0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00481f00
-void FUN_00481f00(void) { STUB(); }
+int FUN_00481f00(struct BestNode *target, struct BestNode *start, struct BestNode **out) {
+    struct BestNode *a[1020];
+    struct BestNode *b[1020];
+    struct BestNode **cur = a;
+    struct BestNode **next = b;
+    int count;
+    int n;
+    int i;
+    int j;
+    struct BestNode *p;
+
+    if (target->field_20 & 1) {
+        return 0;
+    }
+    if (target == start) {
+        *out = target;
+        return 1;
+    }
+    a[0] = start;
+    count = 1;
+    while (count != 0) {
+        n = 0;
+        for (i = 0; i < count; i++) {
+            FUN_004819a0((int *)&cur[i]->x_min);
+            for (j = 0; j < (int)DAT_00669254; j++) {
+                p = DAT_0066a45c[j];
+                if (!(p->field_20 & 1)) {
+                    next[n++] = p;
+                    if (p == target) {
+                        *out = cur[i];
+                        return 1;
+                    }
+                    p->field_20 |= 1;
+                }
+            }
+        }
+        if (cur == a) {
+            cur = b;
+            next = a;
+        } else {
+            cur = a;
+            next = b;
+        }
+        count = n;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00482050
 LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out) { STUB(); }
