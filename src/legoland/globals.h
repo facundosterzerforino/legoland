@@ -411,6 +411,7 @@ extern struct FortRect DAT_004b4580;
 
 // 0x004ab390
 extern float FLOAT_004ab390;
+extern float FLOAT_004ab468;
 // 0x004ab398
 extern double DOUBLE_004ab398;
 // 0x004ab3dc
@@ -1635,6 +1636,24 @@ extern int DAT_006159c8[90][4];
 extern unsigned int DAT_00615f6c;
 // 0x00615f84
 extern void *DAT_00615f84;
+extern int DAT_00615fc4;
+extern int DAT_00615fc8;
+extern int DAT_00615fcc;
+extern float DAT_00615fd0;
+extern float DAT_00615fd8;
+extern float DAT_00615fdc;
+extern float DAT_00615fe0;
+extern int DAT_00615fe4;
+extern int DAT_00615fe8;
+extern int DAT_00615fec;
+extern float *DAT_00615f8c;
+extern int (*DAT_004b63fc)(float (*fn)(unsigned int), float lo, float hi, float *out);
+
+extern void *DAT_00615f80;
+extern int DAT_00615ff0;
+extern float DAT_00615ff4;
+extern struct CastleFloatEnt DAT_004b5f80[3][4];
+extern struct CastleFloatEnt DAT_00612210[3][4];
 // 0x00615f90
 extern int DAT_00615f90;
 // 0x00615fd4
