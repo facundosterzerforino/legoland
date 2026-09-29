@@ -11,11 +11,43 @@
 #include "objclass.h"
 #include "sound_music.h"
 
+#pragma pack(push, 1)
+struct JoustSub12 {
+    unsigned int a;
+    unsigned short b;
+};
+
+struct JoustSub18 {
+    unsigned short a;
+    unsigned char b;
+    unsigned char c;
+};
+
+static __inline void ClearSub12(struct JoustSub12 *p) {
+    p->a = 0;
+    p->b = 0;
+}
+
+static __inline void ClearSub18(struct JoustSub18 *p) {
+    p->a = 0;
+    p->b = 0;
+    p->c = 0;
+}
+
 struct JoustNode {
-    unsigned char pad_0[4];
+    TileId id;
+    unsigned char pad_2[2];
     struct JoustNode *next;
     unsigned int field_8;
+    struct Ride *ride;
+    unsigned char x;
+    unsigned char y;
+    struct JoustSub12 sub12;
+    struct JoustSub18 sub18;
+    unsigned int field_1c;
+    unsigned int field_20;
 };
+#pragma pack(pop)
 
 struct JoustObject {
     unsigned char pad_0[0xc];
@@ -43,13 +75,44 @@ struct JoustRoot {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00407970
-void FUN_00407970(void) { STUB(); }
+struct JoustNode *FUN_00407970(TileId *key) {
+    struct JoustNode *node = (struct JoustNode *)malloc(0x24);
+
+    if (node != NULL) {
+        memset(node, 0, 0x24);
+        node->id.id = key->id;
+        node->next = DAT_004c1250;
+        node->ride = NULL;
+        node->x = 0;
+        node->y = 0;
+        ClearSub12(&node->sub12);
+        ClearSub18(&node->sub18);
+        node->field_1c = 0;
+        node->field_20 = 0;
+        DAT_004c1250 = node;
+    }
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x004079e0
-void FUN_004079e0(void) { STUB(); }
+void FUN_004079e0(Element *editObj, int *coords) {
+    TileId key;
+
+    key.pos.x = (unsigned char)coords[0];
+    key.pos.y = (unsigned char)coords[1];
+    AddBasicObject(editObj, coords);
+    FUN_00407970(&key)->field_8 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x00407a20
-void FUN_00407a20(void) { STUB(); }
+struct JoustNode *FUN_00407a20(TileId *key) {
+    struct JoustNode *cur = DAT_004c1250;
+
+    while (cur != NULL && cur->id.id != key->id) {
+        cur = cur->next;
+    }
+    return cur;
+}
 
 // FUNCTION: LEGOLAND 0x00407a50
 void FUN_00407a50(struct JoustNode *node) { STUB(); }
@@ -62,7 +125,27 @@ void FUN_00407ab0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00407ad0
-void FUN_00407ad0(void) { STUB(); }
+void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
+    struct JoustNode *node;
+    struct {
+        unsigned int kind;
+        unsigned int pad;
+        unsigned int x;
+        unsigned int y;
+    } source;
+
+    node = FUN_00407a20((TileId *)&editObj);
+    if (node != NULL) {
+        source.kind = 2;
+        source.x = node->id.pos.x;
+        source.y = node->id.pos.y;
+        UnSourceAndFadeAllSamplesFromSource(&source, -200);
+        node->field_8 = 0;
+        FUN_00407a50(node);
+    }
+    StandardRemoveObject(editObj, coords, cursor);
+    RemoveAllBlokesFromRide(editObj->ride, coords);
+}
 
 // FUNCTION: LEGOLAND 0x00407b50
 void FUN_00407b50(void) { STUB(); }
