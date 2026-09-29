@@ -106,7 +106,66 @@ void FUN_0048bd70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048bde0
-void FUN_0048bde0(void) { STUB(); }
+void FUN_0048bde0(void) {
+    struct IconNode *icon;
+    unsigned int *mapping;
+    int *entry;
+    int i;
+
+    // STRING: LEGOLAND 0x004bef88
+    SPRITE_TitleScreenBk = LoadSprite("TutorialBK.lls", 0);
+    DAT_00798664 = 1;
+    if (DAT_00798660 == 0) {
+        FUN_0048bd00();
+        // STRING: LEGOLAND 0x004bef70
+        icon = LoadSpriteIcon("Accept_on_Report.lls", 4, 0x20a, 0x16c, 0x23);
+        icon->string_id = 0x262;
+        icon->string = GetString(0x262);
+        icon->flags |= 0x6002;
+        icon->event_handler = (void *)FUN_0048bf90;
+        DAT_006687bc = (unsigned int)FUN_0048bf90;
+        // STRING: LEGOLAND 0x004bef5c
+        icon = LoadSpriteIcon("GoBack_on_Tut.lls", 4, 0x20a, 0xf5, 0x23);
+        icon->string_id = 0x26;
+        icon->string = GetString(0x26);
+        if (DAT_0080ffd9 == 1) {
+            icon->string_id = 0x26c;
+            icon->string = GetString(0x26c);
+            icon->event_handler = (void *)FUN_0048c090;
+        } else {
+            icon->string_id = 0x26;
+            icon->string = GetString(0x26);
+            icon->event_handler = (void *)FUN_0048c020;
+        }
+        icon->flags |= 0x6002;
+        DAT_006687c0 = (unsigned int)icon->event_handler;
+    }
+    FUN_0048bd40();
+    RemoveIconGroup(0x1c);
+    mapping = DAT_007cb380;
+    entry = (int *)&DAT_004becb0;
+    i = 0;
+    do {
+        if (i == lpConfig->field_28 - 1) {
+            icon = InsertIcon(entry[-1], entry[0], 0x1c, (struct Sprite *)entry[1]);
+        } else if (DAT_0080ffd4[i] == 1) {
+            icon = InsertIcon(entry[-1], entry[0], 0x1c, (struct Sprite *)entry[2]);
+        } else {
+            icon = 0;
+        }
+        *mapping = (unsigned int)icon;
+        if (icon) {
+            icon->string = GetString(0x276);
+            icon->string_id = entry[-2];
+            icon->field_18 = i;
+            icon->event_handler = (void *)FUN_0048bb60;
+            icon->flags |= 0x6002;
+        }
+        i++;
+        mapping++;
+        entry += 7;
+    } while ((int)mapping < (int)&DAT_007cb394);
+}
 
 // FUNCTION: LEGOLAND 0x0048bf90
 unsigned char FUN_0048bf90(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
