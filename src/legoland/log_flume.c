@@ -279,7 +279,8 @@ struct FlumeSlot {
     struct FlumeStatHolder *busy;
     unsigned char pad_c[8];
     struct FlumeWeighted *owner;
-    unsigned char pad_18[0x24 - 0x18];
+    float weight;
+    unsigned char pad_1c[0x24 - 0x1c];
 };
 
 struct FlumeSlotSet {
@@ -1821,29 +1822,25 @@ int FUN_0040ba80(struct Node *arg) {
 
 // FUNCTION: LEGOLAND 0x0040bab0
 int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
-    struct FlumeWeighted *slot = (struct FlumeWeighted *)&set->slots[index];
+    struct FlumeSlot *slot = &set->slots[index];
+    struct FlumeSlot *other;
     struct FlumeWeighted *link;
-    struct FlumeWeighted *other;
     float weight;
-    double f;
-    int count;
+    float f;
     int i;
 
     if (slot != NULL) {
-        link = slot->link;
+        link = slot->owner;
         if (link->a != NULL) {
             weight = slot->weight;
-            count = set->count;
             f = weight;
-            other = (struct FlumeWeighted *)&set->slots[0];
-            for (i = 0; i < count; i++) {
+            for (i = 0, other = set->slots; i < set->count; i++, other++) {
                 if (i != index) {
-                    struct FlumeWeighted *o = other->link;
-                    if (o == link || o == link->a) {
-                        if (o == link) {
+                    if (other->owner == link || other->owner == link->a) {
+                        if (other->owner == link) {
                             f = other->weight - weight;
                         }
-                        if (o == link->a) {
+                        if (other->owner == link->a) {
                             f = other->weight + 1.0 - weight;
                         }
                         if (f > 0.0f && f < 0.8) {
@@ -1851,7 +1848,6 @@ int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
                         }
                     }
                 }
-                other = (struct FlumeWeighted *)((char *)other + 0x24);
             }
             return 1;
         }
