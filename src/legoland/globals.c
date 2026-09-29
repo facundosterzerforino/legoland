@@ -881,6 +881,9 @@ const char *DAT_004bcba4[3] = {
 // GLOBAL: LEGOLAND 0x004bcbf4
 LEGO_EXPORT struct LegoConfig *lpConfig;
 
+// GLOBAL: LEGOLAND 0x004bcec0
+struct Point DAT_004bcec0;
+
 // GLOBAL: LEGOLAND 0x004bcecc
 char *PTR_s_Aaron_004bcecc[0x53];
 

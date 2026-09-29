@@ -175,7 +175,76 @@ int FUN_00481f00(struct BestNode *target, struct BestNode *start, struct BestNod
 }
 
 // FUNCTION: LEGOLAND 0x00482050
-LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out) { STUB(); }
+LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out) {
+    struct BestNode *start;
+    struct BestNode *end;
+    struct BestNode *prev;
+    int lo_x;
+    int hi_x;
+    int lo_y;
+    int hi_y;
+    struct Point *to = goal;
+
+    DAT_004bcec0.x = goal->x >> 8;
+    DAT_004bcec0.y = goal->y >> 8;
+    start = FUN_004817d0((int *)pos);
+    end = FUN_004817d0((int *)to);
+    if (start == 0) {
+        return -2;
+    }
+    if (end == 0) {
+        return -1;
+    }
+    if (start == end) {
+        *out = *to;
+        out->x += 0x80;
+        out->y += 0x80;
+        return 2;
+    }
+    FUN_00481ee0();
+    if (!FUN_00481f00(start, end, (struct BestNode **)&goal)) {
+        return -1;
+    }
+    prev = (struct BestNode *)goal;
+    FUN_00481e60((struct PathQuery *)pos, (struct PathBox *)prev);
+    lo_x = prev->x_min << 8;
+    hi_x = prev->x_max << 8;
+    lo_y = prev->y_min << 8;
+    hi_y = prev->y_max << 8;
+    if (pos->x < lo_x) {
+        out->x = lo_x;
+    } else if (pos->x > hi_x) {
+        out->x = hi_x;
+    } else {
+        out->x = pos->x;
+    }
+    if (pos->y < lo_y) {
+        out->y = lo_y;
+    } else if (pos->y > hi_y) {
+        out->y = hi_y;
+    } else {
+        out->y = pos->y;
+    }
+    if ((int)prev->field_1c > 0x18000) {
+        lo_x = start->x_min << 8;
+        hi_x = start->x_max << 8;
+        lo_y = start->y_min << 8;
+        hi_y = start->y_max << 8;
+        if (out->x < lo_x) {
+            out->x = lo_x;
+        } else if (out->x > hi_x) {
+            out->x = hi_x;
+        }
+        if (out->y < lo_y) {
+            out->y = lo_y;
+        } else if (out->y > hi_y) {
+            out->y = hi_y;
+        }
+    }
+    out->x += 0x80;
+    out->y += 0x80;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004821c0
 void FUN_004821c0(void) {
