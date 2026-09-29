@@ -16,6 +16,7 @@
 #include "render3d.h"
 #include "sound_music.h"
 #include "sound_sfx.h"
+#include "tilemap.h"
 
 struct PlaneRideNode {
     unsigned char b0;
@@ -32,7 +33,7 @@ struct PlaneRideNode {
     unsigned char b14;
     unsigned char pad_15[3];
     int f18;
-    unsigned char pad_1c[4];
+    signed char slots[4];
     struct PlaneRideNode *next;
 };
 
@@ -112,7 +113,7 @@ void FUN_0043d940(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d960
-unsigned int FUN_0043d960(struct PlaneRideObject **arg) {
+unsigned int FUN_0043d960(TileId *arg) {
     struct PlaneRideNode *cur = DAT_0062fe9c;
 
     if (cur != NULL) {
@@ -173,7 +174,7 @@ void FUN_0043da60(struct Element *element, unsigned int param_2, unsigned int pa
 
     ride = element->ride;
     r = ride->riders;
-    node = (struct PlaneRideNode *)FUN_0043d960((struct PlaneRideObject **)tile);
+    node = (struct PlaneRideNode *)FUN_0043d960(tile);
     if (node == NULL) {
         return;
     }
@@ -327,24 +328,22 @@ unsigned int *FUN_0043e010(struct PlaneRideRoot *param1, unsigned short param2) 
 }
 
 // FUNCTION: LEGOLAND 0x0043e050
-unsigned int FUN_0043e050(int param2, int param1, signed char n) {
+unsigned int FUN_0043e050(struct RideNode *rn, struct PlaneRideNode *node, signed char n) {
     int count = n;
     int eax = rand();
     int index = eax % count;
-    signed char slot = *((signed char *)param1 + index + 0x1c);
-    int ecx;
+    signed char slot = node->slots[index];
 
     while (slot != 0) {
         index++;
         if (index >= count) {
             index = 0;
         }
-        slot = *((signed char *)param1 + index + 0x1c);
+        slot = node->slots[index];
     }
 
-    *((signed char *)param1 + index + 0x1c) = 1;
-    ecx = *(int *)(param2 + 0x8);
-    *((signed char *)ecx + 0x36) = (signed char)(index + 1);
+    node->slots[index] = 1;
+    rn->rider->field_36 = (signed char)(index + 1);
     return index + 1;
 }
 
@@ -547,4 +546,152 @@ void FUN_0043e3f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e410
-void FUN_0043e410(void) { STUB(); }
+void FUN_0043e410(struct Element *elem) {
+    struct Ride *ride = elem->ride;
+    struct RideNode *rn = ride->riders;
+    struct RideNode *next;
+    struct PlaneRideNode *node;
+    struct Bloke *bloke;
+    TileId *pos;
+    int iv12, iv13;
+    int tw, th;
+    int coords[2];
+    struct Point tmp;
+    int coords2[2];
+
+    while (rn != NULL) {
+        next = rn->next;
+        bloke = rn->rider;
+        pos = &rn->tile;
+        node = (struct PlaneRideNode *)FUN_0043d960(pos);
+        if (node == NULL) {
+            return;
+        }
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0: {
+                struct Point sc;
+                int ix, iy;
+                short sXs, sYs;
+
+                node->b14++;
+                node->f18 = 0xb4;
+                bloke->flags |= 8;
+                sc = GetScreenCoordsForObject(pos, ride);
+                ix = bloke->pos.x;
+                iy = bloke->pos.y;
+                GetTileDimensions(&tw, &th);
+                iv13 = (ix + iy) * th;
+                iv12 = (ix - iy) * tw;
+                sXs = Get_XScroll();
+                sYs = Get_YScroll();
+                coords[0] = ((((unsigned int)lpConfig->field_20 - (int)sXs) + (iv12 >> 9)) - DAT_0081cae8 / 2 - sc.x) * 2;
+                coords[1] = (((iv13 >> 9) + ((unsigned int)lpConfig->field_22 - (int)sYs)) - DAT_0081caec / 2 - sc.y) * 2;
+                bloke->flags |= 0x80;
+                bloke->person->sprite = DAT_0062fe98;
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
+                bloke->field_35 = 0;
+                // STRING: LEGOLAND 0x004b4704
+                sprintf(DAT_004b79bc + 6, "%02d", FUN_0043e050(rn, node, (char)DAT_0062fe58->seats));
+                bloke->path = NewBNVPath(DAT_0062fe84[1], 1, DAT_004b79bc, -1617706.75f, -1617948.625f, coords);
+                UpdateBlokeFromBNVPath(bloke, bloke->path);
+                bloke->param_action++;
+                bloke->field_58 = 0;
+                break;
+            }
+            case 1:
+                if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                    bloke->field_35 = 1;
+                    bloke->param_action = 5;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                if (bloke->path != NULL && BNVPath_GetDFrame(bloke->path) >= 0x3f) {
+                    bloke->field_35 = 1;
+                    bloke->param_action = 5;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                BlokeSetFrame(bloke, bloke->field_74);
+                break;
+            case 5:
+                bloke->flags |= 0x80;
+                BlokeSitAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->field_35 = 1;
+                bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
+                bloke->param_action++;
+                if ((char)++node->b2 == DAT_0062fe58->seats) {
+                    FUN_0043d990(node);
+                }
+                break;
+            case 7:
+                tmp.x = bloke->screen_x * 2;
+                tmp.y = bloke->screen_y * 2;
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                UnAdjustBlokePosition(&tmp);
+                bloke->flags |= 0x80;
+                coords2[0] = tmp.x;
+                coords2[1] = tmp.y;
+                bloke->person->sprite = DAT_0062fe98;
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
+                bloke->field_35 = 2;
+                sprintf(DAT_004b79bc + 6, "%02d", bloke->field_36);
+                bloke->path = NewBNVPath(DAT_0062fe84[2], 2, DAT_004b79bc, -1617706.75f, -1617948.625f, coords2);
+                BNVPath_SetDFrame(bloke, bloke->path, 0);
+                UpdateBlokeFromBNVPath(bloke, bloke->path);
+                bloke->param_action++;
+                break;
+            case 8:
+                if (UpdateBlokeFromBNVPath(bloke, bloke->path) == 0) {
+                    bloke->field_35 = 2;
+                    bloke->param_action = 0xd;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                if (bloke->path != NULL && BNVPath_GetDFrame(bloke->path) >= 0x20) {
+                    bloke->field_35 = 2;
+                    bloke->param_action = 0xd;
+                    free(bloke->path);
+                    bloke->path = NULL;
+                }
+                BlokeSetFrame(bloke, bloke->field_74);
+                break;
+            case 0xd: {
+                iv12 = ride->field_24 + pos->pos.x;
+                iv13 = pos->pos.y + ride->field_25;
+
+                node->slots[bloke->field_36 - 1] = 0;
+                bloke->flags &= 0xff7f;
+                bloke->person->sprite = NULL;
+                bloke->person->field_30 = 0;
+                UnAdjustBlokePosition(&bloke->person->screen);
+                ScreenToMapRef(&bloke->person->screen, &bloke->pos, 0);
+                bloke->person->field_34 = 0;
+                bloke->pos.x <<= 8;
+                bloke->pos.y <<= 8;
+                bloke->dest.x = iv12 * 256 + 128;
+                bloke->dest.y = iv13 * 256 + 128;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            }
+            case 0xe:
+                bloke->flags &= 0xfff7;
+                RemoveBlokeFromRide(ride, rn);
+                if (--node->b3 == 0) {
+                    node->b2 = 0;
+                    Ride_ClearFlagToNotLetAnyoneOn(node);
+                }
+                break;
+            }
+        }
+        rn = next;
+    }
+    FUN_0043e3f0();
+}
