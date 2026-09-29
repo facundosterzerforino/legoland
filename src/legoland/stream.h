@@ -23,3 +23,4 @@ void FUN_00498920(void);
 int FUN_00498b00(void);
 void FUN_00498b40(void);
 int FUN_00498cf0(void);
+void FUN_00498900(unsigned int param_1);
