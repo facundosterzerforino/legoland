@@ -1350,7 +1350,6 @@ void FUN_0040a930(Element *elem, unsigned int param_2, unsigned int param_3) {
 void FUN_0040aac0(unsigned int param_1, struct Point *param_2) {
     struct FlumeEntry *entry;
     struct FlumeEntry *cur;
-    struct Footprint *fp;
 
     BasicObjectDCalcCursor(param_1, param_2);
     DefaultCursor(&DAT_004c74f8);
@@ -1358,12 +1357,11 @@ void FUN_0040aac0(unsigned int param_1, struct Point *param_2) {
     if (entry != NULL) {
         for (cur = entry->sub; cur != NULL; cur = cur->next) {
             if (cur->field_28 != -1) {
-                int unused;
-                FUN_0040d090(cur, &fp, &unused);
-                if (fp == NULL) {
+                FUN_0040d090(cur, &param_1, &param_2);
+                if (param_1 == 0) {
                     continue;
                 }
-                memcpy(DAT_004c74f8.footprint.v, fp, 20);
+                memcpy(DAT_004c74f8.footprint.v, (void *)param_1, 20);
                 DAT_004c74f8.field_1404 = cur->tile.pos.x;
                 DAT_004c74f8.field_1408 = cur->tile.pos.y;
             }
@@ -1994,7 +1992,7 @@ void FUN_0040cfa0(struct StateNode *(*arr)[4]) {
 unsigned __int64 FUN_0040cfd0(struct FlumeEntry *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d090
-void FUN_0040d090(struct FlumeEntry *entry, struct Footprint **fp, int *unused) { STUB(); }
+void FUN_0040d090(struct FlumeEntry *entry, unsigned int *fp, void *unused) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d210
 void FUN_0040d210(void) { STUB(); }
