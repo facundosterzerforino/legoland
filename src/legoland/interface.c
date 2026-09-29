@@ -416,8 +416,8 @@ LEGO_EXPORT int InitGameInterface(int a) {
         obj = element->obj;
         DAT_007fd624 = obj;
         icon = InsertIcon((short)DAT_004bb04c[8], (short)DAT_004bb04c[9], 0x93, DAT_007fdd50);
-        icon->string_id = 0xffffffff;
         icon->string = (char *)obj->field_7c;
+        icon->string_id = 0xffffffff;
         icon->field_18 = 1;
         icon->field_1c = DAT_007fdcd0;
         icon->field_20p = DAT_007fdd50;
@@ -519,15 +519,15 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->flags |= 0x4008;
         icon->field_28 = (void *)FUN_00443e30;
         DAT_00668eb8 = (unsigned int)icon;
-        if (a != 0 || FUN_0046b280() == 0) {
+        if (a != 0 && FUN_0046b280() != 0) {
+            FUN_0046b240(1);
+        } else {
             FUN_0046b240(0);
             if (DAT_0080ffe5 == 2) {
                 FUN_004748a0((void *)0);
             } else {
                 FUN_004748a0((void *)1);
             }
-        } else {
-            FUN_0046b240(1);
         }
         InitPopUpInfo();
     }
@@ -685,35 +685,34 @@ unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags) {
 
     saved_e34 = DAT_00668e34;
     saved_ff8 = DAT_004baff8;
-    if (EditMode.unk4 == 1 || (flags & 2) == 0) {
-        return 1;
-    }
-    EditMode.unk0 = 0;
-    GamePad = GamePad & 0xffffebff;
-    PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
-    if (DAT_004baff8 != 0) {
-        DAT_004baff8 = 0;
-        DAT_00668e34 = 0;
-        result = TestMenu(DAT_004bafa8);
-        if (result == 1) {
+    if (EditMode.unk4 != 1 && (flags & 2) != 0) {
+        EditMode.unk0 = 0;
+        GamePad = GamePad & 0xffffebff;
+        PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
+        if (DAT_004baff8 != 0) {
+            DAT_004baff8 = 0;
+            DAT_00668e34 = 0;
+            result = TestMenu(DAT_004bafa8);
+            if (result == 1) {
+                FUN_00474750();
+                DAT_00668eb0 = (unsigned int)param_1;
+                FUN_0046d680(param_1, DAT_007fdcc0);
+                DAT_004bb094 = 0;
+                return 1;
+            }
+            DAT_004baff8 = saved_ff8;
+            if (saved_ff8 != 5) {
+                DAT_00668e34 = saved_e34;
+                TestMenu(&DAT_004bafa8[saved_ff8 * 5]);
+                return 1;
+            }
+        } else {
             FUN_00474750();
-            DAT_00668eb0 = (unsigned int)param_1;
-            FUN_0046d680(param_1, DAT_007fdcc0);
-            DAT_004bb094 = 0;
-            return 1;
+            DAT_004bb094 = 1;
+            DAT_004baff8 = 5;
+            DAT_007fdd80 = 1;
+            DAT_007fdd84 = 1;
         }
-        DAT_004baff8 = saved_ff8;
-        if (saved_ff8 != 5) {
-            DAT_00668e34 = saved_e34;
-            TestMenu(&DAT_004bafa8[saved_ff8 * 5]);
-            return 1;
-        }
-    } else {
-        FUN_00474750();
-        DAT_004bb094 = 1;
-        DAT_004baff8 = 5;
-        DAT_007fdd80 = 1;
-        DAT_007fdd84 = 1;
     }
     return 1;
 }
