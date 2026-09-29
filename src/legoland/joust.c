@@ -23,17 +23,6 @@ struct JoustSub18 {
     unsigned char c;
 };
 
-static __inline void ClearSub12(struct JoustSub12 *p) {
-    p->a = 0;
-    p->b = 0;
-}
-
-static __inline void ClearSub18(struct JoustSub18 *p) {
-    p->a = 0;
-    p->b = 0;
-    p->c = 0;
-}
-
 struct JoustNode {
     TileId id;
     unsigned char pad_2[2];
@@ -85,8 +74,10 @@ struct JoustNode *FUN_00407970(TileId *key) {
         node->ride = NULL;
         node->x = 0;
         node->y = 0;
-        ClearSub12(&node->sub12);
-        ClearSub18(&node->sub18);
+        memset(&node->sub12, 0, 6);
+        memset(&node->sub18.a, 0, 2);
+        node->sub18.b = 0;
+        node->sub18.c = 0;
         node->field_1c = 0;
         node->field_20 = 0;
         DAT_004c1250 = node;
@@ -139,7 +130,7 @@ void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
         unsigned int y;
     } source;
 
-    node = FUN_00407a20((TileId *)&editObj);
+    node = FUN_00407a20(&coords);
     if (node != NULL) {
         source.kind = 2;
         source.x = node->id.pos.x;

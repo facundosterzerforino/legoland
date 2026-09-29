@@ -80,9 +80,10 @@ void FUN_00432510(int x, int y) {
         mask |= 8;
     }
     if (mask == 0) {
-        mask = 0xf;
+        Set_UserFlags(x << 8, y << 8, 0xe);
+    } else {
+        Set_UserFlags(x << 8, y << 8, mask - 1);
     }
-    Set_UserFlags(x << 8, y << 8, mask - 1);
 }
 
 // FUNCTION: LEGOLAND 0x004325e0

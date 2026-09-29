@@ -64,7 +64,22 @@ unsigned int FUN_00450c70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00450c80
-LEGO_EXPORT void ProcessBuildingTimes(void) { STUB(); }
+LEGO_EXPORT void ProcessBuildingTimes(void) {
+    int i;
+
+    for (i = 0; i < 256; i++) {
+        if (DAT_006664f8[i].ride != NULL) {
+            DAT_006664f8[i].elapsed++;
+            if (DAT_006664f8[i].elapsed >= GetBuildTime(DAT_006664f8[i].ride)) {
+                DAT_006670f8--;
+                ObjectIsBuilt((struct ObjClass *)DAT_006664f8[i].ride, DAT_006664f8[i].coords);
+                DAT_006664f8[i].ride = NULL;
+            } else {
+                ObjectIsBuilding((struct ObjClass *)DAT_006664f8[i].ride, DAT_006664f8[i].coords);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00450cf0
 LEGO_EXPORT int GetBuildAnimFrame(Ride *ride, TileId coords) {
