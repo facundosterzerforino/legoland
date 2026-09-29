@@ -31,7 +31,8 @@ struct KLIBAUDIO_Object {
 int FUN_004989b0(void);
 void FUN_00498100(void);
 void FUN_00498120(void);
-void FUN_00498630(const char *param_1);
+int FUN_00498630(const char *param_1);
+void FUN_00498870(void);
 int FUN_004988c0(void);
 int FUN_00498920(void);
 int FUN_00498b00(void);
