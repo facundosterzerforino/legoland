@@ -1316,7 +1316,7 @@ extern unsigned int DAT_004dd868;
 // 0x004dd86c
 extern unsigned int DAT_004dd86c;
 // 0x0060f924
-extern unsigned int DAT_0060f924[1];
+extern unsigned int DAT_0060f924[9 * 16];
 // 0x0060f938
 extern unsigned int DAT_0060f938;
 // 0x006102f8
@@ -3453,10 +3453,14 @@ extern void (*DAT_00829a5c)(void);
 extern float DAT_00829a60;
 // 0x00829a80
 extern struct EditFootPrint DAT_00829a80;
+// 0x00829abc
+extern struct Element *DAT_00829abc;
 // 0x00829ae0
 extern unsigned int DAT_00829ae0;
 // 0x00829ae4
 extern unsigned int DAT_00829ae4;
+// 0x00829ae8
+extern short DAT_00829ae8[2];
 // 0x00829af8
 extern unsigned int DAT_00829af8[3];
 // 0x00829b04
