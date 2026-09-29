@@ -188,7 +188,7 @@ void FUN_00415e80(struct CarNode *param_1) {
     DAT_004cbf30[0] = DAT_004cbf10;
     DAT_0082c660 = -1;
     DAT_0082c664 = 2;
-    DAT_004cbf3c = DAT_0082c668;
+    DAT_004cbf38[1] = DAT_0082c668;
     DAT_004cbf30[1] = DAT_004cbf24;
     DAT_004cbf38[0] = DAT_004cbf18;
     HideLayer(DAT_004cbf28, 2);

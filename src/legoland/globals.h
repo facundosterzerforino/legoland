@@ -1300,8 +1300,6 @@ extern int DAT_0082c664;
 extern void *DAT_004cbf30[2];
 // 0x004cbf38
 extern void *DAT_004cbf38[2];
-// 0x004cbf3c
-extern struct Sprite *DAT_004cbf3c;
 // 0x004cbf40
 extern unsigned int DAT_004cbf40;
 // 0x004cbf44

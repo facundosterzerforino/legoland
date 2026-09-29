@@ -1079,10 +1079,10 @@ int FUN_0040b210(struct FlumeWeighted *self, struct FlumeWeighted *other) {
     if (link == other) {
         return 1;
     }
-    if (self->weight >= 0.5 && link->a == other) {
+    if (self->weight >= DOUBLE_004ab398 && link->a == other) {
         return 1;
     }
-    if (self->weight < 0.5 && link->b == other) {
+    if (self->weight < DOUBLE_004ab398 && link->b == other) {
         return 1;
     }
     return 0;

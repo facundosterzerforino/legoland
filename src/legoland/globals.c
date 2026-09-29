@@ -1433,9 +1433,6 @@ void *DAT_004cbf30[2];
 // GLOBAL: LEGOLAND 0x004cbf38
 void *DAT_004cbf38[2];
 
-// GLOBAL: LEGOLAND 0x004cbf3c
-struct Sprite *DAT_004cbf3c;
-
 // GLOBAL: LEGOLAND 0x004cbf40
 unsigned int DAT_004cbf40;
 
