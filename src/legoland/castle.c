@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include <float.h>
 #include <math.h>
 #include "bloke.h"
 #include "castle.h"
@@ -1033,8 +1034,36 @@ void FUN_0041ddd0(unsigned char *a, unsigned char *b) {
     FUN_0041dad0((struct FloatHolder *)e, *(float *)(b + 8));
 }
 
+struct AnimOut {
+    unsigned int kind;
+    float f4;
+    float f8;
+};
+
 // FUNCTION: LEGOLAND 0x0041de10
-void FUN_0041de10(void) { STUB(); }
+void FUN_0041de10(unsigned char *obj, unsigned int unused, struct AnimOut *out) {
+    unsigned char *e = *(unsigned char **)(obj + 0x3c);
+    float a;
+    float b;
+    float t;
+
+    out->kind = 2;
+    t = FUN_0041dae0(e);
+    FUN_0041db90(e, &a, &b);
+    t = (*(float *)(e + 0x28) - t) * 2.0f / a;
+    if (t > FLOAT_004ab390) {
+        t = lego_invsqrtf(t);
+    } else {
+        t = FLOAT_004ab390;
+    }
+    out->f4 = t;
+    out->f8 = 0.0f;
+    if (b > FLT_MIN) {
+        if (FUN_0041dd00(e, t) < 0.05) {
+            out->f8 = b;
+        }
+    }
+}
 
 struct Animator {
     unsigned char pad_0[0x20];
@@ -1042,7 +1071,7 @@ struct Animator {
     unsigned char pad_24[0x2c - 0x24];
     void (*field_2c)(void);
     unsigned char pad_30[0x34 - 0x30];
-    void (*field_34)(void);
+    void (*field_34)();
     unsigned char pad_38[0x64 - 0x38];
     void *field_64;
     void *field_68;
