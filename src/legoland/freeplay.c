@@ -36,6 +36,21 @@ struct PanelNode {
     int key;
 };
 
+struct FreePlayGroup {
+    short field_0;
+    unsigned char pad_2[2];
+    unsigned int field_4;
+    struct IconNode *field_8;
+    int field_c;
+    int field_10;
+    int field_14;
+    int field_18;
+    int field_1c;
+    int field_20;
+    int field_24;
+    int field_28;
+};
+
 struct GameListNode {
     struct GameListNode *next;
     unsigned char pad_4[0x14];
@@ -432,7 +447,78 @@ LEGO_EXPORT void Add2FreePlayPanelLists(int a, char **name, char *name2, int key
 }
 
 // FUNCTION: LEGOLAND 0x0048b2a0
-LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) { STUB(); }
+LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
+    struct FreePlayGroup *group;
+    struct IconNode *icon;
+    struct PanelNode *list;
+    struct Sprite *sprite2;
+    struct Sprite *sprite;
+    int y;
+
+    group = (struct FreePlayGroup *)malloc(sizeof(struct FreePlayGroup));
+    if (group == NULL) {
+        return 0;
+    }
+    if (e == 0xc8) {
+        sprite = DAT_007cb3b4;
+        sprite2 = DAT_007cb3c4;
+        list = DAT_007cb3d0;
+    } else if (e == 0x1f4) {
+        sprite = DAT_007cb3ac;
+        sprite2 = DAT_007cb3c0;
+        list = DAT_007cb3a4;
+    } else if (e == 0x190) {
+        sprite = DAT_007cb3b0;
+        sprite2 = DAT_007cb3cc;
+        list = DAT_007cb3b8;
+    } else if (e == 0x12c) {
+        sprite = DAT_007cb3a8;
+        sprite2 = DAT_007cb3c8;
+        list = DAT_007cb39c;
+    } else {
+        list = (struct PanelNode *)b;
+    }
+    if (list == NULL) {
+        InsertIcon(b - 3, 0x15, 7, DAT_007cb3d4);
+        return 0;
+    }
+    icon = AddGBarIcons((unsigned int)group, b, c, 1, d, a);
+    group->field_8 = icon;
+    b = icon->x;
+    group->field_1c = b;
+    group->field_c = b;
+    y = icon->y;
+    group->field_20 = y;
+    group->field_10 = y;
+    group->field_24 = icon->field_10 + icon->x;
+    group->field_28 = icon->field_12 + icon->y;
+    group->field_4 = 1;
+    group->field_0 = (short)a;
+    SetNewGroup_Callbacks(0, (void *)RenderFreePlayIcons, (void *)FUN_0048b000);
+    do {
+        AddFreePlayIcon((unsigned int)group, (struct InfoSource *)list, b, y, a, 1, list->after);
+        list = list->next;
+        y += 0x42;
+    } while (list != NULL);
+    AddFullScreenIcon((void *)(a + 6));
+    group->field_14 = b;
+    group->field_18 = y;
+    icon = FindIcon(a + 4);
+    if (icon != NULL) {
+        FUN_0046d680(icon, sprite);
+        icon->x -= 9;
+        icon->string_id = 0x94;
+        icon->string = GetString(0x94);
+    }
+    icon = FindIcon(a + 3);
+    if (icon != NULL) {
+        FUN_0046d680(icon, sprite2);
+        icon->x -= 9;
+        icon->string_id = 0x95;
+        icon->string = GetString(0x95);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048b4a0
 void FUN_0048b4a0(int arg) {
