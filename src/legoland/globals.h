@@ -1777,13 +1777,13 @@ extern struct PlaneRideNode *DAT_0062fe9c;
 // 0x0062fea4
 extern int DAT_0062fea4;
 // 0x0062fea8
-extern void *DAT_0062fea8;
+extern int *DAT_0062fea8;
 // 0x0062feac
 extern void *DAT_0062feac;
 // 0x0062feb0
 extern void *DAT_0062feb0[2];
 // 0x0062feb8
-extern void *DAT_0062feb8[1];
+extern int DAT_0062feb8[1];
 // 0x0062febc
 extern void *DAT_0062febc[6];
 // 0x0062fed4
@@ -1795,7 +1795,7 @@ extern unsigned int DAT_0062fef0;
 // 0x0062fef4
 extern void *DAT_0062fef4;
 // 0x0062fef8
-extern void *DAT_0062fef8;
+extern int *DAT_0062fef8;
 // 0x00630100
 extern void *DAT_00630100;
 // 0x00630108
@@ -1805,9 +1805,9 @@ extern unsigned int DAT_00638218[1];
 // 0x00638358
 extern unsigned short DAT_00638358;
 // 0x0064cd8c
-extern void *DAT_0064cd8c;
+extern int *DAT_0064cd8c;
 // 0x00655a38
-extern void *DAT_00655a38;
+extern int *DAT_00655a38;
 // 0x00655a3c
 extern void *DAT_00655a3c;
 // 0x00655a4c
@@ -3915,3 +3915,24 @@ extern float FLOAT_004b55a8;
 
 // 0x004b4cac
 extern char DAT_004b4cac[];
+
+// 0x00641000
+extern int DAT_00641000;
+
+// 0x0063810c
+extern int DAT_0063810c;
+
+// 0x0064cd90
+extern int DAT_0064cd90;
+
+// 0x0064cd88
+extern int DAT_0064cd88;
+
+// 0x0063835c
+extern int DAT_0063835c;
+
+// 0x00638110
+extern int DAT_00638110;
+
+// 0x00638108
+extern int DAT_00638108;

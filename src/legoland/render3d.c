@@ -520,7 +520,7 @@ struct TexEntry {
 };
 
 // FUNCTION: LEGOLAND 0x004424e0
-void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, unsigned int param_3, struct ColourRef *param_4, int param_5, int param_6) {
+void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, struct ColourRef *param_3, struct ColourRef *param_4, int param_5, int param_6) {
     int i = 0;
     int count;
     struct TexEntry *entry;
@@ -552,7 +552,102 @@ void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x00442580
-void *FUN_00442580(struct Person *person, void *context, unsigned int arg3, unsigned int arg4, unsigned int arg5) { STUB(); }
+void *FUN_00442580(struct Person *person, void *context, unsigned int src, unsigned int count, unsigned int flag) {
+    int *arrA;
+    int idxI;
+    int valC;
+    int *arrD;
+    int idxJ;
+    int valE;
+    struct ColourRef z0;
+    struct ColourRef z1;
+    struct ColourRef z2;
+    struct ColourRef z3;
+    int a;
+    int b;
+    void *mem;
+    int size;
+    int modI;
+    int modJ;
+
+    if (person->field_8 == 1) {
+        if (flag == 0) {
+            arrA = DAT_00655a38;
+            arrD = DAT_0062fea8;
+            valC = DAT_00641000;
+            modI = DAT_0063810c;
+            modJ = DAT_0062feb8[0];
+            valE = DAT_0064cd90;
+            z0.b0 = z0.b1 = z0.b2 = 0x56;
+            z3.b0 = z3.b1 = z3.b2 = 0;
+        } else {
+            arrA = DAT_0062fef8;
+            arrD = DAT_0064cd8c;
+            modI = DAT_0064cd88;
+            modJ = DAT_0063835c;
+            valC = DAT_00638110;
+            valE = DAT_00638108;
+            z0.b0 = z0.b1 = z0.b2 = 0x56;
+            z3.b0 = z3.b1 = z3.b2 = 1;
+        }
+        if (person->field_80 == -1) {
+            idxI = rand() % modI;
+            person->field_80 = idxI;
+        } else {
+            idxI = person->field_80;
+        }
+        if (person->field_7c == -1) {
+            idxJ = rand() % modJ;
+            person->field_7c = idxJ;
+        } else {
+            idxJ = person->field_7c;
+        }
+        b = person->field_8c;
+        if (b == -1) {
+            do {
+                b = rand() & 7;
+            } while (b == 7);
+            person->field_8c = b;
+        }
+        a = person->field_90;
+        if (a == -1) {
+            a = rand() & 7;
+            person->field_90 = a;
+        }
+    } else {
+        for (;;) {
+            if (person->field_8 == 3) {
+                a = 4;
+                b = 1;
+            } else if (person->field_8 == 2) {
+                a = 0;
+                b = 3;
+            } else {
+                break;
+            }
+            z0.b0 = z0.b1 = z0.b2 = 0x56;
+            z3.b0 = z3.b1 = z3.b2 = 0;
+            break;
+        }
+    }
+    z1.b2 = DAT_004b7ac0[a * 3];
+    z1.b1 = DAT_004b7ac0[a * 3 + 1];
+    z1.b0 = DAT_004b7ac0[a * 3 + 2];
+    z2.b2 = DAT_004b7ac0[b * 3];
+    z2.b1 = DAT_004b7ac0[b * 3 + 1];
+    z2.b0 = DAT_004b7ac0[b * 3 + 2];
+    size = count * 36;
+    mem = malloc(size);
+    if (mem != 0) {
+        memcpy(mem, (void *)src, size);
+        if ((int)person->field_8 < 2) {
+            FUN_00442040(context, valC, arrA[idxI], (float *)mem, count);
+            FUN_00442040(context, valE, arrD[idxJ], (float *)mem, count);
+        }
+        FUN_004424e0(&z0, &z1, &z3, &z2, (int)mem, count);
+    }
+    return mem;
+}
 
 // FUNCTION: LEGOLAND 0x004427e0
 char *FUN_004427e0(struct ResFile *param_1, char *param_2, int param_3) {
