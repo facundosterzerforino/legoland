@@ -3605,7 +3605,53 @@ int FUN_00424c40(struct ListHost *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00424c70
-void FUN_00424c70(struct CastleSub *param_1) { STUB(); }
+void FUN_00424c70(struct CastleSub *param_1) {
+    struct ListHost *host = (struct ListHost *)param_1;
+    struct ListNode *node;
+    struct ListNode *cur;
+    unsigned int ring;
+    int found;
+    int now = GetGameTimer();
+
+    if (DAT_00829ae0 == 2) {
+        if (FUN_0041e4a0((struct FlagWord *)param_1->field_d8) != 0) {
+            if (FUN_0041e4b0((struct FlagWord *)param_1->field_d8) == 0) {
+                return;
+            }
+        }
+        if (FUN_00424c40(host) == 0) {
+            return;
+        }
+        if (FUN_00424b30(host) == 0) {
+            return;
+        }
+        found = 0;
+        for (;;) {
+            node = FUN_00424b30(host);
+            if (node == 0) {
+                break;
+            }
+            ring = FUN_0041e2b0((struct RingHost *)param_1->field_d8);
+            if (ring == 0) {
+                if (found == 0) {
+                    return;
+                }
+                FUN_00424ae0(param_1, 0xbb8);
+                return;
+            }
+            FUN_00421590((struct Struct1590 *)node, ring);
+            node->flags = 2;
+            found = 1;
+        }
+        FUN_00424ae0(param_1, 0xbb8);
+        return;
+    }
+    for (cur = (struct ListNode *)host->field_f8; cur != (struct ListNode *)&host->end; cur = cur->next) {
+        if (now - (int)cur->time > 0x1388) {
+            cur->flags = 4;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00424d80
 void FUN_00424d80(struct ListHost *list) {
