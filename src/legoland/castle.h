@@ -148,6 +148,7 @@ void FUN_0042a780(void);
 void FUN_004273d0(unsigned int param_1, void *param_2);
 unsigned int FUN_004273e0(void *obj);
 void FUN_00428700(void *node);
+void FUN_004294f0(unsigned int a, unsigned int *b, unsigned int c, unsigned int d);
 void FUN_00428f00(void);
 void FUN_00429270(void);
 void FUN_004294b0(void);

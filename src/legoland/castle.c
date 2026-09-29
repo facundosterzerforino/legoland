@@ -4780,7 +4780,16 @@ struct Struct4286e0Element *FUN_004286e0(void *param1) {
 }
 
 // FUNCTION: LEGOLAND 0x00428700
-void FUN_00428700(void *node) { STUB(); }
+void FUN_00428700(void *node) {
+    unsigned int buf[3];
+    unsigned int idx = FUN_0041ce60((struct AnimPair *)node);
+    unsigned int r = FUN_0041cff0((unsigned int)node, buf);
+    if (*(unsigned char *)node & 6) {
+        FUN_004294f0(r, buf, DAT_00611710[idx], 0);
+    } else {
+        FUN_004294f0(r, buf, DAT_00611710[idx], 1);
+    }
+}
 
 struct DirRule {
     unsigned int from;
@@ -4985,7 +4994,7 @@ void FUN_004294b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004294f0
-void FUN_004294f0(void) { STUB(); }
+void FUN_004294f0(unsigned int a, unsigned int *b, unsigned int c, unsigned int d) { STUB(); }
 
 struct SegBlob {
     /* 0x00 */ unsigned int v[17];
