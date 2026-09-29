@@ -13,6 +13,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "obj_instance.h"
+#include "objclass.h"
 #include "path_control.h"
 #include "render3d.h"
 #include "tilemap.h"
@@ -4627,8 +4628,35 @@ void FUN_00427940(struct Struct427940 *param_1) {
     EditCursor.field_1830 = 0;
 }
 
+struct Struct427970Src {
+    short field_0;
+    short pad_2;
+    short field_4;
+};
+
+struct Struct427970Pair {
+    short a;
+    short b;
+};
+
 // FUNCTION: LEGOLAND 0x00427970
-void FUN_00427970(void) { STUB(); }
+void FUN_00427970(Element *obj, const struct Struct427970Src *src) {
+    unsigned int key = (unsigned int)obj->ride;
+    struct Struct427970Pair pair;
+    struct HitNode *node;
+
+    BasicObjectDCalcCursor((unsigned int)obj, (struct Point *)src);
+    pair.a = src->field_0;
+    pair.b = src->field_4;
+    node = FUN_0041d100((struct HitHost *)&DAT_00829ae0, key, (short *)&pair);
+    if (FUN_0041d7c0((unsigned int)node) == 0) {
+        FUN_0045f480(&QueryCursor, 1);
+        DAT_0081cdec = 0;
+    } else {
+        FUN_0045f460(&QueryCursor);
+        DAT_0081cdec = node;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004279f0
 void FUN_004279f0(void) {
@@ -4709,7 +4737,23 @@ void FUN_00427af0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00427b20
-void FUN_00427b20(void) { STUB(); }
+void FUN_00427b20(Element *obj, int x, unsigned int y) {
+    struct Struct427a00Pair tile;
+    struct LookupResult *result;
+
+    SetEditCursorFootPrint(&obj->ride->footprint);
+    ScreenToMapRef((int *)x, (int *)&EditCursor.field_1404, y);
+    ValidateCursor(&EditCursor, (unsigned int)obj->data);
+    EditCursor.field_1828 |= 8;
+    tile.a = (unsigned short)EditCursor.field_1404;
+    tile.b = (unsigned short)EditCursor.field_1408;
+    result = FUN_0041d3b0(DAT_004b5d20, (unsigned int)&tile);
+    if (result->field_0 != 0) {
+        FUN_0045f460(&EditCursor);
+    } else {
+        FUN_0045f480(&EditCursor, 0xe);
+    }
+}
 
 struct Struct427bc0Src {
     short field_0;
