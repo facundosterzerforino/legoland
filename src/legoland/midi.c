@@ -10,11 +10,12 @@
 struct MidiFile {
     unsigned int field_0;
     unsigned int field_4;
-    unsigned char pad_8[4];
+    int field_8;
     short trackCount;
     unsigned char pad_e[2];
     void **trackArray;
-    unsigned char pad_14[4];
+    short field_14;
+    unsigned char pad_16[2];
 };
 
 struct MidiTrack {
@@ -23,7 +24,10 @@ struct MidiTrack {
     unsigned char *data;
     int pos;
     unsigned int status;
-    unsigned char pad_14[10];
+    int field_14;
+    short field_18;
+    short field_1a;
+    unsigned char pad_1c[2];
 };
 
 // FUNCTION: LEGOLAND 0x00480200
@@ -91,13 +95,40 @@ unsigned int FUN_004802f0(struct MidiTrack *track) {
 }
 
 // FUNCTION: LEGOLAND 0x00480330
-void FUN_00480330(void) { STUB(); }
+unsigned int FUN_00480330(struct MidiTrack *track) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480570
-void __stdcall FUN_00480570(unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4, unsigned int p5) { STUB(); }
+void __stdcall FUN_00480570(unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4, unsigned int p5) {
+    struct MidiFile *midi = (struct MidiFile *)DAT_007fd634;
+    unsigned int busy = 0;
+    int i;
+
+    if (midi != NULL && midi->field_14 == 1) {
+        midi->field_8 += midi->field_4;
+        for (i = 0; i < midi->trackCount; i++) {
+            busy |= FUN_00480330((struct MidiTrack *)midi->trackArray[i]);
+        }
+        if (busy == 0) {
+            midi->field_14 = 0;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004805d0
-LEGO_EXPORT void PlayMIDI(void) { STUB(); }
+LEGO_EXPORT void PlayMIDI(struct MidiFile *midi) {
+    int i;
+
+    DAT_007fd634 = midi;
+    midi->field_8 = 0;
+    midi->field_14 = 1;
+    for (i = 0; i < midi->trackCount;) {
+        i++;
+        ((struct MidiTrack *)midi->trackArray[i - 1])->field_14 = 0;
+        ((struct MidiTrack *)midi->trackArray[i - 1])->field_18 = 1;
+        ((struct MidiTrack *)midi->trackArray[i - 1])->pos = 0;
+        ((struct MidiTrack *)midi->trackArray[i - 1])->field_1a = 1;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00480630
 LEGO_EXPORT int InitMIDIManager(void) {

@@ -383,8 +383,24 @@ void FUN_0048b6d0(void) {
     }
 }
 
+struct FreePlayLoadSlot {
+    const char *name0;
+    const char *name1;
+    int pad_8[3];
+    struct Sprite *sprite0;
+    struct Sprite *sprite1;
+};
+
 // FUNCTION: LEGOLAND 0x0048b700
-void FUN_0048b700(void) { STUB(); }
+void FUN_0048b700(void) {
+    int i;
+
+    for (i = 0; i < 10; i++) {
+        DAT_004beb94[i].field_0 = LoadSprite(((const char **)&DAT_004beb94[i])[-5], 4);
+        DAT_004beb94[i].field_4 = LoadSprite(((const char **)&DAT_004beb94[i])[-4], 4);
+    }
+}
+
 // FUNCTION: LEGOLAND 0x0048b740
 void FUN_0048b740(void) {
     int *esi;

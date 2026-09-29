@@ -34,7 +34,18 @@ void FUN_0046ce20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046ce60
-LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned int param_3) {
+    if ((DAT_007fe040 & 1) != 0) {
+        return 0;
+    }
+    DAT_007fe040 |= 1;
+    DAT_007fe048 = (char *)malloc(strlen(param_1) + 1);
+    strcpy(DAT_007fe048, param_1);
+    DAT_007fe04c = GetGameTimer();
+    DAT_007fe044 = param_2;
+    FUN_004748a0((void *)0);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046cee0
 unsigned int FUN_0046cee0(void) {

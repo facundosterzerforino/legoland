@@ -417,7 +417,7 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e280
-LEGO_EXPORT void InitNewSaveGamePOPUP(void) { STUB(); }
+LEGO_EXPORT void InitNewSaveGamePOPUP(void *icon) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e3d0
 void FUN_0048e3d0(const char *name) {
@@ -445,7 +445,8 @@ unsigned char FUN_0048e450(unsigned int a1, unsigned int a2) {
 }
 
 struct SaveIcon {
-    unsigned char pad_0[0x1c];
+    unsigned char pad_0[0x18];
+    const char *field_18;
     unsigned char field_1c;
 };
 
@@ -462,7 +463,19 @@ unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x0048e4f0
-unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4) { STUB(); }
+unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4) {
+    if (DAT_004bef9c != 0 && (a2 & 2) != 0 && DAT_007cb328 == 0) {
+        ResetTempProfile();
+        DAT_0080ffe4 = icon->field_1c;
+        InitNewSaveGamePOPUP(icon);
+        if (icon->field_18 != "EMPTY") {
+            FUN_0048e3d0(icon->field_18);
+        }
+        DAT_00798700 = 1;
+        DAT_004bef9c = 0;
+    }
+    return 1;
+}
 
 struct EditSprite {
     unsigned char pad_0[0xc];

@@ -169,7 +169,28 @@ LEGO_EXPORT void Mute_SFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004928a0
-int FUN_004928a0(struct Sample *sample) { STUB(); }
+int FUN_004928a0(struct Sample *sample) {
+    if (DAT_007988c0 == 0) {
+        return 0;
+    }
+    if (sample == 0) {
+        return 0;
+    }
+    if (sample->active == 0) {
+        return 0;
+    }
+    if ((sample->flags & 4) != 0) {
+        if (sample->buffer->vtable->method_0x30(sample->buffer, 0, 0, 1) != 0) {
+            return 0;
+        }
+    } else {
+        if (sample->buffer->vtable->method_0x30(sample->buffer, 0, 0, 0) != 0) {
+            return 0;
+        }
+    }
+    sample->flags &= 0xfffd;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00492910
 LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample) {

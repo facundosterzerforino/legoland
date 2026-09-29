@@ -452,6 +452,8 @@ extern GUID DAT_004ab9f0;
 extern GUID DAT_004acf80;
 // 0x004b4034
 extern int DAT_004b4034[16];
+// 0x004b40a4
+extern unsigned int DAT_004b40a4[4];
 // 0x004b40c8
 extern unsigned char Catapult_SFX[0x70];
 // 0x004b4140
