@@ -34,6 +34,7 @@ struct CopterNode {
 };
 
 void FUN_00403e90(struct CopterNode *node);
+void FUN_004040f0(struct CopterNode *node, int index, unsigned int param_3);
 void FUN_004049a0(struct CopterNode *node, int param);
 void FUN_00404630(struct CopterNode *node, int index);
 
