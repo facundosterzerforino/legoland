@@ -276,6 +276,15 @@ struct FlumeHolder {
     struct FlumeEntry *entry;
 };
 
+// GLOBAL: LEGOLAND 0x004b4798
+static struct PathPair Flume_PathPairs0[4] = {{0, -1}, {3, 0}, {0, -2}, {-4, 0}};
+// GLOBAL: LEGOLAND 0x004b47b8
+struct PathTable DAT_004b47b8 = {4, Flume_PathPairs0};
+// GLOBAL: LEGOLAND 0x004b47c0
+static struct PathPair Flume_PathPairs1[5] = {{0, 0}, {0, 1}, {3, 0}, {0, 3}, {-4, 0}};
+// GLOBAL: LEGOLAND 0x004b47e8
+struct PathTable DAT_004b47e8 = {5, Flume_PathPairs1};
+
 // FUNCTION: LEGOLAND 0x00408e40
 void FUN_00408e40(TileId tile) {
     struct FlumeEntry *entry = malloc(sizeof(struct FlumeEntry));
@@ -1140,7 +1149,44 @@ void FUN_0040a2a0(void *other, struct StateNode **ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x0040a2e0
-void FUN_0040a2e0(void) { STUB(); }
+void FUN_0040a2e0(Element *elem) {
+    struct LLS *lls;
+
+    DAT_004c2b9c = elem->ride;
+    DAT_004c2b9c->flags |= 0x20;
+    DAT_004c8d54 = DAT_004c2b9c->layer;
+    if (DAT_004c8d54 != NULL) {
+        DAT_004c8d54->flags |= 0x2000;
+    }
+    DAT_004c2ae8 = (void *)FUN_00412100(&DAT_004b47b8);
+    DAT_004c2af8 = (void *)FUN_00412100(&DAT_004b47e8);
+    // STRING: LEGOLAND 0x004b49c8
+    DAT_004cbe74 = LoadSprite("lf_barrel.lls", 1);
+    // STRING: LEGOLAND 0x004b49b8
+    DAT_004cbe78 = LoadSprite("lf_barrel_m.lls", 1);
+    // STRING: LEGOLAND 0x004b49a8
+    DAT_004cbe7c = LoadSprite("lf_barrel1.lls", 1);
+    // STRING: LEGOLAND 0x004b4998
+    DAT_004cbe80 = LoadSprite("barrelmatte.lls", 1);
+    if (DAT_004cbe74 != NULL) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cbe74);
+        if (lls != NULL) {
+            LLSPlay(lls, (unsigned int)DAT_004cbe74->image);
+        }
+    }
+    // STRING: LEGOLAND 0x004b4984
+    DAT_004cbe88 = LoadSprite("lf_enta1_matte2.lls", 1);
+    // STRING: LEGOLAND 0x004b4978
+    DAT_004cbe8c = LoadSprite("lf_sign.lls", 1);
+    // STRING: LEGOLAND 0x004b4964
+    DAT_004cbe98 = LoadSprite("lf_entrance1.lls", 1);
+    // STRING: LEGOLAND 0x004b4950
+    DAT_004cbe90 = LoadSprite("lf_entrance2.lls", 1);
+    // STRING: LEGOLAND 0x004b493c
+    DAT_004cbe94 = LoadSprite("lf_entrance3.lls", 1);
+    // STRING: LEGOLAND 0x004b4930
+    DAT_004cbe4c = LoadSprite("enta3_m.lls", 1);
+}
 
 // FUNCTION: LEGOLAND 0x0040a410
 void FUN_0040a410(void) {
@@ -1205,9 +1251,9 @@ void FUN_0040a410(void) {
 // FUNCTION: LEGOLAND 0x0040a540
 void FUN_0040a540(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = (void *)DAT_004c2b9c;
+    EditMode.unk8 = DAT_004c2b9c;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0040a580

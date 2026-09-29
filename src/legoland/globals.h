@@ -1213,9 +1213,11 @@ extern struct Sprite *DAT_004c2b70;
 // 0x004c2b98
 extern unsigned int DAT_004c2b98;
 // 0x004c2b9c
-extern unsigned int DAT_004c2b9c;
+extern struct Ride *DAT_004c2b9c;
 // 0x004c2ba0
 extern void *DAT_004c2ba0;
+// 0x004c2c18
+extern struct Cursor DAT_004c2c18;
 // 0x004c2bf0
 extern struct CursorSource *DAT_004c2bf0;
 // 0x004c445c
@@ -1234,8 +1236,12 @@ extern struct Sprite *DAT_004c8d2c;
 extern void *DAT_004c8d4c;
 // 0x004c8d50
 extern unsigned int DAT_004c8d50;
+// 0x004c8d54
+extern struct Sprite *DAT_004c8d54;
 // 0x004c8d68
 extern struct Sprite *DAT_004c8d68;
+// 0x004c8d78
+extern struct Cursor DAT_004c8d78;
 // 0x004c8d6c
 extern struct CursorSource *DAT_004c8d6c;
 // 0x004c8d70
