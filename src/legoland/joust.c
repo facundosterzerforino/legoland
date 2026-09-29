@@ -52,7 +52,8 @@ struct JoustBlock {
     unsigned char pad_0[0x14];
     unsigned int field_14;
     unsigned int field_18;
-    unsigned char pad_1c[0x48];
+    unsigned int flags_1c;
+    unsigned char pad_20[0x44];
     struct JoustBlockData *field_64;
 };
 
@@ -165,7 +166,26 @@ void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x00407b50
-void FUN_00407b50(void) { STUB(); }
+void FUN_00407b50(struct JoustRoot *root) {
+    Load_FXList(JOUST_SFX, 1);
+    DAT_004c121c = (unsigned int)root->field_c;
+    ((struct JoustBlock *)DAT_004c121c)->flags_1c |= 0x420;
+    DAT_004c1214 = (unsigned int)((struct JoustBlock *)DAT_004c121c)->field_64;
+    ((struct JoustBlockData *)DAT_004c1214)->field_10 |= 0x2000;
+    // STRING: LEGOLAND 0x004b46f4
+    DAT_004c1244 = LoadSprite("Joust_fmask.lls", 1);
+    // STRING: LEGOLAND 0x004b46e0
+    DAT_004c1248 = LoadSprite("Joust_SpecR_m.lls", 1);
+    // STRING: LEGOLAND 0x004b46cc
+    DAT_004c124c = LoadSprite("Joust_SpecL_m.lls", 1);
+    // STRING: LEGOLAND 0x004b46c0
+    DAT_004c1240 = DAT_004c1210 = LoadSprite("z_joust.lls", 1);
+    // STRING: LEGOLAND 0x004b46a8
+    DAT_004c1218 = LoadBinV("Zbuffers\\joustride.bnv");
+    HideLayer((struct Sprite *)DAT_004c1214, 1);
+    StopLayerPlaying((struct Sprite *)DAT_004c1214, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)DAT_004c1214, 1), 0);
+}
 
 // FUNCTION: LEGOLAND 0x00407c20
 unsigned int FUN_00407c20(unsigned char param_1) {
