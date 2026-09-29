@@ -82,6 +82,7 @@ void FUN_0041da10(struct RingHost *obj, unsigned int a, void *b);
 void FUN_0041e7f0(unsigned char *obj, unsigned int *out);
 int FUN_004298a0(struct SprInfo *info, struct SprOwner *owner, unsigned int *a, unsigned int *b);
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
+void FUN_00429750(struct PathSeg *seg, struct PathSeg *end);
 int FUN_0041d350(struct SprInfo *info, short *pos, struct SprEnt *ent);
 int FUN_0041d2e0(struct SprInfo *info, short *pos, struct SprEnt *ent);
 int FUN_0041d210(short *pos, struct SprEnt *ent, struct SprInfo *info);

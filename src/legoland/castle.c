@@ -192,7 +192,7 @@ struct AnimPair {
     /* 0x00 */ unsigned int field_0;
     /* 0x04 */ unsigned short field_4;
     /* 0x06 */ unsigned short field_6;
-    /* 0x08 */ unsigned char pad_8[0xc - 0x8];
+    /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;
     /* 0x10 */ unsigned int field_10;
     /* 0x14 */ struct Anim anim_14;
@@ -627,13 +627,55 @@ void FUN_0041d430(struct LinkA *a, struct LinkB *b) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d440
-void FUN_0041d440(void) { STUB(); }
+void FUN_0041d440(struct AnimPair *obj, struct SprEnt *ent) { STUB(); }
+
+struct SprKey {
+    unsigned char pad_0[0x28];
+    void (*method_28)(struct AnimPair *self);
+};
 
 // FUNCTION: LEGOLAND 0x0041d5b0
-unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *param3) { STUB(); }
+unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *ent) {
+    struct AnimPair *obj = FUN_004775b0(0xa4, 0, 0, 0);
+
+    if (obj == NULL) {
+        return 0;
+    }
+    FUN_0041ce30(obj);
+    obj->field_8 = param0;
+    obj->field_10 = (unsigned int)ent->owner;
+    *(unsigned int *)&obj->field_4 = *(unsigned int *)param2;
+    obj->field_c = (unsigned int)key;
+    FUN_0041d440(obj, ent);
+    if (ent->id_a != -1 && ent->id_b != -1) {
+        FUN_00429750((struct PathSeg *)ent->h_a, (struct PathSeg *)ent->h_b);
+    }
+    ((struct SprKey *)obj->field_c)->method_28(obj);
+    return (unsigned int)obj;
+}
 
 // FUNCTION: LEGOLAND 0x0041d630
-unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *param3) { STUB(); }
+unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, struct SprEnt *ent) {
+    struct AnimPair *obj = FUN_004775b0(0xa4, 0, 0, 0);
+
+    if (obj == NULL) {
+        return 0;
+    }
+    FUN_0041ce30(obj);
+    obj->field_8 = param0;
+    obj->field_10 = (unsigned int)ent->owner;
+    *(unsigned int *)&obj->field_4 = *(unsigned int *)param2;
+    obj->field_c = (unsigned int)key;
+    FUN_0041d440(obj, ent);
+    if (ent->id_a != -1) {
+        FUN_00429750((struct PathSeg *)ent->h_a, (struct PathSeg *)obj);
+    }
+    if (ent->id_b != -1) {
+        FUN_00429750((struct PathSeg *)obj, (struct PathSeg *)ent->h_b);
+    }
+    ((struct SprKey *)obj->field_c)->method_28(obj);
+    return (unsigned int)obj;
+}
 
 // FUNCTION: LEGOLAND 0x0041d6c0
 void FUN_0041d6c0(unsigned int value) {
