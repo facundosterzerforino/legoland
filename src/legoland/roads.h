@@ -21,7 +21,7 @@ int FUN_004135d0(int x, int y, struct NeighborResult *out);
 void FUN_00413a10(struct LLIDB_Head *head);
 void FUN_00413a80();
 void FUN_00413ad0();
-void FUN_00413b50();
+void FUN_00413b50(Element *obj, int *param_2, unsigned int param_3);
 struct RoadTile *FUN_00413e30(struct Cursor *cur);
 void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param);
 void FUN_00414020(struct RoadEditArg *edit, struct RoadPlaceArg *place);
