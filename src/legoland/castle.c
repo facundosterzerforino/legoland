@@ -1087,11 +1087,77 @@ void FUN_0041dec0(struct Animator *self) {
     self->field_20 = 2;
 }
 
+struct BisectOut {
+    float p;
+    unsigned int q;
+    unsigned int r;
+    unsigned int w;
+};
+
 // FUNCTION: LEGOLAND 0x0041df00
-void FUN_0041df00(void) { STUB(); }
+float FUN_0041df00(unsigned char *obj, float t) {
+    struct BisectOut s;
+    struct AnimOut *state = (struct AnimOut *)(obj + 0x20);
+    float f4;
+    float f8;
+    float lo;
+    float hi;
+    float mid;
+
+    lo = 0.0f;
+    hi = t;
+    s.p = 0.0f;
+    s.q = state->kind;
+    f4 = state->f4;
+    f8 = state->f8;
+    while (hi - lo > 0.001) {
+        mid = (hi + lo) * 0.5f;
+        FUN_0041da10(obj, f4, obj + 0xc);
+        FUN_0041dad0((struct FloatHolder *)obj, f8);
+        FUN_00420310(obj + 0x2c, &s, mid);
+        if (*(float *)(obj + 0x24) > *(float *)(*(unsigned char **)(obj + 0x10) + 0x48)) {
+            hi = mid;
+        } else {
+            lo = mid;
+        }
+    }
+    FUN_0041da10(obj, f4, obj + 0xc);
+    FUN_0041dad0((struct FloatHolder *)obj, f8);
+    mid = (hi + lo) * 0.5f;
+    FUN_00420310(obj + 0x2c, &s, mid);
+    return mid;
+}
 
 // FUNCTION: LEGOLAND 0x0041e000
-unsigned int FUN_0041e000(unsigned int param_1, unsigned int param_2) { STUB(); }
+float FUN_0041e000(unsigned char *obj, float total) {
+    struct BisectOut s;
+    float f8;
+    struct AnimOut *state;
+    float f4;
+    int i = 0;
+    int n = (int)ceil(total * 70.0f);
+    float acc = 0.0f;
+    float dt;
+
+    s.p = 0.0f;
+    dt = total / n;
+    if (n > 0) {
+        for (i = 0; i < n; i++) {
+            state = (struct AnimOut *)(obj + 0x20);
+            s.q = state->kind;
+            f4 = state->f4;
+            f8 = state->f8;
+            FUN_00420310(obj + 0x2c, &s, dt);
+            if (*(float *)(obj + 0x24) > *(float *)(*(unsigned char **)(obj + 0x10) + 0x48)) {
+                FUN_0041da10(obj, f4, obj + 0xc);
+                FUN_0041dad0((struct FloatHolder *)obj, f8);
+                return FUN_0041df00(obj, dt) + acc;
+            }
+            acc += dt;
+        }
+    }
+    return total;
+}
 
 struct Vtable110;
 
@@ -1501,7 +1567,22 @@ float FUN_0041e810(struct FloatAtC4 *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e820
-void FUN_0041e820(unsigned char *obj, struct Elem20 *e, float t) { STUB(); }
+void FUN_0041e820(unsigned char *obj, struct Elem20 *e, float t) {
+    float vA[3];
+    float vB[3];
+    struct Elem20 k;
+    float f;
+
+    FUN_0042a620((unsigned int *)(obj + 8), (unsigned int *)e, *(unsigned int *)&t);
+    FUN_0042a640(obj + 8, 2, (unsigned int)vA);
+    FUN_00429f30((unsigned int *)vA, 30.0f, (struct Elem20 *)(obj + 0xc), *(float *)(obj + 8), 4.8f, &k, &f);
+    FUN_0042a620((unsigned int *)(obj + 0x40), (unsigned int *)&k, *(unsigned int *)&f);
+    FUN_0042a640(obj + 0x40, 2, (unsigned int)vB);
+    *(float *)(obj + 0xb8) = (vA[0] + vB[0]) * 0.5f;
+    *(float *)(obj + 0xbc) = (vA[1] + vB[1]) * 0.5f;
+    *(float *)(obj + 0xc0) = (vA[2] + vB[2]) * 0.5f;
+    *(float *)(obj + 0xc4) = FUN_0041e7e0(obj) * *(float *)(obj + 0xc0) * -0.00134937500115484f;
+}
 
 // FUNCTION: LEGOLAND 0x0041e8f0
 void FUN_0041e8f0(unsigned char *obj, struct Elem20 *e, float t) {
@@ -2041,7 +2122,7 @@ void FUN_0041ff80(void) { STUB(); }
 void FUN_00420200(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00420310
-void FUN_00420310(void) { STUB(); }
+void FUN_00420310(void *self, void *out, float t) { STUB(); }
 
 struct Callback14 {
     unsigned char pad_0[0x14];
@@ -3568,7 +3649,7 @@ void FUN_00424850(unsigned char *p1, unsigned int *p2, unsigned int *p3, struct 
 }
 
 // FUNCTION: LEGOLAND 0x00424890
-unsigned int FUN_00424890(unsigned int param_1, unsigned int param_2) {
+float FUN_00424890(unsigned char *param_1, float param_2) {
     return FUN_0041e000(param_1, param_2);
 }
 
@@ -3608,7 +3689,7 @@ float FUN_00424990(struct CastleActor *self, float value) {
         return value;
     }
     self->field_34 = (unsigned int)FUN_004248b0;
-    FUN_0041e000((unsigned int)self, *(unsigned int *)&value);
+    return FUN_0041e000((unsigned char *)self, value);
 }
 
 // FUNCTION: LEGOLAND 0x004249e0

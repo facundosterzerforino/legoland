@@ -88,6 +88,8 @@ int FUN_004298a0(struct SprInfo *info, struct SprOwner *owner, unsigned int *a, 
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
 void FUN_00429750(struct PathSeg *seg, struct PathSeg *end);
 void FUN_00424e60(struct SprOwner *owner);
+void FUN_00420310(void *self, void *out, float t);
+void FUN_0042a620(unsigned int *param_1, unsigned int *param_2, unsigned int param_5);
 void FUN_00424e70(struct SprOwner *owner);
 void FUN_004299e0(struct PathSeg *n);
 void FUN_00429a30(struct PathSeg *n);
@@ -125,7 +127,7 @@ void FUN_004244b0(unsigned int param_1, TileId param_2, unsigned int param_3);
 void FUN_00424620(short *param_1);
 void FUN_00424800(void);
 void FUN_00424850(void);
-unsigned int FUN_00424890(unsigned int param_1, unsigned int param_2);
+float FUN_00424890(unsigned char *param_1, float param_2);
 struct CastleActor;
 struct CastleSub;
 float FUN_00424990(struct CastleActor *self, float value);
