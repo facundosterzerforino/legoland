@@ -14,6 +14,7 @@
 #include "path_control.h"
 #include "render3d.h"
 #include "ride_queue.h"
+#include "tilemap.h"
 
 struct GoldArray {
     unsigned char pad_0[0x14];
@@ -377,7 +378,33 @@ void FUN_004075b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004075f0
-void FUN_004075f0(void) { STUB(); }
+void FUN_004075f0(struct GoldEditObject *editObj, struct Point *pos) {
+    TileId id;
+    struct Point p;
+    struct GoldRide *ride;
+
+    id.pos.x = (unsigned char)pos->x;
+    id.pos.y = (unsigned char)pos->y;
+    ride = editObj->ride;
+    AddBasicObject((Element *)editObj, (int *)pos);
+    FUN_00406920((struct GoldNode *)&id);
+
+    p.x = pos->x + ride->field_c - 1;
+    p.y = pos->y + ride->field_10;
+    AddPathTileGFX(&p, *(unsigned short *)PathSprite);
+
+    p.x = pos->x + ride->field_c - 2;
+    p.y = pos->y + ride->field_10;
+    AddPathTileGFX(&p, *(unsigned short *)PathSprite);
+
+    p.x = pos->x + ride->field_c - 2;
+    p.y = pos->y + ride->field_10 - 1;
+    AddPathTileGFX(&p, *(unsigned short *)PathSprite);
+
+    p.x = pos->x + ride->field_c - 2;
+    p.y = pos->y + ride->field_10 - 2;
+    AddPathTileGFX(&p, *(unsigned short *)PathSprite);
+}
 
 // FUNCTION: LEGOLAND 0x004076e0
 void FUN_004076e0(struct GoldEditObject *editObj, TileId coords, struct Cursor *cursor) {
