@@ -2078,7 +2078,17 @@ unsigned int FUN_0040f800(unsigned int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f830
-void *FUN_0040f830(void *context, void *result) { STUB(); }
+void FUN_0040f830(struct FlumeXY p, unsigned int *result) {
+    unsigned int w = DAT_004b4730 - DAT_004b4728;
+
+    p.x += (unsigned char)DAT_004c2bf0->var_3c[0];
+    p.y += (unsigned char)DAT_004c2bf0->var_3c[1];
+    result[0] = 10;
+    result[7] = p.x;
+    result[8] = p.y + 3;
+    result[3] = DAT_004c2bf0->var_3c[2] - DAT_004c2bf0->var_3c[0] - w + p.x + 1;
+    result[4] = p.y + 1;
+}
 
 // FUNCTION: LEGOLAND 0x0040f8b0
 struct Sprite *FUN_0040f8b0(struct Obj *obj_ptr) {
