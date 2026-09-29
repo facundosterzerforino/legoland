@@ -499,7 +499,29 @@ int FUN_00482920(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004829c0
-void FUN_004829c0(struct BestNode *node) { STUB(); }
+void FUN_004829c0(struct BestNode *node) {
+    int count;
+    struct BestNode **copy;
+    struct BestNode **p;
+
+    node->field_20 |= 2;
+    FUN_004819a0((int *)&node->x_min);
+    count = DAT_00669254;
+    if (count) {
+        copy = (struct BestNode **)malloc(count * 4);
+        if (copy != NULL) {
+            memcpy(copy, DAT_0066a45c, count * 4);
+            p = copy;
+            for (; count > 0; count--) {
+                if (!((*p)->field_20 & 2)) {
+                    FUN_004829c0(*p);
+                }
+                p++;
+            }
+            free(copy);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00482a40
 void FUN_00482a40(struct Point *pos) {
