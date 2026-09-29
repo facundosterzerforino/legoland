@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "copters.h"
 #include "gamemap.h"
 #include "globals.h"
@@ -437,7 +438,59 @@ void FUN_004040f0(struct CopterNode *node, int index, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00404290
-void FUN_00404290(void) { STUB(); }
+void FUN_00404290(Element *obj, int unused, int unused2, TileId *tile, int unused3, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct CopterNode *node;
+    struct Point pos;
+
+    node = FUN_00403d00((struct CopterSource *)tile);
+    if (node != NULL) {
+        struct RideNode *rn;
+        int base;
+        int d;
+        int key;
+
+        RenderItems_New();
+        DAT_004c119c = NULL;
+        DAT_004c11a0 = NULL;
+        DAT_004c11a4 = NULL;
+        DAT_004c11a8 = NULL;
+        DAT_004c11ac = NULL;
+        DAT_004c11b0 = NULL;
+        base = node->field_1 + ((struct Ride *)DAT_004c1198)->y;
+        for (rn = ((struct Ride *)DAT_004c1198)->riders; rn != NULL; rn = rn->next) {
+            if ((rn->rider->flags & 0x80) == 0) {
+                key = rn->person->field_20;
+                d = base - (rn->rider->pos.y >> 8);
+                if (d >= 5) {
+                    AddBlokeToRenderList(DAT_004c1190, (struct BlokeRenderSrc *)rn, key);
+                }
+                if (d >= 3 && d <= 4) {
+                    AddBlokeToRenderList(DAT_004c1168, (struct BlokeRenderSrc *)rn, key);
+                }
+                if (d >= 0 && d <= 2) {
+                    AddBlokeToRenderList(DAT_004c1194, (struct BlokeRenderSrc *)rn, key);
+                }
+            }
+        }
+        FUN_004040f0(node, 0, clip);
+        FUN_004040f0(node, 2, clip);
+        RenderBlokeList((struct BlokeListHead *)DAT_004c1164);
+        RenderBlokeList((struct BlokeListHead *)DAT_004c1190);
+        FUN_004040f0(node, 3, clip);
+        FUN_004040f0(node, 4, clip);
+        RenderBlokeList((struct BlokeListHead *)DAT_004c1168);
+        RenderBlokeList((struct BlokeListHead *)DAT_004c1188);
+        FUN_004040f0(node, 1, clip);
+        RenderBlokeList((struct BlokeListHead *)DAT_004c1194);
+    }
+    pos = GetScreenCoordsForObject(tile, ride);
+    {
+        struct Point off = GetRenderOffsetForLayer(ride->layer, 0);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_004c1120, pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00404450
 void FUN_00404450(void) {
