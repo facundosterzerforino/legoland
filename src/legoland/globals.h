@@ -141,6 +141,10 @@ struct MapElement {
     /* 0x12 */ unsigned short field_12;
 };
 
+struct FMat4 {
+    float m[4][4];
+};
+
 struct LegoConfig {
     /* 0x00 */ unsigned short field_0;
     /* 0x02 */ unsigned short field_2;
@@ -639,6 +643,8 @@ extern unsigned short DAT_004b5b62;
 extern struct RecBuf *DAT_004b5b3c;
 // 0x004b5988
 extern struct BlokeInfo DAT_004b5988;
+// 0x004b5c1c
+extern struct FMat4 DAT_004b5c1c[2];
 // 0x004b5c9c
 extern unsigned int DAT_004b5c9c;
 // 0x004b5ca0
@@ -3816,10 +3822,12 @@ extern void *DAT_00829980;
 extern float DAT_00829990[3];
 // 0x0082999c
 extern float DAT_0082999c;
-// 0x008299d4
-extern float DAT_008299d4;
+// 0x008299a0
+extern float DAT_008299a0[3];
+// 0x008299bc
+extern struct FMat4 DAT_008299bc;
 // 0x008299fc
-extern unsigned int DAT_008299fc;
+extern struct FMat4 DAT_008299fc;
 // 0x008299ac
 extern int DAT_008299ac;
 // 0x008299b0
@@ -3857,6 +3865,14 @@ extern unsigned int DAT_00829af8[3];
 extern unsigned int DAT_00829b04[3];
 // 0x00829b0c
 extern unsigned int DAT_00829b0c;
+// 0x00829aec
+extern unsigned int DAT_00829aec;
+// 0x00829af0
+extern unsigned int DAT_00829af0;
+// 0x00829af4
+extern unsigned int DAT_00829af4;
+// 0x004b5b48
+extern unsigned int DAT_004b5b48;
 // 0x00829b88
 extern unsigned int DAT_00829b88;
 // 0x00829b8c

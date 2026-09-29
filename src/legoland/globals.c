@@ -373,6 +373,9 @@ struct RecBuf *DAT_004b5b3c;
 // GLOBAL: LEGOLAND 0x004b5988
 struct BlokeInfo DAT_004b5988;
 
+// GLOBAL: LEGOLAND 0x004b5c1c
+struct FMat4 DAT_004b5c1c[2];
+
 // GLOBAL: LEGOLAND 0x004b5c9c
 unsigned int DAT_004b5c9c;
 
@@ -5144,11 +5147,14 @@ float DAT_00829990[3];
 // GLOBAL: LEGOLAND 0x0082999c
 float DAT_0082999c;
 
-// GLOBAL: LEGOLAND 0x008299d4
-float DAT_008299d4;
+// GLOBAL: LEGOLAND 0x008299a0
+float DAT_008299a0[3];
+
+// GLOBAL: LEGOLAND 0x008299bc
+struct FMat4 DAT_008299bc;
 
 // GLOBAL: LEGOLAND 0x008299fc
-unsigned int DAT_008299fc;
+struct FMat4 DAT_008299fc;
 
 // GLOBAL: LEGOLAND 0x008299ac
 int DAT_008299ac;
@@ -5202,6 +5208,18 @@ unsigned int DAT_00829b04[3];
 
 // GLOBAL: LEGOLAND 0x00829b0c
 unsigned int DAT_00829b0c;
+
+// GLOBAL: LEGOLAND 0x00829aec
+unsigned int DAT_00829aec;
+
+// GLOBAL: LEGOLAND 0x00829af0
+unsigned int DAT_00829af0;
+
+// GLOBAL: LEGOLAND 0x00829af4
+unsigned int DAT_00829af4;
+
+// GLOBAL: LEGOLAND 0x004b5b48
+unsigned int DAT_004b5b48;
 
 // GLOBAL: LEGOLAND 0x00829b88
 unsigned int DAT_00829b88;
