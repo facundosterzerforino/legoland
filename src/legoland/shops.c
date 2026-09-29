@@ -226,7 +226,74 @@ void FUN_00439720(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00439760
-void FUN_00439760(void) { STUB(); }
+void FUN_00439760(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+    struct Ride *shop = obj->ride;
+    struct RideNode *node = shop->riders;
+    struct Bloke *blokes[10] = {0};
+    char count = 0;
+    char i;
+    struct Point off;
+    struct Point pos;
+
+    while (node != NULL) {
+        if (*tile == node->tile.id) {
+            blokes[count++] = node->rider;
+        }
+        node = node->next;
+    }
+    if (count == 0) {
+        return;
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 4) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 5) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 3) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 2) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 9) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 10) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 11) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    off = GetRenderOffsetForLayer(shop->layer, 0);
+    pos = GetScreenCoordsForObject((unsigned char *)tile, shop);
+    AdjustOffsetForViewMode(&off);
+    PrintSprite(DAT_0081cb20, pos.x + off.x, pos.y + off.y, param_6, 0);
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 1) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 12) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00439950
 void FUN_00439950(void) { STUB(); }
