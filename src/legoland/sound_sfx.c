@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "debug_alloc.h"
 #include "globals.h"
+#include "imports.h"
 #include "legoland.h"
 #include "profile_io.h"
 #include "sound_music.h"
@@ -60,8 +61,64 @@ struct DirectMusicObj {
     void *vtable;
 };
 
+struct AcmHeader {
+    unsigned int cbStruct;
+    unsigned int fdwStatus;
+    unsigned int dwUser;
+    unsigned char *pbSrc;
+    unsigned int cbSrcLength;
+    unsigned int cbSrcLengthUsed;
+    unsigned int dwSrcUser;
+    unsigned char *pbDst;
+    unsigned int cbDstLength;
+    unsigned int cbDstLengthUsed;
+    unsigned int dwDstUser;
+    unsigned int reserved[10];
+};
+
 // FUNCTION: LEGOLAND 0x004921c0
-void FUN_004921c0(void) { STUB(); }
+void *FUN_004921c0(WAVEFORMATEX *src, void *has, unsigned int *size) {
+    WAVEFORMATEX dst;
+    struct AcmHeader hdr;
+    unsigned int outSize;
+    void *buf;
+
+    dst = *src;
+    dst.wFormatTag = 1;
+    dst.nBlockAlign = src->nChannels * 2;
+    dst.nAvgBytesPerSec = src->nSamplesPerSec * dst.nBlockAlign;
+    dst.wBitsPerSample = 16;
+    dst.cbSize = 0;
+    if (acmStreamOpen(&has, NULL, src, &dst, NULL, 0, 0, 4) != 0) {
+        return NULL;
+    }
+    if (acmStreamSize(has, *size, &outSize, 0) != 0) {
+        return NULL;
+    }
+    buf = malloc(outSize);
+    if (buf == NULL) {
+        return NULL;
+    }
+    memset(&hdr, 0, sizeof(hdr));
+    hdr.cbStruct = sizeof(hdr);
+    hdr.pbSrc = (unsigned char *)src;
+    hdr.cbSrcLength = *size;
+    hdr.pbDst = (unsigned char *)buf;
+    hdr.cbDstLength = outSize;
+    if (acmStreamPrepareHeader(has, &hdr, 0) != 0) {
+        free(buf);
+        return NULL;
+    }
+    if (acmStreamConvert(has, &hdr, 0x10) != 0) {
+        free(buf);
+        return NULL;
+    }
+    free(src);
+    *size = hdr.cbDstLengthUsed;
+    *src = dst;
+    acmStreamUnprepareHeader(has, &hdr, 0);
+    return buf;
+}
 
 // FUNCTION: LEGOLAND 0x00492380
 LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) { STUB(); }
