@@ -363,7 +363,51 @@ int FUN_00498b00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00498b40
-void FUN_00498b40(void) { STUB(); }
+int FUN_00498b40(void) {
+    unsigned char buf[0x1000];
+    void *ptr1;
+    int play;
+    unsigned int size1;
+    unsigned int write;
+    int n;
+
+    if (DAT_0079a84c == 0 || DAT_0079a84c == 1) {
+        return 0;
+    }
+    if (DAT_0079a84c == 2) {
+        FUN_00498250();
+        return 0;
+    }
+    if (!(((struct KLIBAUDIO_Buf *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->GetCurrentPosition(DAT_0079a848, &play, &write) != 0 || play < DAT_0079a840 * 0x1000 || play >= (DAT_0079a840 + 1) * 0x1000)) {
+        return 1;
+    }
+    do {
+        if (((struct KLIBAUDIO_Buf *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->Lock(DAT_0079a848, DAT_0079a840 * 0x1000, 0x1000, &ptr1, &size1, NULL, NULL, 0) == 0) {
+            n = FUN_004983a0(buf, size1);
+            if (n == 0x1000) {
+                memcpy(ptr1, buf, 0x1000);
+                DAT_0079a844++;
+            } else {
+                memcpy(ptr1, buf, n);
+                memset((unsigned char *)ptr1 + n, 0, 0x1000 - n);
+                if (n != 0) {
+                    DAT_0079a844++;
+                }
+            }
+            ((struct KLIBAUDIO_Buf *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->Unlock(DAT_0079a848, ptr1, size1, NULL, 0);
+            DAT_0079a840++;
+            if (DAT_0079a840 >= 10) {
+                DAT_0079a840 = 0;
+            }
+        }
+        DAT_0079a844--;
+        if (DAT_0079a844 == 0) {
+            FUN_004988c0();
+            return 0;
+        }
+    } while (((struct KLIBAUDIO_Buf *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->GetCurrentPosition(DAT_0079a848, &play, &write) != 0 || play < DAT_0079a840 * 0x1000 || play >= (DAT_0079a840 + 1) * 0x1000);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00498cf0
 int FUN_00498cf0(void) {
