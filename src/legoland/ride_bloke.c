@@ -40,6 +40,16 @@ struct DrivingBloke {
     unsigned char field_c2;
 };
 
+struct NearBloke {
+    struct NearBloke *next;
+    unsigned char pad_4[0x10 - 0x4];
+    int px;
+    int py;
+    unsigned char pad_18[0xb0 - 0x18];
+    float fx;
+    float fy;
+};
+
 struct SPHandlers {
     unsigned char pad_0[0x18];
     unsigned int (*get_rf_flags)(int x, int y);
@@ -407,7 +417,30 @@ int FUN_00402430(struct PairArg *a, struct PairArg *b) {
 }
 
 // FUNCTION: LEGOLAND 0x00402490
-void FUN_00402490(void) { STUB(); }
+struct NearBloke *FUN_00402490(struct NearBloke *b) {
+    struct NearBloke *cur;
+    struct NearBloke *result = NULL;
+    int dx, dy, x, y;
+
+    for (cur = (struct NearBloke *)DAT_004c10d4; cur != NULL; cur = cur->next) {
+        if (cur == b) {
+            continue;
+        }
+        dx = (b->px - cur->px) >> 8;
+        dy = (b->py - cur->py) >> 8;
+        if (dx * dx + dy * dy > 0x40000) {
+            continue;
+        }
+        x = b->px - (int)(b->fx * -65536.0f);
+        y = b->py - (int)(b->fy * -65536.0f);
+        dx = (x - cur->px) >> 8;
+        dy = (y - cur->py) >> 8;
+        if (dx * dx + dy * dy <= 0x10000) {
+            result = cur;
+        }
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00402550
 void FUN_00402550(struct BlokeSprite *arg) {
