@@ -249,7 +249,27 @@ struct RideSlotArg *FUN_004122f0(struct RideSlot *slot) {
 }
 
 // FUNCTION: LEGOLAND 0x00412300
-void FUN_00412300(void) { STUB(); }
+void FUN_00412300(struct QueueTable *table, int x, int y, struct Bloke *bloke) {
+    struct Point p;
+    char dir;
+
+    p.x = x + table->steps[bloke->field_38].dx;
+    p.y = table->steps[bloke->field_38].dy + y;
+    bloke->dest.x = p.x << 8;
+    bloke->dest.y = p.y << 8;
+    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+    bloke->field_e = 7;
+    bloke->field_73 = dir + 0x10;
+    NewDirForAction(bloke, (unsigned char)(bloke->field_73 >> 5) + 3);
+    bloke->field_38 += (signed char)bloke->field_34;
+    if ((signed char)bloke->field_34 < 0) {
+        if (bloke->field_38 < 0) {
+            bloke->param_action++;
+        }
+    } else if (bloke->field_38 >= table->count) {
+        bloke->param_action++;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004123a0
 unsigned int FUN_004123a0(struct QueueNode *start, struct QueueNode *stop) {
