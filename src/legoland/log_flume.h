@@ -4,8 +4,14 @@ struct CallbackTable;
 struct ClassNode;
 struct FlumeEntry;
 struct FlumeDims;
+struct ParticleEmitter;
+struct Context;
+struct LinkList;
 
 struct FlumeDims FUN_004112c0(void);
+
+void FUN_0040da10(struct Context *a, struct LinkList *list);
+void FUN_004119a0(struct ParticleEmitter *param_1, unsigned int param_2);
 
 struct FlumeEntry *FUN_0040d210(int x, int y);
 

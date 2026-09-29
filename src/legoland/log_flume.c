@@ -1494,7 +1494,22 @@ void FUN_0040c6c0(int unused, struct Point *pt) {
 void FUN_0040c780(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c8d0
-void FUN_0040c8d0(void) { STUB(); }
+void FUN_0040c8d0(Element *obj, TileId tile, struct Cursor *cursor) {
+    struct FlumeEntry *entry;
+
+    memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
+    DAT_004cbe30->footprint.x1--;
+    DAT_004cbe30->footprint.y1--;
+    StandardRemoveObject(obj, tile, cursor);
+    entry = FUN_00408ef0(&tile);
+    FUN_004119a0((struct ParticleEmitter *)entry->parent, -1);
+    if (entry != NULL) {
+        FUN_00409440((unsigned int)obj, (void **)&tile);
+        FUN_0040da10((struct Context *)entry, (struct LinkList *)cursor);
+        FUN_0040a2a0(entry, (struct StateNode **)cursor);
+        FUN_00409270((struct Node *)entry->parent, (struct Node *)entry);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040c970
 struct RideSpriteInfo *FUN_0040c970(int unused, TileId tile) {
@@ -1977,7 +1992,33 @@ void FUN_0040e340(struct EdgeNode *node, int *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e3b0
-void FUN_0040e3b0(void) { STUB(); }
+int FUN_0040e3b0(unsigned int *ctx) {
+    int flags = FUN_00409410(ctx);
+
+    switch (DAT_004c2af4) {
+    case 0:
+        if (flags == 5 || flags == 1 || flags == 4) {
+            return 1;
+        }
+        break;
+    case 1:
+        if (flags == 0x14 || flags == 4 || flags == 0x10) {
+            return 1;
+        }
+        break;
+    case 2:
+        if (flags == 0x50 || flags == 0x10 || flags == 0x40) {
+            return 1;
+        }
+        break;
+    case 3:
+        if (flags == 0x41 || flags == 0x40 || flags == 1) {
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0040e440
 void FUN_0040e440(unsigned int *buf, void *res) { STUB(); }
