@@ -2827,7 +2827,7 @@ void FUN_00422e40(int param1, char *entry) { STUB(); }
 void FUN_00422fe0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00423140
-void FUN_00423140(void) { STUB(); }
+void FUN_00423140(int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00423200
 void FUN_00423200(void) { STUB(); }
@@ -3476,7 +3476,7 @@ int FUN_00424c40(struct ListHost *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00424c70
-void FUN_00424c70(void) { STUB(); }
+void FUN_00424c70(struct CastleSub *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00424d80
 void FUN_00424d80(struct ListHost *list) {
@@ -3551,7 +3551,16 @@ void FUN_00424e80(void) { STUB(); }
 void FUN_00425050(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00425170
-void FUN_00425170(void) { STUB(); }
+void FUN_00425170(void) {
+    FUN_00424e80();
+    FUN_00425e20();
+    FUN_00423140(0);
+    if (DAT_00610a04 != 0) {
+        FUN_00424c70((struct CastleSub *)&DAT_00829ae0);
+        FUN_00424a50((struct CastleSub *)&DAT_00829ae0);
+        FUN_00424dc0((struct ListHost *)&DAT_00829ae0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004251c0
 void FUN_004251c0(void) { STUB(); }

@@ -157,3 +157,4 @@ unsigned int FUN_00429940(void *n, void *out);
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
 
 void FUN_004254d0();
+void FUN_00425e20(void);
