@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "bricks.h"
 #include "driving_school.h"
 #include "gamemap.h"
@@ -358,7 +359,87 @@ void FUN_00413ad0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00413b50
-void FUN_00413b50(void) { STUB(); }
+void FUN_00413b50(Element *obj, int *param_2, unsigned int param_3) {
+    unsigned int bits;
+    struct Ride *ride = obj->ride;
+    struct RoadTile *t;
+
+    struct NeighborResult r;
+    struct MapRect rect;
+    struct RoadQueueEntry **q = (struct RoadQueueEntry **)&r;
+    unsigned short type;
+    int result;
+    int cost;
+
+    memcpy(EditCursor.field_1414, &ride->footprint, 20);
+    bits = 0;
+    EditCursor.field_1830 = bits;
+    ScreenToMapRef(param_2, (int *)&EditCursor.field_1404, param_3);
+    t = FUN_00413e30(&EditCursor);
+    ValidateCursor(&EditCursor, (unsigned int)ride);
+    if (FUN_0045f4b0(&EditCursor) == 0) {
+        return;
+    }
+    rect.x0 = EditCursor.field_1414[0] + EditCursor.field_1404;
+    rect.y0 = EditCursor.field_1414[1] + EditCursor.field_1408;
+    rect.x1 = EditCursor.field_1414[2] + EditCursor.field_1404;
+    rect.y1 = EditCursor.field_1414[3] + EditCursor.field_1408;
+    result = CheckForPeople(&rect);
+    switch (result) {
+    case -1:
+        FUN_0045f480(&EditCursor, 4);
+        break;
+    case 1:
+        FUN_0045f480(&EditCursor, 3);
+        break;
+    default:
+        cost = GetObjCost(ride);
+        if (GetBrickCount() < cost) {
+            FUN_0045f480(&EditCursor, 2);
+        } else {
+            if (FUN_0045f4b0(&EditCursor) != 0) {
+                if (FUN_00413520(EditCursor.field_1404, EditCursor.field_1408, &r) == 0) {
+                    FUN_0045f480(&EditCursor, 0xe);
+                } else {
+                    if (q[0] != NULL) {
+                        type = q[0]->field_8;
+                    } else if (q[2] != NULL) {
+                        type = q[2]->field_8;
+                    } else if (q[4] != NULL) {
+                        type = q[4]->field_8;
+                    } else if (q[6] != NULL) {
+                        type = q[6]->field_8;
+                    } else {
+                        type = (unsigned short)(unsigned int)t;
+                    }
+                    FUN_004135d0(EditCursor.field_1404, EditCursor.field_1408, &r);
+                    FUN_00413450(EditCursor.field_1404, EditCursor.field_1408, (struct RideQueueEntry **)&r);
+                    if (q[0] != NULL && q[0]->field_8 == type) bits = 1;
+                    if (q[1] != NULL && q[1]->field_8 == type) bits |= 2;
+                    if (q[2] != NULL && q[2]->field_8 == type) bits |= 4;
+                    if (q[3] != NULL && q[3]->field_8 == type) bits |= 8;
+                    if (q[4] != NULL && q[4]->field_8 == type) bits |= 0x10;
+                    if (q[5] != NULL && q[5]->field_8 == type) bits |= 0x20;
+                    if (q[6] != NULL && q[6]->field_8 == type) bits |= 0x40;
+                    if (q[7] != NULL && q[7]->field_8 == type) bits |= 0x80;
+                    if ((bits & 7) == 7 || (bits & 0x1c) == 0x1c || (bits & 0x70) == 0x70 || (bits & 0xc1) == 0xc1) {
+                        FUN_0045f480(&EditCursor, 0xe);
+                    }
+                }
+            }
+            if (t != NULL && FUN_0045f4b0(&EditCursor) != 0) {
+                memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
+                EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
+                DAT_0082f760.field_1404 = t->x;
+                DAT_0082f760.field_1408 = t->y;
+                DAT_0082f760.field_1830 = 0;
+                DAT_0082f760.field_1828 = 0x2034;
+            } else {
+                EditCursor.field_1830 = 0;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00413e30
 struct RoadTile *FUN_00413e30(struct Cursor *cur) {
