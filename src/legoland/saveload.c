@@ -50,16 +50,16 @@ LEGO_EXPORT int EndMeasuredBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d880
-LEGO_EXPORT int FindeIneList(struct Element **element) {
+LEGO_EXPORT int FindeIneList(union SavedElement *handle) {
     int i;
 
     for (i = 0; i < DAT_006691b4; i++) {
-        if (*element == DAT_00669200[i]) {
-            *(int *)element = i;
+        if (handle->element == DAT_00669200[i]) {
+            handle->index = i;
             return 1;
         }
     }
-    *(int *)element = -1;
+    handle->index = -1;
     return 0;
 }
 

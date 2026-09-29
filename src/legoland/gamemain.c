@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
@@ -11,6 +12,7 @@
 #include "map_object.h"
 #include "nerps.h"
 #include "objectives.h"
+#include "resource.h"
 #include "title.h"
 
 struct GameMainNode {
@@ -214,10 +216,26 @@ int FUN_004781b0(const char *param_1, const void *param_2, int param_3) {
     return -1;
 }
 // FUNCTION: LEGOLAND 0x004781f0
-int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4) { STUB(); }
+int FUN_004781f0(const char *name, const void *commands, int count, int flags) {
+    char path[256];
+    struct ResFile *file;
+    int result;
+
+    sprintf(path, "%s%s",
+        // STRING: LEGOLAND 0x004bc084
+        "Scripts\\", name);
+    file = RES_OpenFile(path);
+    if (file != NULL) {
+        strncpy(DAT_00668fd0, name, 128);
+        result = FUN_00478280(file, commands, count, flags);
+        RES_CloseFile(file);
+        return result;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00478280
-void FUN_00478280(void) { STUB(); }
+int FUN_00478280(struct ResFile *file, const void *commands, int count, int flags) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004784c0
 void FUN_004784c0(void) {

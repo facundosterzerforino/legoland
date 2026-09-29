@@ -1,6 +1,7 @@
 #include "sound_sfx.h"
 #include <windows.h>
 #include <stdlib.h>
+#include "debug_alloc.h"
 #include "globals.h"
 #include "legoland.h"
 #include "sound_music.h"
@@ -418,7 +419,25 @@ void FUN_00492ca0(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00492ce0
-void FUN_00492ce0(int param_1) { STUB(); }
+void FUN_00492ce0(int theme) {
+    if (DAT_004bf778 == 1 || DAT_004bf778 == 2) {
+        FUN_00492ca0(theme);
+    } else if (theme == DAT_0079a6ac) {
+        // STRING: LEGOLAND 0x004bf7cc
+        DBPrintf("IMT:Theme was same %d, continuing\n", DAT_0079a6ac);
+    } else if (DAT_004bf778 == 5 || DAT_004bf778 == 6) {
+        // STRING: LEGOLAND 0x004bf77c
+        DBPrintf("IMT:Changing theme before transition\n");
+        DAT_0079a6a8 = theme;
+    } else if (DAT_004bf778 == 7) {
+        // STRING: LEGOLAND 0x004bf7a4
+        DBPrintf("IMT:Already in transition, continuing\n");
+    } else {
+        DAT_0079a6a4 = 4;
+        DAT_0079a6a8 = theme % 5;
+        SetEvent(DAT_0079a6a0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00492d80
 BOOL FUN_00492d80(void) {

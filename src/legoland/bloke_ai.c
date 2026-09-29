@@ -1366,10 +1366,7 @@ void FUN_00450a40(Bloke *bloke) {
 void FUN_00450a80(void) {
     int i;
     int count;
-    union {
-        Element *element;
-        int index;
-    } handle;
+    union SavedElement handle;
     BuildObj record;
 
     count = 0;
@@ -1383,7 +1380,7 @@ void FUN_00450a80(void) {
         if (DAT_006664f8[i].ride != NULL) {
             record = DAT_006664f8[i];
             handle.element = DAT_006664f8[i].ride->element;
-            FindeIneList(&handle.element);
+            FindeIneList(&handle);
             record.index = handle.index;
             SaveGameWrite(&record, sizeof(record));
         }
