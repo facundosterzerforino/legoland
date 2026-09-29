@@ -1172,8 +1172,8 @@ extern struct Sprite *DAT_004c124c;
 extern struct JoustNode *DAT_004c1250;
 // 0x004c1258
 extern struct Sprite *DAT_004c1258;
-// 0x004c2a88
-extern unsigned int DAT_004c2a88;
+// 0x004c1260
+extern struct Cursor DAT_004c1260;
 // 0x004c2a94
 extern struct Sprite *DAT_004c2a94;
 // 0x004c2a98
@@ -1248,8 +1248,8 @@ extern struct Sprite *DAT_004c8d68;
 extern struct CursorSource *DAT_004c8d6c;
 // 0x004c8d70
 extern struct Sprite *DAT_004c8d70;
-// 0x004cbdd8
-extern unsigned int DAT_004cbdd8;
+// 0x004ca5b0
+extern struct Cursor DAT_004ca5b0;
 // 0x004cbe08
 extern struct Sprite *DAT_004cbe08;
 // 0x004cbe0c

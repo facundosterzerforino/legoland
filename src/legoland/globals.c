@@ -1223,8 +1223,8 @@ struct JoustNode *DAT_004c1250;
 // GLOBAL: LEGOLAND 0x004c1258
 struct Sprite *DAT_004c1258;
 
-// GLOBAL: LEGOLAND 0x004c2a88
-unsigned int DAT_004c2a88;
+// GLOBAL: LEGOLAND 0x004c1260
+struct Cursor DAT_004c1260;
 
 // GLOBAL: LEGOLAND 0x004c2a94
 struct Sprite *DAT_004c2a94;
@@ -1337,8 +1337,8 @@ struct CursorSource *DAT_004c8d6c;
 // GLOBAL: LEGOLAND 0x004c8d70
 struct Sprite *DAT_004c8d70;
 
-// GLOBAL: LEGOLAND 0x004cbdd8
-unsigned int DAT_004cbdd8;
+// GLOBAL: LEGOLAND 0x004ca5b0
+struct Cursor DAT_004ca5b0;
 
 // GLOBAL: LEGOLAND 0x004cbe08
 struct Sprite *DAT_004cbe08;

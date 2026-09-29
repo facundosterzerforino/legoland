@@ -1895,8 +1895,8 @@ unsigned int FUN_0040d3b0(void *param_1, unsigned int *param_2) {
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     SetEditCursorFootPrint((void *)param_2);
-    DAT_004cbdd8 = 0x2034;
-    DAT_004c2a88 = 0x2034;
+    DAT_004ca5b0.field_1828 = 0x2034;
+    DAT_004c1260.field_1828 = 0x2034;
     DAT_004c4468.field_1828 = 0x2034;
     DAT_004c5ca0.field_1828 = 0x2034;
     return 0x2034;
@@ -1942,7 +1942,61 @@ void FUN_0040d420(unsigned int *res) {
 }
 
 // FUNCTION: LEGOLAND 0x0040d520
-void FUN_0040d520(void) { STUB(); }
+void FUN_0040d520(struct FlumeEntry **list, struct Cursor *first) {
+    int flags;
+    struct Cursor *cur;
+    int i;
+
+    cur = NULL;
+    flags = FUN_00409410((unsigned int *)list);
+    DAT_004ca5b0.next = NULL;
+    DAT_004c1260.next = NULL;
+    first->next = &DAT_004ca5b0;
+    i = 0;
+    do {
+        if (cur == NULL) {
+            cur = &DAT_004ca5b0;
+        } else {
+            cur->next = &DAT_004c1260;
+            cur = &DAT_004c1260;
+        }
+        if (flags & 1) {
+            struct Footprint *fp;
+            TileId t;
+            FUN_0040d090(list[0], &fp, &t);
+            cur->field_1404 = t.pos.x;
+            cur->field_1408 = t.pos.y;
+            cur->footprint = *fp;
+            flags &= ~1;
+        } else if (flags & 4) {
+            struct Footprint *fp;
+            TileId t;
+            FUN_0040d090(list[1], &fp, &t);
+            cur->field_1404 = t.pos.x;
+            cur->field_1408 = t.pos.y;
+            cur->footprint = *fp;
+            flags &= ~4;
+        } else if (flags & 0x10) {
+            struct Footprint *fp;
+            TileId t;
+            FUN_0040d090(list[2], &fp, &t);
+            cur->field_1404 = t.pos.x;
+            cur->field_1408 = t.pos.y;
+            cur->footprint = *fp;
+            flags &= ~0x10;
+        } else if (flags & 0x40) {
+            struct Footprint *fp;
+            TileId t;
+            FUN_0040d090(list[3], &fp, &t);
+            cur->field_1404 = t.pos.x;
+            cur->field_1408 = t.pos.y;
+            cur->footprint = *fp;
+            flags &= ~0x40;
+        }
+        cur->field_1828 = 0x2010;
+        FUN_0045f460(cur);
+    } while (flags != 0 && ++i < 2);
+}
 
 // FUNCTION: LEGOLAND 0x0040d6f0
 unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, void (*param_5)(void), void (*param_6)(struct EdgeNode *, int *)) { STUB(); }
