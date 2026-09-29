@@ -71,7 +71,7 @@ struct MoviePoolElem *FUN_00477440(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004775b0
-void *FUN_004775b0(unsigned int size) {
+void *FUN_004775b0(unsigned int size, int flags, unsigned int tag, int line) {
     return calloc(1, size);
 }
 
