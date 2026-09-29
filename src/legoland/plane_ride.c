@@ -8,9 +8,12 @@
 #include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "plane_ride.h"
+#include "print_sprite.h"
+#include "render3d.h"
 #include "sound_music.h"
 #include "sound_sfx.h"
 
@@ -156,7 +159,81 @@ void FUN_0043d9f0(struct PlaneRideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043da60
-void FUN_0043da60(void) { STUB(); }
+void FUN_0043da60(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+    char n = 0;
+    struct Ride *ride;
+    struct RideNode *r;
+    struct PlaneRideNode *node;
+    struct Bloke *riders[4] = {0};
+    struct Bloke *bloke;
+    struct Person *person;
+    struct Point coords;
+    struct Point off;
+    char i;
+
+    ride = element->ride;
+    r = ride->riders;
+    node = (struct PlaneRideNode *)FUN_0043d960((struct PlaneRideObject **)tile);
+    if (node == NULL) {
+        return;
+    }
+    coords = GetScreenCoordsForObject(tile, ride);
+    if (r != NULL) {
+        for (; r != NULL; r = r->next) {
+            if (tile->id == r->tile.id) {
+                riders[n++] = r->rider;
+            }
+        }
+        if (n != 0) {
+            for (i = 0; i < n; i++) {
+                if (riders[i]->param_action == 0xd) {
+                    IP_RenderBlokeIn3DNow(riders[i]);
+                }
+            }
+            for (i = 0; i < n; i++) {
+                if (riders[i]->param_action == 0xe) {
+                    IP_RenderBlokeIn3DNow(riders[i]);
+                }
+            }
+            LLSSetFrame(GetLLSForLayer(DAT_0062fe7c, 1), node->b4);
+            off = GetRenderOffsetForLayer(ride->layer, 1);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(GetSpriteForLayer(ride->layer, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
+            *(short *)*DAT_0081cae0->lls = node->b4;
+            for (r = ride->riders; r != NULL; r = r->next) {
+                if (tile->id == r->tile.id) {
+                    bloke = r->rider;
+                    if (bloke->flags & 0x80) {
+                        person = bloke->person;
+                        off.x = DAT_0081cae8;
+                        off.y = DAT_0081caec;
+                        person->offset.x = bloke->screen_x;
+                        person->offset.y = bloke->screen_y;
+                        AdjustBlokePosition(&person->offset);
+                        AdjustOffsetForViewMode(&off);
+                        person->screen.x = bloke->screen_x + coords.x + off.x;
+                        person->screen.y = bloke->screen_y + coords.y + off.y;
+                        AdjustBlokePosition(&person->screen);
+                        IP_RenderBlokeIn3DNow(r->rider);
+                    }
+                }
+            }
+            LLSSetFrame(GetLLSForLayer(DAT_0062fe7c, 2), node->b5);
+            off = GetRenderOffsetForLayer(ride->layer, 2);
+            AdjustOffsetForViewMode(&off);
+            PrintSprite(GetSpriteForLayer(ride->layer, 2), coords.x + off.x, coords.y + off.y, param_6, 0);
+            return;
+        }
+    }
+    LLSSetFrame(GetLLSForLayer(DAT_0062fe7c, 1), node->b4);
+    off = GetRenderOffsetForLayer(ride->layer, 1);
+    AdjustOffsetForViewMode(&off);
+    PrintSprite(GetSpriteForLayer(ride->layer, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fe7c, 2), node->b5);
+    off = GetRenderOffsetForLayer(ride->layer, 2);
+    AdjustOffsetForViewMode(&off);
+    PrintSprite(GetSpriteForLayer(ride->layer, 2), coords.x + off.x, coords.y + off.y, param_6, 0);
+}
 
 // FUNCTION: LEGOLAND 0x0043dda0
 void FUN_0043dda0(Element *input) {
