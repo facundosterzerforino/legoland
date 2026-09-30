@@ -52,7 +52,44 @@ void FUN_004542e0(HANDLE file) {
 }
 
 // FUNCTION: LEGOLAND 0x00454380
-void FUN_00454380(HANDLE file, DWORD base) { STUB(); }
+void FUN_00454380(HANDLE file, DWORD base) {
+    char path[MAX_PATH];
+
+    __try {
+        if (GetModuleFileNameA((HMODULE)base, path, MAX_PATH) > 0) {
+            DWORD fsize;
+            FILETIME ftime;
+            HMODULE hinst = (HMODULE)base;
+            char buf[100];
+            HANDLE fh;
+            IMAGE_NT_HEADERS *nthdr;
+
+            buf[0] = DAT_004d8bb0[0];
+            memset(buf + 1, 0, sizeof(buf) - 1);
+            fsize = 0;
+            if (*(WORD *)hinst == IMAGE_DOS_SIGNATURE) {
+                nthdr = (IMAGE_NT_HEADERS *)(base + ((IMAGE_DOS_HEADER *)hinst)->e_lfanew);
+                if (nthdr->Signature == IMAGE_NT_SIGNATURE) {
+                    fh = CreateFileA(path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                        FILE_ATTRIBUTE_NORMAL, NULL);
+                    if (fh != INVALID_HANDLE_VALUE) {
+                        fsize = GetFileSize(fh, NULL);
+                        if (GetFileTime(fh, NULL, NULL, &ftime)) {
+                            // STRING: LEGOLAND 0x004b8d04
+                            wsprintfA(buf, " - file date is ");
+                            FUN_00454500(buf + lstrlenA(buf), ftime);
+                        }
+                        CloseHandle(fh);
+                    }
+                    // STRING: LEGOLAND 0x004b8cd8
+                    FUN_00454290(file, "%s, loaded at 0x%08x - %d bytes - %08x%s\r\n", path, hinst, fsize,
+                        nthdr->FileHeader.TimeDateStamp, buf);
+                }
+            }
+        }
+    } __except (1) {
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00454500
 void FUN_00454500(char *buffer, FILETIME ft) {
