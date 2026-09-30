@@ -78,15 +78,17 @@ int FUN_0045aa50(struct FXSpriteList **out) {
     struct FXSpriteList *src;
 
     do {
-        if (*slot != (void *)-1 && (src = info->src) != NULL && src != prev) {
-            *out = src;
-            count++;
-            prev = src;
-            out++;
+        if (*slot != (void *)-1) {
+            src = info->src;
+            if (src != NULL && src != prev) {
+                *out++ = src;
+                count++;
+                prev = src;
+            }
         }
         slot++;
         info++;
-    } while ((int)slot < (int)&TileSpriteArray[2048]);
+    } while ((int)slot < (int)MapRenderOrderList);
     return count;
 }
 
@@ -398,7 +400,7 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
 LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out) {
     struct TileSprite *sprite;
     short size;
-    int twice;
+    short twice;
     int ix;
     int iy;
 
@@ -407,9 +409,10 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out
         return 0xffffffff;
     }
     size = sprite->size;
-    twice = (short)(size * 2);
+    twice = size * 2;
     ix = ((twice + 1 >> 1) - lpConfig->field_20);
-    ix = (ix + (ScrollX >> 8) + screen->x) * (0x100 / twice);
+    ix += ScrollX >> 8;
+    ix = (ix + screen->x) * (0x100 / twice);
     iy = (((ScrollY >> 8) - lpConfig->field_22) + screen->y) * (0x100 / (int)size);
     out->x = iy + ix;
     out->y = iy - ix;
@@ -420,8 +423,9 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out
 LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int param_3) {
     struct TileSprite *sprite;
     short size;
+    short twice;
     int w;
-    int twice;
+    int hy;
     int half;
     int sx;
     int sy;
@@ -429,7 +433,7 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
     int rx;
     int qy;
     int ry;
-    char sel;
+    int sel;
 
     sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
     if (sprite == NULL) {
@@ -437,7 +441,8 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
     }
     size = sprite->size;
     w = (int)size;
-    twice = (short)(size * 2);
+    twice = size * 2;
+    hy = w + 1 >> 1;
     half = twice + 1 >> 1;
     sx = ((ScrollX >> 8) - lpConfig->field_20) + *param_1 + half;
     sy = ((ScrollY >> 8) - lpConfig->field_22) + param_1[1];
@@ -457,31 +462,31 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
         *out = *out + -1;
         ry = ry + -1 + w;
     }
-    sel = (char)(half <= rx) + '\x01';
-    if (w + 1 >> 1 < ry) {
-        sel = (char)(half <= rx) + '\x03';
+    sel = (rx >= half) + 1;
+    if (ry > hy) {
+        sel += 2;
     }
     switch (sel) {
-    case '\x01':
+    case 1:
         if (rx < half + ry * -2) {
             *out = *out + -1;
             return 1;
         }
         break;
-    case '\x02':
-        if (half + ry * 2 <= rx) {
+    case 2:
+        if (rx >= half + ry * 2) {
             out[1] = out[1] + -1;
             return 1;
         }
         break;
-    case '\x03':
+    case 3:
         if (rx < half + (ry - w) * 2) {
             out[1] = out[1] + 1;
             return 1;
         }
         break;
-    case '\x04':
-        if (half + (w - ry) * 2 <= rx) {
+    case 4:
+        if (rx >= half + (w - ry) * 2) {
             *out = *out + 1;
         }
     }
@@ -747,31 +752,32 @@ LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param) {
 // FUNCTION: LEGOLAND 0x0045c870
 LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
     struct MapTile *tile;
-    unsigned int flags;
+    unsigned char flags;
     char local_1;
+    char dir;
 
     tile = (struct MapTile *)((char *)GameMap[param_1[1]] + *param_1 * 0x14);
     tile->flags_10 = tile->flags_10 & 0xc3;
-    flags = FUN_0045c440(param_1, (char *)&param_1, &local_1);
-    if ((char)param_1 == '\0') {
+    flags = FUN_0045c440(param_1, &dir, &local_1);
+    if (dir == '\0') {
         tile->flags_10 = tile->flags_10 | 0x10;
         return;
     }
-    if ((char)param_1 == '\x01') {
+    if (dir == '\x01') {
         tile->flags_10 = tile->flags_10 | 0x10;
         return;
     }
-    if ((char)param_1 == '\x02') {
+    if (dir == '\x02') {
         if ((flags & 0x11) == 1 || (flags & 0x11) == 0x10) {
             tile->flags_10 = tile->flags_10 | 8;
             return;
         }
     } else {
-        if ((char)param_1 == '\x03') {
+        if (dir == '\x03') {
             tile->flags_10 = tile->flags_10 | 4;
             return;
         }
-        if ((char)param_1 == '\x04') {
+        if (dir == '\x04') {
             tile->flags_10 = tile->flags_10 | 0x20;
         }
     }
@@ -938,10 +944,9 @@ int FUN_0045cbc0(int *param_1, int param_2) {
 
     switch (param_2) {
     case 2:
+        r.y0 = r.y1 = param_1[1] + -1;
         r.x1 = param_1[2];
-        r.y0 = param_1[1] + -1;
         r.x0 = *param_1;
-        r.y1 = r.y0;
         result = FUN_0045c900(&r);
         if (result != 0) {
             param_1[1] = param_1[1] + -1;
@@ -949,10 +954,9 @@ int FUN_0045cbc0(int *param_1, int param_2) {
         }
         break;
     case 0:
+        r.y0 = r.y1 = param_1[3] + 1;
         r.x1 = param_1[2];
-        r.y0 = param_1[3] + 1;
         r.x0 = *param_1;
-        r.y1 = r.y0;
         result = FUN_0045c900(&r);
         if (result != 0) {
             param_1[3] = param_1[3] + 1;
@@ -962,8 +966,8 @@ int FUN_0045cbc0(int *param_1, int param_2) {
     case 1:
         r.y0 = param_1[1];
         r.y1 = param_1[3];
-        r.x0 = param_1[2] + 1;
-        r.x1 = r.x0;
+        r.x1 = param_1[2] + 1;
+        r.x0 = r.x1;
         result = FUN_0045c900(&r);
         if (result != 0) {
             param_1[2] = param_1[2] + 1;
@@ -973,8 +977,8 @@ int FUN_0045cbc0(int *param_1, int param_2) {
     case 3:
         r.y0 = param_1[1];
         r.y1 = param_1[3];
-        r.x0 = *param_1 + -1;
-        r.x1 = r.x0;
+        r.x1 = *param_1 + -1;
+        r.x0 = r.x1;
         result = FUN_0045c900(&r);
         if (result != 0) {
             *param_1 = *param_1 + -1;
@@ -1074,6 +1078,7 @@ unsigned char FUN_0045ceb0(int *coords) {
     unsigned char local_15;
     struct MapTile tile;
 
+    local_15 = 0;
     x = *coords;
     y = coords[1] + -1;
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
@@ -1083,7 +1088,9 @@ unsigned char FUN_0045ceb0(int *coords) {
     } else {
         tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
     }
-    local_15 = FUN_0045ce10(&tile) != 0;
+    if (FUN_0045ce10(&tile) != 0) {
+        local_15 = 1;
+    }
     y = coords[1];
     x = *coords + 1;
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
@@ -1108,8 +1115,8 @@ unsigned char FUN_0045ceb0(int *coords) {
     if (FUN_0045ce10(&tile) != 0) {
         local_15 = local_15 | 4;
     }
-    y = coords[1];
     x = *coords + -1;
+    y = coords[1];
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         tile.tile = 0;
         tile.flags_c = 0x40;
@@ -1164,7 +1171,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d1a0
-LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned int a) {
+LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned short a) {
     unsigned short *flags;
     int x;
     int y;
@@ -1182,8 +1189,8 @@ LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned int a) {
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         AdjustTileRFFlags((int *)p);
     }
-    flags = NULL;
-    if (FUN_0045ce10(&tile) != 0) {
+    flags = (unsigned short *)FUN_0045ce10(&tile);
+    if (flags != NULL) {
         flags = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
         *flags = *flags & 0xfffc;
     }
@@ -1232,10 +1239,10 @@ void FUN_0045d260(struct Point *param) {
 
 // FUNCTION: LEGOLAND 0x0045d350
 LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) {
-    unsigned char *pb;
+    unsigned short *pb;
 
-    pb = (unsigned char *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
-    *pb = *pb | 0x10;
+    pb = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
+    *pb |= 0x10;
     *(unsigned short *)((char *)GameMap[p->y] + 8 + p->x * 0x14) = param1;
     FUN_0045d260(p);
     if (MapStats.field_184 != 0) {
@@ -1558,14 +1565,14 @@ LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {
     local_8.x = *param_1;
     local_8.y = param_1[1] + -1;
     AdjustPathTile(&local_8, param_2);
-    local_8.y = param_1[1];
     local_8.x = *param_1 + 1;
+    local_8.y = param_1[1];
     AdjustPathTile(&local_8, param_2);
     local_8.x = *param_1;
     local_8.y = param_1[1] + 1;
     AdjustPathTile(&local_8, param_2);
-    local_8.y = param_1[1];
     local_8.x = *param_1 + -1;
+    local_8.y = param_1[1];
     AdjustPathTile(&local_8, param_2);
     local_8.x = *param_1 + -1;
     local_8.y = param_1[1] + 1;
