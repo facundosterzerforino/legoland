@@ -183,7 +183,7 @@ void FUN_0041cd80(short *pos, struct DirPoints *out, unsigned int mask) {
     unsigned int bit = 1;
 
     out->mask = 0;
-    for (i = 0; i <= 3; i++) {
+    for (i = 0; i * 4 + 4 <= 16; i++) {
         if ((mask & bit) != 0) {
             out->pt[i][0] = pos[0] + DAT_004b5584[i][0];
             out->pt[i][1] = pos[1] + DAT_004b5584[i][1];
