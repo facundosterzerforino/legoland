@@ -3777,7 +3777,7 @@ void FUN_004237a0(struct EdgeSet *set) {
 }
 
 // FUNCTION: LEGOLAND 0x004237f0
-void FUN_004237f0(void *a, void *b, int c) {
+void FUN_004237f0(void *a, void *b, short c) {
     int *pa = (int *)a;
     int *pb = (int *)b;
     int pts[30][4];
@@ -3798,7 +3798,7 @@ void FUN_004237f0(void *a, void *b, int c) {
 }
 
 // FUNCTION: LEGOLAND 0x004238a0
-void FUN_004238a0(int *points, int count, unsigned short c) {
+void FUN_004238a0(int *points, int count, short c) {
     struct {
         int pitch;
         unsigned int f4;
@@ -6275,8 +6275,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
     unsigned int key;
     unsigned int bit;
     int n;
-    unsigned int base = (unsigned int)obj->data;
-    struct Footprint *fp = (struct Footprint *)(base + 0x3c);
+    struct Footprint *fp = &obj->ride->footprint;
     int i;
 
     SetEditCursorFootPrint(fp);
@@ -6453,8 +6452,7 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
     unsigned int key;
     unsigned int bit;
     int n;
-    unsigned int base = (unsigned int)obj->data;
-    struct Footprint *fp = (struct Footprint *)(base + 0x3c);
+    struct Footprint *fp = &obj->ride->footprint;
     int i;
 
     SetEditCursorFootPrint(fp);

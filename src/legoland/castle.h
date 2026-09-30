@@ -52,8 +52,8 @@ unsigned int FUN_00420fb0(unsigned char *param_1, unsigned int param_2, unsigned
 void FUN_00426700(struct RectI *dst, struct RectI *src);
 float lego_invsqrtf(float x);
 float FUN_00425d30(struct FVec3 *param_1, struct FVec3 *param_2);
-void FUN_004237f0(void *a, void *b, int c);
-void FUN_004238a0(int *points, int count, int c);
+void FUN_004237f0(void *a, void *b, short c);
+void FUN_004238a0(int *points, int count, short c);
 void FUN_00423ec0(char *param1);
 void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis);
 struct PathSeg;
