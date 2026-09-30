@@ -5036,10 +5036,12 @@ void FUN_0044db20(void) {
 
 // FUNCTION: LEGOLAND 0x0044db40
 void FUN_0044db40(void) {
-    unsigned int t = 0;
+    unsigned int t;
 
     if (MapStats.field_178 != 0) {
         t = GetGameTimer() + MapStats.field_178 * 60000;
+    } else {
+        t = 0;
     }
     DAT_00666098 = t;
 }
