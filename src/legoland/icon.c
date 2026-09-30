@@ -723,14 +723,10 @@ int FUN_0046e040(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046e0a0
 LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {2, node};
     int cost;
-    char buf[12];
     unsigned int *objsub;
 
-    ctx.flags = 2;
-    ctx.node = node;
-    ctx.field_8 = 0;
     if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
         objsub = *(unsigned int **)((char *)node->field_8 + 0xc4);
         if (*(unsigned int **)((char *)EditMode.unk8 + 0xc4) == objsub) {
@@ -738,34 +734,33 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
         }
     }
     if (node->y > 0 && node->y < 0x174) {
+        char buf[12];
         cost = GetObjCost(node->field_8);
         if (node->sprite != NULL) {
-            unsigned int colour;
-            if (GetBrickCount() < cost) {
-                colour = DAT_004ba884;
+            if (cost <= GetBrickCount()) {
+                PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
             } else {
-                colour = 0;
+                PrintSprite(node->sprite, node->x, node->y, DAT_004ba884, (int *)&ctx);
             }
-            PrintSprite(node->sprite, node->x, node->y, colour, (int *)&ctx);
         }
         if (node->field_8 != NULL) {
             // STRING: LEGOLAND 0x004b8a80
             sprintf(buf, "%d", cost);
             FUN_00455e50(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
         }
-        if ((char)node->field_20 == 1) {
+        switch (node->field_20b) {
+        case 1:
             PrintSprite(DAT_00668e8c, node->x, node->y, 0, 0);
-        } else if ((char)node->field_20 == 2) {
+            break;
+        case 2:
             PrintSprite(DAT_00668e90, node->x, node->y, 0, 0);
+            break;
         }
         if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
             // STRING: LEGOLAND 0x004ba888
             if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) != 0 &&
                 *(unsigned int **)((char *)EditMode.unk8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
-                struct Sprite *s = DAT_00668e74;
-                if (GetBlink() != 0) {
-                    s = DAT_00668e78;
-                }
+                struct Sprite *s = GetBlink() != 0 ? DAT_00668e78 : DAT_00668e74;
                 PrintSprite(s, node->x, node->y, 0, 0);
             }
         }
