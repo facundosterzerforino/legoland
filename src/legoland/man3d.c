@@ -428,32 +428,31 @@ LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsign
 }
 
 // FUNCTION: LEGOLAND 0x004401b0
-void FUN_004401b0(int param_1, int param_2) {
-    struct Person *iVar3;
-    struct Person *iVar4;
-    int iVar1;
-    int iVar2;
+void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     struct Point pt;
-    short sVar5;
+    int y;
+    int x;
+    short s;
+    int w;
+    int h;
 
-    iVar4 = (struct Person *)param_2;
-    iVar3 = (struct Person *)param_1;
-    SetPersonDirection(iVar3, iVar4->field_72);
-    iVar1 = iVar4->field_6c;
-    iVar2 = iVar4->field_68;
-    GetTileDimensions(&param_2, &param_1);
-    pt.x = (iVar2 - iVar1) * param_2 >> 9;
-    pt.y = (iVar1 + iVar2) * param_1 >> 9;
-    sVar5 = (short)Get_XScroll();
-    pt.x = pt.x - sVar5;
-    sVar5 = (short)Get_YScroll();
-    iVar3->sort_id = pt.y - sVar5;
-    pt.x = pt.x + lpConfig->field_20;
-    pt.y = (pt.y - sVar5) + (lpConfig->field_22 - (iVar4->field_70 >> 1));
+    SetPersonDirection(person, bloke->field_72);
+    y = bloke->pos.y;
+    x = bloke->pos.x;
+    GetTileDimensions(&w, &h);
+    pt.x = (x - y) * w >> 9;
+    pt.y = (y + x) * h >> 9;
+    s = (short)Get_XScroll();
+    pt.x -= s;
+    s = (short)Get_YScroll();
+    pt.y -= s;
+    person->sort_id = pt.y;
+    pt.x += lpConfig->field_20;
+    pt.y += lpConfig->field_22 - (bloke->field_70 >> 1);
     AdjustBlokePosition(&pt);
-    SetPersonPosition(iVar3, pt.x, pt.y);
-    if ((iVar4->field_63 & 1) == 0) {
-        iVar3->field_4c = iVar4->field_74;
+    SetPersonPosition(person, pt.x, pt.y);
+    if (!(bloke->flags & 0x100)) {
+        person->field_4c = bloke->field_74;
     }
 }
 
@@ -465,7 +464,7 @@ LEGO_EXPORT void UpdatePerson(Bloke *bloke) {
     if (bloke->person == 0) {
         return;
     }
-    FUN_004401b0((int)bloke->person, (int)bloke);
+    FUN_004401b0(bloke->person, bloke);
 }
 
 // FUNCTION: LEGOLAND 0x004402b0
@@ -622,7 +621,7 @@ LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
     bloke->person = person;
     if (person != 0) {
         FUN_0043f810(person);
-        FUN_004401b0((int)person, (int)bloke);
+        FUN_004401b0(person, bloke);
         BlokeWalkAnim(bloke);
     }
 }
