@@ -493,6 +493,8 @@ void FUN_00412680(int x, int y, int param_3, int param_4) {
     struct Point pos;
     TileId id;
     int i;
+    struct FXSpriteList *set1;
+    struct FXSpriteList *set2;
     int col;
     int row;
 
@@ -712,7 +714,8 @@ void FUN_00412680(int x, int y, int param_3, int param_4) {
     pos.x = x;
     pos.y = y + 1;
     tile = TileAt(pos.x, pos.y);
-    if (tile[1].field_8 - *(int *)TileSpriteInfo[tile[1].field_8].src == 0x1a) {
+    set1 = TileSpriteInfo[tile[1].field_8].src;
+    if (tile[1].field_8 - *(int *)set1 == 0x1a) {
         AdjustTileRFFlags((int *)&pos);
         AddPathSquare(&pos);
         tile[0].field_10 = 3;
@@ -728,9 +731,9 @@ void FUN_00412680(int x, int y, int param_3, int param_4) {
         AdjustTileRFFlags((int *)&pos);
         AddPathSquare(&pos);
         tile[3].field_10 = 3;
-    } else if (tile[2].field_8 - *(int *)TileSpriteInfo[tile[2].field_8].src == 0x1b) {
+    } else if (set2 = TileSpriteInfo[tile[2].field_8].src, tile[2].field_8 - *(int *)set2 == 0x1b) {
         pos.x = x + 2;
-        pos.y = y;
+        pos.y--;
         AdjustTileRFFlags((int *)&pos);
         AddPathSquare(&pos);
         TileAt(pos.x, pos.y)->field_10 = 3;
