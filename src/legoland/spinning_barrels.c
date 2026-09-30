@@ -101,6 +101,7 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
     struct BarrelNode *state;
     Point screen;
     Point off;
+    Point off2;
     Point seat;
     LayerResult layer;
     char i;
@@ -155,13 +156,13 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
                 IP_RenderBlokeIn3DNow(blokes[i]);
             }
         }
-        off = GetRenderOffsetForLayer(DAT_0062fde0, 1);
-        AdjustOffsetForViewMode(&off);
-        PrintSprite(DAT_0062fdd0, screen.x + off.x, screen.y + off.y, 0, 0);
+        off2 = GetRenderOffsetForLayer(DAT_0062fde0, 1);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(DAT_0062fdd0, screen.x + off2.x, screen.y + off2.y, 0, 0);
         LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->field_20);
-        off = GetRenderOffsetForLayer(DAT_0062fde0, 2);
-        AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off.x, screen.y + off.y, 0, 0);
+        off2 = GetRenderOffsetForLayer(DAT_0062fde0, 2);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off2.x, screen.y + off2.y, 0, 0);
         for (i = 0; i < count; i++) {
             if (blokes[i]->param_action == 16) {
                 IP_RenderBlokeIn3DNow(blokes[i]);
@@ -172,9 +173,9 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
                 IP_RenderBlokeIn3DNow(blokes[i]);
             }
         }
-        off = GetRenderOffsetForLayer(DAT_0062fde0, 1);
-        AdjustOffsetForViewMode(&off);
-        PrintSprite(DAT_0062fdcc, screen.x + off.x, screen.y + off.y, 0, 0);
+        off2 = GetRenderOffsetForLayer(DAT_0062fde0, 1);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(DAT_0062fdcc, screen.x + off2.x, screen.y + off2.y, 0, 0);
     } else {
         LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->field_8);
         off = GetRenderOffsetForLayer(DAT_0062fde0, 3);
