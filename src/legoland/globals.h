@@ -4073,7 +4073,11 @@ extern struct Sprite *DAT_0082c668;
 // 0x0082c678
 extern void *DAT_0082c678;
 // 0x0082c67c
-extern void *DAT_0082c67c;
+struct DSMapEntry {
+    int pad_0;
+    unsigned short *base;
+};
+extern struct DSMapEntry *DAT_0082c67c;
 // 0x0082c680
 struct RoadLights;
 extern struct RoadLights *DAT_0082c680;
