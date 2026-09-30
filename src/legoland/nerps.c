@@ -222,31 +222,31 @@ unsigned int FUN_0046a230(struct NerpsArg *arg) {
     int value;
     int limit;
     unsigned char threshold;
-    int x;
-    int y;
+    struct Point pt;
 
     group = ((struct TileGroupHolder *)arg->field_4)->group;
     node = group->list;
     value = (unsigned int)group->field_2c * arg->field_14;
-    limit = arg->field_1c;
     threshold = (char)(value / 100);
-    if (group->count < limit || limit == 0) {
+    limit = arg->field_1c;
+    if (limit > group->count || limit == 0) {
         limit = group->count;
     }
-    for (; node != NULL && limit != 0; limit--) {
-        x = node->x;
-        y = node->y;
-        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
-            tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    while (node != NULL && limit != 0) {
+        pt.x = node->x;
+        pt.y = node->y;
+        if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+            tile = (struct MapElement *)((char *)GameMap[pt.y] + pt.x * 0x14);
         } else {
             tile = NULL;
         }
         if (tile->field_11 > threshold) {
             tile->field_11 = threshold;
-            FUN_00463460(tile, (struct Point *)&x);
+            FUN_00463460(tile, &pt);
             DAT_00668610 |= 0x200;
         }
         node = node->next;
+        limit--;
     }
     return 1;
 }
