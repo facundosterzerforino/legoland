@@ -413,18 +413,18 @@ LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsi
     RECT dst;
     RECT src;
 
-    src.right = (short)sprite->width;
-    dst.right = src.right + x;
-    src.bottom = (short)sprite->height;
-    dst.bottom = src.bottom + y;
     dst.left = x;
     dst.top = y;
+    dst.right = (short)sprite->width + x;
+    dst.bottom = (short)sprite->height + y;
     src.left = 0;
     src.top = 0;
+    src.bottom = (short)sprite->height;
+    src.right = (short)sprite->width;
     if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
-        src.top = dst.top;
         sprite->field_c = DAT_008119a4;
         src.left = dst.left;
+        src.top = dst.top;
         src.right = dst.right;
         src.bottom = dst.bottom;
         OffsetRect(&src, -x, -y);
