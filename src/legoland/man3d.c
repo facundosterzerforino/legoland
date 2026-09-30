@@ -713,22 +713,28 @@ LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x00440800
 LEGO_EXPORT struct Anim3D *GetBlokeAnim3DFromPerson(struct Person *person) {
     struct Anim3D *result;
+    void **base;
 
     result = 0;
     if (person != 0) {
         switch (person->field_8) {
         case 1:
             if (person->random == 0) {
-                return (struct Anim3D *)DAT_0062febc[person->field_88];
+                base = DAT_0062febc;
+            } else {
+                base = DAT_0062fed4;
             }
-            return (struct Anim3D *)DAT_0062fed4[person->field_88];
+            break;
         case 2:
-            return (struct Anim3D *)DAT_0062feb0[person->field_88];
+            base = DAT_0062feb0;
+            break;
         case 3:
-            return (struct Anim3D *)(&DAT_0062fef4)[person->field_88];
+            base = &DAT_0062fef4;
+            break;
         default:
-            result = (struct Anim3D *)((unsigned int *)person)[person->field_88];
+            base = (void **)person;
         }
+        result = (struct Anim3D *)base[person->field_88];
     }
     return result;
 }
@@ -778,14 +784,18 @@ LEGO_EXPORT void BlokeAnimNextFrame(struct Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00440910
 LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke) {
-    unsigned int k;
     int anim;
 
-    k = bloke->person->field_8 - 2;
-    if (k == 0 || k == 1) {
+    switch (bloke->person->field_8) {
+    case 2:
         anim = 0;
-    } else {
+        break;
+    case 3:
+        anim = 0;
+        break;
+    default:
         anim = 1;
+        break;
     }
     BlokeSetAnim(bloke, anim);
     BlokeSetFrame(bloke, 0);
@@ -801,9 +811,17 @@ LEGO_EXPORT void BlokePanWithPan(struct Bloke *bloke) {
     BlokeSetAnim(bloke, 4);
 }
 
+struct IntVec3 {
+    int x;
+    int y;
+    int z;
+};
+
 // FUNCTION: LEGOLAND 0x00440980
-void FUN_00440980(struct MeshElem *elem, int *out) {
+void FUN_00440980(struct MeshElem *elem, struct IntVec3 *out) {
     int *verts;
+    struct IntVec3 *lo;
+    struct IntVec3 *hi;
     int max_x;
     int max_y;
     int max_z;
@@ -813,7 +831,6 @@ void FUN_00440980(struct MeshElem *elem, int *out) {
     int min_x;
     int min_y;
     int min_z;
-    int n;
 
     verts = (int *)elem->verts;
     min_x = verts[0];
@@ -824,7 +841,7 @@ void FUN_00440980(struct MeshElem *elem, int *out) {
     max_z = min_z;
     verts = verts + 3;
     if (elem->vert_count > 1) {
-        n = elem->vert_count - 1;
+        int n = elem->vert_count - 1;
         do {
             vx = verts[0];
             vy = verts[1];
@@ -847,16 +864,17 @@ void FUN_00440980(struct MeshElem *elem, int *out) {
             if (vz > max_z) {
                 max_z = vz;
             }
-            n = n - 1;
             verts = verts + 3;
-        } while (n != 0);
+        } while (--n != 0);
     }
-    out[0] = min_x;
-    out[3] = max_x;
-    out[1] = min_y;
-    out[2] = min_z;
-    out[4] = max_y;
-    out[5] = max_z;
+    lo = out;
+    hi = out + 1;
+    lo->x = min_x;
+    hi->x = max_x;
+    lo->y = min_y;
+    lo->z = min_z;
+    hi->y = max_y;
+    hi->z = max_z;
 }
 
 // FUNCTION: LEGOLAND 0x00440a30

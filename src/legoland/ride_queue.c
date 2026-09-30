@@ -230,8 +230,8 @@ int FUN_00412100(struct PathTable *param_1) {
     int cy;
 
     for (i = 0; i < param_1->count; i++) {
-        int y = param_1->pairs[i].b;
         int x = param_1->pairs[i].a;
+        int y = param_1->pairs[i].b;
         total += (int)sqrt((double)(y * y + x * x));
     }
     table = (struct QueueTable *)malloc(total * 12 + 8);
