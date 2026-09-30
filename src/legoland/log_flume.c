@@ -525,13 +525,13 @@ struct FlumeEntry *FUN_00408ef0(TileId *tile) {
 
 // FUNCTION: LEGOLAND 0x00408f30
 unsigned int FUN_00408f30(struct SubBuf *buf) {
-    struct FlumeEntry *first = DAT_004cbe84;
     struct FlumeEntry *outer;
     struct FlumeEntry *mid;
     struct FlumeEntry *cur;
 
-    if (first != NULL) {
-        for (outer = first; outer != NULL; outer = outer->next) {
+    outer = DAT_004cbe84;
+    if (DAT_004cbe84 != NULL) {
+        for (; outer != NULL; outer = outer->next) {
             for (mid = outer->sub; mid != NULL; mid = mid->next) {
                 cur = mid->sub2;
                 if (cur == NULL) {
@@ -3267,21 +3267,24 @@ struct FlumeEntry *FUN_0040d210(int x, int y) {
     int tx;
     int ty;
 
-    for (outer = DAT_004cbe84; outer != NULL; outer = outer->next) {
-        cur = outer->sub;
-        while (cur != NULL) {
-            FUN_0040d090(cur, &fp, &t);
-            if (fp != NULL) {
-                tx = t.pos.x;
-                ty = t.pos.y;
-                if (x >= fp->x0 + tx && x <= fp->x1 + tx && y >= fp->y0 + ty && y <= fp->y1 + ty) {
-                    return cur;
+    outer = DAT_004cbe84;
+    if (DAT_004cbe84 != NULL) {
+        for (; outer != NULL; outer = outer->next) {
+            cur = outer->sub;
+            while (cur != NULL) {
+                FUN_0040d090(cur, &fp, &t);
+                if (fp != NULL) {
+                    tx = t.pos.x;
+                    ty = t.pos.y;
+                    if (x >= fp->x0 + tx && x <= fp->x1 + tx && y >= fp->y0 + ty && y <= fp->y1 + ty) {
+                        return cur;
+                    }
+                } else {
+                    // STRING: LEGOLAND 0x004b4a24
+                    DBPrintf("Something wrong in the log flume track\n");
                 }
-            } else {
-                // STRING: LEGOLAND 0x004b4a24
-                DBPrintf("Something wrong in the log flume track\n");
+                cur = cur->next;
             }
-            cur = cur->next;
         }
     }
     return NULL;
