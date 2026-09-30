@@ -360,14 +360,11 @@ LEGO_EXPORT void DeleteProfileList(void) {
 
 // FUNCTION: LEGOLAND 0x00491bd0
 LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite) {
-    char cursor_str[10];
+    char cursor_str[2];
     unsigned char count;
     char input;
-    int left;
-    int right;
-    int bottom;
+    RECT rc;
     int center_x;
-    int top;
     char *blink;
 
     count = DAT_007cad60.name_len;
@@ -393,36 +390,26 @@ LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite) {
             }
         }
     }
-    top = sprite->y + 7;
-    left = sprite->x + 0x14;
-    bottom = top + 0x13;
-    right = left + 0xc0;
+    rc.top = sprite->y + 7;
+    rc.left = sprite->x + 0x14;
+    rc.bottom = rc.top + 0x13;
+    rc.right = rc.left + 0xc0;
     if (count != 0) {
-        RECT rc;
-        rc.left = left;
-        rc.top = top;
-        rc.right = right;
-        rc.bottom = bottom;
         center_x = FUN_00491e40(DAT_007cad60.name, 2, rc, 1);
     } else {
-        center_x = (right + left) >> 1;
+        center_x = (rc.right + rc.left) >> 1;
     }
-    DAT_00798894 = (center_x - ((right + left) >> 1)) * 2;
-    top = sprite->y + 5;
+    DAT_00798894 = (center_x - ((rc.right + rc.left) >> 1)) * 2;
+    rc.top = sprite->y + 5;
     blink = "|";
     if (GetBlink() == 0) {
         // STRING: LEGOLAND 0x004b8ad4
         blink = " ";
     }
     strcpy(cursor_str, blink);
-    {
-        RECT rc;
-        rc.left = center_x;
-        rc.top = top;
-        rc.right = center_x + 100;
-        rc.bottom = bottom;
-        FUN_00490fa0(cursor_str, 2, rc, 1);
-    }
+    rc.left = center_x;
+    rc.right = center_x + 100;
+    FUN_00490fa0(cursor_str, 2, rc, 1);
     DAT_007cad60.name_len = count;
 }
 

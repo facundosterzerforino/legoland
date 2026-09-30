@@ -134,12 +134,10 @@ int FUN_0042cf40(struct EarthNode *param_1, void *param_2) {
 
 // FUNCTION: LEGOLAND 0x0042cf70
 void FUN_0042cf70(struct EarthNode *param_1) {
-    unsigned char bx;
-    unsigned char by;
     void *bloke;
     struct EarthQueue *q;
     int x;
-    int y;
+    struct Point y;
     int *tbl;
     char cv;
 
@@ -150,15 +148,13 @@ void FUN_0042cf70(struct EarthNode *param_1) {
         FUN_0042d040(param_1);
         q = param_1->queue_head;
         if (q != NULL) {
-            bx = *(unsigned char *)param_1;
-            by = *((unsigned char *)param_1 + 1);
             tbl = &DAT_004b65c0[1];
-            x = *(int *)((char *)DAT_006160d0 + 0xc);
-            y = *(int *)((char *)DAT_006160d0 + 0x10);
+            x = *(int *)((char *)DAT_006160d0 + 0xc) + *(unsigned char *)param_1;
+            y.y = *(int *)((char *)DAT_006160d0 + 0x10) + *((unsigned char *)param_1 + 1);
             do {
                 bloke = q->elem->bloke;
-                *(unsigned int *)((char *)bloke + 0x24) = (tbl[-1] + x + bx) * 0x100;
-                *(int *)((char *)bloke + 0x28) = (tbl[0] + by + y) * 0x100;
+                *(unsigned int *)((char *)bloke + 0x24) = (tbl[-1] + x) * 0x100;
+                *(int *)((char *)bloke + 0x28) = (tbl[0] + y.y) * 0x100;
                 cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                 *(unsigned short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
@@ -267,16 +263,12 @@ void FUN_0042d270(struct EarthRideObj *param_1, TileId tile, unsigned int param_
 
 // FUNCTION: LEGOLAND 0x0042d2c0
 void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2) {
-    struct {
-        unsigned char var_c;
-        unsigned char var_10;
-        unsigned char var_11;
-    } buffer;
+    unsigned char buffer[2];
 
-    buffer.var_c = param_2[0];
-    buffer.var_11 = param_2[4];
+    buffer[0] = param_2[0];
+    buffer[1] = param_2[4];
     AddBasicObject(param_1, (unsigned int)param_2);
-    FUN_0042cd70((unsigned short *)&buffer.var_10);
+    FUN_0042cd70((unsigned short *)buffer);
 }
 
 // FUNCTION: LEGOLAND 0x0042d2f0
@@ -291,12 +283,9 @@ int FUN_0042d2f0(void) {
     flag = 1;
     node = DAT_006160e8;
     terminator = 0;
-    while (1) {
-        if (node == NULL) {
-            return SaveGameWrite(&terminator, 4) != 0;
-        }
+    while (node != NULL) {
         if (SaveGameWrite(&flag, 4) == 0 || SaveGameWrite(node, 0x24) == 0) {
-            break;
+            return 0;
         }
         count = 0;
         for (q = node->queue_head; q != NULL; q = q->next) {
@@ -313,7 +302,7 @@ int FUN_0042d2f0(void) {
         }
         node = node->next;
     }
-    return 0;
+    return SaveGameWrite(&terminator, 4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x0042d3e0
@@ -387,16 +376,9 @@ int FUN_0042d400(void) {
 // FUNCTION: LEGOLAND 0x0042d540
 struct EarthBlokeElem *FUN_0042d540(struct EarthBlokeElem *param_1, unsigned int param_2) {
     struct EarthBlokeElem *result = param_1;
-    unsigned int n = param_2;
 
-    n = n - 1;
-    if (n == 0) {
-        return result;
-    }
-    n = n + 1;
-    while (n != 0) {
+    while (param_2-- != 0) {
         result = result->next;
-        n = n - 1;
     }
     return result;
 }
