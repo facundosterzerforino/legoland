@@ -3570,19 +3570,19 @@ struct EdgeMesh {
 
 // FUNCTION: LEGOLAND 0x004227c0
 struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
+    int *triFlag;
+    int nV = 0;
+    int *edgeFlag;
+    int j;
+    int t;
+    int removedTris = 0;
+    int i;
+    int *vertFlag;
+    int k;
     struct EdgeMesh *out = NULL;
     int nEdges = src->nEdges;
-    int removedTris = 0;
     int removedEdges = 0;
     int removedVerts = 0;
-    int nV = 0;
-    int *triFlag;
-    int *edgeFlag;
-    int *vertFlag;
-    int i;
-    int j;
-    int k;
-    int t;
 
     for (t = 0; t < src->nTris; t++) {
         for (k = 0; k < 3; k++) {
