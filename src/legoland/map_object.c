@@ -187,21 +187,23 @@ LEGO_EXPORT void AddObjectToMap(Element *param_1, TileId param_2, int param_3) {
                 int ty = param_2.pos.y + y;
                 if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
                     tile = &GameMap[ty][tx];
-                    if (tile != 0) {
-                        tile->field_10 = 0;
-                        tile->field_0 = (unsigned int)param_1;
-                        *(unsigned short *)&tile->field_4 = param_2.id;
-                        tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
-                        tile->field_11 = obj->field_2c;
-                        if (obj->flags & 2) {
-                            tile->field_10 = 2;
-                        }
-                        if (obj->flags & 1) {
-                            tile->field_10 = 1;
-                        }
-                        if (obj->flags & 0x800000) {
-                            *((unsigned char *)&tile->flags + 1) |= 0x80;
-                        }
+                } else {
+                    tile = 0;
+                }
+                if (tile != 0) {
+                    tile->field_10 = 0;
+                    tile->field_0 = (unsigned int)param_1;
+                    *(unsigned short *)&tile->field_4 = param_2.id;
+                    tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
+                    tile->field_11 = obj->field_2c;
+                    if (obj->flags & 2) {
+                        tile->field_10 = 2;
+                    }
+                    if (obj->flags & 1) {
+                        tile->field_10 = 1;
+                    }
+                    if (obj->flags & 0x800000) {
+                        *((unsigned char *)&tile->flags + 1) |= 0x80;
                     }
                 }
             }
@@ -308,9 +310,11 @@ void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
                             coord.y = node->field_1408 + y;
                             if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height) {
                                 tile = &GameMap[coord.y][coord.x];
-                                if (tile != 0) {
-                                    FUN_004779d0(&coord);
-                                }
+                            } else {
+                                tile = 0;
+                            }
+                            if (tile != 0) {
+                                FUN_004779d0(&coord);
                             }
                         }
                     }
@@ -335,15 +339,17 @@ void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
                             coord.y = node->field_1408 + y;
                             if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height) {
                                 tile = &GameMap[coord.y][coord.x];
-                                if (tile != 0) {
-                                    tile->field_0 = (unsigned int)editObj;
-                                    *(unsigned short *)&tile->field_4 = coords.id;
-                                    tile->flags = (unsigned short)((tile->flags & 0x10) | flags);
-                                    if (obj->flags & 0x800000) {
-                                        *((unsigned char *)&tile->flags + 1) |= 0x80;
-                                    }
-                                    tile->field_10 = 2;
+                            } else {
+                                tile = 0;
+                            }
+                            if (tile != 0) {
+                                tile->field_0 = (unsigned int)editObj;
+                                *(unsigned short *)&tile->field_4 = coords.id;
+                                tile->flags = (unsigned short)((tile->flags & 0x10) | flags);
+                                if (obj->flags & 0x800000) {
+                                    *((unsigned char *)&tile->flags + 1) |= 0x80;
                                 }
+                                tile->field_10 = 2;
                             }
                         }
                     }
@@ -449,12 +455,14 @@ void FUN_0045e4a0(Element *editObj, struct Point *pos) {
                             ty = node->field_1408 + y;
                             if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
                                 tile = &GameMap[ty][tx];
-                                if (tile != 0) {
-                                    tile->flags = 0;
-                                    tile->field_0 = (unsigned int)editObj;
-                                    *(unsigned short *)&tile->field_4 = coords.id;
-                                    tile->field_10 = 0;
-                                }
+                            } else {
+                                tile = 0;
+                            }
+                            if (tile != 0) {
+                                tile->flags = 0;
+                                tile->field_0 = (unsigned int)editObj;
+                                *(unsigned short *)&tile->field_4 = coords.id;
+                                tile->field_10 = 0;
                             }
                         }
                     }
@@ -793,11 +801,13 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
                             ty = node->field_1408 + y;
                             if (tx >= 0 && tx < cfg->width && ty >= 0 && ty < cfg->height) {
                                 tile = &GameMap[ty][tx];
-                                if (tile != 0) {
-                                    tile->flags &= 0xffdf;
-                                    tile->field_10 = 0;
-                                    cfg = lpConfig;
-                                }
+                            } else {
+                                tile = 0;
+                            }
+                            if (tile != 0) {
+                                tile->flags &= 0xffdf;
+                                tile->field_10 = 0;
+                                cfg = lpConfig;
                             }
                         }
                     }
