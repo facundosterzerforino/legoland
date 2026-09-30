@@ -398,7 +398,7 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
 LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out) {
     struct TileSprite *sprite;
     short size;
-    int twice;
+    short twice;
     int ix;
     int iy;
 
@@ -407,9 +407,10 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out
         return 0xffffffff;
     }
     size = sprite->size;
-    twice = (short)(size * 2);
+    twice = size * 2;
     ix = ((twice + 1 >> 1) - lpConfig->field_20);
-    ix = (ix + (ScrollX >> 8) + screen->x) * (0x100 / twice);
+    ix += ScrollX >> 8;
+    ix = (ix + screen->x) * (0x100 / twice);
     iy = (((ScrollY >> 8) - lpConfig->field_22) + screen->y) * (0x100 / (int)size);
     out->x = iy + ix;
     out->y = iy - ix;
