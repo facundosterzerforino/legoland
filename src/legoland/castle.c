@@ -1646,13 +1646,15 @@ struct RectI {
 
 // FUNCTION: LEGOLAND 0x0041e990
 void FUN_0041e990(unsigned char *obj) {
-    unsigned int b[9];
-    unsigned int loc1[3];
-    struct RectI r;
+    struct {
+        struct RectI r;
+        unsigned int loc1[3];
+        unsigned int b[9];
+    } s;
 
-    FUN_0041e9e0(obj, loc1);
-    FUN_00420fb0((unsigned char *)DAT_0082add0, (unsigned int)loc1, (unsigned int)b, (unsigned int)&r);
-    FUN_00426700((struct RectI *)(obj + 0xc8), &r);
+    FUN_0041e9e0(obj, s.loc1);
+    FUN_00420fb0((unsigned char *)DAT_0082add0, (unsigned int)s.loc1, (unsigned int)s.b, (unsigned int)&s.r);
+    FUN_00426700((struct RectI *)(obj + 0xc8), &s.r);
 }
 
 // FUNCTION: LEGOLAND 0x0041e9e0
