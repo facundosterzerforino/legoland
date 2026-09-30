@@ -4135,12 +4135,12 @@ void FUN_004104b0(Element *elem, unsigned int param_2, unsigned int param_3, Til
         if (DAT_004c2af0 != NULL) {
             off = GetRenderOffsetForLayer(ride->layer, 0);
             AdjustOffsetForViewMode(&off);
-            PrintSprite(DAT_004c2af0, off.x + pos.x, off.y + pos.y, clip, 0);
+            PrintSprite(DAT_004c2af0, pos.x + off.x, pos.y + off.y, clip, 0);
         }
         if (DAT_004c2aec != NULL) {
             off = GetRenderOffsetForLayer(ride->layer, 1);
             AdjustOffsetForViewMode(&off);
-            PrintSprite(DAT_004c2aec, off.x + pos.x, off.y + pos.y, clip, 0);
+            PrintSprite(DAT_004c2aec, pos.x + off.x, pos.y + off.y, clip, 0);
         }
         if (entry->field_24 != NULL && (entry->field_24->flags & 2)) {
             pos = FUN_0040cfd0(entry);
@@ -4155,7 +4155,7 @@ void FUN_004104b0(Element *elem, unsigned int param_2, unsigned int param_3, Til
                     LLSStop((unsigned int)lls);
                     LLSSetFrame(lls, frame);
                 }
-                PrintSprite(DAT_004c2b64, off.x + pos.x, off.y + pos.y, clip, 0);
+                PrintSprite(DAT_004c2b64, pos.x + off.x, pos.y + off.y, clip, 0);
             }
         }
     }
