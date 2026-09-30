@@ -1907,10 +1907,7 @@ char DAT_004e3870[16];
 struct LSub DAT_0060f914[20];
 
 // GLOBAL: LEGOLAND 0x006102f8
-unsigned int DAT_006102f8;
-
-// GLOBAL: LEGOLAND 0x006103a8
-unsigned int DAT_006103a8;
+struct CastlePathObj DAT_006102f8[3];
 
 // GLOBAL: LEGOLAND 0x00610a04
 unsigned int DAT_00610a04;

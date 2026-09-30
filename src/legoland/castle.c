@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdlib.h>
 #include <string.h>
 #include "globals.h"
 #include "legoland.h"
@@ -3826,8 +3827,205 @@ void FUN_004227a0(void) {
     FUN_004775d0(DAT_004dd860);
 }
 
+struct MVert {
+    int x;
+    int y;
+    int rest[3];
+};
+struct MEdge {
+    int v0;
+    int v1;
+};
+struct MTri {
+    int e[3];
+};
+struct EdgeMesh {
+    int f0;
+    int nVerts;
+    int nEdges;
+    int nTris;
+    struct MVert *verts;
+    struct MEdge *edges;
+    struct MTri *tris;
+};
+
 // FUNCTION: LEGOLAND 0x004227c0
-void FUN_004227c0(void) { STUB(); }
+struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
+    int *triFlag;
+    int nV = 0;
+    int *edgeFlag;
+    int j;
+    int i;
+    int removedTris = 0;
+    int *vertFlag;
+    int k;
+    struct EdgeMesh *out = NULL;
+    int nEdges = src->nEdges;
+    int removedEdges = 0;
+    int removedVerts = 0;
+
+    for (i = 0; i < src->nTris; i++) {
+        for (k = 0; k < 3; k++) {
+            struct MEdge *ed = &src->edges[src->tris[i].e[k] & 0x7fffffff];
+            if (ed->v0 > nV) {
+                nV = ed->v0;
+            }
+            if (ed->v1 > nV) {
+                nV = ed->v1;
+            }
+        }
+    }
+    nV++;
+    triFlag = (int *)malloc(src->nTris * 4);
+    edgeFlag = (int *)malloc(nEdges * 4);
+    vertFlag = (int *)malloc(nV * 4);
+    if (triFlag != NULL) {
+        if (edgeFlag != NULL && vertFlag != NULL) {
+            memset(triFlag, 0, src->nTris * 4);
+            memset(edgeFlag, 0, nEdges * 4);
+            memset(vertFlag, 0, nV * 4);
+            for (i = 0; i < src->nTris; i++) {
+                int v[3];
+                float z;
+                struct MVert *p0;
+                struct MVert *p1;
+                struct MVert *p2;
+                int dx1;
+                int dy1;
+                int dx2;
+                int dy2;
+                unsigned int bits;
+                for (k = 0; k < 3; k++) {
+                    int e = src->tris[i].e[k];
+                    if (e & 0x80000000) {
+                        v[k] = src->edges[e & 0x7fffffff].v1;
+                    } else {
+                        v[k] = src->edges[e & 0x7fffffff].v0;
+                    }
+                }
+                p0 = &src->verts[v[0]];
+                p1 = &src->verts[v[1]];
+                p2 = &src->verts[v[2]];
+                dx1 = p1->x - p0->x;
+                dy1 = p1->y - p0->y;
+                dx2 = p2->x - p0->x;
+                dy2 = p2->y - p0->y;
+                z = (float)dy2 * (float)dx1 - (float)dx2 * (float)dy1;
+                bits = *(unsigned int *)&z;
+                if (bits & 0x80000000) {
+                    triFlag[i] = 1;
+                    removedTris++;
+                }
+            }
+            for (i = 0; i < src->nTris; i++) {
+                if (triFlag[i] != 0) {
+                    for (k = 0; k < 3; k++) {
+                        int found = 0;
+                        for (j = 0; j < src->nTris; j++) {
+                            if (triFlag[j] == 0) {
+                                if (((src->tris[j].e[0] ^ ((int *)src->tris)[i * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[j].e[1] ^ ((int *)src->tris)[i * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[j].e[2] ^ ((int *)src->tris)[i * 3 + k]) & 0x7fffffff) == 0) {
+                                    found = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found) {
+                            edgeFlag[((int *)src->tris)[i * 3 + k] & 0x7fffffff] = 1;
+                        }
+                    }
+                }
+            }
+            for (i = 0; i < nEdges; i++) {
+                if (edgeFlag[i] != 0) {
+                    int *pv = &src->edges[i].v0;
+                    for (k = 0; k < 2; k++) {
+                        int found = 0;
+                        for (j = 0; j < nEdges; j++) {
+                            if (edgeFlag[j] == 0) {
+                                if (*pv == src->edges[j].v0 || *pv == src->edges[j].v1) {
+                                    found = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found) {
+                            vertFlag[*pv] = 1;
+                        }
+                        pv++;
+                    }
+                }
+            }
+            for (i = 0; i < nEdges; i++) {
+                if (edgeFlag[i] != 0) {
+                    removedEdges++;
+                }
+            }
+            for (i = 0; i < nV; i++) {
+                if (vertFlag[i] != 0) {
+                    removedVerts++;
+                }
+            }
+            out = (struct EdgeMesh *)malloc((nEdges - removedEdges) * 8 + (src->nTris - removedTris) * 12 + (nV - removedVerts) * 20 + 0x1c);
+            if (out != NULL) {
+                out->nEdges = nEdges - removedEdges - 1;
+                out->nTris = src->nTris - removedTris;
+                out->nVerts = nV - removedVerts - 1;
+                out->edges = (struct MEdge *)(out + 1);
+                out->tris = (struct MTri *)(out->edges + (nEdges - removedEdges));
+                out->verts = (struct MVert *)(out->tris + (src->nTris - removedTris));
+                j = 0;
+                for (i = 0; i < nV; i++) {
+                    if (vertFlag[i] == 0) {
+                        out->verts[j] = src->verts[i];
+                        vertFlag[i] = i - j;
+                        j++;
+                    }
+                }
+                j = 0;
+                for (i = 0; i < nEdges; i++) {
+                    if (edgeFlag[i] == 0) {
+                        out->edges[j].v0 = src->edges[i].v0 - vertFlag[src->edges[i].v0];
+                        out->edges[j].v1 = src->edges[i].v1 - vertFlag[src->edges[i].v1];
+                        edgeFlag[i] = i - j;
+                        j++;
+                    }
+                }
+                j = 0;
+                for (i = 0; i < src->nTris; i++) {
+                    if (triFlag[i] == 0) {
+                        int e = src->tris[i].e[0];
+                        if (e & 0x80000000) {
+                            out->tris[j].e[0] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
+                        } else {
+                            out->tris[j].e[0] = e - edgeFlag[e];
+                        }
+                        e = src->tris[i].e[1];
+                        if (e & 0x80000000) {
+                            out->tris[j].e[1] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
+                        } else {
+                            out->tris[j].e[1] = e - edgeFlag[e];
+                        }
+                        e = src->tris[i].e[2];
+                        if (e & 0x80000000) {
+                            out->tris[j].e[2] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
+                        } else {
+                            out->tris[j].e[2] = e - edgeFlag[e];
+                        }
+                        j++;
+                    }
+                }
+            }
+        }
+        free(triFlag);
+    }
+    if (edgeFlag != NULL) {
+        free(edgeFlag);
+    }
+    if (vertFlag != NULL) {
+        free(vertFlag);
+    }
+    return out;
+}
 
 // FUNCTION: LEGOLAND 0x00422e10
 void FUN_00422e10(int param1, int index) {
@@ -4138,8 +4336,8 @@ void FUN_00423970(unsigned char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00423990
-unsigned int *FUN_00423990(void) {
-    return &DAT_006102f8;
+struct CastlePathObj *FUN_00423990(void) {
+    return DAT_006102f8;
 }
 
 // FUNCTION: LEGOLAND 0x004239a0
@@ -4147,36 +4345,136 @@ void FUN_004239a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004239b0
-void FUN_004239b0(unsigned short *a, unsigned short *b) {
+void FUN_004239b0(struct Int16Pair *a, struct Int16Pair *b) {
     unsigned char *p = (unsigned char *)DAT_00829bf8 + 0x3c;
-    b[0] = *(unsigned short *)(p + 8) + a[0];
-    b[1] = *(unsigned short *)(p + 4) + a[1] - 2;
+    b->x = *(unsigned short *)(p + 8) + a->x;
+    b->y = *(unsigned short *)(p + 4) + a->y - 2;
 }
 
 // FUNCTION: LEGOLAND 0x004239e0
-void FUN_004239e0(unsigned short *a, unsigned short *b) {
+void FUN_004239e0(struct Int16Pair *a, struct Int16Pair *b) {
     unsigned int global_ptr = DAT_00829bf8 + 0x3c;
-    b[0] = *(unsigned short *)global_ptr + a[0] - 2;
-    b[1] = *(unsigned short *)(global_ptr + 0xc) + a[1];
+    b->x = *(unsigned short *)global_ptr + a->x - 2;
+    b->y = *(unsigned short *)(global_ptr + 0xc) + a->y;
 }
 
 // FUNCTION: LEGOLAND 0x00423a10
-void FUN_00423a10(void) { STUB(); }
+void FUN_00423a10(void) {
+    struct Int16Pair origin;
+    struct Int16Pair q;
+    struct Int16Pair p;
+    struct Int16Pair r;
+    struct Int16Pair pt;
+    struct Int16Pair pt1;
+    struct FVec3 v1;
+    struct FVec3 v2;
+    struct FVec3 v3;
+    struct Words3 c;
+    float t;
+    float step;
+    int n;
+    int i;
+    int cnt = 0;
+
+    origin.x = 0;
+    origin.y = 0;
+    FUN_004239e0(&origin, &q);
+    FUN_004239b0(&origin, &p);
+    r.x = q.x;
+    r.y = p.y;
+    pt1.y = p.y + 2;
+    pt.x = r.x + 1;
+    pt1.x = q.x + 1;
+    pt.y = q.y + 2;
+    FUN_00425cb0(&pt, 0.0f, &v1);
+    FUN_00425cb0(&pt1, 0.0f, &v2);
+    c.field_0 = 0xc1200000;
+    c.field_4 = 0;
+    c.field_8 = 0;
+    FUN_00421ab0((struct Obj421ab0 *)&DAT_006102f8[0], &v1.x, &v2.x, &c);
+    n = (q.y - r.y) >> 1;
+    t = DAT_006102f8[0].f44;
+    step = (DAT_006102f8[0].f48 - DAT_006102f8[0].f44) / n;
+    pt = q;
+    for (i = 0; i < n; i++) {
+        DAT_0060f914[cnt].xy = pt;
+        pt.y -= 2;
+        DAT_0060f914[cnt].k = 0;
+        DAT_0060f914[cnt].a = t;
+        t += step;
+        DAT_0060f914[cnt].b = t;
+        cnt++;
+    }
+    pt.x = -1;
+    pt.y = 0;
+    FUN_00425cb0(&pt, 0.0f, &v1);
+    pt.x = 0;
+    pt.y = -1;
+    FUN_00425cb0(&pt, 0.0f, &v2);
+    pt.x = q.x + 2;
+    pt.y = r.y + 2;
+    FUN_00425cb0(&pt, 0.0f, &v3);
+    FUN_00421ce0((struct Words3 *)&v1, (struct Words3 *)&v2, (struct Words3 *)&v3, (struct Obj421ce0 *)&DAT_006102f8[1], 0x3fc00000, 0x3f000000);
+    DAT_0060f914[cnt].xy = r;
+    DAT_0060f914[cnt].k = 1;
+    DAT_0060f914[cnt].a = DAT_006102f8[1].f44;
+    DAT_0060f914[cnt].b = DAT_006102f8[1].f48;
+    cnt++;
+    pt.x = q.x + 2;
+    pt1.x = p.x + 2;
+    pt.y = r.y + 1;
+    pt1.y = r.y + 1;
+    FUN_00425cb0(&pt, 0.0f, &v1);
+    FUN_00425cb0(&pt1, 0.0f, &v2);
+    c.field_0 = 0;
+    c.field_4 = 0xc1200000;
+    c.field_8 = 0;
+    FUN_00421ab0((struct Obj421ab0 *)&DAT_006102f8[2], &v1.x, &v2.x, &c);
+    n = (p.x - q.x) >> 1;
+    t = DAT_006102f8[2].f44;
+    step = (DAT_006102f8[2].f48 - DAT_006102f8[2].f44) / n;
+    pt = r;
+    DAT_006102f8[0].next = &DAT_006102f8[1];
+    DAT_006102f8[0].prev = 0;
+    DAT_006102f8[1].next = &DAT_006102f8[2];
+    DAT_006102f8[1].prev = &DAT_006102f8[0];
+    DAT_006102f8[2].next = 0;
+    DAT_006102f8[2].prev = &DAT_006102f8[1];
+    pt.x = q.x + 2;
+    for (i = 0; i < n; i++) {
+        DAT_0060f914[cnt].xy = pt;
+        pt.x += 2;
+        DAT_0060f914[cnt].k = 2;
+        DAT_0060f914[cnt].a = t;
+        t += step;
+        DAT_0060f914[cnt].b = t;
+        cnt++;
+    }
+    for (i = 0; i < cnt; i++) {
+        DAT_0060f914[i + 1].r[0] = DAT_0060f914[i].xy.x;
+        DAT_0060f914[i + 1].r[1] = DAT_0060f914[i].xy.y;
+        DAT_0060f914[i + 1].r[2] = DAT_0060f914[i].xy.x + 1;
+        DAT_0060f914[i + 1].r[3] = DAT_0060f914[i].xy.y + 1;
+        DAT_0060f914[i + 1].next = &DAT_0060f914[i + 2];
+    }
+    DAT_00610a08 = cnt;
+    DAT_0060f914[i].next = 0;
+}
 
 // FUNCTION: LEGOLAND 0x00423d40
 void FUN_00423d40(void) {
-    unsigned short a[2];
-    unsigned short b[2];
-    unsigned short c[2];
+    struct Int16Pair a;
+    struct Int16Pair b;
+    struct Int16Pair c;
 
-    a[0] = 0;
-    a[1] = 0;
-    FUN_004239b0(a, b);
-    FUN_004239e0(a, c);
-    DAT_004b5b58 = b[0];
-    DAT_004b5b5a = b[1];
-    DAT_004b5b60 = c[0];
-    DAT_004b5b62 = c[1];
+    a.x = 0;
+    a.y = 0;
+    FUN_004239b0(&a, &b);
+    FUN_004239e0(&a, &c);
+    DAT_004b5b58 = b.x;
+    DAT_004b5b5a = b.y;
+    DAT_004b5b60 = c.x;
+    DAT_004b5b62 = c.y;
     FUN_00423a10();
 }
 
@@ -4549,8 +4847,8 @@ unsigned int FUN_004246e0(unsigned int param_1, unsigned int param_2) {
 
 struct Obj58 {
     unsigned int f0[0x11];
-    unsigned int f44;
-    unsigned int f48;
+    float f44;
+    float f48;
     unsigned int f4c[3];
 };
 
@@ -4567,8 +4865,8 @@ void FUN_00424700(unsigned int a1, unsigned int a2, unsigned int a3, unsigned ch
     key[1] = p[1];
     want = *(int *)key;
     for (i = 0; i < (int)DAT_00610a08; i++) {
-        key[0] = DAT_0060f914[i].x + DAT_00829ae8[0];
-        key[1] = DAT_0060f914[i].y + DAT_00829ae8[1];
+        key[0] = DAT_0060f914[i].xy.x + DAT_00829ae8[0];
+        key[1] = DAT_0060f914[i].xy.y + DAT_00829ae8[1];
         if (want == *(int *)key) {
             obj = ((struct Obj58 *)&DAT_006102f8)[DAT_0060f914[i].k];
             obj.f44 = DAT_0060f914[i].a;
@@ -4606,7 +4904,7 @@ void FUN_00424830(int param_1) {
 
 // FUNCTION: LEGOLAND 0x00424850
 void FUN_00424850(unsigned char *p1, unsigned int *p2, unsigned int *p3, struct FVec3 *p4) {
-    *p2 = (unsigned int)&DAT_006103a8;
+    *p2 = (unsigned int)&DAT_006102f8[2];
     *p3 = 0x3dcccccd;
     FUN_00425cb0((struct Int16Pair *)(p1 + 8), (float)DAT_004b5b50, p4);
 }
@@ -4630,7 +4928,7 @@ void FUN_004248b0(unsigned char *obj, unsigned int unused, struct AnimOut *out) 
     FUN_00425cb0((struct Int16Pair *)(sub + 8), (float)DAT_004b5b50, &v);
     r = t * t;
     s[0] = (unsigned int)(sub + 4);
-    s[1] = (unsigned int)&DAT_006103a8;
+    s[1] = (unsigned int)&DAT_006102f8[2];
     r = -(r / (FUN_0042a1b0((struct Struct42a110 *)s, 0x3dcccccd, (struct Struct42a110 *)(e + 0xc), *(unsigned int *)(e + 0x24), 1, 0) * FLOAT_004ab404 * 2));
 
     out->f8 = FUN_0041dd70(e) * r * t;
@@ -4638,7 +4936,7 @@ void FUN_004248b0(unsigned char *obj, unsigned int unused, struct AnimOut *out) 
 
 // FUNCTION: LEGOLAND 0x00424960
 int FUN_00424960(int *param_1) {
-    if (param_1[4] != (int)&DAT_006103a8) {
+    if (param_1[4] != (int)&DAT_006102f8[2]) {
         return 0;
     }
     if (*(float *)((unsigned char *)param_1 + 0x24) > FLOAT_004ab454) {
@@ -5248,18 +5546,13 @@ void FUN_00425c40(void) {
     DAT_0082999c = f;
 }
 
-struct Int16Pair {
-    short var_0;
-    short var_2;
-};
-
 // FUNCTION: LEGOLAND 0x00425cb0
 void FUN_00425cb0(const struct Int16Pair *in, float f, struct FVec3 *out) {
     short temp;
     float temp_f;
-    temp = in->var_0;
+    temp = in->x;
     out->x = (float)temp * FLOAT_004ab45c;
-    temp = in->var_2;
+    temp = in->y;
     out->y = (float)temp * FLOAT_004ab45c;
     temp_f = f;
     out->z = temp_f * FLOAT_004ab458;
@@ -6419,7 +6712,112 @@ void FUN_004275b0(void) {}
 void FUN_004275c0(void) {}
 
 // FUNCTION: LEGOLAND 0x004275d0
-void FUN_004275d0(void) { STUB(); }
+void FUN_004275d0(Element *obj, int x, unsigned int y) {
+    struct LookupResult *result;
+    unsigned int key;
+    unsigned int bit;
+    unsigned int *mask;
+    struct Cursor *c;
+    struct Ride *ride = obj->ride;
+    struct Footprint *fp = &ride->footprint;
+    int n = 0;
+    int i;
+    int found = 0;
+
+    EditCursor.footprint = *fp;
+    EditCursor.field_1830 = 0;
+    ScreenToMapRef((int *)x, (int *)&EditCursor.field_1404, y);
+    if (DAT_00829ae0 != 2) {
+        bit = 1;
+        for (i = 0; i <= 3; i++) {
+            if ((bit & DAT_00829b8c) && EditCursor.field_1404 - DAT_00829b90[i][0] >= -1 && EditCursor.field_1404 - DAT_00829b90[i][0] <= 1 && (int)EditCursor.field_1408 - DAT_00829b90[i][1] >= -1 && (int)EditCursor.field_1408 - DAT_00829b90[i][1] <= 1) {
+                EditCursor.field_1404 = DAT_00829b90[i][0];
+                EditCursor.field_1408 = DAT_00829b90[i][1];
+                found = 1;
+                break;
+            }
+            bit <<= 1;
+        }
+        if (!found) {
+            bit = 1;
+            for (i = 0; i <= 3; i++) {
+                if ((bit & DAT_00829ba4) && EditCursor.field_1404 - DAT_00829ba8[i][0] >= -1 && EditCursor.field_1404 - DAT_00829ba8[i][0] <= 1 && (int)EditCursor.field_1408 - DAT_00829ba8[i][1] >= -1 && (int)EditCursor.field_1408 - DAT_00829ba8[i][1] <= 1) {
+                    EditCursor.field_1404 = DAT_00829ba8[i][0];
+                    EditCursor.field_1408 = DAT_00829ba8[i][1];
+                    found = 1;
+                    break;
+                }
+                bit <<= 1;
+            }
+        }
+        ValidateCursor(&EditCursor, (unsigned int)ride);
+        bit = 1;
+        for (i = 0; i <= 3; i++) {
+            if (bit & DAT_00829b8c) {
+                DefaultCursor(&DAT_0081ce00[n]);
+                DAT_0081ce00[n].next = EditCursor.next;
+                EditCursor.next = &DAT_0081ce00[n];
+                DAT_0081ce00[n].field_1404 = DAT_00829b90[i][0];
+                DAT_0081ce00[n].field_1408 = DAT_00829b90[i][1];
+                DAT_0081ce00[n].footprint = *fp;
+                DAT_0081ce00[n].field_1828 = 0x2032;
+                FUN_0045f460(&DAT_0081ce00[n]);
+                n++;
+            }
+            bit <<= 1;
+        }
+        bit = 1;
+        for (i = 0; i <= 3; i++) {
+            if (bit & DAT_00829ba4) {
+                DefaultCursor(&DAT_0081ce00[n]);
+                DAT_0081ce00[n].next = EditCursor.next;
+                EditCursor.next = &DAT_0081ce00[n];
+                DAT_0081ce00[n].field_1404 = DAT_00829ba8[i][0];
+                DAT_0081ce00[n].field_1408 = DAT_00829ba8[i][1];
+                DAT_0081ce00[n].footprint = *fp;
+                DAT_0081ce00[n].field_1828 = 0x2032;
+                FUN_0045f460(&DAT_0081ce00[n]);
+                n++;
+            }
+            bit <<= 1;
+        }
+        {
+            struct Int16Pair pair;
+            pair.x = (unsigned short)EditCursor.field_1404;
+            pair.y = (unsigned short)EditCursor.field_1408;
+            key = FUN_00427c00((unsigned int)obj);
+            if (key == 0) {
+                key = (unsigned int)DAT_004b5d20;
+            }
+            result = (struct LookupResult *)FUN_0041d3b0((const unsigned char *)key, (unsigned int)&pair);
+            if (result->field_0 == 0) {
+                FUN_0045f480(&EditCursor, 0xe);
+            }
+        }
+        if (FUN_0045f4b0(&EditCursor)) {
+            FUN_0045f480(&EditCursor, 0xe);
+            bit = 1;
+            mask = &DAT_00829b8c;
+            c = DAT_0081ce00;
+            for (i = 0; i < 8; i++) {
+                if (i == 4) {
+                    bit = 1;
+                    mask = &DAT_00829ba4;
+                }
+                if (bit & *mask) {
+                    if (EditCursor.field_1404 == c->field_1404 && EditCursor.field_1408 == c->field_1408) {
+                        FUN_0045f460(&EditCursor);
+                        return;
+                    }
+                    c++;
+                }
+                bit <<= 1;
+            }
+        }
+    } else {
+        FUN_0045f480(&EditCursor, 0xe);
+    }
+}
 
 struct Struct427940 {
     unsigned char pad_0[0xc];

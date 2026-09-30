@@ -304,15 +304,30 @@ struct CastleFloatEnt {
     int c;
 };
 
+struct Int16Pair {
+    short x;
+    short y;
+};
+
 /* castle track-segment list node (0x60f914 table entries; also embedded in castle nodes) */
 struct LSub {
-    /* 0x00 */ char pad0[0x10];
+    /* 0x00 */ int r[4];
     /* 0x10 */ struct LSub *next;
-    /* 0x14 */ short x;
-    /* 0x16 */ short y;
+    /* 0x14 */ struct Int16Pair xy;
     /* 0x18 */ unsigned int k;
-    /* 0x1c */ unsigned int a;
-    /* 0x20 */ unsigned int b;
+    /* 0x1c */ float a;
+    /* 0x20 */ float b;
+};
+
+/* 0x6102f8: three 0x58-byte ride-path objects (doubly linked via next/prev) */
+struct CastlePathObj {
+    unsigned int f0[0x10];
+    float f40;
+    float f44;
+    float f48;
+    void **f4c;
+    struct CastlePathObj *next;
+    struct CastlePathObj *prev;
 };
 
 /* 0x7fded4: newly unlocked objects shown by the "new objects" popup */
@@ -1673,9 +1688,7 @@ extern char DAT_004e3870[];
 // 0x0060f914
 extern struct LSub DAT_0060f914[20];
 // 0x006102f8
-extern unsigned int DAT_006102f8;
-// 0x006103a8
-extern unsigned int DAT_006103a8;
+extern struct CastlePathObj DAT_006102f8[3];
 // 0x00610a04
 extern unsigned int DAT_00610a04;
 // 0x00610a08
