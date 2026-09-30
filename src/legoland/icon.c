@@ -387,9 +387,13 @@ LEGO_EXPORT struct IconNode *LoadSpriteIcon(const char *filename, unsigned int p
 
 // FUNCTION: LEGOLAND 0x0046d850
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3) {
-    int dx;
     int dy;
-    int ebp;
+    int dx;
+    int l;
+    int t;
+    int nl;
+    int nt;
+    int edge;
 
     if ((r->field_4 & 1) != 0) {
         if (r->field_18 - r->field_10 <= r->clip.bottom - r->clip.top) {
@@ -405,28 +409,31 @@ void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3) {
 
     dy = FUN_0046dd10(0xffff, (short)((r->clip.top - r->field_10) - param_3), (short)(r->field_10 + param_3), r->field_0, param_3);
     dx = param_3;
-    ebp = r->field_c + param_3;
+    l = r->field_c;
+    t = r->field_10;
+    nl = l + dx;
+    nt = t + dy;
     if ((r->field_4 & 1) != 0) {
-        if (r->field_10 + dy <= r->clip.top) {
-            ebp = r->field_18 + dy;
-            if (ebp < r->clip.bottom) {
-                dy = dy + (r->clip.bottom - ebp);
-            }
+        if (nt > r->clip.top) {
+            dy = dy + (r->clip.top - nt);
         } else {
-            dy = dy + (r->clip.top - (r->field_10 + dy));
+            edge = r->field_18 + dy;
+            if (edge < r->clip.bottom) {
+                dy = dy + (r->clip.bottom - edge);
+            }
         }
     } else {
-        if (ebp > r->clip.left) {
-            dx = dx + (r->clip.left - ebp);
+        if (nl > r->clip.left) {
+            dx = dx + (r->clip.left - nl);
         } else {
-            ebp = r->field_14 + param_3;
-            if (ebp < r->clip.right) {
-                dx = dx + (r->clip.right - ebp);
+            edge = r->field_14 + dx;
+            if (edge < r->clip.right) {
+                dx = dx + (r->clip.right - edge);
             }
         }
     }
-    r->field_c = r->field_c + dx;
-    r->field_10 = r->field_10 + dy;
+    r->field_c = l + dx;
+    r->field_10 = t + dy;
     r->field_14 = r->field_14 + dx;
     r->field_18 = r->field_18 + dy;
     DAT_00668e44[DAT_00668e64] = DAT_00668e44[DAT_00668e64] + dy;
