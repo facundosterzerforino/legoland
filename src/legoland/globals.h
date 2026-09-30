@@ -1660,6 +1660,8 @@ extern unsigned int DAT_006103a8;
 extern unsigned int DAT_00610a04;
 // 0x00610a08
 extern unsigned int DAT_00610a08;
+// 0x00610a18
+extern struct RenderItemNode *DAT_00610a18;
 // 0x00610a20 — sqrtf lookup table (64 entries: {intercept, slope} pairs)
 extern float sqrtf_table[128];
 // 0x00610c40 — invsqrtf lookup table (64 entries: {intercept, slope} pairs)

@@ -1358,7 +1358,6 @@ struct SpriteSet *DAT_004c2b68;
 // GLOBAL: LEGOLAND 0x004c2b6c
 struct Sprite *DAT_004c2b6c;
 
-
 // GLOBAL: LEGOLAND 0x004c2b70
 struct Sprite *DAT_004c2b70;
 
@@ -1466,7 +1465,6 @@ struct Ride *DAT_004cbe30;
 
 // GLOBAL: LEGOLAND 0x004cbe48
 void *DAT_004cbe48;
-
 
 // GLOBAL: LEGOLAND 0x004cbe4c
 struct Sprite *DAT_004cbe4c;
@@ -1905,6 +1903,9 @@ unsigned int DAT_00610a04;
 
 // GLOBAL: LEGOLAND 0x00610a08
 unsigned int DAT_00610a08;
+
+// GLOBAL: LEGOLAND 0x00610a18
+struct RenderItemNode *DAT_00610a18;
 
 // GLOBAL: LEGOLAND 0x00610a20
 float sqrtf_table[128];

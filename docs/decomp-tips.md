@@ -116,3 +116,31 @@
 - Adding a named `char c` variable shifts register allocation: `file` moves from EBX to EDI, `c` takes CL instead of BL. Removing the variable restores correct allocation.
 - SIB byte order (`(%eax,%esi,1)` vs `(%esi,%eax,1)`) is controlled by which operand the compiler treats as "base" vs "index". Post-increment in the subscript expression makes the index variable (pos/EAX) the base.
 - `while (buffer[pos++] != '\r')` (while-loop, not do-while) changes register allocation entirely (file→EDI, param_3→EBX). The `do {} while` form preserves the target's allocation.
+
+## Uninitialized Locals Read From Dead Argument Slots (FUN_0040b420, FUN_0040f920)
+- If the asm "falls back" to an argument that the code no longer uses (e.g. `mov edi,[esp+0x18]` where
+  `[esp+0x18]` is a dead parameter slot), the source probably used an **uninitialized** local on that path.
+  MSVC reads the variable's home slot, which it had placed in the dead argument slot.
+- Write it that way: `int frame; if (lls != NULL) frame = lls->frame; ... LLSSetFrame(x, frame);`.
+  Writing the fallback as `(int)param` keeps the parameter alive in a register and changes the allocation.
+- If several sections each read such a value, give each block its own short-lived local.
+
+## Block Scope Decides Stack Layout
+- Declaration order of locals almost never changes the frame at /O2; block scope does. Declaring a local
+  (e.g. `struct Point off;`) inside each block that uses it often fixes the whole layout.
+- Two ints that are really a position may need to be one `struct Point`: a struct is never placed in a dead
+  argument slot, two scalars can be.
+
+## Functions With an ebp Frame (`push ebp; mov ebp,esp`)
+At /O2, MSVC6 omits the frame pointer. A frame in the original means one of:
+1. **Inline asm in the function.** Fingerprints: `fistp DWORD` behind `fstp [x]; fld [x]` (fast float->int
+   macro), `shrd`/`shld` (fixed-point), `rdtsc` wrapped in `push eax; push edx` (timing macro), `pusha/popa`,
+   `xchg`, `fstcw/fldcw`, `push eax; lea eax,[func]; mov [g],eax; pop eax`. MSVC never emits these; the
+   function cannot be matched in pure C.
+2. **Unoptimized code** (every local in `[ebp-N]`, loops as `jmp` to the condition, no register
+   allocation). Wrap the function in `#pragma optimize("", off)` / `#pragma optimize("", on)`, placing the
+   first pragma *above* the `// FUNCTION:` annotation (a line between the annotation and the function makes
+   reccmp drop it). In /Od the slot order of locals depends on their **names** (symbol hash), not on
+   declaration order.
+3. **Optimized body with a frame** and no inline-asm fingerprint: `#pragma optimize("y", off)` (frame
+   pointer omission off) reproduces it.

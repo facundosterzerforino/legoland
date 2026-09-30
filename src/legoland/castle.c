@@ -12,10 +12,12 @@
 #include "gamemap.h"
 #include "interface.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
 #include "path_control.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "tilemap.h"
 #include "timer.h"
@@ -4549,8 +4551,40 @@ void FUN_00424e70(struct SprOwner *owner) {
 // FUNCTION: LEGOLAND 0x00424e80
 void FUN_00424e80(void) { STUB(); }
 
+#pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00425050
-void FUN_00425050(void) { STUB(); }
+void FUN_00425050(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *r;
+    struct RideNode *walk;
+    struct Bloke *rider;
+    struct Point off;
+    struct Point pos;
+
+    r = obj->ride;
+    RenderItems_New();
+    DAT_00610a18 = NULL;
+    walk = r->riders;
+    while (walk != NULL) {
+        if (tile->id == walk->tile.id) {
+            rider = walk->rider;
+            if (rider->param_action < 0x10) {
+                AddBlokeToRenderList(&DAT_00610a18, (struct BlokeRenderSrc *)walk, walk->person->field_20);
+            }
+            if (rider->param_action >= 0x21) {
+                AddBlokeToRenderList(&DAT_00610a18, (struct BlokeRenderSrc *)walk, walk->person->field_20);
+            }
+        }
+        walk = walk->next;
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_00610a18);
+    if (DAT_00829c04 != NULL) {
+        pos = GetScreenCoordsForObject(tile, r);
+        off = GetRenderOffsetForLayer(r->layer, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_00829c04, pos.x + off.x, pos.y + off.y, clip, 0);
+    }
+}
+#pragma optimize("", on)
 
 // FUNCTION: LEGOLAND 0x00425170
 void FUN_00425170(void) {
