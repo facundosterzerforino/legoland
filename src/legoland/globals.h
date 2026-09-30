@@ -3255,7 +3255,9 @@ extern unsigned int DAT_007fd638;
 // 0x007fd640
 extern struct ResVolume *DAT_007fd640[4];
 // 0x007fd660
-extern unsigned int DAT_007fd660[329];
+extern unsigned int DAT_007fd660[256];
+// 0x007fda60
+extern struct BlokeSave DAT_007fda60;
 // 0x007fdb84
 extern int DAT_007fdb84;
 // 0x007fdb88

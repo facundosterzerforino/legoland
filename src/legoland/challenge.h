@@ -45,3 +45,4 @@ void FUN_00444970(unsigned int param_1, unsigned int param_2);
 void FUN_00444090(void);
 void FUN_00444150(void);
 int FUN_0044db90(void);
+unsigned int FUN_00444260(void);
