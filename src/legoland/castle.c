@@ -5611,18 +5611,17 @@ void FUN_00425e20(void) {
     struct Point pt;
     struct Point ref;
     int bounds[4];
-    float *mm;
+
     int mid;
     float dx;
     float fx, fy, fm, fb;
     float dy;
 
     DAT_008299bc = DAT_004b5c1c[1];
-    mm = &DAT_008299bc.m[0][0];
-    a[0] = mm[0];
-    a[1] = mm[1];
-    a[2] = mm[4];
-    a[3] = mm[5];
+    a[0] = DAT_008299bc.m[0][0];
+    a[1] = DAT_008299bc.m[0][1];
+    a[2] = DAT_008299bc.m[1][0];
+    a[3] = DAT_008299bc.m[1][1];
     FUN_00425de0(a);
     pt.x = (lpConfig->field_10 >> 1) + lpConfig->field_20;
     pt.y = (lpConfig->field_12 >> 1) + lpConfig->field_22;
@@ -5631,7 +5630,7 @@ void FUN_00425e20(void) {
     ScreenToMapRef(&pt.x, &ref.x, 0);
     GetTileBounds(&ref, bounds);
     DAT_008299a0[2] = 0.0f;
-    mid = (bounds[2] + bounds[0]) >> 1;
+    mid = (bounds[0] + bounds[2]) >> 1;
     fx = (float)pt.x;
     fm = (float)mid;
     dx = fx - fm;
