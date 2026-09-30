@@ -3274,7 +3274,7 @@ unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, un
 }
 
 // FUNCTION: LEGOLAND 0x0040d900
-void FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), FlumeCallback param_5, void (*param_6)(struct EdgeNode *, int *)) {
+void FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(), FlumeCallback param_5, void (*param_6)(struct EdgeNode *, int *)) {
     struct FlumeEntry *entry = FUN_00409010();
     unsigned int buf[9];
     unsigned int *list;
@@ -3404,7 +3404,6 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
     unsigned int h = DAT_004b4734 - DAT_004b472c;
     struct FlumeXY t;
     struct FlumeEntry *n;
-    unsigned char dx, dy;
     struct FlumeEntry *prev;
 
     t.x = entry->tile.pos.x;
@@ -3414,10 +3413,8 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
         entry->submode = DAT_004c2af4;
         switch (DAT_004c2af4) {
         case 0:
-            dx = DAT_004c445c->var_3c[0];
-            dy = DAT_004c445c->var_3c[1];
-            t.x += dx;
-            t.y += dy;
+            t.x += DAT_004c445c->var_3c[0];
+            t.y += DAT_004c445c->var_3c[1];
             t.x += 3;
             n = FUN_00409010();
             if (n != NULL) {
@@ -3508,8 +3505,8 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->tile.pos.y = t.y;
             }
             FUN_00409170((struct Node *)entry, (struct ListNode *)n);
-            entry->link30 = n;
             prev = n;
+            entry->link30 = n;
             t.x -= w;
             n = FUN_00409010();
             if (n != NULL) {
@@ -3585,8 +3582,8 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->tile.pos.y = t.y;
             }
             FUN_00409170((struct Node *)entry, (struct ListNode *)n);
-            entry->link30 = n;
             prev = n;
+            entry->link30 = n;
             t.y -= h;
             n = FUN_00409010();
             if (n != NULL) {
