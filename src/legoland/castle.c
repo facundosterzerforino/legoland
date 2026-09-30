@@ -3606,6 +3606,9 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
             for (i = 0; i < src->nTris; i++) {
                 int v[3];
                 float z;
+                struct MVert *p0;
+                struct MVert *p1;
+                struct MVert *p2;
                 int dx1;
                 int dy1;
                 int dx2;
@@ -3619,10 +3622,13 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                         v[k] = src->edges[e & 0x7fffffff].v0;
                     }
                 }
-                dx1 = src->verts[v[1]].x - src->verts[v[0]].x;
-                dy1 = src->verts[v[1]].y - src->verts[v[0]].y;
-                dx2 = src->verts[v[2]].x - src->verts[v[0]].x;
-                dy2 = src->verts[v[2]].y - src->verts[v[0]].y;
+                p0 = &src->verts[v[0]];
+                p1 = &src->verts[v[1]];
+                p2 = &src->verts[v[2]];
+                dx1 = p1->x - p0->x;
+                dy1 = p1->y - p0->y;
+                dx2 = p2->x - p0->x;
+                dy2 = p2->y - p0->y;
                 z = (float)dy2 * (float)dx1 - (float)dx2 * (float)dy1;
                 bits = *(unsigned int *)&z;
                 if (bits & 0x80000000) {
