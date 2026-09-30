@@ -3950,8 +3950,6 @@ extern int DAT_008299b4;
 extern int DAT_008299b8;
 // 0x00829a3c
 extern struct ListLink DAT_00829a3c;
-// 0x00829a54
-extern struct ListLink *DAT_00829a54;
 // 0x00829a58
 extern void (*DAT_00829a58)(void);
 // 0x00829a5c

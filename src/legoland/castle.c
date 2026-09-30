@@ -5140,7 +5140,7 @@ int FUN_004265d0(struct RectI *a, struct RectI *b) {
 
 // FUNCTION: LEGOLAND 0x00426650
 unsigned int FUN_00426650(void) {
-    struct FlagNode *n = (struct FlagNode *)DAT_00829a54;
+    struct FlagNode *n = (struct FlagNode *)DAT_00829a3c.var_18;
 
     while (n != (struct FlagNode *)&DAT_00829a3c) {
         if (n->kind == 0xf) {
