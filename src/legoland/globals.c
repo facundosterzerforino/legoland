@@ -5533,7 +5533,7 @@ struct Cursor DAT_0082f760;
 struct Sprite *DAT_00830f94;
 
 // GLOBAL: LEGOLAND 0x00830f9c
-void *DAT_00830f9c;
+struct DriveTable *DAT_00830f9c;
 
 // GLOBAL: LEGOLAND 0x00830f98
 struct Position *DAT_00830f98;

@@ -4123,7 +4123,12 @@ extern struct Sprite *DAT_00830f94;
 // 0x00830f98
 extern struct Position *DAT_00830f98;
 // 0x00830f9c
-extern void *DAT_00830f9c;
+struct DriveTable {
+    unsigned char pad_0[0xc];
+    int *x;
+    int *y;
+};
+extern struct DriveTable *DAT_00830f9c;
 // 0x00830fc0
 extern LEGO_EXPORT struct Cursor PathCursor;
 // 0x00832800
