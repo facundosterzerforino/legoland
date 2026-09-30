@@ -366,12 +366,9 @@ void FUN_00485bd0(struct SortNode *node) {
         DAT_0066b5a4 = node;
     } else {
         if (node->key < DAT_007fd600->key) {
-            do {
-                if (DAT_007fd600->left == NULL) {
-                    break;
-                }
+            while (node->key < DAT_007fd600->key && DAT_007fd600->left != NULL) {
                 DAT_007fd600 = DAT_007fd600->left;
-            } while (node->key < DAT_007fd600->key);
+            }
         } else {
             while (node->key > DAT_007fd600->key && DAT_007fd600->right != NULL) {
                 DAT_007fd600 = DAT_007fd600->right;
