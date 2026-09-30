@@ -209,13 +209,22 @@ struct FreePlaySpriteSlot {
 };
 
 struct ProgressEntry {
-    int id;
-    int x;
-    int y;
-    struct Sprite *sprite0;
-    struct Sprite *sprite1;
-    const char *name0;
-    const char *name1;
+    /* 0x00 */ const char *name0;
+    /* 0x04 */ const char *name1;
+    /* 0x08 */ int id;
+    /* 0x0c */ int x;
+    /* 0x10 */ int y;
+    /* 0x14 */ struct Sprite *sprite0;
+    /* 0x18 */ struct Sprite *sprite1;
+};
+
+/* 0x4beb80: progress-screen levels, then the tutorial-screen entries */
+struct ProgressTables {
+    /* 0x000 */ struct ProgressEntry levels[10];
+    /* 0x118 */ int last_clicked;
+    /* 0x11c */ int pad_11c;
+    /* 0x120 */ struct ProgressEntry tutorials[5];
+    /* 0x1ac */ unsigned char tail[0x14];
 };
 
 struct InfoTimedEntry {
@@ -1097,19 +1106,8 @@ extern struct Bloke *DAT_004bdd04;
 extern unsigned int DAT_004bdd08;
 // 0x004bdea0
 extern LEGO_EXPORT RECT SPRITE_ClipRect;
-// 0x004beb88
-extern struct ProgressEntry DAT_004beb88[10];
-// 0x004beb94
-extern struct FreePlaySpriteSlot DAT_004beb94[10];
-// 0x004beba0
-extern unsigned char DAT_004beba0;
-// 0x004becac
-extern int DAT_004bec98;
-extern unsigned int DAT_004becac;
-// 0x004becb0
-extern int DAT_004becb0[1];
-// 0x004becb4
-extern struct FreePlaySpriteSlot DAT_004becb4[5];
+// 0x004beb80
+extern struct ProgressTables DAT_004beb80;
 // 0x004bed40
 extern unsigned int DAT_004bed40;
 // 0x004bed44

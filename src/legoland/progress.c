@@ -86,19 +86,19 @@ LEGO_EXPORT void InitProgressScreen(void) {
 
         for (i = 0; i < 10; i++) {
             if (i + 5 == (int)lpConfig->field_28 - 1) {
-                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite0);
+                icon = InsertIcon(DAT_004beb80.levels[i].x, DAT_004beb80.levels[i].y, 0x1c, DAT_004beb80.levels[i].sprite0);
                 if (icon) {
                     icon->field_28 = (void *)RenderFlashingSpriteIcon;
-                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string_id = DAT_004beb80.levels[i].id;
                     icon->string = GetString(icon->string_id);
                     icon->field_18 = i + 5;
                     icon->event_handler = (void *)FUN_0048bb60;
                     icon->flags |= flags;
                 }
             } else if (i + 5 < (int)lpConfig->field_28 - 1) {
-                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite1);
+                icon = InsertIcon(DAT_004beb80.levels[i].x, DAT_004beb80.levels[i].y, 0x1c, DAT_004beb80.levels[i].sprite1);
                 if (icon) {
-                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string_id = DAT_004beb80.levels[i].id;
                     icon->string = GetString(icon->string_id);
                     icon->flags |= 0x2000;
                 }
@@ -107,19 +107,19 @@ LEGO_EXPORT void InitProgressScreen(void) {
     } else {
         for (i = 0; i < 10; i++) {
             if (i + 5 == (int)lpConfig->field_28 - 1) {
-                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite0);
+                icon = InsertIcon(DAT_004beb80.levels[i].x, DAT_004beb80.levels[i].y, 0x1c, DAT_004beb80.levels[i].sprite0);
                 if (icon) {
                     icon->field_28 = (void *)RenderFlashingSpriteIcon;
-                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string_id = DAT_004beb80.levels[i].id;
                     icon->string = GetString(icon->string_id);
                     icon->field_18 = i + 5;
                     icon->event_handler = (void *)FUN_0048bb60;
                     icon->flags |= 0x600a;
                 }
             } else if (DAT_0080ffa0.flags[4 + i + 5] == 1) {
-                icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite1);
+                icon = InsertIcon(DAT_004beb80.levels[i].x, DAT_004beb80.levels[i].y, 0x1c, DAT_004beb80.levels[i].sprite1);
                 if (icon) {
-                    icon->string_id = DAT_004beb88[i].id;
+                    icon->string_id = DAT_004beb80.levels[i].id;
                     icon->string = GetString(icon->string_id);
                     icon->field_18 = i + 5;
                     icon->event_handler = (void *)FUN_0048bb60;
@@ -136,14 +136,14 @@ LEGO_EXPORT void InitProgressScreen(void) {
 unsigned char FUN_0048bb60(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
     DAT_00798660 = 1;
     if ((arg1 & 2) != 0) {
-        if ((int)(GetTicks() - DAT_0079866c) < 500 && arg0[0x18] == DAT_004bec98) {
+        if ((int)(GetTicks() - DAT_0079866c) < 500 && arg0[0x18] == DAT_004beb80.last_clicked) {
             if (DAT_00798664 != 0) {
                 return FUN_0048bf90(arg0, arg1, arg2, arg3);
             }
             return FUN_0048bc20(arg0, arg1, arg2, arg3);
         }
         DAT_0079866c = GetTicks();
-        DAT_004bec98 = arg0[0x18];
+        DAT_004beb80.last_clicked = arg0[0x18];
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         lpConfig->field_28 = arg0[0x18] + 1;
         DAT_0080ff80.unk4 = 0xffffffff;
@@ -187,7 +187,7 @@ unsigned char FUN_0048bc20(unsigned char *arg0, unsigned int arg1, unsigned int 
 void FUN_0048bd00(void) {
     struct FreePlaySpriteSlot *slot;
 
-    for (slot = DAT_004becb4; (int)slot < (int)&DAT_004bed40; slot++) {
+    for (slot = (struct FreePlaySpriteSlot *)&DAT_004beb80.tutorials[0].sprite0; (int)slot < (int)&DAT_004bed40; slot++) {
         slot->field_0 = LoadSprite(((const char **)slot)[-5], 4);
         slot->field_4 = LoadSprite(((const char **)slot)[-4], 4);
     }
@@ -196,7 +196,7 @@ void FUN_0048bd00(void) {
 void FUN_0048bd40(void) {
     int *esi;
 
-    esi = (int *)&DAT_004becb4[0].field_4;
+    esi = (int *)&DAT_004beb80.tutorials[0].sprite1;
     do {
         ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
@@ -209,7 +209,7 @@ void FUN_0048bd70(void) {
 
     RemoveIconGroup(0x1c);
     RemoveIconGroup(0x23);
-    slot = DAT_004becb4;
+    slot = (struct FreePlaySpriteSlot *)&DAT_004beb80.tutorials[0].sprite0;
     while ((int)slot < (int)&DAT_004bed40) {
         while (KillSprite(slot->field_0) == 0) {
         }
@@ -259,7 +259,7 @@ void FUN_0048bde0(void) {
     FUN_0048bd40();
     RemoveIconGroup(0x1c);
     mapping = DAT_007cb380;
-    entry = (int *)&DAT_004becb0;
+    entry = &DAT_004beb80.tutorials[0].y;
     i = 0;
     do {
         if (i == lpConfig->field_28 - 1) {
@@ -360,7 +360,7 @@ void FUN_0048c100(void) {
         NewPrintCent(GetString(0x28a), 3, rc, 0);
         i = 0;
         mapping = DAT_007cb380;
-        entry = (int *)&DAT_004becac;
+        entry = &DAT_004beb80.tutorials[0].x;
         do {
             text = GetString(entry[-1]);
             rc.left = entry[0] + 0x32;
@@ -381,6 +381,6 @@ void FUN_0048c100(void) {
             i++;
             entry += 7;
             mapping++;
-        } while ((int)entry < (int)&DAT_004becb4[4].pad_8[12]);
+        } while ((int)entry < (int)&DAT_004beb80.tail[12]);
     }
 }

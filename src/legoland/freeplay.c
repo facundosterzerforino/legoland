@@ -642,8 +642,8 @@ void FUN_0048b700(void) {
     int i;
 
     for (i = 0; i < 10; i++) {
-        DAT_004beb94[i].field_0 = LoadSprite(((const char **)&DAT_004beb94[i])[-5], 4);
-        DAT_004beb94[i].field_4 = LoadSprite(((const char **)&DAT_004beb94[i])[-4], 4);
+        DAT_004beb80.levels[i].sprite0 = LoadSprite(DAT_004beb80.levels[i].name0, 4);
+        DAT_004beb80.levels[i].sprite1 = LoadSprite(DAT_004beb80.levels[i].name1, 4);
     }
 }
 
@@ -651,12 +651,12 @@ void FUN_0048b700(void) {
 void FUN_0048b740(void) {
     int *esi;
 
-    esi = (int *)&DAT_004beb94[0].field_4;
+    esi = (int *)&DAT_004beb80.levels[0].sprite1;
     do {
         ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
-    } while ((long)esi < (long)DAT_004becb0);
+    } while ((long)esi < (long)&DAT_004beb80.levels[10].sprite1);
 }
 
 // FUNCTION: LEGOLAND 0x0048b770
@@ -665,8 +665,8 @@ void FUN_0048b770(void) {
 
     RemoveIconGroup(0x1c);
     RemoveIconGroup(0x23);
-    slot = DAT_004beb94;
-    while ((int)slot < (int)&DAT_004becac) {
+    slot = (struct FreePlaySpriteSlot *)&DAT_004beb80.levels[0].sprite0;
+    while ((int)slot < (int)&DAT_004beb80.levels[10].sprite0) {
         while (KillSprite(slot->field_0) == 0) {
         }
         while (KillSprite(slot->field_4) == 0) {
