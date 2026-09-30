@@ -346,15 +346,17 @@ struct AnimHandle *FUN_00443bd0(const char *filename) {
             if (AVIStreamInfoA(stream, &sinfo, 0x8c) == 0 && sinfo.fccType == 0x73646976) {
                 found = stream;
                 AVIStreamAddRef(stream);
+                length = sinfo.dwLength;
                 fps = sinfo.dwRate / sinfo.dwScale;
                 width = sinfo.rcFrameRight - sinfo.rcFrameLeft;
                 height = sinfo.rcFrameBottom - sinfo.rcFrameTop;
-                length = sinfo.dwLength;
             }
         }
         if (found != NULL) {
             result = (struct AnimHandle *)malloc(sizeof(struct AnimHandle));
-            if (result != NULL) {
+            if (result == NULL) {
+                AVIStreamRelease(found);
+            } else {
                 result->length = length;
                 result->fps = fps;
                 result->width = width;
@@ -367,7 +369,6 @@ struct AnimHandle *FUN_00443bd0(const char *filename) {
                 DAT_00665f48 = DAT_00665f48 + 1;
                 return result;
             }
-            AVIStreamRelease(found);
         }
         AVIFileRelease(file);
     }
