@@ -6,10 +6,17 @@
 
 struct Person;
 struct Sprite;
+struct Element;
 struct HitInfo {
     int field_0;
-    int field_4;
-    int field_8;
+    union {
+        int field_4;
+        struct Element *element;
+    };
+    union {
+        int field_8;
+        unsigned short coords;
+    };
 };
 struct SpriteExArg;
 struct IconNode;

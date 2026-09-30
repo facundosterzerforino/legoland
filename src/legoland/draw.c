@@ -407,7 +407,7 @@ LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00464360
-LEGO_EXPORT void PrintBackground(void) { return; }
+LEGO_EXPORT void PrintBackground(int x, int y) { return; }
 
 // FUNCTION: LEGOLAND 0x00464370
 LEGO_EXPORT void CommitCliprectToHardware(void) {

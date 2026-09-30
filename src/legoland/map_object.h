@@ -81,3 +81,6 @@ int FUN_004636c0(void);
 LEGO_EXPORT void DoMapAI(void);
 void FUN_004632b0(void);
 LEGO_EXPORT void ProcessDamage(void);
+void FUN_00460e00(void);
+void FUN_00461020(void);
+void FUN_00461220(void);

@@ -2795,6 +2795,9 @@ LEGO_EXPORT int ScrollSpeedX;
 // GLOBAL: LEGOLAND 0x00667cc0
 LEGO_EXPORT int ScrollSpeedY;
 
+// GLOBAL: LEGOLAND 0x00667cc4
+int DAT_00667cc4;
+
 // GLOBAL: LEGOLAND 0x00667cd0
 int DAT_00667cd0;
 
@@ -4554,7 +4557,7 @@ int DAT_008003f4;
 unsigned int DAT_008003f8;
 
 // GLOBAL: LEGOLAND 0x00800400
-LEGO_EXPORT unsigned int ObjectPartArray[1024];
+LEGO_EXPORT RECT ObjectPartArray[256];
 
 // GLOBAL: LEGOLAND 0x00801400
 LEGO_EXPORT struct MapElement **GameMap;
@@ -4603,6 +4606,9 @@ LEGO_EXPORT unsigned int ObjectPartCount;
 
 // GLOBAL: LEGOLAND 0x00801b28
 int DAT_00801b28;
+
+// GLOBAL: LEGOLAND 0x00801b40
+int ObjectPartKey[256];
 
 // GLOBAL: LEGOLAND 0x00801f40
 LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
