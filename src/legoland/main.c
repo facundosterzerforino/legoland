@@ -23,13 +23,13 @@ void FUN_00453ce0(const char *format, ...) {
 }
 
 // FUNCTION: LEGOLAND 0x00453d10
-int __stdcall FUN_00453d10(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsigned int arg4) {
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     int result;
 
     result = -1;
     __try {
         FUN_00458830((char *)&DAT_0066752c);
-        result = (int)wWinMain(arg1, arg2, arg3, arg4);
+        result = wWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
         // STRING: LEGOLAND 0x004b8a94
     } __except (stackdump((void *)GetExceptionInformation(), "main thread")) {
     }

@@ -243,10 +243,3 @@ int __cdecl wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     }
     return FUN_0047f880();
 }
-
-/* __stdcall thunk providing _WinMain@16 for LIBC's _WinMainCRTStartup, which
-   forwards to the game's __cdecl WinMain at 0x0047fd10. Not a real binary
-   function (no annotation); only satisfies the CRT startup's reference. */
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    return wWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-}
