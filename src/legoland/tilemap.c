@@ -945,8 +945,8 @@ int FUN_0045cbc0(int *param_1, int param_2) {
     switch (param_2) {
     case 2:
         r.y0 = r.y1 = param_1[1] + -1;
-        r.x1 = param_1[2];
         r.x0 = *param_1;
+        r.x1 = param_1[2];
         result = FUN_0045c900(&r);
         if (result != 0) {
             param_1[1] = param_1[1] + -1;
@@ -955,8 +955,8 @@ int FUN_0045cbc0(int *param_1, int param_2) {
         break;
     case 0:
         r.y0 = r.y1 = param_1[3] + 1;
-        r.x1 = param_1[2];
         r.x0 = *param_1;
+        r.x1 = param_1[2];
         result = FUN_0045c900(&r);
         if (result != 0) {
             param_1[3] = param_1[3] + 1;
