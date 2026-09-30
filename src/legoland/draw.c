@@ -812,28 +812,151 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00466770
-void FUN_00466770(void) { STUB(); }
+void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
+    struct DrawLLSFrame *frame = (struct DrawLLSFrame *)(lls + 1);
+    unsigned short *dst;
+    unsigned short *pixels;
+    unsigned char *runs;
+    unsigned int *mask;
+    int frame_index;
+    int hit;
+    int i;
+
+    DAT_007fe9a4 = DAT_0066809c.lPitch;
+    DAT_007fea4c.left = clip->left;
+    DAT_007febac.width = clip->right - clip->left;
+    DAT_007fea4c.top = clip->top;
+    DAT_007febac.height = clip->bottom - clip->top;
+    frame_index = (int)DAT_004b9ca8;
+    if (frame_index < 0) {
+        frame_index = lls->frame;
+    }
+    if (frame_index >= lls->frame_count) {
+        frame_index = lls->frame_count - 1;
+    }
+    hit = 0;
+    DAT_007fe9a8 = (unsigned int)((unsigned char *)DAT_0066809c.lpSurface + DAT_00813a44.y * DAT_0066809c.lPitch + DAT_00813a44.x * 2);
+    if (DAT_00813a44.x >= pos->x && DAT_00813a44.x <= pos->x + lls->width && DAT_00813a44.y >= pos->y && DAT_00813a44.y <= pos->y + lls->height) {
+        hit = 1;
+    }
+    dst = (unsigned short *)((unsigned char *)DAT_0066809c.lpSurface + pos->y * DAT_0066809c.lPitch + (pos->x - DAT_007fea4c.left) * 2);
+    if (lls->flags & 1) {
+        pixels = frame->pixels;
+        runs = (unsigned char *)frame + frame->pixel_count * 2 + 0x10;
+        mask = (unsigned int *)(runs + frame->run_bytes);
+        if (hit) {
+            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
+                FUN_00467640(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            } else if (DAT_007fea4c.left != 0) {
+                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
+                    FUN_00466d80(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                } else {
+                    FUN_00467180(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                }
+            } else {
+                FUN_004673f0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            }
+        } else {
+            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
+                FUN_00467f00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top);
+            } else if (DAT_007fea4c.left != 0) {
+                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
+                    FUN_004677b0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                } else {
+                    FUN_00467b00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                }
+            } else {
+                FUN_00467d10(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            }
+        }
+        i = lls->frame + 1;
+        while (i-- != 0) {
+            frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
+        }
+        pixels = frame->pixels;
+        runs = (unsigned char *)frame + frame->pixel_count * 2 + 0x10;
+        mask = (unsigned int *)(runs + frame->run_bytes);
+        if (hit) {
+            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
+                FUN_00467640(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            } else if (DAT_007fea4c.left != 0) {
+                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
+                    FUN_00466d80(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                } else {
+                    FUN_00467180(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                }
+            } else {
+                FUN_004673f0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            }
+        } else {
+            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
+                FUN_00467f00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top);
+            } else if (DAT_007fea4c.left != 0) {
+                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
+                    FUN_004677b0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                } else {
+                    FUN_00467b00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                }
+            } else {
+                FUN_00467d10(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            }
+        }
+    } else {
+        i = frame_index;
+        while (i-- != 0) {
+            frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
+        }
+        pixels = frame->pixels;
+        runs = (unsigned char *)frame + frame->pixel_count * 2 + 0x10;
+        mask = (unsigned int *)(runs + frame->run_bytes);
+        if (hit) {
+            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
+                FUN_00467640(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            } else if (DAT_007fea4c.left != 0) {
+                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
+                    FUN_00466d80(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                } else {
+                    FUN_00467180(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                }
+            } else {
+                FUN_004673f0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            }
+        } else {
+            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
+                FUN_00467f00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top);
+            } else if (DAT_007fea4c.left != 0) {
+                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
+                    FUN_004677b0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                } else {
+                    FUN_00467b00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                }
+            } else {
+                FUN_00467d10(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00466d80
-void FUN_00466d80(void) { STUB(); }
+void FUN_00466d80(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467180
-void FUN_00467180(void) { STUB(); }
+void FUN_00467180(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004673f0
-void FUN_004673f0(void) { STUB(); }
+void FUN_004673f0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467640
-void FUN_00467640(void) { STUB(); }
+void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004677b0
-void FUN_004677b0(void) { STUB(); }
+void FUN_004677b0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467b00
-void FUN_00467b00(void) { STUB(); }
+void FUN_00467b00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467d10
-void FUN_00467d10(void) { STUB(); }
+void FUN_00467d10(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467f00
 void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip) {

@@ -48,6 +48,7 @@ void FUN_00465850(void *frame);
 void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3);
 void FUN_00466360(int a, int b);
 void FUN_004663c0(void);
+LEGO_EXPORT void CommitCliprectToHardware(void);
 LEGO_EXPORT int RenderingComplete(void);
 LEGO_EXPORT void PushSetTarget(struct Sprite *sprite);
 LEGO_EXPORT void PopTarget(void);
@@ -60,3 +61,32 @@ LEGO_EXPORT void SoftPrint_Clear(void);
 LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
 void FUN_004663f0(void);
 int FUN_00463ef0(void);
+
+struct DrawLLS {
+    short frame;
+    unsigned short delay;
+    int width;
+    int height;
+    unsigned int field_c;
+    short frame_count;
+    short loop_delay;
+    unsigned int flags;
+};
+
+struct DrawLLSFrame {
+    unsigned int size;
+    unsigned int pixel_count;
+    unsigned int run_bytes;
+    unsigned int field_c;
+    unsigned short pixels[1];
+};
+
+void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos);
+void FUN_00466d80(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_00467180(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_004673f0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_004677b0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_00467b00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_00467d10(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip);

@@ -331,6 +331,17 @@ struct CastlePathObj {
 };
 
 /* 0x7fded4: newly unlocked objects shown by the "new objects" popup */
+/* 0x7fea4c / 0x7febac: clip rectangle used by the software sprite renderer */
+struct DrawClipOrigin {
+    int top;
+    int left;
+};
+
+struct DrawClipSize {
+    int height;
+    int width;
+};
+
 struct NewObjTable {
     /* 0x00 */ void *objs[20];
     /* 0x50 */ struct Sprite *sprites[20];
@@ -1468,6 +1479,10 @@ extern int DAT_007fe9a4;
 extern int DAT_007fea14;
 // 0x007fea1c
 extern int DAT_007fea1c;
+// 0x007fea4c
+extern struct DrawClipOrigin DAT_007fea4c;
+// 0x007febac
+extern struct DrawClipSize DAT_007febac;
 // 0x0082c66c
 extern struct Sprite *DAT_0082c66c;
 // 0x0082c670

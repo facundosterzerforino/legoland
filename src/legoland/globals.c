@@ -1580,6 +1580,12 @@ int DAT_007fea14;
 // GLOBAL: LEGOLAND 0x007fea1c
 int DAT_007fea1c;
 
+// GLOBAL: LEGOLAND 0x007fea4c
+struct DrawClipOrigin DAT_007fea4c;
+
+// GLOBAL: LEGOLAND 0x007febac
+struct DrawClipSize DAT_007febac;
+
 // GLOBAL: LEGOLAND 0x0082c66c
 struct Sprite *DAT_0082c66c;
 
