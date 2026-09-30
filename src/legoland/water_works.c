@@ -360,20 +360,19 @@ void FUN_00417f40(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417f90
-void FUN_00417f90(struct WaterArg *arg) {
+void FUN_00417f90(Element *obj) {
     struct WaterNode *node;
-    struct WaterRender *render;
-    struct RenderNode *rnode;
-    struct RenderNode *next;
-    unsigned char *bloke;
+    Ride *ride;
+    RideNode *rnode;
+    RideNode *next;
+    Bloke *bloke;
+    TileId *tile;
     int lls;
     int limit;
     int rx;
     int ry;
     int idx;
 
-    unsigned char bx;
-    unsigned char by;
     char dir;
 
     FUN_00417f40();
@@ -411,31 +410,30 @@ void FUN_00417f90(struct WaterArg *arg) {
         }
         node = node->next;
     }
-    render = (struct WaterRender *)arg->field_c;
-    rnode = render->nodes;
+    ride = obj->ride;
+    rnode = ride->riders;
     while (rnode != NULL) {
-        bloke = (unsigned char *)rnode->fn;
-        bx = *(unsigned char *)&rnode->id;
-        by = *((unsigned char *)&rnode->id + 1);
+        bloke = rnode->rider;
+        tile = &rnode->tile;
         next = rnode->next;
-        rx = bx + *(int *)((char *)render + 0xc);
-        ry = by + *(int *)((char *)render + 0x10);
-        if (*(short *)(bloke + 0xe) == 0) {
-            switch (bloke[0x60]) {
+        rx = tile->pos.x + ride->x;
+        ry = tile->pos.y + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
             case 0:
-                bloke[0x62] |= 8;
+                bloke->flags |= 8;
                 ry = ry * 0x100 + 0x80;
-                *(unsigned int *)(bloke + 0x24) = rx * 0x100 + -0x80;
-                *(int *)(bloke + 0x28) = ry;
-                dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                bloke[0x73] = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                bloke[0x60]++;
+                bloke->dest.x = rx * 0x100 + -0x80;
+                bloke->dest.y = ry;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 1:
-                RemoveBlokeFromRide((struct Ride *)render, (struct RideNode *)rnode);
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+                RemoveBlokeFromRide(ride, rnode);
+                bloke->flags &= 0xfff7;
                 break;
             }
         }
