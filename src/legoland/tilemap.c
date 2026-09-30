@@ -1076,6 +1076,7 @@ unsigned char FUN_0045ceb0(int *coords) {
     unsigned char local_15;
     struct MapTile tile;
 
+    local_15 = 0;
     x = *coords;
     y = coords[1] + -1;
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
@@ -1085,7 +1086,9 @@ unsigned char FUN_0045ceb0(int *coords) {
     } else {
         tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
     }
-    local_15 = FUN_0045ce10(&tile) != 0;
+    if (FUN_0045ce10(&tile) != 0) {
+        local_15 = 1;
+    }
     y = coords[1];
     x = *coords + 1;
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
@@ -1110,8 +1113,8 @@ unsigned char FUN_0045ceb0(int *coords) {
     if (FUN_0045ce10(&tile) != 0) {
         local_15 = local_15 | 4;
     }
-    y = coords[1];
     x = *coords + -1;
+    y = coords[1];
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         tile.tile = 0;
         tile.flags_c = 0x40;
