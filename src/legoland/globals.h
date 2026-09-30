@@ -701,7 +701,7 @@ extern unsigned int DAT_004b55f4;
 // 0x004b5608
 extern unsigned int DAT_004b5608;
 // 0x004b560c
-extern unsigned int DAT_004b560c;
+extern int DAT_004b560c;
 // 0x004b5b20
 extern void *DAT_004b5b20;
 // 0x004b5b24
@@ -4283,3 +4283,25 @@ extern int DAT_004d83bc;
 
 // 0x0060f910
 extern int DAT_0060f910;
+
+// 0x004b5964
+extern unsigned int DAT_004b5964[2];
+// 0x004b596c
+extern const char *DAT_004b596c[2];
+// 0x004b5974
+extern unsigned int DAT_004b5974[2];
+// 0x004b597c
+extern const char *DAT_004b597c[2];
+
+// 0x006121c8
+extern float DAT_006121c8[6][3];
+// 0x006126d8
+extern float DAT_006126d8[6][2];
+// 0x00612708
+extern unsigned int DAT_00612708[31][36];
+// 0x00613878
+extern unsigned int DAT_00613878[36];
+// 0x00613908
+extern int DAT_00613908[24][2];
+// 0x006148b8
+extern int DAT_006148b8[546][2];
