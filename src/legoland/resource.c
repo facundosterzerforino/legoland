@@ -308,8 +308,8 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
     last_bs = 0;
     prefix[0] = '\0';
     memset(prefix + 1, 0, sizeof(prefix) - 1);
-    strcpy(path_copy, path);
     src = path_copy;
+    strcpy(src, path);
 
     for (scan = path_copy; scan != 0; scan++) {
         if (*scan == '\0') {
