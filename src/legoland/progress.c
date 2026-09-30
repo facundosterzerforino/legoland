@@ -155,31 +155,33 @@ unsigned char FUN_0048bb60(unsigned char *arg0, unsigned int arg1, unsigned int 
 // FUNCTION: LEGOLAND 0x0048bc20
 unsigned char FUN_0048bc20(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
     if ((arg1 & 2) != 0) {
-        DAT_006687c0 = 0;
-        DAT_006687bc = 0;
-        FUN_00498920();
-        DAT_006687b0 = 4;
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        FUN_0048b770();
-        if ((int)lpConfig->field_28 <= 0xf) {
-            FUN_00466360(0xfa, 0x181);
-            DAT_00668e38 = 0;
-            InitGameInterface(1);
-            EditMode.unk4 = 3;
-            FUN_00474880();
-            FUN_00458a50();
-            FUN_004663c0();
-            DAT_00798660 = 0;
-            DAT_00798668 = 0;
-            return 1;
-        }
-        DAT_00798660 = 0;
-        GamePad &= ~0x20;
-        DAT_00798668 = 0;
-        EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 8;
-        DAT_00668e38 = 1;
+        do {
+            DAT_006687c0 = 0;
+            DAT_006687bc = 0;
+            FUN_00498920();
+            DAT_006687b0 = 4;
+            PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+            FUN_0048b770();
+            if ((int)lpConfig->field_28 <= 0xf) {
+                FUN_00466360(0xfa, 0x181);
+                DAT_00668e38 = 0;
+                InitGameInterface(1);
+                EditMode.unk4 = 3;
+                FUN_00474880();
+                FUN_00458a50();
+                FUN_004663c0();
+                DAT_00798660 = 0;
+                DAT_00798668 = 0;
+            } else {
+                DAT_00798660 = 0;
+                GamePad &= ~0x20;
+                DAT_00798668 = 0;
+                EditMode.unk4 = 2;
+                DAT_0080ff80.unk4 = 0xffffffff;
+                DAT_0080ff80.unk8 = 8;
+                DAT_00668e38 = 1;
+            }
+        } while (0);
     }
     return 1;
 }

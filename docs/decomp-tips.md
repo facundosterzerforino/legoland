@@ -73,6 +73,11 @@
 ## Lazy Callee-Saved Register Push
 - If a variable's first use is inside a conditional block, its callee-saved register gets pushed at that block's entry point, not at function entry. Look for `push %ebx` appearing AFTER `push %esi`/`push %edi` and inside a branch.
 - The loop-back jump target is AFTER the `push; mov` sequence, confirming those instructions run only once (loop setup, not per-iteration).
+- To get the push *after* an early-exit test (`test byte ptr [esp+8], 2; je end; push esi`), wrap the guarded
+  body in `do { ... } while (0);` and turn its early `return`s into if/else, with one `return` after the loop:
+  `if ((flags & 2) != 0) { do { if (a) { ... } else { ... } } while (0); return 2; } return 1;`.
+  Without the wrapper MSVC6 pushes in the prologue (and often preloads the flag byte into `al`). Matched
+  FUN_00475080, FUN_004751a0, FUN_0048b000, FUN_0048bc20, FUN_00470000, FUN_0046d980.
 
 ## Parameter Stack Slot Reuse
 - When a parameter is only tested once early (via memory-form `testb $imm, N(%esp)` without loading into a register), MSVC6 may reuse its stack slot for a local variable.
@@ -144,3 +149,13 @@ At /O2, MSVC6 omits the frame pointer. A frame in the original means one of:
    declaration order.
 3. **Optimized body with a frame** and no inline-asm fingerprint: `#pragma optimize("y", off)` (frame
    pointer omission off) reproduces it.
+
+## Walking a Global List: `mov esi,eax` Before the Test (FUN_0040d210, FUN_00408f30)
+- When the original loads the list head into eax, tests it, and copies it to the loop register
+  (`mov eax,[head]; mov esi,eax; test eax,eax`), write
+  `node = head; if (head != NULL) for (; node != NULL; node = node->next) { ... }`.
+
+## Globals Reloaded Everywhere
+- If the original reloads a global after every call or store even where nothing could alias it, try
+  declaring it `volatile` (DAT_006675b8, the text cell count, fixed four text.c functions). Check every
+  other user still matches — it is not always right (DAT_006687a0 got worse).

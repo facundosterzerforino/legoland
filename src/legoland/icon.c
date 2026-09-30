@@ -439,25 +439,29 @@ void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3) {
 unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
     struct ScrollRegion *region;
     if ((buttons & 1) != 0) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
-        if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, 6);
-            return 2;
-        }
-        FUN_0046d850(region, 0x20, 0);
-        return 2;
-    }
-    if ((buttons & 4) != 0) {
-        if (GetTickCount() - DAT_006688b4 >= 0xfa) {
+        do {
             region = (struct ScrollRegion *)icon->field_30;
             DAT_006688b4 = GetTickCount();
             if ((region->field_4 & 1) != 0) {
                 FUN_0046d850(region, 0, 6);
-                return 2;
+            } else {
+                FUN_0046d850(region, 0x20, 0);
             }
-            FUN_0046d850(region, 0x20, 0);
-        }
+        } while (0);
+        return 2;
+    }
+    if ((buttons & 4) != 0) {
+        do {
+            if (GetTickCount() - DAT_006688b4 >= 0xfa) {
+                region = (struct ScrollRegion *)icon->field_30;
+                DAT_006688b4 = GetTickCount();
+                if ((region->field_4 & 1) != 0) {
+                    FUN_0046d850(region, 0, 6);
+                } else {
+                    FUN_0046d850(region, 0x20, 0);
+                }
+            }
+        } while (0);
         return 2;
     }
     return 1;
@@ -737,42 +741,44 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
     }
     if (node->y > 0 && node->y < 0x174) {
         char buf[12];
-        cost = GetObjCost(node->field_8);
-        if (node->sprite != NULL) {
-            if (cost <= GetBrickCount()) {
-                PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
-            } else {
-                PrintSprite(node->sprite, node->x, node->y, DAT_004ba884, (int *)&ctx);
+        do {
+            cost = GetObjCost(node->field_8);
+            if (node->sprite != NULL) {
+                if (cost <= GetBrickCount()) {
+                    PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
+                } else {
+                    PrintSprite(node->sprite, node->x, node->y, DAT_004ba884, (int *)&ctx);
+                }
             }
-        }
-        if (node->field_8 != NULL) {
-            // STRING: LEGOLAND 0x004b8a80
-            sprintf(buf, "%d", cost);
-            FUN_00455e50(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
-        }
-        switch (node->field_20b) {
-        case 1:
-            PrintSprite(DAT_00668e8c, node->x, node->y, 0, 0);
-            break;
-        case 2:
-            PrintSprite(DAT_00668e90, node->x, node->y, 0, 0);
-            break;
-        }
-        if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
-            // STRING: LEGOLAND 0x004ba888
-            if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) != 0 &&
-                *(unsigned int **)((char *)EditMode.unk8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
-                struct Sprite *s = GetBlink() != 0 ? DAT_00668e78 : DAT_00668e74;
+            if (node->field_8 != NULL) {
+                // STRING: LEGOLAND 0x004b8a80
+                sprintf(buf, "%d", cost);
+                FUN_00455e50(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
+            }
+            switch (node->field_20b) {
+            case 1:
+                PrintSprite(DAT_00668e8c, node->x, node->y, 0, 0);
+                break;
+            case 2:
+                PrintSprite(DAT_00668e90, node->x, node->y, 0, 0);
+                break;
+            }
+            if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
+                // STRING: LEGOLAND 0x004ba888
+                if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) != 0 &&
+                    *(unsigned int **)((char *)EditMode.unk8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
+                    struct Sprite *s = GetBlink() != 0 ? DAT_00668e78 : DAT_00668e74;
+                    PrintSprite(s, node->x, node->y, 0, 0);
+                }
+            }
+            if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
+                struct Sprite *s = DAT_00668e7c;
+                if (GetBlink() == 0) {
+                    s = DAT_00668e80;
+                }
                 PrintSprite(s, node->x, node->y, 0, 0);
             }
-        }
-        if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
-            struct Sprite *s = DAT_00668e7c;
-            if (GetBlink() == 0) {
-                s = DAT_00668e80;
-            }
-            PrintSprite(s, node->x, node->y, 0, 0);
-        }
+        } while (0);
     }
     if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
         if (node->y < 0x3e) {
@@ -1943,21 +1949,23 @@ unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
     unsigned int flags;
 
     if ((buttons & 2) != 0) {
-        cost = GetObjCost(node->field_8);
-        if (cost <= GetBrickCount()) {
-            if ((node->flags & 0x1000) != 0) {
-                SetEditObject(node->field_8);
+        do {
+            cost = GetObjCost(node->field_8);
+            if (cost <= GetBrickCount()) {
+                if ((node->flags & 0x1000) != 0) {
+                    SetEditObject(node->field_8);
+                }
+                sub = *(unsigned int **)((char *)node->field_8 + 0xc4);
+                flags = sub[2];
+                if ((flags & 0x20000) != 0) {
+                    sub[2] = flags & 0xfffdffff;
+                    FUN_00471ca0(node->field_8);
+                }
+                PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
+            } else {
+                PlayInstanceOfSample(DAT_004b92d8, 0, 1, 0);
             }
-            sub = *(unsigned int **)((char *)node->field_8 + 0xc4);
-            flags = sub[2];
-            if ((flags & 0x20000) != 0) {
-                sub[2] = flags & 0xfffdffff;
-                FUN_00471ca0(node->field_8);
-            }
-            PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
-            return 2;
-        }
-        PlayInstanceOfSample(DAT_004b92d8, 0, 1, 0);
+        } while (0);
         return 2;
     }
     return 1;
