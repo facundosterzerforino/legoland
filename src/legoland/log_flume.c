@@ -1939,7 +1939,7 @@ int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
                         if (other->owner == link->a) {
                             f = (float)(other->weight + 1.0 - weight);
                         }
-                        if (f > 0.0f && f < 0.8) {
+                        if (f > FLOAT_004ab390 && f < 0.8) {
                             return 0;
                         }
                     }
