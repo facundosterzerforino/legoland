@@ -253,21 +253,24 @@ LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def) {
     while (src->parent != 0) {
         src = src->parent;
     }
-    if (((LPDIRECTSOUND)DAT_007cad40)
-            ->lpVtbl->DuplicateSoundBuffer((LPDIRECTSOUND)DAT_007cad40, (LPDIRECTSOUNDBUFFER)src->buffer,
-                (LPDIRECTSOUNDBUFFER *)&def) != 0) {
-        return 0;
+    for (;;) {
+        if (((LPDIRECTSOUND)DAT_007cad40)
+                ->lpVtbl->DuplicateSoundBuffer((LPDIRECTSOUND)DAT_007cad40, (LPDIRECTSOUNDBUFFER)src->buffer,
+                    (LPDIRECTSOUNDBUFFER *)&def) != 0) {
+            break;
+        }
+        sample = FUN_00492110();
+        if (sample == 0) {
+            ((LPDIRECTSOUNDBUFFER)def)->lpVtbl->Release((LPDIRECTSOUNDBUFFER)def);
+            break;
+        }
+        src->refcount++;
+        sample->refcount++;
+        sample->active = src;
+        sample->buffer = (struct SampleBuffer *)def;
+        return sample;
     }
-    sample = FUN_00492110();
-    if (sample == 0) {
-        ((LPDIRECTSOUNDBUFFER)def)->lpVtbl->Release((LPDIRECTSOUNDBUFFER)def);
-        return 0;
-    }
-    src->refcount++;
-    sample->refcount++;
-    sample->active = src;
-    sample->buffer = (struct SampleBuffer *)def;
-    return sample;
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00492710
