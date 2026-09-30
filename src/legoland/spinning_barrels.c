@@ -499,7 +499,6 @@ void FUN_0043c950(struct Element *elem) {
     int iv12, iv13;
     int tw, th;
     int coords[2];
-    struct Point tmp;
     int coords2[2];
 
     while (rn != NULL) {
@@ -570,12 +569,10 @@ void FUN_0043c950(struct Element *elem) {
                 }
                 break;
             case 8:
-                tmp.x = bloke->screen_x * 2;
-                tmp.y = bloke->screen_y * 2;
+                coords2[0] = bloke->screen_x * 2;
+                coords2[1] = bloke->screen_y * 2;
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
-                coords2[0] = tmp.x;
-                coords2[1] = tmp.y;
                 bloke->person->sprite = DAT_0062fe04;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617922.25f, -1618065.75f);
