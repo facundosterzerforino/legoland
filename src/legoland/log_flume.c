@@ -1173,7 +1173,118 @@ void FUN_00409b70(int i, int j, struct Node **nodes, struct Node *insert) {
 }
 
 // FUNCTION: LEGOLAND 0x00409c20
-void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) { STUB(); }
+void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) {
+    struct Node *insert = (struct Node *)entry;
+    struct Node **nodes = (struct Node **)list;
+    struct Node *a;
+
+    switch (FUN_00409410(list)) {
+    case 0x01:
+        a = nodes[0];
+        if (a->prev == NULL) {
+            FUN_00409040(a, insert);
+        } else {
+            FUN_00409080(a, insert);
+        }
+        return;
+    case 0x10:
+        a = nodes[2];
+        if (a->prev == NULL) {
+            FUN_00409040(a, insert);
+        } else {
+            FUN_00409080(a, insert);
+        }
+        return;
+    case 0x04:
+        a = nodes[1];
+        if (a->prev == NULL) {
+            FUN_00409040(a, insert);
+        } else {
+            FUN_00409080(a, insert);
+        }
+        return;
+    case 0x40:
+        a = nodes[3];
+        if (a->prev == NULL) {
+            FUN_00409040(a, insert);
+        } else {
+            FUN_00409080(a, insert);
+        }
+        return;
+    case 0x11:
+        a = nodes[0];
+        if ((a->next != NULL && nodes[2]->next != NULL && a->prev == NULL && nodes[2]->prev == NULL) || (a->next == NULL && nodes[2]->next == NULL && a->prev != NULL && nodes[2]->prev != NULL)) {
+            FUN_00409b70(0, 2, nodes, insert);
+            return;
+        }
+        if (a->next == NULL && nodes[2]->prev == NULL) {
+            FUN_004090c0(a, nodes[2], insert);
+        } else {
+            FUN_004090c0(nodes[2], a, insert);
+        }
+        return;
+    case 0x44:
+        a = nodes[1];
+        if ((a->next != NULL && nodes[3]->next != NULL && a->prev == NULL && nodes[3]->prev == NULL) || (a->next == NULL && nodes[3]->next == NULL && a->prev != NULL && nodes[3]->prev != NULL)) {
+            FUN_00409b70(1, 3, nodes, insert);
+            return;
+        }
+        if (a->prev == NULL && nodes[3]->next == NULL) {
+            FUN_004090c0(nodes[3], a, insert);
+        } else {
+            FUN_004090c0(a, nodes[3], insert);
+        }
+        return;
+    case 0x05:
+        a = nodes[0];
+        if ((a->next != NULL && nodes[1]->next != NULL && a->prev == NULL && nodes[1]->prev == NULL) || (a->next == NULL && nodes[1]->next == NULL && a->prev != NULL && nodes[1]->prev != NULL)) {
+            FUN_00409b70(0, 1, nodes, insert);
+            return;
+        }
+        if (nodes[1]->prev == NULL && a->next == NULL) {
+            FUN_004090c0(a, nodes[1], insert);
+        } else {
+            FUN_004090c0(nodes[1], a, insert);
+        }
+        return;
+    case 0x14:
+        a = nodes[1];
+        if ((a->next != NULL && nodes[2]->next != NULL && a->prev == NULL && nodes[2]->prev == NULL) || (a->next == NULL && nodes[2]->next == NULL && a->prev != NULL && nodes[2]->prev != NULL)) {
+            FUN_00409b70(1, 2, nodes, insert);
+            return;
+        }
+        if (nodes[2]->prev == NULL && a->next == NULL) {
+            FUN_004090c0(a, nodes[2], insert);
+        } else {
+            FUN_004090c0(nodes[2], a, insert);
+        }
+        return;
+    case 0x50:
+        a = nodes[2];
+        if ((a->next != NULL && nodes[3]->next != NULL && a->prev == NULL && nodes[3]->prev == NULL) || (a->next == NULL && nodes[3]->next == NULL && a->prev != NULL && nodes[3]->prev != NULL)) {
+            FUN_00409b70(2, 3, nodes, insert);
+            return;
+        }
+        if (nodes[3]->prev == NULL && a->next == NULL) {
+            FUN_004090c0(a, nodes[3], insert);
+        } else {
+            FUN_004090c0(nodes[3], a, insert);
+        }
+        return;
+    case 0x41:
+        a = nodes[3];
+        if ((a->next != NULL && nodes[0]->next != NULL && a->prev == NULL && nodes[0]->prev == NULL) || (a->next != NULL && nodes[0]->next != NULL && a->prev == NULL && nodes[0]->prev == NULL)) {
+            FUN_00409b70(3, 0, nodes, insert);
+            return;
+        }
+        if (nodes[0]->prev == NULL && a->next == NULL) {
+            FUN_004090c0(a, nodes[0], insert);
+        } else {
+            FUN_004090c0(nodes[0], a, insert);
+        }
+        return;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040a010
 void FUN_0040a010(struct Node *a, struct Node *b) {
