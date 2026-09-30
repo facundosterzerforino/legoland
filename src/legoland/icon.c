@@ -964,16 +964,15 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
 // FUNCTION: LEGOLAND 0x0046e7b0
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
     struct PrintCtx ctx;
-    short x;
     RECT clip;
 
     ctx.flags = 2;
     ctx.node = node;
     ctx.field_8 = 0;
     StoreClipping();
-    x = node->x;
-    clip.left = x;
-    clip.right = (int)(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
+    clip.left = node->x;
+    clip.right = (int)(node->field_10 * 0.00005f * (int)DAT_007cb3a0);
+    clip.right += clip.left;
     clip.top = node->y;
     clip.bottom = node->field_12 + clip.top;
     SetClipping(&clip);
