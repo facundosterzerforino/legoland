@@ -13,11 +13,11 @@
 #include "image_sprite.h"
 #include "input.h"
 #include "legoland.h"
-#include "print_sprite.h"
-#include "wndenv.h"
 #include "llidb.h"
+#include "print_sprite.h"
 #include "render.h"
 #include "text.h"
+#include "wndenv.h"
 
 // FUNCTION: LEGOLAND 0x0043e930
 int FUN_0043e930(RECT *rc, int min, int max, int value, int step) {
@@ -431,7 +431,8 @@ int FUN_0043f4f0(struct Sprite *bg, RECT *box, char *title, char *buf, int maxle
     rc.top = box->top + 0x20;
     rc.right = box->right + box->left - 9;
     rc.bottom = box->top + box->bottom - 9;
-    while (!ProcessSystemEvents()) {
+    done = 0;
+    while (!done && ProcessSystemEvents()) {
         ReadGameButtons();
         PushRenderingStatusAndLockVideoSurface();
         PrintSprite(bg, 0, 0, 0, 0);
@@ -443,9 +444,6 @@ int FUN_0043f4f0(struct Sprite *bg, RECT *box, char *title, char *buf, int maxle
         done = FUN_0043f460(&rc, 0, buf, maxlen, &pos);
         RenderingComplete();
         PopRenderingStatus();
-        if (done) {
-            break;
-        }
     }
     return pos;
 }
