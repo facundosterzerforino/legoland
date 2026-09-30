@@ -1458,7 +1458,110 @@ void FUN_0040a5d0(struct ParticleEmitter *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0040a600
-void FUN_0040a600(void) { STUB(); }
+void FUN_0040a600(Element *elem, int *pt) {
+    TileId t;
+    struct FlumeEntry *entry;
+    struct FlumeEntry *mid;
+    struct FlumeEntry *node;
+    struct FlumeEntry *prev;
+    struct Ride *ride;
+    int pos[2];
+    int coords[2];
+    int h;
+    int midY;
+    int count;
+    int last;
+    int i;
+
+    ride = elem->ride;
+    t.pos.x = pt[0];
+    t.pos.y = pt[1];
+    AddBasicObject(elem, pt);
+    FUN_00408e40(t);
+    entry = FUN_00408ec0(&t);
+    if (entry != NULL) {
+        h = DAT_004b4734 - DAT_004b472c;
+        midY = t.pos.y + ride->footprint.y0 + ((ride->footprint.y1 - ride->footprint.y0) >> 1);
+        entry->sub2 = DAT_004c2ae8;
+        pos[0] = t.pos.x + ride->footprint.x0 + 1;
+        pos[1] = t.pos.y + ride->footprint.y0 - h;
+        node = FUN_00409010();
+        if (node != NULL) {
+            node->mode = 3;
+            node->submode = 0;
+            node->ride = DAT_004cbe30;
+            node->parent = entry;
+            node->link28 = NULL;
+            node->flags10d |= 3;
+            node->tile.pos.x = pos[0] - DAT_004b4728;
+            node->tile.pos.y = pos[1] - DAT_004b472c;
+        }
+        FUN_004091f0((struct Node *)entry, (struct ListNode *)node);
+        coords[0] = node->tile.pos.x;
+        coords[1] = node->tile.pos.y;
+        memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
+        DAT_004cbe30->footprint.x1--;
+        DAT_004cbe30->footprint.y1--;
+        AddBasicObject(DAT_004c74f4, coords);
+        mid = FUN_00409010();
+        mid->parent = entry;
+        mid->ride = DAT_004c2b9c;
+        mid->tile = entry->tile;
+        FUN_004091f0((struct Node *)entry, (struct ListNode *)mid);
+        entry->link = mid;
+        FUN_00409080((struct Node *)node, (struct Node *)mid);
+        prev = node;
+        count = (ride->footprint.y1 - ride->footprint.y0 + 1) / h;
+        coords[1] = pos[1] + h;
+        last = count - 1;
+        for (i = 0; i < count; i++) {
+            node = FUN_00409010();
+            if (node != NULL) {
+                node->mode = 1;
+                node->submode = 0;
+                node->link28 = mid;
+                node->ride = DAT_004cbe30;
+                node->parent = entry;
+                node->flags10d |= 7;
+                node->tile.pos.x = pos[0] - DAT_004b4728;
+                node->tile.pos.y = coords[1] - DAT_004b472c;
+            }
+            if (coords[1] <= midY && coords[1] + h >= midY) {
+                entry->field_8 = node;
+                entry->field_c = prev;
+            }
+            FUN_00409170((struct Node *)mid, (struct ListNode *)node);
+            if (i == 0) {
+                mid->link30 = node;
+            }
+            if (i == last) {
+                mid->link34 = node;
+            }
+            FUN_00409080((struct Node *)prev, (struct Node *)node);
+            prev = node;
+            coords[1] += h;
+        }
+        coords[0] = t.pos.x + ride->footprint.x0 + 1;
+        coords[1] = t.pos.y + ride->footprint.y1 - 1 + h;
+        node = FUN_00409010();
+        if (node != NULL) {
+            node->mode = 3;
+            node->submode = 2;
+            node->flags10d |= 3;
+            node->link28 = NULL;
+            node->ride = DAT_004cbe30;
+            node->parent = entry;
+            node->tile.pos.x = coords[0] - DAT_004b4728;
+            node->tile.pos.y = coords[1] - DAT_004b472c;
+        }
+        FUN_004091f0((struct Node *)entry, (struct ListNode *)node);
+        coords[0] = node->tile.pos.x;
+        coords[1] = node->tile.pos.y;
+        AddBasicObject(DAT_004c74f4, coords);
+        FUN_00409080((struct Node *)prev, (struct Node *)node);
+        FUN_0040a5d0((struct ParticleEmitter *)entry);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040a930
 void FUN_0040a930(Element *elem, int *param_2, unsigned int param_3) {
