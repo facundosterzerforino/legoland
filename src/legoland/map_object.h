@@ -16,7 +16,13 @@ struct ObjClass;
 struct ObjInstance;
 
 LEGO_EXPORT void RenderCursor(struct Cursor *cursor);
-struct OverlayParam;
+struct OverlayParam {
+    unsigned int field_0;
+    unsigned int field_4;
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned int field_10;
+};
 void FUN_00462c00(struct OverlayParam *param);
 void FUN_00462c60(void);
 struct ObjClass;
@@ -66,7 +72,6 @@ LEGO_EXPORT unsigned short Get_UserFlags(int x, int y);
 LEGO_EXPORT void Set_UserFlags(int x, int y, unsigned short value);
 LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value);
 LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1);
-struct OverlayParam;
 LEGO_EXPORT void AddOvSav(struct OverlayParam *param);
 LEGO_EXPORT void ResetMapAI(void);
 unsigned int FUN_004629e0(void);

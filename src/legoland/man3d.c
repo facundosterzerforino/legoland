@@ -28,31 +28,6 @@ struct Position {
     void **entries;
 };
 
-struct Anim3D {
-    int divisor;
-};
-
-struct MeshShared {
-    /* 0x00 */ int count;
-    /* 0x04 */ int field_4;
-    /* 0x08 */ void *field_8;
-};
-
-struct MeshElem {
-    /* 0x00 */ int min_x;
-    /* 0x04 */ int min_y;
-    /* 0x08 */ int min_z;
-    /* 0x0c */ int max_x;
-    /* 0x10 */ int max_y;
-    /* 0x14 */ int max_z;
-    /* 0x18 */ int vert_count;
-    /* 0x1c */ void *verts;
-    /* 0x20 */ struct MeshShared *shared;
-    /* 0x24 */ int norm_count;
-    /* 0x28 */ void *norms;
-    /* 0x2c */ unsigned char pad_2c[0x38 - 0x2c];
-};
-
 struct Mesh {
     /* 0x00 */ int count;
     /* 0x04 */ struct MeshElem *elems;

@@ -121,6 +121,67 @@ struct Bloke {
 };
 typedef struct Bloke Bloke;
 
+/* The 0x124-byte save-game record of a visitor and its Person (scratch buffer DAT_007fda60). */
+struct BlokeSave {
+    /* 0x00 */ unsigned short action;
+    /* 0x02 */ unsigned short field_e;
+    /* 0x04 */ unsigned short field_10;
+    /* 0x06 */ unsigned char pad_6[0x8 - 0x6];
+    /* 0x08 */ int target; /* index into the save game's element list, or -1 */
+    /* 0x0c */ int last_ride;
+    /* 0x10 */ unsigned int field_1c;
+    /* 0x14 */ int field_20;
+    /* 0x18 */ Point dest;
+    /* 0x20 */ Point goal;
+    /* 0x28 */ unsigned int block_34[10]; /* Bloke 0x34..0x5c; [8] is the BNVPath pointer */
+    /* 0x50 */ int field_5c;
+    /* 0x54 */ unsigned char param_action;
+    /* 0x55 */ unsigned char pad_55[1];
+    /* 0x56 */ unsigned short flags;
+    /* 0x58 */ unsigned char field_64;
+    /* 0x59 */ unsigned char pad_59[1];
+    /* 0x5a */ short field_78;
+    /* 0x5c */ short field_7a;
+    /* 0x5e */ unsigned short field_7c;
+    /* 0x60 */ unsigned char field_7e;
+    /* 0x61 */ unsigned char field_7f;
+    /* 0x62 */ unsigned char field_80;
+    /* 0x63 */ unsigned char field_81;
+    /* 0x64 */ unsigned char field_82;
+    /* 0x65 */ unsigned char pad_65[3];
+    /* 0x68 */ int favourite[4]; /* indices into the save game's element list */
+    /* 0x78 */ Point pos;
+    /* 0x80 */ unsigned short field_70;
+    /* 0x82 */ unsigned char field_72;
+    /* 0x83 */ unsigned char field_73;
+    /* 0x84 */ unsigned char field_74;
+    /* 0x85 */ unsigned char field_75;
+    /* 0x86 */ unsigned char pad_86[2];
+    /* 0x88 */ Navigator nav;
+    /* 0x9c */ unsigned int person_8;
+    /* 0xa0 */ Vector3 scale;
+    /* 0xac */ Point screen;
+    /* 0xb4 */ Point offset;
+    /* 0xbc */ unsigned int field_34;
+    /* 0xc0 */ unsigned int field_30;
+    /* 0xc4 */ float field_38;
+    /* 0xc8 */ float depth;
+    /* 0xcc */ Vector3 rotation;
+    /* 0xd8 */ int person_4c;
+    /* 0xdc */ unsigned int anim; /* Person.field_88 */
+    /* 0xe0 */ unsigned int sort_id;
+    /* 0xe4 */ int m[9];
+    /* 0x108 */ unsigned int field_7c_p;
+    /* 0x10c */ unsigned int field_80_p;
+    /* 0x110 */ unsigned int field_8c_p;
+    /* 0x114 */ unsigned int field_90_p;
+    /* 0x118 */ unsigned int random;
+    /* 0x11c */ unsigned short prev_param;
+    /* 0x11e */ unsigned char pad_11e[2];
+    /* 0x120 */ unsigned char prev_action;
+    /* 0x121 */ unsigned char pad_121[3];
+};
+
 /* A per-state low-level AI handler (indexed by Bloke.field_e). */
 typedef void (*BlokeAction)(Bloke *bloke);
 

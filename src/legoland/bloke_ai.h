@@ -25,3 +25,4 @@ void FUN_00450530(struct Bloke *bloke);
 void FUN_00450a40(struct Bloke *bloke);
 LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke);
 LEGO_EXPORT void ControlPeople(void);
+void FUN_00450b10(void);

@@ -15,3 +15,4 @@ int FUN_00473970(void);
 unsigned int FUN_00474070(void);
 unsigned int FUN_00474080(void);
 char FUN_00474130(void);
+void FUN_004741c0(void);

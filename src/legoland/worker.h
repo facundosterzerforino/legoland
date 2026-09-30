@@ -125,3 +125,7 @@ LEGO_EXPORT int SetGardenerWorkOrderAtPostion(Bloke *worker, int x, int y);
 LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y);
 LEGO_EXPORT void ControlWorkers(void);
 LEGO_EXPORT void LoadWorkerInterfaceGFX(void);
+void FUN_0049c3c0(void);
+void FUN_0049c8b0(void);
+void FUN_0049cc10(void);
+void FUN_0049ce00(void);

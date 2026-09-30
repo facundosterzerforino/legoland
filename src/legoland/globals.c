@@ -4242,7 +4242,10 @@ unsigned int DAT_007fd638;
 struct ResVolume *DAT_007fd640[4];
 
 // GLOBAL: LEGOLAND 0x007fd660
-unsigned int DAT_007fd660[329];
+unsigned int DAT_007fd660[256];
+
+// GLOBAL: LEGOLAND 0x007fda60
+struct BlokeSave DAT_007fda60;
 
 // GLOBAL: LEGOLAND 0x007fdb84
 int DAT_007fdb84;
