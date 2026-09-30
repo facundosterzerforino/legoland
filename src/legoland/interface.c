@@ -694,33 +694,34 @@ unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags) {
     saved_e34 = DAT_00668e34;
     saved_ff8 = DAT_004baff8;
     if (EditMode.unk4 != 1 && (flags & 2) != 0) {
-        EditMode.unk0 = 0;
-        GamePad = GamePad & 0xffffebff;
-        PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
-        if (DAT_004baff8 != 0) {
-            DAT_004baff8 = 0;
-            DAT_00668e34 = 0;
-            result = TestMenu(DAT_004bafa8);
-            if (result == 1) {
+        do {
+            EditMode.unk0 = 0;
+            GamePad = GamePad & 0xffffebff;
+            PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
+            if (DAT_004baff8 != 0) {
+                DAT_004baff8 = 0;
+                DAT_00668e34 = 0;
+                result = TestMenu(DAT_004bafa8);
+                if (result == 1) {
+                    FUN_00474750();
+                    DAT_00668eb0 = (unsigned int)param_1;
+                    FUN_0046d680(param_1, DAT_007fdcc0);
+                    DAT_004bb094 = 0;
+                } else {
+                    DAT_004baff8 = saved_ff8;
+                    if (saved_ff8 != 5) {
+                        DAT_00668e34 = saved_e34;
+                        TestMenu(&DAT_004bafa8[saved_ff8 * 5]);
+                    }
+                }
+            } else {
                 FUN_00474750();
-                DAT_00668eb0 = (unsigned int)param_1;
-                FUN_0046d680(param_1, DAT_007fdcc0);
-                DAT_004bb094 = 0;
-                return 1;
+                DAT_004bb094 = 1;
+                DAT_004baff8 = 5;
+                DAT_007fdd80 = 1;
+                DAT_007fdd84 = 1;
             }
-            DAT_004baff8 = saved_ff8;
-            if (saved_ff8 != 5) {
-                DAT_00668e34 = saved_e34;
-                TestMenu(&DAT_004bafa8[saved_ff8 * 5]);
-                return 1;
-            }
-        } else {
-            FUN_00474750();
-            DAT_004bb094 = 1;
-            DAT_004baff8 = 5;
-            DAT_007fdd80 = 1;
-            DAT_007fdd84 = 1;
-        }
+        } while (0);
     }
     return 1;
 }
