@@ -72,14 +72,13 @@ struct RenderListNode *FUN_00441890(void *param_1, short *param_2) {
 struct RenderListNode *FUN_004418c0(int param_1, struct ViewportEntry *param_2, short *param_3) {
     struct RenderListNode *node = FUN_00441870(param_2, param_3);
     int i = 0;
-    if (node != NULL && param_2->field_2e > 0) {
-        do {
+    if (node != NULL) {
+        for (; i < param_2->field_2e; i++) {
             if (i == param_1) {
                 return node;
             }
             node = FUN_00441890(param_2, param_3);
-            i = i + 1;
-        } while (i < param_2->field_2e);
+        }
     }
     return NULL;
 }

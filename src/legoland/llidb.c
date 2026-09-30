@@ -298,10 +298,10 @@ unsigned int FUN_0047b500(unsigned int param_1) {
     unsigned int page;
     unsigned int count;
     int offset;
-    int page_base;
+    char *base;
 
-    count = DAT_006691a4;
-    if (param_1 < count) {
+    if (param_1 < DAT_006691a4) {
+        count = DAT_006691a4;
         page = param_1 >> 8;
         slot = param_1 & 0xff;
         if (page <= count >> 8) {
@@ -316,8 +316,8 @@ unsigned int FUN_0047b500(unsigned int param_1) {
                 }
                 offset = slot * 0x14;
                 do {
-                    page_base = (int)DAT_006691a8[page];
-                    *(struct Element *)(page_base + offset) = *(struct Element *)(page_base + offset + 0x14);
+                    base = (char *)DAT_006691a8[page];
+                    *(struct Element *)(base + offset) = *(struct Element *)(base + offset + 0x14);
                     offset += 0x14;
                     count = DAT_006691a4;
                 } while (offset < 0x13d8);
@@ -1364,16 +1364,10 @@ LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) {
                     i++;
                 } while (i < count);
             }
-            i = 0;
-            if (count > 0) {
-                struct Sprite **sprite = table->sprites;
-                do {
-                    if (*sprite == 0) {
-                        break;
-                    }
-                    i++;
-                    sprite++;
-                } while (i < count);
+            for (i = 0; i < count; i++) {
+                if (table->sprites[i] == 0) {
+                    break;
+                }
             }
             if (i == count) {
                 table->data_14 = NULL;
