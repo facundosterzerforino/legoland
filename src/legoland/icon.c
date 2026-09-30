@@ -588,7 +588,20 @@ int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned 
     int extreme;
     int v;
 
-    if (param_5 < 1) {
+    if (param_5 > 0) {
+        extreme = -100000;
+        if (node == NULL) {
+            return 0;
+        }
+        do {
+            if ((node->flags & 1) == 0 && (node->id & param_1) == param_4 &&
+                (v = (int)node->y, (v - param_3) + param_5 <= (int)param_2 && v > extreme)) {
+                best = node;
+                extreme = v;
+            }
+            node = node->next;
+        } while (node != NULL);
+    } else {
         if (param_5 >= 0) {
             return 0;
         }
@@ -598,22 +611,9 @@ int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned 
         }
         do {
             if ((node->flags & 1) == 0 && (node->id & param_1) == param_4 &&
-                (v = (int)node->y, (int)param_2 < (v - param_3) + param_5) && v < extreme) {
-                extreme = v;
+                (v = (int)node->y, (v - param_3) + param_5 > (int)param_2) && v < extreme) {
                 best = node;
-            }
-            node = node->next;
-        } while (node != NULL);
-    } else {
-        extreme = -100000;
-        if (node == NULL) {
-            return 0;
-        }
-        do {
-            if ((node->flags & 1) == 0 && (node->id & param_1) == param_4 &&
-                (v = (int)node->y, (v - param_3) + param_5 <= (int)param_2 && extreme < v)) {
                 extreme = v;
-                best = node;
             }
             node = node->next;
         } while (node != NULL);
