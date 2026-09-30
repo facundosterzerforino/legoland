@@ -5143,24 +5143,18 @@ void FUN_00424c70(struct CastleSub *param_1) {
             return;
         }
         found = 0;
-        for (;;) {
-            node = FUN_00424b30(host);
-            if (node == 0) {
-                break;
-            }
+        while ((node = FUN_00424b30(host)) != 0) {
             ring = FUN_0041e2b0((struct RingHost *)param_1->field_d8);
             if (ring == 0) {
-                if (found == 0) {
-                    return;
-                }
-                FUN_00424ae0(param_1, 0xbb8);
-                return;
+                break;
             }
             FUN_00421590((struct Struct1590 *)node, ring);
             node->flags = 2;
             found = 1;
         }
-        FUN_00424ae0(param_1, 0xbb8);
+        if (found != 0) {
+            FUN_00424ae0(param_1, 0xbb8);
+        }
         return;
     }
     for (cur = (struct ListNode *)host->field_f8; cur != (struct ListNode *)&host->end; cur = cur->next) {
