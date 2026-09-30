@@ -354,33 +354,33 @@ unsigned char FUN_0048b000(struct IconNode *icon, unsigned int param_2) {
     struct IconNode *node;
     struct Element *elem;
 
-    if ((param_2 & 0x2) != 0) {
-        if (icon->field_18 == 0) {
-            if (FUN_0048aef0((unsigned int)icon->field_1c, (struct Element *)icon->field_20p) != 0) {
-                if (DAT_00798648 == 0) {
-                    PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
-                }
-                FUN_0048af40((unsigned int)icon->field_1c);
-                icon->field_18 = 1;
-                ElemID((const char *)icon->field_1c)->flags |= 0x4;
-                return 1;
-            }
-            PlayInstanceOfSample(DAT_004b92d8, 0, 1, 0);
-            return 1;
-        }
-        elem = ElemID((const char *)icon->field_1c);
-        for (node = DAT_006687c8; node != 0; node = node->next) {
-            if (node->field_20p != 0 && node->field_18 == 1 && (struct Element *)node->field_20p == elem) {
-                FUN_0048afa0((unsigned int)node->field_1c);
-                node->field_18 = 0;
-            }
-        }
-        PlayInstanceOfSample(DAT_004b92cc, 0, 1, 0);
-        FUN_0048afa0((unsigned int)icon->field_1c);
-        icon->field_18 = 0;
-        ElemID((const char *)icon->field_1c)->flags &= ~0x4u;
+    if ((param_2 & 0x2) == 0) {
         return 1;
     }
+    if (icon->field_18 == 0) {
+        if (FUN_0048aef0((unsigned int)icon->field_1c, (struct Element *)icon->field_20p) != 0) {
+            if (DAT_00798648 == 0) {
+                PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
+            }
+            FUN_0048af40((unsigned int)icon->field_1c);
+            icon->field_18 = 1;
+            ElemID((const char *)icon->field_1c)->flags |= 0x4;
+            return 1;
+        }
+        PlayInstanceOfSample(DAT_004b92d8, 0, 1, 0);
+        return 1;
+    }
+    elem = ElemID((const char *)icon->field_1c);
+    for (node = DAT_006687c8; node != 0; node = node->next) {
+        if (node->field_20p != 0 && node->field_18 == 1 && (struct Element *)node->field_20p == elem) {
+            FUN_0048afa0((unsigned int)node->field_1c);
+            node->field_18 = 0;
+        }
+    }
+    PlayInstanceOfSample(DAT_004b92cc, 0, 1, 0);
+    FUN_0048afa0((unsigned int)icon->field_1c);
+    icon->field_18 = 0;
+    ElemID((const char *)icon->field_1c)->flags &= ~0x4u;
     return 1;
 }
 

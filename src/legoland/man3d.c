@@ -790,22 +790,17 @@ struct IntVec3 {
 void FUN_00440980(struct MeshElem *elem, struct IntVec3 *out) {
     int n;
     int *verts;
-    struct IntVec3 *lo;
+    struct IntVec3 mn;
     struct IntVec3 mx;
     int vx;
     int vy;
     int vz;
-    int min_x;
-    int min_y;
-    int min_z;
 
     verts = (int *)elem->verts;
-    min_x = verts[0];
-    min_y = verts[1];
-    min_z = verts[2];
-    mx.x = min_x;
-    mx.y = min_y;
-    mx.z = min_z;
+    mn.x = verts[0];
+    mn.y = verts[1];
+    mn.z = verts[2];
+    mx = mn;
     verts = verts + 3;
     n = elem->vert_count;
     if (n > 1) {
@@ -814,20 +809,20 @@ void FUN_00440980(struct MeshElem *elem, struct IntVec3 *out) {
             vx = verts[0];
             vy = verts[1];
             vz = verts[2];
-            if (vx < min_x) {
-                min_x = vx;
+            if (vx < mn.x) {
+                mn.x = vx;
             }
             if (vx > mx.x) {
                 mx.x = vx;
             }
-            if (vy < min_y) {
-                min_y = vy;
+            if (vy < mn.y) {
+                mn.y = vy;
             }
             if (vy > mx.y) {
                 mx.y = vy;
             }
-            if (vz < min_z) {
-                min_z = vz;
+            if (vz < mn.z) {
+                mn.z = vz;
             }
             if (vz > mx.z) {
                 mx.z = vz;
@@ -835,14 +830,8 @@ void FUN_00440980(struct MeshElem *elem, struct IntVec3 *out) {
             verts = verts + 3;
         } while (--n != 0);
     }
-    lo = out;
-    out = out + 1;
-    lo->x = min_x;
-    out->x = mx.x;
-    lo->y = min_y;
-    lo->z = min_z;
-    out->y = mx.y;
-    out->z = mx.z;
+    out[0] = mn;
+    out[1] = mx;
 }
 
 // FUNCTION: LEGOLAND 0x00440a30
