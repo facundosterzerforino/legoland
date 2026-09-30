@@ -424,6 +424,26 @@ struct RecBuf *DAT_004b5b3c;
 // GLOBAL: LEGOLAND 0x004b5988
 struct BlokeInfo DAT_004b5988;
 
+// GLOBAL: LEGOLAND 0x004b5964
+unsigned int DAT_004b5964[2] = {0x191919, 0xf11a22};
+
+// GLOBAL: LEGOLAND 0x004b596c
+const char *DAT_004b596c[2] = {
+    // STRING: LEGOLAND 0x004b59d8
+    "Chest visitor1",
+    // STRING: LEGOLAND 0x004b59d0
+    "Face01"};
+
+// GLOBAL: LEGOLAND 0x004b5974
+unsigned int DAT_004b5974[2] = {0xf11a22, 0x8b4a};
+
+// GLOBAL: LEGOLAND 0x004b597c
+const char *DAT_004b597c[2] = {
+    // STRING: LEGOLAND 0x004b59c0
+    "Chest girly2",
+    // STRING: LEGOLAND 0x004b59d0
+    "Face01"};
+
 // GLOBAL: LEGOLAND 0x004b5c1c
 struct FMat4 DAT_004b5c1c[2];
 

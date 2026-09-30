@@ -4273,3 +4273,12 @@ extern int DAT_004d83bc;
 
 // 0x0060f910
 extern int DAT_0060f910;
+
+// 0x004b5964
+extern unsigned int DAT_004b5964[2];
+// 0x004b596c
+extern const char *DAT_004b596c[2];
+// 0x004b5974
+extern unsigned int DAT_004b5974[2];
+// 0x004b597c
+extern const char *DAT_004b597c[2];

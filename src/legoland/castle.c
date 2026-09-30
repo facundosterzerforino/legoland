@@ -2502,10 +2502,11 @@ struct LmsFile {
     unsigned int field_10;
     unsigned int field_14;
     unsigned int field_18;
-    unsigned char pad_1c[4];
+    int field_1c;
     unsigned int field_20;
-    unsigned char pad_24[4];
+    int field_24;
     unsigned int field_28;
+    int field_2c;
 };
 
 // FUNCTION: LEGOLAND 0x00420640
@@ -2576,8 +2577,8 @@ unsigned int FUN_00420780(unsigned int param) {
 }
 
 // FUNCTION: LEGOLAND 0x00420790
-unsigned int FUN_00420790(unsigned int param) {
-    return FUN_00422600(param);
+unsigned int FUN_00420790(const char *param) {
+    return FUN_00422600((unsigned int)param);
 }
 
 // FUNCTION: LEGOLAND 0x004207a0
@@ -2827,8 +2828,104 @@ struct Obj4215d0 *FUN_004215d0(struct BlokeInfo *a1) {
     return self;
 }
 
+struct KeyPair {
+    unsigned int key;
+    unsigned int val;
+};
+
+struct LmsRef {
+    short idx;
+    unsigned char pad_2[14];
+};
+
+struct LmsRec {
+    unsigned int key;
+    unsigned char pad_4[8];
+};
+
 // FUNCTION: LEGOLAND 0x00421660
-unsigned int FUN_00421660(struct BlokeInfo *p) { STUB(); }
+unsigned int FUN_00421660(struct BlokeInfo *p) {
+    struct LmsFile *lms;
+    struct LmsRec *src;
+    struct LmsRec *dst;
+    unsigned int *colours;
+    unsigned int size;
+    const char **names;
+    struct KeyPair colPairs[2];
+    struct KeyPair namePairs[2];
+    char *nm;
+    unsigned int *cp;
+    int i;
+    int k;
+    struct LmsRef *r;
+
+    if (p->sex == 0) {
+        lms = (struct LmsFile *)FUN_004206b0(DAT_004b59f8);
+        src = (struct LmsRec *)FUN_00420710(DAT_004b59f8);
+        size = FUN_00420730(DAT_004b59f8);
+        names = DAT_004b596c;
+        colours = DAT_004b5964;
+    } else {
+        lms = (struct LmsFile *)FUN_004206b0(DAT_004b59e8);
+        src = (struct LmsRec *)FUN_00420710(DAT_004b59e8);
+        size = FUN_00420730(DAT_004b59e8);
+        names = DAT_004b597c;
+        colours = DAT_004b5974;
+    }
+    dst = (struct LmsRec *)FUN_004775b0(size, 0, 0, 0);
+    if (dst == NULL) {
+        return 0;
+    }
+    for (i = 0, nm = p->chest; i < 2; i++) {
+        namePairs[i].key = FUN_00420790(*names++);
+        namePairs[i].val = FUN_00420790(nm);
+        nm += 0x14;
+    }
+    cp = &p->leg;
+    for (i = 0; i < 2; i++) {
+        colPairs[i].key = FUN_004207d0(*colours++);
+        colPairs[i].val = FUN_004207d0(*cp);
+        cp++;
+    }
+    memcpy(dst, src, size);
+    for (i = 0; i < lms->field_2c; i++) {
+        unsigned int key;
+        r = (struct LmsRef *)lms->field_28 + i;
+        key = src[r->idx].key;
+        for (k = 0; k <= 1; k++) {
+            if (namePairs[k].key == key) {
+                key = namePairs[k].val;
+                break;
+            }
+        }
+        dst[r->idx].key = key;
+    }
+    for (i = 0; i < lms->field_1c; i++) {
+        unsigned int key;
+        r = (struct LmsRef *)lms->field_18 + i;
+        key = src[r->idx].key;
+        for (k = 0; k <= 1; k++) {
+            if (colPairs[k].key == key) {
+                key = colPairs[k].val;
+                break;
+            }
+        }
+        dst[r->idx].key = key;
+    }
+    for (i = 0; i < lms->field_24; i++) {
+        unsigned int key;
+        r = (struct LmsRef *)lms->field_20 + i;
+        key = src[r->idx].key;
+        for (k = 0; k <= 1; k++) {
+            if (colPairs[k].key == key) {
+                key = colPairs[k].val;
+                break;
+            }
+        }
+        dst[r->idx].key = key;
+    }
+    return (unsigned int)dst;
+}
 
 // FUNCTION: LEGOLAND 0x00421890
 struct BlokeInfo *FUN_00421890(struct BlokeSex0 *bloke) {
