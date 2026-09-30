@@ -1722,9 +1722,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
         off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
         AdjustOffsetForViewMode(&off);
-        sy = off.y + sy;
-        sx = off.x + sx;
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
     } else if (s18 == 5 || s18 == 4) {
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 7) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
@@ -1754,9 +1752,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
         off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
         AdjustOffsetForViewMode(&off);
-        sy = off.y + sy;
-        sx = off.x + sx;
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
     }
     for (i = 0; i < count; i = i + 1) {
         if (*(char *)(blokes[i] + 0x60) == 0) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
@@ -2192,36 +2188,28 @@ void FUN_00431d00(int param_1, unsigned int param_2, unsigned int param_3, unsig
     int count;
     int i;
     int *p;
-    int bloke;
-    int *node;
+    struct Bloke *bloke;
+    struct RideNode *node;
+    TileId *tile = (TileId *)param_4;
     p = buckets;
     buckets[0] = 0;
     for (i = 0x1f; p = p + 1, i != 0; i = i - 1) {
         *p = 0;
     }
     count = 0;
-    node = *(int **)(*(int *)(param_1 + 0xc) + 0xcc);
-    if (node != NULL) {
-        int *dst = blokes;
-        do {
-            if (*(short *)param_4 == (short)node[3]) {
-                bloke = node[2];
-                if (*(short *)(bloke + 0x40) == 0) {
-                    int gx = *(int *)(bloke + 0x68);
-                    unsigned char b0 = *param_4;
-                    *dst = bloke;
-                    count = count + 1;
-                    dst = dst + 1;
-                    *(unsigned char *)(bloke + 0x37) =
-                        DAT_004b6d58[((((gx >> 8) - (unsigned int)b0) * 0xb - (*(int *)(bloke + 0x6c) >> 8)) +
-                                         (unsigned int)param_4[1]) *
-                            4];
-                } else {
-                    buckets[*(unsigned char *)(bloke + 0x36)] = bloke;
-                }
+    node = ((struct Ride *)*(int *)(param_1 + 0xc))->riders;
+    while (node != NULL) {
+        if (tile->id == node->tile.id) {
+            bloke = node->rider;
+            if (bloke->field_40 != 0) {
+                buckets[bloke->field_36] = (int)bloke;
+            } else {
+                blokes[count] = (int)bloke;
+                count = count + 1;
+                bloke->field_37 = DAT_004b6d58[(((bloke->pos.x >> 8) - tile->pos.x) * 0xb - (bloke->pos.y >> 8) + tile->pos.y) * 4];
             }
-            node = (int *)*node;
-        } while (node != NULL);
+        }
+        node = node->next;
     }
     for (i = 0; i < count; i = i + 1) {
         if (*(char *)(blokes[i] + 0x37) == 1) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
