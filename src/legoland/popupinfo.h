@@ -6,6 +6,16 @@
 
 struct NewObjInfo;
 
+/* what the info popup is about (0x7fdec0; passed by value to PopUpInfoSetUp) */
+struct PopUpTarget {
+    int type;
+    void *obj;
+    unsigned int tile;
+};
+
+// 0x007fdec0
+extern struct PopUpTarget DAT_007fdec0;
+
 LEGO_EXPORT void InitPopUpInfo(void);
 LEGO_EXPORT void PopInfoSizeMayChange(void);
 void FUN_00471bf0(void);
@@ -32,4 +42,5 @@ unsigned char FUN_004733f0(void *param_1, unsigned char param_2);
 unsigned char FUN_00473460(void *param_1, unsigned char param_2);
 unsigned char FUN_004734d0(void *param_1, unsigned char param_2);
 unsigned int FUN_004735e0(unsigned int param);
+LEGO_EXPORT void PopUpInfoSetUp(struct PopUpTarget t, unsigned int param_4, unsigned int param_5);
 LEGO_EXPORT void DrawPopUpInfo(void);

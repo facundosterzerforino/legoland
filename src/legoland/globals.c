@@ -5,6 +5,7 @@
 #include "interface.h"
 #include "math.h"
 #include "objclass.h"
+#include "popupinfo.h"
 
 // GLOBAL: LEGOLAND 0x004ab444
 float FLOAT_004ab444;
@@ -4350,13 +4351,7 @@ struct Sprite *DAT_007fdeac;
 struct Sprite *DAT_007fdeb0;
 
 // GLOBAL: LEGOLAND 0x007fdec0
-unsigned int DAT_007fdec0;
-
-// GLOBAL: LEGOLAND 0x007fdec4
-void *DAT_007fdec4;
-
-// GLOBAL: LEGOLAND 0x007fdec8
-unsigned int DAT_007fdec8;
+struct PopUpTarget DAT_007fdec0;
 
 // GLOBAL: LEGOLAND 0x007fdecc
 int DAT_007fdecc;
@@ -4392,7 +4387,7 @@ unsigned int DAT_007fdf94;
 unsigned int DAT_007fdf98;
 
 // GLOBAL: LEGOLAND 0x007fdf9c
-unsigned int DAT_007fdf9c;
+int DAT_007fdf9c;
 
 // GLOBAL: LEGOLAND 0x007fdfa0
 unsigned int DAT_007fdfa0;

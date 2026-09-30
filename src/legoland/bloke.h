@@ -165,6 +165,7 @@ int FUN_00482cb0(Bloke *bloke);
 struct BlokeNameView;
 void FUN_00482c60(Bloke *bloke);
 int FUN_00482df0(Bloke *bloke, int index, int mul);
+int FUN_00482d30(Bloke *bloke);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
