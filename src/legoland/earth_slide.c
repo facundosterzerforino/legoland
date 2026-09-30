@@ -134,12 +134,10 @@ int FUN_0042cf40(struct EarthNode *param_1, void *param_2) {
 
 // FUNCTION: LEGOLAND 0x0042cf70
 void FUN_0042cf70(struct EarthNode *param_1) {
-    unsigned char bx;
-    unsigned char by;
     void *bloke;
     struct EarthQueue *q;
     int x;
-    int y;
+    struct Point y;
     int *tbl;
     char cv;
 
@@ -150,15 +148,13 @@ void FUN_0042cf70(struct EarthNode *param_1) {
         FUN_0042d040(param_1);
         q = param_1->queue_head;
         if (q != NULL) {
-            bx = *(unsigned char *)param_1;
-            by = *((unsigned char *)param_1 + 1);
             tbl = &DAT_004b65c0[1];
-            x = *(int *)((char *)DAT_006160d0 + 0xc);
-            y = *(int *)((char *)DAT_006160d0 + 0x10);
+            x = *(int *)((char *)DAT_006160d0 + 0xc) + *(unsigned char *)param_1;
+            y.y = *(int *)((char *)DAT_006160d0 + 0x10) + *((unsigned char *)param_1 + 1);
             do {
                 bloke = q->elem->bloke;
-                *(unsigned int *)((char *)bloke + 0x24) = (tbl[-1] + x + bx) * 0x100;
-                *(int *)((char *)bloke + 0x28) = (tbl[0] + by + y) * 0x100;
+                *(unsigned int *)((char *)bloke + 0x24) = (tbl[-1] + x) * 0x100;
+                *(int *)((char *)bloke + 0x28) = (tbl[0] + y.y) * 0x100;
                 cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                 *(unsigned short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
@@ -380,16 +376,9 @@ int FUN_0042d400(void) {
 // FUNCTION: LEGOLAND 0x0042d540
 struct EarthBlokeElem *FUN_0042d540(struct EarthBlokeElem *param_1, unsigned int param_2) {
     struct EarthBlokeElem *result = param_1;
-    unsigned int n = param_2;
 
-    n = n - 1;
-    if (n == 0) {
-        return result;
-    }
-    n = n + 1;
-    while (n != 0) {
+    while (param_2-- != 0) {
         result = result->next;
-        n = n - 1;
     }
     return result;
 }
