@@ -745,8 +745,9 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
         }
     }
     DAT_00668144 = 0;
-    renderEngineTargets[renderEngineTargetIdx++] = renderEngine;
+    renderEngineTargets[renderEngineTargetIdx] = renderEngine;
     renderEngine = sprite->surface;
+    renderEngineTargetIdx++;
     FUN_004640f0();
 }
 
