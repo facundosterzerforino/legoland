@@ -601,6 +601,7 @@ void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
             if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
                 Point seat;
                 Point adjust;
+                int x;
 
                 bloke = riders->rider;
                 seat.x = layer.x + 0xc;
@@ -608,9 +609,10 @@ void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
                 adjust.x = 0x12;
                 adjust.y = 0;
                 AdjustOffsetForViewMode(&adjust);
+                x = bloke->screen_x - adjust.x;
                 adjust.y -= 8;
                 person = bloke->person;
-                person->offset.x = bloke->screen_x - adjust.x;
+                person->offset.x = x;
                 person->offset.y = bloke->screen_y - adjust.y;
                 AdjustBlokePosition(&person->offset);
                 AdjustOffsetForViewMode(&seat);
