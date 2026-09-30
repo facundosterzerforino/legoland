@@ -2729,6 +2729,9 @@ LEGO_EXPORT TileId QueryObj;
 // GLOBAL: LEGOLAND 0x00667c58
 LEGO_EXPORT struct ObjClass *QueryClass;
 
+// GLOBAL: LEGOLAND 0x00667c5c
+unsigned int DAT_00667c5c;
+
 // GLOBAL: LEGOLAND 0x00667c60
 unsigned int DAT_00667c60;
 

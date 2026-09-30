@@ -81,3 +81,5 @@ int FUN_004636c0(void);
 LEGO_EXPORT void DoMapAI(void);
 void FUN_004632b0(void);
 LEGO_EXPORT void ProcessDamage(void);
+struct ObjState;
+int FUN_0045ead0(struct ObjState *obj);

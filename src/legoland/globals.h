@@ -2215,6 +2215,8 @@ extern int DAT_00667c3c;
 extern LEGO_EXPORT TileId QueryObj;
 // 0x00667c58
 extern LEGO_EXPORT struct ObjClass *QueryClass;
+// 0x00667c5c
+extern unsigned int DAT_00667c5c;
 // 0x00667c60
 extern unsigned int DAT_00667c60;
 // 0x00667c68

@@ -33,3 +33,5 @@ unsigned char FUN_00473460(void *param_1, unsigned char param_2);
 unsigned char FUN_004734d0(void *param_1, unsigned char param_2);
 unsigned int FUN_004735e0(unsigned int param);
 LEGO_EXPORT void DrawPopUpInfo(void);
+unsigned int FUN_00473640(unsigned int param_1);
+LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5);

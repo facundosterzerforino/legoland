@@ -1,9 +1,28 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "controller.h"
+#include "draw.h"
+#include "gamemain.h"
+#include "gamemap.h"
 #include "globals.h"
+#include "interface.h"
 #include "llidb.h"
+#include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
+#include "popupinfo.h"
+#include "ride_queue.h"
+#include "sound_music.h"
+#include "tilemap.h"
+#include "worker.h"
+
+/* An FXSpriteList as seen by the map hover code: its first tile and the per-tile flag words. */
+struct TileSetView {
+    int first_tile;
+    unsigned char pad_4[0x8];
+    int *sprite_ids;
+};
 
 // FUNCTION: LEGOLAND 0x00457870
 void FUN_00457870(int param_1) {
@@ -87,4 +106,297 @@ int FUN_00457970(int dx, int dy) {
 }
 
 // FUNCTION: LEGOLAND 0x00457a70
-void FUN_00457a70(void) { STUB(); }
+void FUN_00457a70(void) {
+    struct Element *roads;
+    struct Element *zebra;
+    struct Point pt;
+    struct MapElement *tile;
+    unsigned int v;
+    struct Element *elem;
+    struct ObjClass *cls;
+    int x;
+    int y;
+
+    // STRING: LEGOLAND 0x004b89cc
+    roads = ElemID("DRIVING SCHOOL ROADS");
+    // STRING: LEGOLAND 0x004b89bc
+    zebra = ElemID("ZEBRA CROSSING");
+    if (EditMode.unk0 == 0 || EditMode.unk0 == 2) {
+        QueryClass = NULL;
+        if (DAT_004bdd00 == 0x100 || DAT_004bdd00 == 0x103) {
+            if ((int)DAT_00813a64 >= 0 && (int)DAT_00813a64 < lpConfig->width && (int)DAT_00813a68 >= 0 &&
+                (int)DAT_00813a68 < lpConfig->height) {
+                tile = &GameMap[DAT_00813a68][DAT_00813a64];
+            } else {
+                tile = NULL;
+            }
+            if (tile) {
+                if (tile->flags & 0x888) {
+                    if (tile->flags & 0x800) {
+                        if ((DAT_004bdd04 = (struct Bloke *)GetGardenerWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
+                            DAT_004bdd00 = 0x10b;
+                        } else if ((DAT_004bdd04 = (struct Bloke *)GetMechanicWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
+                            DAT_004bdd00 = 0x10c;
+                        }
+                        *(unsigned short *)&DAT_004bdd08 = tile->anchor.id;
+                        if (tile->field_0) {
+                            QueryObj.id = tile->anchor.id;
+                            QueryClass = (struct ObjClass *)tile->field_0->ride;
+                        }
+                    } else {
+                        DAT_004bdd04 = (struct Bloke *)tile->field_0;
+                        *(unsigned short *)&DAT_004bdd08 = tile->anchor.id;
+                        if (tile->flags & 0x88) {
+                            DAT_004bdd00 = 0x103;
+                            if (tile->field_0 == roads) {
+                                struct RideQueueEntry *entry;
+                                if ((entry = FUN_004125f0(tile->field_4, tile->field_5)) != 0 && (entry->field_14 & 0x10)) {
+                                    DAT_004bdd04 = (struct Bloke *)zebra;
+                                }
+                            }
+                        }
+                        elem = (struct Element *)DAT_004bdd04;
+                        QueryObj.id = (unsigned short)DAT_004bdd08;
+                        QueryClass = (struct ObjClass *)elem->ride;
+                    }
+                } else if (DAT_004bdd00 != 0x103) {
+                    struct TileSetView *src;
+                    if ((src = (struct TileSetView *)TileSpriteInfo[tile->field_8].src) != 0 && (src->sprite_ids[tile->field_8 - src->first_tile] & 0x10)) {
+                        DAT_004bdd00 = 0x10d;
+                    } else {
+                        DAT_004bdd00 = 0x109;
+                    }
+                } else {
+                    elem = (struct Element *)DAT_004bdd04;
+                    QueryObj.id = (unsigned short)DAT_004bdd08;
+                    QueryClass = (struct ObjClass *)elem->ride;
+                }
+            } else if (DAT_004bdd00 == 0x103 && EditMode.unk0 == 2) {
+                elem = (struct Element *)DAT_004bdd04;
+                QueryObj.id = (unsigned short)DAT_004bdd08;
+                QueryClass = (struct ObjClass *)elem->ride;
+            } else {
+                DAT_004bdd00 = 0x10a;
+            }
+        }
+    }
+    cls = QueryClass;
+    switch (EditMode.unk0) {
+    case 2:
+        v = DAT_004bdd08 & 0xffff;
+        pt.x = v & 0xff;
+        pt.y = v >> 8;
+        DAT_00810144 = 0;
+        if (DAT_0080ff6c != NULL && (DAT_0080ff6c == DAT_007fd624 || DAT_0080ff6c == DAT_0081cd08)) {
+            GamePad |= 0x800;
+        } else {
+            GamePad &= ~0x800;
+        }
+        if (!(GamePad & 0x1000)) {
+            if (DAT_004bdd00 == 0x103) {
+                cls->method_94(cls->field_c4, &pt);
+            } else if (DAT_004bdd00 == 0x10c) {
+                cls->method_94(cls->field_c4, &pt);
+            } else if (DAT_004bdd00 == 0x10b) {
+                cls->method_94(cls->field_c4, &pt);
+            } else {
+                QueryCursor.field_1414[0] = 0;
+                QueryCursor.field_1414[1] = 0;
+                QueryCursor.field_1828 = 8;
+                QueryCursor.field_1414[2] = 0;
+                QueryCursor.field_1414[3] = 0;
+                QueryCursor.field_1414[4] = 0;
+                FUN_0045f480(&QueryCursor, 1);
+                QueryCursor.field_1404 = DAT_00813a64;
+                QueryCursor.field_1408 = DAT_00813a68;
+                GamePad &= ~0x400;
+                DAT_00667c5c = 0;
+                if (!(DAT_00813ac4 & 2)) {
+                    DAT_0080ff6c = NULL;
+                }
+            }
+        } else {
+            FUN_00452030();
+            QueryCursor = EditCursor;
+        }
+        if (DAT_00810144 == 0) {
+            QueryCursor.field_1830 = 0;
+        }
+        BuildCursorPtr(&QueryCursor, 0, 0);
+        RenderCursor(&QueryCursor);
+        if (FUN_0045f4b0(&QueryCursor)) {
+            SetPointer(2);
+        } else {
+            SetPointer(1);
+        }
+        if (DAT_00813ac4 & 0x11) {
+            if (DAT_0080ff6c != NULL && (((struct ObjClass *)DAT_0080ff6c)->field_1c & 0x2000000)) {
+                DAT_00667cd8 = 1;
+                DAT_00667cdc = 0;
+                for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a3c) {
+                    for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a38) {
+                        QueryCursor.field_1404 = x;
+                        QueryCursor.field_1408 = y;
+                        QueryCursor.field_1414[4] = 0;
+                        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                            tile = &GameMap[y][x];
+                        } else {
+                            tile = NULL;
+                        }
+                        if (tile != NULL) {
+                            QueryObj.pos.x = QueryCursor.field_1404 = tile->field_4;
+                            QueryObj.pos.y = QueryCursor.field_1408 = tile->field_5;
+                            if ((tile->flags & 0x88) && !(tile->flags & 0x40) &&
+                                tile->field_0 == (struct Element *)((struct ObjClass *)DAT_0080ff6c)->field_c4) {
+                                RemObjFromMap((struct ObjClass *)DAT_0080ff6c,
+                                    (unsigned int)((struct ObjClass *)DAT_0080ff6c)->field_c4, QueryObj,
+                                    &QueryCursor);
+                            }
+                        }
+                    }
+                }
+                if (DAT_00667cdc != 0) {
+                    PlayInstanceOfSample(DAT_004b9248, 0, 1, 0);
+                    CalculateMapRenderOrder();
+                }
+                DAT_00667cd8 = 0;
+            } else if (FUN_0045f4b0(&QueryCursor)) {
+                if (DAT_004bdd00 == 0x10c) {
+                    FUN_0045e850((struct ObjNode *)((WorkOrder *)DAT_004bdd04)->element, &((WorkOrder *)DAT_004bdd04)->pos.x);
+                    FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)DAT_004bdd04)->element->ride, &((WorkOrder *)DAT_004bdd04)->pos.x);
+                    EraseMechanicOrder((WorkOrder *)DAT_004bdd04);
+                } else if (DAT_004bdd00 == 0x10b) {
+                    FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)DAT_004bdd04)->element->ride, &((WorkOrder *)DAT_004bdd04)->pos.x);
+                    EraseGardenerOrder((WorkOrder *)DAT_004bdd04);
+                } else {
+                    pt.x = QueryObj.pos.x;
+                    pt.y = QueryObj.pos.y;
+                    if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+                        tile = &GameMap[pt.y][pt.x];
+                    } else {
+                        tile = NULL;
+                    }
+                    QueryClass = (struct ObjClass *)tile->field_0->ride;
+                    if (DAT_00810144 == 0) {
+                        FUN_0045d3d0((struct PathFootprint *)QueryClass, &pt.x);
+                    }
+                    RemObjFromMap(QueryClass, (unsigned int)QueryClass->field_c4, QueryObj, &QueryCursor);
+                }
+            }
+        }
+        if (!(GamePad & 0x1000) && DAT_004bdd00 == 0x103) {
+            if (QueryClass->field_1c & 0x2000000) {
+                DAT_0080ff6c = QueryClass;
+                GamePad |= 0x400;
+            } else {
+                GamePad &= ~0x400;
+                DAT_0080ff6c = NULL;
+            }
+        }
+        if (DAT_00813acc & 2) {
+            EditMode.unk0 = 0;
+            GamePad &= ~0x1400;
+        }
+        break;
+    case 1:
+        if (FUN_0045f4b0(&EditCursor)) {
+            SetPointer(4);
+        } else {
+            SetPointer(3);
+        }
+        if (EditMode.unk8 == DAT_007fd624 || EditMode.unk8 == DAT_0081cd08) {
+            GamePad |= 0x800;
+        } else {
+            GamePad &= ~0x800;
+        }
+        if (!(GamePad & 0x400) && EditMode.unk8 != NULL) {
+            ((struct ObjClass *)EditMode.unk8)->method_90((unsigned int)EditMode.unk8->element, &DAT_00813a44, 0x8f8);
+        }
+        BuildCursorPtr(&EditCursor, 0x8f8, FUN_0045ead0((struct ObjState *)EditMode.unk8));
+        if (DAT_00813ac4 & 0x11) {
+            if (FUN_0045f4b0(&EditCursor)) {
+                if (EditMode.unk8->flags & 0x2000000) {
+                    DAT_00667cd8 = 1;
+                    DAT_00667cdc = 0;
+                    if (EditMode.unk8 == DAT_007fd624) {
+                        for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a70) {
+                            for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
+                                pt.x = x - EditMode.unk8->footprint.x0;
+                                pt.y = y - EditMode.unk8->footprint.y0;
+                                if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+                                    tile = &GameMap[pt.y][pt.x];
+                                } else {
+                                    tile = NULL;
+                                }
+                                if (tile != NULL && (tile->flags & 0x8a0) && (tile->field_0->ride->flags & 0x200000)) {
+                                    FUN_004779d0(&pt);
+                                }
+                            }
+                        }
+                    }
+                    for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a70) {
+                        for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
+                            pt.x = x - EditMode.unk8->footprint.x0;
+                            pt.y = y - EditMode.unk8->footprint.y0;
+                            if (FUN_00457970(pt.x, pt.y)) {
+                                if (WorkOrderBuildObject(EditMode.unk8->element, &pt)) {
+                                    DAT_00668610 |= 0x10;
+                                }
+                                DAT_0066b46c = 1;
+                            }
+                        }
+                    }
+                    DAT_00667cd8 = 0;
+                    if (DAT_00667cdc != 0) {
+                        PlayAppropriateBuildEffect((struct ObjClass *)EditMode.unk8, NULL);
+                        PlayInstanceOfSample(DAT_004b9248, 0, 1, 0);
+                        CalculateMapRenderOrder();
+                    }
+                    DAT_00667cd8 = 0;
+                } else if (WorkOrderBuildObject(EditMode.unk8->element, (Point *)&EditCursor.field_1404)) {
+                    FUN_00475f40();
+                    DAT_00668610 |= 2;
+                }
+            } else {
+                FUN_00473640(EditCursor.field_1410);
+            }
+        } else {
+            RenderCursor(&EditCursor);
+        }
+        if (DAT_00813acc & 2) {
+            GamePad &= ~0x1400;
+            EditMode.unk0 = 0;
+        }
+        break;
+    case 0:
+        v = DAT_004bdd08 & 0xffff;
+        pt.x = v & 0xff;
+        pt.y = v >> 8;
+        if (DAT_004bdd00 == 0x103 || DAT_004bdd00 == 0x10c || DAT_004bdd00 == 0x10b) {
+            cls->method_94(cls->field_c4, &pt);
+            QueryCursor.field_1830 = 0;
+            BuildCursorPtr(&QueryCursor, 0, 0);
+            RenderCursor(&QueryCursor);
+        } else {
+            QueryCursor.field_1414[0] = 0;
+            QueryCursor.field_1414[1] = 0;
+            QueryCursor.field_1828 = 8;
+            QueryCursor.field_1414[2] = 0;
+            QueryCursor.field_1414[3] = 0;
+            QueryCursor.field_1414[4] = 0;
+            FUN_0045f480(&QueryCursor, 1);
+            QueryCursor.field_1408 = DAT_00813a68;
+            QueryCursor.field_1404 = DAT_00813a64;
+            GamePad &= ~0x400;
+            DAT_00667c5c = 0;
+            if (!(DAT_00813ac4 & 2)) {
+                DAT_0080ff6c = NULL;
+            }
+        }
+        break;
+    }
+    if ((DAT_00813a50 & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
+        PopUpInfoSetUp(DAT_004bdd00, DAT_004bdd04, DAT_004bdd08, DAT_00813a44.x, DAT_00813a44.y);
+        DAT_00667c48 = 1;
+    }
+}
