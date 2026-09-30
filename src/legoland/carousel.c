@@ -198,13 +198,12 @@ void FUN_0042c4a0(struct CarouselRideObj *param_1, TileId tile, unsigned int par
 
 // FUNCTION: LEGOLAND 0x0042c520
 void FUN_0042c520(unsigned int param_1, unsigned char *param_2) {
-    unsigned char *src = param_2;
-    unsigned char b0 = src[0];
+    unsigned char pair[2];
 
-    *((unsigned char *)&param_2 + 1) = src[4];
-    *(unsigned char *)&param_2 = b0;
-    AddBasicObject(param_1, (unsigned int)src);
-    FUN_0042bbc0((unsigned short *)&param_2);
+    pair[0] = param_2[0];
+    pair[1] = param_2[4];
+    AddBasicObject(param_1, (unsigned int)param_2);
+    FUN_0042bbc0((unsigned short *)pair);
 }
 
 // FUNCTION: LEGOLAND 0x0042c550
