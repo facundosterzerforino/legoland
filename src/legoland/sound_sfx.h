@@ -3,6 +3,7 @@
 #include "legoland.h"
 
 #include <windows.h>
+#include <mmsystem.h>
 
 struct SampleBuffer;
 
@@ -59,6 +60,7 @@ struct Sample {
     struct SampleBuffer *buffer;
 };
 
+void *FUN_004921c0(void *data, WAVEFORMATEX *has, unsigned int *size);
 LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path);
 LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def);
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);

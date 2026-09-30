@@ -2280,7 +2280,22 @@ void FUN_0040c6c0(int unused, struct Point *pt) {
 void FUN_0040c780(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040c8d0
-void FUN_0040c8d0(void) { STUB(); }
+void FUN_0040c8d0(Element *elem, TileId tile, struct Cursor *cursor) {
+    struct FlumeEntry *entry;
+
+    memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
+    DAT_004cbe30->footprint.x1--;
+    DAT_004cbe30->footprint.y1--;
+    StandardRemoveObject(elem, tile, cursor);
+    entry = FUN_00408ef0(&tile);
+    FUN_004119a0((struct ParticleEmitter *)entry->parent, -1);
+    if (entry != NULL) {
+        FUN_00409440(tile, (void **)&cursor);
+        FUN_0040da10((struct Context *)entry, (struct LinkList *)cursor);
+        FUN_0040a2a0(entry, (struct StateNode **)cursor);
+        FUN_00409270((struct Node *)entry->parent, (struct Node *)entry);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040c970
 struct RideSpriteInfo *FUN_0040c970(int unused, TileId tile) {
@@ -3365,7 +3380,34 @@ struct RideSpriteInfo *FUN_0040ed50(struct FlumeRideArg *arg1, TileId arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040edb0
-void FUN_0040edb0(void) { STUB(); }
+void FUN_0040edb0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
+    struct Ride *ride = elem->ride;
+    struct FlumeEntry *entry;
+    struct LLS *lls;
+    struct Point pos;
+    int frame = 0;
+
+    DAT_004c2af4 = 0;
+    pos = GetScreenCoordsForObject(tile, ride);
+    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+    if (lls != NULL) {
+        frame = lls->frame;
+    }
+    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c2b6c);
+    if (lls != NULL) {
+        LLSSetFrame(lls, frame);
+    }
+    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c2b70);
+    if (lls != NULL) {
+        LLSSetFrame(lls, frame);
+    }
+    FUN_0040cdf0(tile);
+    entry = FUN_00408ef0(tile);
+    if (entry != NULL) {
+        FUN_0040b290(entry, pos.x, pos.y, (struct FlumeStageList *)&DAT_004b4808, 0);
+        FUN_0040cd70((struct PairHolder *)entry, 1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040ee60
 void FUN_0040ee60(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {

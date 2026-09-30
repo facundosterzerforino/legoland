@@ -594,6 +594,8 @@ extern int DAT_004b4764;
 extern struct Sprite *DAT_004b47f8;
 // 0x004b4804
 extern struct Sprite *DAT_004b4804;
+// 0x004b4808
+extern struct FlumeTemplate DAT_004b4808;
 // 0x004b4818
 extern struct Sprite *DAT_004b4818;
 // 0x004b4824

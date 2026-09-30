@@ -259,6 +259,9 @@ struct Sprite *DAT_004b47f8;
 // GLOBAL: LEGOLAND 0x004b4804
 struct Sprite *DAT_004b4804;
 
+// GLOBAL: LEGOLAND 0x004b4808
+struct FlumeTemplate DAT_004b4808;
+
 // GLOBAL: LEGOLAND 0x004b4818
 struct Sprite *DAT_004b4818;
 

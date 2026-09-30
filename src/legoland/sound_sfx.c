@@ -6,6 +6,7 @@
 #include "imports.h"
 #include "legoland.h"
 #include "profile_io.h"
+#include "resource.h"
 #include "sound_music.h"
 #include "stream.h"
 
@@ -77,7 +78,8 @@ struct AcmHeader {
 };
 
 // FUNCTION: LEGOLAND 0x004921c0
-void *FUN_004921c0(WAVEFORMATEX *src, void *has, unsigned int *size) {
+void *FUN_004921c0(void *data, WAVEFORMATEX *has, unsigned int *size) {
+    WAVEFORMATEX *src = has;
     WAVEFORMATEX dst;
     struct AcmHeader hdr;
     unsigned int outSize;
@@ -89,7 +91,7 @@ void *FUN_004921c0(WAVEFORMATEX *src, void *has, unsigned int *size) {
     dst.nAvgBytesPerSec = src->nSamplesPerSec * dst.nBlockAlign;
     dst.wBitsPerSample = 16;
     dst.cbSize = 0;
-    if (acmStreamOpen(&has, NULL, src, &dst, NULL, 0, 0, 4) != 0) {
+    if (acmStreamOpen((void **)&has, NULL, src, &dst, NULL, 0, 0, 4) != 0) {
         return NULL;
     }
     if (acmStreamSize(has, *size, &outSize, 0) != 0) {
@@ -101,7 +103,7 @@ void *FUN_004921c0(WAVEFORMATEX *src, void *has, unsigned int *size) {
     }
     memset(&hdr, 0, sizeof(hdr));
     hdr.cbStruct = sizeof(hdr);
-    hdr.pbSrc = (unsigned char *)src;
+    hdr.pbSrc = (unsigned char *)data;
     hdr.cbSrcLength = *size;
     hdr.pbDst = (unsigned char *)buf;
     hdr.cbDstLength = outSize;
@@ -113,15 +115,129 @@ void *FUN_004921c0(WAVEFORMATEX *src, void *has, unsigned int *size) {
         free(buf);
         return NULL;
     }
-    free(src);
+    free(data);
     *size = hdr.cbDstLengthUsed;
     *src = dst;
     acmStreamUnprepareHeader(has, &hdr, 0);
     return buf;
 }
 
+struct WaveBufferDesc {
+    unsigned int dwSize;
+    unsigned int dwFlags;
+    unsigned int dwBufferBytes;
+    unsigned int dwReserved;
+    WAVEFORMATEX *lpwfxFormat;
+    GUID guid3DAlgorithm;
+};
+
 // FUNCTION: LEGOLAND 0x00492380
-LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) { STUB(); }
+LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) {
+    LPDIRECTSOUNDBUFFER buffer = NULL;
+    struct ResFile *file;
+    unsigned int chunk;
+    unsigned int size;
+    WAVEFORMATEX *format;
+    void *data;
+    void *converted;
+    void *locked;
+    DWORD lockedSize;
+    struct WaveBufferDesc desc;
+    struct SampleDef *sample;
+
+    if (DAT_007988c0 == 0) {
+        return NULL;
+    }
+    file = RES_OpenFile(path);
+    if (file != NULL) {
+        do {
+            if (RES_ReadFile(file, &chunk, 4) != 4 || chunk != 0x46464952) {
+                break;
+            }
+            if (RES_ReadFile(file, &size, 4) != 4) {
+                break;
+            }
+            if (RES_ReadFile(file, &chunk, 4) != 4 || chunk != 0x45564157) {
+                break;
+            }
+            if (RES_ReadFile(file, &chunk, 4) != 4) {
+                break;
+            }
+            if (RES_ReadFile(file, &size, 4) != 4) {
+                break;
+            }
+            if (size < sizeof(WAVEFORMATEX)) {
+                format = malloc(sizeof(WAVEFORMATEX));
+            } else {
+                format = malloc(size);
+            }
+            do {
+                if (RES_ReadFile(file, format, size) != size) {
+                    break;
+                }
+                if (size <= sizeof(WAVEFORMATEX)) {
+                    format->cbSize = 0;
+                }
+                if (RES_ReadFile(file, &chunk, 4) != 4) {
+                    break;
+                }
+                for (;;) {
+                    if (chunk == 0x61746164) {
+                        if (RES_ReadFile(file, &size, 4) != 4) {
+                            break;
+                        }
+                        data = malloc(size);
+                        if (RES_ReadFile(file, data, size) == size) {
+                            converted = FUN_004921c0(data, format, &size);
+                            if (converted != NULL) {
+                                data = converted;
+                                desc.dwSize = sizeof(desc);
+                                desc.dwFlags = 0xe0;
+                                desc.dwBufferBytes = size;
+                                desc.dwReserved = 0;
+                                desc.lpwfxFormat = format;
+                                if (((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->CreateSoundBuffer((LPDIRECTSOUND)DAT_007cad40, (LPCDSBUFFERDESC)&desc, &buffer, NULL) == 0) {
+                                    if (buffer->lpVtbl->Lock(buffer, 0, 0, &locked, &lockedSize, NULL, NULL, 2) == 0) {
+                                        memcpy(locked, converted, lockedSize);
+                                        buffer->lpVtbl->Unlock(buffer, locked, lockedSize, NULL, 0);
+                                        sample = (struct SampleDef *)FUN_004920e0();
+                                        if (sample != NULL) {
+                                            sample->refcount++;
+                                            sample->parent = NULL;
+                                            sample->buffer = (struct SampleBuffer *)buffer;
+                                            sample->block_30 = format;
+                                            sample->block_34 = converted;
+                                            RES_CloseFile(file);
+                                            return sample;
+                                        }
+                                    }
+                                    buffer->lpVtbl->Release(buffer);
+                                }
+                            }
+                        }
+                        free(data);
+                        break;
+                    }
+                    if (RES_ReadFile(file, &size, 4) != 4) {
+                        break;
+                    }
+                    data = malloc(size);
+                    if (RES_ReadFile(file, data, size) != size) {
+                        free(data);
+                        break;
+                    }
+                    free(data);
+                    if (RES_ReadFile(file, &chunk, 4) != 4) {
+                        break;
+                    }
+                }
+            } while (0);
+            free(format);
+        } while (0);
+        RES_CloseFile(file);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00492690
 LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def) {

@@ -2174,7 +2174,15 @@ int FUN_0041f720(double (*fn)(float), float p2, float p3, float *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0041f790
-void FUN_0041f790(float x, unsigned int out) { STUB(); }
+void FUN_0041f790(float x, unsigned int out) {
+    double e;
+    unsigned int *p = (unsigned int *)out;
+    e = exp(x);
+    p[0] = 3;
+    ((float *)p)[1] = (float)e;
+    ((float *)p)[2] = (float)(2.0 * e);
+    ((float *)p)[3] = (float)(2.0 * exp(2.0 * x));
+}
 
 // FUNCTION: LEGOLAND 0x0041f7e0
 double FUN_0041f7e0(float param) {
@@ -5203,7 +5211,46 @@ void FUN_004267b0(unsigned int *t, unsigned int *m3, struct EdgeObj *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00426850
-void FUN_00426850(void) { STUB(); }
+void FUN_00426850(float x, float y, float z, struct EdgeObj *obj) {
+    int i;
+    obj->npts = 8;
+    obj->nedges = 12;
+    obj->pts[0][0] = x;
+    obj->pts[0][1] = -y;
+    obj->pts[0][2] = 0.0f;
+    obj->pts[1][0] = x;
+    obj->pts[1][1] = y;
+    obj->pts[1][2] = 0.0f;
+    obj->pts[2][0] = -x;
+    obj->pts[2][1] = y;
+    obj->pts[3][0] = -x;
+    obj->pts[3][1] = -y;
+    obj->pts[3][2] = 0.0f;
+    for (i = 0; i < 4; i++) {
+        *(struct FVec3 *)obj->pts[i + 4] = *(struct FVec3 *)obj->pts[i];
+        obj->pts[i + 4][2] = -z;
+    }
+    obj->edges[0].a = 0;
+    obj->edges[0].b = 1;
+    obj->edges[1].a = 1;
+    obj->edges[1].b = 2;
+    obj->edges[2].a = 2;
+    obj->edges[2].b = 3;
+    obj->edges[3].a = 3;
+    obj->edges[3].b = 0;
+    for (i = 0; i < 4; i++) {
+        obj->edges[i + 4].a = obj->edges[i].a + 4;
+        obj->edges[i + 4].b = obj->edges[i].b + 4;
+    }
+    obj->edges[8].a = 0;
+    obj->edges[8].b = 4;
+    obj->edges[9].a = 1;
+    obj->edges[9].b = 5;
+    obj->edges[10].a = 1;
+    obj->edges[10].b = 5;
+    obj->edges[11].a = 3;
+    obj->edges[11].b = 7;
+}
 
 // FUNCTION: LEGOLAND 0x00426960
 float lego_sqrtf(float x) {

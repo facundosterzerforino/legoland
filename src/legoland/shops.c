@@ -380,7 +380,140 @@ void FUN_00439760(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 }
 
 // FUNCTION: LEGOLAND 0x00439950
-void FUN_00439950(void) { STUB(); }
+void FUN_00439950(Element *obj) {
+    Ride *ride = obj->ride;
+    RideNode *node = ride->riders;
+    RideNode *next;
+    Bloke *bloke;
+    TileId *tile;
+    unsigned int x;
+    unsigned int y;
+    unsigned char dir;
+    int r;
+
+    while (node != NULL) {
+        next = node->next;
+        bloke = node->rider;
+        tile = &node->tile;
+        x = tile->pos.x + ride->x;
+        y = tile->pos.y + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                bloke->flags |= 8;
+                x = (x << 8) - 0x80;
+                y <<= 8;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 2:
+                x = (x << 8) - 0x160;
+                y = (y << 8) - 0x60;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 3:
+                r = rand() % 3;
+                if (r == 2) {
+                    x = (x - 3) << 8;
+                    y = (y << 8) - 0x80;
+                    bloke->dest.x = x;
+                    bloke->dest.y = y;
+                } else if (r == 1) {
+                    bloke->dest.x = (x << 8) - 0x100;
+                    y = (y - 2) << 8;
+                    bloke->dest.y = y;
+                } else {
+                    x = (x - 3) << 8;
+                    y = (y << 8) - 0x280;
+                    bloke->dest.x = x;
+                    bloke->dest.y = y;
+                }
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 4:
+                FUN_00437570(node, obj, tile, 1);
+                break;
+            case 5:
+                r = rand() % 3;
+                if (r == 2) {
+                    bloke->pos.x = (x - 3) << 8;
+                    bloke->pos.y = y << 8;
+                    bloke->field_58 = rand() % 50;
+                    bloke->param_action = 8;
+                } else if (r == 1) {
+                    bloke->pos.x = (x << 8) - 0x100;
+                    bloke->pos.y = (y - 2) << 8;
+                    bloke->field_58 = rand() % 50;
+                    bloke->param_action = 8;
+                } else {
+                    bloke->pos.x = (x - 3) << 8;
+                    bloke->pos.y = (y << 8) - 0x280;
+                    bloke->param_action = 9;
+                }
+                break;
+            case 8:
+                bloke->field_58--;
+                if (bloke->field_58 == 0) {
+                    bloke->param_action++;
+                }
+                break;
+            case 1:
+            case 9:
+                x = (x << 8) - 0x100;
+                y = (y << 8) - 0x80;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 10:
+                x = (x << 8) - 0x80;
+                y <<= 8;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 11:
+                x <<= 8;
+                bloke->dest.x = x;
+                y <<= 8;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+            case 12:
+                RemoveBlokeFromRide(ride, node);
+                bloke->flags &= ~8;
+                break;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00439c20
 void FUN_00439c20(struct MapObject *obj) {
