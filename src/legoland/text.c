@@ -542,21 +542,16 @@ LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
 
 // FUNCTION: LEGOLAND 0x00455a10
 struct TextCell *FUN_00455a10(struct Sprite *sprite, int *out_index) {
-    int i = 0;
-    struct TextCell *cell;
+    int i;
+    struct TextCell *cell = DAT_006675c0;
 
-    if (0 < DAT_006675b8) {
-        cell = DAT_006675c0;
-        do {
-            if (cell->sprite == sprite) {
-                if (out_index != NULL) {
-                    *out_index = i;
-                }
-                return &DAT_006675c0[i];
+    for (i = 0; i < DAT_006675b8; i++, cell++) {
+        if (cell->sprite == sprite) {
+            if (out_index != NULL) {
+                *out_index = i;
             }
-            i++;
-            cell++;
-        } while (i < DAT_006675b8);
+            return &DAT_006675c0[i];
+        }
     }
     return NULL;
 }
@@ -651,9 +646,10 @@ struct TextCell *FUN_00455d40(const char *name, int font, unsigned int format, u
 // FUNCTION: LEGOLAND 0x00455de0
 struct TextCell *FUN_00455de0(char *name) {
     int i;
+    struct TextCell *cell = DAT_006675c0;
 
-    for (i = 0; i < DAT_006675b8; i++) {
-        if (strcmp(DAT_006675c0[i].name, name) == 0) {
+    for (i = 0; i < DAT_006675b8; i++, cell++) {
+        if (strcmp(cell->name, name) == 0) {
             return &DAT_006675c0[i];
         }
     }
@@ -697,16 +693,16 @@ void FUN_00455ee0(int index) {
 
 // FUNCTION: LEGOLAND 0x00455f70
 void FUN_00455f70(int evict_all) {
-    int i = 0;
+    int i;
+    struct TextCell *cell = DAT_006675c0;
 
-    if (0 < DAT_006675b8) {
-        do {
-            if (evict_all == 0 && DAT_008119a4 - DAT_006675c0[i].sprite->field_c <= 10) {
-                i++;
-            } else {
-                FUN_00455ee0(i);
-            }
-        } while (i < DAT_006675b8);
+    for (i = 0; i < DAT_006675b8;) {
+        if (evict_all == 0 && DAT_008119a4 - cell->sprite->field_c <= 10) {
+            i++;
+            cell++;
+        } else {
+            FUN_00455ee0(i);
+        }
     }
 }
 
