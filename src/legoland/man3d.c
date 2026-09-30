@@ -433,8 +433,7 @@ void FUN_004401b0(int param_1, int param_2) {
     struct Person *iVar4;
     int iVar1;
     int iVar2;
-    int local_8;
-    int local_4;
+    struct Point pt;
     short sVar5;
 
     iVar4 = (struct Person *)param_2;
@@ -443,16 +442,16 @@ void FUN_004401b0(int param_1, int param_2) {
     iVar1 = iVar4->field_6c;
     iVar2 = iVar4->field_68;
     GetTileDimensions(&param_2, &param_1);
-    local_8 = (iVar2 - iVar1) * param_2 >> 9;
-    local_4 = (iVar1 + iVar2) * param_1 >> 9;
+    pt.x = (iVar2 - iVar1) * param_2 >> 9;
+    pt.y = (iVar1 + iVar2) * param_1 >> 9;
     sVar5 = (short)Get_XScroll();
-    local_8 = local_8 - sVar5;
+    pt.x = pt.x - sVar5;
     sVar5 = (short)Get_YScroll();
-    iVar3->sort_id = local_4 - sVar5;
-    local_8 = local_8 + lpConfig->field_20;
-    local_4 = (local_4 - sVar5) + (lpConfig->field_22 - (iVar4->field_70 >> 1));
-    AdjustBlokePosition((struct Point *)&local_8);
-    SetPersonPosition(iVar3, local_8, local_4);
+    iVar3->sort_id = pt.y - sVar5;
+    pt.x = pt.x + lpConfig->field_20;
+    pt.y = (pt.y - sVar5) + (lpConfig->field_22 - (iVar4->field_70 >> 1));
+    AdjustBlokePosition(&pt);
+    SetPersonPosition(iVar3, pt.x, pt.y);
     if ((iVar4->field_63 & 1) == 0) {
         iVar3->field_4c = iVar4->field_74;
     }
@@ -489,7 +488,6 @@ void *FUN_004402d0(const char *param_1, const char *param_2) {
     struct ResFile *file;
     unsigned int size;
     void *buffer;
-    void *uninit;
 
     sprintf(path, ".\\3ddata\\new\\%s\\%s", param_1, param_2);
     file = RES_OpenFile(path);
@@ -500,9 +498,8 @@ void *FUN_004402d0(const char *param_1, const char *param_2) {
             RES_ReadFile(file, buffer, size);
             RES_CloseFile(file);
         }
-        return buffer;
     }
-    return uninit;
+    return buffer;
 }
 
 // FUNCTION: LEGOLAND 0x00440350
