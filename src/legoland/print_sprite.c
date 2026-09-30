@@ -180,7 +180,7 @@ void FUN_004855d0(struct Sprite *sprite, int *out) {
 LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y) {
     struct Sprite *sprite;
     struct SpriteGroup *group;
-    unsigned int mask;
+    int mask;
     unsigned int result;
     int i;
     int xoff;
@@ -249,8 +249,8 @@ LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y) {
             }
         }
         group = (struct SpriteGroup *)sprite->image;
-        i = i + 1;
-        mask = (int)mask >> 1;
+        i++;
+        mask >>= 1;
     } while (i < group->count);
     return 1;
 }
