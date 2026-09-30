@@ -2,6 +2,8 @@
 
 struct CallbackTable;
 struct ClassNode;
+struct Element;
+struct RideNode;
 
 struct BarrelNode {
     struct BarrelNode *next;
@@ -18,10 +20,11 @@ struct BarrelNode {
     unsigned char pad_19[3];
     unsigned int field_1c;
     signed char field_20;
-    unsigned char pad_21[0x34 - 0x21];
+    signed char slots[0x34 - 0x21];
 };
 
 void FUN_0043c2f0(struct BarrelNode *node);
-void FUN_0043c950(void);
+void FUN_0043c950(struct Element *elem);
+unsigned int FUN_0043ce10(struct RideNode *rn, struct BarrelNode *node, signed char n);
 
 void FUN_0043c760(struct ClassNode *str, struct CallbackTable *ride);
