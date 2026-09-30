@@ -289,6 +289,9 @@ unsigned int DAT_004b4bf0[5];
 // GLOBAL: LEGOLAND 0x004b4c04
 int DAT_004b4c04;
 
+// GLOBAL: LEGOLAND 0x004b4c08
+unsigned short DAT_004b4c08[15][4];
+
 // GLOBAL: LEGOLAND 0x004b4cb8
 unsigned char SAFARI_SFX[8];
 
@@ -5459,7 +5462,7 @@ struct Sprite *DAT_0082c668;
 void *DAT_0082c678;
 
 // GLOBAL: LEGOLAND 0x0082c67c
-void *DAT_0082c67c;
+struct DSMapEntry *DAT_0082c67c;
 
 // GLOBAL: LEGOLAND 0x0082c680
 struct RoadLights *DAT_0082c680;

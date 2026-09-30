@@ -4,8 +4,11 @@
 #include "bloke.h"
 #include "globals.h"
 #include "llidb.h"
+#include "map_object.h"
 #include "math.h"
+#include "pathfind.h"
 #include "ride_queue.h"
+#include "tilemap.h"
 
 struct QueueItemInner {
     unsigned char pad_0[0xe];
@@ -63,6 +66,18 @@ struct RideSlot {
     unsigned char pad_54[0xc];
     unsigned char field_60;
 };
+
+struct RQObjClass {
+    unsigned char pad_0[0xc4];
+    struct Element *field_c4;
+};
+
+static __inline struct MapElement *TileAt(int x, int y) {
+    if (x < 0 || x >= (unsigned short)lpConfig->width || y < 0 || y >= (unsigned short)lpConfig->height) {
+        return NULL;
+    }
+    return &GameMap[y][x];
+}
 
 // FUNCTION: LEGOLAND 0x00411e30
 void FUN_00411e30(struct Queue *queue, struct QueueNode *node) {
@@ -468,4 +483,293 @@ struct RideQueueEntry *FUN_00412650(unsigned short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00412680
-void FUN_00412680(int x, int y, int param_3, int param_4) { STUB(); }
+void FUN_00412680(int x, int y, int param_3, int param_4) {
+    unsigned short tiles[16] = {0};
+    int dm2 = (param_4 - 2) & 3;
+    int dm1 = (param_4 - 1) & 3;
+    int dp1 = (param_4 + 1) & 3;
+    struct RideQueueEntry *entry;
+    struct MapElement *tile;
+    struct Point pos;
+    TileId id;
+    int i;
+    int col;
+    int row;
+
+    entry = FUN_004125a0(x, y);
+    if (entry == NULL) {
+        return;
+    }
+    BGFullUpdate = 1;
+    entry->field_14 = ((param_4 & 3) << 5) | param_3;
+    id.pos.x = x;
+    id.pos.y = y;
+    pos.x = x;
+    for (i = 0; i < 4; i++) {
+        pos.y = i + y;
+        tile = TileAt(pos.x, pos.y);
+        tile[0].field_10 = 2;
+        tile[0].flags |= 8;
+        tile[0].field_0 = ((struct RQObjClass *)DAT_0082c684)->field_c4;
+        tile[0].anchor = id;
+        tile[1].field_10 = 2;
+        tile[1].flags |= 8;
+        tile[1].field_0 = ((struct RQObjClass *)DAT_0082c684)->field_c4;
+        tile[1].anchor = id;
+        tile[2].field_10 = 2;
+        tile[2].flags |= 8;
+        tile[2].field_0 = ((struct RQObjClass *)DAT_0082c684)->field_c4;
+        tile[2].anchor = id;
+        tile[3].field_10 = 2;
+        tile[3].flags |= 8;
+        tile[3].field_0 = ((struct RQObjClass *)DAT_0082c684)->field_c4;
+        tile[3].anchor = id;
+        RemovePathSquare(&pos);
+        pos.x++;
+        RemovePathSquare(&pos);
+        pos.x++;
+        RemovePathSquare(&pos);
+        pos.x++;
+        RemovePathSquare(&pos);
+        pos.x = x;
+    }
+
+    switch (param_3 & 0xf) {
+    case 1:
+        tiles[0] = DAT_004b4c08[2][param_4];
+        tiles[1] = DAT_004b4c08[4][param_4];
+        tiles[2] = DAT_004b4c08[5][param_4];
+        tiles[3] = DAT_004b4c08[3][param_4];
+        tiles[4] = DAT_004b4c08[0][param_4];
+        tiles[5] = DAT_004b4c08[1][param_4];
+        tiles[6] = DAT_004b4c08[1][dm2];
+        tiles[7] = DAT_004b4c08[0][dm2];
+        tiles[8] = DAT_004b4c08[0][param_4];
+        tiles[9] = DAT_004b4c08[1][param_4];
+        tiles[10] = DAT_004b4c08[1][dm2];
+        tiles[11] = DAT_004b4c08[0][dm2];
+        tiles[12] = DAT_004b4c08[0][param_4];
+        tiles[13] = DAT_004b4c08[1][param_4];
+        tiles[14] = DAT_004b4c08[1][dm2];
+        tiles[15] = DAT_004b4c08[0][dm2];
+        break;
+    case 7:
+        tiles[0] = DAT_004b4c08[2][param_4];
+        tiles[1] = DAT_004b4c08[4][param_4];
+        tiles[2] = DAT_004b4c08[5][param_4];
+        tiles[3] = DAT_004b4c08[3][param_4];
+        tiles[4] = DAT_004b4c08[0][param_4];
+        tiles[5] = DAT_004b4c08[1][param_4];
+        tiles[6] = DAT_004b4c08[1][dm2];
+        tiles[7] = DAT_004b4c08[0][dm2];
+        tiles[8] = DAT_004b4c08[0][param_4];
+        tiles[9] = DAT_004b4c08[1][param_4];
+        tiles[10] = DAT_004b4c08[1][dm2];
+        tiles[11] = DAT_004b4c08[0][dm2];
+        tiles[12] = DAT_004b4c08[3][dm2];
+        tiles[13] = DAT_004b4c08[5][dm2];
+        tiles[14] = DAT_004b4c08[4][dm2];
+        tiles[15] = DAT_004b4c08[2][dm2];
+        break;
+    case 3:
+        tiles[0] = DAT_004b4c08[14][param_4];
+        tiles[1] = DAT_004b4c08[0][dp1];
+        tiles[2] = DAT_004b4c08[0][dp1];
+        tiles[3] = DAT_004b4c08[0][dp1];
+        tiles[4] = DAT_004b4c08[0][param_4];
+        tiles[5] = DAT_004b4c08[11][param_4];
+        tiles[6] = DAT_004b4c08[12][param_4];
+        tiles[7] = DAT_004b4c08[8][dp1];
+        tiles[8] = DAT_004b4c08[0][param_4];
+        tiles[9] = DAT_004b4c08[13][param_4];
+        tiles[10] = DAT_004b4c08[10][param_4];
+        tiles[11] = DAT_004b4c08[8][dm1];
+        tiles[12] = DAT_004b4c08[0][param_4];
+        tiles[13] = DAT_004b4c08[8][param_4];
+        tiles[14] = DAT_004b4c08[8][dm2];
+        tiles[15] = DAT_004b4c08[9][param_4];
+        break;
+    case 4:
+        tiles[0] = DAT_004b4c08[9][dm2];
+        tiles[1] = DAT_004b4c08[11][param_4];
+        tiles[2] = DAT_004b4c08[11][dm2];
+        tiles[3] = DAT_004b4c08[9][dm1];
+        tiles[4] = DAT_004b4c08[1][dp1];
+        tiles[5] = DAT_004b4c08[1][dp1];
+        tiles[6] = DAT_004b4c08[1][dp1];
+        tiles[7] = DAT_004b4c08[1][dp1];
+        tiles[8] = DAT_004b4c08[1][dm1];
+        tiles[9] = DAT_004b4c08[1][dm1];
+        tiles[10] = DAT_004b4c08[1][dm1];
+        tiles[11] = DAT_004b4c08[1][dm1];
+        tiles[12] = DAT_004b4c08[0][dm1];
+        tiles[13] = DAT_004b4c08[0][dm1];
+        tiles[14] = DAT_004b4c08[0][dm1];
+        tiles[15] = DAT_004b4c08[0][dm1];
+        break;
+    case 5:
+        tiles[0] = DAT_004b4c08[9][dm2];
+        tiles[1] = DAT_004b4c08[11][param_4];
+        tiles[2] = DAT_004b4c08[11][param_4];
+        tiles[3] = DAT_004b4c08[9][dm1];
+        tiles[4] = DAT_004b4c08[11][param_4];
+        tiles[5] = DAT_004b4c08[11][param_4];
+        tiles[6] = DAT_004b4c08[11][param_4];
+        tiles[7] = DAT_004b4c08[11][param_4];
+        tiles[8] = DAT_004b4c08[11][param_4];
+        tiles[9] = DAT_004b4c08[11][param_4];
+        tiles[10] = DAT_004b4c08[11][param_4];
+        tiles[11] = DAT_004b4c08[11][param_4];
+        tiles[12] = DAT_004b4c08[9][dp1];
+        tiles[13] = DAT_004b4c08[11][param_4];
+        tiles[14] = DAT_004b4c08[11][param_4];
+        tiles[15] = DAT_004b4c08[9][param_4];
+        break;
+    case 6:
+        tiles[0] = DAT_004b4c08[2][param_4];
+        tiles[1] = DAT_004b4c08[4][param_4];
+        tiles[2] = DAT_004b4c08[5][param_4];
+        tiles[3] = DAT_004b4c08[3][param_4];
+        tiles[4] = DAT_004b4c08[0][param_4];
+        tiles[5] = DAT_004b4c08[1][param_4];
+        tiles[6] = DAT_004b4c08[1][dm2];
+        tiles[7] = DAT_004b4c08[0][dm2];
+        tiles[8] = DAT_004b4c08[0][param_4];
+        tiles[9] = DAT_004b4c08[1][param_4];
+        tiles[10] = DAT_004b4c08[1][dm2];
+        tiles[11] = DAT_004b4c08[0][dm2];
+        tiles[12] = DAT_004b4c08[14][dm1];
+        tiles[13] = DAT_004b4c08[0][dm1];
+        tiles[14] = DAT_004b4c08[0][dm1];
+        tiles[15] = DAT_004b4c08[0][dm1];
+        break;
+    case 2:
+    default:
+        tiles[0] = DAT_004b4c08[0][param_4];
+        tiles[1] = DAT_004b4c08[1][param_4];
+        tiles[2] = DAT_004b4c08[1][dm2];
+        tiles[3] = DAT_004b4c08[0][dm2];
+        tiles[4] = DAT_004b4c08[0][param_4];
+        tiles[5] = DAT_004b4c08[1][param_4];
+        tiles[6] = DAT_004b4c08[1][dm2];
+        tiles[7] = DAT_004b4c08[0][dm2];
+        tiles[8] = DAT_004b4c08[0][param_4];
+        tiles[9] = DAT_004b4c08[1][param_4];
+        tiles[10] = DAT_004b4c08[1][dm2];
+        tiles[11] = DAT_004b4c08[0][dm2];
+        tiles[12] = DAT_004b4c08[0][param_4];
+        tiles[13] = DAT_004b4c08[1][param_4];
+        tiles[14] = DAT_004b4c08[1][dm2];
+        tiles[15] = DAT_004b4c08[0][dm2];
+        break;
+    }
+
+    if (param_3 & 0x10) {
+        if (param_4 < 2) {
+            tiles[4] = DAT_004b4c08[6][param_4];
+            tiles[5] = DAT_004b4c08[7][param_4];
+            tiles[6] = DAT_004b4c08[7][param_4];
+            tiles[7] = DAT_004b4c08[6][dm2];
+        } else {
+            tiles[8] = DAT_004b4c08[6][param_4];
+            tiles[9] = DAT_004b4c08[7][param_4];
+            tiles[10] = DAT_004b4c08[7][param_4];
+            tiles[11] = DAT_004b4c08[6][dm2];
+        }
+    }
+
+    switch (param_4) {
+    case 0:
+        for (col = 0; col < 4; col++) {
+            for (row = 0; row < 4; row++) {
+                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[row * 4 + col] >> 8].base[0] + (tiles[row * 4 + col] & 0xff));
+            }
+        }
+        break;
+    case 1:
+        for (col = 0; col < 4; col++) {
+            for (row = 0; row < 4; row++) {
+                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[(3 - col) * 4 + row] >> 8].base[0] + (tiles[(3 - col) * 4 + row] & 0xff));
+            }
+        }
+        break;
+    case 2:
+        for (col = 0; col < 4; col++) {
+            for (row = 0; row < 4; row++) {
+                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[(3 - row) * 4 + (3 - col)] >> 8].base[0] + (tiles[(3 - row) * 4 + (3 - col)] & 0xff));
+            }
+        }
+        break;
+    case 3:
+        for (col = 0; col < 4; col++) {
+            for (row = 0; row < 4; row++) {
+                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[col * 4 + (3 - row)] >> 8].base[0] + (tiles[col * 4 + (3 - row)] & 0xff));
+            }
+        }
+        break;
+    }
+
+    pos.x = x;
+    pos.y = y + 1;
+    tile = TileAt(pos.x, pos.y);
+    if (tile[1].field_8 - *(int *)TileSpriteInfo[tile[1].field_8].src == 0x1a) {
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        tile[0].field_10 = 3;
+        pos.x++;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        tile[1].field_10 = 3;
+        pos.x++;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        tile[2].field_10 = 3;
+        pos.x++;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        tile[3].field_10 = 3;
+    } else if (tile[2].field_8 - *(int *)TileSpriteInfo[tile[2].field_8].src == 0x1b) {
+        pos.x = x + 2;
+        pos.y = y;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        TileAt(pos.x, pos.y)->field_10 = 3;
+        pos.y++;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        TileAt(pos.x, pos.y)->field_10 = 3;
+        pos.y++;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        TileAt(pos.x, pos.y)->field_10 = 3;
+        pos.y++;
+        AdjustTileRFFlags((int *)&pos);
+        AddPathSquare(&pos);
+        TileAt(pos.x, pos.y)->field_10 = 3;
+    }
+
+    pos.x = x - 1;
+    pos.y = y + 1;
+    tile = TileAt(pos.x, pos.y);
+    if (tile != NULL && (tile->field_10 & 1)) {
+        AdjustTileRFFlags((int *)&pos);
+    }
+    pos.x = x + 4;
+    pos.y = y + 1;
+    tile = TileAt(pos.x, pos.y);
+    if (tile != NULL && (tile->field_10 & 1)) {
+        AdjustTileRFFlags((int *)&pos);
+    }
+    pos.x = x + 2;
+    pos.y = y - 1;
+    tile = TileAt(pos.x, pos.y);
+    if (tile != NULL && (tile->field_10 & 1)) {
+        AdjustTileRFFlags((int *)&pos);
+    }
+    pos.x = x + 2;
+    pos.y = y + 4;
+    tile = TileAt(pos.x, pos.y);
+    if (tile != NULL && (tile->field_10 & 1)) {
+        AdjustTileRFFlags((int *)&pos);
+    }
+}
