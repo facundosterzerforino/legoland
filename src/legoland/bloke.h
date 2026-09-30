@@ -241,3 +241,4 @@ struct BinVObject;
 struct Vertex;
 void FUN_00482ec0(void);
 LEGO_EXPORT void InitialiseBlokes(void);
+LEGO_EXPORT void RenderPeople(void);

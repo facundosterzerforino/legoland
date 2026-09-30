@@ -2263,6 +2263,8 @@ extern LEGO_EXPORT int ScrollY;
 extern LEGO_EXPORT int ScrollSpeedX;
 // 0x00667cc0
 extern LEGO_EXPORT int ScrollSpeedY;
+// 0x00667cc4
+extern int DAT_00667cc4;
 // 0x00667cd0
 extern int DAT_00667cd0;
 // 0x00667cd4
@@ -3466,7 +3468,7 @@ extern int DAT_008003f4;
 // 0x008003f8
 extern unsigned int DAT_008003f8;
 // 0x00800400
-extern LEGO_EXPORT unsigned int ObjectPartArray[1024];
+extern LEGO_EXPORT RECT ObjectPartArray[256];
 // 0x00801400
 extern LEGO_EXPORT struct MapElement **GameMap;
 // 0x00801404
@@ -3497,6 +3499,8 @@ extern struct MapRect DAT_00801a80[10];
 extern unsigned int DAT_00801b20;
 // 0x00801b24
 extern LEGO_EXPORT unsigned int ObjectPartCount;
+// 0x00801b40
+extern int ObjectPartKey[256];
 // 0x00801b28
 extern int DAT_00801b28;
 // 0x00801f40

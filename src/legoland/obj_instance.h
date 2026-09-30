@@ -52,7 +52,10 @@ struct Ride {
     /* 0x2c */ unsigned char durability; /* repair levels (MapElement.field_11 when new) */
     /* 0x2d */ unsigned char pad_2d;
     /* 0x2e */ short seats; /* riders allowed per tile */
-    /* 0x30 */ unsigned char pad_30[0x36 - 0x30];
+    /* 0x30 */ unsigned char pad_30[0x32 - 0x30];
+    /* 0x32 */ signed char anim_dx; /* build-animation draw offset */
+    /* 0x33 */ signed char anim_dy;
+    /* 0x34 */ unsigned char pad_34[0x36 - 0x34];
     /* 0x36 */ short value;
     /* 0x38 */ short intensity; /* compared with a bloke's thrill preference */
     /* 0x3a */ short field_3a;
@@ -66,6 +69,11 @@ struct Ride {
     /* 0x7c */ unsigned char pad_7c[0xb8 - 0x7c];
     /* 0xb8 */ int (*load_hook)(struct Element *element); /* run after a save game restores this ride */
     /* 0xbc */ unsigned char pad_bc[0xc4 - 0xbc];
+    /* 0x7c */ unsigned char pad_7c[0xa0 - 0x7c];
+    /* 0xa0 */ struct RideSpriteInfo *(*cb_sprite)(); /* sprite to draw for a placed object */
+    /* 0xa4 */ unsigned char pad_a4[0xa8 - 0xa4];
+    /* 0xa8 */ void (*cb_pre_render)();
+    /* 0xac */ unsigned char pad_ac[0xc4 - 0xac];
     /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */
     /* 0xc8 */ unsigned char *counters; /* per-bloke visit counts */
     /* 0xcc */ struct RideNode *riders;

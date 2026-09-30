@@ -34,6 +34,7 @@ LEGO_EXPORT unsigned int SetPointer(unsigned int param_1);
 LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void);
 LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void);
 LEGO_EXPORT void PopRenderingStatus(void);
+LEGO_EXPORT void PrintBackground(int x, int y);
 LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg);
 LEGO_EXPORT void SetOverridePalette(unsigned int param_1);
 LEGO_EXPORT void SetOverrideFrame(unsigned int param_1);

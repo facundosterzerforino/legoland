@@ -3,14 +3,21 @@
 #include "legoland.h"
 #include "math.h"
 
+#include "bloke.h"
+#include "build.h"
 #include "clipping.h"
+#include "draw.h"
 #include "gamemain.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"
+#include "map_object.h"
+#include "obj_instance.h"
 #include "pathfind.h"
 #include "print_sprite.h"
 #include "tilemap.h"
+#include "timer.h"
+#include "worker.h"
 
 struct MapTile {
     /* 0x00 */ unsigned char pad_0[8];
@@ -325,11 +332,355 @@ void FUN_0045ade0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045b170
-void FUN_0045b170(void) {
+void FUN_0045b170(struct Point *pt) {
+}
+
+/* RideSpriteInfo followed by one more zeroed word (RenderView local copy). */
+struct RenderSprite {
+    RideSpriteInfo info;
+    unsigned int field_14;
+};
+
+#define HALF(v) ((v) < 0 ? -(-(v) >> 1) : (v) >> 1)
+
+static __inline struct MapElement *GetTile(int x, int y) {
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        return 0;
+    }
+    return &GameMap[y][x];
 }
 
 // FUNCTION: LEGOLAND 0x0045b180
-LEGO_EXPORT void RenderView(void) { STUB(); }
+LEGO_EXPORT void RenderView(void) {
+    struct MapElement *list[3000];
+    RECT clip;
+    struct HitInfo hit_a;
+    struct HitInfo hit_b;
+    int bounds[4];
+    /* iVar1..iVar8 are scratch: tile metrics while scanning the map, strip maths while drawing. */
+    int b[6];
+    struct Ride *rides;
+    RECT rect;
+    int ya;
+    int savey;
+    int iVar5;
+    int iVar4;
+    int iVar3;
+    int xlim;
+    int q;
+    int count;
+    TileId uid;
+    struct Point pt;
+    int rx;
+    int h;
+    int iVar1;
+    int iVar2;
+    int hw;
+    int ry;
+    unsigned char sel;
+    int sx;
+    struct MapElement *tile;
+    struct MapElement *anchor;
+    int i;
+    struct Ride *ride;
+    RideSpriteInfo *info;
+
+    rect.left = lpConfig->field_20;
+    rect.top = lpConfig->field_22;
+    rect.right = lpConfig->field_10 + lpConfig->field_20;
+    rect.bottom = lpConfig->field_12 + lpConfig->field_22;
+    count = 0;
+    rides = ObjectClassList;
+    BGFullUpdate = 1;
+    DAT_00667cc4 = 0;
+    GetClipping(&clip);
+    FUN_00460e00();
+    PrintBackground(DAT_00667cd0, DAT_00667cd4);
+    if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == DAT_007fd624)) {
+        DAT_00667d40 = 1;
+        DAT_00667d48 = (GetTickCount() & 0x100) ? 0xff : 0;
+    } else {
+        DAT_00667d40 = 0;
+    }
+    SetClipping(&rect);
+
+    /* Scroll position -> first map tile of the view (same maths as FUN_0045ade0). */
+    h = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
+    iVar1 = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
+    iVar2 = (h + 1) >> 1;
+    ry = (ScrollY >> 8) - iVar2;
+    q = (ScrollX >> 8) / iVar1;
+    hw = (iVar1 + 1) >> 1;
+    rx = (ScrollX >> 8) % iVar1;
+    pt.y = ry / h;
+    ry = ry % h;
+    pt.x = pt.y + -3 + q;
+    pt.y = pt.y - q;
+    sel = (rx >= hw) + '\x01';
+    if (ry > iVar2) {
+        sel = (rx >= hw) + '\x03';
+    }
+    switch (sel) {
+    case 1:
+        if (rx < hw + ry * -2) {
+            pt.x = pt.x + -1;
+            rx = rx + hw;
+            ry = ry + iVar2;
+        }
+        break;
+    case 2:
+        if (hw + ry * 2 <= rx) {
+            rx = rx - hw;
+            pt.y = pt.y + -1;
+            ry = ry + iVar2;
+        }
+        break;
+    case 3:
+        if (hw + (ry - h) * 2 <= rx) {
+            break;
+        }
+        pt.y = pt.y + 1;
+        rx = rx + hw;
+        ry = ry - iVar2;
+        break;
+    case 4:
+        if (rx < hw + (h - ry) * 2) {
+            break;
+        }
+        pt.x = pt.x + 1;
+        rx = rx - hw;
+        ry = ry - iVar2;
+    }
+
+    /* Walk the visible tiles in diagonal rows; list each object once (0x400 marks it as listed). */
+    xlim = iVar1 * 2 + rect.right;
+    iVar3 = lpConfig->field_12 + rect.bottom;
+    for (iVar5 = (rect.top - h * 2) - ry; iVar5 < iVar3; iVar5 += h) {
+        q = pt.x;
+        savey = pt.y;
+        for (sx = (rect.left - iVar1 * 2) - rx; sx < xlim; sx += iVar1) {
+            tile = GetTile(pt.x, pt.y);
+            if (tile != NULL) {
+                FUN_0045b170(&pt);
+                if (tile->flags & 0xa0) {
+                    anchor = GetTile(tile->field_4, tile->field_5);
+                    if ((anchor->flags & 0x400) == 0) {
+                        list[count++] = anchor;
+                        anchor->flags |= 0x400;
+                    }
+                }
+            }
+            pt.x++;
+            if (tile != NULL) {
+                if (pt.x == (int)lpConfig->width) {
+                    break;
+                }
+                tile++;
+            }
+            if (tile == NULL) {
+                tile = GetTile(pt.x, pt.y);
+            }
+            if (tile != NULL) {
+                FUN_0045b170(&pt);
+                if (tile->flags & 0xa0) {
+                    anchor = GetTile(tile->field_4, tile->field_5);
+                    if ((anchor->flags & 0x400) == 0) {
+                        list[count++] = anchor;
+                        anchor->flags |= 0x400;
+                    }
+                }
+            }
+            pt.y--;
+        }
+        pt.x = q + 1;
+        pt.y = savey + 1;
+    }
+
+    /* Pre-render callback of each object class. */
+    for (; rides != NULL; rides = rides->next) {
+        if ((rides->flags & 0x20) && rides->cb_pre_render != NULL) {
+            rides->cb_pre_render(rides->element);
+        }
+    }
+
+    /* Draw every listed object, sliced into vertical strips for depth sorting. */
+    list[count] = NULL;
+    if (count > 0) {
+        for (i = 0; i < count; i++) {
+            struct RenderSprite loc = {0};
+            int step;
+            int iVar6;
+            int iVar7;
+            int iVar8;
+            RECT *part;
+            RECT *prev;
+            unsigned int k;
+
+            tile = list[i];
+            tile->flags &= 0xfbff;
+            if (tile->field_0 == NULL) {
+                continue;
+            }
+            ride = tile->field_0->ride;
+            ObjectPartCount = 0;
+            uid.id = tile->anchor.id;
+            pt.x = tile->field_4 + ride->footprint.x0;
+            pt.y = tile->field_5 + ride->footprint.y1;
+            GetTileBounds(&pt, b);
+            iVar1 = b[0];
+            ya = ((b[1] + b[3]) >> 1) - lpConfig->field_22;
+            pt.x = tile->field_4 + ride->footprint.x1;
+            pt.y = tile->field_5 + ride->footprint.y0;
+            GetTileBounds(&pt, b);
+            b[4] = b[2];
+            b[5] = ((b[1] + b[3]) >> 1) - lpConfig->field_22;
+            if (ya != b[5]) {
+                pt.x = tile->field_4 + ride->footprint.x0;
+                pt.y = tile->field_5 + ride->footprint.y0;
+                GetTileBounds(&pt, b);
+                iVar7 = (b[0] + b[2]) >> 1;
+                pt.x = tile->field_4 + ride->footprint.x1;
+                pt.y = tile->field_5 + ride->footprint.y1;
+                GetTileBounds(&pt, b);
+                iVar7 = iVar7 - iVar1;
+                iVar6 = ((b[0] + b[2]) >> 1) - iVar1;
+                if (iVar6 < iVar7) {
+                    iVar2 = iVar6 * 2;
+                    step = -(iVar2 / 4);
+                } else {
+                    iVar2 = iVar7 * 2;
+                    step = iVar2 / 4;
+                }
+                iVar3 = ya;
+                ObjectPartKey[ObjectPartCount] = iVar3;
+                iVar3 += step;
+                part = &ObjectPartArray[ObjectPartCount++];
+                part->top = rect.top;
+                part->bottom = rect.bottom;
+                part->left = rect.left;
+                iVar8 = iVar2 * 3 / 4;
+                part->right = iVar1 + iVar8;
+                if (part->right + iVar8 < b[4]) {
+                    ObjectPartKey[ObjectPartCount] = iVar3;
+                    iVar3 += step;
+                    part = &ObjectPartArray[ObjectPartCount++];
+                    part->top = rect.top;
+                    part->left = iVar1 + iVar8;
+                    part->bottom = rect.bottom;
+                    part->right = iVar2 * 5 / 4 + iVar1;
+                }
+                if (part->right + iVar8 < b[4]) {
+                    iVar2 = iVar2 / 2;
+                    do {
+                        prev = part;
+                        ObjectPartKey[ObjectPartCount] = iVar3;
+                        iVar3 += step;
+                        part = &ObjectPartArray[ObjectPartCount++];
+                        part->top = rect.top;
+                        part->bottom = rect.bottom;
+                        part->left = prev->left + iVar2;
+                        part->right = prev->right + iVar2;
+                    } while (part->right + iVar8 < b[4]);
+                }
+                ObjectPartKey[ObjectPartCount] = b[5];
+                prev = part;
+                part = &ObjectPartArray[ObjectPartCount++];
+                part->top = rect.top;
+                part->bottom = rect.bottom;
+                part->left = prev->right;
+                part->right = rect.right;
+            }
+            if (ride->flags & 0x400) {
+                if (ride->cb_sprite == NULL) {
+                    continue;
+                }
+                info = ride->cb_sprite(ride->element, uid);
+                if (info == NULL) {
+                    continue;
+                }
+            } else {
+                loc.info.sprite = ride->layer;
+                loc.info.x = ride->field_14;
+                loc.info.y = ride->field_18;
+                loc.info.field_10 = 0;
+                info = &loc.info;
+            }
+            pt.x = tile->field_4;
+            pt.y = tile->field_5;
+            GetTileBounds(&pt, bounds);
+            if (tile->flags & 0x20) {
+                iVar1 = info->field_10;
+                hit_a.field_0 = 0x104;
+                hit_a.element = tile->field_0;
+                hit_a.coords = tile->anchor.id;
+                if (ride->anim != NULL) {
+                    iVar4 = HALF(ride->anim_dx + info->x);
+                    iVar5 = HALF(ride->anim_dy + info->y);
+                    iVar4 = bounds[0] + iVar4;
+                    iVar5 = bounds[1] + iVar5;
+                    info->sprite = ride->anim;
+                    SetOverrideFrame(GetBuildAnimFrame(ride, uid));
+                } else {
+                    iVar4 = HALF(info->x);
+                    iVar5 = HALF(info->y);
+                    iVar4 = iVar4 + bounds[0];
+                    iVar5 = iVar5 + bounds[1];
+                    iVar1 = 0xff00;
+                }
+                if (ObjectPartCount != 0) {
+                    for (k = 0; k < ObjectPartCount; k++) {
+                        SortClippedSprite(info->sprite, iVar4, iVar5, ObjectPartKey[k], &ObjectPartArray[k], iVar1, &hit_a);
+                    }
+                } else {
+                    SortSprite(info->sprite, iVar4, iVar5, ya, iVar1, &hit_a);
+                }
+            } else {
+                iVar1 = info->field_10;
+                hit_b.field_0 = 0x103;
+                hit_b.element = tile->field_0;
+                hit_b.coords = tile->anchor.id;
+                iVar4 = HALF(info->x);
+                iVar5 = HALF(info->y);
+                iVar4 = bounds[0] + iVar4;
+                iVar5 = bounds[1] + iVar5;
+                if ((tile->flags & 4) == 0) {
+                    if ((tile->flags & 0x200) && GetBlink()) {
+                        iVar1 = 0xff0000;
+                    } else if (MapStats.field_18c != 0 && (tile->flags & 0x100) && !GetBlink()) {
+                        iVar1 = 0xffff;
+                    }
+                }
+                if (ObjectPartCount != 0) {
+                    for (k = 0; k < ObjectPartCount; k++) {
+                        SortClippedSprite(info->sprite, iVar4, iVar5, ObjectPartKey[k], &ObjectPartArray[k], iVar1, &hit_b);
+                    }
+                } else {
+                    SortSprite(info->sprite, iVar4, iVar5, ya, iVar1, &hit_b);
+                }
+            }
+            ClearOverrideFrame();
+        }
+    }
+    /* People and workers are sorted in with the objects. */
+    RenderPeople();
+    RenderWorkers();
+    DrawAndClearPrintList();
+    for (i = 0; i < count; i++) {
+        tile = list[i];
+        if (tile->field_0 != NULL && (tile->flags & 0x20)) {
+            uid.id = tile->anchor.id;
+            DoBuildEffects(tile->field_0->ride, uid);
+        }
+    }
+    if (DAT_00667d40 != 0) {
+        PushRenderingStatusAndLockVideoSurface();
+        FUN_00461220();
+        FUN_00461020();
+        PopRenderingStatus();
+    }
+    RenderWorkerInterfaceGFX();
+    SetClipping(&clip);
+}
 
 // FUNCTION: LEGOLAND 0x0045bcd0
 LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {

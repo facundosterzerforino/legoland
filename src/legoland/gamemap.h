@@ -47,8 +47,8 @@ struct SpriteSet {
 /* Sprite and draw offset a ride's cb_a0 callback returns for rendering. */
 struct RideSpriteInfo {
     /* 0x00 */ void *sprite;
-    /* 0x04 */ unsigned int x;
-    /* 0x08 */ unsigned int y;
+    /* 0x04 */ int x;
+    /* 0x08 */ int y;
     /* 0x0c */ unsigned short id;
     /* 0x0e */ unsigned short pad_e;
     /* 0x10 */ unsigned int field_10;
