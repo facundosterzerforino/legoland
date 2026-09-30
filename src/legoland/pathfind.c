@@ -421,7 +421,6 @@ int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, str
 // FUNCTION: LEGOLAND 0x00482430
 int FUN_00482430(void) {
     struct PathLink *cur;
-    struct PathLink *prev;
     struct PathLink *p2;
     struct PathLink *p3;
     struct PathLink *p4;
@@ -434,18 +433,12 @@ int FUN_00482430(void) {
     if (cur == 0) {
         return 0;
     }
-
-    prev = cur->prev;
-    if (prev != 0) {
-        do {
-            p4 = p3;
-            p3 = p2;
-            p2 = cur;
-            cur = prev;
-            prev = cur->prev;
-        } while (prev != 0);
+    while (cur->prev != 0) {
+        p4 = p3;
+        p3 = p2;
+        p2 = cur;
+        cur = cur->prev;
     }
-
     dir = FUN_00482330(cur, p2, p3, p4);
     switch (dir) {
     case 0:
