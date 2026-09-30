@@ -48,10 +48,20 @@ struct NewBloke {
     unsigned char pad_6[0x10 - 0x6];
     int fx;
     int fy;
-    int px;
-    int py;
-    int tx;
-    int ty;
+    union {
+        struct Point p;
+        struct {
+            int px;
+            int py;
+        };
+    };
+    union {
+        struct Point t;
+        struct {
+            int tx;
+            int ty;
+        };
+    };
     unsigned char pad_28[8];
     struct Point wp[17];
     unsigned char f_b8;
@@ -529,9 +539,8 @@ int FUN_00401ae0(unsigned short id, int bloke) {
         b->px = e->x + 2;
         b->fx = (e->x + 2) << 16;
     }
-    b->tx = b->px;
     b->py = e->y + 4;
-    b->ty = b->py;
+    b->t = b->p;
     b->fy = (e->y + 4) << 16;
     if (FUN_00401970((int *)b, b->px, b->ty) != 0) {
         free(b);
