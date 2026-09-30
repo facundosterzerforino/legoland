@@ -1646,13 +1646,15 @@ struct RectI {
 
 // FUNCTION: LEGOLAND 0x0041e990
 void FUN_0041e990(unsigned char *obj) {
-    unsigned int b[9];
-    unsigned int loc1[3];
-    struct RectI r;
+    struct {
+        struct RectI r;
+        unsigned int loc1[3];
+        unsigned int b[9];
+    } s;
 
-    FUN_0041e9e0(obj, loc1);
-    FUN_00420fb0((unsigned char *)DAT_0082add0, (unsigned int)loc1, (unsigned int)b, (unsigned int)&r);
-    FUN_00426700((struct RectI *)(obj + 0xc8), &r);
+    FUN_0041e9e0(obj, s.loc1);
+    FUN_00420fb0((unsigned char *)DAT_0082add0, (unsigned int)s.loc1, (unsigned int)s.b, (unsigned int)&s.r);
+    FUN_00426700((struct RectI *)(obj + 0xc8), &s.r);
 }
 
 // FUNCTION: LEGOLAND 0x0041e9e0
@@ -3218,7 +3220,7 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
     m = (y1 - y0) / (x1 - x0);
     b = y0 - m * x0;
     {
-        float a = 3.0f * o->field_24;
+        double a = 3.0f * o->field_24;
         float b2 = o->field_28 + o->field_28;
         float sq;
         float c = o->field_2c - m;
@@ -3250,7 +3252,7 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
 }
 
 // FUNCTION: LEGOLAND 0x00422000
-void FUN_00422000(struct Struct1e40 *o, float *out) {
+int FUN_00422000(struct Struct1e40 *o, float *out) {
     int i;
     int j;
     float t;
@@ -3273,6 +3275,7 @@ void FUN_00422000(struct Struct1e40 *o, float *out) {
             }
         }
     }
+    return DAT_004dd650;
 }
 
 struct V3 {
@@ -3559,9 +3562,9 @@ void FUN_00422e40(int param1, char *entry) {
     unsigned int rshift;
     float rf, gf, bf;
     float dr, dg, db;
-    float ar;
-    float ag;
-    float ab;
+    double ar;
+    double ag;
+    double ab;
     int i;
 
     if (DAT_00668088 == 2) {
@@ -3587,13 +3590,13 @@ void FUN_00422e40(int param1, char *entry) {
         ag += dg;
         ab += db;
     }
-    out = (unsigned short *)entry + 32;
     ar = rf;
     ag = gf;
     ab = bf;
-    dr = (FLOAT_004ab444 - ar) * 0.032258064f;
-    dg = ((float)((1 << gbits) - 1) - ag) * 0.032258064f;
-    db = (FLOAT_004ab444 - ab) * 0.032258064f;
+    dr = (float)(FLOAT_004ab444 - ar) * 0.032258064f;
+    dg = (float)((float)((1 << gbits) - 1) - ag) * 0.032258064f;
+    db = (float)(FLOAT_004ab444 - ab) * 0.032258064f;
+    out = (unsigned short *)entry + 32;
     for (i = 0; i < 32; i++) {
         *out++ = (unsigned short)(((short)(int)ar << rshift) | ((int)ag << 5) | (int)ab);
         ar += dr;
