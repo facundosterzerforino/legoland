@@ -4885,7 +4885,7 @@ void FUN_00425a50(void) {
     DAT_004b5c1c[0].m[3][2] = 0.0f;
     DAT_004b5c1c[0].m[3][3] = 1.0f;
     DAT_004b5c1c[1] = DAT_004b5c1c[0];
-    DAT_004b5c1c[1].m[0][0] *= 0.5f;
+    *(volatile float *)&DAT_004b5c1c[1].m[0][0] *= 0.5f;
     DAT_004b5c1c[1].m[0][1] *= 0.5f;
     DAT_004b5c1c[1].m[1][0] *= 0.5f;
     DAT_004b5c1c[1].m[1][1] *= 0.5f;
