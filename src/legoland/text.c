@@ -563,7 +563,7 @@ struct TextCell *FUN_00455a10(struct Sprite *sprite, int *out_index) {
 
 // FUNCTION: LEGOLAND 0x00455a50
 int FUN_00455a50(struct Sprite *sprite) {
-    RECT rc;
+    RECT rc = {0};
     struct TextCell *cell;
     HDC hdc;
     COLORREF color;
@@ -572,8 +572,6 @@ int FUN_00455a50(struct Sprite *sprite) {
     DDCOLORKEY ck;
     LPDIRECTDRAWSURFACE surface;
 
-    rc.top = 0;
-    rc.left = 0;
     cell = FUN_00455a10(sprite, 0);
     if (cell != NULL) {
         rc.right = cell->width;
@@ -592,8 +590,7 @@ int FUN_00455a50(struct Sprite *sprite) {
         SelectObject(hdc, old_font);
         ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
         PopRenderingStatus();
-        ck.dwColorSpaceLowValue = GetNearestColour(color & 0xff, color >> 8 & 0xff, color >> 0x10 & 0xff);
-        ck.dwColorSpaceHighValue = ck.dwColorSpaceLowValue;
+        ck.dwColorSpaceLowValue = ck.dwColorSpaceHighValue = GetNearestColour(color & 0xff, color >> 8 & 0xff, color >> 0x10 & 0xff);
         surface = (LPDIRECTDRAWSURFACE)cell->sprite->surface;
         surface->lpVtbl->SetColorKey(surface, 8, &ck);
     }
@@ -609,7 +606,7 @@ struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsig
         FUN_00455f70(1);
     }
     cell = &DAT_006675c0[DAT_006675b8];
-    DAT_006675b8 = DAT_006675b8 + 1;
+    DAT_006675b8++;
     cell->format = format;
     cell->width = width;
     cell->height = height;
@@ -625,57 +622,40 @@ struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsig
 
 // FUNCTION: LEGOLAND 0x00455c80
 struct TextCell *FUN_00455c80(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
-    int i = 0;
-    struct TextCell *cell;
+    int i;
 
-    if (0 < DAT_006675b8) {
-        cell = DAT_006675c0;
-        do {
-            if (cell->width == width && cell->height == height && cell->format == format &&
-                cell->bg_color == bg_color && cell->text_color == text_color && cell->font == font &&
-                strcmp(cell->name, name) == 0) {
-                return &DAT_006675c0[i];
-            }
-            i++;
-            cell++;
-        } while (i < DAT_006675b8);
+    for (i = 0; i < DAT_006675b8; i++) {
+        if (DAT_006675c0[i].width == width && DAT_006675c0[i].height == height && DAT_006675c0[i].format == format &&
+            DAT_006675c0[i].bg_color == bg_color && DAT_006675c0[i].text_color == text_color && DAT_006675c0[i].font == font &&
+            strcmp(DAT_006675c0[i].name, name) == 0) {
+            return &DAT_006675c0[i];
+        }
     }
     return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00455d40
 struct TextCell *FUN_00455d40(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
-    int i = 0;
-    struct TextCell *cell;
+    int i;
+    struct TextCell *cell = DAT_006675c0;
 
-    if (0 < DAT_006675b8) {
-        cell = DAT_006675c0;
-        do {
-            if (cell->format == format && cell->bg_color == bg_color && cell->text_color == text_color &&
-                cell->font == font && strcmp(cell->name, name) == 0) {
-                return &DAT_006675c0[i];
-            }
-            i++;
-            cell++;
-        } while (i < DAT_006675b8);
+    for (i = 0; i < DAT_006675b8; i++, cell++) {
+        if (cell->format == format && cell->bg_color == bg_color && cell->text_color == text_color && cell->font == font &&
+            strcmp(cell->name, name) == 0) {
+            return &DAT_006675c0[i];
+        }
     }
     return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00455de0
 struct TextCell *FUN_00455de0(char *name) {
-    int i = 0;
-    struct TextCell *cell;
+    int i;
 
-    if (0 < DAT_006675b8) {
-        cell = DAT_006675c0;
-        do {
-            if (strcmp(cell->name, name) == 0) {
-                return &DAT_006675c0[i];
-            }
-            i++;
-            cell++;
-        } while (i < DAT_006675b8);
+    for (i = 0; i < DAT_006675b8; i++) {
+        if (strcmp(DAT_006675c0[i].name, name) == 0) {
+            return &DAT_006675c0[i];
+        }
     }
     return NULL;
 }
@@ -698,6 +678,9 @@ void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y) {
 
 // FUNCTION: LEGOLAND 0x00455ee0
 void FUN_00455ee0(int index) {
+    int i;
+    struct TextCell *dst;
+
     // STRING: LEGOLAND 0x004b9098
     DBPrintf("Deleting Cell (%d) %s\n", index, DAT_006675c0[index].name);
     DAT_006675b8 = DAT_006675b8 - 1;
@@ -706,27 +689,20 @@ void FUN_00455ee0(int index) {
         KillSprite(DAT_006675c0[index].sprite);
         DAT_006675c0[index].sprite = NULL;
     }
-    if (index < DAT_006675b8) {
-        struct TextCell *dst = &DAT_006675c0[index];
-        do {
-            index++;
-            *dst = dst[1];
-            dst++;
-        } while (index < DAT_006675b8);
+    for (i = index; i < DAT_006675b8; i++) {
+        dst = &DAT_006675c0[i];
+        *dst = dst[1];
     }
 }
 
 // FUNCTION: LEGOLAND 0x00455f70
 void FUN_00455f70(int evict_all) {
     int i = 0;
-    struct TextCell *cell;
 
     if (0 < DAT_006675b8) {
-        cell = DAT_006675c0;
         do {
-            if (evict_all == 0 && DAT_008119a4 - cell->sprite->field_c <= 10) {
+            if (evict_all == 0 && DAT_008119a4 - DAT_006675c0[i].sprite->field_c <= 10) {
                 i++;
-                cell++;
             } else {
                 FUN_00455ee0(i);
             }
