@@ -178,3 +178,5 @@ struct MapRect;
 struct BinVFile;
 struct BinVObject;
 struct Vertex;
+void FUN_00482ec0(void);
+LEGO_EXPORT void InitialiseBlokes(void);

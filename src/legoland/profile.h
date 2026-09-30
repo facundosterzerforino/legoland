@@ -23,3 +23,5 @@ unsigned char FUN_0048d400(unsigned int arg0, unsigned int arg1);
 unsigned char FUN_0048d450(unsigned int param_1, unsigned int param_2);
 void FUN_0048d470(void);
 void FUN_0048d490(void);
+void FUN_0048d230(void);
+LEGO_EXPORT void KillListProfileSprite(void);

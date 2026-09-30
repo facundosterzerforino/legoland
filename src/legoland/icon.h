@@ -91,3 +91,6 @@ int FUN_0046e040(struct IconNode *node);
 LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6);
 unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons);
 LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *param_2);
+void FUN_0046f100(short param_1);
+void FUN_0046f890(void);
+void FUN_0046f920(void);

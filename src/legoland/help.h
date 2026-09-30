@@ -9,3 +9,6 @@ void FUN_0046d110(void);
 void FUN_0046d230(unsigned int a1);
 void FUN_0046d2f0(unsigned int a1);
 unsigned int FUN_0046d280(unsigned int a1);
+void FUN_0046cff0(void);
+LEGO_EXPORT void KillHelp(void);
+LEGO_EXPORT void ProcessInGameHelp(void);

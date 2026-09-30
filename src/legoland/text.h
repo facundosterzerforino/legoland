@@ -21,3 +21,5 @@ LEGO_EXPORT void Print(int x, int y, const char *text, int font);
 LEGO_EXPORT void PrintLimitedText(int x, int y, int width, const char *text, int font, COLORREF color, UINT format);
 int FUN_004551a0(const char *text, int font, int width);
 void FUN_00455220(int x, int y, const char *text, int font, int width);
+void FUN_00454a10(void);
+LEGO_EXPORT void LoadBubbleHelpGFX(void);

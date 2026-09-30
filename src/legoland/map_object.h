@@ -78,3 +78,6 @@ void FUN_00463460(struct MapElement *tile, struct Point *pos);
 void FUN_00463560(void);
 void FUN_00463680(void);
 int FUN_004636c0(void);
+LEGO_EXPORT void DoMapAI(void);
+void FUN_004632b0(void);
+LEGO_EXPORT void ProcessDamage(void);

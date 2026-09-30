@@ -82,3 +82,7 @@ LEGO_EXPORT unsigned int TestMenu(unsigned int *entry);
 char FUN_00475c50(int param_1, unsigned char param_2);
 char FUN_00475c90(int param_1, unsigned char param_2);
 LEGO_EXPORT void UpdateMenu(void);
+LEGO_EXPORT void Load_Interface_ControlIcons(void);
+LEGO_EXPORT void Load_Interface_ThemeIcons(void);
+LEGO_EXPORT void UnLoad_Interface_ControlIcons(void);
+LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void);

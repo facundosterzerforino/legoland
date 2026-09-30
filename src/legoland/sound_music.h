@@ -43,3 +43,6 @@ LEGO_EXPORT int KLIBAUDIO_DestroyAVISoundBuffer(struct AVISoundBuffer *buffer);
 LEGO_EXPORT void *KLIBAUDIO_LockAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer, unsigned int offset, unsigned int size);
 LEGO_EXPORT void KLIBAUDIO_UnLockAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer);
 void FUN_004967b0(void);
+LEGO_EXPORT int InitSoundSystem(void);
+LEGO_EXPORT int KillSoundSystem(void);
+LEGO_EXPORT void SetMusicGrooveLevel(unsigned int level);

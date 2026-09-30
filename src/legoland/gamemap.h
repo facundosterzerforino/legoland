@@ -120,3 +120,5 @@ LEGO_EXPORT struct MapElement *GetNextObjectMatching(struct MapElement *object, 
 LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileId tile, void *cursor);
 void FUN_00459880(void);
 LEGO_EXPORT struct Point PlayfieldToMap(struct Point pos);
+LEGO_EXPORT void InitGameMap(void);
+LEGO_EXPORT void KillGameMap(void);

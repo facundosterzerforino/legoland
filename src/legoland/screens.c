@@ -6,17 +6,22 @@
 #include "legoland.h"
 
 #include "bloke.h"
+#include "bloke_ai.h"
 #include "bricks.h"
 #include "build.h"
+#include "challenge.h"
 #include "clipping.h"
 #include "controller.h"
 #include "draw.h"
 #include "freeplay.h"
+#include "game_util.h"
 #include "gamemap.h"
 #include "help.h"
 #include "icon.h"
+#include "input.h"
 #include "interface.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "mapscreen.h"
 #include "math.h"
@@ -35,8 +40,12 @@
 #include "sound_music.h"
 #include "sound_sfx.h"
 #include "string.h"
+#include "text.h"
+#include "tilemap.h"
 #include "timer.h"
 #include "title.h"
+#include "tooltip.h"
+#include "wndenv.h"
 #include "worker.h"
 
 struct ScreenConfig {
@@ -48,6 +57,7 @@ struct ScreenConfig {
 
 #include "image_sprite.h"
 #include "stream.h"
+#include "worker_mouse.h"
 
 // FUNCTION: LEGOLAND 0x004585c0
 void FUN_004585c0(void) {

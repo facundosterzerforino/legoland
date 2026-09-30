@@ -29,3 +29,6 @@ LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, 
 LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param);
 LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1);
 LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1);
+unsigned int FUN_0045ac20(void);
+LEGO_EXPORT unsigned int LoadMapTiles(void);
+LEGO_EXPORT void RenderView(void);

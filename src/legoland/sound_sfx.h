@@ -84,3 +84,6 @@ int FUN_00495a50(int param_1);
 int FUN_00495a10(void *hwnd);
 int FUN_00495b00(void);
 LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2);
+void FUN_00492c60(void);
+void FUN_00492c80(void);
+void FUN_00492ca0(int param_1);
