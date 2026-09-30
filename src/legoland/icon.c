@@ -446,19 +446,19 @@ unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3,
         FUN_0046d850(region, 0x20, 0);
         return 2;
     }
-    if ((buttons & 4) == 0) {
-        return 1;
-    }
-    if (0xf9 < GetTickCount() - DAT_006688b4) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
-        if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, 6);
-            return 2;
+    if ((buttons & 4) != 0) {
+        if (GetTickCount() - DAT_006688b4 >= 0xfa) {
+            region = (struct ScrollRegion *)icon->field_30;
+            DAT_006688b4 = GetTickCount();
+            if ((region->field_4 & 1) != 0) {
+                FUN_0046d850(region, 0, 6);
+                return 2;
+            }
+            FUN_0046d850(region, 0x20, 0);
         }
-        FUN_0046d850(region, 0x20, 0);
+        return 2;
     }
-    return 2;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046da20
@@ -474,19 +474,19 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
         FUN_0046d850(region, -0x20, 0);
         return 2;
     }
-    if ((buttons & 4) == 0) {
-        return 1;
-    }
-    if (0xf9 < GetTickCount() - DAT_006688b4) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
-        if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, -6);
-            return 2;
+    if ((buttons & 4) != 0) {
+        if (GetTickCount() - DAT_006688b4 >= 0xfa) {
+            region = (struct ScrollRegion *)icon->field_30;
+            DAT_006688b4 = GetTickCount();
+            if ((region->field_4 & 1) != 0) {
+                FUN_0046d850(region, 0, -6);
+                return 2;
+            }
+            FUN_0046d850(region, -0x20, 0);
         }
-        FUN_0046d850(region, -0x20, 0);
+        return 2;
     }
-    return 2;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046dac0
@@ -971,7 +971,7 @@ LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
     StoreClipping();
     x = node->x;
     clip.left = x;
-    clip.right = FUN_00458930(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
+    clip.right = (int)(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
     clip.top = node->y;
     clip.bottom = node->field_12 + clip.top;
     SetClipping(&clip);
@@ -1045,10 +1045,7 @@ int FUN_0046e920(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046e9d0
 LEGO_EXPORT int RenderGBarSprite(struct IconNode *node) {
-    struct PrintCtx ctx;
-    ctx.flags = 1;
-    ctx.node = NULL;
-    ctx.field_8 = 0;
+    struct PrintCtx ctx = {1};
     if (node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
