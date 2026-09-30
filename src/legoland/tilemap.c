@@ -1167,7 +1167,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d1a0
-LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned int a) {
+LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned short a) {
     unsigned short *flags;
     int x;
     int y;
@@ -1561,14 +1561,14 @@ LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {
     local_8.x = *param_1;
     local_8.y = param_1[1] + -1;
     AdjustPathTile(&local_8, param_2);
-    local_8.y = param_1[1];
     local_8.x = *param_1 + 1;
+    local_8.y = param_1[1];
     AdjustPathTile(&local_8, param_2);
     local_8.x = *param_1;
     local_8.y = param_1[1] + 1;
     AdjustPathTile(&local_8, param_2);
-    local_8.y = param_1[1];
     local_8.x = *param_1 + -1;
+    local_8.y = param_1[1];
     AdjustPathTile(&local_8, param_2);
     local_8.x = *param_1 + -1;
     local_8.y = param_1[1] + 1;
