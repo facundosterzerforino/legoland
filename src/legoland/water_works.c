@@ -448,12 +448,12 @@ unsigned int *FUN_00418110(unsigned int *arg1, unsigned short arg2) {
 
     node = FUN_00417d10(&arg2);
     if (node != NULL) {
-        idx = node->field_a * 4;
+        idx = node->field_a;
         DAT_004cbffc = arg2;
-        DAT_004cbff0 = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + idx);
-        DAT_004cbff4 = *(int *)(*(int *)((char *)DAT_004cc018 + 0xc) + idx) >> 1;
+        DAT_004cbff0 = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + (unsigned char)idx * 4);
+        DAT_004cbff4 = *(int *)(*(int *)((char *)DAT_004cc018 + 0xc) + (unsigned char)idx * 4) >> 1;
+        DAT_004cbff8 = *(int *)(*(int *)((char *)DAT_004cc018 + 0x10) + (unsigned char)idx * 4) >> 1;
         DAT_004cc000 = 0;
-        DAT_004cbff8 = *(int *)(*(int *)((char *)DAT_004cc018 + 0x10) + idx) >> 1;
         *(unsigned int *)(DAT_004cbff0 + 0x10) |= 0x2000;
         SetOverrideFrame(node->field_9);
     }
