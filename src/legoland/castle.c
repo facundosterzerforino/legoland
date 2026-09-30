@@ -3553,7 +3553,50 @@ void FUN_00422e10(int param1, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00422e40
-void FUN_00422e40(int param1, char *entry) { STUB(); }
+void FUN_00422e40(int param1, char *entry) {
+    unsigned short *out = (unsigned short *)entry;
+    unsigned int gbits;
+    unsigned int rshift;
+    float rf, gf, bf;
+    float dr, dg, db;
+    float ar = FLOAT_004ab390;
+    float ag = FLOAT_004ab390;
+    float ab = FLOAT_004ab390;
+    int i;
+
+    if (DAT_00668088 == 2) {
+        gbits = 6;
+        rshift = 11;
+    } else {
+        gbits = 5;
+        rshift = 10;
+    }
+    rf = (float)(((unsigned int)param1 >> 19) & 0x1f);
+    dr = rf * 0.03125f;
+    gf = (float)(((unsigned int)param1 & 0xff00) >> (16 - gbits));
+    dg = gf * 0.03125f;
+    bf = (float)(((unsigned int)param1 >> 3) & 0x1f);
+    db = bf * 0.03125f;
+    for (i = 0; i < 33; i++) {
+        *out++ = (unsigned short)(((short)(int)ar << rshift) | ((int)ag << 5) | (int)ab);
+        ar += dr;
+        ag += dg;
+        ab += db;
+    }
+    out = (unsigned short *)entry + 32;
+    ar = rf;
+    ag = gf;
+    ab = bf;
+    dr = (FLOAT_004ab444 - ar) * 0.032258064f;
+    dg = ((float)((1 << gbits) - 1) - ag) * 0.032258064f;
+    db = (FLOAT_004ab444 - ab) * 0.032258064f;
+    for (i = 0; i < 32; i++) {
+        *out++ = (unsigned short)(((short)(int)ar << rshift) | ((int)ag << 5) | (int)ab);
+        ar += dr;
+        ag += dg;
+        ab += db;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00422fe0
 void FUN_00422fe0(void) {
