@@ -686,16 +686,15 @@ int FUN_00483b60(Bloke *bloke, unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00483c20
-int FUN_00483c20(Bloke *bloke, int x, int y) {
+int FUN_00483c20(Bloke *bloke, Point pos) {
     int chance;
     int state;
-    unsigned char dir;
 
     chance = (bloke->flags & 2) ? 0 : 20;
     state = bloke->person->field_8;
     if (state != 2 && state != 3) {
-        if (HitPathEdge(bloke, x, y) != 0 || HitObstacle(bloke, x, y) != 0 || (rand() & 0x3ff) < chance) {
-            dir = rand() & 7;
+        if (HitPathEdge(bloke, pos.x, pos.y) != 0 || HitObstacle(bloke, pos.x, pos.y) != 0 || (rand() & 0x3ff) < chance) {
+            unsigned char dir = rand() & 7;
             if ((bloke->flags & 2) != 0) {
                 dir |= 1;
             }
@@ -703,8 +702,8 @@ int FUN_00483c20(Bloke *bloke, int x, int y) {
             return 1;
         }
     } else {
-        if (HitPathEdge(bloke, x, y) != 0 || FUN_00483580(bloke, x, y) != 0) {
-            dir = rand() & 7;
+        if (HitPathEdge(bloke, pos.x, pos.y) != 0 || FUN_00483580(bloke, pos.x, pos.y) != 0) {
+            unsigned char dir = rand() & 7;
             if ((bloke->flags & 2) != 0) {
                 dir |= 1;
             }
@@ -723,7 +722,7 @@ void FUN_00483d10(Bloke *bloke) {
     d.y += bloke->pos.y;
     if (FUN_00483300(bloke, d.x, d.y) == 0) {
         if (Handle_RndWalk_TileSpecifics(bloke, d.x, d.y) == 0) {
-            if (FUN_00483c20(bloke, d.x, d.y) == 0) {
+            if (FUN_00483c20(bloke, d) == 0) {
                 FUN_00483680(bloke, d.x, d.y);
                 bloke->pos = d;
                 FUN_00483830(bloke);
@@ -745,7 +744,7 @@ void FUN_00483d90(Bloke *bloke) {
     if (DAT_008119a4 - bloke->field_54 >= 0x32) {
         if (FUN_00483300(bloke, d.x, d.y) == 0) {
             if (Handle_RndWalk_TileSpecifics(bloke, d.x, d.y) == 0) {
-                if (FUN_00483c20(bloke, d.x, d.y) == 0) {
+                if (FUN_00483c20(bloke, d) == 0) {
                     FUN_00483680(bloke, d.x, d.y);
                     bloke->pos = d;
                     FUN_00483830(bloke);
@@ -776,7 +775,7 @@ void FUN_00483e20(Bloke *bloke) {
     d.y += bloke->pos.y;
     if (FUN_00483300(bloke, d.x, d.y) == 0) {
         if (FUN_00483b60(bloke, d.x, d.y) == 0) {
-            if (FUN_00483c20(bloke, d.x, d.y) == 0) {
+            if (FUN_00483c20(bloke, d) == 0) {
                 FUN_00483680(bloke, d.x, d.y);
                 bloke->pos = d;
                 FUN_00483830(bloke);
