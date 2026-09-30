@@ -682,6 +682,7 @@ LEGO_EXPORT void BlokeSitAnim(struct Bloke *bloke) {
 LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) {
     struct Person *person;
     struct Anim3D *result;
+    void **base;
 
     result = 0;
     person = bloke->person;
@@ -689,16 +690,19 @@ LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) {
         switch (person->field_8) {
         case 1:
             if (person->random == 0) {
-                return (struct Anim3D *)DAT_0062febc[person->field_88];
+                base = DAT_0062febc;
+            } else {
+                base = DAT_0062fed4;
             }
-            return (struct Anim3D *)DAT_0062fed4[person->field_88];
+            break;
         case 2:
-            return (struct Anim3D *)DAT_0062feb0[person->field_88];
+            base = DAT_0062feb0;
+            break;
         case 3:
-            return (struct Anim3D *)(&DAT_0062fef4)[person->field_88];
-        default:
-            result = (struct Anim3D *)((unsigned int *)bloke)[person->field_88];
+            base = &DAT_0062fef4;
+            break;
         }
+        result = (struct Anim3D *)base[person->field_88];
     }
     return result;
 }
@@ -724,8 +728,6 @@ LEGO_EXPORT struct Anim3D *GetBlokeAnim3DFromPerson(struct Person *person) {
         case 3:
             base = &DAT_0062fef4;
             break;
-        default:
-            base = (void **)person;
         }
         result = (struct Anim3D *)base[person->field_88];
     }
