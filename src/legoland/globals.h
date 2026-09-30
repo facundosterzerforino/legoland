@@ -4282,3 +4282,16 @@ extern const char *DAT_004b596c[2];
 extern unsigned int DAT_004b5974[2];
 // 0x004b597c
 extern const char *DAT_004b597c[2];
+
+// 0x006121c8
+extern float DAT_006121c8[6][3];
+// 0x006126d8
+extern float DAT_006126d8[6][2];
+// 0x00612708
+extern unsigned int DAT_00612708[31][36];
+// 0x00613878
+extern unsigned int DAT_00613878[36];
+// 0x00613908
+extern int DAT_00613908[24][2];
+// 0x006148b8
+extern int DAT_006148b8[546][2];

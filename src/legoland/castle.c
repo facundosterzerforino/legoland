@@ -7157,7 +7157,104 @@ void FUN_00428ec0(void *p, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00428f00
-void FUN_00428f00(void) { STUB(); }
+void FUN_00428f00(void) {
+    int i, j, k, m, n, t, e, v;
+    int cnt;
+    float ang;
+    float s;
+    unsigned int *g, *out;
+    int (*d)[2];
+    int (*sp)[2];
+    int k6, k18;
+
+    for (i = 0; i <= 4; i++) {
+        DAT_00613908[i][0] = i;
+        DAT_00613908[i][1] = i + 1;
+    }
+    DAT_00613908[5][0] = i;
+    DAT_00613908[5][1] = 0;
+    n = 6;
+    for (j = 0; j <= 4; j++) {
+        DAT_00613908[n][0] = j;
+        DAT_00613908[n][1] = j + 6;
+        n++;
+        DAT_00613908[n][0] = j;
+        DAT_00613908[n][1] = j + 7;
+        n++;
+    }
+    DAT_00613908[n][0] = j;
+    DAT_00613908[n][1] = j + 6;
+    n++;
+    DAT_00613908[n][0] = j;
+    DAT_00613908[n][1] = 6;
+    n++;
+    for (j = 0; j <= 4; j++) {
+        DAT_00613908[n + j][0] = j + 6;
+        DAT_00613908[n + j][1] = j + 7;
+    }
+    n += 5;
+    DAT_00613908[n][0] = j + 6;
+    DAT_00613908[n][1] = 6;
+
+    t = 0;
+    v = 6;
+    for (e = 18; e < 23; e++) {
+        DAT_00613878[t * 3] = e - 18 + 0x80000000;
+        DAT_00613878[t * 3 + 1] = v + 1;
+        DAT_00613878[t * 3 + 2] = v + 2 + 0x80000000;
+        t++;
+        DAT_00613878[t * 3] = v;
+        DAT_00613878[t * 3 + 1] = e;
+        DAT_00613878[t * 3 + 2] = v + 1 + 0x80000000;
+        t++;
+        v += 2;
+    }
+    DAT_00613878[t * 3] = 0x80000005;
+    DAT_00613878[t * 3 + 1] = v + 1;
+    DAT_00613878[t * 3 + 2] = 0x80000006;
+    DAT_00613878[t * 3 + 3] = v;
+    DAT_00613878[t * 3 + 4] = e;
+    DAT_00613878[t * 3 + 5] = v + 1 + 0x80000000;
+
+    n = 0;
+    g = DAT_00612708[0];
+    for (k = 0; k < 30; k++) {
+        k6 = k * 6;
+        k18 = k * 18;
+        cnt = 18;
+        if (k == 29) {
+            cnt = 24;
+        }
+        d = &DAT_006148b8[n];
+        sp = DAT_00613908;
+        n += cnt;
+        do {
+            (*d)[0] = (*sp)[0] + k6;
+            (*d)[1] = (*sp)[1] + k6;
+            d++;
+            sp++;
+        } while (--cnt);
+        out = g;
+        g += 36;
+        for (i = 0; i < 12; i++) {
+            for (j = 0; j < 3; j++) {
+                unsigned int x = DAT_00613878[i * 3 + j];
+                *out++ = ((x & 0x7fffffff) + k18) | (x & 0x80000000);
+            }
+        }
+    }
+
+    ang = FLOAT_004ab390;
+    for (i = 0; i < 6; i++) {
+        DAT_006121c8[i][0] = 0.0f;
+        DAT_006121c8[i][1] = (float)cos(ang) * 1.8f;
+        s = (float)sin(ang);
+        DAT_006121c8[i][2] = s * 1.8f;
+        DAT_006126d8[i][0] = (float)cos(ang);
+        DAT_006126d8[i][1] = s;
+        ang += 1.0472f;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00429150
 void FUN_00429150(struct Curve *curve, float *off, int flag) {
