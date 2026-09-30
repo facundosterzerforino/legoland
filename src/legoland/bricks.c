@@ -158,8 +158,8 @@ void FUN_00457a70(void) {
                             }
                         }
                         elem = (struct Element *)DAT_004bdd04;
-                        QueryObj.id = Hover.data.tile.id;
                         QueryClass = (struct ObjClass *)elem->ride;
+                        QueryObj.id = Hover.data.tile.id;
                     }
                 } else if (DAT_004bdd00 != 0x103) {
                     struct TileSetView *src;
@@ -170,13 +170,13 @@ void FUN_00457a70(void) {
                     }
                 } else {
                     elem = (struct Element *)DAT_004bdd04;
-                    QueryObj.id = Hover.data.tile.id;
                     QueryClass = (struct ObjClass *)elem->ride;
+                    QueryObj.id = Hover.data.tile.id;
                 }
             } else if (DAT_004bdd00 == 0x103 && EditMode.unk0 == 2) {
                 elem = (struct Element *)DAT_004bdd04;
-                QueryObj.id = Hover.data.tile.id;
                 QueryClass = (struct ObjClass *)elem->ride;
+                QueryObj.id = Hover.data.tile.id;
             } else {
                 DAT_004bdd00 = 0x10a;
             }
@@ -205,8 +205,8 @@ void FUN_00457a70(void) {
                 memset(QueryCursor.field_1414, 0, 20);
                 QueryCursor.field_1828 = 8;
                 FUN_0045f480(&QueryCursor, 1);
-                QueryCursor.field_1408 = DAT_00813a68;
                 QueryCursor.field_1404 = DAT_00813a64;
+                QueryCursor.field_1408 = DAT_00813a68;
                 GamePad &= ~0x400;
                 DAT_00667c5c = 0;
                 if (!(DAT_00813ac4 & 2)) {
@@ -284,8 +284,8 @@ void FUN_00457a70(void) {
         }
         if (!(GamePad & 0x1000) && DAT_004bdd00 == 0x103) {
             if (QueryClass->field_1c & 0x2000000) {
-                DAT_0080ff6c = QueryClass;
                 GamePad |= 0x400;
+                DAT_0080ff6c = QueryClass;
             } else {
                 GamePad &= ~0x400;
                 DAT_0080ff6c = NULL;
@@ -370,23 +370,28 @@ void FUN_00457a70(void) {
         v = DAT_004bdd08 & 0xffff;
         pt.x = v & 0xff;
         pt.y = v >> 8;
-        if (DAT_004bdd00 == 0x103 || DAT_004bdd00 == 0x10c || DAT_004bdd00 == 0x10b) {
+        if (DAT_004bdd00 == 0x103) {
+            QueryClass->method_94(QueryClass->field_c4, &pt);
+        } else if (DAT_004bdd00 == 0x10c) {
             cls->method_94(cls->field_c4, &pt);
-            QueryCursor.field_1830 = 0;
-            BuildCursorPtr(&QueryCursor, 0, 0);
-            RenderCursor(&QueryCursor);
+        } else if (DAT_004bdd00 == 0x10b) {
+            cls->method_94(cls->field_c4, &pt);
         } else {
             memset(QueryCursor.field_1414, 0, 20);
             QueryCursor.field_1828 = 8;
             FUN_0045f480(&QueryCursor, 1);
-            QueryCursor.field_1404 = DAT_00813a64;
             QueryCursor.field_1408 = DAT_00813a68;
+            QueryCursor.field_1404 = DAT_00813a64;
             GamePad &= ~0x400;
             DAT_00667c5c = 0;
             if (!(DAT_00813ac4 & 2)) {
                 DAT_0080ff6c = NULL;
             }
+            break;
         }
+        QueryCursor.field_1830 = 0;
+        BuildCursorPtr(&QueryCursor, 0, 0);
+        RenderCursor(&QueryCursor);
         break;
     }
     if ((DAT_00813a50 & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
