@@ -1725,10 +1725,11 @@ void FUN_0041eb70(void) {
 
 struct DispatchRow {
     unsigned int field_0;
-    void (*fn_4)(unsigned int);
-    void (*fn_8)(unsigned int, unsigned int, unsigned int);
-    void (*fn_c)(unsigned int, unsigned int);
-    unsigned char pad_10[0x18 - 0x10];
+    void (*fn_4)();
+    void (*fn_8)();
+    void (*fn_c)();
+    void (*fn_10)();
+    void (*fn_14)();
 };
 
 struct DispatchTarget {
@@ -4582,8 +4583,34 @@ void FUN_00424e70(struct SprOwner *owner) {
     FUN_00424ab0((struct CastleSub *)&DAT_00829ae0);
 }
 
+#pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00424e80
-void FUN_00424e80(void) { STUB(); }
+void FUN_00424e80(void) {
+    DAT_00610804[DAT_00610a10 & 0x3f] = DAT_0060f908;
+    DAT_00610500[DAT_00610a10 & 0x3f] = DAT_0060f900;
+    DAT_00610400[DAT_00610a10 & 0x3f] = DAT_0060f8fc;
+    DAT_00610704[DAT_00610a10 & 0x3f] = DAT_00611644;
+    DAT_00610604[DAT_00610a10 & 0x3f] = DAT_00615f68;
+    DAT_006100f8[DAT_00610a10 & 0x3f] = DAT_004dcbc8;
+    DAT_0060fdf8[DAT_00610a10 & 0x3f] = DAT_004d83bc;
+    DAT_0060fef8[DAT_00610a10 & 0x3f] = DAT_0060f910;
+    DAT_0060fbf8[DAT_00610a10 & 0x3f] = DAT_00615fc4;
+    DAT_006101f8[DAT_00610a10 & 0x3f] = DAT_00615fc8;
+    DAT_0060fcf8[DAT_00610a10 & 0x3f] = DAT_00615fcc;
+    DAT_00610904[DAT_00610a10 & 0x3f] = DAT_00610704[DAT_00610a10 & 0x3f] + DAT_00610400[DAT_00610a10 & 0x3f] + DAT_0060fdf8[DAT_00610a10 & 0x3f] + DAT_00610604[DAT_00610a10 & 0x3f] + DAT_006100f8[DAT_00610a10 & 0x3f] + DAT_0060fef8[DAT_00610a10 & 0x3f];
+    DAT_0060f908 = 0;
+    DAT_0060f900 = 0;
+    DAT_0060f8fc = 0;
+    DAT_00611644 = 0;
+    DAT_00615f68 = 0;
+    DAT_004dcbc8 = 0;
+    DAT_004d83bc = 0;
+    DAT_0060f910 = 0;
+    DAT_00615fc4 = 0;
+    DAT_00615fc8 = 0;
+    DAT_00615fcc = 0;
+}
+#pragma optimize("", on)
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00425050
@@ -4635,8 +4662,134 @@ void FUN_00425170(void) {
 // FUNCTION: LEGOLAND 0x004251c0
 void FUN_004251c0(void) { STUB(); }
 
+#pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004254d0
-void FUN_004254d0(void) { STUB(); }
+void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
+    // STRING: LEGOLAND 0x004b5c0c
+    if (_stricmp("CASTLE OBJ", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_a4 = FUN_00424150;
+        obj->cb_ac = FUN_004241e0;
+        obj->cb_a8 = FUN_004251c0;
+        obj->cb_b0 = FUN_00425050;
+        obj->cb_bc = FUN_00426ce0;
+        obj->cb_b8 = FUN_00426c20;
+        obj->cb_c0 = FUN_004246e0;
+        ((struct DispatchRow *)DAT_0082ad20)[0].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)DAT_0082ad20)[0].fn_4 = FUN_00424240;
+        ((struct DispatchRow *)DAT_0082ad20)[0].fn_8 = FUN_00424280;
+        ((struct DispatchRow *)DAT_0082ad20)[0].fn_10 = FUN_00424440;
+        ((struct DispatchRow *)DAT_0082ad20)[0].fn_c = FUN_00424320;
+        ((struct DispatchRow *)DAT_0082ad20)[0].fn_14 = FUN_004244b0;
+        DAT_0082adb0[2] = (unsigned int)head;
+    }
+    // STRING: LEGOLAND 0x004b5b7c
+    else if (_stricmp("CASTLE_DUMMY", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_a4 = FUN_00424830;
+        obj->cb_b0 = FUN_00424700;
+        ((struct DispatchRow *)DAT_0082ad20)[1].fn_10 = FUN_00424820;
+        ((struct DispatchRow *)DAT_0082ad20)[1].fn_14 = FUN_00424800;
+        DAT_0082adb0[3] = (unsigned int)head;
+    }
+    // STRING: LEGOLAND 0x004b5bfc
+    else if (_stricmp("SQUARE_TRACK", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_a4 = FUN_00427aa0;
+        obj->cb_ac = FUN_00427af0;
+        obj->cb_b0 = FUN_00427a00;
+        obj->cb_90 = FUN_004275d0;
+        ((struct DispatchRow *)DAT_0082ad20)[2].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)DAT_0082ad20)[2].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)DAT_0082ad20)[2].fn_8 = FUN_00427b20;
+        ((struct DispatchRow *)DAT_0082ad20)[2].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)DAT_0082ad20)[2].fn_c = FUN_00427bc0;
+        ((struct DispatchRow *)DAT_0082ad20)[2].fn_14 = FUN_004279f0;
+        DAT_0082adb0[0] = (unsigned int)head;
+    }
+    // STRING: LEGOLAND 0x004b5be8
+    else if (_stricmp("SQUARE_TRACK_HEIGHT", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_a4 = FUN_00427ef0;
+        obj->cb_b0 = FUN_00427a00;
+        ((struct DispatchRow *)DAT_0082ad20)[3].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)DAT_0082ad20)[3].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)DAT_0082ad20)[3].fn_8 = FUN_00427c90;
+        ((struct DispatchRow *)DAT_0082ad20)[3].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)DAT_0082ad20)[3].fn_c = FUN_00427ea0;
+        ((struct DispatchRow *)DAT_0082ad20)[3].fn_14 = FUN_004279f0;
+        DAT_0082adb0[5] = (unsigned int)head;
+    }
+    // STRING: LEGOLAND 0x004b5bd0
+    else if (_stricmp("SQUARE_TRACK_HEIGHT_0", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_a4 = FUN_00427f30;
+        obj->cb_b0 = FUN_00427a00;
+        ((struct DispatchRow *)DAT_0082ad20)[4].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)DAT_0082ad20)[4].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)DAT_0082ad20)[4].fn_8 = FUN_00427c90;
+        ((struct DispatchRow *)DAT_0082ad20)[4].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)DAT_0082ad20)[4].fn_c = FUN_00427ea0;
+        ((struct DispatchRow *)DAT_0082ad20)[4].fn_14 = FUN_004279f0;
+        DAT_0082adb0[4] = (unsigned int)head;
+    }
+    // STRING: LEGOLAND 0x004b5bb4
+    else if (_stricmp("SQUARE_TRACK_HEIGHT_PATH", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_a4 = FUN_00428070;
+        obj->cb_b0 = FUN_00427a00;
+        ((struct DispatchRow *)DAT_0082ad20)[5].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)DAT_0082ad20)[5].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)DAT_0082ad20)[5].fn_8 = FUN_004280b0;
+        ((struct DispatchRow *)DAT_0082ad20)[5].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)DAT_0082ad20)[5].fn_c = FUN_00428300;
+        ((struct DispatchRow *)DAT_0082ad20)[5].fn_14 = FUN_004279f0;
+        DAT_0082adb0[1] = (unsigned int)head;
+    }
+    // STRING: LEGOLAND 0x004b5ba0
+    else if (_stricmp("ROLLER_COASTER_LOAD", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_8c = FUN_00426c20;
+    }
+    // STRING: LEGOLAND 0x004b5b8c
+    else if (_stricmp("ROLLER_COASTER_SAVE", head->name) == 0) {
+        obj->cb_8c = FUN_0041ec50;
+        obj->cb_90 = FUN_0041ec70;
+        obj->cb_94 = FUN_0041ed00;
+        obj->cb_98 = FUN_0041ece0;
+        obj->cb_9c = FUN_0041ed50;
+        obj->cb_8c = FUN_00426ce0;
+    }
+}
+#pragma optimize("", on)
 
 // FUNCTION: LEGOLAND 0x00425a50
 void FUN_00425a50(void) { STUB(); }
