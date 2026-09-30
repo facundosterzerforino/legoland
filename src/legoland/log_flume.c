@@ -2094,7 +2094,7 @@ void FUN_0040be00(struct FlumeSlotSet *set) {
                         if (FUN_00411ea0((struct Queue *)set->queue)) {
                             set->flags |= 1;
                             FUN_00412060((struct Queue *)set->queue, (struct QueueItemMid **)&item);
-                            item->slot = slot;
+                            slot->busy = (struct FlumeStatHolder *)item;
                         }
                     }
                 }
