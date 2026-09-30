@@ -482,8 +482,7 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
     while (wave != 0) {
         node = DAT_0066b450;
         DAT_00669250 = 0;
-        while (wave != 0) {
-            wave--;
+        while (wave-- != 0) {
             if (node->x == goal_x && node->y == goal_y) {
                 DAT_0066b454 = node;
                 if (FUN_00482430()) {
@@ -576,8 +575,7 @@ int FUN_00482710(int *a, int *b, int *out) {
     while (wave != 0) {
         node = DAT_0066b450;
         DAT_00669250 = 0;
-        while (wave != 0) {
-            wave--;
+        while (wave-- != 0) {
             if (node->x == goal_x && node->y == goal_y) {
                 DAT_0066b454 = node;
                 if (FUN_00482430()) {
