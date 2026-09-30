@@ -1304,8 +1304,11 @@ LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y) {
     if (order == NULL) {
         target = FUN_0049b350(worker, x, y);
         if (target != NULL) {
+            struct Point at;
             el = target->field_0;
-            order = AddRepairOrderForObject(el->ride, target->anchor.pos.x, target->anchor.pos.y);
+            at.x = target->anchor.pos.x;
+            at.y = target->anchor.pos.y;
+            order = AddRepairOrderForObject(el->ride, at);
             if (order != NULL) {
                 target->flags |= 0x4000;
                 FUN_00499b60(worker, order);
@@ -1529,25 +1532,25 @@ LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b930
-LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, int x, int y) {
+LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, struct Point pos) {
     MapElement *cell;
     int level;
     float rate;
 
-    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
-        cell = &GameMap[y][x];
+    if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
+        cell = &GameMap[pos.y][pos.x];
     } else {
         cell = NULL;
     }
     level = cell->field_11;
     rate = GetObjRepairCost(ride, level) / (float)(ride->durability - level);
     if ((ride->flags & 0x200000) != 0 && lpConfig->field_38 != 0) {
-        return FUN_00499780(ride->element, &x, 2);
+        return FUN_00499780(ride->element, &pos.x, 2);
     }
     if ((ride->flags & 0x400000) != 0 && lpConfig->field_34 != 0) {
-        return FUN_00499830(ride->element, &x, 2);
+        return FUN_00499830(ride->element, &pos.x, 2);
     }
-    FUN_0049b690(&ride->footprint, &x, rate);
+    FUN_0049b690(&ride->footprint, &pos.x, rate);
 }
 
 // FUNCTION: LEGOLAND 0x0049ba10

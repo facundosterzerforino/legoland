@@ -1,7 +1,7 @@
-#include "bloke_ai.h"
-#include "debug_alloc.h"
 #include "worker_mouse.h"
 #include "bloke.h"
+#include "bloke_ai.h"
+#include "debug_alloc.h"
 #include "globals.h"
 #include "icon.h"
 #include "legoland.h"
@@ -167,15 +167,16 @@ WorkOrder *FUN_00470410(Point *out) {
 // FUNCTION: LEGOLAND 0x004704b0
 WorkOrder *FUN_004704b0(Point *out) {
     unsigned int v = DAT_004bdd08 & 0xffff;
-    int x = v & 0xff;
-    int y = v >> 8;
+    struct Point pos;
     MapElement *elem;
     Ride *ride;
     unsigned short flags;
     WorkOrder *order = NULL;
 
-    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
-        elem = &GameMap[y][x];
+    pos.x = v & 0xff;
+    pos.y = v >> 8;
+    if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
+        elem = &GameMap[pos.y][pos.x];
     } else {
         elem = NULL;
     }
@@ -185,11 +186,11 @@ WorkOrder *FUN_004704b0(Point *out) {
         if (ride->durability != 0) {
             if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
                 if (!(0x4000 & flags)) {
-                    order = AddRepairOrderForObject(ride, x, y);
+                    order = AddRepairOrderForObject(ride, pos);
                 }
             } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
                 if (!(0x4000 & flags)) {
-                    order = AddRepairOrderForObject(ride, x, y);
+                    order = AddRepairOrderForObject(ride, pos);
                 }
             }
             if (order != NULL) {

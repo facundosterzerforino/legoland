@@ -116,7 +116,7 @@ void FUN_0049cf00(struct MapRect *rect);
 Bloke *FUN_00499c40(int *coords);
 void FUN_00499ac0(Bloke *worker, WorkOrder *order);
 WorkOrder *FUN_00499780(Element *element, int *coords, int mode);
-LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, int x, int y);
+LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, struct Point pos);
 int FUN_00499550(void);
 int FUN_00499560(void);
 LEGO_EXPORT void ClearAMechanicsWorkList(Bloke *value);

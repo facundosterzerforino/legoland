@@ -3179,7 +3179,7 @@ void FUN_00463460(struct MapElement *tile, struct Point *pos) {
                 return;
             }
             if (lpConfig->field_3c != 0 && (tile->flags & 0x4000) == 0) {
-                if (AddRepairOrderForObject(ride, pos->x, pos->y) != 0) {
+                if (AddRepairOrderForObject(ride, *pos) != 0) {
                     tile->flags |= 0x4000;
                 }
             }
