@@ -181,18 +181,12 @@ struct LocFile {
 // FUNCTION: LEGOLAND 0x00443720
 void FUN_00443720(struct LocFile *param_1, const char *param_2) {
     int i;
-    char *name;
     struct Image *image;
     char filename[64];
 
-    if (param_1->count <= 0) {
-        return;
-    }
-    i = 0;
-    name = param_1->name;
-    do {
+    for (i = 0; i < param_1->count; i++) {
         // STRING: LEGOLAND 0x004b7d58
-        sprintf(filename, "%s\\%s%04d.BMP", param_2, name, i);
+        sprintf(filename, "%s\\%s%04d.BMP", param_2, param_1->name, i);
         image = (struct Image *)FUN_004436d0(filename, 9);
         if (image == NULL) {
             // STRING: LEGOLAND 0x004b7d3c
@@ -204,8 +198,7 @@ void FUN_00443720(struct LocFile *param_1, const char *param_2) {
             KillImage(image);
         }
         DAT_00665e8c = DAT_00665e8c + 1;
-        i = i + 1;
-    } while (i < param_1->count);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x004437d0
@@ -344,11 +337,8 @@ struct AnimHandle *FUN_00443bd0(const char *filename) {
     }
     found = NULL;
     if (AVIFileOpenA(&file, filename, 0, 0) == 0) {
+        finfo.dwStreams = 0;
         AVIFileInfoA(file, &finfo, 0x6c);
-        length = 0;
-        fps = 0;
-        width = 0;
-        height = 0;
         for (i = 0; i < finfo.dwStreams; i++) {
             if (AVIFileGetStream(file, &stream, 0, i) != 0) {
                 break;
@@ -474,21 +464,21 @@ unsigned int FUN_00443e30(struct AdvisorObject *param_1) {
             PushRenderingStatusAndLockVideoSurface();
             FUN_004659a0(frame, param_1->x, param_1->y);
             PopRenderingStatus();
-            DAT_00665eec = DAT_00665eec + 1;
+            DAT_00665eec++;
             // STRING: LEGOLAND 0x004b7d98
             DAT_00667c40 = "Exit Advisor";
             if ((int)DAT_00813a44.x >= param_1->x && (int)DAT_00813a44.y >= param_1->y &&
                 (int)DAT_00813a44.x < frame->width + param_1->x && (int)DAT_00813a44.y < frame->height + param_1->y) {
-                DAT_004bdd08 = state[2];
                 DAT_004bdd00 = state[0];
                 DAT_004bdd04 = state[1];
+                DAT_004bdd08 = state[2];
             }
         }
-        return 0;
+    } else {
+        PushRenderingStatusAndLockVideoSurface();
+        PrintSprite(param_1->sprite, param_1->x, param_1->y, 0, state);
+        PopRenderingStatus();
     }
-    PushRenderingStatusAndLockVideoSurface();
-    PrintSprite(param_1->sprite, param_1->x, param_1->y, 0, state);
-    PopRenderingStatus();
     return 0;
 }
 
@@ -981,16 +971,9 @@ void FUN_004449b0(void) {
     int i;
     struct Sprite **slot;
     char buffer[0x20];
-    char *p;
 
-    buffer[0] = '\0';
-    p = buffer + 1;
-    for (i = 7; i != 0; i--) {
-        *(int *)p = 0;
-        p += 4;
-    }
-    *(short *)p = 0;
-    *(p + 2) = 0;
+    buffer[0] = 0;
+    memset(buffer + 1, 0, 0x1f);
     i = 0;
     slot = DAT_0081c054;
     do {
@@ -1017,12 +1000,14 @@ void FUN_00444a70(int param_1, int param_2, int param_3, int param_4, int param_
     int negative;
     int bar;
     unsigned int colour;
+    int mark;
 
-    negative = 0;
     if (param_6 < 0) {
         negative = 1;
         param_6 = -param_6;
         param_7 = param_6 - param_7;
+    } else {
+        negative = 0;
     }
     if (param_5 > param_6) {
         param_5 = param_6;
@@ -1030,7 +1015,7 @@ void FUN_00444a70(int param_1, int param_2, int param_3, int param_4, int param_
     if (negative != 0) {
         param_5 = param_6 - param_5;
     }
-    if (param_7 <= param_5) {
+    if (param_5 >= param_7) {
         colour = GetNearestColour(0, 0xff, 0);
     } else {
         colour = GetNearestColour(0xff, 0, 0);
@@ -1039,7 +1024,8 @@ void FUN_00444a70(int param_1, int param_2, int param_3, int param_4, int param_
     PrintSprite(DAT_0081c028, param_1, param_2, 0, 0);
     RenderBlock(param_1 + 3, param_2 + 2, bar - 2, 1, colour);
     RenderBlock(param_1 + 2, param_2 + 3, bar, (param_4 - param_2) - 1, colour);
-    PrintSprite(DAT_0081c030, (((param_3 - param_1) - 2) * param_7) / param_6 + 2 + param_1, param_2 + 2, 0, 0);
+    mark = (((param_3 - param_1) - 2) * param_7) / param_6 + 2 + param_1;
+    PrintSprite(DAT_0081c030, mark, param_2 + 2, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00444b70
@@ -5050,14 +5036,12 @@ void FUN_0044db20(void) {
 
 // FUNCTION: LEGOLAND 0x0044db40
 void FUN_0044db40(void) {
-    unsigned int now;
+    unsigned int t = 0;
 
     if (MapStats.field_178 != 0) {
-        now = GetGameTimer();
-        DAT_00666098 = now + MapStats.field_178 * 60000;
-        return;
+        t = GetGameTimer() + MapStats.field_178 * 60000;
     }
-    DAT_00666098 = 0;
+    DAT_00666098 = t;
 }
 
 // FUNCTION: LEGOLAND 0x0044db80
