@@ -600,6 +600,7 @@ void FUN_00418450(struct WaterRender *render, unsigned int p2, unsigned int p3, 
     void *ctx;
     struct AdjustOffset offset;
     struct Point sc;
+    struct LLS *lls;
 
     ctx = render->field_c;
     node = FUN_004182c0((unsigned short *)coords);
@@ -608,7 +609,8 @@ void FUN_00418450(struct WaterRender *render, unsigned int p2, unsigned int p3, 
         offset.y = 0x14;
         AdjustOffsetForViewMode((struct Point *)&offset);
         sc = GetScreenCoordsForObject(coords, ctx);
-        LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cc014), node->field_9);
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cc014);
+        LLSSetFrame(lls, node->field_9);
         PrintSprite(DAT_004cc014, sc.x + offset.x, sc.y + offset.y, p6, 0);
     }
 }
