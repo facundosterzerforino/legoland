@@ -229,14 +229,14 @@ void FUN_00452390(void) {
 
 // FUNCTION: LEGOLAND 0x00452460
 LEGO_EXPORT void ReadGameButtons(void) {
+    volatile unsigned int saved;
     unsigned int held;
     DWORD now;
     int scroll;
     unsigned int released;
     unsigned int repeat;
     unsigned int pressed;
-    int mx;
-    int my;
+    struct Point mp;
 
     DAT_00667c48 = 0;
     held = CONTROLLERBUFFER->field_18;
@@ -252,6 +252,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
     }
     now = GetTickCount();
     if (now - DAT_0066710c > DAT_006670fc) {
+        saved = held;
         DAT_0066710c = GetTickCount();
         DAT_006670fc = 0x32;
         repeat = held;
@@ -259,6 +260,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
         repeat = 0;
     }
     GamePad = GamePad & 0xffffffe1;
+    DAT_00813a94 = held;
 
     DAT_00813abc = 0;
     if ((pressed & DAT_00813ab8) != 0) DAT_00813abc = 1;
@@ -314,7 +316,6 @@ LEGO_EXPORT void ReadGameButtons(void) {
     if ((held & DAT_00813ad8) != 0) DAT_00813adc |= 4;
     if ((repeat & DAT_00813ad8) != 0) DAT_00813adc |= 8;
 
-    DAT_00813a94 = held;
     if (lpConfig->field_1e != 0) {
         DAT_00813a44.x = CONTROLLERBUFFER->field_8;
         DAT_00813a44.y = CONTROLLERBUFFER->field_c;
@@ -329,10 +330,10 @@ LEGO_EXPORT void ReadGameButtons(void) {
                     GamePad = GamePad | 8;
                     DAT_00813ae0 = GetTicks();
                 }
-                ScreenToMapRef((unsigned int)&DAT_00813a44, &mx, 0);
-                if (DAT_00813a64 != mx || DAT_00813a68 != my) {
-                    DAT_00813a68 = my;
-                    DAT_00813a64 = mx;
+                ScreenToMapRef((unsigned int)&DAT_00813a44, (int *)&mp, 0);
+                if (DAT_00813a64 != mp.x || DAT_00813a68 != mp.y) {
+                    DAT_00813a68 = mp.y;
+                    DAT_00813a64 = mp.x;
                     if ((GamePad & 0x1000) == 0) {
                         GamePad = GamePad | 4;
                     }
