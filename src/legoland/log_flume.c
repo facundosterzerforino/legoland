@@ -1173,7 +1173,7 @@ void FUN_00409b70(int i, int j, struct Node **nodes, struct Node *insert) {
 }
 
 // FUNCTION: LEGOLAND 0x00409c20
-void FUN_00409c20(void) { STUB(); }
+void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040a010
 void FUN_0040a010(struct Node *a, struct Node *b) {
@@ -2277,7 +2277,59 @@ void FUN_0040c6c0(int unused, struct Point *pt) {
 }
 
 // FUNCTION: LEGOLAND 0x0040c780
-void FUN_0040c780(void) { STUB(); }
+void FUN_0040c780(int unused, struct Point *pt) {
+    TileId t;
+    int coords[2];
+    struct FlumeEntry *entry;
+    struct Slot **list;
+    struct Slot *p;
+    unsigned int key;
+
+    t.pos.x = pt->x;
+    t.pos.y = pt->y;
+    coords[0] = t.pos.x;
+    coords[1] = t.pos.y;
+    entry = FUN_00409010();
+    if (entry != NULL) {
+        entry->ride = DAT_004cbe30;
+        entry->link28 = NULL;
+        entry->tile.pos.x = DAT_004b4728 + coords[0];
+        entry->tile.pos.y = DAT_004b472c + coords[1];
+        FUN_00409440(t, (void **)&list);
+        FUN_00409510((struct StateSlots *)list);
+        p = list[0];
+        if (p != NULL) {
+            key = p->key;
+        } else {
+            p = list[1];
+            if (p != NULL) {
+                key = p->key;
+            } else {
+                p = list[2];
+                if (p != NULL) {
+                    key = p->key;
+                } else {
+                    p = list[3];
+                    if (p != NULL) {
+                        key = p->key;
+                    }
+                }
+            }
+        }
+        FUN_004119a0((struct ParticleEmitter *)key, 1);
+        if (key != 0) {
+            entry->parent = (struct FlumeEntry *)key;
+            FUN_004094b0(key, list);
+            FUN_004091f0((struct Node *)key, (struct ListNode *)entry);
+            memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
+            DAT_004cbe30->footprint.x1--;
+            DAT_004cbe30->footprint.y1--;
+            AddBasicObject(DAT_004c74f4, coords);
+            FUN_00409c20(entry, (unsigned int *)list);
+            FUN_004097a0(entry, (struct StateSlots *)list);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040c8d0
 void FUN_0040c8d0(Element *elem, TileId tile, struct Cursor *cursor) {
