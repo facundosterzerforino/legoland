@@ -3490,9 +3490,6 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
-            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
-            FUN_00409080((struct Node *)prev, (struct Node *)n);
-            prev = n;
             break;
         case 1:
             t.x += DAT_004c2aa0->var_3c[0];
@@ -3570,9 +3567,6 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
-            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
-            FUN_00409080((struct Node *)prev, (struct Node *)n);
-            prev = n;
             break;
         case 2:
             t.x += DAT_004c2b0c->var_3c[0];
@@ -3650,9 +3644,6 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
-            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
-            FUN_00409080((struct Node *)prev, (struct Node *)n);
-            prev = n;
             break;
         case 3:
             t.x += DAT_004c74d4->var_3c[0];
@@ -3728,9 +3719,6 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
-            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
-            FUN_00409080((struct Node *)prev, (struct Node *)n);
-            prev = n;
             break;
         }
         FUN_00409170((struct Node *)entry, (struct ListNode *)n);
