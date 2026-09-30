@@ -519,7 +519,14 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->flags |= 0x4008;
         icon->field_28 = (void *)FUN_00443e30;
         DAT_00668eb8 = (unsigned int)icon;
-        if (a != 0 && FUN_0046b280() != 0) {
+        if (a != 0) {
+            FUN_0046b240(0);
+            if (DAT_0080ffa0.field_45 == 2) {
+                FUN_004748a0((void *)0);
+            } else {
+                FUN_004748a0((void *)1);
+            }
+        } else if (FUN_0046b280() != 0) {
             FUN_0046b240(1);
         } else {
             FUN_0046b240(0);
