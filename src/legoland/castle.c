@@ -3252,7 +3252,7 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
 }
 
 // FUNCTION: LEGOLAND 0x00422000
-void FUN_00422000(struct Struct1e40 *o, float *out) {
+int FUN_00422000(struct Struct1e40 *o, float *out) {
     int i;
     int j;
     float t;
@@ -3275,6 +3275,7 @@ void FUN_00422000(struct Struct1e40 *o, float *out) {
             }
         }
     }
+    return DAT_004dd650;
 }
 
 struct V3 {
