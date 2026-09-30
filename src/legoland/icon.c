@@ -220,15 +220,10 @@ void FUN_0046d4e0(struct IconNode *node) {
     struct IconNode *next;
     if (DAT_006687c8 == node) {
         FUN_0046d460(&DAT_006687c8);
-        return;
-    }
-    cur = DAT_006687c8;
-    if (cur != NULL) {
-        while ((next = cur->next) != node) {
+    } else {
+        cur = DAT_006687c8;
+        while (cur != NULL && (next = cur->next) != node) {
             cur = next;
-            if (next == NULL) {
-                return;
-            }
         }
         if (cur != NULL) {
             FUN_0046d460((struct IconNode **)cur);
