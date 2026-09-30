@@ -310,7 +310,9 @@ struct LSub {
     /* 0x10 */ struct LSub *next;
     /* 0x14 */ short x;
     /* 0x16 */ short y;
-    /* 0x18 */ char pad18[0xc];
+    /* 0x18 */ unsigned int k;
+    /* 0x1c */ unsigned int a;
+    /* 0x20 */ unsigned int b;
 };
 
 /* 0x7fded4: newly unlocked objects shown by the "new objects" popup */

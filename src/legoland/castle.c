@@ -4263,44 +4263,32 @@ unsigned int FUN_004246e0(unsigned int param_1, unsigned int param_2) {
     return FUN_0041d6f0();
 }
 
-struct Ent {
-    unsigned int first;
-    short x;
-    short y;
-    unsigned int k;
-    unsigned int a;
-    unsigned int b;
-    char pad[0x10];
-};
-
 struct Obj58 {
-    unsigned int f0[0x13];
-    unsigned int f4c;
-    unsigned int f50;
-    unsigned int f54;
+    unsigned int f0[0x11];
+    unsigned int f44;
+    unsigned int f48;
+    unsigned int f4c[3];
 };
 
 // FUNCTION: LEGOLAND 0x00424700
 void FUN_00424700(unsigned int a1, unsigned int a2, unsigned int a3, unsigned char *p) {
     struct FVec3 buf;
     struct Obj58 obj;
-    struct Ent *ent = (struct Ent *)&DAT_0060f914[0].next;
     short key[2];
     int want;
     int i;
-    int n = DAT_00610a08;
 
     FUN_00425cb0((struct Int16Pair *)DAT_00829ae8, (float)DAT_004b5b50, &buf);
     key[0] = p[0];
     key[1] = p[1];
     want = *(int *)key;
-    for (i = 0; i < n; i++) {
-        key[0] = ent[i].x + DAT_00829ae8[0];
-        key[1] = ent[i].y + DAT_00829ae8[1];
+    for (i = 0; i < (int)DAT_00610a08; i++) {
+        key[0] = DAT_0060f914[i].x + DAT_00829ae8[0];
+        key[1] = DAT_0060f914[i].y + DAT_00829ae8[1];
         if (want == *(int *)key) {
-            obj = ((struct Obj58 *)&DAT_006102f8)[ent[i].k];
-            obj.f4c = ent[i].a;
-            obj.f50 = ent[i].b;
+            obj = ((struct Obj58 *)&DAT_006102f8)[DAT_0060f914[i].k];
+            obj.f44 = DAT_0060f914[i].a;
+            obj.f48 = DAT_0060f914[i].b;
             FUN_004294f0((unsigned int)&obj, (unsigned int *)&buf, 1, 0);
             break;
         }
