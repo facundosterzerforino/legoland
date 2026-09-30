@@ -676,7 +676,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
     struct MapObject *obj;
     TileId packed;
     int cost;
-    unsigned int *effect;
+    struct Point *effect;
     struct Point out;
 
     packed.pos.x = (unsigned char)coords[0];
@@ -711,7 +711,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
             FUN_00482a90();
             FUN_00482b20(1);
             effect = FUN_00482b00();
-            FUN_00477bd0(out.x, out.y, effect[0], effect[1]);
+            FUN_00477bd0(out.x, out.y, effect->x, effect->y);
         }
         if (DAT_00667cd8 == 0) {
             CalculateMapRenderOrder();
@@ -729,7 +729,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
             FUN_00482a90();
             FUN_00482b20(1);
             effect = FUN_00482b00();
-            FUN_00477bd0(out.x, out.y, effect[0], effect[1]);
+            FUN_00477bd0(out.x, out.y, effect->x, effect->y);
         }
     }
     FUN_0045e770((struct ObjNode *)editObj, coords);
@@ -1182,10 +1182,10 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
             bounds.left = 0;
             bounds.bottom = lpConfig->height;
             bounds.right = lpConfig->height;
-            box.top = rect->y0 + cursor->field_1408;
-            box.bottom = cursor->field_1408 + rect->y1;
-            box.left = rect->x0 + cursor->field_1404;
             box.right = rect->x1 + cursor->field_1404;
+            box.left = rect->x0 + cursor->field_1404;
+            box.top = rect->y0 + cursor->field_1408;
+            box.bottom = rect->y1 + cursor->field_1408;
             if (IntersectRect(&inter, &box, &bounds) != 0) {
                 people = CheckForPeople(&inter);
                 switch (people) {
@@ -3179,7 +3179,7 @@ void FUN_00463460(struct MapElement *tile, struct Point *pos) {
                 power = FindObjectsPower(ride);
                 if (power > 0) {
                     MapStats.field_3d0 -= power;
-                    if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
+                    if (MapStats.field_3d4 - (int)MapStats.field_3d8 > MapStats.field_3d0) {
                         FUN_0045a0d0();
                     }
                 }
