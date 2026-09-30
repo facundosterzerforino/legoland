@@ -242,3 +242,32 @@ void FUN_00427220(unsigned int *param_1);
 void FUN_00427190(struct Struct426d80Y *obj, struct Struct426e80Dst *out);
 void FUN_00426f40(struct Struct426f40Src *src, struct Struct426f40Dst *dst);
 unsigned int FUN_00421660(struct BlokeInfo *p);
+
+struct BoxFace {
+    short f0;
+    short plane;
+    short t[3];
+    short u[3];
+};
+
+struct BoxSolid {
+    int f0;
+    int f4;
+    int f8;
+    struct FVec3 *verts;
+    float (*normals)[3];
+    struct FVec3 *xverts;
+    struct BoxFace *faceA;
+    int nFaceA;
+    struct BoxFace *faceB;
+    int nFaceB;
+    unsigned char pad_28[0x90 - 0x28];
+};
+
+extern float DAT_004b5700[6][3];
+extern struct BoxFace DAT_004b5748[12];
+extern struct BoxFace DAT_004b5808[12];
+extern struct BoxSolid DAT_004b58c8;
+
+void FUN_00420fd0(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d);
+void FUN_00421130(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d);

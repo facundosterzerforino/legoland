@@ -2683,8 +2683,132 @@ unsigned int FUN_00420fb0(unsigned char *param_1, unsigned int param_2, unsigned
     return FUN_00426750(param_1 + 0x30, param_2, param_3, param_4);
 }
 
+// GLOBAL: LEGOLAND 0x004b5700
+float DAT_004b5700[6][3] = {
+    {0.0f, 0.0f, -1.0f},
+    {0.0f, 0.0f, 1.0f},
+    {1.0f, 0.0f, 0.0f},
+    {-1.0f, 0.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f},
+    {0.0f, -1.0f, 0.0f},
+};
+
+// GLOBAL: LEGOLAND 0x004b5748
+struct BoxFace DAT_004b5748[12] = {
+    {0, 0, {0, 1, 2}, {0, 0, 0}},
+    {0, 0, {0, 2, 3}, {0, 0, 0}},
+    {0, 1, {7, 6, 5}, {0, 0, 0}},
+    {0, 1, {7, 5, 4}, {0, 0, 0}},
+    {0, 2, {0, 5, 1}, {0, 0, 0}},
+    {0, 2, {0, 4, 5}, {0, 0, 0}},
+    {0, 3, {2, 7, 3}, {0, 0, 0}},
+    {0, 3, {2, 6, 7}, {0, 0, 0}},
+    {0, 4, {1, 6, 2}, {0, 0, 0}},
+    {0, 3, {1, 5, 6}, {0, 0, 0}},
+    {0, 5, {3, 4, 0}, {0, 0, 0}},
+    {0, 3, {3, 7, 4}, {0, 0, 0}},
+};
+
+// GLOBAL: LEGOLAND 0x004b5808
+struct BoxFace DAT_004b5808[12] = {
+    {0, 0, {0, 1, 2}, {0, 0, 0}},
+    {0, 0, {0, 2, 3}, {0, 0, 0}},
+    {0, 1, {7, 6, 5}, {0, 0, 0}},
+    {0, 1, {7, 5, 4}, {0, 0, 0}},
+    {0, 2, {0, 5, 1}, {0, 0, 0}},
+    {0, 2, {0, 4, 5}, {0, 0, 0}},
+    {0, 3, {2, 7, 3}, {0, 0, 0}},
+    {0, 3, {2, 6, 7}, {0, 0, 0}},
+    {0, 4, {1, 6, 2}, {0, 0, 0}},
+    {0, 3, {1, 5, 6}, {0, 0, 0}},
+    {0, 5, {3, 4, 0}, {0, 0, 0}},
+    {0, 3, {3, 7, 4}, {0, 0, 0}},
+};
+
+// GLOBAL: LEGOLAND 0x004b58c8
+struct BoxSolid DAT_004b58c8 = {8, 0, 12, NULL, DAT_004b5700, NULL, DAT_004b5748, 12};
+
 // FUNCTION: LEGOLAND 0x00420fd0
-void FUN_00420fd0(void) { STUB(); }
+void FUN_00420fd0(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d) {
+    int i;
+
+    *box = DAT_004b58c8;
+    box->verts = verts;
+    box->xverts = xverts;
+    box->verts[0].x = w;
+    box->verts[0].y = -h;
+    box->verts[0].z = -d;
+    box->verts[1].x = w;
+    box->verts[1].y = h;
+    box->verts[1].z = -d;
+    box->verts[2].x = -w;
+    box->verts[2].y = h;
+    box->verts[2].z = -d;
+    box->verts[3].x = -w;
+    box->verts[3].y = -h;
+    box->verts[3].z = -d;
+    for (i = 0; i <= 3; i++) {
+        box->verts[i + 4] = box->verts[i];
+        box->verts[i + 4].z = 0.0f;
+    }
+    if (xverts != NULL) {
+        for (i = 0; i <= 7; i++) {
+            struct FVec3 tmp = box->verts[i];
+            FUN_00425d50(&tmp.x);
+            box->xverts[i] = tmp;
+        }
+        for (i = 0; i < 12; i++) {
+            DAT_004b5808[i].plane = -1;
+            DAT_004b5808[i].u[0] = DAT_004b5808[i].t[0];
+            DAT_004b5808[i].u[1] = DAT_004b5808[i].t[1];
+            DAT_004b5808[i].u[2] = DAT_004b5808[i].t[2];
+        }
+        box->nFaceA = 0;
+        box->nFaceB = 12;
+        box->faceB = DAT_004b5808;
+    }
+}
+
+// FUNCTION: LEGOLAND 0x00421130
+void FUN_00421130(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d) {
+    int i;
+
+    *box = DAT_004b58c8;
+    box->verts = verts;
+    box->xverts = xverts;
+    box->verts[0].x = w;
+    box->verts[0].y = -h;
+    box->verts[0].z = -d;
+    box->verts[1].x = w;
+    box->verts[1].y = h;
+    box->verts[1].z = -d;
+    box->verts[2].x = -w;
+    box->verts[2].y = h;
+    box->verts[2].z = -d;
+    box->verts[3].x = -w;
+    box->verts[3].y = -h;
+    box->verts[3].z = -d;
+    for (i = 0; i <= 3; i++) {
+        box->verts[i + 4] = box->verts[i];
+        box->verts[i + 4].z = d;
+    }
+    if (xverts != NULL) {
+        for (i = 0; i <= 7; i++) {
+            struct FVec3 tmp = box->verts[i];
+            FUN_00425d50(&tmp.x);
+            box->xverts[i] = tmp;
+        }
+        for (i = 0; i < 12; i++) {
+            DAT_004b5808[i].plane = -1;
+            DAT_004b5808[i].u[0] = DAT_004b5808[i].t[0];
+            DAT_004b5808[i].u[1] = DAT_004b5808[i].t[1];
+            DAT_004b5808[i].u[2] = DAT_004b5808[i].t[2];
+        }
+        box->nFaceA = 0;
+        box->nFaceB = 12;
+        box->faceB = DAT_004b5808;
+    }
+}
 
 struct FloatArray {
     int count;
