@@ -1137,12 +1137,11 @@ void FUN_0046ec50(char param) {
         short id = (short)node->id;
         if (id == 0xd2 || id == 0xd5 || id == 0xd6 || id == 0xd7) {
             if (DAT_007fdd80 == 0) {
-                short old = node->x;
-                short sum = (short)param + old;
-                node->x = sum;
-                if ((char)node->field_18 == 0xa && sum >= 3) {
+                int old = node->x;
+                node->x += param;
+                if ((char)node->field_18 == 0xa && node->x >= 3) {
                     node->x = 0;
-                    param = (char)node->x - (char)(short)old;
+                    param = (char)node->x - (char)old;
                     DAT_007fdd8c = 3;
                     saved_mode = 3;
                     lpConfig->field_20 = 0x79;
