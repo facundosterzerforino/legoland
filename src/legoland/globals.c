@@ -2700,7 +2700,7 @@ unsigned int DAT_0066752c;
 unsigned int DAT_006675b4;
 
 // GLOBAL: LEGOLAND 0x006675b8
-int DAT_006675b8;
+volatile int DAT_006675b8;
 
 // GLOBAL: LEGOLAND 0x006675c0
 struct TextCell DAT_006675c0[50];

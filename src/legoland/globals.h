@@ -2201,7 +2201,7 @@ extern unsigned int DAT_0066752c;
 // 0x006675b4
 extern unsigned int DAT_006675b4;
 // 0x006675b8
-extern int DAT_006675b8;
+extern volatile int DAT_006675b8;
 // 0x006675c0
 extern struct TextCell DAT_006675c0[50];
 // 0x00667c00

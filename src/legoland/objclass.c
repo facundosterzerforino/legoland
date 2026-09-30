@@ -533,7 +533,7 @@ void FUN_00481170(void) {
     int x;
     int y;
     int offset;
-    unsigned int width;
+    int width;
 
     while (DAT_00669248 != 0) {
         next = *(void **)DAT_00669248;
@@ -542,12 +542,11 @@ void FUN_00481170(void) {
     }
     config = lpConfig;
     y = 0;
-    DAT_00669248 = 0;
-    if (config->height != 0) {
+    if (y < config->height) {
         do {
             x = 0;
             width = config->width;
-            if (width != 0) {
+            if (width > 0) {
                 offset = 0;
                 do {
                     if (offset < 0 || x >= (int)width || y < 0 || y >= (int)lpConfig->height) {
