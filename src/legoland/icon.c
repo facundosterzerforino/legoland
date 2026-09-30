@@ -1215,9 +1215,13 @@ void FUN_0046ee00(void) {
     }
     for (; node != NULL; node = node->next) {
         if (node->id == 0x93 && node->field_1c != NULL) {
-            struct Sprite *sprite = node->field_20p;
+            void *sprite = node->field_20p;
             if (sprite != NULL) {
-                FUN_0046d680(node, (node->field_18 == mode) ? node->field_1c : node->field_20p);
+                if (node->field_18 == mode) {
+                    FUN_0046d680(node, node->field_1c);
+                } else {
+                    FUN_0046d680(node, sprite);
+                }
             }
         }
     }
