@@ -824,7 +824,7 @@ void FUN_00409440(TileId param_1, void **param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00409470
-unsigned int FUN_00409470(void) {
+unsigned int FUN_00409470(unsigned int *list) {
     unsigned int result = 0;
     if (DAT_004cbe20 != 0) {
         result = 1;
@@ -2252,7 +2252,81 @@ void FUN_0040c430(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040c4a0
-void FUN_0040c4a0(void) { STUB(); }
+void FUN_0040c4a0(Element *elem, int *param_2, unsigned int param_3) {
+    struct Ride *ride = elem->ride;
+    struct MapRect rect;
+    TileId t;
+    struct Slot **list;
+    struct Slot *p;
+    unsigned int key;
+    int r;
+    int cost;
+    int code;
+
+    memcpy(&EditCursor.footprint, &DAT_004b4728, sizeof(struct Footprint));
+    EditCursor.footprint.x1 = DAT_004b4730 - 1;
+    EditCursor.footprint.y1--;
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    FUN_0045f460(&EditCursor);
+    EditCursor.next = NULL;
+    ValidateCursor(&EditCursor, (unsigned int)ride);
+    if (FUN_0045f4b0(&EditCursor)) {
+        rect.x0 = EditCursor.footprint.x0 + EditCursor.field_1404;
+        rect.y0 = EditCursor.field_1408 + EditCursor.footprint.y0;
+        rect.x1 = EditCursor.footprint.x1 + EditCursor.field_1404;
+        rect.y1 = EditCursor.footprint.y1 + EditCursor.field_1408;
+        r = CheckForPeople(&rect);
+        switch (r) {
+        case -1:
+            FUN_0045f480(&EditCursor, 4);
+            break;
+        case 1:
+            FUN_0045f480(&EditCursor, 3);
+            break;
+        }
+    }
+    cost = GetObjCost(ride);
+    if (GetBrickCount() < cost) {
+        FUN_0045f480(&EditCursor, 2);
+    }
+    if (FUN_0045f4b0(&EditCursor)) {
+        t.pos.x = DAT_004b4728 + EditCursor.field_1404;
+        t.pos.y = DAT_004b472c + EditCursor.field_1408;
+        FUN_00409440(t, (void **)&list);
+        FUN_00409510((struct StateSlots *)list);
+        if (FUN_00409470((unsigned int *)list) == 0) {
+            FUN_0045f480(&EditCursor, 0xe);
+        } else {
+            FUN_0045f480(&EditCursor, 0xe);
+            p = list[0];
+            if (p != NULL) {
+                key = p->key;
+            } else {
+                p = list[1];
+                if (p != NULL) {
+                    key = p->key;
+                } else {
+                    p = list[2];
+                    if (p != NULL) {
+                        key = p->key;
+                    } else {
+                        p = list[3];
+                        if (p != NULL) {
+                            key = p->key;
+                        }
+                    }
+                }
+            }
+            FUN_004094b0(key, list);
+            code = FUN_00409410((unsigned int *)list);
+            if (FUN_00409580(code, (struct StateSlots *)list)) {
+                FUN_0040d520((struct FlumeEntry **)list, &EditCursor);
+                FUN_0045f460(&EditCursor);
+            }
+        }
+    }
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x0040c6c0
 void FUN_0040c6c0(int unused, struct Point *pt) {
