@@ -1415,6 +1415,12 @@ struct CursorSource *DAT_004c8d6c;
 // GLOBAL: LEGOLAND 0x004c8d70
 struct Sprite *DAT_004c8d70;
 
+// GLOBAL: LEGOLAND 0x004c8d74
+struct RenderItemNode *DAT_004c8d74;
+
+// GLOBAL: LEGOLAND 0x004ca5ac
+struct RenderItemNode *DAT_004ca5ac;
+
 // GLOBAL: LEGOLAND 0x004ca5b0
 struct Cursor DAT_004ca5b0;
 

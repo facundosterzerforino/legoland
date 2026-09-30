@@ -41,6 +41,8 @@ LEGO_EXPORT struct RinData *LoadRin(const char *path, const char *dir);
 LEGO_EXPORT void UnLoadRin(struct RinData *rin);
 LEGO_EXPORT unsigned short *LoadPalette(unsigned int path);
 LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
+LEGO_EXPORT void RenderItems2_New(void);
+LEGO_EXPORT void RenderItem2_AddItem(struct RenderItemNode **head, unsigned int param_2, int key);
 LEGO_EXPORT struct LLS *GetLLSForLayer(struct Sprite *sprite, unsigned int index);
 LEGO_EXPORT void StopLayerPlaying(struct Sprite *sprite, unsigned int index);
 LEGO_EXPORT struct Point GetRenderOffsetForLayer(struct Sprite *sprite, int index);
