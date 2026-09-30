@@ -701,7 +701,7 @@ extern unsigned int DAT_004b55f4;
 // 0x004b5608
 extern unsigned int DAT_004b5608;
 // 0x004b560c
-extern unsigned int DAT_004b560c;
+extern int DAT_004b560c;
 // 0x004b5b20
 extern void *DAT_004b5b20;
 // 0x004b5b24

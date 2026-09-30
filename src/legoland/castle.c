@@ -1972,8 +1972,68 @@ void FUN_0041f030(unsigned int param) {
     DAT_004b560c = param;
 }
 
+union FloatBits {
+    float f;
+    unsigned int u;
+};
+
+struct FDist {
+    union FloatBits mag;
+    unsigned int sign;
+};
+
 // FUNCTION: LEGOLAND 0x0041f050
-int FUN_0041f050(int n, int **src, int **dst, int **cursor, float *pl) { STUB(); }
+int FUN_0041f050(int n, int **src, int **dst, int **cursor, float *pl) {
+    struct FDist m, pm;
+    int count = 0;
+    int *pool = *cursor;
+    int i, k;
+    int *prev, *cur;
+    float t;
+    int code;
+
+    src[n] = src[0];
+    cur = src[0];
+    m.mag.f = pl[2] - (cur[2] * pl[0] + cur[1] * pl[1]);
+    code = m.mag.u & 0x80000000;
+    m.mag.u &= 0x7fffffff;
+    for (i = 1; i <= n; i++) {
+        pm.mag = m.mag;
+        prev = cur;
+        cur = src[i];
+        code = (code >> 1) & 0x40000000;
+        m.mag.f = pl[2] - (cur[2] * pl[0] + cur[1] * pl[1]);
+        code |= m.mag.u & 0x80000000;
+        m.mag.u &= 0x7fffffff;
+        switch (code) {
+        case 0x40000000:
+            t = pm.mag.f / (pm.mag.f + m.mag.f);
+            *dst++ = prev;
+            for (k = 0; k <= DAT_004b560c; k++) {
+                pool[k] = prev[k] + (int)((cur[k] - prev[k]) * t);
+            }
+            *dst++ = pool;
+            pool = (int *)((char *)pool + DAT_004b5608);
+            count += 2;
+            break;
+        case 0xc0000000:
+            *dst++ = prev;
+            count++;
+            break;
+        case 0x80000000:
+            t = m.mag.f / (pm.mag.f + m.mag.f);
+            for (k = 0; k <= DAT_004b560c; k++) {
+                pool[k] = cur[k] + (int)((prev[k] - cur[k]) * t);
+            }
+            *dst++ = pool;
+            pool = (int *)((char *)pool + DAT_004b5608);
+            count++;
+            break;
+        }
+    }
+    *cursor = pool;
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x0041f2b0
 int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes) {

@@ -377,7 +377,7 @@ unsigned int DAT_004b55f4;
 unsigned int DAT_004b5608;
 
 // GLOBAL: LEGOLAND 0x004b560c
-unsigned int DAT_004b560c;
+int DAT_004b560c;
 
 // GLOBAL: LEGOLAND 0x004b5b20
 void *DAT_004b5b20;
