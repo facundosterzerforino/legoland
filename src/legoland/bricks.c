@@ -115,6 +115,7 @@ void FUN_00457a70(void) {
     struct MapElement *tile;
     unsigned int v;
     struct Element *elem;
+    unsigned short id;
     struct ObjClass *cls;
     int x;
     int y;
@@ -140,10 +141,12 @@ void FUN_00457a70(void) {
                         } else if ((DAT_004bdd04 = (struct Bloke *)GetMechanicWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
                             DAT_004bdd00 = 0x10c;
                         }
-                        Hover.data.tile.id = tile->anchor.id;
-                        if (tile->field_0) {
-                            QueryObj.id = tile->anchor.id;
-                            QueryClass = (struct ObjClass *)tile->field_0->ride;
+                        id = tile->anchor.id;
+                        Hover.data.tile.id = id;
+                        elem = tile->field_0;
+                        if (elem) {
+                            QueryClass = (struct ObjClass *)elem->ride;
+                            QueryObj.id = id;
                         }
                     } else {
                         DAT_004bdd04 = (struct Bloke *)tile->field_0;
@@ -207,8 +210,8 @@ void FUN_00457a70(void) {
                 FUN_0045f480(&QueryCursor, 1);
                 QueryCursor.field_1404 = DAT_00813a64;
                 QueryCursor.field_1408 = DAT_00813a68;
-                GamePad &= ~0x400;
                 DAT_00667c5c = 0;
+                GamePad &= ~0x400;
                 if (!(DAT_00813ac4 & 2)) {
                     DAT_0080ff6c = NULL;
                 }
@@ -362,8 +365,8 @@ void FUN_00457a70(void) {
             RenderCursor(&EditCursor);
         }
         if (DAT_00813acc & 2) {
-            GamePad &= ~0x1400;
             EditMode.unk0 = 0;
+            GamePad &= ~0x1400;
         }
         break;
     case 0:
@@ -380,10 +383,10 @@ void FUN_00457a70(void) {
             memset(QueryCursor.field_1414, 0, 20);
             QueryCursor.field_1828 = 8;
             FUN_0045f480(&QueryCursor, 1);
-            QueryCursor.field_1408 = DAT_00813a68;
             QueryCursor.field_1404 = DAT_00813a64;
-            GamePad &= ~0x400;
+            QueryCursor.field_1408 = DAT_00813a68;
             DAT_00667c5c = 0;
+            GamePad &= ~0x400;
             if (!(DAT_00813ac4 & 2)) {
                 DAT_0080ff6c = NULL;
             }
