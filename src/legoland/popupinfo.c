@@ -43,10 +43,10 @@ struct InfoObjInner {
 #include "image_sprite.h"
 #include "llidb.h"
 #include "map_object.h"
-#include "objclass.h"
 #include "obj_instance.h"
-#include "render.h"
+#include "objclass.h"
 #include "print_sprite.h"
+#include "render.h"
 #include "sound_music.h"
 #include "stream.h"
 #include "string.h"
@@ -903,6 +903,8 @@ int FUN_004723f0(void) {
     QueryClass = saved_class;
 }
 
+/* Draws the info popup: the title/info text for the selected object or bloke, the mood
+   sprites, the build/repair progress bar and the icons (repair, delete, add gardener/mechanic). */
 // FUNCTION: LEGOLAND 0x004724a0
 LEGO_EXPORT void DrawPopUpInfo(void) {
     char buf_b[256];
@@ -910,10 +912,10 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     char tmp[512];
     struct Ride *ride;
     struct Bloke *bloke;
-    int has_durability = 0;
+    int repairable = 0;
     int can_delete = 0;
-    int add_gardener = 0;
     int add_mechanic = 0;
+    int add_gardener = 0;
     int show_close = 0;
     int size;
     int x;
@@ -921,22 +923,24 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     int left;
     int right;
     int width;
-    volatile int mid;
+    int bar_x;
+    int bar_y;
+    volatile int mid; /* kept in memory, as in the original frame */
     int ty;
     int bottom;
     int top;
     int mood;
     int hunger;
     int power;
-    int n;
-    int m;
-    int i;
+    int name_lines;
+    int info_lines;
+    int entry_index;
     int icon_x;
     int icon_y;
     int last_x;
-    int lx;
+    int left_bound;
     float frac;
-    struct BuildObj *o;
+    struct BuildObj *entry;
     struct InfoObjData *info;
 
     buf_a[0] = 0;
@@ -990,7 +994,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             }
         }
         if (ride->durability != 0) {
-            has_durability = 1;
+            repairable = 1;
         }
         if (!(DAT_007fdf84[0xc] & 0x40)) {
             can_delete = 1;
@@ -1059,11 +1063,11 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         if (DAT_007fdf9c == 0x306) {
             DAT_007fdfac = 2;
         } else {
-            n = FUN_00471840(buf_a, 0x40, 0x14, 0xb0, 0x20, 1);
-            m = FUN_004717a0(buf_b, 0x40, 0x14, 0xb0, 0x20, 2);
-            DAT_007fdfac = m;
-            if (m <= n) {
-                DAT_007fdfac = n;
+            name_lines = FUN_00471840(buf_a, 0x40, 0x14, 0xb0, 0x20, 1);
+            info_lines = FUN_004717a0(buf_b, 0x40, 0x14, 0xb0, 0x20, 2);
+            DAT_007fdfac = info_lines;
+            if (info_lines <= name_lines) {
+                DAT_007fdfac = name_lines;
             }
         }
         DAT_007fdfa8 = 0;
@@ -1103,8 +1107,8 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         bottom = y + size * 20 + 0x63;
         mid = (top + bottom) / 2;
         ty = mid + 0x22;
-        FUN_00455e50(GetString(0x8e), left, ty, (width / 2), 0x14, 2, 0x11, 0xff0000, 0xffffff);
-        FUN_00455e50(GetString(0x8f), (right + left) / 2, ty, (width / 2), 0x14, 2, 0x11, 0xff0000, 0xffffff);
+        FUN_00455e50(GetString(0x8e), left, ty, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
+        FUN_00455e50(GetString(0x8f), (right + left) / 2, ty, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
         if (mood == 3) {
             mid -= 0x20;
             PrintSprite(DAT_007fdfc8, width / 4 + left - 0x20, mid, 0, 0);
@@ -1123,32 +1127,34 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             PrintSprite(DAT_007fdfd0, right - width / 4 - 0x20, mid, 0, 0);
         }
     }
-    if (has_durability != 0 || DAT_0066895c != 0) {
-        if (has_durability != 0) {
+    if (repairable != 0 || DAT_0066895c != 0) {
+        if (repairable != 0) {
             frac = (float)DAT_007fdf84[0x11] / ride->durability;
         } else {
-            i = 0;
-            for (o = DAT_006664f8;; o++, i++) {
-                if ((int)&o->coords >= (int)&DAT_006670fc) {
+            entry_index = 0;
+            for (entry = DAT_006664f8;; entry++, entry_index++) {
+                if ((int)&entry->coords >= (int)&DAT_006670fc) {
                     return;
                 }
-                if (o->coords.id == (unsigned short)DAT_007fdec0.tile) {
+                if (entry->coords.id == (unsigned short)DAT_007fdec0.tile) {
                     break;
                 }
             }
-            if (i >= 0x100) {
+            if (entry_index >= 0x100) {
                 return;
             }
-            frac = (float)DAT_006664f8[i].elapsed / GetBuildTime((struct Ride *)DAT_007fdf7c);
+            frac = (float)DAT_006664f8[entry_index].elapsed / GetBuildTime((struct Ride *)DAT_007fdf7c);
             if (frac == 1.0f) {
                 DAT_007fdec0.type = 0x103;
                 PopUpInfoSetUp(DAT_007fdec0, DAT_007fdecc, DAT_007fded0);
                 return;
             }
         }
+        bar_x = x + 6;
+        bar_y = y + size * 20 + 0x6f;
         width = size * 32 + 0xbc;
-        RenderBlock(x + 6, y + size * 20 + 0x6f, width, 6, 0);
-        RenderBlock(x + 6, y + size * 20 + 0x6f, (int)(width * frac), 6, (frac < 0.25 && has_durability != 0) ? GetNearestColour(0xff, 0, 0) : GetNearestColour(0, 0xff, 0));
+        RenderBlock(bar_x, bar_y, width, 6, 0);
+        RenderBlock(bar_x, bar_y, (int)(width * frac), 6, (frac < 0.25 && repairable != 0) ? GetNearestColour(0xff, 0, 0) : GetNearestColour(0, 0xff, 0));
     }
     icon_x = size * 32 + x + 0xc8;
     icon_y = y + (size * 5 + 0x1e) * 4;
@@ -1194,11 +1200,11 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     DAT_007fdfd8->y = icon_y;
     DAT_007fdfd8->flags = DAT_007fdfd8->flags & 0xfffffbff;
     if (DAT_007fdfa4 != 0) {
-        lx = DAT_007fdfc0->x;
+        left_bound = DAT_007fdfc0->x;
     } else {
-        lx = DAT_007fdfd8->x;
+        left_bound = DAT_007fdfd8->x;
     }
-    if (DAT_007fdfc0->x + 0x24 < DAT_00813a44.x || DAT_00813a44.x < lx) {
+    if (DAT_007fdfc0->x + 0x24 < DAT_00813a44.x || DAT_00813a44.x < left_bound) {
         FUN_00471610();
     }
     if (icon_y + 0x1b < DAT_00813a44.y || DAT_00813a44.y < icon_y) {
