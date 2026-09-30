@@ -688,8 +688,8 @@ LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStat
 
 // FUNCTION: LEGOLAND 0x004814c0
 LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke, int param_3) {
-    unsigned int fatigue;
-    unsigned char category;
+    int fatigue;
+    int category;
     int rating;
     int blokenum;
     int counter;
@@ -699,19 +699,19 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
     rating = item->intensity;
     blokenum = GetBlokeNum(bloke);
     counter = GetBlokeCounter(item, blokenum);
-    if ((int)fatigue < rating) {
-        rating -= fatigue;
+    if (rating > fatigue) {
+        fatigue = rating - fatigue;
     } else {
-        rating = (fatigue - rating) * 2;
+        fatigue = (fatigue - rating) * 2;
     }
-    rating -= 10;
-    if (rating < 0) {
-        rating = 0;
+    fatigue -= 10;
+    if (fatigue < 0) {
+        fatigue = 0;
     }
-    if (counter == 0) {
-        rating = (item->value - rating) + 100;
+    if (counter != 0) {
+        counter = ((4 - (1 << counter)) * 0x19 + item->value) - fatigue;
     } else {
-        rating = ((4 - (1 << (counter & 0x1f))) * 0x19 + item->value) - rating;
+        counter = (item->value - fatigue) + 100;
     }
     switch (category) {
     case 0:
@@ -726,25 +726,25 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
         break;
     case 2:
         if (item->type == 5) {
-            if (rating < 0x14) {
-                rating = 0x14;
+            if (counter < 0x14) {
+                counter = 0x14;
             }
             if (param_3 != 0) {
-                return rating * 2;
+                return counter * 2;
             }
         }
         break;
     case 3:
     case 4:
         if (item->type == 5) {
-            if (rating < 0x14) {
-                rating = 0x32;
+            if (counter < 0x14) {
+                counter = 0x32;
             }
-            return rating * ((-(int)(param_3 != 0) & 2) + 4);
+            return counter * (param_3 != 0 ? 6 : 4);
         }
-        rating = 0;
+        counter = 0;
     }
-    return rating;
+    return counter;
 }
 
 // FUNCTION: LEGOLAND 0x004815e0
