@@ -689,7 +689,7 @@ void FUN_00496920(void) {
     while (sample != 0) {
         next = sample->next;
         if ((sample->flags & 8) != 0 && (sample->flags & 2) == 0 &&
-            sample->buffer->vtable->method_0x24(sample->buffer, &status) == 0 && status == 0) {
+            sample->buffer->vtable->method_0x24(sample->buffer, &status) == 0 && ((status == 0) & 1)) {
             // STRING: LEGOLAND 0x004bfe14
             DBPrintf("Autokilling Sample %s (%x)\n", ((struct SampleDef *)sample->active)->field_10, sample);
             if (sample->active == *(unsigned int *)&JOUST_SFX[8]) {
