@@ -2327,9 +2327,9 @@ struct ObjectiveEvent *FUN_0046c7e0(void) {
     struct ObjectiveEvent *head;
     char *str;
 
+    head = NULL;
     prev = NULL;
     node = FUN_00468910((unsigned int)prev, (int)prev);
-    head = NULL;
     while (SaveGameRead(node, 0x44) != 0) {
         if ((unsigned int)node->next == 0xffffffff) {
             free(node);
