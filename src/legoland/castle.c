@@ -4864,7 +4864,40 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
 #pragma optimize("", on)
 
 // FUNCTION: LEGOLAND 0x00425a50
-void FUN_00425a50(void) { STUB(); }
+void FUN_00425a50(void) {
+    DAT_004b5c1c[0].m[0][0] = 1.60334f;
+    DAT_004b5c1c[0].m[0][1] = -1.60334f;
+    DAT_004b5c1c[0].m[0][2] = 0.0f;
+    DAT_004b5c1c[0].m[0][3] = 0.0f;
+    DAT_004b5c1c[0].m[1][0] = 0.801688f;
+    DAT_004b5c1c[0].m[1][1] = 0.801688f;
+    DAT_004b5c1c[0].m[1][2] = 1.96416f;
+    DAT_004b5c1c[0].m[1][3] = 0.0f;
+    DAT_004b5c1c[0].m[2][0] = 3.19995f;
+    DAT_004b5c1c[0].m[2][1] = 3.19995f;
+    DAT_004b5c1c[0].m[2][2] = 0.0f;
+    DAT_004b5c1c[0].m[2][3] = 32767.5f;
+    DAT_004b5c1c[0].m[3][0] = 0.0f;
+    DAT_004b5c1c[0].m[3][1] = 0.0f;
+    DAT_004b5c1c[0].m[3][2] = 0.0f;
+    DAT_004b5c1c[0].m[3][3] = 1.0f;
+    DAT_004b5c1c[1] = DAT_004b5c1c[0];
+    DAT_004b5c1c[1].m[0][0] *= 0.5f;
+    DAT_004b5c1c[1].m[0][1] *= 0.5f;
+    DAT_004b5c1c[1].m[1][0] *= 0.5f;
+    DAT_004b5c1c[1].m[1][1] *= 0.5f;
+    DAT_004b5c1c[1].m[1][2] *= 0.5f;
+    lego_invsqrtf_init();
+    lego_sqrtf_init();
+    DAT_00829990[0] = 1.0f;
+    DAT_00829990[1] = 1.0f;
+    DAT_00829990[2] = DAT_004b5c1c[0].m[1][0] * -2.0f / DAT_004b5c1c[0].m[1][2];
+    FUN_00425d50(DAT_00829990);
+    FUN_00425d50((float *)&DAT_004b5cb0);
+    FUN_00425d50((float *)&DAT_004b5cc0);
+    FUN_00425bd0();
+    FUN_00426740();
+}
 
 // FUNCTION: LEGOLAND 0x00425bd0
 void FUN_00425bd0(void) {

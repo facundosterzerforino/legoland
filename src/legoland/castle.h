@@ -46,6 +46,10 @@ struct BlokeSex0;
 void FUN_00421980(struct LinkInput *p);
 
 void FUN_00425cb0(const struct Int16Pair *in, float f, struct FVec3 *out);
+void lego_invsqrtf_init(void);
+void lego_sqrtf_init(void);
+void FUN_00425bd0(void);
+void FUN_00426740(void);
 void FUN_00425d50(float *v);
 float lego_sqrtf(float x);
 unsigned int FUN_00420fb0(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
