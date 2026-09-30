@@ -6439,7 +6439,6 @@ void FUN_004275d0(Element *obj, int x, unsigned int y) {
     struct Cursor *c;
     struct Ride *ride = obj->ride;
     struct Footprint *fp = &ride->footprint;
-    int cy;
     int n = 0;
     int i;
     int found = 0;
