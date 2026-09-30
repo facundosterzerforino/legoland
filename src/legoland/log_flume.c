@@ -3628,7 +3628,7 @@ void FUN_0040f450(Element *elem, unsigned int param_2, unsigned int param_3, Til
     if (FUN_0040cdf0(tile)) {
         if (DAT_004c1258 != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
-            frame = lls != NULL ? lls->frame : (int)tile;
+            frame = lls != NULL ? lls->frame : frame;
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c1258);
             if (lls != NULL) {
                 LLSSetFrame(lls, frame);
