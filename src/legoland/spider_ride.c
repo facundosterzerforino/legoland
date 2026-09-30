@@ -172,11 +172,11 @@ int FUN_00415a90(struct SpiderNode *node) {
 void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
     Ride *ride = obj->ride;
     RideNode *elem = ride->riders;
+    char count = 0;
     Bloke *blokes[16] = {0};
     struct SpiderNode *state;
     Point off;
     Point screen;
-    char count = 0;
     char i;
     unsigned short id;
 
