@@ -304,6 +304,15 @@ struct CastleFloatEnt {
     int c;
 };
 
+/* castle track-segment list node (0x60f914 table entries; also embedded in castle nodes) */
+struct LSub {
+    /* 0x00 */ char pad0[0x10];
+    /* 0x10 */ struct LSub *next;
+    /* 0x14 */ short x;
+    /* 0x16 */ short y;
+    /* 0x18 */ char pad18[0xc];
+};
+
 struct EditFootPrint {
     unsigned char data[16];
     void *field_10;
@@ -1647,10 +1656,8 @@ extern int DAT_0060f908;
 extern int DAT_0060f90c;
 // 0x004e3870
 extern char DAT_004e3870[];
-// 0x0060f924
-extern unsigned int DAT_0060f924[9 * 16];
-// 0x0060f938
-extern unsigned int DAT_0060f938;
+// 0x0060f914
+extern struct LSub DAT_0060f914[20];
 // 0x006102f8
 extern unsigned int DAT_006102f8;
 // 0x006103a8

@@ -3844,15 +3844,9 @@ void FUN_00423db0(void) {
 void FUN_00423de0(void) {
     unsigned int v0 = DAT_00829bf8;
     memcpy(&DAT_00829a80, (void *)(v0 + 0x3c), 20);
-    DAT_00829a80.field_10 = &DAT_0060f938;
-    DAT_0060f924[DAT_00610a08 * 9] = 0;
+    DAT_00829a80.field_10 = &DAT_0060f914[1];
+    ((unsigned int *)&DAT_0060f914[0].next)[DAT_00610a08 * 9] = 0;
 }
-
-struct LSub {
-    char pad0[0x10];
-    struct LSub *next;
-    char pad14[0x10];
-};
 
 struct LNode {
     char pad0[4];
@@ -3871,9 +3865,9 @@ void FUN_00423e20(void) {
     struct LSub *tail;
 
     DAT_00829a80 = *(struct EditFootPrint *)(DAT_00829bf8 + 0x3c);
-    DAT_00829a80.field_10 = &DAT_0060f938;
-    DAT_0060f924[DAT_00610a08 * 9] = 0;
-    tail = (struct LSub *)((char *)&DAT_0060f924[DAT_00610a08 * 9] - 0x10);
+    DAT_00829a80.field_10 = &DAT_0060f914[1];
+    DAT_0060f914[DAT_00610a08].next = 0;
+    tail = &DAT_0060f914[DAT_00610a08];
     if (DAT_00829ae0 == 2) {
         for (n = (struct LNode *)DAT_00829b0c; n != (struct LNode *)&DAT_00829ae4; n = n->next28) {
             tail->next = &n->sub;
@@ -4171,7 +4165,7 @@ void FUN_004245b0(short *param_1) {
     int i;
 
     for (i = 0; i < (int)DAT_00610a08; i++) {
-        short *q = (short *)((unsigned char *)DAT_0060f924 + 6 + i * 0x24);
+        short *q = (short *)((unsigned char *)&DAT_0060f914[0].next + 6 + i * 0x24);
         pt[0] = q[-1] + param_1[0];
         pt[1] = param_1[1] + q[0];
         FUN_0041ed90(DAT_00829c00, (unsigned int)pt);
@@ -4186,8 +4180,8 @@ void FUN_00424620(short *param_1) {
     int i;
 
     for (i = 0; i < (int)DAT_00610a08; i++) {
-        tile.pos.x = ((short *)DAT_0060f924)[i * 18 + 2] + param_1[0];
-        tile.pos.y = ((short *)DAT_0060f924)[i * 18 + 3] + param_1[1];
+        tile.pos.x = ((short *)&DAT_0060f914[0].next)[i * 18 + 2] + param_1[0];
+        tile.pos.y = ((short *)&DAT_0060f914[0].next)[i * 18 + 3] + param_1[1];
         cursor.field_1404 = tile.pos.x;
         cursor.field_1408 = tile.pos.y;
         cursor.footprint = *(struct Footprint *)(DAT_00829c34 + 0x3c);
@@ -4226,7 +4220,7 @@ struct Obj58 {
 void FUN_00424700(unsigned int a1, unsigned int a2, unsigned int a3, unsigned char *p) {
     struct FVec3 buf;
     struct Obj58 obj;
-    struct Ent *ent = (struct Ent *)DAT_0060f924;
+    struct Ent *ent = (struct Ent *)&DAT_0060f914[0].next;
     short key[2];
     int want;
     int i;
