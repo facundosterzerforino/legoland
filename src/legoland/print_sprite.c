@@ -365,11 +365,17 @@ void FUN_00485bd0(struct SortNode *node) {
         node->right = NULL;
         DAT_0066b5a4 = node;
     } else {
-        while (node->key < DAT_007fd600->key && DAT_007fd600->left != NULL) {
-            DAT_007fd600 = DAT_007fd600->left;
-        }
-        while (node->key > DAT_007fd600->key && DAT_007fd600->right != NULL) {
-            DAT_007fd600 = DAT_007fd600->right;
+        if (node->key < DAT_007fd600->key) {
+            do {
+                if (DAT_007fd600->left == NULL) {
+                    break;
+                }
+                DAT_007fd600 = DAT_007fd600->left;
+            } while (node->key < DAT_007fd600->key);
+        } else {
+            while (node->key > DAT_007fd600->key && DAT_007fd600->right != NULL) {
+                DAT_007fd600 = DAT_007fd600->right;
+            }
         }
         if (node->key < DAT_007fd600->key) {
             l = DAT_007fd600->left;

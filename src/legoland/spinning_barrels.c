@@ -129,8 +129,7 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
             if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
                 bloke = riders->rider;
                 person = bloke->person;
-                seat.x = DAT_0062fdd8;
-                seat.y = DAT_0062fddc;
+                seat = DAT_0062fdd8;
                 person->offset.x = bloke->screen_x;
                 person->offset.y = bloke->screen_y;
                 AdjustBlokePosition(&person->offset);
@@ -182,9 +181,9 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
         AdjustOffsetForViewMode(&off);
         PrintSprite(GetSpriteForLayer(DAT_0062fde0, 3), screen.x + off.x, screen.y + off.y, 0, 0);
         LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->field_20);
-        off = GetRenderOffsetForLayer(DAT_0062fde0, 2);
-        AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off.x, screen.y + off.y, 0, 0);
+        off2 = GetRenderOffsetForLayer(DAT_0062fde0, 2);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off2.x, screen.y + off2.y, 0, 0);
     }
 }
 
@@ -232,8 +231,8 @@ void FUN_0043c340(struct Element *elem) {
     StopLayerPlaying(DAT_0062fde0, 2);
     LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), 0);
     GetLayer(DAT_0062fde4->layer, &layer, 3);
-    DAT_0062fdd8 = layer.x - 103;
-    DAT_0062fddc = layer.y - 55;
+    DAT_0062fdd8.x = layer.x - 103;
+    DAT_0062fdd8.y = layer.y - 55;
     // STRING: LEGOLAND 0x004b78e4
     DAT_0062fdd0 = LoadSprite("SpinningBarrelsEntranceMatte.lls", 1);
     // STRING: LEGOLAND 0x004b78c0

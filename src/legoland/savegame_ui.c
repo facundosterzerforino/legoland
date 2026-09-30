@@ -495,7 +495,6 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
     char path[120];
     struct ProfileData header;
     char slot;
-    int n;
     int rc;
     void *file;
 
@@ -504,9 +503,8 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
     }
 
     slot = 8;
-    n = 8;
     do {
-        sprintf(path, "profiles\\%dsave%d.sh", profile, n);
+        sprintf(path, "profiles\\%dsave%d.sh", profile, slot);
         file = fopen(path, "r");
         if (file == 0) {
             FUN_0048e0c0(0, &header, slot);
@@ -517,12 +515,11 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
         }
         memset(&header, 0, sizeof(struct ProfileData));
         slot = slot - 1;
-        n = n - 1;
     } while (slot != 0);
 
     rc = ReturnFrom_ProfileDir();
     {
-        char r = !(!rc);
+        char r = (unsigned int)rc > 0;
         r--;
         return r;
     }

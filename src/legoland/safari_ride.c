@@ -193,8 +193,7 @@ void FUN_00414b80(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                     struct Person *person;
 
                     if ((bloke->flags & 0x80) != 0) {
-                        off2.x = DAT_0082c670;
-                        off2.y = DAT_0082c674;
+                        off2 = DAT_0082c670;
                         person = bloke->person;
                         off1.x = DAT_004cbee8;
                         off1.y = DAT_004cbeec;
@@ -203,8 +202,8 @@ void FUN_00414b80(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                         person->offset.y = bloke->screen_y + off1.y;
                         AdjustBlokePosition(&person->offset);
                         AdjustOffsetForViewMode(&off2);
-                        person->screen.x = off1.x + off2.x + bloke->screen_x + pos.x;
-                        person->screen.y = off1.y + off2.y + bloke->screen_y + pos.y;
+                        person->screen.x = bloke->screen_x + (off2.x + off1.x) + pos.x;
+                        person->screen.y = bloke->screen_y + (off2.y + off1.y) + pos.y;
                         AdjustBlokePosition(&person->screen);
                     }
                     AddBlokeToRenderList(&DAT_004cbecc, (struct BlokeRenderSrc *)node, node->person->field_20);
@@ -232,8 +231,8 @@ void FUN_00414d90(struct SafariObject *a1) {
     DAT_004cbec0 = LoadBinV("Zbuffers\\Safarioff.bnv");
     // STRING: LEGOLAND 0x004b4d1c
     DAT_0082c66c = LoadSprite("z_Safari.lls", 1);
-    DAT_0082c670 = 0;
-    DAT_0082c674 = -1;
+    DAT_0082c670.x = 0;
+    DAT_0082c670.y = -1;
     DAT_004cbee8 = -41;
     DAT_004cbeec = -95;
     HideLayer(DAT_004cbec8, 0);
@@ -457,8 +456,8 @@ void FUN_00415220(Element *obj) {
                 int py = bloke->pos.y;
                 int sx = ((px - py) * w) >> 9;
                 int sy = ((px + py) * h) >> 9;
-                coords[0] = ((unsigned short)lpConfig->field_20 - (short)Get_XScroll() + sx - DAT_0082c670 / 2 - pos.x) * 2;
-                coords[1] = ((unsigned short)lpConfig->field_22 - (short)Get_YScroll() + sy - DAT_0082c674 / 2 - pos.y) * 2;
+                coords[0] = ((unsigned short)lpConfig->field_20 - (short)Get_XScroll() + sx - DAT_0082c670.x / 2 - pos.x) * 2;
+                coords[1] = ((unsigned short)lpConfig->field_22 - (short)Get_YScroll() + sy - DAT_0082c670.y / 2 - pos.y) * 2;
             }
             bloke->person->sprite = DAT_004cbf08;
             bloke->person->field_30 = 1;

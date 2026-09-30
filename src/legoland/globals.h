@@ -1454,9 +1454,7 @@ extern void *DAT_004cbef4;
 // 0x0082c66c
 extern struct Sprite *DAT_0082c66c;
 // 0x0082c670
-extern int DAT_0082c670;
-// 0x0082c674
-extern int DAT_0082c674;
+extern struct Point DAT_0082c670;
 // 0x004cbef8
 extern void *DAT_004cbef8;
 // 0x004cbefc
@@ -1948,9 +1946,7 @@ extern struct Ride *DAT_0062fde4;
 // 0x0062fde0
 extern struct Sprite *DAT_0062fde0;
 // 0x0062fdd8
-extern int DAT_0062fdd8;
-// 0x0062fddc
-extern int DAT_0062fddc;
+extern struct Point DAT_0062fdd8;
 // 0x0062fde8
 extern void *DAT_0062fde8;
 // 0x0062fdf0

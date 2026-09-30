@@ -4347,9 +4347,10 @@ void FUN_004248b0(unsigned char *obj, unsigned int unused, struct AnimOut *out) 
     FUN_0041de10(obj, unused, out);
     t = FUN_0041dd50(e);
     FUN_00425cb0((struct Int16Pair *)(sub + 8), (float)DAT_004b5b50, &v);
+    r = t * t;
     s[0] = (unsigned int)(sub + 4);
     s[1] = (unsigned int)&DAT_006103a8;
-    r = -(t * t / (FUN_0042a1b0((struct Struct42a110 *)s, 0x3dcccccd, (struct Struct42a110 *)(e + 0xc), *(unsigned int *)(e + 0x24), 1, 0) * FLOAT_004ab404 * 2));
+    r = -(r / (FUN_0042a1b0((struct Struct42a110 *)s, 0x3dcccccd, (struct Struct42a110 *)(e + 0xc), *(unsigned int *)(e + 0x24), 1, 0) * FLOAT_004ab404 * 2));
 
     out->f8 = FUN_0041dd70(e) * r * t;
 }

@@ -1557,10 +1557,7 @@ void *DAT_004cbef4;
 struct Sprite *DAT_0082c66c;
 
 // GLOBAL: LEGOLAND 0x0082c670
-int DAT_0082c670;
-
-// GLOBAL: LEGOLAND 0x0082c674
-int DAT_0082c674;
+struct Point DAT_0082c670;
 
 // GLOBAL: LEGOLAND 0x004cbef8
 void *DAT_004cbef8;
@@ -2319,10 +2316,7 @@ struct Ride *DAT_0062fde4;
 struct Sprite *DAT_0062fde0;
 
 // GLOBAL: LEGOLAND 0x0062fdd8
-int DAT_0062fdd8;
-
-// GLOBAL: LEGOLAND 0x0062fddc
-int DAT_0062fddc;
+struct Point DAT_0062fdd8;
 
 // GLOBAL: LEGOLAND 0x0062fde8
 void *DAT_0062fde8;
