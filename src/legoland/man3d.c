@@ -16,6 +16,11 @@
 #include "resource.h"
 #include "worker_mouse.h"
 
+struct PosFrame {
+    float pos[3];
+    float mat[3][3];
+};
+
 struct Position {
     int count_inner;
     int count;
@@ -25,7 +30,7 @@ struct Position {
     int field_14;
     int field_18;
     unsigned char pad_1c[0x24 - 0x1c];
-    void **entries;
+    struct PosFrame **entries;
 };
 
 struct Mesh {
@@ -37,9 +42,9 @@ struct Mesh {
 // FUNCTION: LEGOLAND 0x0043f660
 LEGO_EXPORT struct Position *LoadPos(const char *path) {
     struct ResFile *file;
-    int *pos;
-    int mat;
-    int walk;
+    struct Position *pos;
+    struct PosFrame *f;
+    float *walk;
     float rot[3][3];
     float tmp[3][3];
     int i;
@@ -48,49 +53,49 @@ LEGO_EXPORT struct Position *LoadPos(const char *path) {
     int col;
 
     file = RES_OpenFile(path);
-    pos = (int *)malloc(0x28);
-    pos[2] = 0x3f800000;
-    pos[3] = 0x3f800000;
-    pos[4] = 0x3f800000;
-    pos[5] = 0;
-    pos[6] = 0;
-    RES_ReadFile(file, pos, 4);
-    RES_ReadFile(file, pos + 1, 4);
-    pos[9] = (int)malloc(pos[1] << 2);
+    pos = (struct Position *)malloc(0x28);
+    pos->field_8 = 1.0f;
+    pos->field_c = 1.0f;
+    pos->field_10 = 1.0f;
+    pos->field_14 = 0;
+    pos->field_18 = 0;
+    RES_ReadFile(file, &pos->count_inner, 4);
+    RES_ReadFile(file, &pos->count, 4);
+    pos->entries = (struct PosFrame **)malloc(pos->count << 2);
     i = 0;
-    if (pos[1] > 0) {
+    if (pos->count > 0) {
         do {
-            *(int *)(pos[9] + i * 4) = (int)malloc(*pos * 0x30);
+            pos->entries[i] = (struct PosFrame *)malloc(pos->count_inner * 0x30);
             j = 0;
-            if (*pos > 0) {
-                mat = *(int *)(pos[9] + i * 4) + 0xc;
+            f = pos->entries[i];
+            if (pos->count_inner > 0) {
                 do {
-                    RES_ReadFile(file, (void *)(mat - 0xc), 4);
-                    RES_ReadFile(file, (void *)(mat - 8), 4);
-                    RES_ReadFile(file, (void *)(mat - 4), 4);
+                    RES_ReadFile(file, &f->pos[0], 4);
+                    RES_ReadFile(file, &f->pos[1], 4);
+                    RES_ReadFile(file, &f->pos[2], 4);
                     row = 3;
-                    walk = mat;
+                    walk = &f->mat[0][0];
                     do {
                         col = 3;
                         do {
-                            RES_ReadFile(file, (void *)walk, 4);
-                            walk += 4;
+                            RES_ReadFile(file, walk, 4);
+                            walk++;
                             col--;
                         } while (col != 0);
                         row--;
                     } while (row != 0);
                     BuildYRotationMatrix(1.5707963f, &rot[0][0]);
-                    MatrixMultiply(&rot[0][0], (float *)mat, &tmp[0][0]);
-                    CopyMatrix((struct Matrix3x3 *)&tmp[0][0], (struct Matrix3x3 *)mat);
+                    MatrixMultiply(&rot[0][0], &f->mat[0][0], &tmp[0][0]);
+                    CopyMatrix((struct Matrix3x3 *)&tmp[0][0], (struct Matrix3x3 *)&f->mat[0][0]);
                     j++;
-                    mat += 0x30;
-                } while (j < *pos);
+                    f++;
+                } while (j < pos->count_inner);
             }
             i++;
-        } while (i < pos[1]);
+        } while (i < pos->count);
     }
     RES_CloseFile(file);
-    return (struct Position *)pos;
+    return pos;
 }
 
 // FUNCTION: LEGOLAND 0x0043f7d0
