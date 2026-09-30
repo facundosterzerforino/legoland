@@ -349,6 +349,13 @@ void FUN_00401660(struct NewBloke *b) {
         b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
         d = b->f_ba + 2;
+        FUN_00480840(&local, &local, b->f_ba = d & 7);
+        b->wp[frame].x = local.x << 16;
+        b->wp[frame].y = local.y << 16;
+        b->tx = local.x;
+        b->ty = local.y;
+        b->f_bb = frame + 1;
+        b->f_c2 = 1;
     } else {
         r.i = FUN_00401000(13, -40, b->f_ba);
         b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
@@ -359,14 +366,14 @@ void FUN_00401660(struct NewBloke *b) {
         b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
         d = b->f_ba - 2;
+        FUN_00480840(&local, &local, b->f_ba = d & 7);
+        b->wp[frame].x = local.x << 16;
+        b->wp[frame].y = local.y << 16;
+        b->tx = local.x;
+        b->ty = local.y;
+        b->f_bb = frame + 1;
+        b->f_c2 = 1;
     }
-    FUN_00480840(&local, &local, b->f_ba = d & 7);
-    b->wp[frame].x = local.x << 16;
-    b->wp[frame].y = local.y << 16;
-    b->tx = local.x;
-    b->ty = local.y;
-    b->f_bb = frame + 1;
-    b->f_c2 = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004017c0
