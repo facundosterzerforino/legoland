@@ -213,7 +213,7 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
     }
 
     if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
-        DAT_0080ffe5 = 2;
+        DAT_0080ffa0.field_45 = 2;
         FUN_00466360(0x127, 0x170);
         FUN_00498920();
         DAT_006687b0 = 0x4;
@@ -225,7 +225,7 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
         EditMode.unk4 = 0x3;
         InitGameInterface(0x1);
         FUN_00474880();
-        DAT_0080ffe5 = 2;
+        DAT_0080ffa0.field_45 = 2;
     }
     return 1;
 }
@@ -266,7 +266,7 @@ LEGO_EXPORT void InitFreePlayLists(void) {
     if (LLIDB_FindElement("WESTERN THEME", (unsigned int *)&western, 0) != 0) {
         exit(1);
     }
-    for (i = 0, p = DAT_0080ffe6; i < 200; i++, p++) {
+    for (i = 0, p = DAT_0080ffa0.field_46; i < 200; i++, p++) {
         if (*p == 0) {
             continue;
         }
@@ -620,10 +620,10 @@ void FUN_0048b6c0(void) {
 void FUN_0048b6d0(void) {
     int i;
 
-    DAT_0080ffa0.field_34[0] = 1;
+    DAT_0080ffa0.flags[4] = 1;
     for (i = 0; i < 15; i++) {
-        if (DAT_0080ffa0.field_34[i] != 0) {
-            DAT_0080ffa0.field_34[i] = 1;
+        if (DAT_0080ffa0.flags[4 + i] != 0) {
+            DAT_0080ffa0.flags[4 + i] = 1;
             DAT_007cb394 = i;
         }
     }

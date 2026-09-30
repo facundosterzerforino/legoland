@@ -333,17 +333,16 @@ struct ScreenMode {
 };
 
 struct ScreenState {
-    unsigned char gap_0[0x20];
-    unsigned int field_20;
-    unsigned int field_24;
-    unsigned int field_28;
-    unsigned int field_2c;
-    unsigned char field_30[4];
-    unsigned char field_34[0xf];
-    unsigned char field_43;
-    unsigned char field_44;
-    unsigned char field_45;
-    unsigned char gap_46[0xca];
+    /* 0x00 */ unsigned char gap_0[0x20];
+    /* 0x20 */ unsigned int field_20;
+    /* 0x24 */ int field_24;
+    /* 0x28 */ int field_28;
+    /* 0x2c */ int field_2c;
+    /* 0x30 */ unsigned char flags[0x13];
+    /* 0x43 */ unsigned char field_43;
+    /* 0x44 */ unsigned char field_44;
+    /* 0x45 */ unsigned char field_45;
+    /* 0x46 */ unsigned char field_46[0xca];
 };
 
 // ---------------------------------------------------------------------------
@@ -3514,28 +3513,6 @@ extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 extern LEGO_EXPORT unsigned char NEWFLC_PauseType;
 // 0x0080ff80
 extern struct ScreenMode DAT_0080ff80;
-// 0x0080ffc0
-extern unsigned int DAT_0080ffc0;
-// 0x0080ffc4
-extern int DAT_0080ffc4;
-// 0x0080ffc8
-extern int DAT_0080ffc8;
-// 0x0080ffcc
-extern int DAT_0080ffcc;
-// 0x0080ffd3
-extern unsigned char DAT_0080ffd3[16];
-// 0x0080ffd4
-extern unsigned char DAT_0080ffd4[5];
-// 0x0080ffd9
-extern unsigned char DAT_0080ffd9;
-// 0x0080ffe3
-extern unsigned char DAT_0080ffe3;
-// 0x0080ffe4
-extern unsigned char DAT_0080ffe4;
-// 0x0080ffe5
-extern unsigned char DAT_0080ffe5;
-// 0x0080ffe6
-extern unsigned char DAT_0080ffe6[0xca];
 // 0x0080ffa0
 extern struct ScreenState DAT_0080ffa0;
 // 0x008100c0

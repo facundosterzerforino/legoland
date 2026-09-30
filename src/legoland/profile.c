@@ -436,7 +436,7 @@ LEGO_EXPORT void PrintProfileDetails(void) {
                 DAT_004bdd00 = 2;
                 DAT_004bdd04 = (struct Bloke *)icon;
             }
-            if (DAT_0080ffe3 == icon->slot) {
+            if (DAT_0080ffa0.field_43 == icon->slot) {
                 if (DAT_007986e4 != 0) {
                     FUN_0046d680(icon, DAT_007986b8);
                     last = icon;
@@ -462,7 +462,7 @@ LEGO_EXPORT void PrintProfileDetails(void) {
             x = icon->x + 0x14;
             name = (char *)icon->field_18p;
             if (name != NULL && show) {
-                if (DAT_0080ffe3 - 1 != icon->slot || (DAT_007986e4 == 0 && DAT_007986e8 == 0)) {
+                if (DAT_0080ffa0.field_43 - 1 != icon->slot || (DAT_007986e4 == 0 && DAT_007986e8 == 0)) {
                     if (sel) {
                         FUN_00455e50(name, x, y, 0xe0, 0x13, 2, 0x25, 0, 0xffffff);
                     } else {
@@ -479,7 +479,7 @@ LEGO_EXPORT void PrintProfileDetails(void) {
         FUN_00455e50(GetString(0x86), last->x + 0x14, last->y - 0x14, 0xe0, 0x13, 2, 0x25, 0, 0xffffff);
         UpdateProfileCheckBoxIcons();
     }
-    if (DAT_0080ffe3 != 0 && DAT_007986e4 == 0) {
+    if (DAT_0080ffa0.field_43 != 0 && DAT_007986e4 == 0) {
         if (DAT_007986e8 != 0) {
             if (FUN_00491540()) {
                 ((struct IconNode *)DAT_007986e0)->flags &= ~0x400;
@@ -498,17 +498,17 @@ void FUN_0048d230(void) {
     struct ProfileNode *node = (struct ProfileNode *)DAT_00798890;
 
     while (node != NULL) {
-        if (node->slot == DAT_0080ffe3) {
+        if (node->slot == DAT_0080ffa0.field_43) {
             strcpy((char *)&DAT_0080ffa0, node->data.name);
-            DAT_0080ffc0 = node->data.field_20;
-            DAT_0080ffe4 = 0;
-            DAT_0080ffc4 = node->data.field_28;
-            DAT_0080ffc8 = node->data.field_2c;
-            DAT_0080ffcc = node->data.field_30;
-            DAT_0080ffe5 = 0;
-            memcpy(&DAT_0080ffa0.field_34, &node->data.field_34, 15);
-            memcpy(DAT_0080ffe6, node->data.field_43, 200);
-            *(int *)&DAT_0080ffa0.field_30 = *(int *)&node->data.field_10b;
+            DAT_0080ffa0.field_20 = node->data.field_20;
+            DAT_0080ffa0.field_44 = 0;
+            DAT_0080ffa0.field_24 = node->data.field_28;
+            DAT_0080ffa0.field_28 = node->data.field_2c;
+            DAT_0080ffa0.field_2c = node->data.field_30;
+            DAT_0080ffa0.field_45 = 0;
+            memcpy(&DAT_0080ffa0.flags[4], &node->data.field_34, 15);
+            memcpy(DAT_0080ffa0.field_46, node->data.field_43, 200);
+            *(int *)&DAT_0080ffa0.flags = *(int *)&node->data.field_10b;
             return;
         }
         node = node->next;
@@ -517,7 +517,7 @@ void FUN_0048d230(void) {
 
 // FUNCTION: LEGOLAND 0x0048d300
 unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
-    if (DAT_007986e4 == 0 && (arg_0 & 0x2) != 0 && ((((struct ProfileFlags *)DAT_007986e0)->var_34 >> 8) & 0x4) == 0 && DAT_0080ffe3 != 0) {
+    if (DAT_007986e4 == 0 && (arg_0 & 0x2) != 0 && ((((struct ProfileFlags *)DAT_007986e0)->var_34 >> 8) & 0x4) == 0 && DAT_0080ffa0.field_43 != 0) {
         if (DAT_007986e8 != 0) {
             SaveProfileToDisk();
             DeleteProfileList();
@@ -537,7 +537,7 @@ unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
 // FUNCTION: LEGOLAND 0x0048d390
 unsigned char FUN_0048d390(struct Profile *profile, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
-        DAT_0080ffe3 = profile->var_1c;
+        DAT_0080ffa0.field_43 = profile->var_1c;
         FUN_0048a800();
     }
     return 1;
@@ -547,7 +547,7 @@ unsigned char FUN_0048d390(struct Profile *profile, unsigned char param_2) {
 unsigned char FUN_0048d3c0(struct Profile *profile, unsigned int param_2) {
     if (DAT_004bef9c != 0) {
         if (param_2 & 0x2) {
-            DAT_0080ffe3 = profile->var_1c;
+            DAT_0080ffa0.field_43 = profile->var_1c;
             DAT_007986e8 = 1;
             InitNewProfilePoPUp(profile);
             DAT_004bef9c = 0;
@@ -559,11 +559,11 @@ unsigned char FUN_0048d3c0(struct Profile *profile, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x0048d400
 unsigned char FUN_0048d400(unsigned int arg0, unsigned int arg1) {
     if (arg1 & 0x2) {
-        if (DAT_0080ffe3) {
+        if (DAT_0080ffa0.field_43) {
             CloseFontEndCheckBox();
             DAT_007986e4 = 0;
-            RemoveProfile(DAT_0080ffe3);
-            DAT_0080ffe3 = 0;
+            RemoveProfile(DAT_0080ffa0.field_43);
+            DAT_0080ffa0.field_43 = 0;
             DAT_0080ff80.unk4 = 0xffffffff;
             DAT_0080ff80.unk8 = 0;
         }

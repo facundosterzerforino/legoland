@@ -34,9 +34,9 @@ LEGO_EXPORT void InitOptionScreen(void) {
     unsigned int x;
 
     FUN_00499380();
-    DAT_007cb314 = (char)DAT_0080ffc4;
-    DAT_007cb31c = (char)DAT_0080ffc8;
-    DAT_007cb315 = (char)DAT_0080ffcc;
+    DAT_007cb314 = (char)DAT_0080ffa0.field_24;
+    DAT_007cb31c = (char)DAT_0080ffa0.field_28;
+    DAT_007cb315 = (char)DAT_0080ffa0.field_2c;
 
     // STRING: LEGOLAND 0x004bf49c
     SPRITE_TitleScreenBk = LoadSprite("OptionScreenBK.lls", 0);
@@ -89,7 +89,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->flags |= flag_mask;
     icon->field_18s = 2;
 
-    x = FUN_0048eaf0(DAT_0080ffc4);
+    x = FUN_0048eaf0(DAT_0080ffa0.field_24);
     // STRING: LEGOLAND 0x004bf420
     icon = LoadSpriteIcon("VolMarkerSpeech.lls", 4, x, 0x33, 7);
     icon->string_id = 0x47;
@@ -115,7 +115,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->event_handler = (void *)FUN_0048f5f0;
     icon->field_18s = 5;
 
-    x = FUN_0048eaf0(DAT_0080ffc8);
+    x = FUN_0048eaf0(DAT_0080ffa0.field_28);
     // STRING: LEGOLAND 0x004bf3f8
     icon = LoadSpriteIcon("VolMarkerMusic.lls", 4, x, 0x77, 7);
     icon->string_id = 0x4a;
@@ -141,7 +141,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->flags |= flag_mask;
     icon->field_18s = 8;
 
-    x = FUN_0048eaf0(DAT_0080ffcc);
+    x = FUN_0048eaf0(DAT_0080ffa0.field_2c);
     // STRING: LEGOLAND 0x004bf3d4
     icon = LoadSpriteIcon("VolMarkerFX.lls", 4, x, 0xbb, 7);
     icon->string_id = 0x4d;
@@ -169,9 +169,9 @@ unsigned char FUN_0048ef10(unsigned int param_1, unsigned int param_2) {
 unsigned char FUN_0048ef40(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ffc4 = DAT_007cb314;
-        DAT_0080ffc8 = DAT_007cb31c;
-        DAT_0080ffcc = DAT_007cb315;
+        DAT_0080ffa0.field_24 = DAT_007cb314;
+        DAT_0080ffa0.field_28 = DAT_007cb31c;
+        DAT_0080ffa0.field_2c = DAT_007cb315;
         DAT_0080ff80.unk8 = 1;
     }
     return 1;
@@ -194,7 +194,7 @@ unsigned char FUN_0048efd0(unsigned int param_1, unsigned int param_2) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        if (DAT_0080ffe4 != 0) {
+        if (DAT_0080ffa0.field_44 != 0) {
             UpDateCurrentSaveSlotInfo();
         }
         DAT_00668e38 = 0;
@@ -409,9 +409,9 @@ unsigned char FUN_0048f5f0(struct IconNode *param_1, unsigned int param_2) {
                 }
                 switch ((int)(unsigned short)param_1->field_18s) {
                 case 2:
-                    if (DAT_0080ffc4 != 0) {
-                        DAT_0080ffc4--;
-                        result = FUN_0048eaf0(DAT_0080ffc4);
+                    if (DAT_0080ffa0.field_24 != 0) {
+                        DAT_0080ffa0.field_24--;
+                        result = FUN_0048eaf0(DAT_0080ffa0.field_24);
                         DAT_00798748->x = (short)result;
                         if (!DAT_006687b4 && !FUN_00498cf0()) {
                             FUN_0046d230(-2);
@@ -420,16 +420,16 @@ unsigned char FUN_0048f5f0(struct IconNode *param_1, unsigned int param_2) {
                     }
                     break;
                 case 5:
-                    if (DAT_0080ffc8 != 0) {
-                        DAT_0080ffc8--;
-                        result = FUN_0048eaf0(DAT_0080ffc8);
+                    if (DAT_0080ffa0.field_28 != 0) {
+                        DAT_0080ffa0.field_28--;
+                        result = FUN_0048eaf0(DAT_0080ffa0.field_28);
                         DAT_00798750->x = (short)result;
                     }
                     break;
                 case 8:
-                    if (DAT_0080ffcc != 0) {
-                        DAT_0080ffcc--;
-                        result = FUN_0048eaf0(DAT_0080ffcc);
+                    if (DAT_0080ffa0.field_2c != 0) {
+                        DAT_0080ffa0.field_2c--;
+                        result = FUN_0048eaf0(DAT_0080ffa0.field_2c);
                         DAT_0079874c->x = (short)result;
                     }
                     break;
@@ -469,9 +469,9 @@ unsigned char FUN_0048f760(struct IconNode *param_1, unsigned int param_2) {
                 }
                 switch ((int)(unsigned short)param_1->field_18s) {
                 case 1:
-                    if (DAT_0080ffc4 < 0x64) {
-                        DAT_0080ffc4++;
-                        result = FUN_0048eaf0(DAT_0080ffc4);
+                    if (DAT_0080ffa0.field_24 < 0x64) {
+                        DAT_0080ffa0.field_24++;
+                        result = FUN_0048eaf0(DAT_0080ffa0.field_24);
                         DAT_00798748->x = (short)result;
                         if (!DAT_006687b4 && !FUN_00498cf0()) {
                             FUN_0046d230(-2);
@@ -480,16 +480,16 @@ unsigned char FUN_0048f760(struct IconNode *param_1, unsigned int param_2) {
                     }
                     break;
                 case 4:
-                    if (DAT_0080ffc8 < 0x64) {
-                        DAT_0080ffc8++;
-                        result = FUN_0048eaf0(DAT_0080ffc8);
+                    if (DAT_0080ffa0.field_28 < 0x64) {
+                        DAT_0080ffa0.field_28++;
+                        result = FUN_0048eaf0(DAT_0080ffa0.field_28);
                         DAT_00798750->x = (short)result;
                     }
                     break;
                 case 7:
-                    if (DAT_0080ffcc < 0x64) {
-                        DAT_0080ffcc++;
-                        result = FUN_0048eaf0(DAT_0080ffcc);
+                    if (DAT_0080ffa0.field_2c < 0x64) {
+                        DAT_0080ffa0.field_2c++;
+                        result = FUN_0048eaf0(DAT_0080ffa0.field_2c);
                         DAT_0079874c->x = (short)result;
                     }
                     break;
@@ -534,17 +534,17 @@ unsigned char FUN_0048f8d0(struct IconNode *param_1, unsigned int param_2) {
             result = FUN_0048eac0(param_1->x);
             switch ((unsigned int)(unsigned short)param_1->field_18s) {
             case 3:
-                DAT_0080ffc4 = result;
+                DAT_0080ffa0.field_24 = result;
                 if (!DAT_006687b4 && !FUN_00498cf0()) {
                     FUN_0046d230(-2);
                 }
                 FUN_0046d230(param_1->string_id);
                 break;
             case 6:
-                DAT_0080ffc8 = result;
+                DAT_0080ffa0.field_28 = result;
                 break;
             case 9:
-                DAT_0080ffcc = result;
+                DAT_0080ffa0.field_2c = result;
                 break;
             }
             FUN_0046d110();
@@ -646,5 +646,5 @@ void FUN_0048fc00(void) {
 
 // FUNCTION: LEGOLAND 0x0048fc30
 int FUN_0048fc30(void) {
-    return DAT_0080ffd9 != 0;
+    return DAT_0080ffa0.flags[9] != 0;
 }

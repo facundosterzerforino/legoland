@@ -523,7 +523,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
             FUN_0046b240(1);
         } else {
             FUN_0046b240(0);
-            if (DAT_0080ffe5 == 2) {
+            if (DAT_0080ffa0.field_45 == 2) {
                 FUN_004748a0((void *)0);
             } else {
                 FUN_004748a0((void *)1);
@@ -1363,7 +1363,7 @@ void FUN_00476140(int index, int value) {
     if (obj != NULL) {
         if (value != 0) {
             obj->flags &= 0xfffffbff;
-            DAT_0080ffa0.field_30[index] = 1;
+            DAT_0080ffa0.flags[index] = 1;
             UpDateCurrentProfile();
         } else {
             obj->flags |= 0x400;
@@ -1377,7 +1377,7 @@ void FUN_00476180(void) {
     struct ProfileObj **items;
     unsigned int counter;
 
-    flags = DAT_0080ffa0.field_30;
+    flags = DAT_0080ffa0.flags;
     items = (struct ProfileObj **)DAT_007fdd70;
     counter = 4;
     while (counter != 0) {

@@ -114,7 +114,7 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ffe5 = 1;
+        DAT_0080ffa0.field_45 = 1;
         RemoveIconGroup(7);
         KillTitleScreenSprites();
         EditMode.unk4 = 2;

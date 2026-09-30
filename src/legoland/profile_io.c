@@ -166,18 +166,18 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     void *stream;
 
     memset(&temp, 0, sizeof(struct ProfileData));
-    if (LoadDateIntoTempProfile(DAT_0080ffe3, DAT_0080ffe4 & 0xff) == 0) {
+    if (LoadDateIntoTempProfile(DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff) == 0) {
         return -1;
     }
     strcpy(temp.name, DAT_007cad60.name);
     temp.field_28 = DAT_0080ffa0.field_24;
     temp.field_2c = DAT_0080ffa0.field_28;
     temp.field_30 = DAT_0080ffa0.field_2c;
-    temp.field_24 = DAT_0080ffe5;
+    temp.field_24 = DAT_0080ffa0.field_45;
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\%dsave%d.sh", DAT_0080ffe3, DAT_0080ffe4 & 0xff);
+    sprintf(path, "profiles\\%dsave%d.sh", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
@@ -202,17 +202,17 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
     temp.field_28 = DAT_0080ffa0.field_24;
     temp.field_2c = DAT_0080ffa0.field_28;
     temp.field_30 = DAT_0080ffa0.field_2c;
-    temp.field_34 = *(int *)&DAT_0080ffa0.field_34[0];
-    temp.field_38 = *(int *)&DAT_0080ffa0.field_34[4];
-    temp.field_3c = *(int *)&DAT_0080ffa0.field_34[8];
-    temp.field_40 = *(short *)&DAT_0080ffa0.field_34[12];
-    temp.field_42 = DAT_0080ffa0.field_34[14];
-    memcpy(temp.field_43, DAT_0080ffe6, 200);
-    *(int *)&temp.field_10b = *(int *)&DAT_0080ffa0.field_30[0];
+    temp.field_34 = *(int *)&DAT_0080ffa0.flags[4];
+    temp.field_38 = *(int *)&DAT_0080ffa0.flags[8];
+    temp.field_3c = *(int *)&DAT_0080ffa0.flags[12];
+    temp.field_40 = *(short *)&DAT_0080ffa0.flags[16];
+    temp.field_42 = DAT_0080ffa0.flags[18];
+    memcpy(temp.field_43, DAT_0080ffa0.field_46, 200);
+    *(int *)&temp.field_10b = *(int *)&DAT_0080ffa0.flags[0];
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffe3);
+    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffa0.field_43);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
@@ -267,7 +267,7 @@ LEGO_EXPORT char SaveProfileToDisk(void) {
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffe3);
+    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffa0.field_43);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
@@ -508,7 +508,7 @@ char FUN_004920a0(unsigned int param1, unsigned char flags) {
         CloseFontEndCheckBox();
         DAT_0080ff80.unk4 = 0xffffffff;
         DAT_007986e8 = 0;
-        DAT_0080ffe3 = 0;
+        DAT_0080ffa0.field_43 = 0;
     }
     return 1;
 }

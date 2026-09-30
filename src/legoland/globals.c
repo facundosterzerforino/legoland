@@ -4670,39 +4670,6 @@ LEGO_EXPORT unsigned char NEWFLC_PauseType;
 // GLOBAL: LEGOLAND 0x0080ff80
 struct ScreenMode DAT_0080ff80;
 
-// GLOBAL: LEGOLAND 0x0080ffc0
-unsigned int DAT_0080ffc0;
-
-// GLOBAL: LEGOLAND 0x0080ffc4
-int DAT_0080ffc4;
-
-// GLOBAL: LEGOLAND 0x0080ffc8
-int DAT_0080ffc8;
-
-// GLOBAL: LEGOLAND 0x0080ffcc
-int DAT_0080ffcc;
-
-// GLOBAL: LEGOLAND 0x0080ffd3
-unsigned char DAT_0080ffd3[16];
-
-// GLOBAL: LEGOLAND 0x0080ffd4
-unsigned char DAT_0080ffd4[5];
-
-// GLOBAL: LEGOLAND 0x0080ffd9
-unsigned char DAT_0080ffd9;
-
-// GLOBAL: LEGOLAND 0x0080ffe3
-unsigned char DAT_0080ffe3;
-
-// GLOBAL: LEGOLAND 0x0080ffe4
-unsigned char DAT_0080ffe4;
-
-// GLOBAL: LEGOLAND 0x0080ffe5
-unsigned char DAT_0080ffe5;
-
-// GLOBAL: LEGOLAND 0x0080ffe6
-unsigned char DAT_0080ffe6[0xca];
-
 // GLOBAL: LEGOLAND 0x0080ffa0
 struct ScreenState DAT_0080ffa0;
 

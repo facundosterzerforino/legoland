@@ -32,7 +32,7 @@ LEGO_EXPORT void InitProgressScreen(void) {
             }
         }
         if (MapStats.field_3a0 == 1 && (int)lpConfig->field_28 <= 0xf) {
-            DAT_0080ffd3[lpConfig->field_28] = 1;
+            DAT_0080ffa0.flags[3 + lpConfig->field_28] = 1;
             UpDateCurrentProfile();
         }
     }
@@ -116,7 +116,7 @@ LEGO_EXPORT void InitProgressScreen(void) {
                     icon->event_handler = (void *)FUN_0048bb60;
                     icon->flags |= 0x600a;
                 }
-            } else if (DAT_0080ffd4[i + 5] == 1) {
+            } else if (DAT_0080ffa0.flags[4 + i + 5] == 1) {
                 icon = InsertIcon(DAT_004beb88[i].x, DAT_004beb88[i].y, 0x1c, DAT_004beb88[i].sprite1);
                 if (icon) {
                     icon->string_id = DAT_004beb88[i].id;
@@ -244,7 +244,7 @@ void FUN_0048bde0(void) {
         icon = LoadSpriteIcon("GoBack_on_Tut.lls", 4, 0x20a, 0xf5, 0x23);
         icon->string_id = 0x26;
         icon->string = GetString(0x26);
-        if (DAT_0080ffd9 == 1) {
+        if (DAT_0080ffa0.flags[9] == 1) {
             icon->string_id = 0x26c;
             icon->string = GetString(0x26c);
             icon->event_handler = (void *)FUN_0048c090;
@@ -264,7 +264,7 @@ void FUN_0048bde0(void) {
     do {
         if (i == lpConfig->field_28 - 1) {
             icon = InsertIcon(entry[-1], entry[0], 0x1c, (struct Sprite *)entry[1]);
-        } else if (DAT_0080ffd4[i] == 1) {
+        } else if (DAT_0080ffa0.flags[4 + i] == 1) {
             icon = InsertIcon(entry[-1], entry[0], 0x1c, (struct Sprite *)entry[2]);
         } else {
             icon = 0;
@@ -369,12 +369,12 @@ void FUN_0048c100(void) {
             rc.bottom = rc.top + 0x16;
             if (i == (int)lpConfig->field_28 - 1) {
                 FUN_00454d80(text, 2, rc, 0);
-            } else if (DAT_0080ffd4[i] == 1) {
+            } else if (DAT_0080ffa0.flags[4 + i] == 1) {
                 FUN_00454d80(text, 2, rc, 0x323232);
             } else {
                 FUN_00454d80(text, 2, rc, 0xa0a0a0);
             }
-            if (DAT_0080ffd4[i] == 1 && DAT_00813a44.x >= rc.left && DAT_00813a44.x < rc.right && DAT_00813a44.y >= rc.top && DAT_00813a44.y < rc.bottom) {
+            if (DAT_0080ffa0.flags[4 + i] == 1 && DAT_00813a44.x >= rc.left && DAT_00813a44.x < rc.right && DAT_00813a44.y >= rc.top && DAT_00813a44.y < rc.bottom) {
                 DAT_004bdd00 = 2;
                 DAT_004bdd04 = (struct Bloke *)*mapping;
             }

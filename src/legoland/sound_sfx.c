@@ -681,12 +681,12 @@ LEGO_EXPORT int UpdateSoundVols(void) {
 
     if (DAT_007988c0 != 0) {
         if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
-            vol = FUN_00495a50(DAT_0080ffc8);
+            vol = FUN_00495a50(DAT_0080ffa0.field_28);
             ((struct SampleBuffer *)DAT_007cad4c)->vtable->method_0x3c((struct SampleBuffer *)DAT_007cad4c, vol);
         }
-        DAT_007988a0 = FUN_00495a50(DAT_0080ffcc);
+        DAT_007988a0 = FUN_00495a50(DAT_0080ffa0.field_2c);
         FUN_004967b0();
-        FUN_00498900(FUN_00495a50(DAT_0080ffc4));
+        FUN_00498900(FUN_00495a50(DAT_0080ffa0.field_24));
     }
     return 0;
 }

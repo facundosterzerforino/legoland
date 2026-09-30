@@ -86,7 +86,7 @@ int FUN_00478890(struct CommandArgs *arg, int argc) {
     }
     if (argc == 1) {
         n1 = atoi((char *)arg->field_4);
-        DAT_004bb5b0 = n1 <= DAT_0080ffc0;
+        DAT_004bb5b0 = n1 <= DAT_0080ffa0.field_20;
         return 1;
     }
     n1 = atoi((char *)arg->field_4);
@@ -94,7 +94,7 @@ int FUN_00478890(struct CommandArgs *arg, int argc) {
     if (n1 > n2) {
         return 0;
     }
-    if (DAT_0080ffc0 < n1 || (DAT_004bb5b0 = 1, DAT_0080ffc0 > n2)) {
+    if (DAT_0080ffa0.field_20 < n1 || (DAT_004bb5b0 = 1, DAT_0080ffa0.field_20 > n2)) {
         DAT_004bb5b0 = 0;
     }
     return 1;

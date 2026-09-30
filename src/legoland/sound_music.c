@@ -986,17 +986,17 @@ void FUN_00496e60(int param_1, int param_2) {
     unsigned int start;
     unsigned int now;
 
-    savedC4 = DAT_0080ffc4;
-    savedCC = DAT_0080ffcc;
-    while (DAT_0080ffcc > 0 || DAT_0080ffc4 > 0) {
+    savedC4 = DAT_0080ffa0.field_24;
+    savedCC = DAT_0080ffa0.field_2c;
+    while (DAT_0080ffa0.field_2c > 0 || DAT_0080ffa0.field_24 > 0) {
         start = GetTicks();
-        DAT_0080ffcc = DAT_0080ffcc - param_1;
-        if (DAT_0080ffcc <= 0) {
-            DAT_0080ffcc = 0;
+        DAT_0080ffa0.field_2c = DAT_0080ffa0.field_2c - param_1;
+        if (DAT_0080ffa0.field_2c <= 0) {
+            DAT_0080ffa0.field_2c = 0;
         }
-        DAT_0080ffc4 = DAT_0080ffc4 - param_1;
-        if (DAT_0080ffc4 <= 0) {
-            DAT_0080ffc4 = 0;
+        DAT_0080ffa0.field_24 = DAT_0080ffa0.field_24 - param_1;
+        if (DAT_0080ffa0.field_24 <= 0) {
+            DAT_0080ffa0.field_24 = 0;
         }
         UpdateSoundVols();
         now = GetTicks();
@@ -1007,7 +1007,7 @@ void FUN_00496e60(int param_1, int param_2) {
     FUN_00492830();
     FUN_00498920();
     DAT_006687b0 = 4;
-    DAT_0080ffc4 = savedC4;
-    DAT_0080ffcc = savedCC;
+    DAT_0080ffa0.field_24 = savedC4;
+    DAT_0080ffa0.field_2c = savedCC;
     UpdateSoundVols();
 }

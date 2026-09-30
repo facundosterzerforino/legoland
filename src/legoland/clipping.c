@@ -76,8 +76,8 @@ void FUN_0048a6e0(struct ClippedObject *object) {
 
     for (entry = DAT_004bdeb8; strlen(entry->name) != 0; entry++) {
         if (_stricmp(object->name, entry->name) == 0) {
-            if (DAT_0080ffe6[entry->id] == 0) {
-                DAT_0080ffe6[entry->id] = 1;
+            if (DAT_0080ffa0.field_46[entry->id] == 0) {
+                DAT_0080ffa0.field_46[entry->id] = 1;
                 UpDateCurrentProfile();
             }
             return;

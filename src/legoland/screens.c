@@ -324,7 +324,7 @@ void FUN_00458be0(void) {
     int slot = ((struct ScreenConfig *)lpConfig)->slot;
 
     if (slot < 0xf) {
-        DAT_0080ffa0.field_34[slot] = 1;
+        DAT_0080ffa0.flags[4 + slot] = 1;
     }
     FUN_0048a750();
     UpDateCurrentProfile();
@@ -366,7 +366,7 @@ int FUN_00458c00(void) {
         FUN_00492830();
         if (DAT_00667c80 != 0) {
             DeletePlayableSamples(0);
-            sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, *(unsigned int *)&DAT_0080ffe4 & 0xff);
+            sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, *(unsigned int *)&DAT_0080ffa0.field_44 & 0xff);
             FUN_00466360(0, 0);
             LoadGame(path);
             DAT_00667c80 = 0;
