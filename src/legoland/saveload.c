@@ -27,7 +27,14 @@
 #include "worker.h"
 
 /* Abort a load: close the file and report failure. */
-#define LOAD_FAIL()                    _close(DAT_006691b0);              DAT_00667ca0 = 0;                  return 0
+#pragma auto_inline(off)
+static int LoadAbort(void) {
+    _close(DAT_006691b0);
+    DAT_00667ca0 = 0;
+    return 0;
+}
+#pragma auto_inline(on)
+#define LOAD_FAIL() return LoadAbort()
 
 // FUNCTION: LEGOLAND 0x0047d790
 LEGO_EXPORT int BeginMeasuredBlock(void) {
@@ -99,15 +106,9 @@ LEGO_EXPORT int LoadGame(char *path) {
     int i;
     int x;
     int y;
-    int count;
-    unsigned int len;
-    unsigned int flags;
-    int index;
-    struct Element *elem;
     struct Ride *ride;
     struct MapElement *tile;
     struct Bloke *bloke;
-    struct Person *person;
     struct Anim3D *anim;
     struct ObjInstance *inst;
     struct ObjInstance *inst_prev;
@@ -115,11 +116,11 @@ LEGO_EXPORT int LoadGame(char *path) {
     struct RideNode *rnode_prev;
     struct Ride *entrance;
     struct MapElement *first;
-    struct OverlayParam ov;
+    int n;
+    unsigned int len;
+    int m;
     char header[0x20];
     char name[0x200];
-    unsigned short *tab[252];
-    char label[9] = "xxxxxxxx";
 
     DAT_006691b0 = _open(path, _O_BINARY);
     if (DAT_006691b0 == -1) {
@@ -158,17 +159,19 @@ LEGO_EXPORT int LoadGame(char *path) {
             LOAD_FAIL();
         }
         name[len] = 0;
-        if (LLIDB_FindElement(name, (unsigned int *)&elem, 0) != 0) {
+        if (LLIDB_FindElement(name, (unsigned int *)&n, 0) != 0) {
             LOAD_FAIL();
         }
-        DAT_00669200[i] = elem;
-        if (SaveGameRead(&flags, 4) == 0) {
+        DAT_00669200[i] = (struct Element *)n;
+        if (SaveGameRead(&m, 4) == 0) {
             LOAD_FAIL();
         }
-        LLIDB_LoadData(elem);
-        elem->flags &= 0xfffcfff1;
-        elem->flags |= flags;
+        LLIDB_LoadData((void *)n);
+        ((struct Element *)n)->flags &= 0xfffcfff1;
+        ((struct Element *)n)->flags |= m;
     }
+    {
+        unsigned short *tab[252];
     if (SaveGameRead(&DAT_007fdb84, 4) == 0) {
         break;
     }
@@ -181,12 +184,12 @@ LEGO_EXPORT int LoadGame(char *path) {
             LOAD_FAIL();
         }
         name[len] = 0;
-        if (LLIDB_FindElement(name, (unsigned int *)&elem, 0) != 0) {
+        if (LLIDB_FindElement(name, (unsigned int *)&n, 0) != 0) {
             LOAD_FAIL();
         }
-        DAT_007fd660[i] = (unsigned int)elem;
-        LLIDB_LoadData(elem);
-        tab[i] = elem->data;
+        DAT_007fd660[i] = n;
+        LLIDB_LoadData((void *)n);
+        tab[i] = ((struct Element *)n)->data;
     }
     if (FUN_0047d7e0() == 0) {
         break;
@@ -214,6 +217,7 @@ LEGO_EXPORT int LoadGame(char *path) {
                 tile->field_a = *tab[(tile->field_a >> 8) - 1] + (tile->field_a & 0xff);
             }
         }
+    }
     }
     if (FUN_0047d7e0() == 0) {
         break;
@@ -255,16 +259,16 @@ LEGO_EXPORT int LoadGame(char *path) {
     while (FirstBloke != 0) {
         DestroyBloke(FirstBloke);
     }
-    count = 0;
+    n = 0;
     FUN_004663f0();
-    if (SaveGameRead(&count, 4) == 0) {
+    if (SaveGameRead(&n, 4) == 0) {
         break;
     }
-    while (count-- != 0) {
-        if (SaveGameRead(&index, 4) == 0) {
+    while (n-- != 0) {
+        if (SaveGameRead(&m, 4) == 0) {
             LOAD_FAIL();
         }
-        bloke = &DAT_0066b57c[index];
+        bloke = &DAT_0066b57c[m];
         bloke->next = FirstBloke;
         FirstBloke = bloke;
         if (SaveGameRead(&DAT_007fda60, sizeof(DAT_007fda60)) == 0) {
@@ -397,11 +401,14 @@ LEGO_EXPORT int LoadGame(char *path) {
     for (i = 0; i < DAT_006691b4; i++) {
         FUN_004663f0();
         if ((DAT_00669200[i]->flags & 0x10) != 0) {
+            // STRING: LEGOLAND 0x004bcb94
+            char label[9] = "xxxxxxxx";
             DAT_00669200[i]->flags |= 4;
             ride = DAT_00669200[i]->ride;
             if (SaveGameRead(label, 8) == 0) {
                 LOAD_FAIL();
             }
+            // STRING: LEGOLAND 0x004bcb90
             DBPrintf("%s\n", label);
             if (ride->type != 2 && ride->type != 0) {
                 ride->counters = malloc(lpConfig->field_1a);
@@ -412,12 +419,12 @@ LEGO_EXPORT int LoadGame(char *path) {
             if (SaveGameRead(&ride->field_8, 4) == 0) {
                 LOAD_FAIL();
             }
-            count = 0;
-            if (SaveGameRead(&count, 4) == 0) {
+            n = 0;
+            if (SaveGameRead(&n, 4) == 0) {
                 LOAD_FAIL();
             }
             inst_prev = 0;
-            while (count-- != 0) {
+            while (n-- != 0) {
                 inst = malloc(sizeof(struct ObjInstance));
                 inst->next = 0;
                 inst->field_8 = (unsigned int)ride;
@@ -439,12 +446,12 @@ LEGO_EXPORT int LoadGame(char *path) {
                     LOAD_FAIL();
                 }
             }
-            count = 0;
-            if (SaveGameRead(&count, 4) == 0) {
+            n = 0;
+            if (SaveGameRead(&n, 4) == 0) {
                 LOAD_FAIL();
             }
             rnode_prev = 0;
-            while (count-- != 0) {
+            while (n-- != 0) {
                 rnode = malloc(sizeof(struct RideNode));
                 rnode->next = 0;
                 if (rnode_prev == 0) {
@@ -455,13 +462,13 @@ LEGO_EXPORT int LoadGame(char *path) {
                     rnode->prev = rnode_prev;
                 }
                 rnode_prev = rnode;
-                if (SaveGameRead(&index, 4) == 0) {
+                if (SaveGameRead(&m, 4) == 0) {
                     LOAD_FAIL();
                 }
                 if (SaveGameRead(&rnode->tile, 2) == 0) {
                     LOAD_FAIL();
                 }
-                rnode->rider = GetBlokePtr(index);
+                rnode->rider = GetBlokePtr(m);
                 rnode->person = rnode->rider->person;
             }
             if (ride->load_hook != 0) {
@@ -489,51 +496,54 @@ LEGO_EXPORT int LoadGame(char *path) {
     if (FUN_0047d7e0() == 0) {
         break;
     }
-    SaveGameRead(&len, 4);
-    SaveGameRead(name, len);
-    name[len] = 0;
-    LLIDB_FindElement(name, (unsigned int *)&DAT_00801410, 0);
+    {
+        char name2[0x200];
+        struct OverlayParam ov;
+    SaveGameRead(&n, 4);
+    SaveGameRead(name2, n);
+    name2[n] = 0;
+    LLIDB_FindElement(name2, (unsigned int *)&DAT_00801410, 0);
     OverlayILF = (unsigned int)LLIDB_LoadData(DAT_00801410);
-    SaveGameRead(&count, 4);
-    if (count != 0) {
-        SaveGameRead(name, count);
-        name[count] = 0;
-        LLIDB_FindElement(name, (unsigned int *)&DAT_00801404, 0);
+    SaveGameRead(&n, 4);
+    if (n != 0) {
+        SaveGameRead(name2, n);
+        name2[n] = 0;
+        LLIDB_FindElement(name2, (unsigned int *)&DAT_00801404, 0);
         DAT_00667cb0 = LLIDB_LoadData(DAT_00801404);
-        FUN_004618d0(name);
+        FUN_004618d0(name2);
     } else {
         DAT_00801404 = 0;
         DAT_00667cb0 = 0;
     }
-    SaveGameRead(&count, 4);
-    for (i = 0; i < count; i++) {
+    SaveGameRead(&n, 4);
+    for (i = 0; i < n; i++) {
         SaveGameRead(&ov, 0x14);
         AddOvSav(&ov);
+    }
     }
     _close(DAT_006691b0);
     FUN_004663f0();
     DAT_00667ca0 = 0;
     GamePad |= 0x20;
     CalculateMapRenderOrder();
+    // STRING: LEGOLAND 0x004b83d0
     DAT_006661c4 = ElemID("ENTRANCE 1");
     entrance = DAT_006661c4->ride;
     first = GetFirstObjectMatching(DAT_006661c4);
     if (first != 0) {
         DAT_004b8320.x = (first->field_4 + entrance->footprint.v[0]) * 0x100 + -0x100;
-        DAT_004b8320.y = ((unsigned int)(entrance->footprint.v[3] - entrance->footprint.v[1]) >> 1) * 0x100 + (first->field_5 + entrance->footprint.v[1]) * 0x100;
+        DAT_004b8320.y = (((entrance->footprint.v[3] - entrance->footprint.v[1]) << 7) & ~0xff) + ((first->field_5 + entrance->footprint.v[1]) << 8);
     }
     FUN_00475f10();
     FUN_00458bb0(1);
-    GamePad &= ~0x1000;
     DAT_00810140 = 1;
     DAT_00667c48 = 1;
     EditMode.unk0 = 0;
+    GamePad &= ~0x1000;
     FUN_0046b760();
     return 1;
     }
-    _close(DAT_006691b0);
-    DAT_00667ca0 = 0;
-    return 0;
+    return LoadAbort();
 }
 
 // FUNCTION: LEGOLAND 0x0047f760
