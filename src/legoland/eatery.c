@@ -1722,9 +1722,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
         off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
         AdjustOffsetForViewMode(&off);
-        sy = off.y + sy;
-        sx = off.x + sx;
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
     } else if (s18 == 5 || s18 == 4) {
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 7) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
@@ -1754,9 +1752,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
         off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
         AdjustOffsetForViewMode(&off);
-        sy = off.y + sy;
-        sx = off.x + sx;
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
     }
     for (i = 0; i < count; i = i + 1) {
         if (*(char *)(blokes[i] + 0x60) == 0) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
