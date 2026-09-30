@@ -313,6 +313,14 @@ struct LSub {
     /* 0x18 */ char pad18[0xc];
 };
 
+/* 0x7fded4: newly unlocked objects shown by the "new objects" popup */
+struct NewObjTable {
+    /* 0x00 */ void *objs[20];
+    /* 0x50 */ struct Sprite *sprites[20];
+    /* 0xa0 */ unsigned int count;
+    /* 0xa4 */ int current;
+};
+
 struct EditFootPrint {
     unsigned char data[16];
     void *field_10;
@@ -3332,13 +3340,7 @@ extern int DAT_007fdecc;
 // 0x007fded0
 extern int DAT_007fded0;
 // 0x007fded4
-extern void *DAT_007fded4;
-// 0x007fdf24
-extern struct Sprite *DAT_007fdf24;
-// 0x007fdf74
-extern unsigned int DAT_007fdf74;
-// 0x007fdf78
-extern int DAT_007fdf78;
+extern struct NewObjTable DAT_007fded4;
 // 0x007fdf7c
 extern unsigned int DAT_007fdf7c;
 // 0x007fdf80

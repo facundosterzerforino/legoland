@@ -4371,16 +4371,7 @@ int DAT_007fdecc;
 int DAT_007fded0;
 
 // GLOBAL: LEGOLAND 0x007fded4
-void *DAT_007fded4;
-
-// GLOBAL: LEGOLAND 0x007fdf24
-struct Sprite *DAT_007fdf24;
-
-// GLOBAL: LEGOLAND 0x007fdf74
-unsigned int DAT_007fdf74;
-
-// GLOBAL: LEGOLAND 0x007fdf78
-int DAT_007fdf78;
+struct NewObjTable DAT_007fded4;
 
 // GLOBAL: LEGOLAND 0x007fdf7c
 unsigned int DAT_007fdf7c;

@@ -350,8 +350,8 @@ void FUN_004714a0(void) {
 
 // FUNCTION: LEGOLAND 0x004714e0
 void FUN_004714e0(void) {
-    while (DAT_007fdf74 != 0) {
-        FUN_00471ca0(DAT_007fded4);
+    while (DAT_007fded4.count != 0) {
+        FUN_00471ca0(DAT_007fded4.objs[0]);
     }
 }
 
@@ -609,8 +609,8 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
 // FUNCTION: LEGOLAND 0x00471bf0
 void FUN_00471bf0(void) {
     if (DAT_007fdfa0 != 2) {
-        DAT_007fdf78 = 0;
-        DAT_007fdf74 = 0;
+        DAT_007fded4.current = 0;
+        DAT_007fded4.count = 0;
     }
 }
 
@@ -619,14 +619,14 @@ void FUN_00471c10(struct NewObjInfo *param_1) {
     struct Sprite *sprite;
     char local_200[512];
 
-    if ((int)DAT_007fdf74 < 0x14) {
+    if ((int)DAT_007fded4.count < 0x14) {
         // STRING: LEGOLAND 0x004bacd8
         sprintf(local_200, "NewObjIcons\\%s.bmp", *param_1->name);
         sprite = LoadSprite(local_200, 0);
-        (&DAT_007fdf24)[DAT_007fdf74] = sprite;
-        if ((&DAT_007fdf24)[DAT_007fdf74] != NULL) {
-            (&DAT_007fded4)[DAT_007fdf74] = param_1;
-            DAT_007fdf74 = DAT_007fdf74 + 1;
+        DAT_007fded4.sprites[DAT_007fded4.count] = sprite;
+        if (DAT_007fded4.sprites[DAT_007fded4.count] != NULL) {
+            DAT_007fded4.objs[DAT_007fded4.count] = param_1;
+            DAT_007fded4.count = DAT_007fded4.count + 1;
             return;
         }
         // STRING: LEGOLAND 0x004bacb4
@@ -643,16 +643,16 @@ void FUN_00471ca0(void *param) {
     struct Sprite **puVar6;
     int iVar7;
 
-    if (0 < (int)DAT_007fdf74) {
-        puVar6 = &DAT_007fdf24;
-        iVar5 = DAT_007fdf74;
+    if (0 < (int)DAT_007fded4.count) {
+        puVar6 = DAT_007fded4.sprites;
+        iVar5 = DAT_007fded4.count;
         iVar7 = 1;
         do {
             if (param == ((void **)puVar6)[-0x14]) {
                 if (*puVar6 != NULL) {
                     KillSprite(*puVar6);
                     *puVar6 = NULL;
-                    iVar5 = DAT_007fdf74;
+                    iVar5 = DAT_007fded4.count;
                 }
                 puVar2 = puVar6;
                 iVar3 = iVar7;
@@ -663,14 +663,14 @@ void FUN_00471ca0(void *param) {
                         *puVar2 = puVar2[1];
                         ((void **)puVar2)[-0x14] = ((void **)puVar2)[-0x13];
                         puVar2 = puVar2 + 1;
-                        iVar4 = DAT_007fdf74;
-                    } while (iVar3 < DAT_007fdf74);
+                        iVar4 = DAT_007fded4.count;
+                    } while (iVar3 < DAT_007fded4.count);
                 }
                 iVar5 = iVar4 + -1;
-                if (iVar5 <= DAT_007fdf78) {
-                    DAT_007fdf78 = iVar4 + -2;
+                if (iVar5 <= DAT_007fded4.current) {
+                    DAT_007fded4.current = iVar4 + -2;
                 }
-                DAT_007fdf74 = iVar5;
+                DAT_007fded4.count = iVar5;
                 if ((iVar5 == 0) && (DAT_007fdfa0 == 2)) {
                     DAT_007fdfa0 = 0;
                 }
@@ -683,7 +683,7 @@ void FUN_00471ca0(void *param) {
 
 // FUNCTION: LEGOLAND 0x00471d40
 void FUN_00471d40(void) {
-    if (DAT_007fdf74 != 0) {
+    if (DAT_007fded4.count != 0) {
         ResetInfoStruct();
         DAT_007fdfa0 = 2;
     }
@@ -829,23 +829,23 @@ void FUN_004720a0(void) {
     DAT_007fdfc0->x = (sVar2 - DAT_007fdfc0->field_10) + 0xbb;
     DAT_007fdfc0->y = (sVar3 - sVar4) + 0x25;
     PushRenderingStatusAndUnlockVideoSurface();
-    if (DAT_007fdf74 == 1) {
+    if (DAT_007fded4.count == 1) {
         // STRING: LEGOLAND 0x004bad04
         sprintf(local_80, "You have a new object");
     } else {
         // STRING: LEGOLAND 0x004bacec
-        sprintf(local_80, "You have %d new objects", DAT_007fdf74);
+        sprintf(local_80, "You have %d new objects", DAT_007fded4.count);
     }
     FUN_00455e50(local_80, 0xc1, 0x30, DAT_00668910->width + -6, 0x14, 2, 5, 0xff0000, 0xffffff);
-    obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
+    obj = (struct NewObjInfo *)DAT_007fded4.objs[DAT_007fded4.current];
     FUN_00455e50(obj->field_78, 0xc1, 0x4b, DAT_00668910->width + -6, 0x14, 2, 5, 0xff0000, 0xffffff);
-    obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
+    obj = (struct NewObjInfo *)DAT_007fded4.objs[DAT_007fded4.current];
     FUN_00455e50(obj->field_80, 0x13e, 0x68, 0xfc, 0x77, 2, 0x10, 0xff0000, 0xffffff);
-    obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
+    obj = (struct NewObjInfo *)DAT_007fded4.objs[DAT_007fded4.current];
     sprintf(local_80, "%d", obj->field_26);
     FUN_00455e50(local_80, 0xf0, 0xd1, 0x43, 0x12, 2, 1, 0xff0000, 0xffffff);
     PopRenderingStatus();
-    PrintSprite((&DAT_007fdf24)[DAT_007fdf78], 0xc4, 100, 0, 0);
+    PrintSprite(DAT_007fded4.sprites[DAT_007fded4.current], 0xc4, 100, 0, 0);
     if (((unsigned int)(int)DAT_007fdfc0->field_10 <= (unsigned int)(DAT_00813a44.x - DAT_007fdfc0->x)) ||
         ((unsigned int)(int)DAT_007fdfc0->field_12 <= (unsigned int)(DAT_00813a44.y - DAT_007fdfc0->y))) {
         FUN_0046d680((struct IconNode *)DAT_007fdfc0, DAT_00668920);
@@ -858,13 +858,13 @@ void FUN_004720a0(void) {
         ((unsigned int)(int)DAT_007fdfe8->field_12 <= (unsigned int)(DAT_00813a44.y - DAT_007fdfe8->y))) {
         FUN_0046d680((struct IconNode *)DAT_007fdfe8, DAT_00668930);
     }
-    if (DAT_007fdf78 == 0) {
+    if (DAT_007fded4.current == 0) {
         uVar5 = DAT_007fdfe8->flags | 0x400;
     } else {
         uVar5 = DAT_007fdfe8->flags & 0xfffffbff;
     }
     DAT_007fdfe8->flags = uVar5;
-    if (DAT_007fdf78 == (int)(DAT_007fdf74 + -1)) {
+    if (DAT_007fded4.current == (int)(DAT_007fded4.count + -1)) {
         DAT_007fdfc4->flags = DAT_007fdfc4->flags | 0x400;
         return;
     }
@@ -1011,8 +1011,8 @@ unsigned char FUN_00473360(void *arg1, unsigned char flags, unsigned int arg3, u
         FUN_0046d680(arg1, DAT_00668924);
     }
     if (flags & 2) {
-        if (DAT_007fdf78 < (int)(DAT_007fdf74 - 1)) {
-            DAT_007fdf78++;
+        if (DAT_007fded4.current < (int)(DAT_007fded4.count - 1)) {
+            DAT_007fded4.current++;
         } else {
             ResetInfoStruct();
         }
@@ -1026,8 +1026,8 @@ unsigned char FUN_004733b0(void *arg0, unsigned char flags) {
     FUN_0046d680(arg0, DAT_0066892c);
 
     if (flags & 0x2) {
-        if (DAT_007fdf78 > 0) {
-            DAT_007fdf78--;
+        if (DAT_007fded4.current > 0) {
+            DAT_007fded4.current--;
         }
     }
 
