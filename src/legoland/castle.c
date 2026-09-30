@@ -5086,9 +5086,9 @@ void FUN_004261c0(float *in, float *out, float m[4][4], int n) {
             for (k = 0; k < 3; k++) {
                 sum += in[k] * m[j][k];
             }
-            sum += m[j][3];
-            *out++ = sum;
+            out[j] = sum + m[j][3];
         }
+        out += 3;
         in += 3;
     }
 }
