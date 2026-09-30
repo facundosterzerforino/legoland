@@ -143,7 +143,7 @@ float FUN_0041dd00(unsigned char *param, float result);
 float FUN_0041dd50(unsigned char *param);
 void FUN_0041e8f0(unsigned char *obj, struct Elem20 *e, float t);
 void FUN_00429c60(void *obj, int a, unsigned int b, float c, struct FVec3 *out);
-void FUN_0042a5e0(struct Struct42a5e0Obj *o, struct Struct42a5e0Data *src, unsigned int param_5);
+void FUN_0042a5e0(struct Struct42a5e0Obj *o, struct Struct42a5e0Data *src, float param_5);
 void FUN_0041e820(unsigned char *obj, struct Elem20 *e, float t);
 void FUN_00420410(void *param, unsigned int count);
 unsigned int FUN_004206b0(const char *s);

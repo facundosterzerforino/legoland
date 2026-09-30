@@ -1608,8 +1608,8 @@ void FUN_0041e820(unsigned char *obj, struct Elem20 *e, float t) {
 // FUNCTION: LEGOLAND 0x0041e8f0
 void FUN_0041e8f0(unsigned char *obj, struct Elem20 *e, float t) {
     FUN_0041e820(obj, e, t);
-    FUN_0042a5e0((unsigned int *)(obj + 8), (unsigned int *)(obj + 0xc), *(unsigned int *)(obj + 8));
-    FUN_0042a5e0((unsigned int *)(obj + 0x40), (unsigned int *)(obj + 0x44), *(unsigned int *)(obj + 0x40));
+    FUN_0042a5e0((unsigned int *)(obj + 8), (unsigned int *)(obj + 0xc), *(float *)(obj + 8));
+    FUN_0042a5e0((unsigned int *)(obj + 0x40), (unsigned int *)(obj + 0x44), *(float *)(obj + 0x40));
 }
 
 struct ObjAt40 {
@@ -7461,15 +7461,15 @@ struct Struct42a5e0Obj {
     struct Struct42a5e0Data d1;
 };
 
-static __inline void Init42a5e0(unsigned int *id, struct Struct42a5e0Data *src, unsigned int v) {
+static __inline void Init42a5e0(float *id, struct Struct42a5e0Data *src, float v) {
     *(struct Struct42a5e0Data *)(id + 1) = *src;
     *id = v;
 }
 
 // FUNCTION: LEGOLAND 0x0042a5e0
-void FUN_0042a5e0(struct Struct42a5e0Obj *o, struct Struct42a5e0Data *src, unsigned int param_5) {
-    Init42a5e0(&o->id0, src, param_5);
-    Init42a5e0(&o->id1, src, param_5);
+void FUN_0042a5e0(struct Struct42a5e0Obj *o, struct Struct42a5e0Data *src, float param_5) {
+    Init42a5e0((float *)&o->id0, src, param_5);
+    Init42a5e0((float *)&o->id1, src, param_5);
 }
 
 // FUNCTION: LEGOLAND 0x0042a620
