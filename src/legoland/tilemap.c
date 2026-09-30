@@ -768,7 +768,9 @@ LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
         return;
     }
     if (dir == '\x02') {
-        if ((flags & 0x11) == 1 || (flags & 0x11) == 0x10) {
+        switch (flags & 0x11) {
+        case 1:
+        case 0x10:
             tile->flags_10 = tile->flags_10 | 8;
             return;
         }
