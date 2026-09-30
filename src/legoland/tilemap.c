@@ -1235,10 +1235,10 @@ void FUN_0045d260(struct Point *param) {
 
 // FUNCTION: LEGOLAND 0x0045d350
 LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) {
-    unsigned char *pb;
+    unsigned short *pb;
 
-    pb = (unsigned char *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
-    *pb = *pb | 0x10;
+    pb = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
+    *pb |= 0x10;
     *(unsigned short *)((char *)GameMap[p->y] + 8 + p->x * 0x14) = param1;
     FUN_0045d260(p);
     if (MapStats.field_184 != 0) {
