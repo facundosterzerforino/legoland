@@ -921,7 +921,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     int left;
     int right;
     int width;
-    int mid;
+    volatile int mid;
     int ty;
     int bottom;
     int top;
