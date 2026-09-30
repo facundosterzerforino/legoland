@@ -9,6 +9,7 @@
 #include "math.h"
 
 #include "bricks.h"
+#include "clipping.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "log_flume.h"
@@ -290,10 +291,12 @@ struct FlumeSlot {
     int timer;
     unsigned int flags;
     struct FlumeStatHolder *busy;
-    unsigned char pad_c[8];
+    int x;
+    int y;
     struct FlumeWeighted *owner;
     float weight;
-    unsigned char pad_1c[0x24 - 0x1c];
+    int field_1c;
+    unsigned char pad_20[4];
 };
 
 struct FlumeQueueItem {
@@ -1728,7 +1731,115 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
 }
 
 // FUNCTION: LEGOLAND 0x0040ae90
-void FUN_0040ae90(unsigned int param_1, int param_2, int param_3) { STUB(); }
+void FUN_0040ae90(unsigned int param_1, int param_2, int param_3) {
+    struct FlumeSlot *slot = (struct FlumeSlot *)param_1;
+    struct FlumeEntry *other = (struct FlumeEntry *)param_2;
+    struct FlumeEntry *owner = (struct FlumeEntry *)slot->owner;
+    struct Sprite *spriteA;
+    struct Sprite *spriteB;
+    RECT saved;
+    RECT clip;
+    struct Point p;
+    struct Point q;
+    struct Point bp;
+    int out[4];
+    int out2[4];
+    int w;
+    int h;
+    int frame;
+    struct LLS *lls;
+
+    if (slot->flags & 4) {
+        spriteA = DAT_004cbe80;
+        spriteB = DAT_004cbe7c;
+    } else {
+        spriteA = DAT_004cbe78;
+        spriteB = DAT_004cbe74;
+    }
+    GetClipping(&saved);
+    clip = saved;
+    if (other != owner) {
+        GetTileDimensions(&w, &h);
+        if (owner->tile.pos.x == other->tile.pos.x) {
+            p.x = other->tile.pos.x + 1;
+            p.y = other->tile.pos.y;
+            GetTileBounds(&p, out);
+            if (out[2] < clip.right) {
+                clip.right = out[2];
+            }
+            p.x = other->tile.pos.x + 1;
+            p.y = other->tile.pos.y + 1;
+            GetTileBounds(&p, out);
+            if ((w >> 1) + out[0] > clip.left) {
+                clip.left = (w >> 1) + out[0];
+            }
+        } else {
+            p.x = other->tile.pos.x;
+            p.y = other->tile.pos.y + 1;
+            GetTileBounds(&p, out);
+            if (out[0] + 1 > clip.left) {
+                clip.left = out[0] + 1;
+            }
+            p.x = other->tile.pos.x + 1;
+            p.y = other->tile.pos.y + 1;
+            GetTileBounds(&p, out);
+            if ((w >> 1) + out[0] + 1 < clip.right) {
+                clip.right = (w >> 1) + out[0] + 1;
+            }
+        }
+    }
+    SetClipping(&clip);
+    if (spriteB != NULL) {
+        p.y = slot->y;
+        p.x = slot->x;
+        GetTileDimensions(&w, &h);
+        w <<= 1;
+        h <<= 1;
+        p.x -= w >> 1;
+        out[0] = owner->tile.pos.x;
+        out[1] = owner->tile.pos.y;
+        GetTileBounds((struct Point *)out, out2);
+        q.x = out2[0];
+        q.y = out2[1];
+        if (owner->link28 != NULL) {
+            FUN_0040cfd0(owner->link28);
+        }
+        if (owner->link28 == NULL) {
+            FUN_0040cfd0(owner);
+        }
+        AdjustOffsetForViewMode(&p);
+        p.x -= spriteB->width >> 1;
+        p.y -= (int)((float)(short)spriteB->height * 0.75f + (slot->field_1c >> 1));
+        if (param_3 != 0) {
+            PrintSprite(spriteB, p.x + q.x, p.y + q.y, 0, 0);
+            if (slot->busy != NULL) {
+                if (((struct RideNode *)slot->busy)->rider->flags & 0x80) {
+                    if (((struct RideNode *)slot->busy)->person != NULL) {
+                        bp.x = p.x + (spriteB->width >> 1);
+                        bp.y = p.y + ((short)spriteB->height >> 2) + ((short)spriteB->height >> 1);
+                        AdjustBlokePosition(&bp);
+                        SetPersonPosition(((struct RideNode *)slot->busy)->person, bp.x + q.x, bp.y + q.y);
+                        SetPersonDirection(((struct RideNode *)slot->busy)->person, FUN_004092b0((struct FlumeHolder *)slot));
+                        IP_RenderBlokeIn3DNow(((struct RideNode *)slot->busy)->rider);
+                    }
+                }
+            }
+        }
+        if (spriteA != NULL) {
+            frame = 0;
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)spriteB);
+            if (lls != NULL) {
+                frame = lls->frame;
+            }
+            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)spriteA);
+            if (lls != NULL) {
+                LLSSetFrame(lls, frame);
+            }
+            PrintSprite(spriteA, p.x + q.x, p.y + q.y, 0, 0);
+        }
+    }
+    SetClipping(&saved);
+}
 
 // FUNCTION: LEGOLAND 0x0040b210
 int FUN_0040b210(struct FlumeWeighted *self, struct FlumeWeighted *other) {
