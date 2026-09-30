@@ -236,9 +236,9 @@ void FUN_00457a70(void) {
                 DAT_00667cdc = 0;
                 for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a3c) {
                     for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a38) {
+                        QueryCursor.field_1414[4] = 0;
                         QueryCursor.field_1404 = x;
                         QueryCursor.field_1408 = y;
-                        QueryCursor.field_1414[4] = 0;
                         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                             tile = &GameMap[y][x];
                         } else {
