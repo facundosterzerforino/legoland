@@ -4701,6 +4701,7 @@ void FUN_00425050(Element *obj, unsigned int param_2, unsigned int param_3, Tile
 }
 #pragma optimize("", on)
 
+#pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00425170
 void FUN_00425170(void) {
     FUN_00424e80();
@@ -4712,6 +4713,7 @@ void FUN_00425170(void) {
         FUN_00424dc0((struct ListHost *)&DAT_00829ae0);
     }
 }
+#pragma optimize("", on)
 
 // FUNCTION: LEGOLAND 0x004251c0
 void FUN_004251c0(void) { STUB(); }
