@@ -11,7 +11,7 @@ struct RoadTile;
 unsigned int FUN_00413970(unsigned short param_1);
 void FUN_004132a0(TileId tile, int param_2, int param_3, unsigned int param_4, unsigned int param_5);
 void FUN_004133e0(int param_1, int param_2);
-void FUN_00413650(short param_1, int param_2, int param_3);
+void FUN_00413650(unsigned short param_1, int param_2, int param_3);
 
 int FUN_00413450(int x, int y, struct RideQueueEntry **out);
 struct RoadTile *FUN_004134f0(int arg1, int arg2, struct RoadTile *tile);

@@ -776,11 +776,11 @@ void FUN_00459710(char *s) {
         *semicolon = 0;
         strcpy(buffer, source);
         semicolon++;
+        semicolon[-1] = ';';
         if (strlen(semicolon) != 0) {
             strcpy(DAT_008100c0, semicolon);
             MapStats.field_3ac = 1;
         }
-        semicolon[-1] = ';';
     }
     FUN_00490600(0);
     if (FUN_004907a0(buffer) != 0) {

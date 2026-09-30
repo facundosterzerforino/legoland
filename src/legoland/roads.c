@@ -266,7 +266,137 @@ int FUN_004135d0(int x, int y, struct NeighborResult *out) {
 }
 
 // FUNCTION: LEGOLAND 0x00413650
-void FUN_00413650(short param_1, int param_2, int param_3) { STUB(); }
+void FUN_00413650(unsigned short param_1, int param_2, int param_3) {
+    struct NeighborResult r;
+    struct RideQueueEntry *e;
+    int count = 0;
+    int bits = 0;
+    int mask = 0;
+    int flag = 0;
+    unsigned int m;
+    unsigned short id;
+
+    id = param_1;
+    e = FUN_004125a0(param_2, param_3);
+    if (e != NULL) {
+        flag = e->field_14 & 0x10;
+    }
+    FUN_00413520(param_2, param_3, &r);
+    if (r.field_0 != NULL) {
+        if (r.field_0->field_8 == id) {
+            mask = count = 1;
+        }
+    }
+    if (r.field_8 != NULL && r.field_8->field_8 == id) {
+        count++;
+        mask |= 2;
+    }
+    if (r.field_10 != NULL && r.field_10->field_8 == id) {
+        count++;
+        mask |= 4;
+    }
+    if (r.field_18 != NULL && r.field_18->field_8 == id) {
+        count++;
+        mask |= 8;
+    }
+    switch (count) {
+    case 0:
+        return;
+    case 2:
+        if ((mask & 5) != 5 && (mask & 0xa) != 0xa) {
+            switch (mask) {
+            case 6:
+                FUN_00412680(param_2, param_3, 3, 0);
+                break;
+            case 12:
+                FUN_00412680(param_2, param_3, 3, 1);
+                break;
+            case 9:
+                FUN_00412680(param_2, param_3, 3, 2);
+                break;
+            case 3:
+                FUN_00412680(param_2, param_3, 3, 3);
+                break;
+            }
+            break;
+        }
+    case 1:
+        FUN_00413450(param_2, param_3, (struct RideQueueEntry **)&r);
+        if (r.field_0 != NULL && r.field_0->field_8 == id) {
+            bits = 1;
+        }
+        if (r.field_4 != NULL && r.field_4->field_8 == id) {
+            bits |= 2;
+        }
+        if (r.field_8 != NULL && r.field_8->field_8 == id) {
+            bits |= 4;
+        }
+        if (r.field_c != NULL && r.field_c->field_8 == id) {
+            bits |= 8;
+        }
+        if (r.field_10 != NULL && r.field_10->field_8 == id) {
+            bits |= 0x10;
+        }
+        if (r.field_14 != NULL && r.field_14->field_8 == id) {
+            bits |= 0x20;
+        }
+        if (r.field_18 != NULL && r.field_18->field_8 == id) {
+            bits |= 0x40;
+        }
+        if (r.field_1c != NULL && r.field_1c->field_8 == id) {
+            bits |= 0x80;
+        }
+        m = bits;
+        if ((m & 0x11) != 0) {
+            if ((m & 0x83) == 0x83) {
+                if ((m & 0x38) == 0x38) {
+                    FUN_00412680(param_2, param_3, flag | 7, 0);
+                } else {
+                    FUN_00412680(param_2, param_3, flag | 1, 0);
+                }
+            } else {
+                if ((m & 0x38) == 0x38) {
+                    FUN_00412680(param_2, param_3, flag | 1, 2);
+                } else {
+                    FUN_00412680(param_2, param_3, flag, 0);
+                }
+            }
+        } else if ((m & 0xe0) == 0xe0) {
+            if ((m & 0xe) == 0xe) {
+                FUN_00412680(param_2, param_3, flag | 7, 1);
+            } else {
+                FUN_00412680(param_2, param_3, flag | 1, 3);
+            }
+        } else if ((m & 0xe) == 0xe) {
+            FUN_00412680(param_2, param_3, flag | 1, 1);
+        } else {
+            FUN_00412680(param_2, param_3, flag, 1);
+        }
+        return;
+    case 3:
+        switch (mask) {
+        case 11:
+            FUN_00412680(param_2, param_3, 4, 0);
+            break;
+        case 7:
+            FUN_00412680(param_2, param_3, 4, 1);
+            break;
+        case 14:
+            FUN_00412680(param_2, param_3, 4, 2);
+            break;
+        case 13:
+            FUN_00412680(param_2, param_3, 4, 3);
+            break;
+        }
+        break;
+    case 4:
+        FUN_00412680(param_2, param_3, 5, 0);
+        break;
+    }
+    if (flag != 0) {
+        AddBricks(GetObjCost(DAT_0082c678));
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00413970
 unsigned int FUN_00413970(unsigned short param_1) {
