@@ -3574,9 +3574,8 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
     int nV = 0;
     int *edgeFlag;
     int j;
-    int t;
-    int removedTris = 0;
     int i;
+    int removedTris = 0;
     int *vertFlag;
     int k;
     struct EdgeMesh *out = NULL;
@@ -3584,9 +3583,9 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
     int removedEdges = 0;
     int removedVerts = 0;
 
-    for (t = 0; t < src->nTris; t++) {
+    for (i = 0; i < src->nTris; i++) {
         for (k = 0; k < 3; k++) {
-            struct MEdge *ed = &src->edges[src->tris[t].e[k] & 0x7fffffff];
+            struct MEdge *ed = &src->edges[src->tris[i].e[k] & 0x7fffffff];
             if (ed->v0 > nV) {
                 nV = ed->v0;
             }
@@ -3604,7 +3603,7 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
             memset(triFlag, 0, src->nTris * 4);
             memset(edgeFlag, 0, nEdges * 4);
             memset(vertFlag, 0, nV * 4);
-            for (t = 0; t < src->nTris; t++) {
+            for (i = 0; i < src->nTris; i++) {
                 int v[3];
                 float z;
                 int dx1;
@@ -3613,7 +3612,7 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                 int dy2;
                 unsigned int bits;
                 for (k = 0; k < 3; k++) {
-                    int e = src->tris[t].e[k];
+                    int e = src->tris[i].e[k];
                     if (e & 0x80000000) {
                         v[k] = src->edges[e & 0x7fffffff].v1;
                     } else {
@@ -3627,24 +3626,24 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                 z = (float)dy2 * (float)dx1 - (float)dx2 * (float)dy1;
                 bits = *(unsigned int *)&z;
                 if (bits & 0x80000000) {
-                    triFlag[t] = 1;
+                    triFlag[i] = 1;
                     removedTris++;
                 }
             }
-            for (t = 0; t < src->nTris; t++) {
-                if (triFlag[t] != 0) {
+            for (i = 0; i < src->nTris; i++) {
+                if (triFlag[i] != 0) {
                     for (k = 0; k < 3; k++) {
                         int found = 0;
-                        for (i = 0; i < src->nTris; i++) {
-                            if (triFlag[i] == 0) {
-                                if (((src->tris[i].e[0] ^ ((int *)src->tris)[t * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[i].e[1] ^ ((int *)src->tris)[t * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[i].e[2] ^ ((int *)src->tris)[t * 3 + k]) & 0x7fffffff) == 0) {
+                        for (j = 0; j < src->nTris; j++) {
+                            if (triFlag[j] == 0) {
+                                if (((src->tris[j].e[0] ^ ((int *)src->tris)[i * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[j].e[1] ^ ((int *)src->tris)[i * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[j].e[2] ^ ((int *)src->tris)[i * 3 + k]) & 0x7fffffff) == 0) {
                                     found = 1;
                                     break;
                                 }
                             }
                         }
                         if (!found) {
-                            edgeFlag[((int *)src->tris)[t * 3 + k] & 0x7fffffff] = 1;
+                            edgeFlag[((int *)src->tris)[i * 3 + k] & 0x7fffffff] = 1;
                         }
                     }
                 }
@@ -3705,21 +3704,21 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                     }
                 }
                 j = 0;
-                for (t = 0; t < src->nTris; t++) {
-                    if (triFlag[t] == 0) {
-                        int e = src->tris[t].e[0];
+                for (i = 0; i < src->nTris; i++) {
+                    if (triFlag[i] == 0) {
+                        int e = src->tris[i].e[0];
                         if (e & 0x80000000) {
                             out->tris[j].e[0] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
                         } else {
                             out->tris[j].e[0] = e - edgeFlag[e];
                         }
-                        e = src->tris[t].e[1];
+                        e = src->tris[i].e[1];
                         if (e & 0x80000000) {
                             out->tris[j].e[1] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
                         } else {
                             out->tris[j].e[1] = e - edgeFlag[e];
                         }
-                        e = src->tris[t].e[2];
+                        e = src->tris[i].e[2];
                         if (e & 0x80000000) {
                             out->tris[j].e[2] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
                         } else {
