@@ -199,11 +199,10 @@ void FUN_0042c4a0(struct CarouselRideObj *param_1, TileId tile, unsigned int par
 // FUNCTION: LEGOLAND 0x0042c520
 void FUN_0042c520(unsigned int param_1, unsigned char *param_2) {
     unsigned char *src = param_2;
-    unsigned char b0 = param_2[0];
-    unsigned char b4 = param_2[4];
+    unsigned char b0 = src[0];
 
+    *((unsigned char *)&param_2 + 1) = src[4];
     *(unsigned char *)&param_2 = b0;
-    *((unsigned char *)&param_2 + 1) = b4;
     AddBasicObject(param_1, (unsigned int)src);
     FUN_0042bbc0((unsigned short *)&param_2);
 }
