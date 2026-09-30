@@ -1,6 +1,9 @@
 #include "sound_sfx.h"
 #include <windows.h>
+#include <fcntl.h>
+#include <io.h>
 #include <stdlib.h>
+#include <string.h>
 #include "debug_alloc.h"
 #include "globals.h"
 #include "imports.h"
@@ -11,7 +14,6 @@
 #include "stream.h"
 
 struct DirectSoundObj;
-struct DirectMusicObj;
 
 struct SampleCounter {
     unsigned char pad_0[4];
@@ -32,34 +34,6 @@ struct DirectSoundVtbl {
 
 struct DirectSoundObj {
     struct DirectSoundVtbl *vtable;
-};
-
-struct DirectMusicLoaderVtbl {
-    void *QueryInterface;
-    void *AddRef;
-    void(__stdcall *Release)(struct DirectMusicObj *self);
-    unsigned char pad_c[0x24 - 0xc];
-    void(__stdcall *ClearCache)(struct DirectMusicObj *self, const GUID *type);
-};
-
-struct DirectMusicPerformanceVtbl {
-    void *QueryInterface;
-    void *AddRef;
-    void(__stdcall *Release)(struct DirectMusicObj *self);
-    unsigned char pad_c[0x14 - 0xc];
-    void(__stdcall *Stop)(struct DirectMusicObj *self, int a1, int a2, int a3, int a4);
-    unsigned char pad_18[0x98 - 0x18];
-    void(__stdcall *CloseDown)(struct DirectMusicObj *self);
-};
-
-struct DirectMusicComposerVtbl {
-    void *QueryInterface;
-    void *AddRef;
-    void(__stdcall *Release)(struct DirectMusicObj *self);
-};
-
-struct DirectMusicObj {
-    void *vtable;
 };
 
 struct AcmHeader {
@@ -655,13 +629,378 @@ void FUN_00492da0(void) {
     FUN_00492ce0(DAT_0079a6ac);
 }
 
+#define DMUS_OBJ_CLASS 0x2
+#define DMUS_OBJ_NAME 0x4
+#define DMUS_OBJ_MEMORY 0x400
+
+// STRING: LEGOLAND 0x004bfd30
+#define IMT_MSG_SHORT_READ "Not Enough Data %s (wanted %d, got %d)\n"
+// STRING: LEGOLAND 0x004bfd0c
+#define IMT_MSG_NO_MEMORY "Failed to allocate Music Object %s\n"
+// STRING: LEGOLAND 0x004bfa78
+#define IMT_MSG_GET_FAILED "Error Getting music object (Call %d) (Ret = %d) (Error = %d)\n"
+
+/* Reads music file n into DAT_00799c1c[n] (DAT_0079a608[n] bytes). As in the original,
+ * "got" is the result of `read != size`, not the number of bytes read. */
+#define IMT_LOAD(n, file) \
+    fd = _open(file, _O_BINARY); \
+    DAT_0079a608[n] = _filelength(fd); \
+    DAT_00799c1c[n] = malloc(DAT_0079a608[n]); \
+    if (DAT_00799c1c[n] != NULL) { \
+        got = _read(fd, DAT_00799c1c[n], DAT_0079a608[n]) != DAT_0079a608[n]; \
+        if (got != 0) { \
+            DBPrintf(IMT_MSG_SHORT_READ, file, DAT_0079a608[n], got); \
+        } \
+    } else { \
+        DBPrintf(IMT_MSG_NO_MEMORY, file); \
+    } \
+    _close(fd)
+
+/* Creates segment n from the file IMT_LOAD read into memory, then frees the file. */
+#define IMT_GET(n, name) \
+    DAT_0079a6b0++; \
+    desc.guidClass = DAT_004ab9f0; \
+    desc.dwSize = sizeof(desc); \
+    desc.dwValidData = DMUS_OBJ_CLASS | DMUS_OBJ_NAME | DMUS_OBJ_MEMORY; \
+    desc.llMemLength = DAT_0079a608[n]; \
+    desc.pbMemData = DAT_00799c1c[n]; \
+    wcscpy(desc.wszName, name); \
+    hr = DAT_007cacd8->vtable->GetObject(DAT_007cacd8, &desc, &DAT_004ab670, (void **)&DAT_00799230[n]); \
+    if (hr != S_OK) { \
+        DBPrintf(IMT_MSG_GET_FAILED, DAT_0079a6b0, hr, GetLastError()); \
+    } \
+    free(DAT_00799c1c[n])
+
+/* Interactive music thread (IMT). Sets up DirectMusic, loads the five themes (two segments each)
+ * and the 5x5 transition segments, then serves the commands posted by FUN_00492ca0/FUN_00492ce0/
+ * FUN_00492d80 (DAT_0079a6a4, signalled through DAT_0079a6a0) and DirectMusic notifications. */
 // FUNCTION: LEGOLAND 0x00492db0
-void FUN_00492db0(void) { STUB(); }
+DWORD WINAPI FUN_00492db0(LPVOID param) {
+    unsigned char groove;
+    int beat = -1;
+    struct DirectMusicPort *port = NULL;
+    int theme;
+    struct DirectMusicNotification *msg;
+    struct DirectMusic *music = NULL;
+    unsigned int bufferSize;
+    unsigned int formatSize;
+    struct DirectMusicObjectDesc desc;
+    HANDLE events[2];
+    struct DirectMusicPortParams params = {sizeof(params), 0, 24, 1, 2, 22050, 0, 0};
+    struct WaveBufferDesc bufferDesc;
+    WAVEFORMATEX *format;
+    HRESULT hr;
+    int fd;
+    int got;
+    int i;
+    int k;
+
+    if (DAT_004bf774 == 0) {
+        DAT_007988bc = 1;
+        return 0;
+    }
+    desc.dwSize = sizeof(desc);
+    CoInitialize(NULL);
+    if (SUCCEEDED(CoCreateInstance(&CLSID_DirectMusicComposer, NULL, CLSCTX_INPROC, &IID_IDirectMusicComposer, (void **)&DAT_007cad44))) {
+        if (SUCCEEDED(CoCreateInstance(&CLSID_DirectMusicPerformance, NULL, CLSCTX_INPROC, &IID_IDirectMusicPerformance, (void **)&DAT_007cacdc))) {
+            if (SUCCEEDED(DAT_007cacdc->vtable->Init(DAT_007cacdc, &music, DAT_007cad40, NULL))) {
+                music->vtable->CreatePort(music, &DAT_004acfd0, &params, &port, NULL);
+                port->vtable->GetFormat(port, NULL, &formatSize, &bufferSize);
+                format = malloc(formatSize < sizeof(WAVEFORMATEX) ? sizeof(WAVEFORMATEX) : formatSize);
+                port->vtable->GetFormat(port, format, &formatSize, &bufferSize);
+                bufferDesc.dwSize = sizeof(bufferDesc);
+                bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME;
+                bufferDesc.dwBufferBytes = bufferSize;
+                bufferDesc.dwReserved = 0;
+                bufferDesc.lpwfxFormat = format;
+                if (IDirectSound_CreateSoundBuffer((LPDIRECTSOUND)DAT_007cad40, (LPCDSBUFFERDESC)&bufferDesc, (LPDIRECTSOUNDBUFFER *)&DAT_007cad4c, NULL) != DS_OK) {
+                    DMusicInitialised = 0;
+                    DAT_007988bc = 1;
+                    return 0;
+                }
+                free(format);
+                port->vtable->SetDirectSound(port, DAT_007cad40, DAT_007cad4c);
+                port->vtable->Activate(port, TRUE);
+                DAT_007cacdc->vtable->AddPort(DAT_007cacdc, port);
+                DAT_007cacdc->vtable->AssignPChannelBlock(DAT_007cacdc, 0, port, 1);
+                if (port != NULL) {
+                    port->vtable->Release(port);
+                }
+                if (SUCCEEDED(CoCreateInstance(&CLSID_DirectMusicLoader, NULL, CLSCTX_INPROC, &IID_IDirectMusicLoader, (void **)&DAT_007cacd8))) {
+                    UpdateSoundVols();
+                    DAT_0079a69c = CreateEvent(NULL, TRUE, FALSE, NULL);
+                    DAT_0079a6a0 = CreateEvent(NULL, TRUE, FALSE, NULL);
+                    if (DAT_0079a6a0 != NULL) {
+                        // STRING: LEGOLAND 0x004bfda4
+                        DAT_007cacd8->vtable->SetSearchDirectory(DAT_007cacd8, &DAT_004ab8b0, L"imusic", TRUE);
+                        DAT_007cacd8->vtable->EnableCache(DAT_007cacd8, &DAT_004ab8b0, TRUE);
+                        // STRING: LEGOLAND 0x004bfd9c
+                        if (DAT_007cacd8->vtable->ScanDirectory(DAT_007cacd8, &DAT_004ab9f0, L"sgt", NULL) == S_OK) {
+                            // STRING: LEGOLAND 0x004bfd94
+                            if (DAT_007cacd8->vtable->ScanDirectory(DAT_007cacd8, &DAT_004ab980, L"sty", NULL) == S_OK) {
+                                // STRING: LEGOLAND 0x004bfd84
+                                DBPrintf("Loading Styles\n");
+                                for (i = 0; DAT_007cacd8->vtable->EnumObject(DAT_007cacd8, &DAT_004ab980, i, &desc) == S_OK; i++) {
+                                    DAT_007cacd8->vtable->GetObject(DAT_007cacd8, &desc, &DAT_004ab610, &DAT_007988d0[i]);
+                                }
+                            }
+                            // STRING: LEGOLAND 0x004bfd70
+                            DBPrintf("Loading Segments\n");
+                            // STRING: LEGOLAND 0x004bfd58
+                            IMT_LOAD(0, "imusic\\segtheme1.sgt");
+                            // STRING: LEGOLAND 0x004bfcf4
+                            IMT_LOAD(1, "imusic\\segegypt1.sgt");
+                            // STRING: LEGOLAND 0x004bfce0
+                            IMT_LOAD(2, "imusic\\seginca1.sgt");
+                            // STRING: LEGOLAND 0x004bfccc
+                            IMT_LOAD(3, "imusic\\segmed1.sgt");
+                            // STRING: LEGOLAND 0x004bfcb8
+                            IMT_LOAD(4, "imusic\\segwest1.sgt");
+                            // STRING: LEGOLAND 0x004bfca0
+                            IMT_LOAD(5, "imusic\\segtheme2.sgt");
+                            // STRING: LEGOLAND 0x004bfc88
+                            IMT_LOAD(6, "imusic\\segegypt2.sgt");
+                            // STRING: LEGOLAND 0x004bfc74
+                            IMT_LOAD(7, "imusic\\seginca2.sgt");
+                            // STRING: LEGOLAND 0x004bfc60
+                            IMT_LOAD(8, "imusic\\segmed2.sgt");
+                            // STRING: LEGOLAND 0x004bfc4c
+                            IMT_LOAD(9, "imusic\\segwest2.sgt");
+                            // STRING: LEGOLAND 0x004bfc38
+                            IMT_LOAD(11, "imusic\\letran2.sgt");
+                            // STRING: LEGOLAND 0x004bfc24
+                            IMT_LOAD(12, "imusic\\litran2.sgt");
+                            // STRING: LEGOLAND 0x004bfc10
+                            IMT_LOAD(13, "imusic\\lmtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfbfc
+                            IMT_LOAD(14, "imusic\\lwtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfbe8
+                            IMT_LOAD(15, "imusic\\eltran2.sgt");
+                            // STRING: LEGOLAND 0x004bfbd4
+                            IMT_LOAD(17, "imusic\\ietran2.sgt");
+                            // STRING: LEGOLAND 0x004bfbc0
+                            IMT_LOAD(18, "imusic\\emtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfbac
+                            IMT_LOAD(19, "imusic\\ewtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb98
+                            IMT_LOAD(20, "imusic\\iltran2.sgt");
+                            IMT_LOAD(21, "imusic\\ietran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb84
+                            IMT_LOAD(23, "imusic\\imtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb70
+                            IMT_LOAD(24, "imusic\\iwtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb5c
+                            IMT_LOAD(25, "imusic\\mltran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb48
+                            IMT_LOAD(26, "imusic\\metran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb34
+                            IMT_LOAD(27, "imusic\\mitran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb20
+                            IMT_LOAD(29, "imusic\\mwtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfb0c
+                            IMT_LOAD(30, "imusic\\wltran2.sgt");
+                            // STRING: LEGOLAND 0x004bfaf8
+                            IMT_LOAD(31, "imusic\\wetran2.sgt");
+                            // STRING: LEGOLAND 0x004bfae4
+                            IMT_LOAD(32, "imusic\\witran2.sgt");
+                            // STRING: LEGOLAND 0x004bfad0
+                            IMT_LOAD(33, "imusic\\wmtran2.sgt");
+                            // STRING: LEGOLAND 0x004bfab8
+                            IMT_GET(0, L"themeintro");
+                            // STRING: LEGOLAND 0x004bfa6c
+                            IMT_GET(5, L"theme");
+                            // STRING: LEGOLAND 0x004bfa58
+                            IMT_GET(1, L"segegypt1");
+                            // STRING: LEGOLAND 0x004bfa44
+                            IMT_GET(2, L"seginca1");
+                            // STRING: LEGOLAND 0x004bfa34
+                            IMT_GET(3, L"segmed1");
+                            // STRING: LEGOLAND 0x004bfa20
+                            IMT_GET(4, L"segwest1");
+                            // STRING: LEGOLAND 0x004bfa0c
+                            IMT_GET(6, L"segegypt2");
+                            // STRING: LEGOLAND 0x004bf9f8
+                            IMT_GET(7, L"seginca2");
+                            // STRING: LEGOLAND 0x004bf9e8
+                            IMT_GET(8, L"segmed2");
+                            // STRING: LEGOLAND 0x004bf9d4
+                            IMT_GET(9, L"segwest2");
+                            // STRING: LEGOLAND 0x004bf9c4
+                            IMT_GET(11, L"letran2");
+                            // STRING: LEGOLAND 0x004bf9b4
+                            IMT_GET(12, L"litran2");
+                            // STRING: LEGOLAND 0x004bf9a4
+                            IMT_GET(13, L"lmtran2");
+                            // STRING: LEGOLAND 0x004bf994
+                            IMT_GET(14, L"lwtran2");
+                            // STRING: LEGOLAND 0x004bf984
+                            IMT_GET(15, L"eltran2");
+                            // STRING: LEGOLAND 0x004bf974
+                            IMT_GET(17, L"eitran2");
+                            // STRING: LEGOLAND 0x004bf964
+                            IMT_GET(18, L"emtran2");
+                            // STRING: LEGOLAND 0x004bf954
+                            IMT_GET(19, L"ewtran2");
+                            // STRING: LEGOLAND 0x004bf944
+                            IMT_GET(20, L"iltran2");
+                            // STRING: LEGOLAND 0x004bf934
+                            IMT_GET(21, L"ietran2");
+                            // STRING: LEGOLAND 0x004bf924
+                            IMT_GET(23, L"imtran2");
+                            // STRING: LEGOLAND 0x004bf914
+                            IMT_GET(24, L"iwtran2");
+                            // STRING: LEGOLAND 0x004bf904
+                            IMT_GET(25, L"mltran2");
+                            // STRING: LEGOLAND 0x004bf8f4
+                            IMT_GET(26, L"metran2");
+                            // STRING: LEGOLAND 0x004bf8e4
+                            IMT_GET(27, L"mitran2");
+                            // STRING: LEGOLAND 0x004bf8d4
+                            IMT_GET(29, L"mwtran2");
+                            // STRING: LEGOLAND 0x004bf8c4
+                            IMT_GET(30, L"wltran2");
+                            // STRING: LEGOLAND 0x004bf8b4
+                            IMT_GET(31, L"wetran2");
+                            // STRING: LEGOLAND 0x004bf8a4
+                            IMT_GET(32, L"witran2");
+                            // STRING: LEGOLAND 0x004bf894
+                            IMT_GET(33, L"wmtran2");
+                        }
+                        DAT_007cacdc->vtable->SetNotificationHandle(DAT_007cacdc, DAT_0079a69c, 0);
+                        DAT_007cacdc->vtable->AddNotificationType(DAT_007cacdc, &GUID_NOTIFICATION_MEASUREANDBEAT);
+                        DAT_007cacdc->vtable->AddNotificationType(DAT_007cacdc, &GUID_NOTIFICATION_SEGMENT);
+                        for (theme = 1; theme < 5; theme++) {
+                            DAT_00799230[theme]->vtable->SetParam(DAT_00799230[theme], &GUID_Download, 0xffffffff, 0, 0, DAT_007cacdc);
+                            DAT_00799230[theme]->vtable->SetRepeats(DAT_00799230[theme], 0);
+                            DAT_00799230[theme + 5]->vtable->SetParam(DAT_00799230[theme + 5], &GUID_Download, 0xffffffff, 0, 0, DAT_007cacdc);
+                            DAT_00799230[theme + 5]->vtable->SetRepeats(DAT_00799230[theme + 5], 0);
+                            for (k = 0; k < 5; k++) {
+                                if (k != theme) {
+                                    DAT_00799230[10 + theme * 5 + k]->vtable->SetParam(DAT_00799230[10 + theme * 5 + k], &GUID_Download, 0xffffffff, 0, 0, DAT_007cacdc);
+                                    DAT_00799230[10 + theme * 5 + k]->vtable->SetRepeats(DAT_00799230[10 + theme * 5 + k], 0);
+                                }
+                            }
+                        }
+                        DAT_007988bc = 1;
+                        DMusicInitialised = 1;
+                        events[0] = DAT_0079a69c;
+                        events[1] = DAT_0079a6a0;
+                        // STRING: LEGOLAND 0x004bf87c
+                        DBPrintf("Entering IMT Control\n");
+                        for (;;) {
+                            WaitForMultipleObjects(2, events, FALSE, INFINITE);
+                            if (WaitForSingleObject(DAT_0079a6a0, 0) == WAIT_OBJECT_0) {
+                                ResetEvent(DAT_0079a6a0);
+                                if (DAT_0079a6a4 != 0) {
+                                    switch (DAT_0079a6a4) {
+                                    case 4:
+                                        if (DAT_0079a6ac == DAT_0079a6a8) {
+                                            DAT_0079a6ac = DAT_0079a6a8;
+                                            groove = 0;
+                                            DAT_007cacdc->vtable->SetGlobalParam(DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &groove, 1);
+                                            DAT_007cacdc->vtable->PlaySegment(DAT_007cacdc, DAT_00799230[DAT_0079a6ac + 5], 0x2000, 0, NULL);
+                                        } else {
+                                            groove = 1;
+                                            DAT_0079a6a4 = 5;
+                                            beat = -1;
+                                            DAT_007cacdc->vtable->SetGlobalParam(DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &groove, 1);
+                                        }
+                                        break;
+                                    case 3:
+                                        DAT_0079a6ac = DAT_0079a6a8;
+                                        groove = 0;
+                                        DAT_007cacdc->vtable->SetGlobalParam(DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &groove, 1);
+                                        DAT_007cacdc->vtable->PlaySegment(DAT_007cacdc, DAT_00799230[DAT_0079a6ac], 0x2000, 0, NULL);
+                                        break;
+                                    case 1:
+                                        DAT_007cacdc->vtable->Stop(DAT_007cacdc, NULL, NULL, 0, 0);
+                                        break;
+                                    }
+                                    DAT_004bf778 = DAT_0079a6a4;
+                                    DAT_0079a6a4 = 0;
+                                }
+                            }
+                            if (WaitForSingleObject(DAT_0079a69c, 0) == WAIT_OBJECT_0) {
+                                ResetEvent(DAT_0079a69c);
+                                while (DAT_007cacdc->vtable->GetNotificationPMsg(DAT_007cacdc, &msg) == S_OK) {
+                                    if (IsEqualGUID(&msg->guidNotificationType, &GUID_NOTIFICATION_SEGMENT)) {
+                                        switch (msg->dwNotificationOption) {
+                                        case 4: /* DMUS_NOTIFICATION_SEGABORT */
+                                            // STRING: LEGOLAND 0x004bf864
+                                            DBPrintf("IMT:Segment stopped\n");
+                                            if (DAT_004bf778 == 6) {
+                                                DAT_004bf778 = 7;
+                                            }
+                                            break;
+                                        case 2: /* DMUS_NOTIFICATION_SEGALMOSTEND */
+                                            // STRING: LEGOLAND 0x004bf84c
+                                            DBPrintf("IMT:Segment almost end\n");
+                                            if (DAT_004bf778 == 3 || DAT_004bf778 == 4) {
+                                                DAT_0079a6a4 = 4;
+                                                DAT_0079a6a8 = DAT_0079a6ac;
+                                                SetEvent(DAT_0079a6a0);
+                                            }
+                                            break;
+                                        case 1: /* DMUS_NOTIFICATION_SEGEND */
+                                            // STRING: LEGOLAND 0x004bf838
+                                            DBPrintf("IMT:Segment end\n");
+                                            break;
+                                        case 3: /* DMUS_NOTIFICATION_SEGLOOP */
+                                            // STRING: LEGOLAND 0x004bf824
+                                            DBPrintf("IMT:Segment looped\n");
+                                            break;
+                                        case 0: /* DMUS_NOTIFICATION_SEGSTART */
+                                            // STRING: LEGOLAND 0x004bf80c
+                                            DBPrintf("IMT:Segment started\n");
+                                            break;
+                                        }
+                                    } else if (DAT_004bf778 == 7) {
+                                        if (msg->dwField1 == 3 && msg->dwField2 == 1) {
+                                            DAT_0079a6ac = DAT_0079a6a8;
+                                            DAT_007cacdc->vtable->PlaySegment(DAT_007cacdc, DAT_00799230[DAT_0079a6ac + 5], 0x2000, 0, NULL);
+                                            groove = 0;
+                                            DAT_007cacdc->vtable->SetGlobalParam(DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &groove, 1);
+                                            DAT_004bf778 = 4;
+                                            // STRING: LEGOLAND 0x004bf7f0
+                                            DBPrintf("IMT_INTERACTIVE command\n");
+                                        }
+                                    } else {
+                                        if (DAT_004bf778 == 5 && beat == -1) {
+                                            beat = msg->dwField1;
+                                        }
+                                        if (msg->dwField1 == 0 && DAT_004bf778 == 5) {
+                                            if (beat != 0) {
+                                                DAT_004bf778 = 6;
+                                                DAT_007cacdc->vtable->PlaySegment(DAT_007cacdc, DAT_00799230[10 + DAT_0079a6ac * 5 + DAT_0079a6a8], 0x2000, 0, NULL);
+                                            } else {
+                                                beat = 1;
+                                            }
+                                        }
+                                    }
+                                    DAT_007cacdc->vtable->FreePMsg(DAT_007cacdc, msg);
+                                }
+                            }
+                        }
+                    }
+                    DAT_007cacd8->vtable->ClearCache(DAT_007cacd8, &DAT_004ab8b0);
+                    DAT_007cacd8->vtable->Release(DAT_007cacd8);
+                }
+                DAT_007cacdc->vtable->Stop(DAT_007cacdc, NULL, NULL, 0, 0);
+                DAT_007cacdc->vtable->CloseDown(DAT_007cacdc);
+            }
+            DAT_007cacdc->vtable->Release(DAT_007cacdc);
+        }
+        DAT_007cad44->vtable->Release(DAT_007cad44);
+    }
+    DMusicInitialised = 0;
+    DAT_007988bc = 1;
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00495a10
 int FUN_00495a10(void *hwnd) {
     if (DAT_004bf774 != 0) {
-        DAT_0079a698 = CreateThread(0, 0x4000, (LPTHREAD_START_ROUTINE)FUN_00492db0, 0, 0, (LPDWORD)&DAT_007cad48);
+        DAT_0079a698 = CreateThread(0, 0x4000, FUN_00492db0, 0, 0, (LPDWORD)&DAT_007cad48);
         return 1;
     }
     DAT_007988bc = 1;
@@ -698,16 +1037,14 @@ int FUN_00495b00(void) {
     if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
         TerminateThread(DAT_0079a698, 0);
 
-        ((struct DirectMusicLoaderVtbl *)((struct DirectMusicObj *)DAT_007cacd8)->vtable)
-            ->ClearCache(DAT_007cacd8, &DAT_004ab8b0);
-        ((struct DirectMusicLoaderVtbl *)((struct DirectMusicObj *)DAT_007cacd8)->vtable)->Release(DAT_007cacd8);
+        DAT_007cacd8->vtable->ClearCache(DAT_007cacd8, &DAT_004ab8b0);
+        DAT_007cacd8->vtable->Release(DAT_007cacd8);
 
-        ((struct DirectMusicPerformanceVtbl *)((struct DirectMusicObj *)DAT_007cacdc)->vtable)
-            ->Stop(DAT_007cacdc, 0, 0, 0, 0);
-        ((struct DirectMusicPerformanceVtbl *)((struct DirectMusicObj *)DAT_007cacdc)->vtable)->CloseDown(DAT_007cacdc);
-        ((struct DirectMusicPerformanceVtbl *)((struct DirectMusicObj *)DAT_007cacdc)->vtable)->Release(DAT_007cacdc);
+        DAT_007cacdc->vtable->Stop(DAT_007cacdc, NULL, NULL, 0, 0);
+        DAT_007cacdc->vtable->CloseDown(DAT_007cacdc);
+        DAT_007cacdc->vtable->Release(DAT_007cacdc);
 
-        ((struct DirectMusicComposerVtbl *)((struct DirectMusicObj *)DAT_007cad44)->vtable)->Release(DAT_007cad44);
+        DAT_007cad44->vtable->Release(DAT_007cad44);
 
         DMusicInitialised = 0;
     }

@@ -60,6 +60,150 @@ struct Sample {
     struct SampleBuffer *buffer;
 };
 
+/* DirectMusic (DirectX 6) objects used by the interactive music thread (IMT, FUN_00492db0).
+ * MSVC6 ships no DirectMusic headers: these follow dmusici.h/dmusicc.h, typing only the
+ * methods the game calls, at their vtable offsets. */
+struct DirectMusic;
+struct DirectMusicComposer;
+struct DirectMusicLoader;
+struct DirectMusicPerformance;
+struct DirectMusicPort;
+struct DirectMusicSegment;
+
+/* DMUS_OBJECTDESC */
+struct DirectMusicObjectDesc {
+    /* 0x000 */ unsigned int dwSize;
+    /* 0x004 */ unsigned int dwValidData;
+    /* 0x008 */ GUID guidObject;
+    /* 0x018 */ GUID guidClass;
+    /* 0x028 */ FILETIME ftDate;
+    /* 0x030 */ unsigned int vVersion[2];
+    /* 0x038 */ WCHAR wszName[64];
+    /* 0x0b8 */ WCHAR wszCategory[64];
+    /* 0x138 */ WCHAR wszFileName[MAX_PATH];
+    /* 0x340 */ __int64 llMemLength;
+    /* 0x348 */ unsigned char *pbMemData;
+};
+
+/* DMUS_PORTPARAMS */
+struct DirectMusicPortParams {
+    /* 0x00 */ unsigned int dwSize;
+    /* 0x04 */ unsigned int dwValidParams;
+    /* 0x08 */ unsigned int dwVoices;
+    /* 0x0c */ unsigned int dwChannelGroups;
+    /* 0x10 */ unsigned int dwAudioChannels;
+    /* 0x14 */ unsigned int dwSampleRate;
+    /* 0x18 */ unsigned int dwEffectFlags;
+    /* 0x1c */ BOOL fShare;
+};
+
+/* DMUS_NOTIFICATION_PMSG */
+struct DirectMusicNotification {
+    /* 0x00 */ unsigned char pmsg[0x38];
+    /* 0x38 */ GUID guidNotificationType;
+    /* 0x48 */ unsigned int dwNotificationOption;
+    /* 0x4c */ unsigned int dwField1;
+    /* 0x50 */ unsigned int dwField2;
+};
+
+struct DirectMusicVtbl {
+    void *QueryInterface;
+    void *AddRef;
+    unsigned int(__stdcall *Release)(struct DirectMusic *self);
+    void *EnumPort;
+    void *CreateMusicBuffer;
+    HRESULT(__stdcall *CreatePort)(struct DirectMusic *self, const GUID *clsid, struct DirectMusicPortParams *params, struct DirectMusicPort **port, void *outer);
+};
+
+struct DirectMusic {
+    struct DirectMusicVtbl *vtable;
+};
+
+struct DirectMusicPortVtbl {
+    void *QueryInterface;
+    void *AddRef;
+    unsigned int(__stdcall *Release)(struct DirectMusicPort *self);
+    unsigned char pad_c[0x3c - 0xc];
+    HRESULT(__stdcall *Activate)(struct DirectMusicPort *self, BOOL active);
+    unsigned char pad_40[0x48 - 0x40];
+    HRESULT(__stdcall *SetDirectSound)(struct DirectMusicPort *self, void *dsound, void *buffer);
+    HRESULT(__stdcall *GetFormat)(struct DirectMusicPort *self, WAVEFORMATEX *format, unsigned int *formatSize, unsigned int *bufferSize);
+};
+
+struct DirectMusicPort {
+    struct DirectMusicPortVtbl *vtable;
+};
+
+struct DirectMusicSegmentVtbl {
+    void *QueryInterface;
+    void *AddRef;
+    unsigned int(__stdcall *Release)(struct DirectMusicSegment *self);
+    unsigned char pad_c[0x18 - 0xc];
+    HRESULT(__stdcall *SetRepeats)(struct DirectMusicSegment *self, unsigned int repeats);
+    unsigned char pad_1c[0x4c - 0x1c];
+    HRESULT(__stdcall *SetParam)(struct DirectMusicSegment *self, const GUID *type, unsigned int groupBits, unsigned int index, int time, void *param);
+};
+
+struct DirectMusicSegment {
+    struct DirectMusicSegmentVtbl *vtable;
+};
+
+struct DirectMusicLoaderVtbl {
+    void *QueryInterface;
+    void *AddRef;
+    unsigned int(__stdcall *Release)(struct DirectMusicLoader *self);
+    HRESULT(__stdcall *GetObject)(struct DirectMusicLoader *self, struct DirectMusicObjectDesc *desc, const GUID *iid, void **out);
+    void *SetObject;
+    HRESULT(__stdcall *SetSearchDirectory)(struct DirectMusicLoader *self, const GUID *cls, const WCHAR *path, BOOL clear);
+    HRESULT(__stdcall *ScanDirectory)(struct DirectMusicLoader *self, const GUID *cls, const WCHAR *ext, const WCHAR *cacheFile);
+    void *CacheObject;
+    void *ReleaseObject;
+    HRESULT(__stdcall *ClearCache)(struct DirectMusicLoader *self, const GUID *cls);
+    HRESULT(__stdcall *EnableCache)(struct DirectMusicLoader *self, const GUID *cls, BOOL enable);
+    HRESULT(__stdcall *EnumObject)(struct DirectMusicLoader *self, const GUID *cls, unsigned int index, struct DirectMusicObjectDesc *desc);
+};
+
+struct DirectMusicLoader {
+    struct DirectMusicLoaderVtbl *vtable;
+};
+
+struct DirectMusicPerformanceVtbl {
+    void *QueryInterface;
+    void *AddRef;
+    unsigned int(__stdcall *Release)(struct DirectMusicPerformance *self);
+    HRESULT(__stdcall *Init)(struct DirectMusicPerformance *self, struct DirectMusic **music, void *dsound, HWND hwnd);
+    HRESULT(__stdcall *PlaySegment)(struct DirectMusicPerformance *self, struct DirectMusicSegment *segment, unsigned int flags, __int64 startTime, void **segmentState);
+    HRESULT(__stdcall *Stop)(struct DirectMusicPerformance *self, struct DirectMusicSegment *segment, void *segmentState, int time, unsigned int flags);
+    unsigned char pad_18[0x44 - 0x18];
+    HRESULT(__stdcall *FreePMsg)(struct DirectMusicPerformance *self, struct DirectMusicNotification *msg);
+    unsigned char pad_48[0x50 - 0x48];
+    HRESULT(__stdcall *SetNotificationHandle)(struct DirectMusicPerformance *self, HANDLE event, __int64 minimum);
+    HRESULT(__stdcall *GetNotificationPMsg)(struct DirectMusicPerformance *self, struct DirectMusicNotification **msg);
+    HRESULT(__stdcall *AddNotificationType)(struct DirectMusicPerformance *self, const GUID *type);
+    void *RemoveNotificationType;
+    HRESULT(__stdcall *AddPort)(struct DirectMusicPerformance *self, struct DirectMusicPort *port);
+    void *RemovePort;
+    HRESULT(__stdcall *AssignPChannelBlock)(struct DirectMusicPerformance *self, unsigned int block, struct DirectMusicPort *port, unsigned int group);
+    unsigned char pad_6c[0x88 - 0x6c];
+    HRESULT(__stdcall *SetGlobalParam)(struct DirectMusicPerformance *self, const GUID *type, void *data, unsigned int size);
+    unsigned char pad_8c[0x98 - 0x8c];
+    HRESULT(__stdcall *CloseDown)(struct DirectMusicPerformance *self);
+};
+
+struct DirectMusicPerformance {
+    struct DirectMusicPerformanceVtbl *vtable;
+};
+
+struct DirectMusicComposerVtbl {
+    void *QueryInterface;
+    void *AddRef;
+    unsigned int(__stdcall *Release)(struct DirectMusicComposer *self);
+};
+
+struct DirectMusicComposer {
+    struct DirectMusicComposerVtbl *vtable;
+};
+
 void *FUN_004921c0(void *data, WAVEFORMATEX *has, unsigned int *size);
 LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path);
 LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def);

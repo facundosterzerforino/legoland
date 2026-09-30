@@ -473,6 +473,26 @@ struct FortRect {
     int bottom;
 };
 
+// 0x004ab5f0
+extern GUID IID_IDirectMusicComposer;
+// 0x004ab640
+extern GUID IID_IDirectMusicPerformance;
+// 0x004ab6a0
+extern GUID IID_IDirectMusicLoader;
+// 0x004ab7b0
+extern GUID GUID_Download;
+// 0x004ab880
+extern GUID GUID_NOTIFICATION_MEASUREANDBEAT;
+// 0x004ab8a0
+extern GUID GUID_NOTIFICATION_SEGMENT;
+// 0x004ab900
+extern GUID CLSID_DirectMusicLoader;
+// 0x004ab920
+extern GUID CLSID_DirectMusicComposer;
+// 0x004aba00
+extern GUID CLSID_DirectMusicPerformance;
+// 0x004acfd0
+extern GUID DAT_004acfd0;
 // 0x004b4580
 extern struct FortRect DAT_004b4580;
 
@@ -1473,6 +1493,18 @@ extern int DAT_004cbee8;
 extern int DAT_004cbeec;
 // 0x004cbef4
 extern void *DAT_004cbef4;
+// 0x007988d0
+extern void *DAT_007988d0[600];
+// 0x00799230
+extern struct DirectMusicSegment *DAT_00799230[35];
+// 0x00799c1c
+extern unsigned char *DAT_00799c1c[35];
+// 0x0079a608
+extern int DAT_0079a608[35];
+// 0x0079a69c
+extern void *DAT_0079a69c;
+// 0x0079a6b0
+extern int DAT_0079a6b0;
 // 0x007fe9a4
 extern int DAT_007fe9a4;
 // 0x007fea14
@@ -3169,15 +3201,15 @@ extern unsigned int DAT_007cacb4;
 // 0x007cacd4
 extern LEGO_EXPORT unsigned int FrameNumber;
 // 0x007cacd8
-extern void *DAT_007cacd8;
+extern struct DirectMusicLoader *DAT_007cacd8;
 // 0x007cacdc
-extern void *DAT_007cacdc;
+extern struct DirectMusicPerformance *DAT_007cacdc;
 // 0x007cace0
 extern unsigned int DAT_007cace0[0x18];
 // 0x007cad40
 extern void *DAT_007cad40;
 // 0x007cad44
-extern void *DAT_007cad44;
+extern struct DirectMusicComposer *DAT_007cad44;
 // 0x007cad48
 extern unsigned int DAT_007cad48;
 // 0x007cad4c

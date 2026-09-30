@@ -5630,7 +5630,7 @@ void FUN_00425e20(void) {
     ScreenToMapRef(&pt.x, &ref.x, 0);
     GetTileBounds(&ref, bounds);
     DAT_008299a0[2] = 0.0f;
-    mid = (bounds[0] + bounds[2]) >> 1;
+    mid = (bounds[2] + bounds[0]) >> 1;
     fx = (float)pt.x;
     fm = (float)mid;
     dx = fx - fm;

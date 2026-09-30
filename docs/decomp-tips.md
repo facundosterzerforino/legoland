@@ -159,3 +159,18 @@ At /O2, MSVC6 omits the frame pointer. A frame in the original means one of:
 - If the original reloads a global after every call or store even where nothing could alias it, try
   declaring it `volatile` (DAT_006675b8, the text cell count, fixed four text.c functions). Check every
   other user still matches — it is not always right (DAT_006687a0 got worse).
+
+## COM Calls (DirectMusic/DirectSound)
+- Type the COM objects as `struct X { struct XVtbl *vtable; }` with `__stdcall` function pointers at the
+  vtable offsets the asm uses (`call [ecx+0x4c]` = slot 0x13), and call `p->vtable->Method(p, ...)`; retype
+  the global that holds the object so no casts are needed. The music thread (FUN_00492db0) types the
+  DirectMusic loader/performance/composer/port/segment this way in sound_sfx.h.
+- MSVC6's /O2 includes /Gf (string pooling): a literal repeated in a macro is emitted once. Annotate a shared
+  message with `// STRING:` above a `#define NAME "..."` line and use NAME in the macro body.
+
+## Scores That Move Without Touching the Function
+- FUN_00425e20 (castle.c) changes its register assignment (one commutative `add`) when unrelated
+  declarations are added to or retyped in globals.h -- apparently symbol-table order, not its own code. It
+  has moved between 89% and 93% this way; after a globals.h change, re-tune its `mid` operand order
+  rather than treating the drop as a regression in the new code.
+
