@@ -3179,7 +3179,7 @@ void FUN_00463460(struct MapElement *tile, struct Point *pos) {
                 power = FindObjectsPower(ride);
                 if (power > 0) {
                     MapStats.field_3d0 -= power;
-                    if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
+                    if (MapStats.field_3d4 - (int)MapStats.field_3d8 > MapStats.field_3d0) {
                         FUN_0045a0d0();
                     }
                 }
