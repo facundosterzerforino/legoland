@@ -3556,7 +3556,24 @@ void FUN_00422e10(int param1, int index) {
 void FUN_00422e40(int param1, char *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00422fe0
-void FUN_00422fe0(void) { STUB(); }
+void FUN_00422fe0(void) {
+    int *p = (int *)FUN_004207c0();
+    int n = *p++;
+    int i;
+
+    DAT_0060f904 = n;
+    DAT_00829c54 = FUN_004775b0(n << 7, 0, 0, 0);
+    if (DAT_00829c54 == NULL) {
+        FUN_00422e40(0xffffff, DAT_00579878);
+        for (i = 0; i < 1024; i++) {
+            DAT_00829c60[i] = DAT_00579878;
+        }
+        return;
+    }
+    for (i = 0; i < n; i++) {
+        FUN_00422e10(*p++, i);
+    }
+}
 
 #pragma pack(push, 2)
 struct RecEnt {

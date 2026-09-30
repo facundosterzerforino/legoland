@@ -4023,7 +4023,7 @@ extern int DAT_00829c34;
 // 0x00829c54
 extern char *DAT_00829c54;
 // 0x00829c60
-extern void *DAT_00829c60[32];
+extern void *DAT_00829c60[1024];
 // 0x0082ac60
 extern void *DAT_0082ac60[1];
 // 0x0082ad20
@@ -4242,6 +4242,12 @@ extern unsigned int DAT_00610a10;
 
 // 0x0060f900
 extern int DAT_0060f900;
+
+// 0x0060f904
+extern int DAT_0060f904;
+
+// 0x00579878
+extern char DAT_00579878[0x80];
 
 // 0x0060f8fc
 extern int DAT_0060f8fc;
