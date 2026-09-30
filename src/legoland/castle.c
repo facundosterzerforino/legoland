@@ -7009,17 +7009,18 @@ struct PathSeg *FUN_00429840(struct PathSeg *n, int x) {
     if (n->next == 0) {
         ok = FUN_00429940(n, &n);
         r = n;
-        if (!ok && (float)x != r->f24) {
-            return 0;
+        if (ok || (float)x == r->f24) {
+            return r;
         }
+        return 0;
     } else {
         ok = FUN_00429990(n, &n);
         r = n;
-        if (!ok && (float)x != r->f18) {
-            return 0;
+        if (ok || (float)x == r->f18) {
+            return r;
         }
+        return 0;
     }
-    return r;
 }
 
 // FUNCTION: LEGOLAND 0x004298a0
