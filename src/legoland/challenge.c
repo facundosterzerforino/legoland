@@ -337,11 +337,8 @@ struct AnimHandle *FUN_00443bd0(const char *filename) {
     }
     found = NULL;
     if (AVIFileOpenA(&file, filename, 0, 0) == 0) {
+        finfo.dwStreams = 0;
         AVIFileInfoA(file, &finfo, 0x6c);
-        length = 0;
-        fps = 0;
-        width = 0;
-        height = 0;
         for (i = 0; i < finfo.dwStreams; i++) {
             if (AVIFileGetStream(file, &stream, 0, i) != 0) {
                 break;
@@ -5039,14 +5036,12 @@ void FUN_0044db20(void) {
 
 // FUNCTION: LEGOLAND 0x0044db40
 void FUN_0044db40(void) {
-    unsigned int now;
+    unsigned int t = 0;
 
     if (MapStats.field_178 != 0) {
-        now = GetGameTimer();
-        DAT_00666098 = now + MapStats.field_178 * 60000;
-        return;
+        t = GetGameTimer() + MapStats.field_178 * 60000;
     }
-    DAT_00666098 = 0;
+    DAT_00666098 = t;
 }
 
 // FUNCTION: LEGOLAND 0x0044db80
