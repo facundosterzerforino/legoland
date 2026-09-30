@@ -81,7 +81,7 @@ struct EarthNode *FUN_0042ce20(unsigned short *param_1) {
 void FUN_0042ce50(struct EarthNode *node, struct EarthBlokeElem *elem) {
     struct EarthQueue *q = (struct EarthQueue *)malloc(sizeof(struct EarthQueue));
     if (q != NULL) {
-        q->next = NULL;
+        memset(q, 0, sizeof(struct EarthQueue));
         q->elem = elem;
         *(unsigned char *)((char *)elem->bloke + 0x62) |= 0x40;
         FUN_0042ce90(node, q);
