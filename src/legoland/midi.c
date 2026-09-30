@@ -127,8 +127,8 @@ unsigned int FUN_00480330(struct MidiTrack *track) {
         case 0xff51: {
             unsigned int hi;
             track->pos++;
-            hi = track->data[track->pos++] << 8;
-            hi |= track->data[track->pos];
+            hi = track->data[track->pos++];
+            hi = (hi << 8) | track->data[track->pos];
             track->pos += 2;
             track->parent->field_4 = track->parent->field_0 / hi;
             break;
