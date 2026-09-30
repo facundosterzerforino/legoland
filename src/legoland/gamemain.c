@@ -597,6 +597,7 @@ int FUN_00478280(struct ResFile *file, struct ScriptCommand *commands, int count
 
     DAT_00668fcc = 0;
     cmd = commands;
+    // STRING: LEGOLAND 0x004bbdcc
     if (strcmp(cmd->name, "none") == 0)
         deflt = cmd->fn;
     while (FUN_00489e60(file, line, 1024)) {
@@ -605,7 +606,8 @@ int FUN_00478280(struct ResFile *file, struct ScriptCommand *commands, int count
         p = strchr(line, '#');
         if (p)
             *p = 0;
-        ntok = FUN_00478110(line, " ,;:(){}", tokens);
+        // STRING: LEGOLAND 0x004bc098
+        ntok = FUN_00478110(line, " ,;:(){}\xa0\n\t", tokens);
         if (ntok) {
             FUN_00499300(tokens[0]);
             found = 0;
@@ -629,6 +631,7 @@ int FUN_00478280(struct ResFile *file, struct ScriptCommand *commands, int count
     }
     if (r < 0)
         return r;
+    // STRING: LEGOLAND 0x004bc090
     if (strcmp(commands[count - 1].name, "check") != 0)
         r = commands[count - 1].fn(NULL, errors, flags);
     if (r < 0)
