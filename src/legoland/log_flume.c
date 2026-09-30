@@ -1597,14 +1597,16 @@ int FUN_0040ad50(struct StateNode *node) {
 
 // FUNCTION: LEGOLAND 0x0040adb0
 int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float scale) {
-    struct Point pt;
     int bounds[4];
+    struct Point pt;
     int top;
     float f;
-    int x0 = rect->var_0 + tile.pos.x;
-    int x1 = rect->var_8 + tile.pos.x;
-    int y1 = rect->var_c + tile.pos.y;
-    int y0 = rect->var_4 + tile.pos.y;
+    int tx = tile.pos.x;
+    int ty = tile.pos.y;
+    int x0 = rect->var_0 + tx;
+    int y0 = rect->var_4 + ty;
+    int x1 = rect->var_8 + tx;
+    int y1 = rect->var_c + ty;
 
     pt.x = x0;
     pt.y = y0;
@@ -1614,8 +1616,8 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
     pt.y = y1;
     GetTileBounds(&pt, bounds);
     f = (float)(y - top) / ((float)(bounds[3] - top + 1) * scale);
-    if (f < 0.0f) {
-        f = 0.0f;
+    if (f < FLOAT_004ab390) {
+        f = FLOAT_004ab390;
     } else if (f > 1.0f) {
         f = 1.0f;
     }
@@ -1937,7 +1939,7 @@ int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
                         if (other->owner == link->a) {
                             f = (float)(other->weight + 1.0 - weight);
                         }
-                        if (f > 0.0f && f < 0.8) {
+                        if (f > FLOAT_004ab390 && f < 0.8) {
                             return 0;
                         }
                     }
@@ -3345,8 +3347,8 @@ int FUN_0040e3b0(unsigned int *ctx) {
 
 // FUNCTION: LEGOLAND 0x0040e440
 void FUN_0040e440(struct FlumeXY p, unsigned int *result) {
-    unsigned int w = DAT_004b4730 - DAT_004b4728;
     unsigned int h = DAT_004b4734 - DAT_004b472c;
+    unsigned int w = DAT_004b4730 - DAT_004b4728;
 
     switch (DAT_004c2af4) {
     case 0:
