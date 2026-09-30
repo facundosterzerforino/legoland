@@ -421,8 +421,9 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out
 LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int param_3) {
     struct TileSprite *sprite;
     short size;
+    short twice;
     int w;
-    int twice;
+    int hy;
     int half;
     int sx;
     int sy;
@@ -430,7 +431,7 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
     int rx;
     int qy;
     int ry;
-    char sel;
+    int sel;
 
     sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
     if (sprite == NULL) {
@@ -438,7 +439,8 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
     }
     size = sprite->size;
     w = (int)size;
-    twice = (short)(size * 2);
+    twice = size * 2;
+    hy = w + 1 >> 1;
     half = twice + 1 >> 1;
     sx = ((ScrollX >> 8) - lpConfig->field_20) + *param_1 + half;
     sy = ((ScrollY >> 8) - lpConfig->field_22) + param_1[1];
@@ -458,31 +460,31 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
         *out = *out + -1;
         ry = ry + -1 + w;
     }
-    sel = (char)(half <= rx) + '\x01';
-    if (w + 1 >> 1 < ry) {
-        sel = (char)(half <= rx) + '\x03';
+    sel = (rx >= half) + 1;
+    if (ry > hy) {
+        sel += 2;
     }
     switch (sel) {
-    case '\x01':
+    case 1:
         if (rx < half + ry * -2) {
             *out = *out + -1;
             return 1;
         }
         break;
-    case '\x02':
-        if (half + ry * 2 <= rx) {
+    case 2:
+        if (rx >= half + ry * 2) {
             out[1] = out[1] + -1;
             return 1;
         }
         break;
-    case '\x03':
+    case 3:
         if (rx < half + (ry - w) * 2) {
             out[1] = out[1] + 1;
             return 1;
         }
         break;
-    case '\x04':
-        if (half + (w - ry) * 2 <= rx) {
+    case 4:
+        if (rx >= half + (w - ry) * 2) {
             *out = *out + 1;
         }
     }
