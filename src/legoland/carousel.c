@@ -293,9 +293,12 @@ void FUN_0042c6d0(struct CarouselNode *node) {
     unsigned int flags = node->flags;
 
     if ((flags & 1) != 0) {
-        int v = node->field_14 + 1;
-        unsigned char f10 = node->field_10;
+        int v;
+        unsigned char f10;
+        v = node->field_14 + 1;
         node->field_14 = v;
+        f10 = node->field_10;
+        v = node->field_14;
         if (f10 == 0) {
             if (GetAllBlokesOffRide((struct Ride *)DAT_006160bc, node->id) == 0) {
                 return;
@@ -306,26 +309,25 @@ void FUN_0042c6d0(struct CarouselNode *node) {
         if (2 <= v) {
             char cVar4;
             node->field_14 = 0;
-            cVar4 = node->field_8 + '\x01';
-            node->field_8 = cVar4;
-            if ('?' < cVar4) {
+            cVar4 = ++node->field_8;
+            if (cVar4 >= '@') {
                 node->field_8 = 0;
                 node->field_10 = f10 - 1;
             }
         }
-    } else if ((flags & 0x4000) == 0) {
-        if (node->field_6 != 0) {
-            if (node->field_1c == 0) {
-                node->flags = flags | 0x4000;
-                Ride_SetFlagToNotLetAnyoneOn((unsigned char *)&node->id);
-            } else {
-                node->field_1c = node->field_1c - 1;
-            }
+    } else if ((flags & 0x4000) != 0) {
+        if ((char)node->field_6 == (char)node->field_18) {
+            node->flags = flags & 0xffffbfff;
+            FUN_0042bc90(node);
+            return;
         }
-    } else if ((char)node->field_6 == (char)node->field_18) {
-        node->flags = flags & 0xffffbfff;
-        FUN_0042bc90(node);
-        return;
+    } else if (node->field_6 != 0) {
+        if (node->field_1c == 0) {
+            node->flags = flags | 0x4000;
+            Ride_SetFlagToNotLetAnyoneOn((unsigned char *)&node->id);
+        } else {
+            node->field_1c = node->field_1c - 1;
+        }
     }
     for (; elem != NULL; elem = elem->next) {
         if (node->id == elem->id && *(char *)((char *)elem->bloke + 0x35) == '\x01') {
