@@ -845,11 +845,10 @@ LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source) {
             if (matched) {
                 if (prev != 0) {
                     prev->next = next;
-                    FUN_00492b20(sample);
                 } else {
                     DAT_007988cc = next;
-                    FUN_00492b20(sample);
                 }
+                FUN_00492b20(sample);
                 continue;
             }
         }
