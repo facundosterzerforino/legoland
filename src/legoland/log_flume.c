@@ -2122,7 +2122,123 @@ void FUN_0040bf50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040bf70
-void FUN_0040bf70(void) { STUB(); }
+void FUN_0040bf70(Element *obj) {
+    Ride *ride = obj->ride;
+    RideNode *elem = ride->riders;
+    RideNode *next;
+    Bloke *bloke;
+    TileId *tile;
+    struct FlumeEntry *entry;
+    unsigned int x;
+    unsigned int y;
+    unsigned char dir;
+    int v;
+
+    FUN_0040bf50();
+    while (elem != NULL) {
+        tile = &elem->tile;
+        x = ride->field_24 + tile->pos.x;
+        next = elem->next;
+        y = ride->field_25 + tile->pos.y;
+        bloke = elem->rider;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                bloke->flags |= 8;
+                entry = FUN_00408ec0(tile);
+                if (entry != NULL) {
+                    FUN_00411f20(&entry->queue, (struct QueueItemMid *)elem);
+                    if (FUN_00411e60(&entry->queue)) {
+                        Ride_SetFlagToNotLetAnyoneOn(&entry->tile);
+                    }
+                }
+                break;
+            case 2:
+                v = (tile->pos.x - 2) << 8;
+                bloke->dest.x = v;
+                v = tile->pos.y << 8;
+                bloke->dest.y = v;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 3:
+                v = (tile->pos.x << 8) - 0x280;
+                bloke->dest.x = v;
+                v = (tile->pos.y << 8) + 0x80;
+                bloke->dest.y = v;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 4:
+                bloke->flags |= 0x80;
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                entry = FUN_00408ec0(tile);
+                if (entry != NULL) {
+                    if (entry->target != NULL) {
+                        *(int *)entry->target = 1;
+                        entry->target = NULL;
+                    }
+                    entry->flags &= ~1;
+                }
+                bloke->param_action++;
+                break;
+            case 6:
+                bloke->flags &= ~0x80;
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->pos.x = (tile->pos.x << 8) - 0x280;
+                bloke->pos.y = (tile->pos.y << 8) - 0x80;
+                bloke->field_72 = 3;
+                bloke->dest.x = (tile->pos.x - 2) << 8;
+                bloke->dest.y = (tile->pos.y << 8) - 0x100;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 7:
+                v = tile->pos.x << 8;
+                bloke->dest.x = v;
+                v = (tile->pos.y << 8) - 0x100;
+                bloke->dest.y = v;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 8:
+                FUN_004122a0((struct RideSlotArg *)DAT_004c2af8, (struct RideSlot *)bloke);
+                break;
+            case 9:
+                FUN_00412300((struct QueueTable *)DAT_004c2af8, x, y, bloke);
+                break;
+            case 10:
+                bloke->dest.x = (x << 8) + 0x80;
+                bloke->dest.y = ((tile->pos.y + ride->field_25) << 8) + 0x80;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 11:
+                RemoveBlokeFromRide(ride, elem);
+                bloke->flags &= ~8;
+                break;
+            }
+        }
+        elem = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040c250
 int FUN_0040c250(struct FlumeEntry *param_1) {
