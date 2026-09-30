@@ -3562,9 +3562,9 @@ void FUN_00422e40(int param1, char *entry) {
     unsigned int rshift;
     float rf, gf, bf;
     float dr, dg, db;
-    float ar;
-    float ag;
-    float ab;
+    double ar;
+    double ag;
+    double ab;
     int i;
 
     if (DAT_00668088 == 2) {
@@ -3590,13 +3590,13 @@ void FUN_00422e40(int param1, char *entry) {
         ag += dg;
         ab += db;
     }
-    out = (unsigned short *)entry + 32;
     ar = rf;
     ag = gf;
     ab = bf;
-    dr = (FLOAT_004ab444 - ar) * 0.032258064f;
-    dg = ((float)((1 << gbits) - 1) - ag) * 0.032258064f;
-    db = (FLOAT_004ab444 - ab) * 0.032258064f;
+    dr = (float)(FLOAT_004ab444 - ar) * 0.032258064f;
+    dg = (float)((float)((1 << gbits) - 1) - ag) * 0.032258064f;
+    db = (float)(FLOAT_004ab444 - ab) * 0.032258064f;
+    out = (unsigned short *)entry + 32;
     for (i = 0; i < 32; i++) {
         *out++ = (unsigned short)(((short)(int)ar << rshift) | ((int)ag << 5) | (int)ab);
         ar += dr;
