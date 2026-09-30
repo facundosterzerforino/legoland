@@ -11,6 +11,7 @@
 #include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "safari_ride.h"
 #include "sound_music.h"

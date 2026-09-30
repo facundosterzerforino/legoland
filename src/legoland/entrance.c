@@ -3,6 +3,7 @@
 #include "legoland.h"
 
 #include "bloke.h"
+#include "bloke_ai.h"
 #include "bricks.h"
 #include "entrance.h"
 #include "money.h"

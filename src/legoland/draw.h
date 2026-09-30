@@ -58,3 +58,4 @@ void __fastcall FUN_00464ee0(struct Sprite *sprite, RECT *rect, int *off);
 LEGO_EXPORT void SoftPrint_Clear(void);
 LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
 void FUN_004663f0(void);
+int FUN_00463ef0(void);

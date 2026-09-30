@@ -13,6 +13,7 @@
 
 #include "image_sprite.h"
 #include "stream.h"
+#include "text.h"
 #include "timer.h"
 
 // FUNCTION: LEGOLAND 0x0048b7e0

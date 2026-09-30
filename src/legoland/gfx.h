@@ -11,3 +11,4 @@ LEGO_EXPORT int __BMPLoader(struct Image *image);
 LEGO_EXPORT unsigned int GetNearestColour(int r, int g, int b);
 LEGO_EXPORT unsigned int GetTransparentColour(void);
 LEGO_EXPORT void ResendPalette(void);
+LEGO_EXPORT void LoadColourTable(void);

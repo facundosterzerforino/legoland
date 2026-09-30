@@ -5,6 +5,7 @@
 #include "bloke_ai.h"
 #include "gamemap.h"
 #include "globals.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "mechanics_hut.h"
 #include "obj_instance.h"

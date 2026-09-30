@@ -11,6 +11,7 @@
 #include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "ride_queue.h"
 #include "sound_music.h"

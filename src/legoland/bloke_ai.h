@@ -23,3 +23,4 @@ LEGO_EXPORT void PushLongTermAction(struct Bloke *bloke);
 void FUN_00450530(struct Bloke *bloke);
 
 void FUN_00450a40(struct Bloke *bloke);
+LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke);

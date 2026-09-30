@@ -236,3 +236,4 @@ void FUN_004270c0(struct Struct4270c0Host *a1, struct Struct427050Dst *a2);
 void FUN_00427220(unsigned int *param_1);
 void FUN_00427190(struct Struct426d80Y *obj, struct Struct426e80Dst *out);
 void FUN_00426f40(struct Struct426f40Src *src, struct Struct426f40Dst *dst);
+unsigned int FUN_00421660(struct BlokeInfo *p);

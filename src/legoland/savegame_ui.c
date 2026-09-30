@@ -9,6 +9,7 @@
 #include "draw.h"
 #include "icon.h"
 #include "input.h"
+#include "interface.h"
 #include "main.h"
 #include "math.h"
 #include "options.h"

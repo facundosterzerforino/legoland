@@ -1,3 +1,5 @@
+#include "bloke_ai.h"
+#include "debug_alloc.h"
 #include "worker_mouse.h"
 #include "bloke.h"
 #include "globals.h"
