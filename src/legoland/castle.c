@@ -5033,7 +5033,54 @@ void FUN_00425de0(float *a) {
 }
 
 // FUNCTION: LEGOLAND 0x00425e20
-void FUN_00425e20(void) { STUB(); }
+void FUN_00425e20(void) {
+    struct FMat4 m;
+    float a[4];
+    struct Point pt;
+    struct Point ref;
+    int bounds[4];
+    float *mm;
+    int mid;
+    float dx;
+    float fx, fy, fm, fb;
+    float dy;
+
+    DAT_008299bc = DAT_004b5c1c[1];
+    mm = &DAT_008299bc.m[0][0];
+    a[0] = mm[0];
+    a[1] = mm[1];
+    a[2] = mm[4];
+    a[3] = mm[5];
+    FUN_00425de0(a);
+    pt.x = (lpConfig->field_10 >> 1) + lpConfig->field_20;
+    pt.y = (lpConfig->field_12 >> 1) + lpConfig->field_22;
+    DAT_008299bc.m[0][3] = (float)pt.x;
+    DAT_008299bc.m[1][3] = (float)pt.y;
+    ScreenToMapRef(&pt.x, &ref.x, 0);
+    GetTileBounds(&ref, bounds);
+    DAT_008299a0[2] = 0.0f;
+    mid = (bounds[2] + bounds[0]) >> 1;
+    fx = (float)pt.x;
+    fm = (float)mid;
+    dx = fx - fm;
+    fy = (float)pt.y;
+    fb = (float)bounds[1];
+    dy = fy - fb;
+    DAT_008299a0[0] = dy * a[1] + dx * a[0];
+    DAT_008299a0[1] = dy * a[3] + dx * a[2];
+    DAT_008299a0[0] += (float)ref.x * 20.0f;
+    DAT_008299a0[1] += (float)ref.y * 20.0f;
+    DAT_008299ac = lpConfig->field_20;
+    DAT_008299b0 = lpConfig->field_22;
+    DAT_008299b4 = lpConfig->field_10 + lpConfig->field_20;
+    DAT_008299b8 = lpConfig->field_12 + lpConfig->field_22;
+    FUN_004260f0(m.m);
+    m.m[0][3] = -DAT_008299a0[0];
+    m.m[1][3] = -DAT_008299a0[1];
+    m.m[2][3] = -DAT_008299a0[2];
+    FUN_00426120(DAT_008299bc.m, m.m, DAT_008299fc.m);
+    FUN_0041ef20(DAT_008299ac, DAT_008299b0, DAT_008299b4, DAT_008299b8);
+}
 
 // FUNCTION: LEGOLAND 0x00426000
 void FUN_00426000(int flag) {
