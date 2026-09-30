@@ -361,21 +361,21 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
     RECT src;
     DDBLTFX fx;
 
-    src.right = (short)sprite->width;
     dst.left = x;
-    dst.right = src.right + x;
     dst.top = y;
-    src.bottom = (short)sprite->height;
-    dst.bottom = src.bottom + y;
+    dst.right = (short)sprite->width + x;
+    dst.bottom = (short)sprite->height + y;
     src.left = 0;
     src.top = 0;
+    src.bottom = (short)sprite->height;
+    src.right = (short)sprite->width;
     if ((sprite->flags & 0x60) != 0) {
         if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
             int i;
             unsigned int *p;
-            src.top = dst.top;
             sprite->field_c = DAT_008119a4;
             src.left = dst.left;
+            src.top = dst.top;
             src.right = dst.right;
             src.bottom = dst.bottom;
             OffsetRect(&src, -x, -y);
@@ -386,19 +386,19 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
             }
             fx.dwSize = 100;
             PushRenderingStatusAndUnlockVideoSurface();
-            if ((sprite->flags & 0x40) == 0) {
-                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, (LPDIRECTDRAWSURFACE)sprite->surface, &src, 0x1000000, &fx);
-            } else {
+            if ((sprite->flags & 0x40) != 0) {
                 ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, (LPDIRECTDRAWSURFACE)sprite->surface, &src, 0x1008000, &fx);
+            } else {
+                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, (LPDIRECTDRAWSURFACE)sprite->surface, &src, 0x1000000, &fx);
             }
             PopRenderingStatus();
             return 1;
         }
     } else {
         if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
-            src.top = dst.top;
             sprite->field_c = DAT_008119a4;
             src.left = dst.left;
+            src.top = dst.top;
             src.right = dst.right;
             src.bottom = dst.bottom;
             OffsetRect(&src, -x, -y);
@@ -413,18 +413,18 @@ LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsi
     RECT dst;
     RECT src;
 
-    src.right = (short)sprite->width;
-    dst.right = src.right + x;
-    src.bottom = (short)sprite->height;
-    dst.bottom = src.bottom + y;
     dst.left = x;
     dst.top = y;
+    dst.right = (short)sprite->width + x;
+    dst.bottom = (short)sprite->height + y;
     src.left = 0;
     src.top = 0;
+    src.bottom = (short)sprite->height;
+    src.right = (short)sprite->width;
     if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
-        src.top = dst.top;
         sprite->field_c = DAT_008119a4;
         src.left = dst.left;
+        src.top = dst.top;
         src.right = dst.right;
         src.bottom = dst.bottom;
         OffsetRect(&src, -x, -y);
