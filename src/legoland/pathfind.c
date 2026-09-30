@@ -476,8 +476,8 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
     DAT_0066b454 = 0;
     FUN_00482240(start_x, start_y, 0);
 
-    wave = DAT_00669250;
-    while (wave != 0) {
+    while (DAT_00669250 != 0) {
+        wave = DAT_00669250;
         node = DAT_0066b450;
         DAT_00669250 = 0;
         while (wave-- != 0) {
@@ -502,7 +502,6 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
             FUN_00482240(node->x - 1, node->y, node);
             node = node->next;
         }
-        wave = DAT_00669250;
     }
 
     FUN_004821e0();
@@ -567,8 +566,8 @@ int FUN_00482710(int *a, int *b, int *out) {
     DAT_0066b454 = 0;
     FUN_00482620(start_x, start_y, 0);
 
-    wave = DAT_00669250;
-    while (wave != 0) {
+    while (DAT_00669250 != 0) {
+        wave = DAT_00669250;
         node = DAT_0066b450;
         DAT_00669250 = 0;
         while (wave-- != 0) {
@@ -593,7 +592,6 @@ int FUN_00482710(int *a, int *b, int *out) {
             FUN_00482620(node->x - 1, node->y, node);
             node = node->next;
         }
-        wave = DAT_00669250;
     }
 
     FUN_004821e0();
