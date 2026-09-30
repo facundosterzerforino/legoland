@@ -86,8 +86,8 @@ void *FUN_004921c0(void *data, WAVEFORMATEX *has, unsigned int *size) {
     void *buf;
 
     dst = *src;
-    dst.wFormatTag = 1;
     dst.nBlockAlign = src->nChannels * 2;
+    dst.wFormatTag = 1;
     dst.nAvgBytesPerSec = src->nSamplesPerSec * dst.nBlockAlign;
     dst.wBitsPerSample = 16;
     dst.cbSize = 0;
