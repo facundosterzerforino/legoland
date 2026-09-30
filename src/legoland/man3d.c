@@ -653,8 +653,6 @@ LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, int anim) {
         case 3:
             base = &DAT_0062fef4;
             break;
-        default:
-            base = (void **)bloke;
         }
         mesh = (struct Mesh *)base[anim];
         if (kind == 1 && person->field_50 != 0) {
@@ -670,8 +668,6 @@ LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, int anim) {
         case 3:
             context = DAT_0081c8c4;
             break;
-        default:
-            context = bloke;
         }
         person->field_50 = FUN_00442580(person, context, (unsigned int)mesh->field_8, mesh->elems->shared->count, person->random);
     }
