@@ -627,8 +627,8 @@ void FUN_00466360(int a, int b) {
     w = DAT_00668208->width;
     h = DAT_00668208->height;
     DAT_007fea30.left = a;
-    DAT_007fea30.right = w + a;
     DAT_007fea30.top = b;
+    DAT_007fea30.right = w + a;
     DAT_007fea30.bottom = h + b;
 }
 
