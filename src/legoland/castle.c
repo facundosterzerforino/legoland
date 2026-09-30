@@ -6242,12 +6242,11 @@ void FUN_004275d0(Element *obj, int x, unsigned int y) {
     struct Ride *ride = obj->ride;
     struct Footprint *fp = &ride->footprint;
     int cy;
-    int n;
+    int n = 0;
     int i;
     int found = 0;
 
     EditCursor.footprint = *fp;
-    n = 0;
     EditCursor.field_1830 = 0;
     ScreenToMapRef((int *)x, (int *)&EditCursor.field_1404, y);
     if (DAT_00829ae0 != 2) {
