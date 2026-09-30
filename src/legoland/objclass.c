@@ -765,23 +765,23 @@ LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride) {
     slot = (struct InfoNode **)&DAT_00669248;
     node = DAT_00669248;
     if (DAT_00669248 != (void *)DAT_0066924c) {
-        while (next = node, node != 0) {
-            node = next->next;
-            if ((unsigned int)node == DAT_0066924c) {
-                DAT_0066924c = (unsigned int)next;
-                goal->x = next->x << 8;
-                goal->y = next->y << 8;
-                *ride = next->classid;
+        while (node != 0) {
+            next = node->next;
+            if ((unsigned int)next == DAT_0066924c) {
+                DAT_0066924c = (unsigned int)node;
+                goal->x = node->x << 8;
+                goal->y = node->y << 8;
+                *ride = node->classid;
                 return 1;
             }
-            if ((int)node->sort_key < (int)next->sort_key) {
-                *slot = node;
-                next->next = node->next;
-                node->next = next;
+            if ((int)node->sort_key > (int)next->sort_key) {
+                *slot = next;
+                node->next = next->next;
+                next->next = node;
+                slot = (struct InfoNode **)next;
+            } else {
                 slot = (struct InfoNode **)node;
                 node = next;
-            } else {
-                slot = (struct InfoNode **)next;
             }
         }
     }
