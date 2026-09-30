@@ -3771,9 +3771,9 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 2;
-                n->ride = DAT_004cbe30;
-                n->link28 = entry;
                 n->slotset = entry->slotset;
+                n->link28 = entry;
+                n->ride = DAT_004cbe30;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3848,9 +3848,9 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 3;
-                n->ride = DAT_004cbe30;
-                n->link28 = entry;
                 n->slotset = entry->slotset;
+                n->link28 = entry;
+                n->ride = DAT_004cbe30;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3923,14 +3923,16 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
-                n->link28 = entry;
                 n->slotset = entry->slotset;
+                n->link28 = entry;
+                n->ride = DAT_004cbe30;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
             break;
+        default:
+            return;
         }
         FUN_00409170((struct Node *)entry, (struct ListNode *)n);
         FUN_00409080((struct Node *)prev, (struct Node *)n);
