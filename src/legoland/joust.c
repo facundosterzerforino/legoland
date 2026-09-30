@@ -218,10 +218,12 @@ void FUN_00407c30(struct Element *elem) {
     struct Bloke *b;
     struct JoustNode *jn;
     unsigned char *t;
-    // STRING: LEGOLAND 0x004b470c
-    char name[9] = "manBox??";
+    char name[9];
 
-    for (node = ride->riders; node != NULL; node = next) {
+    node = ride->riders;
+    // STRING: LEGOLAND 0x004b470c
+    strcpy(name, "manBox??");
+    for (; node != NULL; node = next) {
         int x;
         int y;
         int busy;
@@ -244,8 +246,8 @@ void FUN_00407c30(struct Element *elem) {
         count = jn->x;
         horses = jn->y;
         flags = jn->sub12;
-        hb = jn->phase;
         h = jn->pair;
+        hb = jn->phase;
         f1c = jn->field_1c;
         f20 = jn->field_20;
         (*DAT_004c1210->lls)->frame = jn->frame;
