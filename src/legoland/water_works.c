@@ -370,17 +370,20 @@ void FUN_00417f90(struct WaterArg *arg) {
     int limit;
     int rx;
     int ry;
+    int idx;
 
     unsigned char bx;
     unsigned char by;
     char dir;
 
     FUN_00417f40();
-    for (node = (struct WaterNode *)DAT_004cc02c; node != NULL; node = node->next) {
+    node = (struct WaterNode *)DAT_004cc02c;
+    while (node != NULL) {
         if (node->field_8 == 1) {
             limit = 0;
             node->field_9++;
-            lls = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + node->field_a * 4);
+            idx = node->field_a;
+            lls = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + (unsigned char)idx * 4);
             if (lls != 0) {
                 lls = GetLLSForSprite((struct SpriteLLS *)lls);
                 if (lls != 0) {
@@ -391,32 +394,32 @@ void FUN_00417f90(struct WaterArg *arg) {
                 }
             } else {
                 // STRING: LEGOLAND 0x004b5034
-                DBPrintf("Bad Block Index (%d)\n", node->field_a);
+                DBPrintf("Bad Block Index (%d)\n", idx);
             }
             if ((int)node->field_9 >= limit) {
                 node->field_8 = 0;
                 node->field_9 = 0;
             }
         } else {
-            lls = GetLLSForSprite(*(struct SpriteLLS **)(*(int *)((char *)DAT_004cc018 + 8) + node->field_a * 4));
-            if (lls == 0) {
-                DBPrintf("Bad Sprite in Waterworks block\n");
-            } else {
+            lls = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + node->field_a * 4);
+            lls = GetLLSForSprite((struct SpriteLLS *)lls);
+            if (lls != 0) {
                 node->field_9 = 0;
+            } else {
+                DBPrintf("Bad Sprite in Waterworks block\n");
             }
         }
+        node = node->next;
     }
     render = (struct WaterRender *)arg->field_c;
     rnode = render->nodes;
     while (rnode != NULL) {
-        rx = *(int *)((char *)render + 0xc);
         bloke = (unsigned char *)rnode->fn;
-        ry = *(int *)((char *)render + 0x10);
         bx = *(unsigned char *)&rnode->id;
-        next = rnode->next;
         by = *((unsigned char *)&rnode->id + 1);
-        ry = by + ry;
-        rx = bx + rx;
+        next = rnode->next;
+        rx = bx + *(int *)((char *)render + 0xc);
+        ry = by + *(int *)((char *)render + 0x10);
         if (*(short *)(bloke + 0xe) == 0) {
             switch (bloke[0x60]) {
             case 0:
