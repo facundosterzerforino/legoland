@@ -709,23 +709,27 @@ unsigned char *FUN_004428c0(unsigned char *str, int count) {
 unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
     char *pcVar4;
     char *pcVar5;
+    char *res;
+    int flag;
 
-    if (param_1 == NULL) {
-        pcVar4 = (char *)param_3;
-    } else {
-        char *after = param_1 + strlen(param_1) + 1;
-        param_1 = after + 4;
+    if (param_1 != NULL) {
+        param_1 = param_1 + strlen(param_1) + 1;
+        flag = *(int *)param_1;
+        param_1 = param_1 + 4;
         pcVar4 = param_1;
-        if (*(int *)after != 0) {
+        if (flag != 0) {
             pcVar5 = param_1;
             do {
                 pcVar5 = pcVar5 + strlen(pcVar5) + 1;
             } while (strlen(pcVar5) != 0);
-            param_1 = pcVar5 + 1 + strlen(pcVar5 + 1) + 1 + 4;
+            pcVar5++;
+            res = pcVar5 + strlen(pcVar5) + 1 + 4;
         }
+    } else {
+        pcVar4 = (char *)param_3;
     }
     if (param_2 == 1) {
-        return FUN_004428c0((unsigned char *)param_1, param_3);
+        return FUN_004428c0((unsigned char *)res, param_3);
     }
     return FUN_004428c0((unsigned char *)pcVar4, param_3);
 }
