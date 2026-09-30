@@ -1186,7 +1186,7 @@ void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) {
         } else {
             FUN_00409080(a, insert);
         }
-        return;
+        break;
     case 0x10:
         a = nodes[2];
         if (a->prev == NULL) {
@@ -1194,7 +1194,7 @@ void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) {
         } else {
             FUN_00409080(a, insert);
         }
-        return;
+        break;
     case 0x04:
         a = nodes[1];
         if (a->prev == NULL) {
@@ -1202,7 +1202,7 @@ void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) {
         } else {
             FUN_00409080(a, insert);
         }
-        return;
+        break;
     case 0x40:
         a = nodes[3];
         if (a->prev == NULL) {
@@ -1210,7 +1210,7 @@ void FUN_00409c20(struct FlumeEntry *entry, unsigned int *list) {
         } else {
             FUN_00409080(a, insert);
         }
-        return;
+        break;
     case 0x11:
         a = nodes[0];
         if ((a->next != NULL && nodes[2]->next != NULL && a->prev == NULL && nodes[2]->prev == NULL) || (a->next == NULL && nodes[2]->next == NULL && a->prev != NULL && nodes[2]->prev != NULL)) {
