@@ -1870,103 +1870,105 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
     if (DAT_00668f9c == 0 || DAT_00668f84 == NULL) {
         return 0;
     }
-    if (param_1 == 0 && param_2 == 0) {
-        loops = 0xb;
-        DAT_00668f60 = 0;
-        DAT_00668fa0 = 0;
-    } else {
-        loops = param_1 - param_2;
-        if (loops >= DAT_00668f50) {
-            KLIBAUDIO_StopAVISoundBuffer(DAT_00668f48);
-            DAT_00668f60 = DAT_00668f90 * param_1;
-            DAT_00668fa0 = param_1 % DAT_00668f50;
-            play = 1;
-            loops = 0xb;
-            play_pos = DAT_00668f90 * DAT_00668fa0;
-        } else if (loops == 0) {
-            return 1;
-        }
-    }
-    count = loops;
     do {
-        dst = (char *)KLIBAUDIO_LockAVISoundBuffer(DAT_00668f48, DAT_00668f3c * DAT_00668fa0, DAT_00668f3c);
-        if (DAT_00668f60 < DAT_00668f88 && DAT_00668f60 >= 0) {
-            if (DAT_00668ee0 != 0) {
-                produced = 0;
-                if (DAT_00668fb4 != 0) {
-                    if (DAT_00668fb4 < DAT_00668f3c) {
-                        memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668fb4);
-                        rem = DAT_00668f3c - DAT_00668fb4;
-                        DAT_00668fb4 = 0;
-                        DAT_00668f54 = 0;
-                        if (DAT_00668f60 >= DAT_00668f88) {
-                            if (DAT_00668f4c == 8) {
-                                memset(dst + (DAT_00668f3c - rem), 0x80, rem);
+        if (param_1 == 0 && param_2 == 0) {
+            loops = 0xb;
+            DAT_00668f60 = 0;
+            DAT_00668fa0 = 0;
+        } else {
+            loops = param_1 - param_2;
+            if (loops >= DAT_00668f50) {
+                KLIBAUDIO_StopAVISoundBuffer(DAT_00668f48);
+                DAT_00668f60 = DAT_00668f90 * param_1;
+                DAT_00668fa0 = param_1 % DAT_00668f50;
+                play = 1;
+                loops = 0xb;
+                play_pos = DAT_00668f90 * DAT_00668fa0;
+            } else if (loops == 0) {
+                return 1;
+            }
+        }
+        count = loops;
+        do {
+            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(DAT_00668f48, DAT_00668f3c * DAT_00668fa0, DAT_00668f3c);
+            if (DAT_00668f60 < DAT_00668f88 && DAT_00668f60 >= 0) {
+                if (DAT_00668ee0 != 0) {
+                    produced = 0;
+                    if (DAT_00668fb4 != 0) {
+                        if (DAT_00668fb4 < DAT_00668f3c) {
+                            memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668fb4);
+                            rem = DAT_00668f3c - DAT_00668fb4;
+                            DAT_00668fb4 = 0;
+                            DAT_00668f54 = 0;
+                            if (DAT_00668f60 >= DAT_00668f88) {
+                                if (DAT_00668f4c == 8) {
+                                    memset(dst + (DAT_00668f3c - rem), 0x80, rem);
+                                } else {
+                                    memset(dst + (DAT_00668f3c - rem), 0, rem);
+                                }
                             } else {
-                                memset(dst + (DAT_00668f3c - rem), 0, rem);
+                                while (DAT_00668fb4 < DAT_00668f3c) {
+                                    AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
+                                    DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
+                                    acmStreamPrepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
+                                    acmStreamConvert(DAT_00668f5c, DAT_00668ee8, 0x10);
+                                    acmStreamUnprepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
+                                    produced += DAT_00668ee8[9];
+                                    DAT_00668fb4 += DAT_00668ee8[9];
+                                    DAT_00668f60++;
+                                }
+                                memcpy(dst + (DAT_00668f3c - rem), DAT_00668f8c, rem);
+                                DAT_00668f54 += rem;
+                                DAT_00668fb4 -= rem;
                             }
                         } else {
-                            while (DAT_00668fb4 < DAT_00668f3c) {
-                                AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
-                                DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
-                                acmStreamPrepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                                acmStreamConvert(DAT_00668f5c, DAT_00668ee8, 0x10);
-                                acmStreamUnprepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                                produced += DAT_00668ee8[9];
-                                DAT_00668fb4 += DAT_00668ee8[9];
-                                DAT_00668f60++;
+                            memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
+                            DAT_00668fb4 -= DAT_00668f3c;
+                            if (DAT_00668fb4 != 0) {
+                                DAT_00668f54 += DAT_00668f3c;
+                            } else {
+                                DAT_00668f54 = 0;
                             }
-                            memcpy(dst + (DAT_00668f3c - rem), DAT_00668f8c, rem);
-                            DAT_00668f54 += rem;
-                            DAT_00668fb4 -= rem;
                         }
                     } else {
-                        memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
-                        DAT_00668fb4 -= DAT_00668f3c;
-                        if (DAT_00668fb4 != 0) {
-                            DAT_00668f54 += DAT_00668f3c;
-                        } else {
-                            DAT_00668f54 = 0;
+                        while (DAT_00668fb4 < DAT_00668f3c) {
+                            AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
+                            DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
+                            acmStreamPrepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
+                            acmStreamConvert(DAT_00668f5c, DAT_00668ee8, 0x10);
+                            acmStreamUnprepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
+                            produced += DAT_00668ee8[9];
+                            DAT_00668fb4 += DAT_00668ee8[9];
+                            DAT_00668f60++;
                         }
+                        memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
+                        DAT_00668f54 += DAT_00668f3c;
+                        DAT_00668fb4 -= DAT_00668f3c;
                     }
                 } else {
-                    while (DAT_00668fb4 < DAT_00668f3c) {
-                        AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
-                        DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
-                        acmStreamPrepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                        acmStreamConvert(DAT_00668f5c, DAT_00668ee8, 0x10);
-                        acmStreamUnprepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                        produced += DAT_00668ee8[9];
-                        DAT_00668fb4 += DAT_00668ee8[9];
-                        DAT_00668f60++;
-                    }
-                    memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
-                    DAT_00668f54 += DAT_00668f3c;
-                    DAT_00668fb4 -= DAT_00668f3c;
+                    AVIStreamRead(DAT_00668f84, DAT_00668f60, DAT_00668f90, dst, DAT_00668f3c, &bytes_out, &param_2);
                 }
             } else {
-                AVIStreamRead(DAT_00668f84, DAT_00668f60, DAT_00668f90, dst, DAT_00668f3c, &bytes_out, &param_2);
+                if (DAT_00668f4c == 8) {
+                    memset(dst, 0x80, DAT_00668f3c);
+                } else {
+                    memset(dst, 0, DAT_00668f3c);
+                }
+                if (DAT_00668ee0 != 0) {
+                    DAT_00668f60++;
+                }
             }
-        } else {
-            if (DAT_00668f4c == 8) {
-                memset(dst, 0x80, DAT_00668f3c);
-            } else {
-                memset(dst, 0, DAT_00668f3c);
+            KLIBAUDIO_UnLockAVISoundBuffer(DAT_00668f48);
+            if (DAT_00668ee0 == 0) {
+                DAT_00668f60 += DAT_00668f90;
             }
-            if (DAT_00668ee0 != 0) {
-                DAT_00668f60++;
+            DAT_00668fa0++;
+            if (DAT_00668fa0 >= DAT_00668f50) {
+                DAT_00668fa0 = 0;
             }
-        }
-        KLIBAUDIO_UnLockAVISoundBuffer(DAT_00668f48);
-        if (DAT_00668ee0 == 0) {
-            DAT_00668f60 += DAT_00668f90;
-        }
-        DAT_00668fa0++;
-        if (DAT_00668fa0 >= DAT_00668f50) {
-            DAT_00668fa0 = 0;
-        }
-        count--;
-    } while (count != 0);
+            count--;
+        } while (count != 0);
+    } while (0);
     if (play != 0) {
         KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, play_pos);
         KLIBAUDIO_SetAVIVolume(DAT_00668f48, (int)DAT_004bb4dc);
