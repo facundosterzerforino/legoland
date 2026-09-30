@@ -3399,7 +3399,345 @@ void FUN_0040dbb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040dc00
-void FUN_0040dc00(void) { STUB(); }
+void FUN_0040dc00(struct FlumeEntry *entry) {
+    unsigned int w = DAT_004b4730 - DAT_004b4728;
+    unsigned int h = DAT_004b4734 - DAT_004b472c;
+    struct FlumeXY t;
+    struct FlumeEntry *n;
+    unsigned char dx, dy;
+    struct FlumeEntry *prev;
+
+    t.x = entry->tile.pos.x;
+    t.y = entry->tile.pos.y;
+
+    if (entry != NULL) {
+        entry->submode = DAT_004c2af4;
+        switch (DAT_004c2af4) {
+        case 0:
+            dx = DAT_004c445c->var_3c[0];
+            dy = DAT_004c445c->var_3c[1];
+            t.x += dx;
+            t.y += dy;
+            t.x += 3;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            entry->link30 = n;
+            prev = n;
+            t.y += h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.y += h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 2;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.x += w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.x += w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            break;
+        case 1:
+            t.x += DAT_004c2aa0->var_3c[0];
+            t.y += DAT_004c2aa0->var_3c[1];
+            t.y += 2;
+            t.x += DAT_004c2aa0->var_3c[2] - DAT_004c2aa0->var_3c[0] - w + 1;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            entry->link30 = n;
+            prev = n;
+            t.x -= w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.x -= w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 2;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.y += h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.y += h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 2;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            break;
+        case 2:
+            t.x += DAT_004c2b0c->var_3c[0];
+            t.y += DAT_004c2b0c->var_3c[1];
+            t.x += 4;
+            t.y += DAT_004c2b0c->var_3c[3] - DAT_004c2b0c->var_3c[1] - h + 1;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 2;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            entry->link30 = n;
+            prev = n;
+            t.y -= h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.y -= h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 2;
+                n->submode = 2;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.x -= w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.x -= w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 3;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            break;
+        case 3:
+            t.x += DAT_004c74d4->var_3c[0];
+            t.y += DAT_004c74d4->var_3c[1] + 4;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 3;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            entry->link30 = n;
+            prev = n;
+            t.x += w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 1;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.x += w;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 2;
+                n->submode = 3;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.y -= h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 1;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            t.y -= h;
+            n = FUN_00409010();
+            if (n != NULL) {
+                n->mode = 3;
+                n->submode = 0;
+                n->ride = DAT_004cbe30;
+                n->slotset = entry->slotset;
+                n->flags10d |= 4;
+                n->link28 = entry;
+                n->tile.pos.x = t.x;
+                n->tile.pos.y = t.y;
+            }
+            FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+            FUN_00409080((struct Node *)prev, (struct Node *)n);
+            prev = n;
+            break;
+        }
+        FUN_00409170((struct Node *)entry, (struct ListNode *)n);
+        FUN_00409080((struct Node *)prev, (struct Node *)n);
+        entry->link34 = n;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040e340
 void FUN_0040e340(struct EdgeNode *node, int *out) {
