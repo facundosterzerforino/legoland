@@ -2283,8 +2283,42 @@ void FUN_0041fd80(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0041ff80
 void FUN_0041ff80(void) { STUB(); }
 
+#pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00420200
-float FUN_00420200(float (*fn)(unsigned int), unsigned int a, unsigned int b, float tol) { STUB(); }
+float FUN_00420200(float (*fn)(unsigned int), unsigned int a, unsigned int b, float tol) {
+    int it2;
+    int iib;
+    float hh_;
+    float s_;
+    float add0;
+    float pr0;
+    float area0;
+    float strideb;
+    float cxxb;
+
+    it2 = 1;
+    hh_ = *(float *)&b - *(float *)&a;
+    s_ = fn(a) + fn(b);
+    add0 = 0;
+    area0 = s_ * hh_ * 0.5f * FLOAT_004ab43c;
+    do {
+        pr0 = area0;
+        s_ = s_ - 2.0f * add0;
+        add0 = 0;
+        strideb = hh_;
+        hh_ = 0.5f * hh_;
+        cxxb = hh_ + *(float *)&a;
+        for (iib = 1; iib <= it2; iib++) {
+            add0 = fn(*(unsigned int *)&cxxb) + add0;
+            cxxb = cxxb + strideb;
+        }
+        s_ = 4.0f * add0 + s_;
+        area0 = s_ * hh_;
+        it2 = it2 + it2;
+    } while (fabs(area0 - pr0) > tol * fabs(pr0));
+    return FLOAT_004ab438 * area0;
+}
+#pragma optimize("", on)
 
 struct VecOps {
     void (*m0)(struct VecOps *, unsigned int);

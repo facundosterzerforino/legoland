@@ -4047,7 +4047,7 @@ extern void *DAT_0082ac60[1];
 // 0x0082ad20
 extern unsigned char DAT_0082ad20[0x90];
 // 0x0082adb0
-extern unsigned int DAT_0082adb0;
+extern unsigned int DAT_0082adb0[6];
 // 0x0082add0
 extern unsigned int DAT_0082add0;
 // 0x0082add4
@@ -4215,3 +4215,66 @@ extern struct Struct1e40 *DAT_004dd648;
 extern float *DAT_004dd64c;
 // 0x004dd650
 extern int DAT_004dd650;
+
+// 0x004ab438
+extern float FLOAT_004ab438;
+
+// 0x00610804
+extern int DAT_00610804[64];
+
+// 0x00610500
+extern int DAT_00610500[64];
+
+// 0x00610400
+extern int DAT_00610400[64];
+
+// 0x00610704
+extern int DAT_00610704[64];
+
+// 0x00610604
+extern int DAT_00610604[64];
+
+// 0x006100f8
+extern int DAT_006100f8[64];
+
+// 0x0060fdf8
+extern int DAT_0060fdf8[64];
+
+// 0x0060fef8
+extern int DAT_0060fef8[64];
+
+// 0x0060fbf8
+extern int DAT_0060fbf8[64];
+
+// 0x006101f8
+extern int DAT_006101f8[64];
+
+// 0x0060fcf8
+extern int DAT_0060fcf8[64];
+
+// 0x00610904
+extern int DAT_00610904[64];
+
+// 0x00610a10
+extern unsigned int DAT_00610a10;
+
+// 0x0060f900
+extern int DAT_0060f900;
+
+// 0x0060f8fc
+extern int DAT_0060f8fc;
+
+// 0x00611644
+extern int DAT_00611644;
+
+// 0x00615f68
+extern int DAT_00615f68;
+
+// 0x004dcbc8
+extern int DAT_004dcbc8;
+
+// 0x004d83bc
+extern int DAT_004d83bc;
+
+// 0x0060f910
+extern int DAT_0060f910;
