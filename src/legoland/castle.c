@@ -1131,7 +1131,7 @@ float FUN_0041df00(unsigned char *obj, float t) {
     s.q = state->kind;
     f4 = state->f4;
     f8 = state->f8;
-    while (hi - lo > 0.001) {
+    while (hi - lo > DAT_004ab418) {
         mid = (hi + lo) * 0.5f;
         FUN_0041da10(obj, f4, obj + 0xc);
         FUN_0041dad0((struct FloatHolder *)obj, f8);
@@ -5071,8 +5071,8 @@ void FUN_00425e20(void) {
     dy = fy - fb;
     DAT_008299a0[0] = dy * a[1] + dx * a[0];
     DAT_008299a0[1] = dy * a[3] + dx * a[2];
-    DAT_008299a0[0] += (float)ref.x * 20.0f;
-    DAT_008299a0[1] += (float)ref.y * 20.0f;
+    DAT_008299a0[0] += (float)ref.x * FLOAT_004ab45c;
+    DAT_008299a0[1] += (float)ref.y * FLOAT_004ab45c;
     DAT_008299ac = lpConfig->field_20;
     DAT_008299b0 = lpConfig->field_22;
     DAT_008299b4 = lpConfig->field_10 + lpConfig->field_20;
