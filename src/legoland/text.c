@@ -457,11 +457,11 @@ LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font) {
     hit_left = left4;
     if (box.left <= (int)DAT_00813a44.x && (int)DAT_00813a44.x <= right4 && top4 <= (int)DAT_00813a44.y &&
         (int)DAT_00813a44.y <= bottom4) {
-        DAT_004bdd00 = 5;
+        Hover.type = 5;
     }
     if (hit_left <= (int)DAT_00813a44.x && (int)DAT_00813a44.x <= left_corner_w + right4 &&
         width <= (int)DAT_00813a44.y && (int)DAT_00813a44.y <= mid_top) {
-        DAT_004bdd00 = 5;
+        Hover.type = 5;
     }
 }
 

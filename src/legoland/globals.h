@@ -1134,11 +1134,8 @@ extern char *PTR_s_Adams_004bd180[0x6b];
 extern short DAT_004bd32c[8][2]; /* unit step (x, y) per direction, 8.8 fixed point */
 // 0x004bd34c
 extern void (*PTR_FUN_004bd34c[16])(struct Bloke *);
-// 0x004bdd00 (DAT_004bdd00 / DAT_004bdd04 / DAT_004bdd08 are its fields)
+// 0x004bdd00
 extern struct HoverInfo Hover;
-#define DAT_004bdd00 Hover.type
-#define DAT_004bdd04 Hover.ptr
-#define DAT_004bdd08 Hover.data.value
 // 0x004bdea0
 extern LEGO_EXPORT RECT SPRITE_ClipRect;
 // 0x004beb80
@@ -3345,12 +3342,6 @@ extern struct IconNode *DAT_007fdea8;
 extern struct Sprite *DAT_007fdeac;
 // 0x007fdeb0
 extern struct Sprite *DAT_007fdeb0;
-// 0x007fdec0
-extern unsigned int DAT_007fdec0;
-// 0x007fdec4
-extern void *DAT_007fdec4;
-// 0x007fdec8
-extern unsigned int DAT_007fdec8;
 // 0x007fdecc
 extern int DAT_007fdecc;
 // 0x007fded0
@@ -3374,7 +3365,7 @@ extern unsigned int DAT_007fdf94;
 // 0x007fdf98
 extern unsigned int DAT_007fdf98;
 // 0x007fdf9c
-extern unsigned int DAT_007fdf9c;
+extern int DAT_007fdf9c;
 // 0x007fdfa0
 extern unsigned int DAT_007fdfa0;
 // 0x007fdfa4

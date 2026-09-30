@@ -433,8 +433,8 @@ LEGO_EXPORT void PrintProfileDetails(void) {
         if ((icon->flags & 0x400) == 0 && (icon->field_20b & 1)) {
             if (DAT_00813a44.x >= icon->x - 0x18 && DAT_00813a44.x < icon->x && DAT_00813a44.y >= icon->slot * 0x26 + 0x86 &&
                 DAT_00813a44.y < icon->field_10 + icon->y) {
-                DAT_004bdd00 = 2;
-                DAT_004bdd04 = (struct Bloke *)icon;
+                Hover.type = 2;
+                Hover.ptr = (struct Bloke *)icon;
             }
             if (DAT_0080ffa0.field_43 == icon->slot) {
                 if (DAT_007986e4 != 0) {

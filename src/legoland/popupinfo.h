@@ -6,6 +6,10 @@
 
 struct NewObjInfo;
 
+/* what the info popup is about (0x7fdec0; passed by value to PopUpInfoSetUp) */
+// 0x007fdec0
+extern struct HoverInfo DAT_007fdec0;
+
 LEGO_EXPORT void InitPopUpInfo(void);
 LEGO_EXPORT void PopInfoSizeMayChange(void);
 void FUN_00471bf0(void);

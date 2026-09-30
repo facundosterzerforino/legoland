@@ -357,7 +357,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
         if ((GamePad & 4) != 0 && (DAT_00813ac4 & 4) != 0) {
             DAT_00813ac4 |= 0x10;
         }
-        if ((GamePad & 0x400) != 0 && (DAT_004bdd00 & 0x100) != 0) {
+        if ((GamePad & 0x400) != 0 && (Hover.type & 0x100) != 0) {
             if ((GamePad & 0x1000) != 0) {
                 DAT_00813a7c = DAT_00813a64;
                 DAT_00813a80 = DAT_00813a68;

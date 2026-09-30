@@ -100,7 +100,7 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
 
 // FUNCTION: LEGOLAND 0x00470270
 int FUN_00470270(void) {
-    unsigned int v = DAT_004bdd08 & 0xffff;
+    unsigned int v = Hover.data.value & 0xffff;
     int x = v & 0xff;
     int y = v >> 8;
     MapElement *elem;
@@ -140,7 +140,7 @@ int FUN_00470270(void) {
 // FUNCTION: LEGOLAND 0x00470410
 WorkOrder *FUN_00470410(Point *out) {
     WorkOrder *order;
-    unsigned int v = DAT_004bdd08 & 0xffff;
+    unsigned int v = Hover.data.value & 0xffff;
     int x = v & 0xff;
     int y = v >> 8;
 
@@ -166,7 +166,7 @@ WorkOrder *FUN_00470410(Point *out) {
 
 // FUNCTION: LEGOLAND 0x004704b0
 WorkOrder *FUN_004704b0(Point *out) {
-    unsigned int v = DAT_004bdd08 & 0xffff;
+    unsigned int v = Hover.data.value & 0xffff;
     struct Point pos;
     MapElement *elem;
     Ride *ride;
@@ -225,7 +225,7 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
             DAT_00667c48 = 1;
             DAT_00668954 = 0;
             for (;;) {
-                if (DAT_004bdd00 == 0x103) {
+                if (Hover.type == 0x103) {
                     if (FUN_00470270()) {
                         DAT_00668954 = 0;
                         return;
@@ -245,7 +245,7 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                         isOrder = 1;
                     }
                 } else {
-                    if (DAT_004bdd00 == 0x10a || DAT_004bdd00 == 2 || DAT_00813a44.y < 0x20 || DAT_00813a44.y >= 0x174 || DAT_00813a44.x < lpConfig->field_20 + 9) {
+                    if (Hover.type == 0x10a || Hover.type == 2 || DAT_00813a44.y < 0x20 || DAT_00813a44.y >= 0x174 || DAT_00813a44.x < lpConfig->field_20 + 9) {
                         break;
                     }
                     ScreenToMapRef(&DAT_00813a44.x, pt, 0);

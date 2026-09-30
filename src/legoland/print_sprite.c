@@ -106,9 +106,9 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
     result = 0;
 writeback:
     if (param_5 != NULL && DAT_007feb14 != 0 && *param_5 != 0x100) {
-        DAT_004bdd00 = *param_5;
-        DAT_004bdd04 = param_5[1];
-        DAT_004bdd08 = param_5[2];
+        Hover.type = *param_5;
+        Hover.ptr = param_5[1];
+        Hover.data.value = param_5[2];
     }
     return result;
 }
@@ -493,7 +493,7 @@ LEGO_EXPORT void SortClippedSprite(struct Sprite *sprite, unsigned int x, unsign
 
 // FUNCTION: LEGOLAND 0x00485ef0
 LEGO_EXPORT void ResetHitInfo(void) {
-    DAT_004bdd00 = 0x100;
+    Hover.type = 0x100;
 }
 
 // FUNCTION: LEGOLAND 0x00485f00

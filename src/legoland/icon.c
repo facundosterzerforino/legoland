@@ -170,9 +170,9 @@ void FUN_0046d3c0(struct IconNode *node) {
     if (FocussedIconPtr == node) {
         FocussedIconPtr = NULL;
     }
-    if (DAT_004bdd00 == 2 && DAT_004bdd04 == (unsigned int)node) {
-        DAT_004bdd04 = 0;
-        DAT_004bdd00 = 0x100;
+    if (Hover.type == 2 && Hover.ptr == (unsigned int)node) {
+        Hover.ptr = 0;
+        Hover.type = 0x100;
     }
 }
 
@@ -1972,8 +1972,8 @@ unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
 
 // FUNCTION: LEGOLAND 0x004700a0
 LEGO_EXPORT void UpdateFocussedIconPtr(void) {
-    if (DAT_004bdd00 == 2) {
-        FocussedIconPtr = (void *)DAT_004bdd04;
+    if (Hover.type == 2) {
+        FocussedIconPtr = (void *)Hover.ptr;
     } else {
         FocussedIconPtr = NULL;
     }

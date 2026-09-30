@@ -1127,7 +1127,7 @@ LEGO_EXPORT void CloseChildrenBar(void *node, int group, short x, short y) {
 // FUNCTION: LEGOLAND 0x00475c50
 char FUN_00475c50(int param_1, unsigned char param_2) {
     if (param_2 & 2) {
-        DAT_004bdd00 = 0x100;
+        Hover.type = 0x100;
         *(unsigned int *)(*(int *)(*(int *)(*(int *)(param_1 + 0x18) + 4) + 0xc4) + 8) |= 8;
         MakeUpObjectList(0xd2, 3, 0x21, 0x154);
     }
@@ -1137,7 +1137,7 @@ char FUN_00475c50(int param_1, unsigned char param_2) {
 // FUNCTION: LEGOLAND 0x00475c90
 char FUN_00475c90(int param_1, unsigned char param_2) {
     if (param_2 & 2) {
-        DAT_004bdd00 = 0x100;
+        Hover.type = 0x100;
         *(unsigned int *)(*(int *)(*(int *)(*(int *)(param_1 + 0x18) + 4) + 0xc4) + 8) &= ~8;
         MakeUpObjectList(0xd2, 3, 0x21, 0x154);
     }

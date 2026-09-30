@@ -66,14 +66,13 @@ struct Ride {
     /* 0x6c */ struct Sprite *anim; /* build-animation sprite */
     /* 0x70 */ unsigned char pad_70[0x78 - 0x70];
     /* 0x78 */ char *name;
-    /* 0x7c */ unsigned char pad_7c[0xb8 - 0x7c];
-    /* 0xb8 */ int (*load_hook)(struct Element *element); /* run after a save game restores this ride */
-    /* 0xbc */ unsigned char pad_bc[0xc4 - 0xbc];
     /* 0x7c */ unsigned char pad_7c[0xa0 - 0x7c];
     /* 0xa0 */ struct RideSpriteInfo *(*cb_sprite)(); /* sprite to draw for a placed object */
     /* 0xa4 */ unsigned char pad_a4[0xa8 - 0xa4];
     /* 0xa8 */ void (*cb_pre_render)();
-    /* 0xac */ unsigned char pad_ac[0xc4 - 0xac];
+    /* 0xac */ unsigned char pad_ac[0xb8 - 0xac];
+    /* 0xb8 */ int (*load_hook)(struct Element *element); /* run after a save game restores this ride */
+    /* 0xbc */ unsigned char pad_bc[0xc4 - 0xbc];
     /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */
     /* 0xc8 */ unsigned char *counters; /* per-bloke visit counts */
     /* 0xcc */ struct RideNode *riders;

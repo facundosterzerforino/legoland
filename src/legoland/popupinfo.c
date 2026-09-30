@@ -11,13 +11,14 @@
 #include "text.h"
 #include "worker_mouse.h"
 
-#pragma intrinsic(strlen, strcpy, memcpy)
+#pragma intrinsic(strlen, strcpy, strcat, memcpy)
 
 struct Sprite;
+struct Element;
 
 struct InfoObjData {
     /* 0x00 */ unsigned char pad_0[0x4];
-    /* 0x04 */ unsigned int field_4;
+    /* 0x04 */ struct Element *field_4;
     /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;
     /* 0x10 */ unsigned char pad_10[0x18 - 0x10];
@@ -30,15 +31,22 @@ struct InfoObjInner {
     /* 0x60 */ unsigned char field_60;
 };
 
+#include "bloke.h"
+#include "bloke_ai.h"
+#include "build.h"
 #include "controller.h"
 #include "debug_alloc.h"
 #include "draw.h"
 #include "gamemap.h"
+#include "gfx.h"
 #include "help.h"
 #include "image_sprite.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "obj_instance.h"
+#include "objclass.h"
 #include "print_sprite.h"
+#include "render.h"
 #include "sound_music.h"
 #include "stream.h"
 #include "string.h"
@@ -62,7 +70,7 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     unsigned int *puVar3;
     int iVar2;
 
-    puVar3 = &DAT_007fdec0;
+    puVar3 = (unsigned int *)&DAT_007fdec0;
     for (iVar2 = 0x40; iVar2 != 0; iVar2 = iVar2 + -1) {
         *puVar3 = 0;
         puVar3 = puVar3 + 1;
@@ -509,7 +517,7 @@ void FUN_004718c0(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00471950
-LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo info, unsigned int param_4, unsigned int param_5) {
+LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsigned int param_5) {
     short sVar1;
     int iVar2;
     int x;
@@ -518,7 +526,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo info, unsigned int param_4, uns
     unsigned char *iVar4;
     int iVar5;
 
-    uVar3 = info.data.value & 0xffff;
+    uVar3 = t.data.value & 0xffff;
     x = uVar3 & 0xff;
     y = uVar3 >> 8;
     if ((x < 0) || (lpConfig->width <= x) || (y < 0) || (lpConfig->height <= y)) {
@@ -531,26 +539,26 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo info, unsigned int param_4, uns
     DAT_007fdfa8 = 1;
     DAT_007fdecc = param_4;
     DAT_007fded0 = param_5;
-    DAT_007fdf88 = (unsigned short)info.data.value;
-    DAT_007fdec0 = info.type;
-    DAT_007fdec4 = info.ptr;
-    DAT_007fdec8 = info.data.value;
-    if ((int)info.type < 0x308) {
-        if (info.type == 0x307) {
-            if (*(short *)((char *)info.ptr + 0xc) != 5) {
+    DAT_007fdf88 = (unsigned short)t.data.value;
+    DAT_007fdec0.type = t.type;
+    DAT_007fdec0.ptr = t.ptr;
+    DAT_007fdec0.data.value = t.data.value;
+    if (t.type < 0x308) {
+        if (t.type == 0x307) {
+            if (*(short *)((char *)t.ptr + 0xc) != 5) {
                 PlayInstanceOfSample(DAT_004b92e4, 0, 1, 0);
-                FUN_00470100(0x307, info.ptr);
+                FUN_00470100(0x307, t.ptr);
                 ResetInfoStruct();
                 return;
             }
-        } else if (info.type == 0x103) {
-            if (info.ptr == NULL) {
+        } else if (t.type == 0x103) {
+            if (t.ptr == NULL) {
                 DAT_007fdfa0 = 1;
                 DAT_007fdfa8 = 1;
                 return;
             }
-            if (((unsigned int)info.ptr != DAT_007fdfb8) && ((unsigned int)info.ptr != DAT_007fdfbc)) {
-                DAT_007fdf7c = *(unsigned int *)((char *)info.ptr + 0xc);
+            if (((unsigned int)t.ptr != DAT_007fdfb8) && ((unsigned int)t.ptr != DAT_007fdfbc)) {
+                DAT_007fdf7c = *(unsigned int *)((char *)t.ptr + 0xc);
                 DAT_007fdf84 = iVar4;
                 if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == DAT_007fdfb0) {
                     DAT_007fdfa0 = 0;
@@ -577,17 +585,17 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo info, unsigned int param_4, uns
                 GenerateMechanic(&param_4, 1);
                 return;
             }
-        } else if (info.type == 0x306) {
-            DAT_007fdf9c = info.type;
-            DAT_007fdf8c = info.ptr;
-            DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)info.ptr + 4) + 0x1c);
-            DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)info.ptr + 4) + 0x20);
+        } else if (t.type == 0x306) {
+            DAT_007fdf9c = t.type;
+            DAT_007fdf8c = t.ptr;
+            DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x1c);
+            DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x20);
             return;
         }
-    } else if ((info.type == 0x308) && (sVar1 = *(short *)((char *)info.ptr + 0xc), sVar1 != 5)) {
-        if (((sVar1 == 0x13) && (0x6a < *(unsigned char *)((char *)info.ptr + 0x60))) ||
-            ((sVar1 == 0x16) && (0x6a < *(unsigned char *)((char *)info.ptr + 0x60)))) {
-            iVar4 = *(unsigned char **)((char *)info.ptr + 0x50);
+    } else if ((t.type == 0x308) && (sVar1 = *(short *)((char *)t.ptr + 0xc), sVar1 != 5)) {
+        if (((sVar1 == 0x13) && (0x6a < *(unsigned char *)((char *)t.ptr + 0x60))) ||
+            ((sVar1 == 0x16) && (0x6a < *(unsigned char *)((char *)t.ptr + 0x60)))) {
+            iVar4 = *(unsigned char **)((char *)t.ptr + 0x50);
             iVar5 = *(int *)(iVar4 + 8);
             if ((iVar5 < 0) ||
                 (((int)(unsigned int)lpConfig->width <= iVar5 ||
@@ -601,7 +609,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo info, unsigned int param_4, uns
             FUN_00499eb0(iVar4);
         }
         PlayInstanceOfSample(DAT_004b9308, 0, 1, 0);
-        FUN_00470100(0x308, info.ptr);
+        FUN_00470100(0x308, t.ptr);
     }
     ResetInfoStruct();
 }
@@ -872,7 +880,7 @@ void FUN_004720a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004723f0
-void FUN_004723f0(void) {
+int FUN_004723f0(void) {
     unsigned int local_8[2];
     struct Cursor local_cursor;
     void *saved_class;
@@ -880,11 +888,11 @@ void FUN_004723f0(void) {
     unsigned int v;
 
     saved_class = QueryClass;
-    v = DAT_007fdec8 & 0xffff;
+    v = DAT_007fdec0.data.value & 0xffff;
     memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
     local_8[0] = v & 0xff;
     local_8[1] = v >> 8;
-    cls = *(struct ObjClass **)((char *)DAT_007fdec4 + 0xc);
+    cls = *(struct ObjClass **)((char *)DAT_007fdec0.ptr + 0xc);
     QueryCursor.field_1408 = v >> 8;
     QueryClass = cls;
     QueryCursor.field_1404 = v & 0xff;
@@ -895,8 +903,318 @@ void FUN_004723f0(void) {
     QueryClass = saved_class;
 }
 
+/* Draws the info popup: the title/info text for the selected object or bloke, the mood
+   sprites, the build/repair progress bar and the icons (repair, delete, add gardener/mechanic). */
 // FUNCTION: LEGOLAND 0x004724a0
-LEGO_EXPORT void DrawPopUpInfo(void) { STUB(); }
+LEGO_EXPORT void DrawPopUpInfo(void) {
+    char buf_b[256];
+    char buf_a[256];
+    char tmp[512];
+    struct Ride *ride;
+    struct Bloke *bloke;
+    int repairable = 0;
+    int can_delete = 0;
+    int add_mechanic = 0;
+    int add_gardener = 0;
+    int show_close = 0;
+    int size;
+    int x;
+    int y;
+    int left;
+    int right;
+    int width;
+    int bar_x;
+    int bar_y;
+    volatile int mid; /* kept in memory, as in the original frame */
+    int ty;
+    int bottom;
+    int top;
+    int mood;
+    int hunger;
+    int power;
+    int name_lines;
+    int info_lines;
+    int entry_index;
+    int icon_x;
+    int icon_y;
+    int last_x;
+    int left_bound;
+    float frac;
+    struct BuildObj *entry;
+    struct InfoObjData *info;
+
+    buf_a[0] = 0;
+    memset(buf_a + 1, 0, 255);
+    buf_b[0] = 0;
+    memset(buf_b + 1, 0, 255);
+    ride = (struct Ride *)DAT_007fdf7c;
+    bloke = (struct Bloke *)DAT_007fdf8c;
+    GetNearestColour(0xda, 0xc6, 0x96);
+    DAT_0066895c = 0;
+    if (DAT_007fdfa0 == 2) {
+        FUN_004720a0();
+        return;
+    }
+    if (EditMode.unk0 != 0) {
+        ResetInfoStruct();
+        return;
+    }
+    if (DAT_007fdfa0 == 0) {
+        return;
+    }
+    if (DAT_00813a60 & 2) {
+        ResetInfoStruct();
+        return;
+    }
+    switch (DAT_007fdf9c) {
+    case 0x103:
+        sprintf(buf_a, (char *)DAT_004b8bbc, ride->name);
+        // STRING: LEGOLAND 0x004bad44
+        sprintf(buf_b, "%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
+        if (MapStats.field_18c != 0) {
+            power = FindObjectsPower(ride);
+            if (power < 0) {
+                // STRING: LEGOLAND 0x004bad3c
+                sprintf(tmp, "\n%s %d", GetString(0x78), -power);
+                if (DAT_007fdf84[0xd] & 1) {
+                    // STRING: LEGOLAND 0x004bad38
+                    strcat(tmp, "\n");
+                    strcat(tmp, GetString(0x7a));
+                }
+            } else if (power != 0) {
+                if (DAT_007fdf84[0x11] >= ride->durability >> 2) {
+                    sprintf(tmp, "\n%s %d", GetString(0x79), power);
+                } else {
+                    // STRING: LEGOLAND 0x004bad34
+                    sprintf(tmp, "\n%s", GetString(0x7b));
+                }
+            }
+            if (power != 0) {
+                strcat(buf_b, tmp);
+            }
+        }
+        if (ride->durability != 0) {
+            repairable = 1;
+        }
+        if (!(DAT_007fdf84[0xc] & 0x40)) {
+            can_delete = 1;
+        }
+        break;
+    case 0x14:
+        sprintf(buf_a, (char *)DAT_004b8bbc, ride->name);
+        // STRING: LEGOLAND 0x004bad2c
+        sprintf(buf_b, "%s : %d", GetString(0x93), FUN_00499560());
+        // STRING: LEGOLAND 0x004bad1c
+        sprintf(tmp, "\n%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
+        strcat(buf_b, tmp);
+        add_mechanic = 1;
+        if (!(DAT_007fdf84[0xc] & 0x40)) {
+            can_delete = 1;
+        }
+        break;
+    case 0xa:
+        sprintf(buf_a, (char *)DAT_004b8bbc, ride->name);
+        sprintf(buf_b, "%s : %d", GetString(0x91), FUN_00499550());
+        sprintf(tmp, "\n%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
+        strcat(buf_b, tmp);
+        add_gardener = 1;
+        if (!(DAT_007fdf84[0xc] & 0x40)) {
+            can_delete = 1;
+        }
+        break;
+    case 0x104:
+        sprintf(buf_a, (char *)DAT_004b8bbc, ride->name);
+        sprintf(buf_b, (char *)DAT_004b8bbc, GetString(0xa0));
+        DAT_0066895c = 1;
+        break;
+    case 0x10b:
+        info = DAT_007fdf80;
+        if (info->field_18 != 0 && info->field_1c->field_60 >= 0x6b) {
+            DAT_007fdec0.type = 0x104;
+            PopUpInfoSetUp(DAT_007fdec0, DAT_007fdecc, DAT_007fded0);
+            return;
+        }
+        sprintf(buf_a, (char *)DAT_004b8bbc, *(char **)info->field_4);
+        sprintf(buf_b, (char *)DAT_004b8bbc, GetString(0xd2));
+        show_close = 1;
+        break;
+    case 0x10c:
+        info = DAT_007fdf80;
+        if (info->field_18 != 0 && info->field_1c->field_60 >= 0x6b) {
+            DAT_007fdec0.type = 0x104;
+            PopUpInfoSetUp(DAT_007fdec0, DAT_007fdecc, DAT_007fded0);
+            return;
+        }
+        sprintf(buf_a, (char *)DAT_004b8bbc, *(char **)info->field_4);
+        sprintf(buf_b, (char *)DAT_004b8bbc, GetString(0xd3));
+        show_close = 1;
+        break;
+    case 0x306:
+        if (bloke->action == 3 && bloke->param_action >= 0xc) {
+            ResetInfoStruct();
+            return;
+        }
+        sprintf(buf_a, GetVisitorName(DAT_007fdf8c));
+        sprintf(buf_b, DAT_004d8bb0);
+        DAT_007fdf98 = 1;
+        break;
+    }
+    if (DAT_007fdfa8 != 0) {
+        if (DAT_007fdf9c == 0x306) {
+            DAT_007fdfac = 2;
+        } else {
+            name_lines = FUN_00471840(buf_a, 0x40, 0x14, 0xb0, 0x20, 1);
+            info_lines = FUN_004717a0(buf_b, 0x40, 0x14, 0xb0, 0x20, 2);
+            DAT_007fdfac = info_lines;
+            if (info_lines <= name_lines) {
+                DAT_007fdfac = name_lines;
+            }
+        }
+        DAT_007fdfa8 = 0;
+    }
+    FUN_004718c0(*(unsigned int *)&DAT_007fdfac & 0xff);
+    size = *(unsigned int *)&DAT_007fdfac & 0xff;
+    FUN_00471f10();
+    PushRenderingStatusAndUnlockVideoSurface();
+    x = DAT_007fdecc;
+    y = DAT_007fded0;
+    if (buf_a) {
+        struct Point tl;
+        struct Point br;
+        tl.x = x + 0xc;
+        tl.y = y + 6;
+        br.x = size * 32 + x + 0xbc;
+        br.y = y + 0x19;
+        FUN_00455e50(buf_a, tl.x, tl.y, br.x - tl.x, br.y - tl.y, 1, 1, 0xff0000, 0xffffff);
+    }
+    if (buf_b) {
+        struct Point tl;
+        struct Point br;
+        tl.x = x + 0xc;
+        tl.y = y + 0x23;
+        br.x = size * 32 + x + 0xbc;
+        br.y = y + size * 20 + 0x63;
+        FUN_00455e50(buf_b, tl.x, tl.y, br.x - tl.x, br.y - tl.y, 2, 0x10, 0xff0000, 0xffffff);
+    }
+    PopRenderingStatus();
+    if (DAT_007fdf9c == 0x306) {
+        mood = FUN_00482d30(bloke);
+        hunger = FUN_0044eb10(bloke);
+        left = x + 0xc;
+        right = size * 32 + x + 0xb0;
+        width = right - left;
+        top = y + 0x23;
+        bottom = y + size * 20 + 0x63;
+        mid = (top + bottom) / 2;
+        ty = mid + 0x22;
+        FUN_00455e50(GetString(0x8e), left, ty, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
+        FUN_00455e50(GetString(0x8f), (right + left) / 2, ty, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
+        if (mood == 3) {
+            mid -= 0x20;
+            PrintSprite(DAT_007fdfc8, width / 4 + left - 0x20, mid, 0, 0);
+        } else if (mood == 2) {
+            mid -= 0x20;
+            PrintSprite(DAT_007fe018, width / 4 + left - 0x20, mid, 0, 0);
+        } else {
+            mid -= 0x20;
+            PrintSprite(DAT_007fdfe4, width / 4 + left - 0x20, mid, 0, 0);
+        }
+        if (hunger == 0) {
+            PrintSprite(DAT_007fdeac, right - width / 4 - 0x20, mid, 0, 0);
+        } else if (hunger == 1) {
+            PrintSprite(DAT_007fe008, right - width / 4 - 0x20, mid, 0, 0);
+        } else {
+            PrintSprite(DAT_007fdfd0, right - width / 4 - 0x20, mid, 0, 0);
+        }
+    }
+    if (repairable != 0 || DAT_0066895c != 0) {
+        if (repairable != 0) {
+            frac = (float)DAT_007fdf84[0x11] / ride->durability;
+        } else {
+            entry_index = 0;
+            for (entry = DAT_006664f8;; entry++, entry_index++) {
+                if ((int)&entry->coords >= (int)&DAT_006670fc) {
+                    return;
+                }
+                if (entry->coords.id == (unsigned short)DAT_007fdec0.data.value) {
+                    break;
+                }
+            }
+            if (entry_index >= 0x100) {
+                return;
+            }
+            frac = (float)DAT_006664f8[entry_index].elapsed / GetBuildTime((struct Ride *)DAT_007fdf7c);
+            if (frac == 1.0f) {
+                DAT_007fdec0.type = 0x103;
+                PopUpInfoSetUp(DAT_007fdec0, DAT_007fdecc, DAT_007fded0);
+                return;
+            }
+        }
+        bar_x = x + 6;
+        bar_y = y + size * 20 + 0x6f;
+        width = size * 32 + 0xbc;
+        RenderBlock(bar_x, bar_y, width, 6, 0);
+        RenderBlock(bar_x, bar_y, (int)(width * frac), 6, (frac < 0.25 && repairable != 0) ? GetNearestColour(0xff, 0, 0) : GetNearestColour(0, 0xff, 0));
+    }
+    icon_x = size * 32 + x + 0xc8;
+    icon_y = y + (size * 5 + 0x1e) * 4;
+    DAT_007fdfc0->flags = DAT_007fdfc0->flags & 0xfffffbff;
+    DAT_007fdfc0->x = icon_x - 0x27;
+    DAT_007fdfc0->y = icon_y;
+    last_x = DAT_007fdfc0->x;
+    if (show_close != 0) {
+        DAT_007fdfcc->flags = DAT_007fdfcc->flags & 0xfffffbff;
+        DAT_007fdfcc->x = icon_x - 0x4e;
+        DAT_007fdfcc->y = icon_y;
+        last_x = DAT_007fdfcc->x;
+    }
+    if (can_delete != 0) {
+        if (FUN_004723f0() != 0) {
+            DAT_007fdfdc->flags = DAT_007fdfdc->flags & 0xfffffbff;
+            DAT_007fdfdc->x = icon_x - 0x4e;
+            DAT_007fdfdc->y = icon_y;
+            last_x = DAT_007fdfdc->x;
+        }
+    }
+    if (add_gardener != 0) {
+        DAT_007fdfe0->flags = DAT_007fdfe0->flags & 0xfffffbff;
+        DAT_007fdfe0->y = icon_y;
+        if (can_delete != 0) {
+            DAT_007fdfe0->x = icon_x - 0x75;
+        } else {
+            DAT_007fdfe0->x = icon_x - 0x4e;
+        }
+        last_x = DAT_007fdfe0->x;
+    }
+    if (add_mechanic != 0) {
+        DAT_007fdea4->flags = DAT_007fdea4->flags & 0xfffffbff;
+        DAT_007fdea4->y = icon_y;
+        if (can_delete != 0) {
+            DAT_007fdea4->x = icon_x - 0x75;
+        } else {
+            DAT_007fdea4->x = icon_x - 0x4e;
+        }
+        last_x = DAT_007fdea4->x;
+    }
+    DAT_007fdfd8->x = last_x;
+    DAT_007fdfd8->y = icon_y;
+    DAT_007fdfd8->flags = DAT_007fdfd8->flags & 0xfffffbff;
+    if (DAT_007fdfa4 != 0) {
+        left_bound = DAT_007fdfc0->x;
+    } else {
+        left_bound = DAT_007fdfd8->x;
+    }
+    if (DAT_007fdfc0->x + 0x24 < DAT_00813a44.x || DAT_00813a44.x < left_bound) {
+        FUN_00471610();
+    }
+    if (icon_y + 0x1b < DAT_00813a44.y || DAT_00813a44.y < icon_y) {
+        FUN_00471610();
+    }
+    if (DAT_007fdfa4 != 0) {
+        FUN_00471d90();
+    }
+    FUN_00472090();
+}
 
 // FUNCTION: LEGOLAND 0x004730f0
 unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int param3, unsigned int param4) {
@@ -964,12 +1282,12 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
     FUN_00471d60();
     FUN_0046d680(param_1, DAT_00668934);
     if ((flags & 2) != 0) {
-        v = DAT_007fdec8 & 0xffff;
+        v = DAT_007fdec0.data.value & 0xffff;
         saved_class = QueryClass;
         memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
         local_8[0] = v & 0xff;
         local_8[1] = v >> 8;
-        cls = *(struct ObjClass **)((char *)DAT_007fdec4 + 0xc);
+        cls = *(struct ObjClass **)((char *)DAT_007fdec0.ptr + 0xc);
         QueryCursor.field_1408 = local_8[1];
         QueryObj.pos.y = (unsigned char)local_8[1];
         QueryClass = cls;

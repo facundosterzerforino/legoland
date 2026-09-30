@@ -378,8 +378,8 @@ void FUN_0048c100(void) {
                 FUN_00454d80(text, 2, rc, 0xa0a0a0);
             }
             if (DAT_0080ffa0.flags[4 + i] == 1 && DAT_00813a44.x >= rc.left && DAT_00813a44.x < rc.right && DAT_00813a44.y >= rc.top && DAT_00813a44.y < rc.bottom) {
-                DAT_004bdd00 = 2;
-                DAT_004bdd04 = (struct Bloke *)*mapping;
+                Hover.type = 2;
+                Hover.ptr = (struct Bloke *)*mapping;
             }
             i++;
             entry += 7;

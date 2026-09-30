@@ -307,16 +307,16 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
                 }
                 switch (person->field_8) {
                 case 2:
-                    DAT_004bdd00 = 0x307;
-                    DAT_004bdd04 = person->bloke;
+                    Hover.type = 0x307;
+                    Hover.ptr = person->bloke;
                     return;
                 case 3:
-                    DAT_004bdd00 = 0x308;
-                    DAT_004bdd04 = person->bloke;
+                    Hover.type = 0x308;
+                    Hover.ptr = person->bloke;
                     return;
                 default:
-                    DAT_004bdd00 = 0x306;
-                    DAT_004bdd04 = person->bloke;
+                    Hover.type = 0x306;
+                    Hover.ptr = person->bloke;
                 }
             }
         }

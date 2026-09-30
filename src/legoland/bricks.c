@@ -126,7 +126,7 @@ void FUN_00457a70(void) {
     zebra = ElemID("ZEBRA CROSSING");
     if (EditMode.unk0 == 0 || EditMode.unk0 == 2) {
         QueryClass = NULL;
-        if (DAT_004bdd00 == 0x100 || DAT_004bdd00 == 0x103) {
+        if (Hover.type == 0x100 || Hover.type == 0x103) {
             if ((int)DAT_00813a64 >= 0 && (int)DAT_00813a64 < lpConfig->width && (int)DAT_00813a68 >= 0 &&
                 (int)DAT_00813a68 < lpConfig->height) {
                 tile = &GameMap[DAT_00813a68][DAT_00813a64];
@@ -136,10 +136,10 @@ void FUN_00457a70(void) {
             if (tile) {
                 if (tile->flags & 0x888) {
                     if (tile->flags & 0x800) {
-                        if ((DAT_004bdd04 = (struct Bloke *)GetGardenerWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
-                            DAT_004bdd00 = 0x10b;
-                        } else if ((DAT_004bdd04 = (struct Bloke *)GetMechanicWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
-                            DAT_004bdd00 = 0x10c;
+                        if ((Hover.ptr = (struct Bloke *)GetGardenerWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
+                            Hover.type = 0x10b;
+                        } else if ((Hover.ptr = (struct Bloke *)GetMechanicWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
+                            Hover.type = 0x10c;
                         }
                         id = tile->anchor.id;
                         Hover.data.tile.id = id;
@@ -149,46 +149,46 @@ void FUN_00457a70(void) {
                             QueryObj.id = id;
                         }
                     } else {
-                        DAT_004bdd04 = (struct Bloke *)tile->field_0;
+                        Hover.ptr = (struct Bloke *)tile->field_0;
                         Hover.data.tile.id = tile->anchor.id;
                         if (tile->flags & 0x88) {
-                            DAT_004bdd00 = 0x103;
+                            Hover.type = 0x103;
                             if (tile->field_0 == roads) {
                                 struct RideQueueEntry *entry;
                                 if ((entry = FUN_004125f0(tile->field_4, tile->field_5)) != 0 && (entry->field_14 & 0x10)) {
-                                    DAT_004bdd04 = (struct Bloke *)zebra;
+                                    Hover.ptr = (struct Bloke *)zebra;
                                 }
                             }
                         }
-                        elem = (struct Element *)DAT_004bdd04;
+                        elem = (struct Element *)Hover.ptr;
                         QueryClass = (struct ObjClass *)elem->ride;
                         QueryObj.id = Hover.data.tile.id;
                     }
-                } else if (DAT_004bdd00 != 0x103) {
+                } else if (Hover.type != 0x103) {
                     struct TileSetView *src;
                     if ((src = (struct TileSetView *)TileSpriteInfo[tile->field_8].src) != 0 && (src->sprite_ids[tile->field_8 - src->first_tile] & 0x10)) {
-                        DAT_004bdd00 = 0x10d;
+                        Hover.type = 0x10d;
                     } else {
-                        DAT_004bdd00 = 0x109;
+                        Hover.type = 0x109;
                     }
                 } else {
-                    elem = (struct Element *)DAT_004bdd04;
+                    elem = (struct Element *)Hover.ptr;
                     QueryClass = (struct ObjClass *)elem->ride;
                     QueryObj.id = Hover.data.tile.id;
                 }
-            } else if (DAT_004bdd00 == 0x103 && EditMode.unk0 == 2) {
-                elem = (struct Element *)DAT_004bdd04;
+            } else if (Hover.type == 0x103 && EditMode.unk0 == 2) {
+                elem = (struct Element *)Hover.ptr;
                 QueryClass = (struct ObjClass *)elem->ride;
                 QueryObj.id = Hover.data.tile.id;
             } else {
-                DAT_004bdd00 = 0x10a;
+                Hover.type = 0x10a;
             }
         }
     }
     cls = QueryClass;
     switch (EditMode.unk0) {
     case 2:
-        v = DAT_004bdd08 & 0xffff;
+        v = Hover.data.value & 0xffff;
         pt.x = v & 0xff;
         pt.y = v >> 8;
         DAT_00810144 = 0;
@@ -198,11 +198,11 @@ void FUN_00457a70(void) {
             GamePad &= ~0x800;
         }
         if (!(GamePad & 0x1000)) {
-            if (DAT_004bdd00 == 0x103) {
+            if (Hover.type == 0x103) {
                 QueryClass->method_94(QueryClass->field_c4, &pt);
-            } else if (DAT_004bdd00 == 0x10c) {
+            } else if (Hover.type == 0x10c) {
                 cls->method_94(cls->field_c4, &pt);
-            } else if (DAT_004bdd00 == 0x10b) {
+            } else if (Hover.type == 0x10b) {
                 cls->method_94(cls->field_c4, &pt);
             } else {
                 memset(QueryCursor.field_1414, 0, 20);
@@ -262,13 +262,13 @@ void FUN_00457a70(void) {
                 }
                 DAT_00667cd8 = 0;
             } else if (FUN_0045f4b0(&QueryCursor)) {
-                if (DAT_004bdd00 == 0x10c) {
-                    FUN_0045e850((struct ObjNode *)((WorkOrder *)DAT_004bdd04)->element, &((WorkOrder *)DAT_004bdd04)->pos.x);
-                    FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)DAT_004bdd04)->element->ride, &((WorkOrder *)DAT_004bdd04)->pos.x);
-                    EraseMechanicOrder((WorkOrder *)DAT_004bdd04);
-                } else if (DAT_004bdd00 == 0x10b) {
-                    FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)DAT_004bdd04)->element->ride, &((WorkOrder *)DAT_004bdd04)->pos.x);
-                    EraseGardenerOrder((WorkOrder *)DAT_004bdd04);
+                if (Hover.type == 0x10c) {
+                    FUN_0045e850((struct ObjNode *)((WorkOrder *)Hover.ptr)->element, &((WorkOrder *)Hover.ptr)->pos.x);
+                    FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)Hover.ptr)->element->ride, &((WorkOrder *)Hover.ptr)->pos.x);
+                    EraseMechanicOrder((WorkOrder *)Hover.ptr);
+                } else if (Hover.type == 0x10b) {
+                    FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)Hover.ptr)->element->ride, &((WorkOrder *)Hover.ptr)->pos.x);
+                    EraseGardenerOrder((WorkOrder *)Hover.ptr);
                 } else {
                     pt.x = *(unsigned int *)&QueryObj & 0xff;
                     pt.y = QueryObj.pos.y;
@@ -285,7 +285,7 @@ void FUN_00457a70(void) {
                 }
             }
         }
-        if (!(GamePad & 0x1000) && DAT_004bdd00 == 0x103) {
+        if (!(GamePad & 0x1000) && Hover.type == 0x103) {
             if (QueryClass->field_1c & 0x2000000) {
                 GamePad |= 0x400;
                 DAT_0080ff6c = QueryClass;
@@ -370,14 +370,14 @@ void FUN_00457a70(void) {
         }
         break;
     case 0:
-        v = DAT_004bdd08 & 0xffff;
+        v = Hover.data.value & 0xffff;
         pt.x = v & 0xff;
         pt.y = v >> 8;
-        if (DAT_004bdd00 == 0x103) {
+        if (Hover.type == 0x103) {
             QueryClass->method_94(QueryClass->field_c4, &pt);
-        } else if (DAT_004bdd00 == 0x10c) {
+        } else if (Hover.type == 0x10c) {
             cls->method_94(cls->field_c4, &pt);
-        } else if (DAT_004bdd00 == 0x10b) {
+        } else if (Hover.type == 0x10b) {
             cls->method_94(cls->field_c4, &pt);
         } else {
             memset(QueryCursor.field_1414, 0, 20);

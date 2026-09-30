@@ -1114,7 +1114,7 @@ void FUN_00484790(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x004848e0
 void FUN_004848e0(Bloke *bloke) {
-    if (!((DAT_004bdd00 >> 8) & 0x2) || DAT_004bdd04 != bloke) {
+    if (!((Hover.type >> 8) & 0x2) || Hover.ptr != bloke) {
         bloke->flags &= 0xfff7;
         DoPendingAction(bloke);
     }

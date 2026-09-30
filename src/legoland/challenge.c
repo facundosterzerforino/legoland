@@ -469,9 +469,9 @@ unsigned int FUN_00443e30(struct AdvisorObject *param_1) {
             DAT_00667c40 = "Exit Advisor";
             if ((int)DAT_00813a44.x >= param_1->x && (int)DAT_00813a44.y >= param_1->y &&
                 (int)DAT_00813a44.x < frame->width + param_1->x && (int)DAT_00813a44.y < frame->height + param_1->y) {
-                DAT_004bdd00 = state[0];
-                DAT_004bdd04 = state[1];
-                DAT_004bdd08 = state[2];
+                Hover.type = state[0];
+                Hover.ptr = state[1];
+                Hover.data.value = state[2];
             }
         }
     } else {

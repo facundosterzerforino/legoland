@@ -26,7 +26,7 @@ struct Bloke;
 /* What the cursor is over (Hover at 0x004bdd00): a type code (0x100 nothing, 0x103 an object, ...),
    the thing itself and its tile.  Passed by value to PopUpInfoSetUp. */
 struct HoverInfo {
-    unsigned int type;
+    int type;
     struct Bloke *ptr;
     union {
         unsigned int value;

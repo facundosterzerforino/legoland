@@ -479,7 +479,7 @@ void FUN_00458ee0(void) {
     DAT_00667c40 = "ProcessStuff";
     ProcessBuildingTimes();
     ProcessDamage();
-    input = DAT_004bdd00;
+    input = Hover.type;
     SetPointer(5);
     // STRING: LEGOLAND 0x004b91cc
     DAT_00667c40 = "Zoning";
@@ -491,9 +491,9 @@ void FUN_00458ee0(void) {
     if ((input & 0x100) != 0 || (GamePad & 0x1000) != 0) {
         FUN_00457a70();
     }
-    saved_value = DAT_004bdd04;
-    saved_action = DAT_004bdd08;
-    PrintSprite(DAT_00668e68, DAT_004bdd00, saved_value, saved_action, frame.outgoing);
+    saved_value = Hover.ptr;
+    saved_action = Hover.data.value;
+    PrintSprite(DAT_00668e68, Hover.type, saved_value, saved_action, frame.outgoing);
     FUN_0046f100(0x2c3);
     FUN_0046ee00();
     // STRING: LEGOLAND 0x004b91b0
@@ -503,11 +503,11 @@ void FUN_00458ee0(void) {
     RenderIcons2(0x2c3, 0, 0);
     FUN_0046cff0();
     if ((GamePad & 0x1000) != 0) {
-        DAT_004bdd00 = input;
-        DAT_004bdd04 = saved_value;
-        DAT_004bdd08 = saved_action;
+        Hover.type = input;
+        Hover.ptr = saved_value;
+        Hover.data.value = saved_action;
     }
-    input = DAT_004bdd00;
+    input = Hover.type;
     if ((input & 0x100) != 0 && (EditMode.unk0 == 0 || EditMode.unk0 == 2)) {
         frame.help_rect.left = DAT_00813a44.x;
         frame.help_rect.top = DAT_00813a44.y - 0xa;
@@ -549,8 +549,8 @@ void FUN_00458ee0(void) {
                     SetPointer(7);
                     break;
                 case 0x306:
-                    FUN_00455fc0(&frame.help_rect, GetVisitorName(DAT_004bdd04), 2, FUN_00482cb0(DAT_004bdd04));
-                    FUN_00450a40(DAT_004bdd04);
+                    FUN_00455fc0(&frame.help_rect, GetVisitorName(Hover.ptr), 2, FUN_00482cb0(Hover.ptr));
+                    FUN_00450a40(Hover.ptr);
                     SetPointer(8);
                     break;
                 case 0x307:
@@ -558,14 +558,14 @@ void FUN_00458ee0(void) {
                     HTBubbleHelp(&frame.help_rect, value, 2);
                     FUN_0046d230(0x90);
                     SetPointer(8);
-                    FUN_00450a40(DAT_004bdd04);
+                    FUN_00450a40(Hover.ptr);
                     break;
                 case 0x308:
                     value = GetString(0x92);
                     HTBubbleHelp(&frame.help_rect, value, 2);
                     FUN_0046d230(0x92);
                     SetPointer(8);
-                    FUN_00450a40(DAT_004bdd04);
+                    FUN_00450a40(Hover.ptr);
                     break;
                 case 0x104:
                 case 0x105:
@@ -587,7 +587,7 @@ void FUN_00458ee0(void) {
             }
         }
     }
-    if (DAT_004bdd00 == 5 && (DAT_00813ac4 & 2) != 0) {
+    if (Hover.type == 5 && (DAT_00813ac4 & 2) != 0) {
         FUN_0046ce20();
         DAT_00667c48 = 1;
     }
@@ -633,14 +633,14 @@ void FUN_00459360(void) {
     FUN_0046ee00();
     RenderIcons();
     CheckFocussedIcon();
-    if (DAT_004bdd00 == 2) {
+    if (Hover.type == 2) {
         SetPointer(6);
         UpdateFocussedIconPtr();
         PopRenderingStatus();
         RenderingComplete();
         return;
     }
-    if ((DAT_004bdd00 & 0x100) != 0) {
+    if ((Hover.type & 0x100) != 0) {
         GetClipping(&clipping);
         SetClipping(&old_clipping);
         RenderMouseBounds();
