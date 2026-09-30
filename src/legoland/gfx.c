@@ -25,12 +25,12 @@ struct LLSFileHeader {
 };
 
 // FUNCTION: LEGOLAND 0x0044de90
-LEGO_EXPORT char *GetGFXFName(const char *name, unsigned int type, char *out) {
+LEGO_EXPORT char *GetGFXFName(const char *name, unsigned char type, char *out) {
     char *result = out;
     if (result == NULL) {
         result = DAT_006660b0;
     }
-    switch (type & 0xff) {
+    switch (type) {
     case 0:
         // STRING: LEGOLAND 0x004b7a90
         sprintf(result, "%s%s", DAT_004b81c0, name);
