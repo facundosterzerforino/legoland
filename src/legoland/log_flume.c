@@ -3423,10 +3423,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3438,10 +3438,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3453,10 +3453,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 2;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3468,10 +3468,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3483,10 +3483,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3497,16 +3497,16 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
         case 1:
             t.x += DAT_004c2aa0->var_3c[0];
             t.y += DAT_004c2aa0->var_3c[1];
-            t.y += 2;
             t.x += DAT_004c2aa0->var_3c[2] - DAT_004c2aa0->var_3c[0] - w + 1;
+            t.y += 2;
             n = FUN_00409010();
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3518,10 +3518,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3533,10 +3533,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 2;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3548,10 +3548,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3563,10 +3563,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 2;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3583,10 +3583,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 2;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3598,10 +3598,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3613,10 +3613,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 2;
                 n->submode = 2;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3628,10 +3628,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3643,10 +3643,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 3;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3661,10 +3661,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 3;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3676,10 +3676,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 1;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3691,10 +3691,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 2;
                 n->submode = 3;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3706,10 +3706,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 1;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
@@ -3721,10 +3721,10 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
                 n->slotset = entry->slotset;
-                n->flags10d |= 4;
                 n->link28 = entry;
+                n->ride = DAT_004cbe30;
+                n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
             }
