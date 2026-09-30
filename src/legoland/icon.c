@@ -1229,13 +1229,10 @@ void FUN_0046ee00(void) {
 
 // FUNCTION: LEGOLAND 0x0046eee0
 LEGO_EXPORT void RenderIcons(void) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {2};
     struct IconNode *node = (struct IconNode *)DAT_006687c8;
     int elapsed;
 
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
     StoreClipping();
     FUN_0046df60(0);
     elapsed = GetTicks() - DAT_006688c8;
@@ -1273,12 +1270,9 @@ LEGO_EXPORT void RenderIcons(void) {
 
 // FUNCTION: LEGOLAND 0x0046f010
 LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {2};
     struct IconNode *node = (struct IconNode *)DAT_006687c8;
 
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
     StoreClipping();
     FUN_0046df60(0);
     while (node) {
@@ -1304,13 +1298,10 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
 
 // FUNCTION: LEGOLAND 0x0046f100
 void FUN_0046f100(short param_1) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {2};
     struct IconNode *node;
     int elapsed;
 
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
     elapsed = GetTicks() - DAT_006688cc;
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
@@ -1343,12 +1334,8 @@ void FUN_0046f100(short param_1) {
 
 // FUNCTION: LEGOLAND 0x0046f200
 LEGO_EXPORT void RenderHelpIcons(void) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {2};
     struct IconNode *node = DAT_006687cc;
-
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
     StoreClipping();
     FUN_0046df60(0);
     for (; node != NULL; node = node->next) {
