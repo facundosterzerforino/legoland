@@ -5143,24 +5143,18 @@ void FUN_00424c70(struct CastleSub *param_1) {
             return;
         }
         found = 0;
-        for (;;) {
-            node = FUN_00424b30(host);
-            if (node == 0) {
-                break;
-            }
+        while ((node = FUN_00424b30(host)) != 0) {
             ring = FUN_0041e2b0((struct RingHost *)param_1->field_d8);
             if (ring == 0) {
-                if (found == 0) {
-                    return;
-                }
-                FUN_00424ae0(param_1, 0xbb8);
-                return;
+                break;
             }
             FUN_00421590((struct Struct1590 *)node, ring);
             node->flags = 2;
             found = 1;
         }
-        FUN_00424ae0(param_1, 0xbb8);
+        if (found != 0) {
+            FUN_00424ae0(param_1, 0xbb8);
+        }
         return;
     }
     for (cur = (struct ListNode *)host->field_f8; cur != (struct ListNode *)&host->end; cur = cur->next) {
@@ -5617,18 +5611,17 @@ void FUN_00425e20(void) {
     struct Point pt;
     struct Point ref;
     int bounds[4];
-    float *mm;
+
     int mid;
     float dx;
     float fx, fy, fm, fb;
     float dy;
 
     DAT_008299bc = DAT_004b5c1c[1];
-    mm = &DAT_008299bc.m[0][0];
-    a[0] = mm[0];
-    a[1] = mm[1];
-    a[2] = mm[4];
-    a[3] = mm[5];
+    a[0] = DAT_008299bc.m[0][0];
+    a[1] = DAT_008299bc.m[0][1];
+    a[2] = DAT_008299bc.m[1][0];
+    a[3] = DAT_008299bc.m[1][1];
     FUN_00425de0(a);
     pt.x = (lpConfig->field_10 >> 1) + lpConfig->field_20;
     pt.y = (lpConfig->field_12 >> 1) + lpConfig->field_22;
@@ -5637,7 +5630,7 @@ void FUN_00425e20(void) {
     ScreenToMapRef(&pt.x, &ref.x, 0);
     GetTileBounds(&ref, bounds);
     DAT_008299a0[2] = 0.0f;
-    mid = (bounds[2] + bounds[0]) >> 1;
+    mid = (bounds[0] + bounds[2]) >> 1;
     fx = (float)pt.x;
     fm = (float)mid;
     dx = fx - fm;
@@ -7689,7 +7682,7 @@ void FUN_00429270(void) {
     int i;
 
     for (i = 0; i <= 3; i++) {
-        DAT_00612210[0][i].b = DAT_00612210[0][i].a = DAT_004b5f80[0][i].a * 5.0f;
+        DAT_006121c8[6 + i][1] = DAT_006121c8[6 + i][0] = DAT_004b5f80[0][i].a * 5.0f;
     }
     for (i = 0; i <= 3; i++) {
         DAT_00612210[1][i].a = DAT_004b5f80[1][i].a * 1.5f;
@@ -8226,8 +8219,8 @@ void FUN_00429f30(float *center, float r, struct Struct42a110 *src, float hi, fl
     cur = *src;
     lo = *(float *)&cur.field_4->f44;
     DAT_00615fd8 = r * r;
-    DAT_00615fd0 = r;
     DAT_00615f8c = center;
+    DAT_00615fd0 = r;
     DAT_00615fd4 = x;
     DAT_00615f84 = &cur;
     DAT_00615fdc = (r + x) * (r + x);
@@ -8252,8 +8245,8 @@ void FUN_0042a020(float *center, float r, struct Struct42a110 *src, float hi, fl
     cur = *src;
     lo = *(float *)&cur.field_4->f48;
     DAT_00615fd8 = r * r;
-    DAT_00615fd0 = r;
     DAT_00615f8c = center;
+    DAT_00615fd0 = r;
     DAT_00615fd4 = x;
     DAT_00615f84 = &cur;
     DAT_00615fdc = (r + x) * (r + x);
