@@ -330,7 +330,6 @@ void FUN_00482240(int x, int y, struct DirNode *parent) {
     struct MapElement *tile;
     struct DirNode *node;
     int word_index;
-    unsigned int bit;
 
     if (x < 0 || x >= lpConfig->width) {
         return;
@@ -345,8 +344,7 @@ void FUN_00482240(int x, int y, struct DirNode *parent) {
     }
 
     word_index = (x >> 5) + y * 6;
-    bit = 1u << (x & 0x1f);
-    if (bit & DAT_00669258[word_index]) {
+    if ((1u << (x & 0x1f)) & DAT_00669258[word_index]) {
         return;
     }
 
@@ -361,7 +359,7 @@ void FUN_00482240(int x, int y, struct DirNode *parent) {
     node->x = x;
     node->y = y;
     DAT_00669250++;
-    DAT_00669258[word_index] |= bit;
+    DAT_00669258[word_index] |= 1u << (x & 0x1f);
 }
 
 // FUNCTION: LEGOLAND 0x00482300
@@ -517,7 +515,6 @@ void FUN_00482620(int x, int y, struct DirNode *parent) {
     struct MapElement *tile;
     struct DirNode *node;
     int word_index;
-    unsigned int bit;
 
     if (x < 0 || x >= lpConfig->width) {
         return;
@@ -534,8 +531,7 @@ void FUN_00482620(int x, int y, struct DirNode *parent) {
     }
 
     word_index = (x >> 5) + y * 6;
-    bit = 1u << (x & 0x1f);
-    if (bit & DAT_00669258[word_index]) {
+    if ((1u << (x & 0x1f)) & DAT_00669258[word_index]) {
         return;
     }
 
@@ -546,7 +542,7 @@ void FUN_00482620(int x, int y, struct DirNode *parent) {
     node->x = x;
     node->y = y;
     DAT_00669250++;
-    DAT_00669258[word_index] |= bit;
+    DAT_00669258[word_index] |= 1u << (x & 0x1f);
 }
 
 // FUNCTION: LEGOLAND 0x00482710
