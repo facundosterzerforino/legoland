@@ -778,14 +778,18 @@ LEGO_EXPORT void BlokeAnimNextFrame(struct Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00440910
 LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke) {
-    unsigned int k;
     int anim;
 
-    k = bloke->person->field_8 - 2;
-    if (k == 0 || k == 1) {
+    switch (bloke->person->field_8) {
+    case 2:
         anim = 0;
-    } else {
+        break;
+    case 3:
+        anim = 0;
+        break;
+    default:
         anim = 1;
+        break;
     }
     BlokeSetAnim(bloke, anim);
     BlokeSetFrame(bloke, 0);
