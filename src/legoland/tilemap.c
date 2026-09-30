@@ -78,15 +78,17 @@ int FUN_0045aa50(struct FXSpriteList **out) {
     struct FXSpriteList *src;
 
     do {
-        if (*slot != (void *)-1 && (src = info->src) != NULL && src != prev) {
-            *out = src;
-            count++;
-            prev = src;
-            out++;
+        if (*slot != (void *)-1) {
+            src = info->src;
+            if (src != NULL && src != prev) {
+                *out++ = src;
+                count++;
+                prev = src;
+            }
         }
         slot++;
         info++;
-    } while ((int)slot < (int)&TileSpriteArray[2048]);
+    } while ((int)slot < (int)MapRenderOrderList);
     return count;
 }
 
