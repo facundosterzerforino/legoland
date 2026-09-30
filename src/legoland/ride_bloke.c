@@ -2,6 +2,7 @@
 
 #include "legoland.h"
 
+#include "bloke.h"
 #include "draw.h"
 #include "globals.h"
 #include "image_sprite.h"
@@ -9,6 +10,7 @@
 #include "map_object.h"
 #include "math.h"
 #include "print_sprite.h"
+#include "render3d.h"
 #include "ride_bloke.h"
 #include "ride_queue.h"
 #include "sound_music.h"
@@ -45,20 +47,39 @@ struct RideMover {
 struct NewBloke {
     struct NewBloke *next;
     unsigned short id;
-    unsigned char pad_6[0x10 - 0x6];
-    int fx;
-    int fy;
-    int px;
-    int py;
-    int tx;
-    int ty;
-    unsigned char pad_28[8];
+    unsigned char pad_6[0x8 - 0x6];
+    int sx;
+    int sy;
+    union {
+        struct Point f;
+        struct {
+            int fx;
+            int fy;
+        };
+    };
+    union {
+        struct Point p;
+        struct {
+            int px;
+            int py;
+        };
+    };
+    union {
+        struct Point t;
+        struct PathPair tp;
+        struct {
+            int tx;
+            int ty;
+        };
+    };
+    int velX;
+    int velY;
     struct Point wp[17];
     unsigned char f_b8;
-    unsigned char pad_b9;
+    unsigned char f_b9;
     unsigned char f_ba;
     unsigned char f_bb;
-    unsigned short f_bc;
+    short f_bc;
     unsigned short f_be;
     unsigned short f_c0;
     unsigned char f_c2;
@@ -68,7 +89,10 @@ struct NewBloke {
     unsigned short f_c6;
     unsigned short f_c8;
     unsigned char pad_ca[2];
-    int owner;
+    union {
+        int owner;
+        struct Bloke *bloke;
+    };
 };
 
 struct RideBloke {
@@ -339,6 +363,13 @@ void FUN_00401660(struct NewBloke *b) {
         b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
         d = b->f_ba + 2;
+        FUN_00480840(&local, &local, b->f_ba = d & 7);
+        b->wp[frame].x = local.x << 16;
+        b->wp[frame].y = local.y << 16;
+        b->tx = local.x;
+        b->ty = local.y;
+        b->f_bb = frame + 1;
+        b->f_c2 = 1;
     } else {
         r.i = FUN_00401000(13, -40, b->f_ba);
         b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
@@ -349,18 +380,34 @@ void FUN_00401660(struct NewBloke *b) {
         b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
         frame++;
         d = b->f_ba - 2;
+        FUN_00480840(&local, &local, b->f_ba = d & 7);
+        b->wp[frame].x = local.x << 16;
+        b->wp[frame].y = local.y << 16;
+        b->tx = local.x;
+        b->ty = local.y;
+        b->f_bb = frame + 1;
+        b->f_c2 = 1;
     }
-    FUN_00480840(&local, &local, b->f_ba = d & 7);
-    b->wp[frame].x = local.x << 16;
-    b->wp[frame].y = local.y << 16;
-    b->tx = local.x;
-    b->ty = local.y;
-    b->f_bb = frame + 1;
-    b->f_c2 = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004017c0
 LEGO_EXPORT __int64 MapToPlayfield(int param_1, int param_2) {
+    int w;
+    int h;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
+    GetTileDimensions(&w, &h);
+    r.p.lo = (param_1 - param_2) * w >> 9;
+    r.p.hi = (param_1 + param_2) * h >> 9;
+    return r.i;
+}
+
+static __inline __int64 MapToPlayfieldInl(int param_1, int param_2) {
     int w;
     int h;
     union {
@@ -472,10 +519,14 @@ int *FUN_00401970(int *param_1, int param_2, int param_3) {
 void FUN_004019c0(struct RideMover *m) {
     unsigned char oldDir = m->dir;
     unsigned char moving = m->moving;
-    int dy, dx, dist, diff;
-    unsigned char newDir;
 
-    if (moving) {
+    if (!moving) {
+        m->velX = 0;
+        m->velY = 0;
+    } else {
+        int dy, dx, dist, diff;
+        unsigned char newDir;
+
         dx = m->destX - m->x;
         dy = m->destY - m->y;
         dist = (int)sqrt((float)dx * (float)dx + (float)dy * (float)dy);
@@ -503,9 +554,6 @@ void FUN_004019c0(struct RideMover *m) {
             m->dirY = 0;
             m->velY = 0;
         }
-    } else {
-        m->velX = 0;
-        m->velY = 0;
     }
 }
 
@@ -529,9 +577,8 @@ int FUN_00401ae0(unsigned short id, int bloke) {
         b->px = e->x + 2;
         b->fx = (e->x + 2) << 16;
     }
-    b->tx = b->px;
     b->py = e->y + 4;
-    b->ty = b->py;
+    b->t = b->p;
     b->fy = (e->y + 4) << 16;
     if (FUN_00401970((int *)b, b->px, b->ty) != 0) {
         free(b);
@@ -964,7 +1011,151 @@ void FUN_004025d0(struct Person *person, unsigned int direction) {
 }
 
 // FUNCTION: LEGOLAND 0x00402780
-void FUN_00402780(struct DrivingBloke *b) { STUB(); }
+void FUN_00402780(struct NewBloke *b) {
+    int w2, h2;
+    struct Point of;
+    struct Point off;
+    struct Point op;
+    struct Point wp0;
+    struct HitInfo cfg;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
+    int sx, sy, key, v;
+    struct Person *person;
+    struct Point *scr;
+
+    cfg.field_0 = 0x306;
+    cfg.field_4 = b->owner;
+    cfg.field_8 = 0;
+    r.i = MapToPlayfieldInl(b->fx >> 8, b->fy >> 8);
+    of = b->f;
+    wp0 = b->wp[0];
+    op = b->p;
+    v = 0;
+    FUN_004125f0(b->px, b->py);
+    GetTileDimensions(&w2, &h2);
+    sx = r.p.lo - ((w2 + 1) >> 1) - (ScrollX >> 8);
+    sy = r.p.hi - (ScrollY >> 8);
+    off.x = DAT_00830f9c->x[b->f_b8] >> 1;
+    off.y = DAT_00830f9c->y[b->f_b8] >> 1;
+    AdjustOffsetForViewMode(&off);
+    b->sx = lpConfig->field_20 + off.x + sx;
+    b->sy = lpConfig->field_22 + off.y + sy;
+    key = h2 + sy;
+    switch (b->f_c3) {
+    case 1:
+        SetOverridePalette((unsigned int)DAT_0082c6bc);
+        break;
+    case 2:
+        SetOverridePalette((unsigned int)DAT_0082c6b8);
+        break;
+    case 3:
+        SetOverridePalette((unsigned int)DAT_0082c690);
+        break;
+    }
+    SetOverrideFrame(b->f_b9 = b->f_b8);
+    SortSpriteWithCallback(DAT_00830f94, b->sx, b->sy, key, 0, (unsigned int)FUN_00402550, (unsigned int)b, &cfg);
+    ClearOverridePalette();
+    ClearOverrideFrame();
+    b->bloke->pos.x = sx;
+    b->bloke->pos.y = sy;
+    b->bloke->field_72 = (b->f_b8 + 6) & 15;
+    person = Find3DPersonFromBloke(b->bloke);
+    person->sort_id = wp0.x;
+    scr = &person->screen;
+    scr->x = lpConfig->field_20 + b->bloke->pos.x + 0x10;
+    scr->y = lpConfig->field_22 + b->bloke->pos.y + 8;
+    AdjustBlokePosition(scr);
+    FUN_004025d0(person, b->bloke->field_72);
+    for (;;) {
+        if (FUN_00402490((struct NearBloke *)b) != NULL) {
+            b->f_c8 = b->f_c6 >> 1;
+            b->f_bc++;
+            if (b->f_bc <= 0x200) {
+                return;
+            }
+            if (b->f_c4 != 0) {
+                return;
+            }
+            break;
+        }
+        b->f_bc = 0;
+        if (b->f_c8 < b->f_c6) {
+            b->f_c8 += 0x40;
+        }
+        FUN_004019c0((struct RideMover *)b);
+        b->fx += b->velX;
+        b->fy += b->velY;
+        b->px = (b->fx + 0x10000) >> 16;
+        b->py = (b->fy + 0x10000) >> 16;
+        if (FUN_00402430((struct PairArg *)&b->p, (struct PairArg *)&op) != 0) {
+            break;
+        }
+        b->p = op;
+        b->f = of;
+        return;
+    }
+    if ((((wp0.x - b->fx) ^ (wp0.x - of.x)) | ((wp0.y - b->fy) ^ (wp0.y - of.y))) & 0x80000000) {
+    } else if (b->f_bb != 0) {
+        if (wp0.x != b->fx || wp0.y != b->fy) {
+            return;
+        }
+    }
+    if (b->f_bb == 0) {
+        v = 1;
+        if (b->f_c4 == 0) {
+            b->f_c2 = 0;
+            if (b->f_c0 != 0) {
+                b->f_c4 = FUN_00401f30(b->id, &b->tp, b->f_ba);
+                if (b->f_c4 == 0) {
+                    b->f_c8 = 0;
+                }
+            } else {
+                b->f_c4 = FUN_00402150(b->id, &b->tp, b->f_ba);
+                if (b->f_c4 == 0) {
+                    b->f_c8 = 0;
+                }
+            }
+        }
+    }
+    switch (b->f_c4) {
+    case 1:
+        if (FUN_00402390((unsigned char *)b) != 0) {
+            FUN_00401320(b);
+            b->f_c4 = 0;
+        }
+        break;
+    case 2:
+        if (FUN_00402390((unsigned char *)b) != 0) {
+            b->f_c4 = 0;
+            FUN_004015e0((unsigned char *)b);
+        }
+        break;
+    case 3:
+        if (FUN_00402390((unsigned char *)b) != 0) {
+            b->f_c4 = 0;
+            FUN_00401080(b);
+        }
+        break;
+    case 4:
+        FUN_00401660(b);
+        b->f_c4 = 0;
+        break;
+    case 5:
+        FUN_00401320(b);
+        FUN_004015e0((unsigned char *)b);
+        b->f_c4 = 0;
+        break;
+    }
+    if (v == 0) {
+        FUN_00401cd0((struct TimerStruct *)b);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00402c10
 void FUN_00402c10(void) {
@@ -990,7 +1181,7 @@ void FUN_00402c10(void) {
                 tile->var_1c--;
             }
         } else {
-            FUN_00402780(cur);
+            FUN_00402780((struct NewBloke *)cur);
         }
 
         cur = next;
