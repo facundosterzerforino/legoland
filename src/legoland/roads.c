@@ -10,7 +10,9 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "pumps.h"
+#include "render3d.h"
 #include "ride_queue.h"
 #include "roads.h"
 #include "tilemap.h"
@@ -712,7 +714,111 @@ void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x00414440
-void FUN_00414440(void) { STUB(); }
+void FUN_00414440(void) {
+    struct RideQueueEntry *e = DAT_004cbeac;
+    int ia;
+    int ib;
+    int ic;
+    int id;
+    int w;
+    int h;
+    struct Point pt;
+    struct Point ref;
+    int b[4];
+
+    DAT_004b4c04--;
+    if (DAT_004b4c04 <= 0) {
+        switch (DAT_004cbeb8) {
+        case 0:
+            DAT_004cbeb0 = 0;
+            DAT_004b4c04 = 0x28;
+            break;
+        case 1:
+            DAT_004cbeb4 = 1;
+            DAT_004b4c04 = 0x8c;
+            break;
+        case 2:
+            DAT_004cbeb4 = 0;
+            DAT_004b4c04 = 0x28;
+            break;
+        case 3:
+            DAT_004cbeb0 = 1;
+            DAT_004b4c04 = 0x8c;
+            break;
+        }
+        DAT_004cbeb8 = (DAT_004cbeb8 + 1) & 3;
+    }
+    if (DAT_004c11c0 != 0) {
+        if (DAT_004cbeb0 != 0) {
+            id = 6;
+            ib = 1;
+            ic = 2;
+            ia = 5;
+        } else if (DAT_004cbeb4 != 0) {
+            id = 7;
+            ib = 0;
+            ic = 3;
+            ia = 4;
+        } else {
+            id = 7;
+            ib = 1;
+            ic = 3;
+            ia = 5;
+        }
+    } else if (DAT_004cbeb0 != 0) {
+        id = 9;
+        ib = 10;
+        ic = 13;
+        ia = 14;
+    } else if (DAT_004cbeb4 != 0) {
+        id = 8;
+        ib = 11;
+        ic = 12;
+        ia = 15;
+    } else {
+        id = 9;
+        ib = 11;
+        ic = 13;
+        ia = 15;
+    }
+    for (; e != NULL; e = e->next) {
+        if ((e->field_14 & 0xf) != 5) {
+            continue;
+        }
+        GetTileDimensions(&w, &h);
+        pt.x = DAT_0082c680->off_x[ia & 0xff] >> 1;
+        pt.y = DAT_0082c680->off_y[ia & 0xff] >> 1;
+        AdjustOffsetForViewMode(&pt);
+        ref.x = e->x;
+        ref.y = e->y;
+        GetTileBounds(&ref, b);
+        SortSprite(DAT_0082c680->sprites[ia & 0xff], b[0] + pt.x, b[1] + pt.y, b[1] - lpConfig->field_22, 0, 0);
+
+        ref.x = e->x + 3;
+        ref.y = e->y;
+        GetTileBounds(&ref, b);
+        pt.x = DAT_0082c680->off_x[id & 0xff] >> 1;
+        pt.y = DAT_0082c680->off_y[id & 0xff] >> 1;
+        AdjustOffsetForViewMode(&pt);
+        SortSprite(DAT_0082c680->sprites[id & 0xff], b[0] + pt.x, b[1] + pt.y, ((b[1] + b[3]) >> 1) - lpConfig->field_22, 0, 0);
+
+        ref.x = e->x + 3;
+        ref.y = e->y + 3;
+        GetTileBounds(&ref, b);
+        pt.x = DAT_0082c680->off_x[ib & 0xff] >> 1;
+        pt.y = DAT_0082c680->off_y[ib & 0xff] >> 1;
+        AdjustOffsetForViewMode(&pt);
+        SortSprite(DAT_0082c680->sprites[ib & 0xff], b[0] + pt.x, b[1] + pt.y, b[3] - lpConfig->field_22, 0, 0);
+
+        ref.x = e->x;
+        ref.y = e->y + 3;
+        GetTileBounds(&ref, b);
+        pt.x = DAT_0082c680->off_x[ic & 0xff] >> 1;
+        pt.y = DAT_0082c680->off_y[ic & 0xff] >> 1;
+        AdjustOffsetForViewMode(&pt);
+        SortSprite(DAT_0082c680->sprites[ic & 0xff], b[0] + pt.x, b[1] + pt.y, ((b[1] + b[3]) >> 1) - lpConfig->field_22, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00414830
 void FUN_00414830(void) {

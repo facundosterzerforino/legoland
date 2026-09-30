@@ -286,6 +286,9 @@ unsigned char DAT_004b4bd0[0x14];
 // GLOBAL: LEGOLAND 0x004b4bf0
 unsigned int DAT_004b4bf0[5];
 
+// GLOBAL: LEGOLAND 0x004b4c04
+int DAT_004b4c04;
+
 // GLOBAL: LEGOLAND 0x004b4cb8
 unsigned char SAFARI_SFX[8];
 
@@ -1507,6 +1510,9 @@ int DAT_004cbeb0;
 
 // GLOBAL: LEGOLAND 0x004cbeb4
 int DAT_004cbeb4;
+
+// GLOBAL: LEGOLAND 0x004cbeb8
+unsigned int DAT_004cbeb8;
 
 // GLOBAL: LEGOLAND 0x004cbec4
 struct SafariOwner *DAT_004cbec4;
@@ -5465,7 +5471,7 @@ void *DAT_0082c678;
 void *DAT_0082c67c;
 
 // GLOBAL: LEGOLAND 0x0082c680
-void *DAT_0082c680;
+struct RoadLights *DAT_0082c680;
 
 // GLOBAL: LEGOLAND 0x0082c684
 void *DAT_0082c684;

@@ -629,6 +629,8 @@ extern struct FlumeTemplate DAT_004b4858;
 extern unsigned char DAT_004b4bd0[0x14];
 // 0x004b4bf0
 extern unsigned int DAT_004b4bf0[5];
+// 0x004b4c04
+extern int DAT_004b4c04;
 // 0x004b4cb8
 extern unsigned char SAFARI_SFX[8];
 // 0x004b4cc0
@@ -1413,6 +1415,8 @@ extern struct RideQueueEntry *DAT_004cbeac;
 extern int DAT_004cbeb0;
 // 0x004cbeb4
 extern int DAT_004cbeb4;
+// 0x004cbeb8
+extern unsigned int DAT_004cbeb8;
 // 0x004cbec4
 extern struct SafariOwner *DAT_004cbec4;
 // 0x004cbed0
@@ -4069,7 +4073,8 @@ extern void *DAT_0082c678;
 // 0x0082c67c
 extern void *DAT_0082c67c;
 // 0x0082c680
-extern void *DAT_0082c680;
+struct RoadLights;
+extern struct RoadLights *DAT_0082c680;
 // 0x0082c684
 extern void *DAT_0082c684;
 // 0x0082c688

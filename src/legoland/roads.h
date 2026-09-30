@@ -7,6 +7,14 @@ struct RoadEditArg;
 struct RoadPlaceArg;
 struct NeighborResult;
 struct RoadTile;
+struct Sprite;
+
+struct RoadLights {
+    unsigned char pad_0[0x8];
+    struct Sprite **sprites;
+    int *off_x;
+    int *off_y;
+};
 
 unsigned int FUN_00413970(unsigned short param_1);
 void FUN_004132a0(TileId tile, int param_2, int param_3, unsigned int param_4, unsigned int param_5);
