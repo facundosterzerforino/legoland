@@ -275,9 +275,8 @@ LEGO_EXPORT void LoadColourTable(void) {
         blue = src[-1];
         entry->peBlue = blue;
         src += 3;
-        lookup++;
         entry->peFlags = 4;
-        lookup[-1] = (unsigned short)((((entry->peRed & 0xf8) << 5 | (entry->peGreen & 0xf8)) << 2) | (blue >> 3));
+        *lookup++ = (unsigned short)((((entry->peRed & 0xf8) << 5 | (entry->peGreen & 0xf8)) << 2) | (blue >> 3));
         entry++;
     } while ((int)src < (int)&DAT_00813b20[0x301]);
 

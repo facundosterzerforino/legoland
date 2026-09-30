@@ -220,15 +220,10 @@ void FUN_0046d4e0(struct IconNode *node) {
     struct IconNode *next;
     if (DAT_006687c8 == node) {
         FUN_0046d460(&DAT_006687c8);
-        return;
-    }
-    cur = DAT_006687c8;
-    if (cur != NULL) {
-        while ((next = cur->next) != node) {
+    } else {
+        cur = DAT_006687c8;
+        while (cur != NULL && (next = cur->next) != node) {
             cur = next;
-            if (next == NULL) {
-                return;
-            }
         }
         if (cur != NULL) {
             FUN_0046d460((struct IconNode **)cur);
@@ -964,16 +959,15 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
 // FUNCTION: LEGOLAND 0x0046e7b0
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
     struct PrintCtx ctx;
-    short x;
     RECT clip;
 
     ctx.flags = 2;
     ctx.node = node;
     ctx.field_8 = 0;
     StoreClipping();
-    x = node->x;
-    clip.left = x;
-    clip.right = (int)(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
+    clip.left = node->x;
+    clip.right = (int)(node->field_10 * 0.00005f * (int)DAT_007cb3a0);
+    clip.right += clip.left;
     clip.top = node->y;
     clip.bottom = node->field_12 + clip.top;
     SetClipping(&clip);
@@ -1138,12 +1132,11 @@ void FUN_0046ec50(char param) {
         short id = (short)node->id;
         if (id == 0xd2 || id == 0xd5 || id == 0xd6 || id == 0xd7) {
             if (DAT_007fdd80 == 0) {
-                short old = node->x;
-                short sum = (short)param + old;
-                node->x = sum;
-                if ((char)node->field_18 == 0xa && sum >= 3) {
+                int old = node->x;
+                node->x += param;
+                if ((char)node->field_18 == 0xa && node->x >= 3) {
                     node->x = 0;
-                    param = (char)node->x - (char)(short)old;
+                    param = (char)node->x - (char)old;
                     DAT_007fdd8c = 3;
                     saved_mode = 3;
                     lpConfig->field_20 = 0x79;
