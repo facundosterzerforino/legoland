@@ -8219,8 +8219,8 @@ void FUN_00429f30(float *center, float r, struct Struct42a110 *src, float hi, fl
     cur = *src;
     lo = *(float *)&cur.field_4->f44;
     DAT_00615fd8 = r * r;
-    DAT_00615fd0 = r;
     DAT_00615f8c = center;
+    DAT_00615fd0 = r;
     DAT_00615fd4 = x;
     DAT_00615f84 = &cur;
     DAT_00615fdc = (r + x) * (r + x);
@@ -8245,8 +8245,8 @@ void FUN_0042a020(float *center, float r, struct Struct42a110 *src, float hi, fl
     cur = *src;
     lo = *(float *)&cur.field_4->f48;
     DAT_00615fd8 = r * r;
-    DAT_00615fd0 = r;
     DAT_00615f8c = center;
+    DAT_00615fd0 = r;
     DAT_00615fd4 = x;
     DAT_00615f84 = &cur;
     DAT_00615fdc = (r + x) * (r + x);
