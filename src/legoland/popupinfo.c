@@ -700,38 +700,41 @@ void FUN_00471d90(void) {
     int iVar1;
     short sVar2;
     char *str;
-    unsigned int uVar4;
+    int uVar4;
     int iVar5;
     int iVar6;
+    int iVar7;
+    int iVar8;
     struct PrintCtx ctx;
     char local_14[20];
 
     iVar6 = DAT_007fdecc;
-    uVar4 = DAT_007fdfac & 0xff;
+    uVar4 = *(unsigned int *)&DAT_007fdfac & 0xff;
     iVar5 = uVar4 * 0x14;
     ctx.node = 0;
-    iVar1 = DAT_007fded0 + 0x48 + iVar5;
     ctx.field_8 = 0;
     ctx.flags = 1;
+    iVar1 = DAT_007fded0 + 0x48 + iVar5;
     PrintSprite(DAT_00668904, DAT_007fdecc, iVar1, 0, (int *)&ctx);
     iVar6 = iVar6 + 0x7a;
-    for (; uVar4 != 0; uVar4 = uVar4 - 1) {
+    for (; uVar4 > 0; uVar4 = uVar4 - 1) {
         PrintSprite(DAT_00668908, iVar6, iVar1, 0, (int *)&ctx);
         iVar6 = iVar6 + 0x20;
     }
     PrintSprite(DAT_0066890c, iVar6, iVar1, 0, (int *)&ctx);
     DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
-    DAT_007fdea8->x = (short)iVar6 + 3;
+    iVar6 = iVar6 + 0x4e;
+    DAT_007fdea8->x = (short)iVar6 - 0x4b;
     sVar2 = (short)iVar1 + 3;
     DAT_007fdea8->y = sVar2;
     DAT_007fe000->flags = DAT_007fe000->flags & 0xfffffbff;
-    DAT_007fe000->x = (short)iVar6 + 0x27;
+    DAT_007fe000->x = (short)iVar6 - 0x27;
     DAT_007fe000->y = sVar2;
     str = GetString(0xa2);
     sprintf(local_14, (char *)DAT_004b8bbc, str);
-    FUN_00455e50(local_14, DAT_007fdecc + 0xc, iVar1 + 6,
-        (DAT_007fdecc + 0x86 + iVar5) - (DAT_007fdecc + 0xc), (iVar1 + 0x21) - (iVar1 + 6), 1, 5,
-        0xff0000, 0xffffff);
+    iVar7 = DAT_007fdecc + 0xc;
+    iVar8 = iVar1 + 6;
+    FUN_00455e50(local_14, iVar7, iVar8, (DAT_007fdecc + 0x86 + iVar5) - iVar7, (iVar1 + 0x21) - iVar8, 1, 5, 0xff0000, 0xffffff);
     if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44.x) || ((int)DAT_00813a44.x < DAT_007fdea8->x)) {
         FUN_00471d60();
     }
@@ -745,12 +748,12 @@ void FUN_00471d90(void) {
 void FUN_00471f10(void) {
     int iVar1;
     int iVar2;
-    unsigned int uVar3;
-    unsigned int uVar4;
+    int uVar3;
+    int uVar4;
     int iVar5;
     int iVar6;
     int iVar7;
-    unsigned int local_1c;
+    int local_1c;
     struct PrintCtx ctx;
 
     iVar2 = DAT_007fded0;
@@ -758,11 +761,11 @@ void FUN_00471f10(void) {
     ctx.node = 0;
     ctx.flags = 1;
     ctx.field_8 = 0;
-    uVar4 = DAT_007fdfac & 0xff;
+    uVar4 = *(unsigned int *)&DAT_007fdfac & 0xff;
     PrintSprite(DAT_006688e0, DAT_007fdecc, DAT_007fded0, 0, (int *)&ctx);
     iVar6 = iVar1 + 0xbc;
     iVar7 = iVar6;
-    for (uVar3 = uVar4; uVar3 != 0; uVar3 = uVar3 - 1) {
+    for (uVar3 = uVar4; uVar3 > 0; uVar3 = uVar3 - 1) {
         PrintSprite(DAT_006688e4, iVar7, iVar2, 0, (int *)&ctx);
         iVar7 = iVar7 + 0x20;
     }
@@ -786,7 +789,7 @@ void FUN_00471f10(void) {
     }
     iVar7 = iVar2 + 99 + uVar4 * 0x14;
     PrintSprite(DAT_00668900, iVar1, iVar7, 0, (int *)&ctx);
-    for (; uVar4 != 0; uVar4 = uVar4 - 1) {
+    for (; uVar4 > 0; uVar4 = uVar4 - 1) {
         PrintSprite(DAT_006688fc, iVar6, iVar7, 0, (int *)&ctx);
         iVar6 = iVar6 + 0x20;
     }
@@ -967,17 +970,17 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
         local_8[0] = v & 0xff;
         local_8[1] = v >> 8;
         cls = *(struct ObjClass **)((char *)DAT_007fdec4 + 0xc);
-        QueryCursor.field_1408 = v >> 8;
-        QueryObj.pos.y = (unsigned char)(v >> 8);
+        QueryCursor.field_1408 = local_8[1];
+        QueryObj.pos.y = (unsigned char)local_8[1];
         QueryClass = cls;
-        QueryCursor.field_1404 = v & 0xff;
-        QueryObj.pos.x = (unsigned char)(v & 0xff);
+        QueryCursor.field_1404 = local_8[0];
+        QueryObj.pos.x = (unsigned char)local_8[0];
         cls->method_94(cls->field_c4, local_8);
         BuildCursorPtr(&QueryCursor, 0, 0);
         if ((int)FUN_0045f4b0(&QueryCursor) != 0) {
             FUN_0045d3d0(QueryClass, local_8);
             cls = QueryClass;
-            RemObjFromMap(cls, *cls->field_c4, QueryObj, &QueryCursor);
+            RemObjFromMap(cls, cls->field_c4, QueryObj, &QueryCursor);
         }
         memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
         QueryClass = saved_class;
