@@ -750,31 +750,32 @@ LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param) {
 // FUNCTION: LEGOLAND 0x0045c870
 LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
     struct MapTile *tile;
-    unsigned int flags;
+    unsigned char flags;
     char local_1;
+    char dir;
 
     tile = (struct MapTile *)((char *)GameMap[param_1[1]] + *param_1 * 0x14);
     tile->flags_10 = tile->flags_10 & 0xc3;
-    flags = FUN_0045c440(param_1, (char *)&param_1, &local_1);
-    if ((char)param_1 == '\0') {
+    flags = FUN_0045c440(param_1, &dir, &local_1);
+    if (dir == '\0') {
         tile->flags_10 = tile->flags_10 | 0x10;
         return;
     }
-    if ((char)param_1 == '\x01') {
+    if (dir == '\x01') {
         tile->flags_10 = tile->flags_10 | 0x10;
         return;
     }
-    if ((char)param_1 == '\x02') {
+    if (dir == '\x02') {
         if ((flags & 0x11) == 1 || (flags & 0x11) == 0x10) {
             tile->flags_10 = tile->flags_10 | 8;
             return;
         }
     } else {
-        if ((char)param_1 == '\x03') {
+        if (dir == '\x03') {
             tile->flags_10 = tile->flags_10 | 4;
             return;
         }
-        if ((char)param_1 == '\x04') {
+        if (dir == '\x04') {
             tile->flags_10 = tile->flags_10 | 0x20;
         }
     }
