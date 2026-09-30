@@ -1571,6 +1571,15 @@ int DAT_004cbeec;
 // GLOBAL: LEGOLAND 0x004cbef4
 void *DAT_004cbef4;
 
+// GLOBAL: LEGOLAND 0x007fe9a4
+int DAT_007fe9a4;
+
+// GLOBAL: LEGOLAND 0x007fea14
+int DAT_007fea14;
+
+// GLOBAL: LEGOLAND 0x007fea1c
+int DAT_007fea1c;
+
 // GLOBAL: LEGOLAND 0x0082c66c
 struct Sprite *DAT_0082c66c;
 

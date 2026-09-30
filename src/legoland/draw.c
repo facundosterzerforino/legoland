@@ -459,8 +459,27 @@ LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3
 // FUNCTION: LEGOLAND 0x00464ee0
 void __fastcall FUN_00464ee0(struct Sprite *sprite, RECT *rect, int *off) { STUB(); }
 
+// The original fills the rows with an inline __asm block (pusha; rep stosw per row; popa) that
+// reads its loop bounds from the globals below. This is the C equivalent: same effect, but it
+// cannot byte-match without __asm.
 // FUNCTION: LEGOLAND 0x004651d0
-LEGO_EXPORT void SoftPrint_Clear(void) { STUB(); }
+LEGO_EXPORT void SoftPrint_Clear(void) {
+    unsigned short colour = GetTransparentColour();
+    unsigned short *row;
+    int y;
+    int x;
+
+    DAT_007fea14 = DAT_0066809c.dwHeight;
+    DAT_007fea1c = DAT_0066809c.dwWidth;
+    DAT_007fe9a4 = DAT_007fea1c;
+    row = DAT_0066809c.lpSurface;
+    for (y = DAT_007fea14; y != 0; y--) {
+        for (x = 0; x < DAT_007fe9a4; x++) {
+            row[x] = colour;
+        }
+        row = (unsigned short *)((char *)row + DAT_0066809c.lPitch);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00465240
 void FUN_00465240(void) { STUB(); }

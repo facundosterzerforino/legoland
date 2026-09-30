@@ -1462,6 +1462,12 @@ extern int DAT_004cbee8;
 extern int DAT_004cbeec;
 // 0x004cbef4
 extern void *DAT_004cbef4;
+// 0x007fe9a4
+extern int DAT_007fe9a4;
+// 0x007fea14
+extern int DAT_007fea14;
+// 0x007fea1c
+extern int DAT_007fea1c;
 // 0x0082c66c
 extern struct Sprite *DAT_0082c66c;
 // 0x0082c670
