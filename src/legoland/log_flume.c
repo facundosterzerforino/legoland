@@ -2449,7 +2449,7 @@ int FUN_0040cdf0(TileId *tile) {
     int result = 0;
     struct FlumeEntry *entry = FUN_00408ef0(tile);
     if (entry != NULL) {
-        return FUN_0040b390(entry);
+        result = FUN_0040b390(entry);
     }
     return result;
 }
