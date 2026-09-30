@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdlib.h>
 #include <string.h>
 #include "globals.h"
 #include "legoland.h"
@@ -3545,8 +3546,200 @@ void FUN_004227a0(void) {
     FUN_004775d0(DAT_004dd860);
 }
 
+struct MVert {
+    int x;
+    int y;
+    int rest[3];
+};
+struct MEdge {
+    int v0;
+    int v1;
+};
+struct MTri {
+    int e[3];
+};
+struct EdgeMesh {
+    int f0;
+    int nVerts;
+    int nEdges;
+    int nTris;
+    struct MVert *verts;
+    struct MEdge *edges;
+    struct MTri *tris;
+};
+
 // FUNCTION: LEGOLAND 0x004227c0
-void FUN_004227c0(void) { STUB(); }
+struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
+    struct EdgeMesh *out = NULL;
+    int nEdges = src->nEdges;
+    int removedTris = 0;
+    int removedEdges = 0;
+    int removedVerts = 0;
+    int nV = 0;
+    int *triFlag;
+    int *edgeFlag;
+    int *vertFlag;
+    int i;
+    int j;
+    int k;
+    int t;
+
+    for (t = 0; t < src->nTris; t++) {
+        for (k = 0; k < 3; k++) {
+            struct MEdge *ed = &src->edges[src->tris[t].e[k] & 0x7fffffff];
+            if (ed->v0 > nV) {
+                nV = ed->v0;
+            }
+            if (ed->v1 > nV) {
+                nV = ed->v1;
+            }
+        }
+    }
+    nV++;
+    triFlag = (int *)malloc(src->nTris * 4);
+    edgeFlag = (int *)malloc(nEdges * 4);
+    vertFlag = (int *)malloc(nV * 4);
+    if (triFlag != NULL) {
+        if (edgeFlag != NULL && vertFlag != NULL) {
+            memset(triFlag, 0, src->nTris * 4);
+            memset(edgeFlag, 0, nEdges * 4);
+            memset(vertFlag, 0, nV * 4);
+            for (t = 0; t < src->nTris; t++) {
+                int v[3];
+                float z;
+                int dx1;
+                int dy1;
+                int dx2;
+                int dy2;
+                unsigned int bits;
+                for (k = 0; k < 3; k++) {
+                    int e = src->tris[t].e[k];
+                    if (e & 0x80000000) {
+                        v[k] = src->edges[e & 0x7fffffff].v1;
+                    } else {
+                        v[k] = src->edges[e & 0x7fffffff].v0;
+                    }
+                }
+                dx1 = src->verts[v[1]].x - src->verts[v[0]].x;
+                dy1 = src->verts[v[1]].y - src->verts[v[0]].y;
+                dx2 = src->verts[v[2]].x - src->verts[v[0]].x;
+                dy2 = src->verts[v[2]].y - src->verts[v[0]].y;
+                z = (float)dy2 * (float)dx1 - (float)dx2 * (float)dy1;
+                bits = *(unsigned int *)&z;
+                if (bits & 0x80000000) {
+                    triFlag[t] = 1;
+                    removedTris++;
+                }
+            }
+            for (t = 0; t < src->nTris; t++) {
+                if (triFlag[t] != 0) {
+                    for (k = 0; k < 3; k++) {
+                        int found = 0;
+                        for (i = 0; i < src->nTris; i++) {
+                            if (triFlag[i] == 0) {
+                                if (((src->tris[i].e[0] ^ ((int *)src->tris)[t * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[i].e[1] ^ ((int *)src->tris)[t * 3 + k]) & 0x7fffffff) == 0 || ((src->tris[i].e[2] ^ ((int *)src->tris)[t * 3 + k]) & 0x7fffffff) == 0) {
+                                    found = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found) {
+                            edgeFlag[((int *)src->tris)[t * 3 + k] & 0x7fffffff] = 1;
+                        }
+                    }
+                }
+            }
+            for (i = 0; i < nEdges; i++) {
+                if (edgeFlag[i] != 0) {
+                    int *pv = &src->edges[i].v0;
+                    for (k = 0; k < 2; k++) {
+                        int found = 0;
+                        for (j = 0; j < nEdges; j++) {
+                            if (edgeFlag[j] == 0) {
+                                if (*pv == src->edges[j].v0 || *pv == src->edges[j].v1) {
+                                    found = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found) {
+                            vertFlag[*pv] = 1;
+                        }
+                        pv++;
+                    }
+                }
+            }
+            for (i = 0; i < nEdges; i++) {
+                if (edgeFlag[i] != 0) {
+                    removedEdges++;
+                }
+            }
+            for (i = 0; i < nV; i++) {
+                if (vertFlag[i] != 0) {
+                    removedVerts++;
+                }
+            }
+            out = (struct EdgeMesh *)malloc((nEdges - removedEdges) * 8 + (src->nTris - removedTris) * 12 + (nV - removedVerts) * 20 + 0x1c);
+            if (out != NULL) {
+                out->nEdges = nEdges - removedEdges - 1;
+                out->nTris = src->nTris - removedTris;
+                out->nVerts = nV - removedVerts - 1;
+                out->edges = (struct MEdge *)(out + 1);
+                out->tris = (struct MTri *)(out->edges + (nEdges - removedEdges));
+                out->verts = (struct MVert *)(out->tris + (src->nTris - removedTris));
+                j = 0;
+                for (i = 0; i < nV; i++) {
+                    if (vertFlag[i] == 0) {
+                        out->verts[j] = src->verts[i];
+                        vertFlag[i] = i - j;
+                        j++;
+                    }
+                }
+                j = 0;
+                for (i = 0; i < nEdges; i++) {
+                    if (edgeFlag[i] == 0) {
+                        out->edges[j].v0 = src->edges[i].v0 - vertFlag[src->edges[i].v0];
+                        out->edges[j].v1 = src->edges[i].v1 - vertFlag[src->edges[i].v1];
+                        edgeFlag[i] = i - j;
+                        j++;
+                    }
+                }
+                j = 0;
+                for (t = 0; t < src->nTris; t++) {
+                    if (triFlag[t] == 0) {
+                        int e = src->tris[t].e[0];
+                        if (e & 0x80000000) {
+                            out->tris[j].e[0] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
+                        } else {
+                            out->tris[j].e[0] = e - edgeFlag[e];
+                        }
+                        e = src->tris[t].e[1];
+                        if (e & 0x80000000) {
+                            out->tris[j].e[1] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
+                        } else {
+                            out->tris[j].e[1] = e - edgeFlag[e];
+                        }
+                        e = src->tris[t].e[2];
+                        if (e & 0x80000000) {
+                            out->tris[j].e[2] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
+                        } else {
+                            out->tris[j].e[2] = e - edgeFlag[e];
+                        }
+                        j++;
+                    }
+                }
+            }
+        }
+        free(triFlag);
+    }
+    if (edgeFlag != NULL) {
+        free(edgeFlag);
+    }
+    if (vertFlag != NULL) {
+        free(vertFlag);
+    }
+    return out;
+}
 
 // FUNCTION: LEGOLAND 0x00422e10
 void FUN_00422e10(int param1, int index) {

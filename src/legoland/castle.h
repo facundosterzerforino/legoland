@@ -8,6 +8,8 @@ struct ListHost;
 struct Struct426d80Y;
 struct Struct427130Main;
 struct Int16Pair;
+struct EdgeMesh;
+struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src);
 struct FVec3;
 struct SprEnt;
 struct SprInfo;
