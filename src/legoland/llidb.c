@@ -297,8 +297,6 @@ unsigned int FUN_0047b500(unsigned int param_1) {
     unsigned int slot;
     unsigned int page;
     unsigned int count;
-    int offset;
-    char *base;
 
     if (param_1 < DAT_006691a4) {
         count = DAT_006691a4;
@@ -314,13 +312,12 @@ unsigned int FUN_0047b500(unsigned int param_1) {
                     page++;
                     continue;
                 }
-                offset = slot * 0x14;
                 do {
-                    base = (char *)DAT_006691a8[page];
-                    *(struct Element *)(base + offset) = *(struct Element *)(base + offset + 0x14);
-                    offset += 0x14;
-                    count = DAT_006691a4;
-                } while (offset < 0x13d8);
+                    struct Element *arr = DAT_006691a8[page];
+                    arr[slot] = arr[slot + 1];
+                    slot++;
+                } while ((int)slot < 0xfe);
+                count = DAT_006691a4;
                 slot = 0xffffffff;
                 page++;
             } while (page <= count >> 8);
