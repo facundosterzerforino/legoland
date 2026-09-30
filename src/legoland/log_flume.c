@@ -406,7 +406,7 @@ struct FlumeEntry {
         struct Queue queue;
     };
     /* 0x38 */ void *target;
-    /* 0x3c */ unsigned char pad_3c[4];
+    /* 0x3c */ int count;
     /* 0x40 */ struct FlumeSlot slots[4];
     /* 0xd0 */ int field_d0;
 };
@@ -2393,7 +2393,82 @@ void FUN_0040ca30(void *a1, int a2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ca60
-int FUN_0040ca60(struct FlumeEntry *entry, int arg) { STUB(); }
+int FUN_0040ca60(struct FlumeEntry *entry, int arg) {
+    struct FlumeEntry *par = entry->parent;
+    int count = 0;
+    int i;
+    struct FlumeSlot *slot;
+    double w;
+    struct Sprite *spr;
+    struct Point pos;
+    int idx;
+
+    RenderItems2_New();
+    DAT_004c8d74 = NULL;
+    DAT_004ca5ac = NULL;
+    for (i = 0, slot = par->slots; i < par->count; i++, slot++) {
+        if (FUN_0040b210((struct FlumeWeighted *)slot, (struct FlumeWeighted *)entry)) {
+            w = slot->weight;
+            if ((struct FlumeEntry *)slot->owner != entry) {
+                if (entry->field_c == slot->owner) {
+                    w = slot->weight - 1.0;
+                }
+                if (entry->field_8 == slot->owner) {
+                    w = slot->weight + 1.0;
+                }
+            }
+            if (w > DOUBLE_004ab398) {
+                RenderItem2_AddItem(&DAT_004ca5ac, (unsigned int)slot, 0);
+            } else {
+                RenderItem2_AddItem(&DAT_004c8d74, (unsigned int)slot, 0);
+            }
+            count++;
+        }
+    }
+    if (count != 0) {
+        par = entry->parent8;
+        pos = FUN_0040cfd0(entry);
+        spr = DAT_004cbe1c;
+        if (entry->submode != 0) {
+            spr = DAT_004c8d68;
+        }
+        if (entry->submode == 0) {
+            if (par->tile.pos.x != entry->tile.pos.x) {
+                FUN_0040ca30(&DAT_004c8d74, (int)entry);
+                if (spr != NULL) {
+                    PrintSprite(spr, pos.x, pos.y, (unsigned int)par, 0);
+                }
+                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+            } else {
+                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+                if (spr != NULL) {
+                    PrintSprite(spr, pos.x, pos.y, 0, 0);
+                }
+                FUN_0040ca30(&DAT_004c8d74, (int)entry);
+            }
+        } else {
+            if (par->tile.pos.x == entry->tile.pos.x) {
+                FUN_0040ca30(&DAT_004c8d74, (int)entry);
+                if (spr != NULL) {
+                    PrintSprite(spr, pos.x, pos.y, (unsigned int)par, 0);
+                }
+                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+            } else {
+                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+                if (spr != NULL) {
+                    PrintSprite(spr, pos.x, pos.y, 0, 0);
+                }
+                FUN_0040ca30(&DAT_004c8d74, (int)entry);
+            }
+        }
+        idx = FUN_0040ad50((struct StateNode *)entry);
+        pos = FUN_0040cfd0(entry);
+        spr = DAT_004c2abc[idx];
+        if (spr != NULL) {
+            PrintSprite(spr, pos.x, pos.y, 0, 0);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0040cc00
 void FUN_0040cc00(struct FlumeEntry *entry, int arg) {
