@@ -20,12 +20,15 @@ address,type,size
 0x004ab410,float,4
 0x004ab420,float,4
 0x004ab434,float,4
+0x004ab440,float,4
+0x004ab448,float,4
 0x004ab450,float,4
 0x004ab460,float,8
 0x004ab480,float,4
 0x004ab498,float,4
 0x004ab4d0,float,8
 0x004ab4d8,float,4
+0x004ab51c,float,4
 0x004ab520,float,8
 0x004ab540,float,4
 0x004ab548,float,8
