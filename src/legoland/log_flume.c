@@ -3835,7 +3835,63 @@ unsigned int FUN_0040fab0(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x0040fad0
-void FUN_0040fad0(void) { STUB(); }
+void FUN_0040fad0(struct FlumeNode *parent) {
+    struct FlumeNode *node;
+    struct FlumeNode *prev;
+    TileId pos;
+    int w = DAT_004b4730 - DAT_004b4728;
+    int h = DAT_004b4734 - DAT_004b472c;
+    int i;
+
+    pos.pos.x = ((struct Ride *)DAT_004c2b60)->footprint.x0 + parent->tile.pos.x;
+    pos.pos.y = ((struct Ride *)DAT_004c2b60)->footprint.y0 + parent->tile.pos.y + 9;
+    node = NewFlumeNode(parent, 3, 3, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    parent->field_30 = (unsigned int)node;
+    prev = node;
+    pos.pos.x += w;
+    node = NewFlumeNode(parent, 1, 1, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    prev = node;
+    pos.pos.x += w;
+    node = NewFlumeNode(parent, 2, 3, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    prev = node;
+    pos.pos.y -= h;
+    node = NewFlumeNode(parent, 1, 0, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    prev = node;
+    pos.pos.y -= h;
+    node = NewFlumeNode(parent, 2, 1, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    prev = node;
+    for (i = 2; i != 0; i--) {
+        pos.pos.x += w;
+        node = NewFlumeNode(parent, 1, 1, pos.pos.y, pos.pos.x);
+        FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+        FUN_00409080((struct Node *)prev, (struct Node *)node);
+        prev = node;
+    }
+    pos.pos.x += w;
+    node = NewFlumeNode(parent, 2, 2, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    prev = node;
+    pos.pos.y += h;
+    node = NewFlumeNode(parent, 2, 0, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    prev = node;
+    pos.pos.x += w;
+    node = NewFlumeNode(parent, 3, 1, pos.pos.y, pos.pos.x);
+    FUN_00409170((struct Node *)parent, (struct ListNode *)node);
+    FUN_00409080((struct Node *)prev, (struct Node *)node);
+    parent->field_34 = (unsigned int)node;
+}
 
 // FUNCTION: LEGOLAND 0x0040fe50
 void FUN_0040fe50(struct FlumePos *src, struct FlumeRect *dst) {
