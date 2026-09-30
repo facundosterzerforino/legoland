@@ -602,13 +602,13 @@ struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsig
     }
     cell = &DAT_006675c0[DAT_006675b8];
     DAT_006675b8++;
-    cell->format = format;
     cell->width = width;
     cell->height = height;
+    cell->format = format;
     cell->name = malloc(strlen(name) + 1);
     strcpy(cell->name, name);
-    cell->text_color = text_color;
     cell->bg_color = bg_color;
+    cell->text_color = text_color;
     cell->font = font;
     cell->sprite = CreateFunctionBasedSprite(FUN_00455a50, (unsigned short)width, (unsigned short)height);
     cell->sprite->flags = cell->sprite->flags | 0x40;
