@@ -185,12 +185,14 @@ unsigned char FUN_0048bc20(unsigned char *arg0, unsigned int arg1, unsigned int 
 
 // FUNCTION: LEGOLAND 0x0048bd00
 void FUN_0048bd00(void) {
-    struct FreePlaySpriteSlot *slot;
+    struct ProgressEntry *e;
 
-    for (slot = (struct FreePlaySpriteSlot *)&DAT_004beb80.tutorials[0].sprite0; (int)slot < (int)&DAT_004bed40; slot++) {
-        slot->field_0 = LoadSprite(((const char **)slot)[-5], 4);
-        slot->field_4 = LoadSprite(((const char **)slot)[-4], 4);
-    }
+    e = &DAT_004beb80.tutorials[0];
+    do {
+        e->sprite0 = LoadSprite(e->name0, 4);
+        e->sprite1 = LoadSprite(e->name1, 4);
+        e++;
+    } while ((int)&e->sprite0 < (int)&DAT_004bed40);
 }
 // FUNCTION: LEGOLAND 0x0048bd40
 void FUN_0048bd40(void) {
@@ -225,7 +227,7 @@ void FUN_0048bd70(void) {
 void FUN_0048bde0(void) {
     struct IconNode *icon;
     unsigned int *mapping;
-    int *entry;
+    struct ProgressEntry *entry;
     int i;
 
     // STRING: LEGOLAND 0x004bef88
@@ -258,28 +260,28 @@ void FUN_0048bde0(void) {
     }
     FUN_0048bd40();
     RemoveIconGroup(0x1c);
-    mapping = DAT_007cb380;
-    entry = &DAT_004beb80.tutorials[0].y;
     i = 0;
+    mapping = DAT_007cb380;
+    entry = &DAT_004beb80.tutorials[0];
     do {
         if (i == lpConfig->field_28 - 1) {
-            icon = InsertIcon(entry[-1], entry[0], 0x1c, (struct Sprite *)entry[1]);
+            icon = InsertIcon(entry->x, entry->y, 0x1c, entry->sprite0);
         } else if (DAT_0080ffa0.flags[4 + i] == 1) {
-            icon = InsertIcon(entry[-1], entry[0], 0x1c, (struct Sprite *)entry[2]);
+            icon = InsertIcon(entry->x, entry->y, 0x1c, entry->sprite1);
         } else {
             icon = 0;
         }
         *mapping = (unsigned int)icon;
         if (icon) {
             icon->string = GetString(0x276);
-            icon->string_id = entry[-2];
+            icon->string_id = entry->id;
             icon->field_18 = i;
             icon->event_handler = (void *)FUN_0048bb60;
             icon->flags |= 0x6002;
         }
         i++;
         mapping++;
-        entry += 7;
+        entry++;
     } while ((int)mapping < (int)&DAT_007cb394);
 }
 
