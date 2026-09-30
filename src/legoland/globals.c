@@ -1058,13 +1058,7 @@ BlokeAction PTR_FUN_004bd34c[16] = {
 };
 
 // GLOBAL: LEGOLAND 0x004bdd00
-unsigned int DAT_004bdd00;
-
-// GLOBAL: LEGOLAND 0x004bdd04
-struct Bloke *DAT_004bdd04;
-
-// GLOBAL: LEGOLAND 0x004bdd08
-unsigned int DAT_004bdd08;
+struct HoverInfo Hover;
 
 // GLOBAL: LEGOLAND 0x004bdea0
 LEGO_EXPORT RECT SPRITE_ClipRect;

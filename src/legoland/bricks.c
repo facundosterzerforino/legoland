@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include <string.h>
+
 #include "bricks.h"
 #include "controller.h"
 #include "draw.h"
@@ -138,14 +140,14 @@ void FUN_00457a70(void) {
                         } else if ((DAT_004bdd04 = (struct Bloke *)GetMechanicWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
                             DAT_004bdd00 = 0x10c;
                         }
-                        *(unsigned short *)&DAT_004bdd08 = tile->anchor.id;
+                        Hover.data.tile.id = tile->anchor.id;
                         if (tile->field_0) {
                             QueryObj.id = tile->anchor.id;
                             QueryClass = (struct ObjClass *)tile->field_0->ride;
                         }
                     } else {
                         DAT_004bdd04 = (struct Bloke *)tile->field_0;
-                        *(unsigned short *)&DAT_004bdd08 = tile->anchor.id;
+                        Hover.data.tile.id = tile->anchor.id;
                         if (tile->flags & 0x88) {
                             DAT_004bdd00 = 0x103;
                             if (tile->field_0 == roads) {
@@ -156,7 +158,7 @@ void FUN_00457a70(void) {
                             }
                         }
                         elem = (struct Element *)DAT_004bdd04;
-                        QueryObj.id = (unsigned short)DAT_004bdd08;
+                        QueryObj.id = Hover.data.tile.id;
                         QueryClass = (struct ObjClass *)elem->ride;
                     }
                 } else if (DAT_004bdd00 != 0x103) {
@@ -168,12 +170,12 @@ void FUN_00457a70(void) {
                     }
                 } else {
                     elem = (struct Element *)DAT_004bdd04;
-                    QueryObj.id = (unsigned short)DAT_004bdd08;
+                    QueryObj.id = Hover.data.tile.id;
                     QueryClass = (struct ObjClass *)elem->ride;
                 }
             } else if (DAT_004bdd00 == 0x103 && EditMode.unk0 == 2) {
                 elem = (struct Element *)DAT_004bdd04;
-                QueryObj.id = (unsigned short)DAT_004bdd08;
+                QueryObj.id = Hover.data.tile.id;
                 QueryClass = (struct ObjClass *)elem->ride;
             } else {
                 DAT_004bdd00 = 0x10a;
@@ -194,21 +196,17 @@ void FUN_00457a70(void) {
         }
         if (!(GamePad & 0x1000)) {
             if (DAT_004bdd00 == 0x103) {
-                cls->method_94(cls->field_c4, &pt);
+                QueryClass->method_94(QueryClass->field_c4, &pt);
             } else if (DAT_004bdd00 == 0x10c) {
                 cls->method_94(cls->field_c4, &pt);
             } else if (DAT_004bdd00 == 0x10b) {
                 cls->method_94(cls->field_c4, &pt);
             } else {
-                QueryCursor.field_1414[0] = 0;
-                QueryCursor.field_1414[1] = 0;
+                memset(QueryCursor.field_1414, 0, 20);
                 QueryCursor.field_1828 = 8;
-                QueryCursor.field_1414[2] = 0;
-                QueryCursor.field_1414[3] = 0;
-                QueryCursor.field_1414[4] = 0;
                 FUN_0045f480(&QueryCursor, 1);
-                QueryCursor.field_1404 = DAT_00813a64;
                 QueryCursor.field_1408 = DAT_00813a68;
+                QueryCursor.field_1404 = DAT_00813a64;
                 GamePad &= ~0x400;
                 DAT_00667c5c = 0;
                 if (!(DAT_00813ac4 & 2)) {
@@ -269,7 +267,7 @@ void FUN_00457a70(void) {
                     FUN_0045d3d0((struct PathFootprint *)((WorkOrder *)DAT_004bdd04)->element->ride, &((WorkOrder *)DAT_004bdd04)->pos.x);
                     EraseGardenerOrder((WorkOrder *)DAT_004bdd04);
                 } else {
-                    pt.x = QueryObj.pos.x;
+                    pt.x = *(unsigned int *)&QueryObj & 0xff;
                     pt.y = QueryObj.pos.y;
                     if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
                         tile = &GameMap[pt.y][pt.x];
@@ -378,15 +376,11 @@ void FUN_00457a70(void) {
             BuildCursorPtr(&QueryCursor, 0, 0);
             RenderCursor(&QueryCursor);
         } else {
-            QueryCursor.field_1414[0] = 0;
-            QueryCursor.field_1414[1] = 0;
+            memset(QueryCursor.field_1414, 0, 20);
             QueryCursor.field_1828 = 8;
-            QueryCursor.field_1414[2] = 0;
-            QueryCursor.field_1414[3] = 0;
-            QueryCursor.field_1414[4] = 0;
             FUN_0045f480(&QueryCursor, 1);
-            QueryCursor.field_1408 = DAT_00813a68;
             QueryCursor.field_1404 = DAT_00813a64;
+            QueryCursor.field_1408 = DAT_00813a68;
             GamePad &= ~0x400;
             DAT_00667c5c = 0;
             if (!(DAT_00813ac4 & 2)) {
@@ -396,7 +390,7 @@ void FUN_00457a70(void) {
         break;
     }
     if ((DAT_00813a50 & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
-        PopUpInfoSetUp(DAT_004bdd00, DAT_004bdd04, DAT_004bdd08, DAT_00813a44.x, DAT_00813a44.y);
+        PopUpInfoSetUp(Hover, DAT_00813a44.x, DAT_00813a44.y);
         DAT_00667c48 = 1;
     }
 }
