@@ -1185,8 +1185,8 @@ LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned int a) {
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         AdjustTileRFFlags((int *)p);
     }
-    flags = NULL;
-    if (FUN_0045ce10(&tile) != 0) {
+    flags = (unsigned short *)FUN_0045ce10(&tile);
+    if (flags != NULL) {
         flags = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
         *flags = *flags & 0xfffc;
     }
