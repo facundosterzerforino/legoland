@@ -267,16 +267,12 @@ void FUN_0042d270(struct EarthRideObj *param_1, TileId tile, unsigned int param_
 
 // FUNCTION: LEGOLAND 0x0042d2c0
 void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2) {
-    struct {
-        unsigned char var_c;
-        unsigned char var_10;
-        unsigned char var_11;
-    } buffer;
+    unsigned char buffer[2];
 
-    buffer.var_c = param_2[0];
-    buffer.var_11 = param_2[4];
+    buffer[0] = param_2[0];
+    buffer[1] = param_2[4];
     AddBasicObject(param_1, (unsigned int)param_2);
-    FUN_0042cd70((unsigned short *)&buffer.var_10);
+    FUN_0042cd70((unsigned short *)buffer);
 }
 
 // FUNCTION: LEGOLAND 0x0042d2f0
@@ -291,12 +287,9 @@ int FUN_0042d2f0(void) {
     flag = 1;
     node = DAT_006160e8;
     terminator = 0;
-    while (1) {
-        if (node == NULL) {
-            return SaveGameWrite(&terminator, 4) != 0;
-        }
+    while (node != NULL) {
         if (SaveGameWrite(&flag, 4) == 0 || SaveGameWrite(node, 0x24) == 0) {
-            break;
+            return 0;
         }
         count = 0;
         for (q = node->queue_head; q != NULL; q = q->next) {
@@ -313,7 +306,7 @@ int FUN_0042d2f0(void) {
         }
         node = node->next;
     }
-    return 0;
+    return SaveGameWrite(&terminator, 4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x0042d3e0
