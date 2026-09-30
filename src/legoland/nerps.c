@@ -757,21 +757,16 @@ unsigned int FUN_0046ac50(struct NerpsArg *arg) {
     struct RenderObj *robj;
     int count;
     unsigned int value;
-    unsigned int x;
-    unsigned int y;
+    struct Point pt;
 
     count = 0;
     node = (struct ClassListNode *)((struct TileGroupHolder *)arg->field_4)->group->list;
-    while (1) {
-        if (node == NULL) {
-            FUN_00469220(arg, arg->field_4, arg->field_1c - count);
-            return 0;
-        }
+    while (node != NULL) {
         if (_stricmp(*(char **)node->iface->context, *(char **)arg->field_4) == 0 &&
             (robj = (struct RenderObj *)GetFirstObjectMatching((Element *)node->iface->context)) != NULL) {
-            x = robj->field_4;
-            y = robj->field_5;
-            value = FUN_00489fd0((const struct Point *)&x) & 0xffff;
+            pt.x = robj->field_4;
+            pt.y = robj->field_5;
+            value = FUN_00489fd0(&pt) & 0xffff;
             if ((int)value >= (int)arg->field_1c) {
                 return 1;
             }
@@ -781,6 +776,8 @@ unsigned int FUN_0046ac50(struct NerpsArg *arg) {
         }
         node = node->next;
     }
+    FUN_00469220(arg, arg->field_4, arg->field_1c - count);
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046ad00
@@ -914,11 +911,6 @@ unsigned int FUN_0046af10(struct NerpsArg *arg) {
         FUN_00469040(arg, target - current);
         return 0;
     }
-    return FUN_0046af39(target, current, arg);
-}
-
-// FUNCTION: LEGOLAND 0x0046af39
-unsigned int FUN_0046af39(int target, int current, struct NerpsArg *arg) {
     if (-target >= current) {
         return 1;
     }
@@ -961,16 +953,16 @@ unsigned int FUN_0046af60(struct NerpsArg *arg) {
 unsigned int FUN_0046afe0(struct NerpsArg *arg) {
     struct RenderObj *robj;
     int count;
-    int denom;
+    struct TileGroup *group;
     int pct;
 
     count = 0;
     for (robj = (struct RenderObj *)GetFirstRenderObject(); robj != NULL;
         robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj)) {
         if (robj->field_11 != 0) {
-            denom = robj->field_0->group->field_2c;
-            if (denom != 0) {
-                pct = robj->field_11 * 100 / denom;
+            group = robj->field_0->group;
+            if (group->field_2c != 0) {
+                pct = robj->field_11 * 100 / group->field_2c;
             } else {
                 pct = 100;
             }
@@ -982,11 +974,11 @@ unsigned int FUN_0046afe0(struct NerpsArg *arg) {
             }
         }
     }
-    if (count <= (int)arg->field_1c) {
-        return 1;
+    if (count > (int)arg->field_1c) {
+        FUN_004691e0(arg, count - arg->field_1c, arg->field_14);
+        return 0;
     }
-    FUN_004691e0(arg, count - arg->field_1c, arg->field_14);
-    return 0;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046b080
@@ -1108,24 +1100,23 @@ unsigned int FUN_0046b280(void) {
 void FUN_0046b290(void) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
-    struct ObjectiveEvent *cur;
-    struct ObjectiveEvent *newprev;
+    struct ObjectiveEvent *next;
 
     prev = NULL;
     node = DAT_00668784;
-    while (cur = node, newprev = prev, cur != NULL) {
-        node = cur->next;
-        prev = cur;
-        if ((cur->flags_10 & 8) != 0) {
-            prev = node;
-            if (newprev != NULL) {
-                newprev->next = node;
-                prev = DAT_00668784;
+    while (node != NULL) {
+        next = node->next;
+        if ((node->flags_10 & 8) != 0) {
+            if (prev != NULL) {
+                prev->next = next;
+            } else {
+                DAT_00668784 = next;
             }
-            DAT_00668784 = prev;
-            FUN_00468940(cur);
-            prev = newprev;
+            FUN_00468940(node);
+            node = prev;
         }
+        prev = node;
+        node = next;
     }
 }
 
@@ -1207,124 +1198,115 @@ EventHandler DAT_004b9d44[68] = {
 void FUN_0046b2d0(void) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *next;
-    struct ObjectiveEvent *cur;
     struct ObjectiveEvent *prev;
     int active;
-    int done;
-    unsigned char flags;
-    int result;
+    int changed;
 
     node = DAT_00668784;
-    done = 0;
+    prev = NULL;
+    active = 0;
+    changed = 0;
     FUN_00471bf0();
     if (FUN_0046b280() != 0) {
         return;
     }
-    do {
-        active = 0;
+    for (;;) {
         if ((DAT_00668610 & 0x10) != 0) {
             FUN_00482b20(1);
         }
         DAT_00668794 = GetGameTimer();
-        next = (struct ObjectiveEvent *)(unsigned int)done;
-        prev = NULL;
-        if (node != (struct ObjectiveEvent *)(unsigned int)done) {
-            do {
-                cur = node;
-                next = cur->next;
-                if (DAT_004b9d44[cur->type] != NULL) {
-                    result = FUN_0046b200((struct TimedEvent *)cur);
-                    if (result == 0) {
-                        if ((cur->flags_10 & 0x80) == 0) {
-                            active++;
-                        }
-                    } else {
-                        cur->field_40 = DAT_00668794;
-                        result = DAT_004b9d44[cur->type](cur);
-                        flags = cur->flags_10;
-                        if (result == 0) {
-                            if ((flags & 4) != 0) {
-                                cur->flags_10 = flags | 0x80;
+        while (node != NULL) {
+            next = node->next;
+            if (DAT_004b9d44[node->type] != NULL) {
+                if (FUN_0046b200((struct TimedEvent *)node) != 0) {
+                    node->timestamp = DAT_00668794;
+                    if (DAT_004b9d44[node->type](node) != 0) {
+                        if ((node->flags_10 & 7) == 0) {
+                            if (prev != NULL) {
+                                prev->next = node->next;
                             } else {
-                                active++;
-                                cur->flags_10 = flags & 0x7f;
+                                DAT_00668784 = node->next;
                             }
-                        } else if ((flags & 7) == 0) {
-                            if (prev == NULL) {
-                                DAT_00668784 = cur->next;
-                                FUN_00468940(cur);
-                                cur = prev;
-                            } else {
-                                prev->next = cur->next;
-                                FUN_00468940(cur);
-                                cur = prev;
-                            }
+                            FUN_00468940(node);
+                            node = prev;
                         } else {
-                            cur->flags_10 = flags | 0x80;
+                            node->flags_10 |= 0x80;
                         }
+                    } else if ((node->flags_10 & 4) != 0) {
+                        node->flags_10 |= 0x80;
+                    } else {
+                        active++;
+                        node->flags_10 &= 0x7f;
                     }
-                }
-                node = next;
-                prev = cur;
-            } while (next != NULL);
-        }
-        if (DAT_0066871c != (unsigned int)next) {
-            UpdateMenu();
-            DAT_0066871c = (unsigned int)next;
-            FUN_00471d40();
-        }
-        if (DAT_00668788 != (unsigned int)next) {
-            DAT_00668788 = (unsigned int)next;
-            FUN_0046b290();
-        }
-        if (DAT_00668790 != (unsigned int)next && (DAT_00668790 = (unsigned int)next, active != (int)next)) {
-            FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
-            FUN_00468d00();
-        }
-        if (DAT_00668798 != next && active == (int)next) {
-            FUN_0046ce20();
-            active = 0;
-            node = DAT_00668784;
-            while (cur = node, prev = (struct ObjectiveEvent *)(unsigned int)active, cur != next) {
-                node = cur->next;
-                active = (int)cur;
-                if ((cur->flags_10 & 6) == 0) {
-                    active = (int)node;
-                    if (prev != next) {
-                        prev->next = node;
-                        active = (int)DAT_00668784;
-                    }
-                    DAT_00668784 = (struct ObjectiveEvent *)(unsigned int)active;
-                    FUN_00468940(cur);
-                    active = (int)prev;
+                } else if ((node->flags_10 & 0x80) == 0) {
+                    active++;
                 }
             }
-            if (DAT_0066879c != (unsigned int)next) {
+            prev = node;
+            node = next;
+        }
+        if (DAT_0066871c != 0) {
+            UpdateMenu();
+            DAT_0066871c = 0;
+            FUN_00471d40();
+        }
+        if (DAT_00668788 != 0) {
+            DAT_00668788 = 0;
+            FUN_0046b290();
+        }
+        if (DAT_00668790 != 0) {
+            DAT_00668790 = 0;
+            if (active != 0) {
+                FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
+                FUN_00468d00();
+            }
+        }
+        if (DAT_00668798 != NULL && active == 0) {
+            FUN_0046ce20();
+            prev = NULL;
+            node = DAT_00668784;
+            while (node != NULL) {
+                next = node->next;
+                if ((node->flags_10 & 6) == 0) {
+                    if (prev != NULL) {
+                        prev->next = next;
+                    } else {
+                        DAT_00668784 = next;
+                    }
+                    FUN_00468940(node);
+                    node = prev;
+                }
+                prev = node;
+                node = next;
+            }
+            if (DAT_0066879c != 0) {
                 FUN_0046c580((struct AppendArg10 *)DAT_0066879c);
                 FUN_0046b5d0((struct SortNode *)DAT_0066879c);
                 FUN_0046b520((struct WrapperNode *)DAT_0066879c);
-                done = 1;
+                changed = 1;
             }
             DAT_0066879c = (unsigned int)DAT_00668798;
-            if (DAT_00668798 != next) {
+            if (DAT_00668798 != NULL) {
                 DAT_00668790 = 1;
                 FUN_0046c540((struct AppendArgC *)DAT_00668798);
                 FUN_00468d00();
             }
         }
-        node = DAT_00668784;
         DAT_00668610 = 0xffffffff;
-        if (done == (int)next) {
-            DAT_00668610 = 0x100;
+        if (changed != 0) {
+            node = DAT_00668784;
+            prev = NULL;
+            active = 0;
+            changed = 0;
+            FUN_00471bf0();
+            if (FUN_0046b280() == 0) {
+                continue;
+            }
             return;
         }
-        FUN_00471bf0();
-        result = FUN_0046b280();
-        done = (int)next;
-        if (result != 0) {
-            return;
-        }
-    } while (1);
+        DAT_00668610 = 0x100;
+        return;
+    }
 }
 
 // FUNCTION: LEGOLAND 0x0046b4f0
@@ -2400,8 +2382,8 @@ struct ObjectiveEvent *FUN_0046c7e0(void) {
 // FUNCTION: LEGOLAND 0x0046c920
 unsigned int FUN_0046c920(void) {
     struct NerpsListNode *node;
-    int i;
     int scratch;
+    int i;
 
     DAT_006687a0 = 0;
     DAT_007fe994 = GetGameTimer();
@@ -2426,8 +2408,8 @@ unsigned int FUN_0046c920(void) {
     if (SaveGameWrite(&scratch, 4) == 0) {
         return 0;
     }
-    scratch = 0xa;
-    if (SaveGameWrite(&scratch, 4) == 0) {
+    i = 0xa;
+    if (SaveGameWrite(&i, 4) == 0) {
         return 0;
     }
     if (SaveGameWrite(DAT_007fe930, 0xa) == 0) {
