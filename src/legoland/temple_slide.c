@@ -288,27 +288,26 @@ void FUN_00417340(void *arg) {
 // FUNCTION: LEGOLAND 0x00417380
 int FUN_00417380(void *arg) {
     int avail[4];
-    int count = 0;
+    int count;
     int pick;
     struct SlideNode *node = FUN_00416f60(arg);
-    unsigned int *slots;
 
     if (node != NULL) {
-        slots = node->slots;
-        if (slots[0] == 0) {
+        count = 0;
+        if (node->slots[0] == 0) {
             avail[count] = count;
             count = 1;
         }
-        if (slots[3] == 0) {
+        if (node->slots[3] == 0) {
             avail[count++] = 3;
         }
         if (count != 0) {
             pick = avail[0];
-            slots[pick] = 1;
+            node->slots[pick] = 1;
             FUN_00417340(arg);
             return pick;
         }
-        slots[0] = 1;
+        node->slots[0] = 1;
         FUN_00417340(arg);
         return 0;
     }
