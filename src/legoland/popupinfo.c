@@ -509,7 +509,7 @@ void FUN_004718c0(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00471950
-LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) {
+LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo info, unsigned int param_4, unsigned int param_5) {
     short sVar1;
     int iVar2;
     int x;
@@ -518,7 +518,7 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
     unsigned char *iVar4;
     int iVar5;
 
-    uVar3 = param_3 & 0xffff;
+    uVar3 = info.data.value & 0xffff;
     x = uVar3 & 0xff;
     y = uVar3 >> 8;
     if ((x < 0) || (lpConfig->width <= x) || (y < 0) || (lpConfig->height <= y)) {
@@ -531,26 +531,26 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
     DAT_007fdfa8 = 1;
     DAT_007fdecc = param_4;
     DAT_007fded0 = param_5;
-    DAT_007fdf88 = (unsigned short)param_3;
-    DAT_007fdec0 = param_1;
-    DAT_007fdec4 = param_2;
-    DAT_007fdec8 = param_3;
-    if (param_1 < 0x308) {
-        if (param_1 == 0x307) {
-            if (*(short *)((char *)param_2 + 0xc) != 5) {
+    DAT_007fdf88 = (unsigned short)info.data.value;
+    DAT_007fdec0 = info.type;
+    DAT_007fdec4 = info.ptr;
+    DAT_007fdec8 = info.data.value;
+    if ((int)info.type < 0x308) {
+        if (info.type == 0x307) {
+            if (*(short *)((char *)info.ptr + 0xc) != 5) {
                 PlayInstanceOfSample(DAT_004b92e4, 0, 1, 0);
-                FUN_00470100(0x307, param_2);
+                FUN_00470100(0x307, info.ptr);
                 ResetInfoStruct();
                 return;
             }
-        } else if (param_1 == 0x103) {
-            if (param_2 == NULL) {
+        } else if (info.type == 0x103) {
+            if (info.ptr == NULL) {
                 DAT_007fdfa0 = 1;
                 DAT_007fdfa8 = 1;
                 return;
             }
-            if (((unsigned int)param_2 != DAT_007fdfb8) && ((unsigned int)param_2 != DAT_007fdfbc)) {
-                DAT_007fdf7c = *(unsigned int *)((char *)param_2 + 0xc);
+            if (((unsigned int)info.ptr != DAT_007fdfb8) && ((unsigned int)info.ptr != DAT_007fdfbc)) {
+                DAT_007fdf7c = *(unsigned int *)((char *)info.ptr + 0xc);
                 DAT_007fdf84 = iVar4;
                 if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == DAT_007fdfb0) {
                     DAT_007fdfa0 = 0;
@@ -577,17 +577,17 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
                 GenerateMechanic(&param_4, 1);
                 return;
             }
-        } else if (param_1 == 0x306) {
-            DAT_007fdf9c = param_1;
-            DAT_007fdf8c = param_2;
-            DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)param_2 + 4) + 0x1c);
-            DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)param_2 + 4) + 0x20);
+        } else if (info.type == 0x306) {
+            DAT_007fdf9c = info.type;
+            DAT_007fdf8c = info.ptr;
+            DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)info.ptr + 4) + 0x1c);
+            DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)info.ptr + 4) + 0x20);
             return;
         }
-    } else if ((param_1 == 0x308) && (sVar1 = *(short *)((char *)param_2 + 0xc), sVar1 != 5)) {
-        if (((sVar1 == 0x13) && (0x6a < *(unsigned char *)((char *)param_2 + 0x60))) ||
-            ((sVar1 == 0x16) && (0x6a < *(unsigned char *)((char *)param_2 + 0x60)))) {
-            iVar4 = *(unsigned char **)((char *)param_2 + 0x50);
+    } else if ((info.type == 0x308) && (sVar1 = *(short *)((char *)info.ptr + 0xc), sVar1 != 5)) {
+        if (((sVar1 == 0x13) && (0x6a < *(unsigned char *)((char *)info.ptr + 0x60))) ||
+            ((sVar1 == 0x16) && (0x6a < *(unsigned char *)((char *)info.ptr + 0x60)))) {
+            iVar4 = *(unsigned char **)((char *)info.ptr + 0x50);
             iVar5 = *(int *)(iVar4 + 8);
             if ((iVar5 < 0) ||
                 (((int)(unsigned int)lpConfig->width <= iVar5 ||
@@ -601,7 +601,7 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
             FUN_00499eb0(iVar4);
         }
         PlayInstanceOfSample(DAT_004b9308, 0, 1, 0);
-        FUN_00470100(0x308, param_2);
+        FUN_00470100(0x308, info.ptr);
     }
     ResetInfoStruct();
 }

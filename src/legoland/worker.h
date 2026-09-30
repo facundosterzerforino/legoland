@@ -131,3 +131,4 @@ void FUN_0049cc10(void);
 void FUN_0049ce00(void);
 LEGO_EXPORT void RenderWorkers(void);
 LEGO_EXPORT void RenderWorkerInterfaceGFX(void);
+LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos);

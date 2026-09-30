@@ -89,3 +89,5 @@ LEGO_EXPORT void ProcessDamage(void);
 void FUN_00460e00(void);
 void FUN_00461020(void);
 void FUN_00461220(void);
+struct ObjState;
+int FUN_0045ead0(struct ObjState *obj);
