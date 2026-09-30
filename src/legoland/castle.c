@@ -6838,8 +6838,8 @@ void FUN_004294b0(void) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        DAT_00614858[i].a = DAT_004b61e0[i].a * FLOAT_004ab494;
-        DAT_00614858[i].b = DAT_004b61e0[i].b * FLOAT_004ab490;
+        DAT_00614858[i].a = DAT_004b61e0[i].a * 2.5f;
+        DAT_00614858[i].b = DAT_004b61e0[i].b * 8.2f;
         DAT_00614858[i].c = DAT_004b61e0[i].c;
     }
 }
@@ -6922,15 +6922,15 @@ struct Struct429690 {
     unsigned int *field_c;
     unsigned char pad_10[4];
     unsigned int field_14;
-    unsigned int field_18;
+    float field_18;
     unsigned char pad_1c[4];
     unsigned int field_20;
-    unsigned int field_24;
+    float field_24;
     struct Struct429690 *next;
 };
 
 // FUNCTION: LEGOLAND 0x00429690
-struct Struct429690 *FUN_00429690(struct Struct429690 *n, unsigned int v, struct Struct429690 *end) {
+struct Struct429690 *FUN_00429690(struct Struct429690 *n, float v, struct Struct429690 *end) {
     while (!FUN_00429910(n->field_c, n->field_14, n->field_20) && n != end) {
         n->field_24 = n->field_18 = v;
         n = n->next;
@@ -6995,7 +6995,7 @@ void FUN_00429750(struct PathSeg *seg, struct PathSeg *end) {
                 base = h + base;
                 n = node->next;
             } else {
-                n = (struct PathSeg *)FUN_00429690((struct Struct429690 *)n, *(unsigned int *)&base, (struct Struct429690 *)end);
+                n = (struct PathSeg *)FUN_00429690((struct Struct429690 *)n, base, (struct Struct429690 *)end);
             }
         }
     }
