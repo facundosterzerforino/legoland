@@ -489,10 +489,14 @@ int *FUN_00401970(int *param_1, int param_2, int param_3) {
 void FUN_004019c0(struct RideMover *m) {
     unsigned char oldDir = m->dir;
     unsigned char moving = m->moving;
-    int dy, dx, dist, diff;
-    unsigned char newDir;
 
-    if (moving) {
+    if (!moving) {
+        m->velX = 0;
+        m->velY = 0;
+    } else {
+        int dy, dx, dist, diff;
+        unsigned char newDir;
+
         dx = m->destX - m->x;
         dy = m->destY - m->y;
         dist = (int)sqrt((float)dx * (float)dx + (float)dy * (float)dy);
@@ -520,9 +524,6 @@ void FUN_004019c0(struct RideMover *m) {
             m->dirY = 0;
             m->velY = 0;
         }
-    } else {
-        m->velX = 0;
-        m->velY = 0;
     }
 }
 
