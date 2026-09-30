@@ -117,6 +117,7 @@ void FUN_0041da10(void *obj, float val, void *b);
 unsigned int FUN_0041e930(struct ObjAt40 *obj, unsigned int param);
 struct Struct42a110;
 void FUN_00429f30(float *center, float r, struct Struct42a110 *src, float hi, float x, struct Struct42a110 *dst, float *out);
+float FUN_0042a1b0(struct Struct42a110 *a, unsigned int hi, struct Struct42a110 *b, unsigned int lo, int idx, float c);
 void FUN_0041e7f0(unsigned char *obj, unsigned int *out);
 int FUN_004298a0(struct SprInfo *info, struct SprOwner *owner, unsigned int *a, unsigned int *b);
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x);

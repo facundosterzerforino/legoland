@@ -4333,7 +4333,23 @@ float FUN_00424890(unsigned char *param_1, float param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004248b0
-void FUN_004248b0(void) { STUB(); }
+void FUN_004248b0(unsigned char *obj, unsigned int unused, struct AnimOut *out) {
+    unsigned char *e = *(unsigned char **)(obj + 0x3c);
+    unsigned char *sub = *(unsigned char **)(e + 0x6c);
+    struct FVec3 v;
+    unsigned int s[2];
+    float t;
+    float r;
+
+    FUN_0041de10(obj, unused, out);
+    t = FUN_0041dd50(e);
+    FUN_00425cb0((struct Int16Pair *)(sub + 8), (float)DAT_004b5b50, &v);
+    s[0] = (unsigned int)(sub + 4);
+    s[1] = (unsigned int)&DAT_006103a8;
+    r = -(t * t / (FUN_0042a1b0((struct Struct42a110 *)s, 0x3dcccccd, (struct Struct42a110 *)(e + 0xc), *(unsigned int *)(e + 0x24), 1, 0) * FLOAT_004ab404 * 2));
+
+    out->f8 = FUN_0041dd70(e) * r * t;
+}
 
 // FUNCTION: LEGOLAND 0x00424960
 int FUN_00424960(int *param_1) {
