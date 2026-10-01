@@ -283,9 +283,9 @@ LEGO_EXPORT void LoadColourTable(void) {
     RES_ReadFile(file, DAT_00814020, 0x8000);
 
     ddraw = DDRAWENV.ddraw2;
-    ddraw->lpVtbl->CreatePalette(ddraw, 0x44, entries, (LPDIRECTDRAWPALETTE *)&DAT_00668084, NULL);
+    ddraw->lpVtbl->CreatePalette(ddraw, 0x44, entries, (LPDIRECTDRAWPALETTE *)&DDPalette, NULL);
     surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
-    surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DAT_00668084);
+    surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DDPalette);
     RES_CloseFile(file);
 }
 
@@ -293,7 +293,7 @@ LEGO_EXPORT void LoadColourTable(void) {
 LEGO_EXPORT void ResendPalette(void) {
     if (DAT_00668088 == 0) {
         LPDIRECTDRAWSURFACE surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
-        surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DAT_00668084);
+        surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DDPalette);
     }
 }
 

@@ -407,7 +407,7 @@ LEGO_EXPORT LPDIRECTSOUNDBUFFER KLIBAUDIO_CreateAVISoundBuffer(LPWAVEFORMATEX fo
     struct AVIBufferDesc desc;
     int result;
 
-    if (DAT_007988c0 != 0) {
+    if (SoundAvailable != 0) {
         buffer = 0;
         desc.dwReserved = 0;
         desc.dwBufferBytes = bytes;
@@ -474,7 +474,7 @@ LEGO_EXPORT void KLIBAUDIO_SetAVIVolume(struct AVISoundBuffer *buffer, int volum
 // FUNCTION: LEGOLAND 0x004964f0
 LEGO_EXPORT int InitSoundSystem(void) {
     DAT_007988b0 = WNDENV_Gethwnd();
-    if (FUN_00492130(DAT_007988b0) == 0) {
+    if (InitDirectSound(DAT_007988b0) == 0) {
         return 0;
     }
     return FUN_00495a10(DAT_007988b0) != 0;
@@ -547,7 +547,7 @@ int FUN_004965a0(struct Sample *sample, int x, int y) {
 
 // FUNCTION: LEGOLAND 0x00496660
 int FUN_00496660(struct Sample *sample) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -565,7 +565,7 @@ int FUN_004966a0(struct Sample *sample) {
     int coord[2];
     int *obj;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -597,7 +597,7 @@ void FUN_00496760(void) {
     struct Sample *sample;
     unsigned int status;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return;
     }
     for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
@@ -613,7 +613,7 @@ void FUN_004967b0(void) {
     struct Sample *sample;
     unsigned int status;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return;
     }
     for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
@@ -629,7 +629,7 @@ void FUN_004967f0(void) {
     struct Sample *sample;
     int vol;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return;
     }
     for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
@@ -662,7 +662,7 @@ void FUN_004968d0(void) {
     unsigned int next;
 
     now = GetTicks();
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return;
     }
     for (entry = (struct CallbackEntry *)DAT_007988cc; entry != 0; entry = entry->next) {
@@ -720,7 +720,7 @@ void FUN_004969d0(void) {
 
 // FUNCTION: LEGOLAND 0x004969f0
 LEGO_EXPORT unsigned int UnSourcePlayableSample(struct Sample *sample) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -736,7 +736,7 @@ LEGO_EXPORT unsigned int UnSourcePlayableSample(struct Sample *sample) {
 
 // FUNCTION: LEGOLAND 0x00496a30
 LEGO_EXPORT unsigned int SourcePlayableSampleToBloke(struct Sample *sample, void *bloke) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -753,7 +753,7 @@ LEGO_EXPORT unsigned int SourcePlayableSampleToBloke(struct Sample *sample, void
 
 // FUNCTION: LEGOLAND 0x00496a70
 LEGO_EXPORT unsigned int SourcePlayableSampleToMapRef(struct Sample *sample, unsigned int x, unsigned int y) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -771,7 +771,7 @@ LEGO_EXPORT unsigned int SourcePlayableSampleToMapRef(struct Sample *sample, uns
 
 // FUNCTION: LEGOLAND 0x00496ac0
 LEGO_EXPORT unsigned int SourcePlayableSampleToLevelXY(struct Sample *sample, unsigned int x, unsigned int y) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {

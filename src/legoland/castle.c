@@ -6663,8 +6663,8 @@ int FUN_004272a0(unsigned int *data) {
     unsigned int written;
     HANDLE hFile;
 
-    if (DAT_004b5cf4 && data) {
-        hFile = CreateFileA(DAT_004b5cf4, 0x40000000, 0, 0, 2, 0x8000000, 0);
+    if (RollerCoasterSavePath && data) {
+        hFile = CreateFileA(RollerCoasterSavePath, 0x40000000, 0, 0, 2, 0x8000000, 0);
         if (hFile != (HANDLE)-1) {
             WriteFile(hFile, data, size, &written, 0);
             if (written != size) {
@@ -6690,10 +6690,10 @@ void *FUN_00427310(void) {
     unsigned int fileSize;
     void *buffer;
 
-    if (!DAT_004b5cf4) {
+    if (!RollerCoasterSavePath) {
         return 0;
     }
-    hFile = CreateFileA(DAT_004b5cf4, 0x80000000, 1, 0, 3, 0x8000000, 0);
+    hFile = CreateFileA(RollerCoasterSavePath, 0x80000000, 1, 0, 3, 0x8000000, 0);
     if (hFile == (HANDLE)-1) {
         return 0;
     }

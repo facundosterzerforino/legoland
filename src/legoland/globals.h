@@ -804,7 +804,7 @@ extern unsigned int DAT_004b5cc4;
 // 0x004b5cc8
 extern unsigned int DAT_004b5cc8;
 // 0x004b5d20
-extern char DAT_004b5cf4[32];
+extern char RollerCoasterSavePath[32];
 extern const unsigned char DAT_004b5d20[1];
 
 // 0x004b5d58
@@ -2417,7 +2417,7 @@ extern LPDIRECTDRAWSURFACE renderEngine;
 // 0x00668080
 extern LPDIRECTDRAWCLIPPER DAT_00668080;
 // 0x00668084
-extern unsigned int DAT_00668084;
+extern unsigned int DDPalette;
 // 0x00668088
 extern unsigned int DAT_00668088;
 // 0x0066808c
@@ -3081,7 +3081,7 @@ extern void *DAT_007988b0;
 // 0x007988bc
 extern unsigned int DAT_007988bc;
 // 0x007988c0
-extern unsigned int DAT_007988c0;
+extern unsigned int SoundAvailable;
 // 0x007988c4
 extern unsigned int DAT_007988c4;
 // 0x007988c8
@@ -3198,7 +3198,7 @@ extern int DAT_007caca0;
 // 0x007caca4
 extern int DAT_007caca4;
 // 0x007caca8
-extern unsigned int DAT_007caca8;
+extern unsigned int SpeechFileHandle;
 // 0x007cacac
 extern unsigned int DAT_007cacac;
 // 0x007cacb0
@@ -3216,7 +3216,7 @@ extern struct DirectMusicLoader *DMusicLoader;
 // 0x007cacdc
 extern struct DirectMusicPerformance *DMusicPerformance;
 // 0x007cace0
-extern unsigned int DAT_007cace0[0x18];
+extern unsigned int DSoundCaps[0x18];
 // 0x007cad40
 extern void *DSound;
 // 0x007cad44

@@ -77,9 +77,9 @@ void FUN_00498000(void) {
     while (n != 0) {
         while (n != 0) {
             if (n > (int)DAT_007cacac) {
-                r = _read(DAT_007caca8, &DAT_0079ac20[DAT_0079a7dc], DAT_007cacac);
+                r = _read(SpeechFileHandle, &DAT_0079ac20[DAT_0079a7dc], DAT_007cacac);
             } else {
-                r = _read(DAT_007caca8, &DAT_0079ac20[DAT_0079a7dc], n);
+                r = _read(SpeechFileHandle, &DAT_0079ac20[DAT_0079a7dc], n);
             }
             idx = DAT_0079a7e0;
             if (r != -1) {
@@ -111,7 +111,7 @@ void FUN_00498100(void) {
 
 // FUNCTION: LEGOLAND 0x00498120
 void FUN_00498120(void) {
-    _lseek(DAT_007caca8, DAT_007cacb4, 0);
+    _lseek(SpeechFileHandle, DAT_007cacb4, 0);
     DAT_007cacac = DAT_0079ac04;
 }
 
@@ -267,26 +267,26 @@ int FUN_00498420(void) {
     unsigned int tag;
     unsigned int *p;
 
-    _lseek(DAT_007caca8, 0, 0);
-    if (_read(DAT_007caca8, &tag, 4) != 4) {
+    _lseek(SpeechFileHandle, 0, 0);
+    if (_read(SpeechFileHandle, &tag, 4) != 4) {
         return 0;
     }
     if (tag != 0x46464952) {
         return 0;
     }
-    if (_read(DAT_007caca8, &size, 4) != 4) {
+    if (_read(SpeechFileHandle, &size, 4) != 4) {
         return 0;
     }
-    if (_read(DAT_007caca8, &tag, 4) != 4) {
+    if (_read(SpeechFileHandle, &tag, 4) != 4) {
         return 0;
     }
     if (tag != 0x45564157) {
         return 0;
     }
-    if (_read(DAT_007caca8, &tag, 4) != 4) {
+    if (_read(SpeechFileHandle, &tag, 4) != 4) {
         return 0;
     }
-    if (_read(DAT_007caca8, &size, 4) != 4) {
+    if (_read(SpeechFileHandle, &size, 4) != 4) {
         return 0;
     }
     if (size < 0x12) {
@@ -294,21 +294,21 @@ int FUN_00498420(void) {
     } else {
         DAT_007cacb0 = malloc(size);
     }
-    if (_read(DAT_007caca8, DAT_007cacb0, size) != (int)size) {
+    if (_read(SpeechFileHandle, DAT_007cacb0, size) != (int)size) {
         return 0;
     }
     if (size <= 0x12) {
         *(short *)((char *)DAT_007cacb0 + 0x10) = 0;
     }
-    while (_read(DAT_007caca8, &tag, 4) == 4) {
+    while (_read(SpeechFileHandle, &tag, 4) == 4) {
         if (tag == 0x61746164) {
             break;
         }
-        if (_read(DAT_007caca8, &size, 4) != 4) {
+        if (_read(SpeechFileHandle, &size, 4) != 4) {
             return 0;
         }
         p = (unsigned int *)malloc(size);
-        if (_read(DAT_007caca8, p, size) != (int)size) {
+        if (_read(SpeechFileHandle, p, size) != (int)size) {
             free(p);
             return 0;
         }
@@ -317,10 +317,10 @@ int FUN_00498420(void) {
     if (tag != 0x61746164) {
         return 0;
     }
-    if (_read(DAT_007caca8, &DAT_0079ac04, 4) != 4) {
+    if (_read(SpeechFileHandle, &DAT_0079ac04, 4) != 4) {
         return 0;
     }
-    DAT_007cacb4 = _tell(DAT_007caca8);
+    DAT_007cacb4 = _tell(SpeechFileHandle);
     return 1;
 }
 
@@ -329,17 +329,17 @@ int FUN_00498630(const char *param_1) {
     char path[0x400];
     unsigned int out_size;
 
-    if (DAT_007988c0 != 0) {
+    if (SoundAvailable != 0) {
         // STRING: LEGOLAND 0x004bfeec
         strcpy(path, "speech\\");
         strcat(path, param_1);
         if (DAT_0079a84c == 0) {
-            DAT_007caca8 = _open(path, 0x8000);
-            if (DAT_007caca8 == -1) {
+            SpeechFileHandle = _open(path, 0x8000);
+            if (SpeechFileHandle == -1) {
                 // STRING: LEGOLAND 0x004bfee4
                 sprintf(path, "%s%s%s", CdDrivePath, "speech\\", param_1);
-                DAT_007caca8 = _open(path, 0x8000);
-                if (DAT_007caca8 == -1) {
+                SpeechFileHandle = _open(path, 0x8000);
+                if (SpeechFileHandle == -1) {
                     return 0;
                 }
             }
@@ -371,7 +371,7 @@ int FUN_00498630(const char *param_1) {
                 FUN_00498870();
                 return 1;
             }
-            _close(DAT_007caca8);
+            _close(SpeechFileHandle);
         }
     }
     return 0;
@@ -418,7 +418,7 @@ int FUN_00498920(void) {
     FUN_004988c0();
     acmStreamUnprepareHeader(DAT_007cacb8, &DAT_007aac40, 0);
     acmStreamClose(DAT_007cacb8, 0);
-    _close(DAT_007caca8);
+    _close(SpeechFileHandle);
     KLIBAUDIO_DestroyAVISoundBuffer((struct AVISoundBuffer *)DAT_0079a848);
     DAT_0079a848 = NULL;
     free(DAT_0079ac0c);

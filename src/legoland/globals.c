@@ -518,7 +518,7 @@ unsigned int DAT_004b5cc4;
 unsigned int DAT_004b5cc8;
 
 // GLOBAL: LEGOLAND 0x004b5cf4
-char DAT_004b5cf4[32] = "RollerCoaster\\RollerCoaster.sav";
+char RollerCoasterSavePath[32] = "RollerCoaster\\RollerCoaster.sav";
 
 // GLOBAL: LEGOLAND 0x004b5d20
 const unsigned char DAT_004b5d20[1];
@@ -2994,7 +2994,7 @@ LPDIRECTDRAWSURFACE renderEngine;
 LPDIRECTDRAWCLIPPER DAT_00668080;
 
 // GLOBAL: LEGOLAND 0x00668084
-unsigned int DAT_00668084;
+unsigned int DDPalette;
 
 // GLOBAL: LEGOLAND 0x00668088
 unsigned int DAT_00668088;
@@ -3987,7 +3987,7 @@ void *DAT_007988b0;
 unsigned int DAT_007988bc;
 
 // GLOBAL: LEGOLAND 0x007988c0
-unsigned int DAT_007988c0;
+unsigned int SoundAvailable;
 
 // GLOBAL: LEGOLAND 0x007988c4
 unsigned int DAT_007988c4;
@@ -4140,7 +4140,7 @@ int DAT_007caca0;
 int DAT_007caca4;
 
 // GLOBAL: LEGOLAND 0x007caca8
-unsigned int DAT_007caca8;
+unsigned int SpeechFileHandle;
 
 // GLOBAL: LEGOLAND 0x007cacac
 unsigned int DAT_007cacac;
@@ -4167,7 +4167,7 @@ struct DirectMusicLoader *DMusicLoader;
 struct DirectMusicPerformance *DMusicPerformance;
 
 // GLOBAL: LEGOLAND 0x007cace0
-unsigned int DAT_007cace0[0x18];
+unsigned int DSoundCaps[0x18];
 
 // GLOBAL: LEGOLAND 0x007cad40
 void *DSound;

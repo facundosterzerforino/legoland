@@ -119,7 +119,7 @@ LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) {
     struct WaveBufferDesc desc;
     struct SampleDef *sample;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return NULL;
     }
     file = RES_OpenFile(path);
@@ -218,7 +218,7 @@ LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def) {
     struct SampleDef *src = def;
     struct Sample *sample;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (src == 0) {
@@ -249,7 +249,7 @@ LEGO_EXPORT struct Sample *CreatePlayableSample(struct SampleDef *def) {
 
 // FUNCTION: LEGOLAND 0x00492710
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -285,7 +285,7 @@ LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned
 
 // FUNCTION: LEGOLAND 0x004927b0
 int FUN_004927b0(struct Sample *sample) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -350,7 +350,7 @@ LEGO_EXPORT void Mute_SFX(void) {
 
 // FUNCTION: LEGOLAND 0x004928a0
 int FUN_004928a0(struct Sample *sample) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -374,7 +374,7 @@ int FUN_004928a0(struct Sample *sample) {
 
 // FUNCTION: LEGOLAND 0x00492910
 LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample) {
-    if (DAT_007988c0 != 0 && sample != 0 && (sample->flags & 1) != 0) {
+    if (SoundAvailable != 0 && sample != 0 && (sample->flags & 1) != 0) {
         sample->flags &= 0xfffe;
         if (DAT_007988c4 == 0) {
             FUN_004928a0(sample);
@@ -408,7 +408,7 @@ void FUN_00492990(void) {
 
 // FUNCTION: LEGOLAND 0x004929a0
 LEGO_EXPORT int SetSampleVolume(struct Sample *sample, int volume) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -425,7 +425,7 @@ LEGO_EXPORT int SetSampleVolume(struct Sample *sample, int volume) {
 
 // FUNCTION: LEGOLAND 0x004929e0
 LEGO_EXPORT int SetSamplePan(struct Sample *sample, int pan) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -441,7 +441,7 @@ LEGO_EXPORT int SetSamplePan(struct Sample *sample, int pan) {
 
 // FUNCTION: LEGOLAND 0x00492a20
 LEGO_EXPORT int SetSampleFrequency(struct Sample *sample, int frequency) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -457,7 +457,7 @@ LEGO_EXPORT int SetSampleFrequency(struct Sample *sample, int frequency) {
 struct Sample *FUN_00492a60(struct Sample *sample) {
     struct SampleBuffer *buffer;
 
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -481,7 +481,7 @@ LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2) 
 
 // FUNCTION: LEGOLAND 0x00492af0
 LEGO_EXPORT int SetSampleFade(struct Sample *sample, unsigned int fade) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     if (sample == 0) {
@@ -564,13 +564,13 @@ LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def) {
 
 // FUNCTION: LEGOLAND 0x00492c20
 LEGO_EXPORT int KillSoundSampleSystem(void) {
-    if (DAT_007988c0 == 0) {
+    if (SoundAvailable == 0) {
         return 0;
     }
     DeletePlayableSamples(0);
     ((struct DirectSoundObj *)DSound)->vtable->Release(DSound);
     DSound = 0;
-    DAT_007988c0 = 0;
+    SoundAvailable = 0;
     return 1;
 }
 
@@ -1030,7 +1030,7 @@ int FUN_00495a50(int param_1) {
 LEGO_EXPORT int UpdateSoundVols(void) {
     int vol;
 
-    if (DAT_007988c0 != 0) {
+    if (SoundAvailable != 0) {
         if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
             vol = FUN_00495a50(DAT_0080ffa0.field_28);
             ((struct SampleBuffer *)DAT_007cad4c)->vtable->method_0x3c((struct SampleBuffer *)DAT_007cad4c, vol);
