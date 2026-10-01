@@ -110,7 +110,7 @@ unsigned int FUN_004434d0(struct Image *param_1) {
     }
     aligned_width = (*(int *)(info + 4) + 3) & 0xfffffffc;
     row_size = *(int *)(info + 8) * aligned_width;
-    RES_SetFilePointer(file, offbits);
+    RES_SetFilePointer(file, *(unsigned int *)(header + 0xa));
     pixels = (unsigned char *)malloc(row_size);
     if (pixels == NULL) {
         free(param_1);
