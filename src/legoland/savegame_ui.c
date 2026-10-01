@@ -518,11 +518,10 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
     } while (slot != 0);
 
     rc = ReturnFrom_ProfileDir();
-    {
-        char r = (unsigned int)rc > 0;
-        r--;
-        return r;
+    if (rc) {
+        return 0;
     }
+    return 0xff;
 }
 
 // FUNCTION: LEGOLAND 0x0048e280
