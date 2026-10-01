@@ -477,10 +477,10 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
     struct RenderObj *robj;
     struct TileGroup *group;
     struct TileNode *node;
+    struct MapElement *tile;
     int total;
     int blocked;
-    int x;
-    int y;
+    Point pt;
 
     total = 0;
     blocked = 0;
@@ -491,14 +491,13 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
             return 1;
         }
         do {
-            x = group->field_c + node->x;
-            y = group->field_10 + node->y;
-            if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
-                y >= (int)(unsigned int)lpConfig->height ||
-                (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+            pt.x = group->field_c + node->x;
+            pt.y = group->field_10 + node->y;
+            tile = GetTileAtPoint(&pt);
+            if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                 total++;
                 blocked++;
-            } else if (FUN_00482b60((struct Point *)&x) == 0) {
+            } else if (FUN_00482b60(&pt) == 0) {
                 total++;
             }
             node = node->next;
@@ -512,14 +511,13 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
         do {
             group = robj->field_0->group;
             if (FUN_0046a730((struct NerpsArg *)group) != 0) {
-                x = group->field_c + robj->field_4;
-                y = group->field_10 + robj->field_5;
-                if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
-                    y >= (int)(unsigned int)lpConfig->height ||
-                    (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+                pt.x = group->field_c + robj->field_4;
+                pt.y = group->field_10 + robj->field_5;
+                tile = GetTileAtPoint(&pt);
+                if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                     total++;
                     blocked++;
-                } else if (FUN_00482b60((struct Point *)&x) == 0) {
+                } else if (FUN_00482b60(&pt) == 0) {
                     total++;
                 }
             }
