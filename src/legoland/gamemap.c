@@ -243,7 +243,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
     } else {
         DAT_00667cdc = 1;
     }
-    RemoveObjectsPowerStats(classid, tile.id);
+    RemoveObjectsPowerStats(classid, tile);
     obj->method_9c(classid, tile.id, cursor);
     if (obj == DAT_007fd624) {
         DAT_00667cf4 = DAT_00667cf4 + -1;
@@ -481,31 +481,37 @@ LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a230
-LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, unsigned int coords) {
+LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, TileId coords) {
     int power;
     struct MapCell *cell;
     int amount;
+    int x;
+    int y;
 
     power = FindObjectsPower(((struct ClassNode *)classid)->iface);
     if (power != 0) {
         if (0 < power) {
-            if ((coords & 0xff) < lpConfig->width && (coords >> 8 & 0xff) < lpConfig->height) {
-                cell = (struct MapCell *)((char *)GameMap[coords >> 8 & 0xff] + (coords & 0xff) * 0x14);
+            x = coords.pos.x;
+            y = coords.pos.y;
+            if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
+                cell = (struct MapCell *)((char *)GameMap[y] + x * 0x14);
             } else {
                 cell = NULL;
             }
             if ((cell->flags.bytes[1] & 2) == 0) {
                 MapStats.field_3d0 = MapStats.field_3d0 - power;
-                if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
+                if (MapStats.field_3d4 - (int)MapStats.field_3d8 > MapStats.field_3d0) {
                     FUN_0045a0d0();
                 }
             }
         } else {
-            amount = (power ^ power >> 0x1f) - (power >> 0x1f);
+            amount = abs(power);
             MapStats.field_3d4 = MapStats.field_3d4 - amount;
             if (MapStats.field_3d8 != 0) {
-                if ((coords & 0xff) < lpConfig->width && (coords >> 8 & 0xff) < lpConfig->height) {
-                    cell = (struct MapCell *)((char *)GameMap[coords >> 8 & 0xff] + (coords & 0xff) * 0x14);
+                x = coords.pos.x;
+                y = coords.pos.y;
+                if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
+                    cell = (struct MapCell *)((char *)GameMap[y] + x * 0x14);
                 } else {
                     cell = NULL;
                 }
