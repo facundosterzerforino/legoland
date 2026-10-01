@@ -201,7 +201,6 @@ LEGO_EXPORT void RenderFullMap(void) {
     pen = CreatePen(PS_SOLID, 2, 0xff4000);
 
     if (DAT_00667c30 == 0) {
-        RECT clip;
         int tw;
         int th;
         int half;
@@ -216,7 +215,6 @@ LEGO_EXPORT void RenderFullMap(void) {
         int bounds[4];
         int origin[4];
         struct Point pt;
-        struct MapElement tile;
         struct MapElement *obj;
         struct OverlayNode *node;
 
@@ -227,11 +225,15 @@ LEGO_EXPORT void RenderFullMap(void) {
         DAT_008139c4 = 0x280;
         DAT_008139c0 = 0x154;
         StoreClipping();
-        clip.left = 0;
-        clip.right = DAT_008139c4;
-        clip.top = 0;
-        clip.bottom = DAT_008139c0;
-        SetClipping(&clip);
+        {
+            RECT clip;
+
+            clip.left = 0;
+            clip.right = DAT_008139c4;
+            clip.top = 0;
+            clip.bottom = DAT_008139c0;
+            SetClipping(&clip);
+        }
         GetTileDimensions(&tw, &th);
         DAT_00667c04 = 0;
         DAT_00667c00 = -(lpConfig->height * tw / 2);
@@ -254,6 +256,8 @@ LEGO_EXPORT void RenderFullMap(void) {
 
         for (y = 0; y < (int)lpConfig->height; y++) {
             for (x = 0; x < (int)lpConfig->width; x++) {
+                struct MapElement tile;
+
                 if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
                     tile = GameMap[y][x];
                 } else {
@@ -264,6 +268,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                     unsigned short id;
                     int px;
                     int py;
+                    struct Point pt;
 
                     id = GameMap[y][x].field_8;
                     src = TileSpriteInfo[id].src;
@@ -298,6 +303,8 @@ LEGO_EXPORT void RenderFullMap(void) {
         PushRenderingStatusAndUnlockVideoSurface();
         for (y = 0; y < (int)lpConfig->height; y++) {
             for (x = 0; x < (int)lpConfig->width; x++) {
+                struct MapElement tile;
+
                 if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
                     tile = GameMap[y][x];
                 } else {
@@ -307,6 +314,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                 if (tile.flags & 8) {
                     struct Ride *ride;
                     struct MapPoint off;
+                    struct Point pt;
                     float sxf;
                     float syf;
 
@@ -330,11 +338,15 @@ LEGO_EXPORT void RenderFullMap(void) {
             }
         }
 
-        clip.left = 0;
-        clip.right = DAT_008139c4;
-        clip.top = 0;
-        clip.bottom = DAT_008139c0;
-        SetClipping(&clip);
+        {
+            RECT clip;
+
+            clip.left = 0;
+            clip.right = DAT_008139c4;
+            clip.top = 0;
+            clip.bottom = DAT_008139c0;
+            SetClipping(&clip);
+        }
         node = OverlayList;
         pt.x = 0;
         pt.y = 0;
@@ -350,6 +362,7 @@ LEGO_EXPORT void RenderFullMap(void) {
         }
 
         for (obj = GetFirstRenderObject(); obj != NULL; obj = GetNextRenderObject(obj)) {
+            struct MapElement tile;
             TileId uid;
             struct Ride *ride;
 
@@ -357,6 +370,7 @@ LEGO_EXPORT void RenderFullMap(void) {
             tile = *obj;
             if ((tile.flags & 0x200) && (tile.flags & 4) == 0) {
                 struct MapMarker *marker;
+                struct Point pt;
 
                 pt.x = (tile.field_4 & ~7) + 4;
                 pt.y = (tile.field_5 & ~7) + 4;
@@ -371,6 +385,7 @@ LEGO_EXPORT void RenderFullMap(void) {
             if ((ride->flags & 4) == 0 && (ride->flags & 0x400) == 0) {
                 if (ride == driving_school_roads->ride) {
                     struct RideQueueEntry *entry;
+                    struct Point pt;
 
                     pt.x = uid.pos.x;
                     pt.y = uid.pos.y;
@@ -391,6 +406,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                 ride->element == castle_dummy) {
                 struct Point pos;
                 struct Point dest;
+                struct Point pt;
                 RideSpriteInfo loc;
                 float f1;
                 float f2;
@@ -483,6 +499,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                 }
                 spr = (struct Sprite *)info->sprite;
                 if ((spr->flags & 0x8000) == 0) {
+                    struct Point pt;
+
                     pt.x = uid.pos.x;
                     pt.y = uid.pos.y;
                     GetTileBounds(&pt, bounds);
@@ -500,6 +518,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                         struct Sprite *sub;
                         int hx;
                         int hy;
+                        struct Point pt;
 
                         sub = spr->group->subs[i];
                         hx = HALF(spr->group->xoffs[i]);
