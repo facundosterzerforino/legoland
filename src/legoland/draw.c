@@ -527,7 +527,58 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
 LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465ee0
-void FUN_00465ee0(void) { STUB(); }
+void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
+    struct DrawLLSFrame *frame = (struct DrawLLSFrame *)(lls + 1);
+    unsigned short *dst;
+    unsigned short *pixels;
+    unsigned char *runs;
+    unsigned int *mask;
+    int frame_index;
+    int i;
+    int off;
+
+    DAT_007fe9a4 = DAT_0066809c.lPitch;
+    DAT_007fea4c.left = clip->left;
+    DAT_007febac.width = clip->right - clip->left;
+    DAT_007fea4c.top = clip->top;
+    DAT_007febac.height = clip->bottom - clip->top;
+    if ((int)DAT_004b9ca8 < 0) {
+        frame_index = lls->frame;
+    } else {
+        frame_index = (int)DAT_004b9ca8;
+    }
+    if (frame_index >= lls->frame_count) {
+        frame_index = lls->frame_count - 1;
+    }
+    DAT_007fe9a8 = (unsigned int)((unsigned char *)DAT_0066809c.lpSurface + DAT_00813a44.y * DAT_0066809c.lPitch + DAT_00813a44.x * 2);
+    dst = (unsigned short *)((unsigned char *)DAT_0066809c.lpSurface + pos->y * DAT_0066809c.lPitch + (pos->x - DAT_007fea4c.left) * 2);
+    if (lls->flags & 1) {
+        pixels = frame->pixels;
+        off = frame->pixel_count * 2 + 0x10;
+        runs = (unsigned char *)frame + off;
+        mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
+        FUN_00468040(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+        i = lls->frame + 1;
+        while (i-- != 0) {
+            frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
+        }
+        pixels = frame->pixels;
+        off = frame->pixel_count * 2 + 0x10;
+        runs = (unsigned char *)frame + off;
+        mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
+        FUN_00468040(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+    } else {
+        i = frame_index;
+        while (i-- != 0) {
+            frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
+        }
+        pixels = frame->pixels;
+        off = frame->pixel_count * 2 + 0x10;
+        runs = (unsigned char *)frame + off;
+        mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
+        FUN_00468040(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00466080
 int FUN_00466080(void) {
@@ -947,7 +998,88 @@ void FUN_00467180(unsigned short *dst, unsigned short *src, unsigned char *runs,
 void FUN_004673f0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00467640
-void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
+void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) {
+    unsigned int m;
+    unsigned int c;
+    unsigned int n;
+    unsigned short *p;
+    unsigned short v;
+
+    m = 3;
+    if (skip != 0) {
+        do {
+            for (;;) {
+                c = *mask & m;
+                m = _rotl(m, 2);
+                mask += m & 1;
+                if (!(c & 0xaaaaaaaa)) {
+                    src++;
+                }
+                if (c & 0x55555555) {
+                    n = *runs++;
+                    if (n == 0) {
+                        break;
+                    }
+                    c = *mask & m;
+                    m = _rotl(m, 2);
+                    mask += m & 1;
+                    if (!(c & 0xaaaaaaaa)) {
+                        if (c & 0x55555555) {
+                            src++;
+                        } else {
+                            src += n;
+                        }
+                    }
+                }
+            }
+        } while (--skip > 0);
+    }
+    p = dst;
+    do {
+        for (;;) {
+            c = *mask & m;
+            m = _rotl(m, 2);
+            mask += m & 1;
+            if (c & 0xaaaaaaaa) {
+                p++;
+                if (c & 0x55555555) {
+                    p--;
+                    n = *runs++;
+                    if (n == 0) {
+                        break;
+                    }
+                    c = *mask & m;
+                    m = _rotl(m, 2);
+                    mask += m & 1;
+                    if (!(c & 0xaaaaaaaa)) {
+                        if ((unsigned int)(cursor - p) < n) {
+                            DAT_007feb14 |= 1;
+                        }
+                        if (!(c & 0x55555555)) {
+                            do {
+                                *p++ = *src++;
+                            } while (--n);
+                        } else {
+                            v = *src++;
+                            do {
+                                *p++ = v;
+                            } while (--n);
+                        }
+                    } else {
+                        p += n;
+                    }
+                }
+            } else {
+                if (cursor == p) {
+                    DAT_007feb14 |= 1;
+                }
+                *p++ = *src++;
+            }
+        }
+        dst = (unsigned short *)((char *)dst + stride);
+        p = dst;
+    } while (--h != 0);
+}
 
 // FUNCTION: LEGOLAND 0x004677b0
 void FUN_004677b0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
@@ -1036,7 +1168,7 @@ void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs,
 }
 
 // FUNCTION: LEGOLAND 0x00468040
-void FUN_00468040(void) { STUB(); }
+void FUN_00468040(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468410
 void FUN_00468410(void) { STUB(); }
