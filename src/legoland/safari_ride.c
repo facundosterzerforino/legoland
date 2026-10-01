@@ -168,8 +168,6 @@ void FUN_00414b80(Element *obj, unsigned int param_2, unsigned int param_3, unsi
     struct RideNode *node = ride->riders;
     struct SafariNode *sn;
     struct Point pos;
-    struct Point off1;
-    struct Point off2;
     char found = 0;
 
     sn = FUN_00414a80((struct SafariKey *)tile);
@@ -190,9 +188,12 @@ void FUN_00414b80(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             for (node = ride->riders; node != NULL; node = node->next) {
                 if (*tile == node->tile.id) {
                     struct Bloke *bloke = node->rider;
-                    struct Person *person;
 
                     if ((bloke->flags & 0x80) != 0) {
+                        struct Point off2;
+                        struct Person *person;
+                        struct Point off1;
+
                         off2 = DAT_0082c670;
                         person = bloke->person;
                         off1.x = DAT_004cbee8;
