@@ -184,11 +184,12 @@ WorkOrder *FUN_004704b0(Point *out) {
     if (flags & 0x88) {
         ride = elem->field_0->ride;
         if (ride->durability != 0) {
+            do {
             if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
                 if (!(0x4000 & flags)) {
                     order = AddRepairOrderForObject(ride, pos);
                     if (order == NULL) {
-                        return order;
+                        break;
                     }
                 }
             } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
@@ -208,6 +209,7 @@ WorkOrder *FUN_004704b0(Point *out) {
                     PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
                 }
             }
+            } while (0);
         }
         return order;
     }
