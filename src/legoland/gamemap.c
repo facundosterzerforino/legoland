@@ -294,7 +294,9 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
                         blk.f0 <= (int)(query->field_1404 + query->field_1414[2]); blk.f0 = blk.f0 + 1) {
                         cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
                         cell->flags.word = cell->flags.word & 0xffe7;
+                        cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
                         cell->byte_10 = 0;
+                        cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
                         cell->word_8 = cell->word_a;
                         FUN_0045d260((struct Point *)&blk);
                         RemovePathSquare((struct Point *)&blk);
