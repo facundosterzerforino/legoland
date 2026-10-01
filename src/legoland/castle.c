@@ -5297,7 +5297,7 @@ void FUN_00425050(Element *obj, unsigned int param_2, unsigned int param_3, Tile
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00425170
-void FUN_00425170(void) {
+void FUN_00425170(Element *obj) {
     FUN_00424e80();
     FUN_00425e20();
     FUN_00423140(0);
