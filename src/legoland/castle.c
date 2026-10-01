@@ -5319,7 +5319,6 @@ void FUN_004251c0(Element *obj) {
     TileId *tile;
     unsigned int x;
     unsigned int y;
-    unsigned char dir;
     struct TimerNode *node;
     struct {
         unsigned char pad_0[0xa8];
@@ -5350,8 +5349,7 @@ void FUN_004251c0(Element *obj) {
             if (bloke->field_e == 0) {
                 bloke->dest.x = (x - 8) << 8;
                 bloke->dest.y = (y - 1) << 8;
-                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_73 = dir + 0x10;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
                 bloke->field_e = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
@@ -5370,8 +5368,7 @@ void FUN_004251c0(Element *obj) {
             if (bloke->field_e == 0) {
                 bloke->dest.x = (x << 8) + 0x80;
                 bloke->dest.y = (y << 8) + 0x80;
-                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_73 = dir + 0x10;
+                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
                 bloke->field_e = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
@@ -5391,7 +5388,6 @@ void FUN_004251c0(Element *obj) {
     }
     FUN_00425170(obj);
 }
-#pragma optimize("", on)
 #pragma optimize("", on)
 
 #pragma optimize("", off)
