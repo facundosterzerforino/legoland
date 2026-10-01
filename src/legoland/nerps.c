@@ -530,14 +530,14 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
             robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj);
         } while (robj != NULL);
     }
-    if (blocked == 0) {
-        if (total == 0) {
-            goto ok;
-        }
-        FUN_00468e00(arg, arg->field_4);
+    if (blocked != 0) {
+        FUN_00468dc0(arg, arg->field_4);
         return 0;
     }
-    FUN_00468dc0(arg, arg->field_4);
+    if (total == 0) {
+        goto ok;
+    }
+    FUN_00468e00(arg, arg->field_4);
     return 0;
 ok:
     return 1;
