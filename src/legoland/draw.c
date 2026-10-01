@@ -485,7 +485,60 @@ LEGO_EXPORT void SoftPrint_Clear(void) {
 void FUN_00465240(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465850
-void FUN_00465850(void *frame) { STUB(); }
+void FUN_00465850(struct AviFrame *frame) {
+    unsigned char *dst;
+    unsigned char *next;
+    unsigned short *row;
+    unsigned short *s;
+    unsigned short *p0;
+    unsigned short *p1;
+    unsigned short v;
+    int width;
+    int height;
+    int half;
+    int rest;
+    int y;
+    int x;
+
+    dst = DAT_0066809c.lpSurface;
+    DAT_006681ec = (DAT_006681ec != dst) ? dst : 0;
+    height = frame->height;
+    width = frame->width;
+    rest = lpConfig->field_2 - height * 2;
+    half = rest / 2;
+    rest = rest - half;
+    row = frame->pixels + (height - 1) * width;
+    for (y = half; y > 0; y--) {
+        memset(dst, 0, 0x500);
+        dst += DAT_0066809c.lPitch;
+    }
+    for (y = height; y != 0; y--) {
+        next = dst + DAT_0066809c.lPitch;
+        s = row;
+        p0 = (unsigned short *)dst;
+        p1 = (unsigned short *)next;
+        for (x = width; x > 0; x--) {
+            v = *s;
+            if (DAT_00668088 == 2) {
+                v = (v & 0x1f) | (v & 0xffe0) << 1;
+            }
+            p0[0] = v;
+            p1[0] = v;
+            p0[1] = v;
+            p1[1] = v;
+            s++;
+            p0 += 2;
+            p1 += 2;
+        }
+        row -= width;
+        dst += DAT_0066809c.lPitch * 2;
+    }
+    dst = next + DAT_0066809c.lPitch;
+    for (y = rest; y > 0; y--) {
+        memset(dst, 0, 0x500);
+        dst += DAT_0066809c.lPitch;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004659a0
 void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {

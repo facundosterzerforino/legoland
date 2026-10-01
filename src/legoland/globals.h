@@ -2439,6 +2439,8 @@ extern int DAT_00668164[32];
 extern int DAT_006681e4;
 // 0x006681e8
 extern unsigned int DAT_006681e8;
+// 0x006681ec
+extern void *DAT_006681ec;
 // 0x006681f0
 extern unsigned int DAT_006681f0;
 // 0x006681f4
