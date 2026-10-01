@@ -181,7 +181,6 @@ void FUN_004378e0(struct MapObject *param_1) {
     int y;
     char move;
     char rr;
-    unsigned char tmr;
 
     while (node != NULL) {
         next = node->next;
@@ -199,7 +198,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 1:
@@ -209,7 +208,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 2:
@@ -219,7 +218,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 3:
@@ -232,7 +231,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                     move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->field_e = 7;
                     bloke->field_73 = move + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                     y = rand() % 0x32;
                     bloke->param_action++;
                     bloke->field_58 = y;
@@ -260,7 +259,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
@@ -276,7 +275,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 9:
@@ -286,7 +285,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 10:
@@ -296,7 +295,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 11:
@@ -381,7 +380,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 1:
@@ -391,7 +390,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 2:
@@ -405,7 +404,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 bloke->field_72 = 8;
                 break;
@@ -419,7 +418,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 5:
@@ -429,7 +428,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
@@ -439,7 +438,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 7:
@@ -693,7 +692,7 @@ void FUN_00438430(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->field_58 = rand() % 100;
                 bloke->param_action++;
                 break;
@@ -728,7 +727,7 @@ void FUN_00438430(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action = 8;
                 field_8 = 0;
                 break;
@@ -746,7 +745,7 @@ void FUN_00438430(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action = 10;
                 break;
             case 10:
@@ -909,7 +908,7 @@ void FUN_00438960(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 1:
@@ -918,7 +917,7 @@ void FUN_00438960(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 2:
@@ -927,7 +926,7 @@ void FUN_00438960(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 bloke->field_58 = rand() % 8;
                 break;
@@ -941,7 +940,7 @@ void FUN_00438960(Element *obj) {
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->field_e = 7;
                     bloke->field_73 = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                     bloke->param_action++;
                 }
                 break;
@@ -955,7 +954,7 @@ void FUN_00438960(Element *obj) {
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->field_e = 7;
                     bloke->field_73 = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                     bloke->param_action--;
                 }
                 break;
@@ -965,7 +964,7 @@ void FUN_00438960(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
@@ -974,7 +973,7 @@ void FUN_00438960(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 7:
@@ -983,7 +982,7 @@ void FUN_00438960(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 8:
@@ -1123,7 +1122,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, to, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 1:
@@ -1133,7 +1132,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 2:
@@ -1144,7 +1143,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 3:
@@ -1162,7 +1161,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->field_72 = 8;
                 bloke->param_action++;
                 break;
@@ -1176,7 +1175,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
@@ -1187,7 +1186,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 7:
@@ -1197,7 +1196,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 8:
@@ -1207,7 +1206,7 @@ void FUN_00438f10(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 9:
