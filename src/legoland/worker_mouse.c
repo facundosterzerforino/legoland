@@ -187,6 +187,9 @@ WorkOrder *FUN_004704b0(Point *out) {
             if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
                 if (!(0x4000 & flags)) {
                     order = AddRepairOrderForObject(ride, pos);
+                    if (order == NULL) {
+                        return order;
+                    }
                 }
             } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
                 if (!(0x4000 & flags)) {
