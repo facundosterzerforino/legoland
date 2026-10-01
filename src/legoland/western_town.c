@@ -364,9 +364,6 @@ void FUN_00437c90(struct MapObject *param_1) {
     int x;
     int y;
     char move;
-    int v24;
-    int v6c;
-    int v68;
 
     while (node != NULL) {
         next = node->next;
@@ -377,17 +374,26 @@ void FUN_00437c90(struct MapObject *param_1) {
         if (bloke->field_e == 0) {
             switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                bloke->flags |= 8;
                 bloke->dest.x = x * 0x100 - 0x100;
                 y = y * 0x100 + 0x80;
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-                goto calc;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 1:
-                x = (x - 3) * 0x100;
-                goto calc2;
+                bloke->dest.x = (x - 3) * 0x100;
+                y = y * 0x100 + 0x80;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 2:
                 bloke->dest.x = (x - 3) * 0x100;
                 move = (char)(rand() % 3);
@@ -400,8 +406,8 @@ void FUN_00437c90(struct MapObject *param_1) {
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
-                bloke->field_72 = 8;
                 bloke->param_action++;
+                bloke->field_72 = 8;
                 break;
             case 3:
                 FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->pos, 1);
@@ -417,15 +423,9 @@ void FUN_00437c90(struct MapObject *param_1) {
                 bloke->param_action++;
                 break;
             case 5:
-                x = (x - 1) * 0x100;
-            calc2:
+                bloke->dest.x = x * 0x100 - 0x100;
                 y = y * 0x100 + 0x80;
-                bloke->dest.x = x;
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-            calc:
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
@@ -434,7 +434,8 @@ void FUN_00437c90(struct MapObject *param_1) {
                 break;
             case 6:
                 bloke->dest.x = x * 0x100;
-                bloke->dest.y = y * 0x100;
+                y = y * 0x100;
+                bloke->dest.y = y;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
