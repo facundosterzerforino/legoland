@@ -481,6 +481,8 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
     int total;
     int blocked;
     Point pt;
+    int ox;
+    int oy;
 
     total = 0;
     blocked = 0;
@@ -488,11 +490,13 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
         group = ((struct TileGroupHolder *)arg->field_4)->group;
         node = group->list;
         if (node == NULL) {
-            return 1;
+            goto ok;
         }
         do {
-            pt.x = group->field_c + node->x;
-            pt.y = group->field_10 + node->y;
+            ox = node->x;
+            oy = node->y;
+            pt.x = group->field_c + ox;
+            pt.y = group->field_10 + oy;
             tile = GetTileAtPoint(&pt);
             if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                 total++;
@@ -506,13 +510,15 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
         robj = (struct RenderObj *)GetFirstRenderObject();
         blocked = 0;
         if (robj == NULL) {
-            return 1;
+            goto ok;
         }
         do {
             group = robj->field_0->group;
             if (FUN_0046a730((struct NerpsArg *)group) != 0) {
-                pt.x = group->field_c + robj->field_4;
-                pt.y = group->field_10 + robj->field_5;
+                ox = robj->field_4;
+                oy = robj->field_5;
+                pt.x = group->field_c + ox;
+                pt.y = group->field_10 + oy;
                 tile = GetTileAtPoint(&pt);
                 if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                     total++;
@@ -526,13 +532,15 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
     }
     if (blocked == 0) {
         if (total == 0) {
-            return 1;
+            goto ok;
         }
         FUN_00468e00(arg, arg->field_4);
         return 0;
     }
     FUN_00468dc0(arg, arg->field_4);
     return 0;
+ok:
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a900
