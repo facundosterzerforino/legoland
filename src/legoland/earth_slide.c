@@ -389,15 +389,14 @@ void FUN_0042d560(unsigned short *param_1) {
     unsigned int flags;
     char nb;
 
-    if ((*(unsigned int *)((char *)param_1 + 0x10) & 1) != 0) {
-        v14 = *(int *)((char *)param_1 + 0x14);
-        *(int *)((char *)param_1 + 0x14) = v14 + 1;
-        if (2 < v14 + 1) {
+    flags = *(unsigned int *)((char *)param_1 + 0x10);
+    if ((flags & 1) != 0) {
+        if ((v14 = ++*(int *)((char *)param_1 + 0x14)) > 2) {
             nb = *(char *)((char *)param_1 + 0xb) + 1;
             *(int *)((char *)param_1 + 0x14) = 0;
             *(char *)((char *)param_1 + 0xb) = nb;
-            if (*(int *)((char *)DAT_006160d4 + 0x14) <= (int)nb) {
-                flags = *(unsigned int *)((char *)param_1 + 0x10) & 0xfffffffe;
+            if ((int)nb >= *(int *)((char *)DAT_006160d4 + 0x14)) {
+                flags = flags & 0xfffffffe;
                 *(unsigned char *)((char *)param_1 + 0xb) = 0;
                 *(unsigned int *)((char *)param_1 + 0x10) = flags;
                 GetAllBlokesOffRide((struct Ride *)DAT_006160d0, *param_1);
