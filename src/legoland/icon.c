@@ -341,8 +341,10 @@ LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprit
         ReferenceSprite(sprite);
         icon->sprite = sprite;
         if (sprite != NULL) {
-            icon->field_12 = sprite->height;
-            icon->field_10 = sprite->width;
+            short h = *(volatile short *)&sprite->height;
+            short w = *(volatile short *)&sprite->width;
+            icon->field_12 = h;
+            icon->field_10 = w;
             icon->flags = icon->flags | 0x10;
         }
     }
