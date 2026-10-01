@@ -244,7 +244,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
         DAT_00667cdc = 1;
     }
     RemoveObjectsPowerStats(classid, tile);
-    obj->method_9c(classid, tile.id, cursor);
+    obj->method_9c(classid, tile, cursor);
     if (obj == DAT_007fd624) {
         DAT_00667cf4 = DAT_00667cf4 + -1;
         DAT_00667ce0 = DAT_00667ce0 + -1;
