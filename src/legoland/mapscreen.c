@@ -8,14 +8,14 @@
 #include "gamemap.h"
 #include "gfx.h"
 #include "globals.h"
-#include "llidb.h"
-#include "obj_instance.h"
-#include "ride_queue.h"
 #include "interface.h"
+#include "llidb.h"
 #include "map_object.h"
 #include "mapscreen.h"
+#include "obj_instance.h"
 #include "print_sprite.h"
 #include "render.h"
+#include "ride_queue.h"
 #include "tilemap.h"
 
 struct MapPoint {
@@ -324,8 +324,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                     bounds[1] += ScrollY >> 8;
                     bounds[0] += ScrollX >> 8;
                     PrintScaledSprite(TileSpriteArray[tile.field_8], (int)((bounds[0] - DAT_00667c00) * sxf),
-                                      (int)((bounds[1] - DAT_00667c04) * syf) + DAT_00667c20, DAT_00667c16 + 1,
-                                      DAT_00667c14 + 1);
+                        (int)((bounds[1] - DAT_00667c04) * syf) + DAT_00667c20, DAT_00667c16 + 1,
+                        DAT_00667c14 + 1);
                 }
             }
         }
@@ -345,8 +345,8 @@ LEGO_EXPORT void RenderFullMap(void) {
         base_y = (((origin[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20;
         for (; node != NULL; node = node->next) {
             PrintScaledSprite(node->sprite, (((tw * 2 / 3 + node->x) * sx) >> 16) + base_x,
-                              ((node->y * sy) >> 16) + base_y, ((short)node->sprite->width * sx) >> 16,
-                              ((short)node->sprite->height * sy) >> 16);
+                ((node->y * sy) >> 16) + base_y, ((short)node->sprite->width * sx) >> 16,
+                ((short)node->sprite->height * sy) >> 16);
         }
 
         for (obj = GetFirstRenderObject(); obj != NULL; obj = GetNextRenderObject(obj)) {
@@ -382,13 +382,13 @@ LEGO_EXPORT void RenderFullMap(void) {
                         DAT_00667c16 = lights->width;
                         DAT_00667c14 = lights->height;
                         PrintScaledSprite(lights, ((bounds[0] - DAT_00667c00) * sx) >> 16,
-                                          (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20,
-                                          ((short)lights->width * sx) >> 16, ((short)lights->height * sy) >> 16);
+                            (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20,
+                            ((short)lights->width * sx) >> 16, ((short)lights->height * sy) >> 16);
                     }
                 }
             } else if (ride->element == square_track || ride->element == square_track_height ||
-                       ride->element == square_track_height_0 || ride->element == square_track_height_path ||
-                       ride->element == castle_dummy) {
+                ride->element == square_track_height_0 || ride->element == square_track_height_path ||
+                ride->element == castle_dummy) {
                 struct Point pos;
                 struct Point dest;
                 RideSpriteInfo loc;
@@ -436,7 +436,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                         DAT_00667c14 = (short)(int)((float)sy * f1 * 7.62939453125e-06f);
                         if (DAT_00667c14 > 0) {
                             PrintScaledSprite(stick, x1 - (((short)DAT_00667c16 * sx) >> 17), y1,
-                                              ((short)DAT_00667c16 * sx) >> 16, DAT_00667c14);
+                                ((short)DAT_00667c16 * sx) >> 16, DAT_00667c14);
                         }
                     }
                     PushRenderingStatusAndUnlockVideoSurface();
@@ -453,7 +453,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                         bounds[0] += ScrollX >> 8;
                         bounds[1] += ScrollY >> 8;
                         LineTo(hdc, ((bounds[0] - DAT_00667c00) * sx) >> 16,
-                               (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20);
+                            (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20);
                     }
                     SelectObject(hdc, old);
                     renderEngine->lpVtbl->ReleaseDC(renderEngine, hdc);
@@ -491,8 +491,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                     DAT_00667c16 = spr->width;
                     DAT_00667c14 = spr->height;
                     PrintScaledSprite(spr, ((bounds[0] - DAT_00667c00) * sx) >> 16,
-                                      (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20,
-                                      ((short)spr->width * sx) >> 16, ((short)spr->height * sy) >> 16);
+                        (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20,
+                        ((short)spr->width * sx) >> 16, ((short)spr->height * sy) >> 16);
                 } else {
                     int i;
 
@@ -512,8 +512,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                         DAT_00667c16 = sub->width;
                         DAT_00667c14 = sub->height;
                         PrintScaledSprite(sub, ((bounds[0] - DAT_00667c00) * sx) >> 16,
-                                          (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20,
-                                          ((short)sub->width * sx) >> 16, ((short)sub->height * sy) >> 16);
+                            (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20,
+                            ((short)sub->width * sx) >> 16, ((short)sub->height * sy) >> 16);
                     }
                 }
             }
