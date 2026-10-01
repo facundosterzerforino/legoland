@@ -243,7 +243,7 @@ LEGO_EXPORT void RemakeAllDetailDependentSprites(void) {
 
     sprite = sprite_list;
     node = sprite_list;
-    if (sprite != NULL) {
+    if (sprite_list != NULL) {
         do {
             if ((node->flags & 0x400) == 0 && node->surface != NULL) {
                 node->surface->lpVtbl->Release(node->surface);
