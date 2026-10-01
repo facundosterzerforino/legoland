@@ -748,15 +748,11 @@ LEGO_EXPORT MapElement *GetFirstRenderObject(void) {
 
 // FUNCTION: LEGOLAND 0x0045a8b0
 LEGO_EXPORT MapElement *GetNextRenderObject(MapElement *object) {
-    int x;
-    int y;
-
     if (object != 0 && object->next.id != 0) {
-        x = object->next.pos.x;
-        y = object->next.pos.y;
-        if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
-            return &GameMap[y][x];
-        }
+        Point p;
+        p.x = object->next.pos.x;
+        p.y = object->next.pos.y;
+        return GetTileAtPoint(&p);
     }
     return 0;
 }
