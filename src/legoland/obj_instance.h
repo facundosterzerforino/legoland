@@ -72,7 +72,8 @@ struct Ride {
     /* 0xa8 */ void (*cb_pre_render)();
     /* 0xac */ unsigned char pad_ac[0xb8 - 0xac];
     /* 0xb8 */ int (*load_hook)(struct Element *element); /* run after a save game restores this ride */
-    /* 0xbc */ unsigned char pad_bc[0xc4 - 0xbc];
+    /* 0xbc */ int (*save_hook)(struct Element *element); /* run when this ride is saved */
+    /* 0xc0 */ unsigned char pad_c0[0xc4 - 0xc0];
     /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */
     /* 0xc8 */ unsigned char *counters; /* per-bloke visit counts */
     /* 0xcc */ struct RideNode *riders;
