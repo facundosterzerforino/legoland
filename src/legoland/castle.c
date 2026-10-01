@@ -7161,10 +7161,10 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
     unsigned int key;
     unsigned int bit;
     int n;
-    struct Footprint *fp = &obj->ride->footprint;
+    struct Ride *ride = obj->ride;
     int i;
 
-    SetEditCursorFootPrint(fp);
+    SetEditCursorFootPrint(&ride->footprint);
     EditCursor.field_1830 = 0;
     ScreenToMapRef((int *)x, (int *)&EditCursor.field_1404, y);
     n = 0;
@@ -7176,7 +7176,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
             EditCursor.next = &DAT_0081ce00[n];
             DAT_0081ce00[n].field_1404 = DAT_00829b90[i][0];
             DAT_0081ce00[n].field_1408 = DAT_00829b90[i][1];
-            DAT_0081ce00[n].footprint = *fp;
+            DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
             FUN_0045f460(&DAT_0081ce00[n]);
             n++;
@@ -7191,7 +7191,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
             EditCursor.next = &DAT_0081ce00[n];
             DAT_0081ce00[n].field_1404 = DAT_00829ba8[i][0];
             DAT_0081ce00[n].field_1408 = DAT_00829ba8[i][1];
-            DAT_0081ce00[n].footprint = *fp;
+            DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
             FUN_0045f460(&DAT_0081ce00[n]);
             n++;
