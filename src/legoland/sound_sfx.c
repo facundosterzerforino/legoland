@@ -659,13 +659,13 @@ void FUN_00492da0(void) {
 /* Creates segment n from the file IMT_LOAD read into memory, then frees the file. */
 #define IMT_GET(n, name) \
     DAT_0079a6b0++; \
-    desc.guidClass = DAT_004ab9f0; \
+    desc.guidClass = CLSID_DirectMusicSegment; \
     desc.dwSize = sizeof(desc); \
     desc.dwValidData = DMUS_OBJ_CLASS | DMUS_OBJ_NAME | DMUS_OBJ_MEMORY; \
     desc.llMemLength = DAT_0079a608[n]; \
     desc.pbMemData = DAT_00799c1c[n]; \
     wcscpy(desc.wszName, name); \
-    hr = DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &DAT_004ab670, (void **)&DAT_00799230[n]); \
+    hr = DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &IID_IDirectMusicSegment, (void **)&DAT_00799230[n]); \
     if (hr != S_OK) { \
         DBPrintf(IMT_MSG_GET_FAILED, DAT_0079a6b0, hr, GetLastError()); \
     } \
@@ -711,7 +711,7 @@ DWORD WINAPI FUN_00492db0(LPVOID param) {
     if (FAILED(DMusicPerformance->vtable->Init(DMusicPerformance, &music, DSound, NULL))) {
         goto release_perf;
     }
-    music->vtable->CreatePort(music, &DAT_004acfd0, &params, &port, NULL);
+    music->vtable->CreatePort(music, &NullGuid, &params, &port, NULL);
     port->vtable->GetFormat(port, NULL, &formatSize, &bufferSize);
     format = malloc(formatSize < sizeof(WAVEFORMATEX) ? sizeof(WAVEFORMATEX) : formatSize);
     port->vtable->GetFormat(port, format, &formatSize, &bufferSize);
@@ -741,16 +741,16 @@ DWORD WINAPI FUN_00492db0(LPVOID param) {
         goto clear_loader;
     }
     // STRING: LEGOLAND 0x004bfda4
-    DMusicLoader->vtable->SetSearchDirectory(DMusicLoader, &DAT_004ab8b0, L"imusic", TRUE);
-    DMusicLoader->vtable->EnableCache(DMusicLoader, &DAT_004ab8b0, TRUE);
+    DMusicLoader->vtable->SetSearchDirectory(DMusicLoader, &GUID_DirectMusicAllTypes, L"imusic", TRUE);
+    DMusicLoader->vtable->EnableCache(DMusicLoader, &GUID_DirectMusicAllTypes, TRUE);
     // STRING: LEGOLAND 0x004bfd9c
-    if (DMusicLoader->vtable->ScanDirectory(DMusicLoader, &DAT_004ab9f0, L"sgt", NULL) == S_OK) {
+    if (DMusicLoader->vtable->ScanDirectory(DMusicLoader, &CLSID_DirectMusicSegment, L"sgt", NULL) == S_OK) {
         // STRING: LEGOLAND 0x004bfd94
-        if (DMusicLoader->vtable->ScanDirectory(DMusicLoader, &DAT_004ab980, L"sty", NULL) == S_OK) {
+        if (DMusicLoader->vtable->ScanDirectory(DMusicLoader, &CLSID_DirectMusicStyle, L"sty", NULL) == S_OK) {
             // STRING: LEGOLAND 0x004bfd84
             DBPrintf("Loading Styles\n");
-            for (i = 0; DMusicLoader->vtable->EnumObject(DMusicLoader, &DAT_004ab980, i, &desc) == S_OK; i++) {
-                DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &DAT_004ab610, &DAT_007988d0[i]);
+            for (i = 0; DMusicLoader->vtable->EnumObject(DMusicLoader, &CLSID_DirectMusicStyle, i, &desc) == S_OK; i++) {
+                DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &IID_IDirectMusicStyle, &DAT_007988d0[i]);
             }
         }
         // STRING: LEGOLAND 0x004bfd70
@@ -991,7 +991,7 @@ DWORD WINAPI FUN_00492db0(LPVOID param) {
         }
     }
 clear_loader:
-    DMusicLoader->vtable->ClearCache(DMusicLoader, &DAT_004ab8b0);
+    DMusicLoader->vtable->ClearCache(DMusicLoader, &GUID_DirectMusicAllTypes);
     DMusicLoader->vtable->Release(DMusicLoader);
 stop_perf:
     DMusicPerformance->vtable->Stop(DMusicPerformance, NULL, NULL, 0, 0);
@@ -1046,7 +1046,7 @@ int FUN_00495b00(void) {
     if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
         TerminateThread(MusicThread, 0);
 
-        DMusicLoader->vtable->ClearCache(DMusicLoader, &DAT_004ab8b0);
+        DMusicLoader->vtable->ClearCache(DMusicLoader, &GUID_DirectMusicAllTypes);
         DMusicLoader->vtable->Release(DMusicLoader);
 
         DMusicPerformance->vtable->Stop(DMusicPerformance, NULL, NULL, 0, 0);

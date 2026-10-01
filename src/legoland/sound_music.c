@@ -175,11 +175,11 @@ LEGO_EXPORT int LoadMusicStyle(const char *filename, void **out) {
     }
     *out = 0;
     MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
-    desc.guidClass = DAT_004ab980;
+    desc.guidClass = CLSID_DirectMusicStyle;
     desc.dwSize = 0x350;
     wcscpy(desc.wszFileName, wide);
     desc.dwValidData = 0x12;
-    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &DAT_004ab610, out);
+    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &IID_IDirectMusicStyle, out);
     return 0 <= result;
 }
 
@@ -201,7 +201,7 @@ LEGO_EXPORT int LoadMusicBand(const char *filename, void **out) {
     desc.dwSize = 0x350;
     wcscpy(desc.wszFileName, wide);
     desc.dwValidData = 0x12;
-    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &DAT_004ab5e0, out);
+    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &IID_IDirectMusicBand, out);
     return 0 <= result;
 }
 
@@ -223,7 +223,7 @@ LEGO_EXPORT int LoadMusicChordMap(const char *filename, void **out) {
     desc.dwSize = 0x350;
     wcscpy(desc.wszFileName, wide);
     desc.dwValidData = 0x12;
-    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &DAT_004ab600, out);
+    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &IID_IDirectMusicChordMap, out);
     return 0 <= result;
 }
 
@@ -241,11 +241,11 @@ LEGO_EXPORT int LoadMusicSegment(const char *filename, void **out) {
     }
     *out = 0;
     MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
-    desc.guidClass = DAT_004ab9f0;
+    desc.guidClass = CLSID_DirectMusicSegment;
     desc.dwSize = 0x350;
     wcscpy(desc.wszFileName, wide);
     desc.dwValidData = 0x12;
-    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &DAT_004ab670, out);
+    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &IID_IDirectMusicSegment, out);
     return 0 <= result;
 }
 
@@ -265,12 +265,12 @@ int FUN_00495f00(const char *file, const char *name, void **out) {
     *out = 0;
     MultiByteToWideChar(0, 0, file, -1, wideFile, 0x200);
     MultiByteToWideChar(0, 0, name, -1, wideName, 0x200);
-    desc.guidClass = DAT_004ab9f0;
+    desc.guidClass = CLSID_DirectMusicSegment;
     desc.dwSize = 0x350;
     wcscpy(desc.wszFileName, wideFile);
     wcscpy(desc.wszName, wideName);
     desc.dwValidData = 0x16;
-    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &DAT_004ab670, out);
+    result = ((struct MusicLoader *)DMusicLoader)->vtable->GetObject((struct MusicLoader *)DMusicLoader, &desc, &IID_IDirectMusicSegment, out);
     return 0 <= result;
 }
 

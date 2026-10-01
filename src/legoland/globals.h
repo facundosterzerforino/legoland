@@ -493,7 +493,7 @@ extern GUID CLSID_DirectMusicComposer;
 // 0x004aba00
 extern GUID CLSID_DirectMusicPerformance;
 // 0x004acfd0
-extern GUID DAT_004acfd0;
+extern GUID NullGuid;
 // 0x004b4580
 extern struct FortRect DAT_004b4580;
 
@@ -607,25 +607,25 @@ extern double DOUBLE_004ab538;
 extern double DOUBLE_004ab558;
 // 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
 // 0x004ab5e0
-extern GUID DAT_004ab5e0;
+extern GUID IID_IDirectMusicBand;
 // 0x004ab600
-extern GUID DAT_004ab600;
+extern GUID IID_IDirectMusicChordMap;
 // 0x004ab610
-extern GUID DAT_004ab610;
+extern GUID IID_IDirectMusicStyle;
 // 0x004ab670
-extern GUID DAT_004ab670;
+extern GUID IID_IDirectMusicSegment;
 // 0x004ab6d0
 extern GUID GUID_PerfMasterGrooveLevel;
 // 0x004ab8b0
-extern GUID DAT_004ab8b0;
+extern GUID GUID_DirectMusicAllTypes;
 // 0x004ab8e0
 extern GUID DAT_004ab8e0;
 // 0x004ab930
 extern GUID DAT_004ab930;
 // 0x004ab980
-extern GUID DAT_004ab980;
+extern GUID CLSID_DirectMusicStyle;
 // 0x004ab9f0
-extern GUID DAT_004ab9f0;
+extern GUID CLSID_DirectMusicSegment;
 // 0x004ac090 GUID_SysKeyboard, 0x004ac0a0 GUID_SysMouse — declared in <dinput.h>, defined in globals.c
 // 0x004acf80
 extern GUID DAT_004acf80;
