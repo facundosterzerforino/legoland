@@ -4368,3 +4368,12 @@ extern unsigned int DAT_00613878[36];
 extern int DAT_00613908[24][2];
 // 0x006148b8
 extern int DAT_006148b8[546][2];
+
+// 0x00667528
+extern int DAT_00667528;
+// 0x004b8a88
+extern int DAT_004b8a88;
+// 0x004b8a8c
+extern int DAT_004b8a8c;
+// 0x004b8a90
+extern int DAT_004b8a90;
