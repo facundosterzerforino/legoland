@@ -508,7 +508,6 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
         } while (node != NULL);
     } else {
         robj = (struct RenderObj *)GetFirstRenderObject();
-        blocked = 0;
         if (robj == NULL) {
             goto ok;
         }
@@ -534,11 +533,10 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
         FUN_00468dc0(arg, arg->field_4);
         return 0;
     }
-    if (total == 0) {
-        goto ok;
+    if (total != 0) {
+        FUN_00468e00(arg, arg->field_4);
+        return 0;
     }
-    FUN_00468e00(arg, arg->field_4);
-    return 0;
 ok:
     return 1;
 }
