@@ -113,6 +113,7 @@ LEGO_EXPORT void DefaultCursor(struct Cursor *cursor);
 void FUN_0045a3e0(int *param);
 void FUN_0045a430(short param_1, int *param_2);
 LEGO_EXPORT void CalculateMapRenderOrder(void);
+void FUN_0045a660(void);
 LEGO_EXPORT struct MapElement *GetFirstRenderObject(void);
 LEGO_EXPORT struct MapElement *GetNextRenderObject(struct MapElement *object);
 LEGO_EXPORT struct MapElement *GetFirstObjectMatching(struct Element *cls);

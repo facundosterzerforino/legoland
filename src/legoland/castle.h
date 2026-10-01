@@ -1,5 +1,8 @@
 #pragma once
 
+struct Point;
+int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5);
+
 struct SprObj;
 struct FlagWord;
 struct ObjAtC8;

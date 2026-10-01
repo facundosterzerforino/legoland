@@ -270,7 +270,8 @@ struct TextCell {
 
 /* A tile set: sprites plus per-tile-type callbacks. */
 struct FXSpriteList {
-    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x00 */ int base;
+    /* 0x04 */ unsigned char pad_4[0xc - 0x4];
     /* 0x0c */ int *sprite_ids;
     /* 0x10 */ unsigned char pad_10[0x18 - 0x10];
     /* 0x18 */ unsigned char (*get_rf_flags)(int x, int y);
@@ -2255,6 +2256,14 @@ extern struct TextCell DAT_006675c0[50];
 extern int DAT_00667c00;
 // 0x00667c04
 extern int DAT_00667c04;
+// 0x00667c08
+extern int DAT_00667c08;
+// 0x00667c0c
+extern int DAT_00667c0c;
+// 0x00667c14
+extern short DAT_00667c14;
+// 0x00667c16
+extern short DAT_00667c16;
 // 0x00667c18
 extern int DAT_00667c18;
 // 0x00667c1c
