@@ -491,7 +491,7 @@ LEGO_EXPORT void DeleteSavedGameList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e190
-LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
+LEGO_EXPORT char LoadSavedGamesList(unsigned char profile) {
     char path[120];
     struct ProfileData header;
     char slot;
@@ -499,7 +499,7 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
     void *file;
 
     if (!Goto_ProfileDir()) {
-        return 0xff;
+        return -1;
     }
 
     slot = 8;
@@ -521,7 +521,7 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
     if (rc) {
         return 0;
     }
-    return 0xff;
+    return -1;
 }
 
 // FUNCTION: LEGOLAND 0x0048e280
