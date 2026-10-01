@@ -6072,7 +6072,26 @@ __declspec(naked) void HASM_lego_invsqrtf(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00426b10
-void lego_invsqrtf_init(void) { STUB(); }
+void lego_invsqrtf_init(void) {
+    int i;
+    int j;
+    float x;
+
+    for (i = 0; i < 64; i++) {
+        x = (float)sqrt((float)i * 0.015625f + 1.0f);
+        invsqrtf_table[i * 2] = x * 0.5f;
+        invsqrtf_table[i * 2 + 1] = 0.5f / x;
+    }
+    for (j = 0; j <= 255; j++) {
+        invsqrtf_exp_table[j] = (float)sqrt(pow(2.0, j - 127));
+    }
+    __asm {
+        push eax
+        lea eax, HASM_lego_invsqrtf
+        mov DAT_00829a58, eax
+        pop eax
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00426ba0
 void FUN_00426ba0(unsigned int *param_1, unsigned int param_2) {
