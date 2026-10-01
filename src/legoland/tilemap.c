@@ -1146,29 +1146,22 @@ int FUN_0045c900(struct MapRect *param_1) {
     int y;
     struct MapTile tile;
 
-    x = param_1->x0;
     x1 = param_1->x1;
-    if (x <= x1) {
+    for (x = param_1->x0; x <= x1; x++) {
         y0 = param_1->y0;
         y1 = param_1->y1;
         xoff = x * 0x14;
-        y = y0;
-        do {
-            for (; y <= y1; y = y + 1) {
-                if (xoff < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
-                    tile.flags_c = 0;
-                    tile.flags_10 = 0;
-                } else {
-                    tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
-                }
-                if ((tile.flags_c & 0x10) == 0 || (tile.flags_10 & 2) != 0) {
-                    return 0;
-                }
+        for (y = y0; y <= y1; y++) {
+            if (xoff < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+                tile.flags_c = 0x40;
+                tile.flags_10 = 0;
+            } else {
+                tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
             }
-            x = x + 1;
-            xoff = xoff + 0x14;
-            y = y0;
-        } while (x <= x1);
+            if ((tile.flags_c & 0x10) == 0 || (tile.flags_10 & 2) != 0) {
+                return 0;
+            }
+        }
     }
     return 1;
 }
@@ -1178,7 +1171,6 @@ unsigned int FUN_0045c9c0(int *param_1) {
     int y;
     int yend;
     unsigned int result;
-    unsigned int acc;
     unsigned int bit;
     int x;
     int xoff;
@@ -1187,36 +1179,26 @@ unsigned int FUN_0045c9c0(int *param_1) {
 
     y = param_1[1];
     result = 0;
-    acc = 0;
     bit = 0x1000000;
     yend = y + 5;
-    if (y < yend) {
+    for (; y < yend; y++) {
         x = *param_1;
-        do {
-            if (x < x + 5) {
-                xoff = x * 0x14;
-                xi = x;
-                do {
-                    if (xoff < 0 || xi >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
-                        tile.flags_c = 0;
-                        tile.flags_10 = 0;
-                    } else {
-                        tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
-                    }
-                    if ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0) {
-                        acc = acc | bit;
-                    }
-                    xoff = xoff + 0x14;
-                    bit = bit >> 1;
-                    xi = xi + 1;
-                    result = acc;
-                } while (xi < x + 5);
+        xoff = x * 0x14;
+        for (xi = x; xi < x + 5; xi++) {
+            if (xoff < 0 || xi >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+                tile.flags_c = 0x40;
+                tile.flags_10 = 0;
+            } else {
+                tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
             }
-            y = y + 1;
-        } while (y < yend);
-        return result;
+            if ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0) {
+                result |= bit;
+            }
+            xoff += 0x14;
+            bit >>= 1;
+        }
     }
-    return 0;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x0045ca90
@@ -1369,29 +1351,20 @@ void FUN_0045cd30(int *arg) {
 
 // FUNCTION: LEGOLAND 0x0045cd70
 void FUN_0045cd70(int *param_1) {
-    int iVar1;
-    int local_18;
-    int local_14;
-    struct MapRect local_10;
+    struct Point pt;
+    struct MapRect rect;
 
-    local_18 = *param_1 + -2;
-    if (local_18 <= *param_1 + 2) {
-        do {
-            iVar1 = param_1[1];
-            local_14 = iVar1 + -2;
-            if (local_14 <= iVar1 + 2) {
-                do {
-                    if ((local_18 != *param_1 || local_14 != iVar1) &&
-                        FUN_0045ce30(&local_18) != 0 &&
-                        FUN_0045ca90(&local_18, (int *)&local_10) == 0) {
-                        FUN_0045cb90((struct Point *)&local_18);
-                    }
-                    iVar1 = param_1[1];
-                    local_14 = local_14 + 1;
-                } while (local_14 <= iVar1 + 2);
+    pt.x = *param_1 - 2;
+    while (pt.x <= *param_1 + 2) {
+        pt.y = param_1[1] - 2;
+        while (pt.y <= param_1[1] + 2) {
+            if ((pt.x != *param_1 || pt.y != param_1[1]) && FUN_0045ce30((int *)&pt) != 0 &&
+                FUN_0045ca90((int *)&pt, (int *)&rect) == 0) {
+                FUN_0045cb90(&pt);
             }
-            local_18 = local_18 + 1;
-        } while (local_18 <= *param_1 + 2);
+            pt.y++;
+        }
+        pt.x++;
     }
 }
 
