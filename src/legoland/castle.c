@@ -3890,10 +3890,10 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                 struct MVert *p0;
                 struct MVert *p1;
                 struct MVert *p2;
-                float dx1;
-                float dy1;
-                float dx2;
-                float dy2;
+                double dx1;
+                double dy1;
+                double dx2;
+                double dy2;
                 unsigned int bits;
                 for (k = 0; k < 3; k++) {
                     int e = src->tris[i].e[k];
