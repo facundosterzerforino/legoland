@@ -1356,16 +1356,17 @@ LEGO_EXPORT void RenderHelpIcons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f2e0
-unsigned char FUN_0046f2e0(struct IconNode *node, unsigned int buttons, short dx, short dy) {
-    unsigned char result;
-    if ((buttons & 1) != 0) {
+unsigned char FUN_0046f2e0(struct IconNode *node, unsigned char buttons, short dx, short dy) {
+    unsigned char r = buttons;
+    if (r & 1) {
         return 2;
     }
-    result = 2;
-    if ((buttons & 4) == 0) {
-        result = 1;
+    if (r & 4) {
+        r = 2;
+    } else {
+        r = 1;
     }
-    return result;
+    return r;
 }
 
 // FUNCTION: LEGOLAND 0x0046f300
@@ -1788,16 +1789,13 @@ LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
     if (cur == ind) {
         DAT_006688d4 = cur->next;
     } else {
-        if (cur == NULL) {
-            return;
-        }
-        while ((next = cur->next) != ind) {
-            cur = next;
-            if (next == NULL) {
-                return;
+        for (; cur != NULL; cur = next) {
+            next = cur->next;
+            if (next == ind) {
+                cur->next = ind->next;
+                break;
             }
         }
-        cur->next = ind->next;
     }
     if (cur != NULL) {
         ind->next = DAT_006688d8;
@@ -1815,16 +1813,13 @@ LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
     if (cur == ind) {
         DAT_006688d8 = cur->next;
     } else {
-        if (cur == NULL) {
-            return;
-        }
-        while ((next = cur->next) != ind) {
-            cur = next;
-            if (next == NULL) {
-                return;
+        for (; cur != NULL; cur = next) {
+            next = cur->next;
+            if (next == ind) {
+                cur->next = ind->next;
+                break;
             }
         }
-        cur->next = ind->next;
     }
     if (cur != NULL) {
         ind->next = DAT_006688d4;
