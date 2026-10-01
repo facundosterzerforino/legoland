@@ -14,30 +14,29 @@ struct ExceptionEntry {
 int stackdump(void *exc_info, const char *filename) {
     char progname[260] = "Unknown";
     const char *modname = "Unknown";
-    char buf[1000] = {0};
-    int maxlen = 50;
-    int count = 0;
-    char path[260];
-    HANDLE hFile;
-    char *base;
-    char *dot;
     EXCEPTION_POINTERS *ep;
     EXCEPTION_RECORD *rec;
     CONTEXT *ctx;
+    const char *sep;
+    char path[260];
+    HANDLE hFile;
+    char *bufend;
+    int count = 0;
+    char buf[1000] = {DAT_004d8bb0[0]};
     MEMORY_BASIC_INFORMATION mbi;
-    char modpath[260];
+    char *out;
+    int maxlen = 50;
     unsigned char *ip;
+    char modpath[260];
     int i;
     char tmp[1000];
     DWORD *sp;
-    DWORD *next;
     DWORD *limit;
-    char *bufend;
-    char *out;
-    const char *sep;
+    DWORD *next;
+    char *base;
+    char *dot;
+    const char *kind;
 
-    buf[0] = DAT_004d8bb0[0];
-    memset(buf + 1, 0, sizeof(buf) - 1);
     if (DAT_00667528 == 0) {
         DAT_00667528 = 1;
         if (GetModuleFileNameA(NULL, path, 0x104) <= 0) {
@@ -73,26 +72,41 @@ int stackdump(void *exc_info, const char *filename) {
         FUN_00454290(hFile, "Exception handler called in %s.\r\n", filename);
         FUN_004545a0(hFile);
         if (rec->ExceptionCode == EXCEPTION_ACCESS_VIOLATION && rec->NumberParameters >= 2) {
+            // STRING: LEGOLAND 0x004b8bfc
+            kind = "Read from";
+            if (rec->ExceptionInformation[0]) {
+                // STRING: LEGOLAND 0x004b8bf0
+                kind = "Write to";
+            }
             // STRING: LEGOLAND 0x004b8bc0
-            wsprintfA(tmp, "%s location %08x caused an access violation.\r\n",
-                rec->ExceptionInformation[0] ? "Write to" : "Read from", rec->ExceptionInformation[1]);
-            FUN_00454290(hFile, "%s", tmp);
+            wsprintfA(tmp, "%s location %08x caused an access violation.\r\n", kind, rec->ExceptionInformation[1]);
+            FUN_00454290(hFile, (char *)DAT_004b8bbc, tmp);
         }
+        // STRING: LEGOLAND 0x004b8bb8
         FUN_00454290(hFile, "\r\n");
+        // STRING: LEGOLAND 0x004b8ba8
         FUN_00454290(hFile, "Registers:\r\n");
+        // STRING: LEGOLAND 0x004b8b80
         FUN_00454290(hFile, "EAX=%08x CS=%04x EIP=%08x EFLGS=%08x\r\n", ctx->Eax, ctx->SegCs, ctx->Eip, ctx->EFlags);
+        // STRING: LEGOLAND 0x004b8b58
         FUN_00454290(hFile, "EBX=%08x SS=%04x ESP=%08x EBP=%08x\r\n", ctx->Ebx, ctx->SegSs, ctx->Esp, ctx->Ebp);
+        // STRING: LEGOLAND 0x004b8b34
         FUN_00454290(hFile, "ECX=%08x DS=%04x ESI=%08x FS=%04x\r\n", ctx->Ecx, ctx->SegDs, ctx->Esi, ctx->SegFs);
+        // STRING: LEGOLAND 0x004b8b10
         FUN_00454290(hFile, "EDX=%08x ES=%04x EDI=%08x GS=%04x\r\n", ctx->Edx, ctx->SegEs, ctx->Edi, ctx->SegGs);
+        // STRING: LEGOLAND 0x004b8afc
         FUN_00454290(hFile, "Bytes at CS:EIP:\r\n");
         ip = (unsigned char *)ctx->Eip;
         for (i = 0; i < DAT_004b8a88; i++) {
             __try {
+                // STRING: LEGOLAND 0x004b8af4
                 FUN_00454290(hFile, "%02x ", ip[i]);
             } __except (1) {
+                // STRING: LEGOLAND 0x004b8af0
                 FUN_00454290(hFile, "?? ");
             }
         }
+        // STRING: LEGOLAND 0x004b8ae0
         FUN_00454290(hFile, "\r\nStack dump:\r\n");
         __try {
             sp = (DWORD *)ctx->Esp;
@@ -102,23 +116,27 @@ int stackdump(void *exc_info, const char *filename) {
             out = buf;
             while ((next = sp + 1) <= limit) {
                 if (count % DAT_004b8a90 == 0) {
+                    // STRING: LEGOLAND 0x004b8ad8
                     out += wsprintfA(out, "%08x: ", sp);
                 }
+                // STRING: LEGOLAND 0x004b8ad4
                 sep = " ";
                 count++;
                 if (count % DAT_004b8a90 == 0 || sp + 2 > limit) {
                     sep = "\r\n";
                 }
+                // STRING: LEGOLAND 0x004b8acc
                 out += wsprintfA(out, "%08x%s", *sp, sep);
                 sp = next;
                 if (out > bufend) {
-                    FUN_00454290(hFile, "%s", buf);
+                    FUN_00454290(hFile, (char *)DAT_004b8bbc, buf);
                     buf[0] = 0;
                     out = buf;
                 }
             }
-            FUN_00454290(hFile, "%s", buf);
+            FUN_00454290(hFile, (char *)DAT_004b8bbc, buf);
         } __except (1) {
+            // STRING: LEGOLAND 0x004b8aa0
             FUN_00454290(hFile, "Exception encountered during stack dump.\r\n");
         }
         FUN_004542e0(hFile);
