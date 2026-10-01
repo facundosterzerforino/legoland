@@ -5309,8 +5309,90 @@ void FUN_00425170(void) {
 }
 #pragma optimize("", on)
 
+#pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004251c0
-void FUN_004251c0(void) { STUB(); }
+void FUN_004251c0(Element *obj) {
+    Ride *ride;
+    RideNode *elem;
+    RideNode *next;
+    Bloke *bloke;
+    TileId *tile;
+    unsigned int x;
+    unsigned int y;
+    unsigned char dir;
+    struct TimerNode *node;
+    struct {
+        unsigned char pad_0[0xa8];
+        struct SprObj *prev;
+        unsigned char pts_a[0x14];
+        struct SprObj *next;
+        unsigned char pts_b[0x14];
+    } *cs;
+
+    ride = obj->ride;
+    elem = ride->riders;
+    cs = (void *)&DAT_00829ae0;
+    if (cs->prev != NULL) {
+        FUN_0041d170(cs->prev, (unsigned int)cs->pts_a);
+    }
+    if (cs->next != NULL) {
+        FUN_0041d190(cs->next, (unsigned int)cs->pts_b);
+    }
+    while (elem != NULL) {
+        next = elem->next;
+        tile = &elem->tile;
+        x = tile->pos.x + ride->x;
+        y = tile->pos.y + ride->y;
+        bloke = elem->rider;
+        switch (bloke->param_action) {
+        case 0:
+            bloke->flags |= 8;
+            if (bloke->field_e == 0) {
+                bloke->dest.x = (x - 8) << 8;
+                bloke->dest.y = (y - 1) << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_73 = dir + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+            }
+            break;
+        case 1:
+            if (bloke->field_e == 0) {
+                bloke->param_action = 0x10;
+            }
+            break;
+        case 0x10:
+            node = FUN_00421930((unsigned int)bloke, (struct Timer *)&DAT_00829ae0);
+            bloke->param_action = 0x20;
+            break;
+        case 0x21:
+            if (bloke->field_e == 0) {
+                bloke->dest.x = (x << 8) + 0x80;
+                bloke->dest.y = (y << 8) + 0x80;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_73 = dir + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+            }
+            break;
+        case 0x22:
+            if (bloke->field_e == 0) {
+                bloke->param_action = 0x40;
+            }
+            break;
+        case 0x40:
+            bloke->flags &= 0xfff7;
+            RemoveBlokeFromRide(ride, elem);
+            break;
+        }
+        elem = next;
+    }
+    FUN_00425170(obj);
+}
+#pragma optimize("", on)
+#pragma optimize("", on)
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004254d0
