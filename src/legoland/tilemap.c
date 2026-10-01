@@ -1171,7 +1171,6 @@ unsigned int FUN_0045c9c0(int *param_1) {
     int y;
     int yend;
     unsigned int result;
-    unsigned int acc;
     unsigned int bit;
     int x;
     int xoff;
@@ -1180,36 +1179,26 @@ unsigned int FUN_0045c9c0(int *param_1) {
 
     y = param_1[1];
     result = 0;
-    acc = 0;
     bit = 0x1000000;
     yend = y + 5;
-    if (y < yend) {
+    for (; y < yend; y++) {
         x = *param_1;
-        do {
-            if (x < x + 5) {
-                xoff = x * 0x14;
-                xi = x;
-                do {
-                    if (xoff < 0 || xi >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
-                        tile.flags_c = 0;
-                        tile.flags_10 = 0;
-                    } else {
-                        tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
-                    }
-                    if ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0) {
-                        acc = acc | bit;
-                    }
-                    xoff = xoff + 0x14;
-                    bit = bit >> 1;
-                    xi = xi + 1;
-                    result = acc;
-                } while (xi < x + 5);
+        xoff = x * 0x14;
+        for (xi = x; xi < x + 5; xi++) {
+            if (xoff < 0 || xi >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+                tile.flags_c = 0x40;
+                tile.flags_10 = 0;
+            } else {
+                tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
             }
-            y = y + 1;
-        } while (y < yend);
-        return result;
+            if ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0) {
+                result |= bit;
+            }
+            xoff += 0x14;
+            bit >>= 1;
+        }
     }
-    return 0;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x0045ca90
