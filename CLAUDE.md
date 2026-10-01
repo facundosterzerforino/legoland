@@ -53,7 +53,9 @@ struct assignment, etc.).
 - **No forward declarations in `.c` files** — put all declarations in the TU's `.h` header.
   Run `uv run tools/needsdecl.py` to check.
 - **No `__declspec(naked)` or inline `__asm`** — achieve matches through pure C only.
-- **No `goto`** — use `for (;;) { ... break; }` if you need a forward jump pattern.
+- **`goto` only with named labels** — cleanup/error paths like `goto fail;` are fine (the original code
+  used them, and they often match better than duplicated cleanup). No Ghidra-style `goto LAB_00446b71;`:
+  give the label a meaningful name or restructure with `if`/loops.
 - **Run `clang-format -i`** on all modified `.c`/`.h` files before committing.
 - **Retype globals** when casts can be removed. If a global is always cast to `struct Foo *`,
   change its type in `globals.h`/`globals.c`. Consecutive globals that form a struct

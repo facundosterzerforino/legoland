@@ -174,3 +174,9 @@ At /O2, MSVC6 omits the frame pointer. A frame in the original means one of:
   has moved between 89% and 93% this way; after a globals.h change, re-tune its `mid` operand order
   rather than treating the drop as a regression in the new code.
 
+## Shared Cleanup Paths: `goto fail`
+- When several failure checks jump into one cleanup chain that runs the releases in reverse order and
+  falls into a single `return`, the original was usually written with named labels:
+  `if (FAILED(hr)) goto release_perf; ... release_perf: perf->Release(); release_composer: ...`.
+  Nested ifs or duplicated cleanup code give the wrong block layout (SaveGame: 62.77% -> 91.55% with `goto fail`).
+
