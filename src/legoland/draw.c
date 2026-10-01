@@ -551,7 +551,7 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
     int i;
     int j;
     unsigned short *p;
-    unsigned short v;
+    short v;
 
     height = param_1->height;
     width = param_1->width;
@@ -559,15 +559,16 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
     last = height - 1;
     src = param_1->pixels + last * width;
     if (height != 0) {
-        for (i = last + 1; i != 0; i--) {
+        i = last + 1;
+        do {
             if (width > 0) {
                 offset = (char *)src - (char *)dst;
                 p = dst;
                 j = width;
                 do {
-                    v = *(unsigned short *)((char *)p + offset);
+                    v = *(short *)(offset + (char *)p);
                     if (DAT_00668088 == 2) {
-                        v = (v & 0x1f) | (v & 0xffe0) << 1;
+                        v = (v & 0x1f) | (v & ~0x1f) << 1;
                     }
                     *p = v;
                     p++;
@@ -576,7 +577,8 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
             }
             dst = (unsigned short *)((char *)dst + DAT_0066809c.lPitch);
             src -= width;
-        }
+            i--;
+        } while (i != 0);
     }
 }
 
