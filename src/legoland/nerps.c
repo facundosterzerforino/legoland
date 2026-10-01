@@ -570,18 +570,24 @@ unsigned int FUN_0046a960(struct NerpsArg *arg) {
     unsigned int x;
     unsigned int y;
     int xb;
+    int xstart;
+    int yend;
+    struct LegoConfig *cfg;
 
     total = 0;
     y = arg->field_2c;
     count = 0;
-    if ((int)y <= arg->field_34) {
+    yend = arg->field_34;
+    cfg = lpConfig;
+    if ((int)y <= yend) {
+        xstart = arg->field_28;
         do {
-            x = arg->field_28;
+            x = xstart;
             if ((int)x <= arg->field_30) {
                 xb = x * 0x14;
                 do {
-                    if (xb < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 ||
-                        (int)(unsigned int)lpConfig->height <= (int)y) {
+                    if (xb < 0 || (int)(unsigned int)cfg->width <= (int)x || (int)y < 0 ||
+                        (int)(unsigned int)cfg->height <= (int)y) {
                         tile = NULL;
                     } else {
                         tile = (struct MapElement *)((char *)GameMap[y] + xb);
@@ -591,11 +597,11 @@ unsigned int FUN_0046a960(struct NerpsArg *arg) {
                     }
                     x++;
                     xb += 0x14;
-                    total = count;
                 } while ((int)x <= arg->field_30);
+                total = count;
             }
             y++;
-        } while ((int)y <= arg->field_34);
+        } while ((int)y <= yend);
     }
     if (total <= (int)arg->field_14) {
         return 1;
