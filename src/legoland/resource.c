@@ -240,7 +240,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
     if (volume->handle == INVALID_HANDLE_VALUE) {
         // STRING: LEGOLAND 0x004bde3c
-        sprintf(res_path, "%s%s.res", DAT_00813b04, fname);
+        sprintf(res_path, "%s%s.res", CdDrivePath, fname);
         FUN_0047f870("Trying to open from %s", res_path);
         FUN_0047f850();
         volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);

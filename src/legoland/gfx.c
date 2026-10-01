@@ -33,25 +33,25 @@ LEGO_EXPORT char *GetGFXFName(const char *name, unsigned char type, char *out) {
     switch (type) {
     case 0:
         // STRING: LEGOLAND 0x004b7a90
-        sprintf(result, "%s%s", DAT_004b81c0, name);
+        sprintf(result, "%s%s", GraphicsPath, name);
         break;
     case 1:
-        sprintf(result, "%s%s", DAT_004b81c8, name);
+        sprintf(result, "%s%s", GraphicsSmallPath, name);
         break;
     case 2:
         sprintf(result, "%s%s", DAT_004b81c4, name);
         break;
     case 3:
-        sprintf(result, "%s%s", DAT_004b81c8, name);
+        sprintf(result, "%s%s", GraphicsSmallPath, name);
         break;
     case 5:
-        sprintf(result, "%s%s", DAT_004b81cc, name);
+        sprintf(result, "%s%s", MasksPath, name);
         break;
     case 6:
-        sprintf(result, "%s%s", DAT_004b81d0, name);
+        sprintf(result, "%s%s", MasksSmallPath, name);
         break;
     case 4:
-        sprintf(result, "%s%s", DAT_004b81d4, name);
+        sprintf(result, "%s%s", IconsPath, name);
         break;
     case 7:
         // STRING: LEGOLAND 0x004b8278
@@ -59,10 +59,10 @@ LEGO_EXPORT char *GetGFXFName(const char *name, unsigned char type, char *out) {
         break;
     case 8:
         // STRING: LEGOLAND 0x004b826c
-        sprintf(result, "%s%s.MDL", DAT_004b81d8, name);
+        sprintf(result, "%s%s.MDL", ModelsPath, name);
         break;
     case 9:
-        sprintf(result, "%s%s", DAT_004b81d8, name);
+        sprintf(result, "%s%s", ModelsPath, name);
         break;
     }
     return result;

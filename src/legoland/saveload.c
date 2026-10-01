@@ -32,7 +32,7 @@
 /* Abort a load: close the file and report failure. */
 #pragma auto_inline(off)
 static int LoadAbort(void) {
-    _close(DAT_006691b0);
+    _close(SaveFileHandle);
     DAT_00667ca0 = 0;
     return 0;
 }
@@ -51,7 +51,7 @@ LEGO_EXPORT int BeginMeasuredBlock(void) {
     int pos;
     int marker;
 
-    pos = _tell(DAT_006691b0);
+    pos = _tell(SaveFileHandle);
     marker = 0;
     if (pos == -1) {
         return 0;
@@ -72,18 +72,18 @@ int FUN_0047d7e0(void) {
 LEGO_EXPORT int EndMeasuredBlock(void) {
     int end_pos;
 
-    end_pos = _tell(DAT_006691b0);
+    end_pos = _tell(SaveFileHandle);
     if (end_pos == -1) {
         return 0;
     }
     DAT_006691fc = DAT_006691fc - 1;
-    if (_lseek(DAT_006691b0, DAT_006691bc[DAT_006691fc], 0) == -1) {
+    if (_lseek(SaveFileHandle, DAT_006691bc[DAT_006691fc], 0) == -1) {
         return 0;
     }
     if (SaveGameWrite(&end_pos, 4) == 0) {
         return 0;
     }
-    return _lseek(DAT_006691b0, end_pos, 0) != -1;
+    return _lseek(SaveFileHandle, end_pos, 0) != -1;
 }
 
 // FUNCTION: LEGOLAND 0x0047d880
@@ -120,8 +120,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
     struct MapElement tile;
     struct FXSpriteList *tab[256];
 
-    DAT_006691b0 = _open(filename, _O_RDWR | _O_CREAT | _O_TRUNC | _O_BINARY, 0x180);
-    if (DAT_006691b0 == -1) {
+    SaveFileHandle = _open(filename, _O_RDWR | _O_CREAT | _O_TRUNC | _O_BINARY, 0x180);
+    if (SaveFileHandle == -1) {
         switch (errno) {
         case EACCES:
             // STRING: LEGOLAND 0x004bcb14
@@ -722,10 +722,10 @@ LEGO_EXPORT int SaveGame(char *filename) {
         FUN_00453ce0("End Measured Block 13");
         goto fail;
     }
-    _close(DAT_006691b0);
+    _close(SaveFileHandle);
     return 1;
 fail:
-    _close(DAT_006691b0);
+    _close(SaveFileHandle);
     return 0;
 }
 
@@ -751,8 +751,8 @@ LEGO_EXPORT int LoadGame(char *path) {
     char header[0x20];
     char name[0x200];
 
-    DAT_006691b0 = _open(path, _O_BINARY);
-    if (DAT_006691b0 == -1) {
+    SaveFileHandle = _open(path, _O_BINARY);
+    if (SaveFileHandle == -1) {
         return 0;
     }
     DAT_006691fc = 0;
@@ -1151,7 +1151,7 @@ LEGO_EXPORT int LoadGame(char *path) {
                 AddOvSav(&ov);
             }
         }
-        _close(DAT_006691b0);
+        _close(SaveFileHandle);
         FUN_004663f0();
         DAT_00667ca0 = 0;
         EditMode.unk0 = 0;

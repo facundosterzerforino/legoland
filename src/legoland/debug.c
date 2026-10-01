@@ -39,14 +39,14 @@ int FUN_0047f880(void) {
     }
 
     for (i = 0; i < 3; i++) {
-        DAT_007fd640[i] = RES_OpenVolume(DAT_004bcba4[i]);
-        if (DAT_007fd640[i] == NULL) {
+        ResourceVolumes[i] = RES_OpenVolume(ResourceFileNames[i]);
+        if (ResourceVolumes[i] == NULL) {
             // STRING: LEGOLAND 0x004bcd28
-            sprintf(buffer, "Failed to open resource %s", DAT_004bcba4[i]);
+            sprintf(buffer, "Failed to open resource %s", ResourceFileNames[i]);
             // STRING: LEGOLAND 0x004bcd18
             MessageBoxA(GetDesktopWindow(), buffer, "LEGOLAND Error", 0x30);
             for (j = 0; j < i; j++) {
-                RES_CloseVolume(DAT_007fd640[j]);
+                RES_CloseVolume(ResourceVolumes[j]);
             }
             return 1;
         }
@@ -57,7 +57,7 @@ int FUN_0047f880(void) {
     if (InitScreen() == 0) {
         MessageBoxA(GetDesktopWindow(), GetString(0xcc), GetString(0xcb), 0x30);
         KillHostSystemGPU();
-        for (vol = DAT_007fd640; vol < DAT_007fd640 + 3; vol++) {
+        for (vol = ResourceVolumes; vol < ResourceVolumes + 3; vol++) {
             RES_CloseVolume(*vol);
         }
         return 1;
@@ -67,7 +67,7 @@ int FUN_0047f880(void) {
         MessageBoxA(GetDesktopWindow(), GetString(0x9c4), GetString(0xcb), 0x30);
         KillInputSystem();
         KillHostSystemGPU();
-        for (vol = DAT_007fd640; vol < DAT_007fd640 + 3; vol++) {
+        for (vol = ResourceVolumes; vol < ResourceVolumes + 3; vol++) {
             RES_CloseVolume(*vol);
         }
         return 1;
@@ -107,7 +107,7 @@ int FUN_0047f880(void) {
 
     KillHostSystemGPU();
 
-    for (vol = DAT_007fd640; vol < DAT_007fd640 + 3; vol++) {
+    for (vol = ResourceVolumes; vol < ResourceVolumes + 3; vol++) {
         if (*vol != 0) {
             RES_CloseVolume(*vol);
         }

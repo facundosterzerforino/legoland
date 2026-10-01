@@ -527,20 +527,20 @@ void *FUN_00492110(void) {
 
 // FUNCTION: LEGOLAND 0x00492130
 int FUN_00492130(void *hwnd) {
-    if (DirectSoundCreate(NULL, (LPDIRECTSOUND *)&DAT_007cad40, NULL) == 0) {
-        if (((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->SetCooperativeLevel((LPDIRECTSOUND)DAT_007cad40, (HWND)hwnd, 1) ==
+    if (DirectSoundCreate(NULL, (LPDIRECTSOUND *)&DSound, NULL) == 0) {
+        if (((LPDIRECTSOUND)DSound)->lpVtbl->SetCooperativeLevel((LPDIRECTSOUND)DSound, (HWND)hwnd, 1) ==
             0) {
             memset(DAT_007cace0, 0, sizeof(DAT_007cace0));
             DAT_007cace0[0] = sizeof(DAT_007cace0);
-            if (((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->GetCaps((LPDIRECTSOUND)DAT_007cad40, (LPDSCAPS)DAT_007cace0) ==
+            if (((LPDIRECTSOUND)DSound)->lpVtbl->GetCaps((LPDIRECTSOUND)DSound, (LPDSCAPS)DAT_007cace0) ==
                 0) {
                 DAT_007988c0 = 1;
                 return 1;
             }
         }
-        ((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->Release((LPDIRECTSOUND)DAT_007cad40);
+        ((LPDIRECTSOUND)DSound)->lpVtbl->Release((LPDIRECTSOUND)DSound);
     }
-    DAT_007cad40 = NULL;
+    DSound = NULL;
     DAT_007988c0 = 0;
     return 0;
 }

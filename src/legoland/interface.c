@@ -2002,7 +2002,7 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
         FUN_0047f870("Attempting to open Movie %s", path);
         handle = FUN_00476460(path);
         if (handle == NULL) {
-            strcpy(path, DAT_00813b04);
+            strcpy(path, CdDrivePath);
             strcat(path, filename);
             FUN_0047f870("Attempting to open Movie %s", path);
             handle = FUN_00476460(path);

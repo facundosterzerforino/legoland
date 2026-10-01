@@ -1617,10 +1617,10 @@ LEGO_EXPORT void LLS555To565(struct LLSImage *param_1) {
 
 // FUNCTION: LEGOLAND 0x0047d730
 LEGO_EXPORT unsigned int SaveGameRead(void *buffer, unsigned int count) {
-    return _read(DAT_006691b0, buffer, count) == count;
+    return _read(SaveFileHandle, buffer, count) == count;
 }
 
 // FUNCTION: LEGOLAND 0x0047d760
 LEGO_EXPORT unsigned int SaveGameWrite(void *buffer, unsigned int count) {
-    return (unsigned int)_write(DAT_006691b0, buffer, count) == count;
+    return (unsigned int)_write(SaveFileHandle, buffer, count) == count;
 }

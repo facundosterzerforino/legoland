@@ -337,7 +337,7 @@ int FUN_00498630(const char *param_1) {
             DAT_007caca8 = _open(path, 0x8000);
             if (DAT_007caca8 == -1) {
                 // STRING: LEGOLAND 0x004bfee4
-                sprintf(path, "%s%s%s", DAT_00813b04, "speech\\", param_1);
+                sprintf(path, "%s%s%s", CdDrivePath, "speech\\", param_1);
                 DAT_007caca8 = _open(path, 0x8000);
                 if (DAT_007caca8 == -1) {
                     return 0;

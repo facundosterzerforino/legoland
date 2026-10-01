@@ -734,30 +734,30 @@ unsigned int DAT_004b7e9c;
 
 // GLOBAL: LEGOLAND 0x004b81c0
 // STRING: LEGOLAND 0x004b8260
-char *DAT_004b81c0 = ".\\graphics\\";
+char *GraphicsPath = ".\\graphics\\";
 
 // GLOBAL: LEGOLAND 0x004b81c4
 char *DAT_004b81c4 = ".\\graphics\\";
 
 // GLOBAL: LEGOLAND 0x004b81c8
 // STRING: LEGOLAND 0x004b824c
-char *DAT_004b81c8 = ".\\graphics\\small\\";
+char *GraphicsSmallPath = ".\\graphics\\small\\";
 
 // GLOBAL: LEGOLAND 0x004b81cc
 // STRING: LEGOLAND 0x004b8238
-char *DAT_004b81cc = ".\\graphics\\masks\\";
+char *MasksPath = ".\\graphics\\masks\\";
 
 // GLOBAL: LEGOLAND 0x004b81d0
 // STRING: LEGOLAND 0x004b8220
-char *DAT_004b81d0 = ".\\graphics\\masks\\small\\";
+char *MasksSmallPath = ".\\graphics\\masks\\small\\";
 
 // GLOBAL: LEGOLAND 0x004b81d4
 // STRING: LEGOLAND 0x004b820c
-char *DAT_004b81d4 = ".\\graphics\\icons\\";
+char *IconsPath = ".\\graphics\\icons\\";
 
 // GLOBAL: LEGOLAND 0x004b81d8
 // STRING: LEGOLAND 0x004b81f8
-char *DAT_004b81d8 = ".\\graphics\\models\\";
+char *ModelsPath = ".\\graphics\\models\\";
 
 // GLOBAL: LEGOLAND 0x004b8318
 struct Point DAT_004b8318; /* offset of the park entrance walk-in start */
@@ -1055,7 +1055,7 @@ unsigned int DAT_004bb6d4;
 struct ScriptCommand DAT_004bb6f8[0x5d];
 
 // GLOBAL: LEGOLAND 0x004bcba4
-const char *DAT_004bcba4[3] = {
+const char *ResourceFileNames[3] = {
     // STRING: LEGOLAND 0x004bcc18
     "Legoland.res",
     // STRING: LEGOLAND 0x004bcc08
@@ -3543,7 +3543,7 @@ struct Element **DAT_006691a8;
 struct LLSNode *DAT_006691ac;
 
 // GLOBAL: LEGOLAND 0x006691b0
-int DAT_006691b0;
+int SaveFileHandle;
 
 // GLOBAL: LEGOLAND 0x006691b4
 int DAT_006691b4;
@@ -4002,7 +4002,7 @@ void *DAT_007988cc;
 LEGO_EXPORT unsigned int DMusicInitialised;
 
 // GLOBAL: LEGOLAND 0x0079a698
-void *DAT_0079a698;
+void *MusicThread;
 
 // GLOBAL: LEGOLAND 0x0079a6a0
 void *DAT_0079a6a0;
@@ -4161,22 +4161,22 @@ unsigned int DAT_007cacb4;
 LEGO_EXPORT unsigned int FrameNumber;
 
 // GLOBAL: LEGOLAND 0x007cacd8
-struct DirectMusicLoader *DAT_007cacd8;
+struct DirectMusicLoader *DMusicLoader;
 
 // GLOBAL: LEGOLAND 0x007cacdc
-struct DirectMusicPerformance *DAT_007cacdc;
+struct DirectMusicPerformance *DMusicPerformance;
 
 // GLOBAL: LEGOLAND 0x007cace0
 unsigned int DAT_007cace0[0x18];
 
 // GLOBAL: LEGOLAND 0x007cad40
-void *DAT_007cad40;
+void *DSound;
 
 // GLOBAL: LEGOLAND 0x007cad44
-struct DirectMusicComposer *DAT_007cad44;
+struct DirectMusicComposer *DMusicComposer;
 
 // GLOBAL: LEGOLAND 0x007cad48
-unsigned int DAT_007cad48;
+unsigned int MusicThreadId;
 
 // GLOBAL: LEGOLAND 0x007cad4c
 void *DAT_007cad4c;
@@ -4338,7 +4338,7 @@ void *DAT_007fd634;
 unsigned int DAT_007fd638;
 
 // GLOBAL: LEGOLAND 0x007fd640
-struct ResVolume *DAT_007fd640[4];
+struct ResVolume *ResourceVolumes[4];
 
 // GLOBAL: LEGOLAND 0x007fd660
 unsigned int DAT_007fd660[256];
@@ -4989,7 +4989,7 @@ int DAT_00813afc;
 LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 
 // GLOBAL: LEGOLAND 0x00813b04
-char DAT_00813b04[4];
+char CdDrivePath[4];
 
 // GLOBAL: LEGOLAND 0x00813b08
 unsigned int DAT_00813b08;

@@ -948,19 +948,19 @@ extern unsigned int DAT_004b7d84;
 // 0x004b7e9c
 extern unsigned int DAT_004b7e9c;
 // 0x004b81c0
-extern char *DAT_004b81c0;
+extern char *GraphicsPath;
 // 0x004b81c4
 extern char *DAT_004b81c4;
 // 0x004b81c8
-extern char *DAT_004b81c8;
+extern char *GraphicsSmallPath;
 // 0x004b81cc
-extern char *DAT_004b81cc;
+extern char *MasksPath;
 // 0x004b81d0
-extern char *DAT_004b81d0;
+extern char *MasksSmallPath;
 // 0x004b81d4
-extern char *DAT_004b81d4;
+extern char *IconsPath;
 // 0x004b81d8
-extern char *DAT_004b81d8;
+extern char *ModelsPath;
 // 0x004b8318
 extern struct Point DAT_004b8318;
 // 0x004b8320
@@ -1153,7 +1153,7 @@ extern unsigned int DAT_004bb6d4;
 // 0x004bb6f8
 extern struct ScriptCommand DAT_004bb6f8[0x5d];
 // 0x004bcba4
-extern const char *DAT_004bcba4[3];
+extern const char *ResourceFileNames[3];
 // 0x004bcbf4
 extern LEGO_EXPORT struct LegoConfig *lpConfig;
 // 0x004bcecc
@@ -2783,7 +2783,7 @@ extern struct Element **DAT_006691a8;
 // 0x006691ac
 extern struct LLSNode *DAT_006691ac;
 // 0x006691b0
-extern int DAT_006691b0;
+extern int SaveFileHandle;
 // 0x006691b4
 extern int DAT_006691b4;
 // 0x006691bc
@@ -3091,7 +3091,7 @@ extern void *DAT_007988cc;
 // 0x0079a694
 extern LEGO_EXPORT unsigned int DMusicInitialised;
 // 0x0079a698
-extern void *DAT_0079a698;
+extern void *MusicThread;
 // 0x0079a6a0
 extern void *DAT_0079a6a0;
 // 0x0079a6a4
@@ -3212,17 +3212,17 @@ extern unsigned int DAT_007cacb4;
 // 0x007cacd4
 extern LEGO_EXPORT unsigned int FrameNumber;
 // 0x007cacd8
-extern struct DirectMusicLoader *DAT_007cacd8;
+extern struct DirectMusicLoader *DMusicLoader;
 // 0x007cacdc
-extern struct DirectMusicPerformance *DAT_007cacdc;
+extern struct DirectMusicPerformance *DMusicPerformance;
 // 0x007cace0
 extern unsigned int DAT_007cace0[0x18];
 // 0x007cad40
-extern void *DAT_007cad40;
+extern void *DSound;
 // 0x007cad44
-extern struct DirectMusicComposer *DAT_007cad44;
+extern struct DirectMusicComposer *DMusicComposer;
 // 0x007cad48
-extern unsigned int DAT_007cad48;
+extern unsigned int MusicThreadId;
 // 0x007cad4c
 extern void *DAT_007cad4c;
 // 0x007cad60
@@ -3330,7 +3330,7 @@ extern void *DAT_007fd634;
 // 0x007fd638
 extern unsigned int DAT_007fd638;
 // 0x007fd640
-extern struct ResVolume *DAT_007fd640[4];
+extern struct ResVolume *ResourceVolumes[4];
 // 0x007fd660
 extern unsigned int DAT_007fd660[256];
 // 0x007fda60
@@ -3765,7 +3765,7 @@ extern int DAT_00813afc;
 // 0x00813b00
 extern LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 // 0x00813b04
-extern char DAT_00813b04[4];
+extern char CdDrivePath[4];
 // 0x00813b08
 extern unsigned int DAT_00813b08; /* letter of the bloke being processed */
 // 0x00813b20
