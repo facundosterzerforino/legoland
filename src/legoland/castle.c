@@ -3502,9 +3502,9 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
     m = (y1 - y0) / (x1 - x0);
     b = y0 - m * x0;
     {
-        double a = 3.0f * o->field_24;
-        float b2 = o->field_28 + o->field_28;
-        float sq;
+        float a = o->field_24 * 3.0f;
+        volatile float b2 = o->field_28 + o->field_28;
+        volatile float sq;
         float c = o->field_2c - m;
         sq = (float)sqrt(b2 * b2 - c * a * 4.0f);
         roots[0] = (sq - b2) / (a + a);
@@ -3890,10 +3890,10 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                 struct MVert *p0;
                 struct MVert *p1;
                 struct MVert *p2;
-                float dx1;
-                float dy1;
-                float dx2;
-                float dy2;
+                double dx1;
+                double dy1;
+                double dx2;
+                double dy2;
                 unsigned int bits;
                 for (k = 0; k < 3; k++) {
                     int e = src->tris[i].e[k];
@@ -4184,13 +4184,14 @@ void FUN_004232b0(struct RecBuf *rb) {
 
     for (i = 0; i < n; i++) {
         short w = rb->ent[i].w;
+        short w2 = rb->ent[i].w;
 
         if (w < 0) {
             src[i].flag = 1;
             idx[i].v = -w;
         } else {
             src[i].flag = 0;
-            idx[i].v = w;
+            idx[i].v = w2;
         }
         idx[i].k = i;
         src[i].fx = rb->ent[i - 1].s0n << 16;
