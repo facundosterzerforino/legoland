@@ -32,6 +32,12 @@ struct OverlayNode {
     struct Sprite *sprite;
 };
 
+/* RideSpriteInfo plus one more word (same layout as RenderView's local copy). */
+struct MapSprite {
+    RideSpriteInfo info;
+    unsigned int field_14;
+};
+
 #define HALF(v) ((v) < 0 ? -(-(v) >> 1) : (v) >> 1)
 
 #include "image_sprite.h"
@@ -263,7 +269,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                 }
                 if ((tile.flags & 8) == 0) {
                     struct FXSpriteList *src;
-                    unsigned short id;
+                    int id;
                     int px;
                     int py;
                     struct Point pt;
@@ -325,10 +331,10 @@ LEGO_EXPORT void RenderFullMap(void) {
                     off.field0 = ride->field_14;
                     off.field1 = ride->field_18;
                     FUN_00456770(&off);
-                    bounds[1] += off.field1;
                     bounds[0] += off.field0;
-                    bounds[1] += ScrollY >> 8;
+                    bounds[1] += off.field1;
                     bounds[0] += ScrollX >> 8;
+                    bounds[1] += ScrollY >> 8;
                     PrintScaledSprite(TileSpriteArray[tile.field_8], (int)((bounds[0] - DAT_00667c00) * sxf),
                         (int)((bounds[1] - DAT_00667c04) * syf) + DAT_00667c20, DAT_00667c16 + 1,
                         DAT_00667c14 + 1);
@@ -369,7 +375,7 @@ LEGO_EXPORT void RenderFullMap(void) {
             TileId uid;
             struct Ride *ride;
             RideSpriteInfo *info;
-            RideSpriteInfo loc;
+            struct MapSprite loc;
 
             uid.id = obj->anchor.id;
             tile = *obj;
@@ -392,21 +398,21 @@ LEGO_EXPORT void RenderFullMap(void) {
                     struct RideQueueEntry *entry;
                     struct Point pt;
 
-                    loc.sprite = lights;
-                    loc.x = -102;
-                    loc.y = -88;
+                    loc.info.sprite = lights;
+                    loc.info.x = -102;
+                    loc.info.y = -88;
                     pt.x = uid.pos.x;
                     pt.y = uid.pos.y;
                     entry = FUN_004125f0(pt.x, pt.y);
                     if (entry != NULL && (entry->field_14 & 0xf) == 5) {
                         GetTileBounds(&pt, bounds);
-                        bounds[0] += HALF(loc.x);
-                        bounds[1] += HALF(loc.y);
+                        bounds[0] += HALF(loc.info.x);
+                        bounds[1] += HALF(loc.info.y);
                         bounds[0] += ScrollX >> 8;
                         bounds[1] += ScrollY >> 8;
-                        DAT_00667c16 = ((struct Sprite *)loc.sprite)->width;
-                        DAT_00667c14 = ((struct Sprite *)loc.sprite)->height;
-                        PrintScaledSprite(loc.sprite, ((bounds[0] - DAT_00667c00) * sx) >> 16,
+                        DAT_00667c16 = ((struct Sprite *)loc.info.sprite)->width;
+                        DAT_00667c14 = ((struct Sprite *)loc.info.sprite)->height;
+                        PrintScaledSprite(loc.info.sprite, ((bounds[0] - DAT_00667c00) * sx) >> 16,
                             (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20, (DAT_00667c16 * sx) >> 16,
                             (DAT_00667c14 * sy) >> 16);
                     }
@@ -442,7 +448,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                     pt.y = pos.y;
                     GetTileBounds(&pt, bounds);
                     rise = -(int)f1;
-                    bounds[1] += HALF(rise);
+                    rise = HALF(rise);
+                    bounds[1] += rise;
                     bounds[0] += ScrollX >> 8;
                     bounds[1] += ScrollY >> 8;
                     x1 = ((bounds[0] - DAT_00667c00) * sx) >> 16;
@@ -451,7 +458,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                     pt.y = dest.y;
                     GetTileBounds(&pt, bounds);
                     rise = -(int)f2;
-                    bounds[1] += HALF(rise);
+                    rise = HALF(rise);
+                    bounds[1] += rise;
                     bounds[0] += ScrollX >> 8;
                     bounds[1] += ScrollY >> 8;
                     x2 = ((bounds[0] - DAT_00667c00) * sx) >> 16;
@@ -474,7 +482,8 @@ LEGO_EXPORT void RenderFullMap(void) {
                         pt.y = pos.y;
                         GetTileBounds(&pt, bounds);
                         rise = -(int)f1;
-                        bounds[1] += HALF(rise);
+                        rise = HALF(rise);
+                        bounds[1] += rise;
                         bounds[0] += ScrollX >> 8;
                         bounds[1] += ScrollY >> 8;
                         LineTo(hdc, ((bounds[0] - DAT_00667c00) * sx) >> 16,
@@ -484,25 +493,26 @@ LEGO_EXPORT void RenderFullMap(void) {
                     renderEngine->lpVtbl->ReleaseDC(renderEngine, hdc);
                     PopRenderingStatus();
                 }
-                loc.sprite = blob;
-                loc.x = 0;
-                loc.y = (int)-f1;
+                loc.info.sprite = blob;
+                loc.info.x = 0;
+                loc.info.y = (int)-f1;
             } else if (ride->flags & 0x400) {
                 if (ride->cb_sprite == NULL) {
                     continue;
                 }
                 info = ride->cb_sprite(ride->element, uid);
             } else {
-                loc.sprite = ride->layer;
-                loc.x = ride->field_14;
-                loc.y = ride->field_18;
-                info = &loc;
+                loc.info.sprite = ride->layer;
+                loc.info.x = ride->field_14;
+                loc.info.y = ride->field_18;
+                info = &loc.info;
             }
             if (info == NULL || info->sprite == NULL) {
                 continue;
             }
             if ((((struct Sprite *)info->sprite)->flags & 0x8000) == 0) {
                 struct Point pt;
+                struct Sprite *sprite;
                 int hx;
                 int hy;
 
@@ -517,8 +527,9 @@ LEGO_EXPORT void RenderFullMap(void) {
                 bounds[1] += hy;
                 bounds[0] += ScrollX >> 8;
                 bounds[1] += ScrollY >> 8;
-                DAT_00667c16 = ((struct Sprite *)info->sprite)->width;
-                DAT_00667c14 = ((struct Sprite *)info->sprite)->height;
+                sprite = info->sprite;
+                DAT_00667c16 = sprite->width;
+                DAT_00667c14 = sprite->height;
                 PrintScaledSprite(info->sprite, ((bounds[0] - DAT_00667c00) * sx) >> 16,
                     (((bounds[1] - DAT_00667c04) * sy) >> 16) + DAT_00667c20, (DAT_00667c16 * sx) >> 16,
                     (DAT_00667c14 * sy) >> 16);
