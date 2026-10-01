@@ -16,4 +16,5 @@ void FUN_00482a80(void);
 void FUN_00482a90(void);
 void FUN_004828f0(void);
 struct Point *FUN_00482b00(void);
+unsigned int FUN_00482860(void);
 int FUN_00482920(void);

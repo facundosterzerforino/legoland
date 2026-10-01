@@ -12,4 +12,5 @@ LEGO_EXPORT int GetBrickCount(void);
 void FUN_00457900(unsigned int param_1);
 int FUN_00457970(int dx, int dy);
 void FUN_00457a70(void);
+int FUN_00457910(void);
 int FUN_00457940(void);

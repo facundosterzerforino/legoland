@@ -3,6 +3,8 @@
 #include "legoland.h"
 
 struct MapTile;
+struct FXSpriteList;
+int FUN_0045aa50(struct FXSpriteList **out);
 struct Point;
 struct PathFootprint;
 struct Cursor;

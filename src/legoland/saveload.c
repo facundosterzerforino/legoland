@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include <errno.h>
 #include <fcntl.h>
 #include <io.h>
 #include <stdlib.h>
@@ -15,6 +16,7 @@
 #include "input.h"
 #include "interface.h"
 #include "llidb.h"
+#include "main.h"
 #include "man3d.h"
 #include "map_object.h"
 #include "nerps.h"
@@ -23,6 +25,7 @@
 #include "render3d.h"
 #include "saveload.h"
 #include "screens.h"
+#include "tilemap.h"
 #include "timer.h"
 #include "worker.h"
 
@@ -35,6 +38,35 @@ static int LoadAbort(void) {
 }
 #pragma auto_inline(on)
 #define LOAD_FAIL() return LoadAbort()
+
+/* Abort a save: report the failure (optionally), close the file and return 0. */
+#define SAVE_FAIL() \
+    do { \
+        _close(DAT_006691b0); \
+        return 0; \
+    } while (0)
+#define SAVE_FAIL1(a) \
+    do { \
+        FUN_00453ce0(a); \
+        SAVE_FAIL(); \
+    } while (0)
+#define SAVE_FAIL2(a, b) \
+    do { \
+        FUN_00453ce0(a, b); \
+        SAVE_FAIL(); \
+    } while (0)
+#define SAVE_FAIL3(a, b, c) \
+    do { \
+        FUN_00453ce0(a, b, c); \
+        SAVE_FAIL(); \
+    } while (0)
+
+/* A node of OverlayList (the overlays saved at the end of a save game). */
+struct OverlayNode {
+    struct OverlayParam param;
+    unsigned int pad_14[2];
+    struct OverlayNode *next;
+};
 
 // FUNCTION: LEGOLAND 0x0047d790
 LEGO_EXPORT int BeginMeasuredBlock(void) {
@@ -99,7 +131,506 @@ LEGO_EXPORT struct Element *GeteListPtr(int idx) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d8e0
-LEGO_EXPORT int SaveGame(char *filename) { STUB(); }
+LEGO_EXPORT int SaveGame(char *filename) {
+    // STRING: LEGOLAND 0x004bcb6c
+    char header[0x21] = "00002 LEGOLAND Save Game V0.02 \x1a";
+    int i;
+    int k;
+    int x;
+    int y;
+    int count;
+    int tab_count;
+    int len;
+    int num;
+    int flags;
+    struct Element *elem;
+    struct MapElement tile;
+    struct Bloke *bloke;
+    struct Ride *ride;
+    struct ObjInstance *inst;
+    struct RideNode *rnode;
+    struct OverlayNode *ov;
+    struct FXSpriteList *tab[252];
+
+    DAT_006691b0 = _open(filename, _O_RDWR | _O_CREAT | _O_TRUNC | _O_BINARY, 0x180);
+    if (DAT_006691b0 == -1) {
+        switch (errno) {
+        case EACCES:
+            // STRING: LEGOLAND 0x004bcb14
+            FUN_00453ce0("can't open read-only file for writing, or file\x92s sharing mode forbids operations (%s)\n", filename);
+            return 0;
+        case EINVAL:
+            // STRING: LEGOLAND 0x004bcaec
+            FUN_00453ce0("Invalid oflag or pmode argument (%s)\n", filename);
+            return 0;
+        case EMFILE:
+            // STRING: LEGOLAND 0x004bcab0
+            FUN_00453ce0("No more file handles available (too many open files) (%s)\n", filename);
+            return 0;
+        case ENOENT:
+            // STRING: LEGOLAND 0x004bca90
+            FUN_00453ce0("File or path not found (%s)\n", filename);
+            return 0;
+        default:
+            // STRING: LEGOLAND 0x004bca68
+            FUN_00453ce0("Unknown error (%d) openning file %s\n", errno, filename);
+            return 0;
+        }
+    }
+    DAT_006691fc = 0;
+    if (SaveGameWrite(header, 0x20) == 0) {
+        // STRING: LEGOLAND 0x004bca54
+        SAVE_FAIL1("Header write failed");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        SAVE_FAIL();
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bca38
+        SAVE_FAIL1("Measured block begin failed");
+    }
+    count = LLIDB_GetCount();
+    DAT_006691b4 = 0;
+    // STRING: LEGOLAND 0x004b8a70
+    ElemID("PATH CONTROL")->flags |= 4;
+    for (i = 0; i < count; i++) {
+        LLIDB_GetElement(i, &elem);
+        if ((elem->flags & 4) != 0) {
+            DAT_006691b4++;
+        }
+    }
+    if (SaveGameWrite(&DAT_006691b4, 4) == 0) {
+        // STRING: LEGOLAND 0x004bca24
+        SAVE_FAIL1("Num elements failed");
+    }
+    if (DAT_00669200 != 0) {
+        free(DAT_00669200);
+    }
+    DAT_00669200 = malloc(DAT_006691b4 * 4);
+    k = 0;
+    for (i = 0; i < count; i++) {
+        FUN_004663f0();
+        LLIDB_GetElement(i, &elem);
+        if ((elem->flags & 4) != 0) {
+            len = strlen(elem->name);
+            if (SaveGameWrite(&len, 4) == 0) {
+                SAVE_FAIL();
+            }
+            if (SaveGameWrite(elem->name, len) == 0) {
+                // STRING: LEGOLAND 0x004bc9e8
+                SAVE_FAIL2("Element name write failed %s", elem->name);
+            }
+            DAT_00669200[k++] = elem;
+            flags = elem->flags & 0x3000e;
+            if (SaveGameWrite(&flags, 4) == 0) {
+                // STRING: LEGOLAND 0x004bc9c4
+                SAVE_FAIL2("Flags of interest write failed %s", elem->name);
+            }
+        }
+    }
+    tab_count = FUN_0045aa50(tab);
+    if (SaveGameWrite(&tab_count, 4) == 0) {
+        // STRING: LEGOLAND 0x004bca08
+        SAVE_FAIL1("TSF Pointers write failed");
+    }
+    for (i = 0; i < tab_count; i++) {
+        FUN_004663f0();
+        LLIDB_FindElementFromDataPtr(tab[i], (unsigned int *)&elem, 0);
+        len = strlen(elem->name);
+        if (SaveGameWrite(&len, 4) == 0) {
+            // STRING: LEGOLAND 0x004bc980
+            SAVE_FAIL3("TSF element length write failed %s, %d", elem->name, len);
+        }
+        if (SaveGameWrite(elem->name, len) == 0) {
+            // STRING: LEGOLAND 0x004bc95c
+            SAVE_FAIL2("TSF Element name writer failed %s", elem->name);
+        }
+    }
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc9a8
+        SAVE_FAIL1("End measured block1 failed");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc93c
+        SAVE_FAIL1("Begin Measured block2 failed");
+    }
+    if (SaveGameWrite(lpConfig, 0x44) == 0) {
+        // STRING: LEGOLAND 0x004bc920
+        SAVE_FAIL1("Host Config write failed");
+    }
+    for (y = 0; y < lpConfig->height; y++) {
+        for (x = 0; x < lpConfig->width; x++) {
+            tile = GameMap[y][x];
+            FUN_004663f0();
+            if ((tile.flags & 0x8a8) != 0) {
+                if (FindeIneList((union SavedElement *)&tile) == 0) {
+                    // STRING: LEGOLAND 0x004bc8d8
+                    SAVE_FAIL3("Failed to locate Object instance at (%d,%d)", x, y);
+                }
+            } else {
+                tile.field_0 = 0;
+            }
+            for (k = 0; k < tab_count && TileSpriteInfo[tile.field_8].src != tab[k]; k++) {
+            }
+            if (k != tab_count) {
+                tile.field_8 = (tile.field_8 - *(unsigned short *)TileSpriteInfo[tile.field_8].src) | ((k + 1) << 8);
+            } else {
+                tile.field_8 = 0;
+            }
+            for (k = 0; k < tab_count && TileSpriteInfo[tile.field_a].src != tab[k]; k++) {
+            }
+            if (k != tab_count) {
+                tile.field_a = (tile.field_a - *(unsigned short *)TileSpriteInfo[tile.field_a].src) | ((k + 1) << 8);
+            } else {
+                tile.field_a = 0;
+            }
+            if (SaveGameWrite(&tile, 0x14) == 0) {
+                // STRING: LEGOLAND 0x004bc8ac
+                SAVE_FAIL3("Failed to write mapinfo struct at (%d,%d)", x, y);
+            }
+        }
+    }
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc904
+        SAVE_FAIL1("EndMeasured Block2 failed");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc88c
+        SAVE_FAIL1("Begin Measured block3 failed");
+    }
+    if (SaveGameWrite(&MapStats, 0x3f0) == 0) {
+        // STRING: LEGOLAND 0x004bc874
+        SAVE_FAIL1("Mapstats write failed");
+    }
+    if (SaveGameWrite(&ScrollX, 4) == 0) {
+        // STRING: LEGOLAND 0x004bc860
+        SAVE_FAIL2("Scrollx (%d) Failed", ScrollX);
+    }
+    if (SaveGameWrite(&ScrollY, 4) == 0) {
+        // STRING: LEGOLAND 0x004bc84c
+        SAVE_FAIL2("Scrolly (%d) Failed", ScrollY);
+    }
+    if (SaveGameWrite(&EditMode, 0xc) == 0) {
+        // STRING: LEGOLAND 0x004bc83c
+        SAVE_FAIL1("EditMode Failed");
+    }
+    FUN_00474190();
+    if (FUN_0046c920() == 0) {
+        // STRING: LEGOLAND 0x004bc828
+        SAVE_FAIL1("Scripts Save Failed");
+    }
+    if (FUN_00444200() == 0) {
+        // STRING: LEGOLAND 0x004bc814
+        SAVE_FAIL1("Report Save Failed");
+    }
+    if (FUN_00457910() == 0) {
+        // STRING: LEGOLAND 0x004bc7fc
+        SAVE_FAIL1("Currency Save Failed");
+    }
+    if (SaveGameWrite(DAT_007fdd00, 0x24) == 0) {
+        // STRING: LEGOLAND 0x004bc7dc
+        SAVE_FAIL1("Button flash states Save Failed");
+    }
+    FUN_004663f0();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc7c8
+        SAVE_FAIL1("EndMeasured Block 3");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc7b0
+        SAVE_FAIL1("Begin Measured Block 4");
+    }
+    count = 0;
+    for (bloke = FirstBloke; bloke != 0; bloke = bloke->next) {
+        count++;
+    }
+    if (SaveGameWrite(&count, 4) == 0) {
+        // STRING: LEGOLAND 0x004bc794
+        SAVE_FAIL2("NumBlokes (%d) save Failed", count);
+    }
+    for (bloke = FirstBloke; bloke != 0; bloke = bloke->next) {
+        FUN_004663f0();
+        num = GetBlokeNum(bloke);
+        if (SaveGameWrite(&num, 4) == 0) {
+            // STRING: LEGOLAND 0x004bc764
+            SAVE_FAIL2("Bloke Num (d) Save Failed", num);
+        }
+        DAT_007fda60.action = bloke->action;
+        DAT_007fda60.field_e = bloke->field_e;
+        DAT_007fda60.field_10 = bloke->field_10;
+        if (bloke->target != 0) {
+            DAT_007fda60.target = (int)bloke->target;
+            FindeIneList((union SavedElement *)&DAT_007fda60.target);
+        } else {
+            DAT_007fda60.target = -1;
+        }
+        if (bloke->last_ride != 0) {
+            DAT_007fda60.last_ride = (int)bloke->last_ride;
+            FindeIneList((union SavedElement *)&DAT_007fda60.last_ride);
+        } else {
+            DAT_007fda60.last_ride = -1;
+        }
+        DAT_007fda60.field_1c = bloke->field_1c;
+        DAT_007fda60.field_20 = bloke->field_20;
+        DAT_007fda60.dest.x = bloke->dest.x;
+        DAT_007fda60.dest.y = bloke->dest.y;
+        DAT_007fda60.goal.x = bloke->goal.x;
+        DAT_007fda60.goal.y = bloke->goal.y;
+        memcpy(DAT_007fda60.block_34, &bloke->field_34, sizeof(DAT_007fda60.block_34));
+        DAT_007fda60.field_5c = bloke->field_5c;
+        DAT_007fda60.param_action = bloke->param_action;
+        DAT_007fda60.flags = bloke->flags;
+        DAT_007fda60.field_64 = bloke->field_64;
+        DAT_007fda60.field_78 = bloke->field_78;
+        DAT_007fda60.field_7a = bloke->field_7a;
+        DAT_007fda60.field_7c = bloke->field_7c;
+        DAT_007fda60.field_7e = bloke->field_7e;
+        DAT_007fda60.field_7f = bloke->field_7f;
+        DAT_007fda60.field_80 = bloke->field_80;
+        DAT_007fda60.field_81 = bloke->field_81;
+        DAT_007fda60.field_82 = bloke->field_82;
+        DAT_007fda60.favourite[0] = (int)bloke->favourite_attraction_0;
+        FindeIneList((union SavedElement *)&DAT_007fda60.favourite[0]);
+        DAT_007fda60.favourite[1] = (int)bloke->favourite_attraction_1;
+        FindeIneList((union SavedElement *)&DAT_007fda60.favourite[1]);
+        DAT_007fda60.favourite[2] = (int)bloke->favourite_attraction_2;
+        FindeIneList((union SavedElement *)&DAT_007fda60.favourite[2]);
+        DAT_007fda60.favourite[3] = (int)bloke->favourite_food;
+        FindeIneList((union SavedElement *)&DAT_007fda60.favourite[3]);
+        DAT_007fda60.pos.x = bloke->pos.x;
+        DAT_007fda60.pos.y = bloke->pos.y;
+        DAT_007fda60.field_70 = bloke->field_70;
+        DAT_007fda60.field_72 = bloke->field_72;
+        DAT_007fda60.field_73 = bloke->field_73;
+        DAT_007fda60.field_74 = bloke->field_74;
+        DAT_007fda60.field_75 = bloke->field_75;
+        DAT_007fda60.nav = bloke->nav;
+        DAT_007fda60.person_8 = bloke->person->field_8;
+        DAT_007fda60.scale = bloke->person->scale;
+        DAT_007fda60.screen = bloke->person->screen;
+        DAT_007fda60.offset = bloke->person->offset;
+        DAT_007fda60.field_34 = bloke->person->field_34;
+        DAT_007fda60.field_38 = bloke->person->field_38;
+        DAT_007fda60.depth = bloke->person->depth;
+        DAT_007fda60.rotation = bloke->person->rotation;
+        DAT_007fda60.person_4c = bloke->person->field_4c;
+        DAT_007fda60.anim = (unsigned int)bloke->person->field_88;
+        DAT_007fda60.sort_id = bloke->person->sort_id;
+        DAT_007fda60.field_38 = bloke->person->field_38;
+        memcpy(DAT_007fda60.m, bloke->person->m, sizeof(DAT_007fda60.m));
+        DAT_007fda60.field_7c_p = bloke->person->field_7c;
+        DAT_007fda60.field_80_p = bloke->person->field_80;
+        DAT_007fda60.field_8c_p = bloke->person->field_8c;
+        DAT_007fda60.field_90_p = bloke->person->field_90;
+        DAT_007fda60.random = bloke->person->random;
+        DAT_007fda60.prev_param = bloke->prev_param;
+        DAT_007fda60.prev_action = bloke->prev_action;
+        DAT_007fda60.field_30 = bloke->person->field_30;
+        if (SaveGameWrite(&DAT_007fda60, sizeof(DAT_007fda60)) == 0) {
+            // STRING: LEGOLAND 0x004bc74c
+            SAVE_FAIL2("Bloke data failed (%d)", num);
+        }
+        if (DAT_007fda60.block_34[8] != 0) {
+            if (SaveGameWrite((void *)DAT_007fda60.block_34[8], 0x48) == 0) {
+                // STRING: LEGOLAND 0x004bc730
+                SAVE_FAIL2("Bloke BNV path data (%d)", num);
+            }
+        }
+    }
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc780
+        SAVE_FAIL1("EndMeasured Block 4");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc718
+        SAVE_FAIL1("Begin Measured Block 5");
+    }
+    FUN_0049c140();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc704
+        SAVE_FAIL1("EndMeasuredBlock5");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc6ec
+        SAVE_FAIL1("Begin Measured Block 6");
+    }
+    FUN_004663f0();
+    FUN_0049c630();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc6d4
+        SAVE_FAIL1("End Measured Block 6");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc6bc
+        SAVE_FAIL1("Begin measured block 7");
+    }
+    FUN_0049cb20();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc6a4
+        SAVE_FAIL1("End Measured Block 7");
+    }
+    FUN_004663f0();
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc68c
+        SAVE_FAIL1("Begin Measured Block 8");
+    }
+    FUN_0049cd10();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc674
+        SAVE_FAIL1("End Measured Block 8");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc65c
+        SAVE_FAIL1("Begin Measured Block 9");
+    }
+    if (SaveGameWrite(&DAT_0079a8d0, 4) == 0) {
+        // STRING: LEGOLAND 0x004bc634
+        FUN_00453ce0("Castle Placed Flag %s",
+            // STRING: LEGOLAND 0x004bc654
+            DAT_0079a8d0 != 0 ? "TRUE" :
+                              // STRING: LEGOLAND 0x004bc64c
+                "FALSE");
+        SAVE_FAIL();
+    }
+    if (SaveGameWrite(&DAT_006670f8, 4) == 0) {
+        // STRING: LEGOLAND 0x004bc614
+        SAVE_FAIL2("Num Build Objs (%d) Save Failed", DAT_006670f8);
+    }
+    if (SaveGameWrite(DAT_006664f8, sizeof(DAT_006664f8)) == 0) {
+        // STRING: LEGOLAND 0x004bc5f0
+        SAVE_FAIL2("BuildObjList (size %dS) Save Failed", DAT_006670f8);
+    }
+    for (i = 0; i < DAT_006691b4; i++) {
+        FUN_004663f0();
+        if ((DAT_00669200[i]->flags & 0x10) != 0) {
+            ride = DAT_00669200[i]->ride;
+            SaveGameWrite(ride->element->name, 8);
+            if (ride->type != 2 && ride->type != 0) {
+                if (SaveGameWrite(ride->counters, lpConfig->field_1a) == 0) {
+                    // STRING: LEGOLAND 0x004bc5c4
+                    SAVE_FAIL2("BeenOn Flags for %s Save Failed", ride->element->name);
+                }
+            }
+            if (SaveGameWrite(&ride->field_8, 4) == 0) {
+                // STRING: LEGOLAND 0x004bc5b0
+                SAVE_FAIL2("Count for Object %s", ride->element->name);
+            }
+            count = 0;
+            for (inst = ride->instances; inst != 0; inst = inst->next) {
+                count++;
+            }
+            if (SaveGameWrite(&count, 4) == 0) {
+                // STRING: LEGOLAND 0x004bc598
+                SAVE_FAIL2("Instance Count for %s", ride->element->name);
+            }
+            for (inst = ride->instances; inst != 0; inst = inst->next) {
+                if (SaveGameWrite(&inst->flags, 4) == 0) {
+                    // STRING: LEGOLAND 0x004bc57c
+                    SAVE_FAIL2("Flags for instance of %s", ride->element->name);
+                }
+                if (SaveGameWrite(&inst->uid, 4) == 0) {
+                    // STRING: LEGOLAND 0x004bc560
+                    SAVE_FAIL2("Objuid for instance of %s", ride->element->name);
+                }
+                if (SaveGameWrite(&inst->field_10, 4) == 0) {
+                    // STRING: LEGOLAND 0x004bc540
+                    SAVE_FAIL2("TickCount for instance of %s", ride->element->name);
+                }
+            }
+            count = 0;
+            for (rnode = ride->riders; rnode != 0; rnode = rnode->next) {
+                count++;
+            }
+            if (SaveGameWrite(&count, 4) == 0) {
+                // STRING: LEGOLAND 0x004bc51c
+                SAVE_FAIL2("Num Blokes On Ride for object %s", ride->element->name);
+            }
+            for (rnode = ride->riders; rnode != 0; rnode = rnode->next) {
+                count = GetBlokeNum(rnode->rider);
+                if (SaveGameWrite(&count, 4) == 0) {
+                    // STRING: LEGOLAND 0x004bc500
+                    SAVE_FAIL2("Bloke Num for bloke on %s", ride->element->name);
+                }
+                if (SaveGameWrite(&rnode->tile, 2) == 0) {
+                    // STRING: LEGOLAND 0x004bc4e8
+                    SAVE_FAIL2("Ride ID for bloke on %s", ride->element->name);
+                }
+            }
+            if (ride->save_hook != 0) {
+                if (ride->save_hook(ride->element) == 0) {
+                    // STRING: LEGOLAND 0x004bc4c8
+                    SAVE_FAIL2("Ride specific save data for %s", ride->element->name);
+                }
+            }
+        }
+    }
+    if (SaveGameWrite(DAT_007cb3e0, sizeof(DAT_007cb3e0)) == 0) {
+        // STRING: LEGOLAND 0x004bc5e4
+        SAVE_FAIL1("RideTotal");
+    }
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc4b0
+        SAVE_FAIL1("End Measured VBlock 9");
+    }
+    FUN_004663f0();
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc498
+        SAVE_FAIL1("Begin Measured Block 10");
+    }
+    if (FUN_00482860() == 0) {
+        // STRING: LEGOLAND 0x004bc48c
+        SAVE_FAIL1("Path Rects");
+    }
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc474
+        SAVE_FAIL1("End Measured Block 10");
+    }
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc458
+        SAVE_FAIL1("Begin Measured VBlock 11");
+    }
+    FUN_00450a80();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc440
+        SAVE_FAIL1("End Measured Block 11");
+    }
+    FUN_004663f0();
+    if (BeginMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc428
+        SAVE_FAIL1("Begin Measured Block 12");
+    }
+    len = strlen(((struct Element *)DAT_00801410)->name);
+    SaveGameWrite(&len, 4);
+    SaveGameWrite(((struct Element *)DAT_00801410)->name, len);
+    if (DAT_00801404 != 0) {
+        len = strlen(((struct Element *)DAT_00801404)->name);
+    } else {
+        len = 0;
+    }
+    SaveGameWrite(&len, 4);
+    if (len != 0) {
+        SaveGameWrite(((struct Element *)DAT_00801404)->name, len);
+    }
+    count = 0;
+    for (ov = OverlayList; ov != 0; ov = ov->next) {
+        count++;
+    }
+    SaveGameWrite(&count, 4);
+    for (ov = OverlayList; ov != 0; ov = ov->next) {
+        SaveGameWrite(ov, 0x14);
+    }
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc410
+        SAVE_FAIL1("End Measured Block 12");
+    }
+    FUN_004663f0();
+    if (EndMeasuredBlock() == 0) {
+        // STRING: LEGOLAND 0x004bc3f8
+        SAVE_FAIL1("End Measured Block 13");
+    }
+    _close(DAT_006691b0);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047e980
 LEGO_EXPORT int LoadGame(char *path) {
