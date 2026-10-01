@@ -180,11 +180,8 @@ void FUN_004378e0(struct MapObject *param_1) {
     int x;
     int y;
     char move;
-    unsigned int r;
+    char rr;
     unsigned char tmr;
-    int v24;
-    int v6c;
-    int v68;
 
     while (node != NULL) {
         next = node->next;
@@ -195,26 +192,39 @@ void FUN_004378e0(struct MapObject *param_1) {
         if (bloke->field_e == 0) {
             switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                bloke->flags |= 8;
                 bloke->dest.x = x * 0x100 - 0x80;
                 y = y * 0x100 - 0x100;
-                goto calc968;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 1:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 2) * 0x100;
-                goto calc998;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 2:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 3) * 0x100;
-                goto calcaff;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 3:
-                r = rand() & 0x80000001;
-                if ((int)r < 0) {
-                    r = ((r - 1) | 0xfffffffe) + 1;
-                }
-                if ((char)r == 0) {
-                    bloke->param_action = 6;
-                } else {
+                rr = rand() % 2;
+                if (rr != 0) {
                     y = y * 0x100 - 0x280;
                     x = x * 0x100 - 0x100;
                     bloke->dest.x = x;
@@ -223,20 +233,22 @@ void FUN_004378e0(struct MapObject *param_1) {
                     bloke->field_e = 7;
                     bloke->field_73 = move + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                    y = rand() % 0x32;
                     bloke->param_action++;
-                    bloke->field_58 = rand() % 0x32;
+                    bloke->field_58 = y;
+                } else {
+                    bloke->param_action = 6;
                 }
                 break;
             case 4:
                 y = bloke->field_58 - 1;
                 bloke->field_58 = y;
                 if (y == 0) {
-                    goto case6;
+                    bloke->param_action++;
+                    break;
                 }
                 if (y % 10 == 0) {
-                    tmr = bloke->field_72 + 1;
-                    bloke->field_72 = tmr;
-                    if (8 < tmr) {
+                    if ((bloke->field_72 = bloke->field_72 + 1) > 8) {
                         bloke->field_72 = 0;
                     }
                 }
@@ -244,9 +256,14 @@ void FUN_004378e0(struct MapObject *param_1) {
             case 5:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 3) * 0x100;
-                goto calc968;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 6:
-            case6:
                 bloke->param_action++;
                 break;
             case 7:
@@ -255,30 +272,27 @@ void FUN_004378e0(struct MapObject *param_1) {
             case 8:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 2) * 0x100;
-            calc968:
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-                goto calc;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 9:
                 bloke->dest.x = x * 0x100 - 0x80;
                 y = y * 0x100 - 0x100;
-            calc998:
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-                goto calc;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
             case 10:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = y * 0x100 + 0x80;
-            calcaff:
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-            calc:
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
