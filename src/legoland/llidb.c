@@ -779,7 +779,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
             }
         } else {
             // STRING: LEGOLAND 0x004bc37c
-            FUN_0047f870("Class %s has no sprite name.", *(char **)obj->cleanup_arg);
+            DebugTrace("Class %s has no sprite name.", *(char **)obj->cleanup_arg);
             obj->sprite_0 = NULL;
         }
     } else {
@@ -794,7 +794,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
         obj->sprite_1 = (struct ODFSprite *)LoadSprite(name, 4);
     } else {
         // STRING: LEGOLAND 0x004bc360
-        FUN_0047f870("Class %s has no icon name.", *(char **)obj->cleanup_arg);
+        DebugTrace("Class %s has no icon name.", *(char **)obj->cleanup_arg);
         obj->sprite_1 = NULL;
     }
     if (obj->sprite_1 == NULL) {
@@ -818,7 +818,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
         }
     } else {
         // STRING: LEGOLAND 0x004bc328
-        FUN_0047f870("Class %s has no build anim name.", *(char **)obj->cleanup_arg);
+        DebugTrace("Class %s has no build anim name.", *(char **)obj->cleanup_arg);
         obj->sprite_2 = NULL;
     }
 
@@ -884,7 +884,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
             obj->callback(obj->cleanup_arg);
         }
         // STRING: LEGOLAND 0x004bc2ec
-        FUN_0047f870("Class %s has OC_USEDLL attribute and DLL failed to load.", *(char **)obj->cleanup_arg);
+        DebugTrace("Class %s has OC_USEDLL attribute and DLL failed to load.", *(char **)obj->cleanup_arg);
     }
 
     if ((obj->flags & LLIDB_FLAG_NODATA) != 0) {

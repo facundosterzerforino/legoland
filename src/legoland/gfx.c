@@ -100,7 +100,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         }
         if (file == NULL) {
             // STRING: LEGOLAND 0x004b82d0
-            FUN_0047f870("Failed to load (%s)", path);
+            DebugTrace("Failed to load (%s)", path);
             // STRING: LEGOLAND 0x004b82b8
             DBPrintf("Failed to load (%s)\n", path);
             return 0;
@@ -130,12 +130,12 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
     file = RES_OpenFile(path);
     if (file == NULL) {
         // STRING: LEGOLAND 0x004b82a0
-        FUN_0047f870("Failed to load (%s). ", path);
+        DebugTrace("Failed to load (%s). ", path);
         DBPrintf("Failed to load (%s)\n", path);
         return 0;
     }
     // STRING: LEGOLAND 0x004b828c
-    FUN_0047f870("Loading BMP (%s)", path);
+    DebugTrace("Loading BMP (%s)", path);
     RES_ReadFile(file, header, 0xe);
     offbits = *(unsigned int *)(header + 0xa);
     pixel_offset = RES_GetFilePointer(file) + 0x28;

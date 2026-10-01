@@ -1181,7 +1181,7 @@ extern unsigned int DAT_004bef9c;
 // 0x004bf670
 extern unsigned int DAT_004bf670;
 // 0x004bf774
-extern unsigned int DAT_004bf774;
+extern unsigned int MusicEnabled;
 // 0x004bf778
 extern unsigned int DAT_004bf778;
 // 0x004bff28
@@ -2243,7 +2243,7 @@ extern unsigned int DAT_0066711c;
 // 0x00667120
 extern unsigned int DAT_00667120;
 // 0x00667128
-extern char DAT_00667128[512];
+extern char LogBuffer[512];
 // 0x0066752c
 extern unsigned int DAT_0066752c;
 // 0x006675b4
@@ -2797,7 +2797,7 @@ extern unsigned int DAT_00669204;
 // 0x00669208
 extern void *g_hInstance;
 // 0x0066920c
-extern int DAT_0066920c;
+extern int g_nCmdShow;
 // 0x00669210
 extern HWND DAT_00669210;
 // 0x00669238

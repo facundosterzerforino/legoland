@@ -576,14 +576,14 @@ LEGO_EXPORT int KillSoundSampleSystem(void) {
 
 // FUNCTION: LEGOLAND 0x00492c60
 void FUN_00492c60(void) {
-    if (DAT_004bf774 != 0) {
+    if (MusicEnabled != 0) {
         SuspendThread(MusicThread);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00492c80
 void FUN_00492c80(void) {
-    if (DAT_004bf774 != 0) {
+    if (MusicEnabled != 0) {
         ResumeThread(MusicThread);
     }
 }
@@ -696,7 +696,7 @@ DWORD WINAPI FUN_00492db0(LPVOID param) {
     int i;
     int k;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         DAT_007988bc = 1;
         return 0;
     }
@@ -1008,7 +1008,7 @@ fail:
 
 // FUNCTION: LEGOLAND 0x00495a10
 int FUN_00495a10(void *hwnd) {
-    if (DAT_004bf774 != 0) {
+    if (MusicEnabled != 0) {
         MusicThread = CreateThread(0, 0x4000, FUN_00492db0, 0, 0, (LPDWORD)&MusicThreadId);
         return 1;
     }
@@ -1031,7 +1031,7 @@ LEGO_EXPORT int UpdateSoundVols(void) {
     int vol;
 
     if (SoundAvailable != 0) {
-        if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
+        if (MusicEnabled != 0 && DMusicInitialised != 0) {
             vol = FUN_00495a50(DAT_0080ffa0.field_28);
             ((struct SampleBuffer *)DAT_007cad4c)->vtable->method_0x3c((struct SampleBuffer *)DAT_007cad4c, vol);
         }
@@ -1043,7 +1043,7 @@ LEGO_EXPORT int UpdateSoundVols(void) {
 }
 // FUNCTION: LEGOLAND 0x00495b00
 int FUN_00495b00(void) {
-    if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
+    if (MusicEnabled != 0 && DMusicInitialised != 0) {
         TerminateThread(MusicThread, 0);
 
         DMusicLoader->vtable->ClearCache(DMusicLoader, &GUID_DirectMusicAllTypes);

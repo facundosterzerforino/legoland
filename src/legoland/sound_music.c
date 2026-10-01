@@ -156,7 +156,7 @@ struct FXItem {
 
 // FUNCTION: LEGOLAND 0x00495b90
 LEGO_EXPORT void SetMusicGrooveLevel(unsigned int level) {
-    if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
+    if (MusicEnabled != 0 && DMusicInitialised != 0) {
         ((struct MusicPerformance *)DMusicPerformance)->vtable->SetGlobalParam((struct MusicPerformance *)DMusicPerformance, &GUID_PerfMasterGrooveLevel, &level, 1);
     }
 }
@@ -167,7 +167,7 @@ LEGO_EXPORT int LoadMusicStyle(const char *filename, void **out) {
     unsigned short wide[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -189,7 +189,7 @@ LEGO_EXPORT int LoadMusicBand(const char *filename, void **out) {
     unsigned short wide[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -211,7 +211,7 @@ LEGO_EXPORT int LoadMusicChordMap(const char *filename, void **out) {
     unsigned short wide[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -233,7 +233,7 @@ LEGO_EXPORT int LoadMusicSegment(const char *filename, void **out) {
     unsigned short wide[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -256,7 +256,7 @@ int FUN_00495f00(const char *file, const char *name, void **out) {
     unsigned short wideName[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -279,7 +279,7 @@ int FUN_00496010(const char *filename, struct MusicContainer *container, void **
     unsigned short wide[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -296,7 +296,7 @@ LEGO_EXPORT int GetMusicBand(const char *filename, struct MusicContainer *contai
     unsigned short wide[512];
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -312,7 +312,7 @@ LEGO_EXPORT int GetMusicBand(const char *filename, struct MusicContainer *contai
 LEGO_EXPORT int CreateMusicBandSegment(struct BandObj *band, void *arg) {
     int result;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -326,7 +326,7 @@ LEGO_EXPORT int CreateMusicBandSegment(struct BandObj *band, void *arg) {
 LEGO_EXPORT unsigned int PlaySegmentFromTemplate(void *style, unsigned int templateMode, void *chordMap) {
     struct MusicSegment *segment;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -343,7 +343,7 @@ LEGO_EXPORT unsigned int PlaySegmentFromTemplate(void *style, unsigned int templ
 LEGO_EXPORT unsigned int PlaySegment(unsigned int numMeasures, void *chordMap) {
     struct MusicSegment *segment;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -358,7 +358,7 @@ LEGO_EXPORT unsigned int PlaySegment(unsigned int numMeasures, void *chordMap) {
 
 // FUNCTION: LEGOLAND 0x00496250
 LEGO_EXPORT unsigned int SetBand(unsigned int band) {
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -370,7 +370,7 @@ LEGO_EXPORT unsigned int SetBand(unsigned int band) {
 
 // FUNCTION: LEGOLAND 0x00496290
 LEGO_EXPORT unsigned int PlayMotif(unsigned int motif) {
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {
@@ -386,7 +386,7 @@ LEGO_EXPORT unsigned int BlendMusic(unsigned int numMeasures, unsigned int unuse
     struct MusicSegment *transition;
     unsigned int shape;
 
-    if (DAT_004bf774 == 0) {
+    if (MusicEnabled == 0) {
         return 0;
     }
     if (DMusicInitialised == 0) {

@@ -1999,24 +1999,24 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
         DAT_006687b0 = 4;
         strcat(path, filename);
         // STRING: LEGOLAND 0x004bb56c
-        FUN_0047f870("Attempting to open Movie %s", path);
+        DebugTrace("Attempting to open Movie %s", path);
         handle = FUN_00476460(path);
         if (handle == NULL) {
             strcpy(path, CdDrivePath);
             strcat(path, filename);
-            FUN_0047f870("Attempting to open Movie %s", path);
+            DebugTrace("Attempting to open Movie %s", path);
             handle = FUN_00476460(path);
         }
         FUN_0047f850();
         if (handle != NULL) {
             // STRING: LEGOLAND 0x004bb554
-            FUN_0047f870("Movie openned OK (%s)", path);
+            DebugTrace("Movie openned OK (%s)", path);
             FUN_0047f850();
             FUN_00492830();
             FUN_00492d80();
             PushRenderingStatusAndUnlockVideoSurface();
             // STRING: LEGOLAND 0x004bb538
-            FUN_0047f870("Attempting to play movie..");
+            DebugTrace("Attempting to play movie..");
             FUN_0047f850();
             // STRING: LEGOLAND 0x004bb528
             DBPrintf("Starting Movie\n");
@@ -2024,7 +2024,7 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
             // STRING: LEGOLAND 0x004bb518
             DBPrintf("Stopping Movie\n");
             // STRING: LEGOLAND 0x004bb508
-            FUN_0047f870("Stopping movie");
+            DebugTrace("Stopping movie");
             FUN_0047f850();
             FUN_00476630(handle);
             PopRenderingStatus();

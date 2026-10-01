@@ -21,8 +21,8 @@ _WinMainCRTStartup (CRT)                         [TU_CRT, out of match %]
    └─ WinMainBody                        0x0047fd10  debug.c   MATCHED 100%
       ├─ CreateMutexA / cmdline parse  (-nointro / -nomusic / WINDEBUG / BLT)
       ├─ CheckHostSystemGPU             0x004637c0  draw.c    MATCHED (zeroes DDRAWENV, calls InitHostSystemGPU)
-      └─ FUN_0047f880  (main init+loop) 0x0047f880  debug.c   MATCHED 99.62%
-         ├─ FUN_0047f830 open log
+      └─ GameMain      (main init+loop) 0x0047f880  debug.c   MATCHED 99.62%
+         ├─ OpenLogFile open log
          ├─ FUN_004515e0 (alloc/profile init)
          ├─ RES_OpenVolume ×3           0x00489750  resource.c MATCHED 91.5%   (LEGO000/001/002 .res)
          ├─ FUN_00498d00

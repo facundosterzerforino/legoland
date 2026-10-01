@@ -1133,7 +1133,7 @@ unsigned int DAT_004bef9c;
 unsigned int DAT_004bf670;
 
 // GLOBAL: LEGOLAND 0x004bf774
-unsigned int DAT_004bf774;
+unsigned int MusicEnabled;
 
 // GLOBAL: LEGOLAND 0x004bf778
 unsigned int DAT_004bf778;
@@ -2745,7 +2745,7 @@ unsigned int DAT_0066711c;
 unsigned int DAT_00667120;
 
 // GLOBAL: LEGOLAND 0x00667128
-char DAT_00667128[512];
+char LogBuffer[512];
 
 // GLOBAL: LEGOLAND 0x0066752c
 unsigned int DAT_0066752c;
@@ -3564,7 +3564,7 @@ unsigned int DAT_00669204;
 void *g_hInstance;
 
 // GLOBAL: LEGOLAND 0x0066920c
-int DAT_0066920c;
+int g_nCmdShow;
 
 // GLOBAL: LEGOLAND 0x00669210
 HWND DAT_00669210;

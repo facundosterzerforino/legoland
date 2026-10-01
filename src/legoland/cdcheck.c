@@ -28,7 +28,7 @@ int FUN_00450f30(char *cd_volume) {
     result = 0;
     drives = GetLogicalDrives();
     // STRING: LEGOLAND 0x004b8610
-    FUN_0047f870("Checking all drives (Mask = %d)", drives);
+    DebugTrace("Checking all drives (Mask = %d)", drives);
     FUN_0047f850();
     if (drives != 0) {
         bit = 1;
@@ -38,7 +38,7 @@ int FUN_00450f30(char *cd_volume) {
                 root_path[0] = (char)('A' + i);
                 if (GetDriveTypeA(root_path) == DRIVE_CDROM) {
                     // STRING: LEGOLAND 0x004b85f4
-                    FUN_0047f870("Getting Info on drive %s", root_path);
+                    DebugTrace("Getting Info on drive %s", root_path);
                     FUN_0047f850();
                     if (GetVolumeInformationA(root_path, volume_name, 256, &serial_number, &max_component_length, &fs_flags, fs_name, 256)) {
                         // STRING: LEGOLAND 0x004b85ec
@@ -47,7 +47,7 @@ int FUN_00450f30(char *cd_volume) {
                                 result = 1;
                                 strcpy(CdDrivePath, root_path);
                                 // STRING: LEGOLAND 0x004b85c8
-                                FUN_0047f870("Drive %s contains the correct CD", CdDrivePath);
+                                DebugTrace("Drive %s contains the correct CD", CdDrivePath);
                                 FUN_0047f850();
                             }
                         }
@@ -254,7 +254,7 @@ int FUN_004515e0(int param_1) {
         while (!FUN_00450f30("LEGOLAND")) {
             if (!minimised) {
                 // STRING: LEGOLAND 0x004b86c0
-                FUN_0047f870("Minimising Game");
+                DebugTrace("Minimising Game");
                 FUN_0047f850();
                 FUN_0047fe70();
                 minimised = 1;
@@ -265,14 +265,14 @@ int FUN_004515e0(int param_1) {
                     // STRING: LEGOLAND 0x004b86b4
                     "CD Missing", 0x50015) == IDCANCEL) {
                 // STRING: LEGOLAND 0x004b8670
-                FUN_0047f870("Maximising Game");
+                DebugTrace("Maximising Game");
                 FUN_0047f850();
                 FUN_0047fe80();
                 return 0;
             }
         }
         if (minimised) {
-            FUN_0047f870("Maximising Game");
+            DebugTrace("Maximising Game");
             FUN_0047f850();
             FUN_0047fe80();
         }
@@ -280,7 +280,7 @@ int FUN_004515e0(int param_1) {
     } else {
         while (!FUN_004510e0("LEGOLAND")) {
             if (!minimised) {
-                FUN_0047f870("Minimising Game");
+                DebugTrace("Minimising Game");
                 FUN_0047f850();
                 FUN_0047fe70();
                 minimised = 1;
@@ -288,14 +288,14 @@ int FUN_004515e0(int param_1) {
             // STRING: LEGOLAND 0x004b8640
             sprintf(text, "Please insert the LEGOLAND CD-ROM into drive %s", CdDrivePath);
             if (MessageBoxA(WNDENV_Gethwnd(), text, "CD Missing", 0x50015) == IDCANCEL) {
-                FUN_0047f870("Maximising Game");
+                DebugTrace("Maximising Game");
                 FUN_0047f850();
                 FUN_0047fe80();
                 return 0;
             }
         }
         if (minimised) {
-            FUN_0047f870("Maximising Game");
+            DebugTrace("Maximising Game");
             FUN_0047f850();
             FUN_0047fe80();
         }

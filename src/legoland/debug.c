@@ -19,10 +19,10 @@
 #include "string.h"
 
 // FUNCTION: LEGOLAND 0x0047f870
-void FUN_0047f870(const char *fmt, ...) {}
+void DebugTrace(const char *fmt, ...) {}
 
 // FUNCTION: LEGOLAND 0x0047f880
-int FUN_0047f880(void) {
+int GameMain(void) {
     char buffer[1024];
     int i;
     int j;
@@ -31,7 +31,7 @@ int FUN_0047f880(void) {
     lpConfig->field_1e = 1;
 
     // STRING: LEGOLAND 0x004bcd44
-    if (FUN_0047f830("legoland.log") == 0) {
+    if (OpenLogFile("legoland.log") == 0) {
         return 1;
     }
     if (FUN_004515e0(1) == 0) {
@@ -114,9 +114,9 @@ int FUN_0047f880(void) {
     }
 
     // STRING: LEGOLAND 0x004bcc28
-    FUN_0047f870("Finished shutting stuff down");
+    DebugTrace("Finished shutting stuff down");
 
-    FUN_0047f840();
+    CloseLogFile();
     DeleteStrings();
     LLIDB_CloseICM();
 
@@ -165,7 +165,7 @@ LEGO_EXPORT unsigned int mystrlen(const char *s) {
 }
 
 // FUNCTION: LEGOLAND 0x0047fc40
-char *FUN_0047fc40(const char *haystack, const char *needle) {
+char *StrIStr(const char *haystack, const char *needle) {
     char *upper_haystack;
     char *upper_needle;
     char *match;
@@ -218,28 +218,28 @@ int __cdecl wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     }
 
     // STRING: LEGOLAND 0x004bcd70
-    if (FUN_0047fc40(lpCmdLine, "WINDEBUG")) {
+    if (StrIStr(lpCmdLine, "WINDEBUG")) {
         DAT_004b9ca4 = FUN_004661d0;
         DAT_00667d6c = 1;
         // STRING: LEGOLAND 0x004bcd6c
-    } else if (FUN_0047fc40(lpCmdLine, "BLT")) {
+    } else if (StrIStr(lpCmdLine, "BLT")) {
         DAT_004b9ca4 = FUN_004661d0;
     }
 
     // STRING: LEGOLAND 0x004bcd60
-    if (FUN_0047fc40(lpCmdLine, "-nointro")) {
+    if (StrIStr(lpCmdLine, "-nointro")) {
         lpConfig->field_40 = 1;
     } else {
         lpConfig->field_40 = 0;
     }
 
     // STRING: LEGOLAND 0x004bcd54
-    DAT_004bf774 = FUN_0047fc40(lpCmdLine, "-nomusic") ? 0 : 1;
+    MusicEnabled = StrIStr(lpCmdLine, "-nomusic") ? 0 : 1;
     g_hInstance = hInstance;
-    DAT_0066920c = nCmdShow;
+    g_nCmdShow = nCmdShow;
 
     if (CheckHostSystemGPU() == 0) {
         return 0;
     }
-    return FUN_0047f880();
+    return GameMain();
 }

@@ -753,7 +753,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     FUN_0047f810();
     if (SaveGame(save_path) == 0) {
         // STRING: LEGOLAND 0x004bf360
-        FUN_00453ce0("Failed to save game %s", save_path);
+        LogPrintf("Failed to save game %s", save_path);
         DAT_0080ffa0.field_44 = 0;
         remove(save_path);
         FUN_004663c0();
@@ -770,7 +770,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     sprintf(header_path, "profiles\\%dsave%d.sh", DAT_0080ffa0.field_43, *(unsigned int *)&DAT_0080ffa0.field_44 & 0xff);
     if (!Goto_ProfileDir()) {
         // STRING: LEGOLAND 0x004bf33c
-        FUN_00453ce0("Failed to move to profile folder");
+        LogPrintf("Failed to move to profile folder");
         return 0xff;
     }
 
@@ -778,11 +778,11 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     file = fopen(header_path, "w+");
     if (file == 0) {
         // STRING: LEGOLAND 0x004bf320
-        FUN_00453ce0("\ncannot open output file %s", header_path);
+        LogPrintf("\ncannot open output file %s", header_path);
     } else {
         if (fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, file) == 0) {
             // STRING: LEGOLAND 0x004bf2fc
-            FUN_00453ce0("Failed to write to save header %s", header_path);
+            LogPrintf("Failed to write to save header %s", header_path);
         }
         fclose(file);
     }
@@ -791,7 +791,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
         return 0xff;
     }
     // STRING: LEGOLAND 0x004bf2f0
-    FUN_00453ce0("Saved OK %s", header_path);
+    LogPrintf("Saved OK %s", header_path);
     return 1;
 }
 
