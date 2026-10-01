@@ -447,7 +447,7 @@ void FUN_00404290(Element *obj, int unused, int unused2, TileId *tile, int unuse
     node = FUN_00403d00((struct CopterSource *)tile);
     if (node != NULL) {
         struct RideNode *rn;
-        int base;
+        struct Point base;
         int d;
         int key;
 
@@ -458,11 +458,11 @@ void FUN_00404290(Element *obj, int unused, int unused2, TileId *tile, int unuse
         DAT_004c11a8 = NULL;
         DAT_004c11ac = NULL;
         DAT_004c11b0 = NULL;
-        base = node->field_1 + ((struct Ride *)DAT_004c1198)->y;
+        base.y = node->field_1 + ((struct Ride *)DAT_004c1198)->y;
         for (rn = ((struct Ride *)DAT_004c1198)->riders; rn != NULL; rn = rn->next) {
             if ((rn->rider->flags & 0x80) == 0) {
                 key = rn->person->field_20;
-                d = base - (rn->rider->pos.y >> 8);
+                d = base.y - (rn->rider->pos.y >> 8);
                 if (d >= 5) {
                     AddBlokeToRenderList(DAT_004c1190, (struct BlokeRenderSrc *)rn, key);
                 }
