@@ -3502,9 +3502,9 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
     m = (y1 - y0) / (x1 - x0);
     b = y0 - m * x0;
     {
-        double a = 3.0f * o->field_24;
-        float b2 = o->field_28 + o->field_28;
-        float sq;
+        float a = o->field_24 * 3.0f;
+        volatile float b2 = o->field_28 + o->field_28;
+        volatile float sq;
         float c = o->field_2c - m;
         sq = (float)sqrt(b2 * b2 - c * a * 4.0f);
         roots[0] = (sq - b2) / (a + a);
