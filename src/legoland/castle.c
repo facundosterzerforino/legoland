@@ -6006,7 +6006,33 @@ __declspec(naked) void HASM_lego_sqrtf(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004269e0
-void lego_sqrtf_init(void) { STUB(); }
+void lego_sqrtf_init(void) {
+    int i;
+    float x;
+    struct {
+        float a;
+        float b;
+    } *t = (void *)&DAT_00610a18;
+
+    for (i = 0; i < 64; i++) {
+        if (i == 29) {
+            i = 29;
+        }
+        x = (float)sqrt((float)i * 0.015625f + 1.0f);
+        t[i + 1].a = FLOAT_004ab43c / (x + x);
+        t[i + 1].b = FLOAT_004ab468 / (x * x * x * 2.0f);
+    }
+    sqrtf_exp_table[0] = 1.0f;
+    for (i = 1; i <= 255; i++) {
+        sqrtf_exp_table[i] = 1.0f / (float)sqrt(pow(2.0, i - 127));
+    }
+    __asm {
+        push eax
+        lea eax, HASM_lego_sqrtf
+        mov DAT_00829a5c, eax
+        pop eax
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00426a90
 float lego_invsqrtf(float x) {
