@@ -2,6 +2,7 @@
 
 #include "bloke.h"
 #include "gamemap.h"
+#include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
 #include "math.h"
@@ -132,3 +133,13 @@ void FUN_0049ce00(void);
 LEGO_EXPORT void RenderWorkers(void);
 LEGO_EXPORT void RenderWorkerInterfaceGFX(void);
 LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos);
+
+/* The map tile at `pos`, or NULL off the map. Inlined by the original: Garderner_Repair
+   and Mechanics_Repair only schedule their loads like the binary when the lookup goes
+   through this helper. */
+static __inline MapElement *GetTileAtPoint(Point *pos) {
+    if (pos->x >= 0 && pos->x < lpConfig->width && pos->y >= 0 && pos->y < lpConfig->height) {
+        return &GameMap[pos->y][pos->x];
+    }
+    return NULL;
+}

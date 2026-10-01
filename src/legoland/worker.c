@@ -1634,11 +1634,7 @@ LEGO_EXPORT void Garderner_Repair(Bloke *worker) {
         if (GetBrickCount() >= cost) {
             UseBricks(cost);
             order->bricks = order->bricks - cost + order->bricks_per_step;
-            if (order->pos.x >= 0 && order->pos.x < lpConfig->width && order->pos.y >= 0 && order->pos.y < lpConfig->height) {
-                tile = &GameMap[order->pos.y][order->pos.x];
-            } else {
-                tile = NULL;
-            }
+            tile = GetTileAtPoint(&order->pos);
             ride = tile->field_0->ride;
             DAT_00668610 |= 0x200;
             FUN_0049b0d0(tile, ride);
@@ -1742,11 +1738,7 @@ LEGO_EXPORT void Mechanics_Repair(Bloke *worker) {
             if (GetBrickCount() >= cost) {
                 UseBricks(cost);
                 order->bricks = order->bricks - cost + order->bricks_per_step;
-                if (order->pos.x >= 0 && order->pos.x < lpConfig->width && order->pos.y >= 0 && order->pos.y < lpConfig->height) {
-                    tile = &GameMap[order->pos.y][order->pos.x];
-                } else {
-                    tile = NULL;
-                }
+                tile = GetTileAtPoint(&order->pos);
                 ride = tile->field_0->ride;
                 DAT_00668610 |= 0x200;
                 FUN_0049b0d0(tile, ride);
