@@ -4184,13 +4184,14 @@ void FUN_004232b0(struct RecBuf *rb) {
 
     for (i = 0; i < n; i++) {
         short w = rb->ent[i].w;
+        short w2 = rb->ent[i].w;
 
         if (w < 0) {
             src[i].flag = 1;
             idx[i].v = -w;
         } else {
             src[i].flag = 0;
-            idx[i].v = w;
+            idx[i].v = w2;
         }
         idx[i].k = i;
         src[i].fx = rb->ent[i - 1].s0n << 16;
