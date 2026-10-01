@@ -2711,7 +2711,7 @@ struct BoxFace DAT_004b5748[12] = {
 };
 
 // GLOBAL: LEGOLAND 0x004b5808
-struct BoxFace DAT_004b5808[12] = {
+BoxFace DAT_004b5808[12] = {
     {0, 0, {0, 1, 2}, {0, 0, 0}},
     {0, 0, {0, 2, 3}, {0, 0, 0}},
     {0, 1, {7, 6, 5}, {0, 0, 0}},

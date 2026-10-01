@@ -256,6 +256,8 @@ struct BoxFace {
     short u[3];
 };
 
+typedef struct BoxFace BoxFace;
+
 struct BoxSolid {
     int f0;
     int f4;
