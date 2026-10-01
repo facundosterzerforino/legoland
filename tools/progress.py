@@ -60,6 +60,7 @@ def find_inline_asm(image, starts: list[int]) -> set[int]:
                     end = op.mem.disp
         if any(
             ins.mnemonic in INLINE_ASM
+            or (ins.mnemonic == "and" and ins.op_str.endswith(", 0xffffffff"))
             for ins in md.disasm(code[: end - start], start)
         ):
             found.add(start)

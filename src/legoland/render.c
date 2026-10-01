@@ -582,8 +582,119 @@ LEGO_EXPORT unsigned int RenderBlock(int x, int y, int w, int h, unsigned int co
     return 0;
 }
 
+/* Lock info filled by GetSprite (NULL locks the screen) and released by ReleaseSprite. */
+struct SpriteLock {
+    int pitch;
+    int width;
+    int height;
+    unsigned char *bits;
+    void *surface;
+    int depth;
+};
+
+/* Draws `sprite` at (x, y) blended 50% over the screen, 16-bit modes only: each pair of 5:6:5 pixels is
+ * averaged with the mask 0xf7def7de, transparent (zero) pairs are skipped, and every second source row is
+ * written to two screen rows. As in the original, the blend reads the next screen pair, not the one it
+ * writes. The original does the clipping and blending in an inline __asm block (it even reuses ebp as a
+ * loop register); this is the C equivalent: same effect, but it cannot byte-match without __asm. */
 // FUNCTION: LEGOLAND 0x00489190
-LEGO_EXPORT void RenderTransSprite(void) { STUB(); }
+LEGO_EXPORT int RenderTransSprite(struct Sprite *sprite, int x, int y) {
+    struct SpriteLock screen;
+    struct SpriteLock image;
+    RECT dst;
+    RECT off;
+    unsigned short w;
+    unsigned short h;
+    int last;
+    int rows;
+    int cols;
+    int c;
+    unsigned char *d;
+    unsigned char *s;
+    unsigned int *dp;
+    unsigned int *sp;
+    unsigned int px;
+    int result;
+
+    w = sprite->width;
+    h = sprite->height;
+    if (!GetSprite((unsigned int *)&screen, NULL)) {
+        return 0;
+    }
+    if (!GetSprite((unsigned int *)&image, sprite)) {
+        return 0;
+    }
+    switch (DAT_00668088) {
+    case 0:
+        result = 0;
+        break;
+    case 1:
+        result = 0;
+        break;
+    case 2:
+        if (x < SPRITE_ClipRect.left) {
+            dst.left = SPRITE_ClipRect.left;
+            off.left = SPRITE_ClipRect.left - x;
+        } else {
+            dst.left = x;
+            off.left = 0;
+        }
+        last = x + (w - 1);
+        if (last > SPRITE_ClipRect.right) {
+            dst.right = SPRITE_ClipRect.right;
+            off.right = (w - 1) - (last - SPRITE_ClipRect.right);
+        } else {
+            dst.right = last;
+            off.right = w - 1;
+        }
+        if (y < SPRITE_ClipRect.top) {
+            dst.top = SPRITE_ClipRect.top;
+            off.top = SPRITE_ClipRect.top - y;
+        } else {
+            dst.top = y;
+            off.top = 0;
+        }
+        last = y + (h - 1);
+        if (last > SPRITE_ClipRect.bottom) {
+            dst.bottom = SPRITE_ClipRect.bottom;
+            off.bottom = (h - 1) - (last - SPRITE_ClipRect.bottom);
+        } else {
+            dst.bottom = last;
+            off.bottom = h - 1;
+        }
+        result = 0;
+        if (dst.left < dst.right && dst.top < dst.bottom) {
+            d = screen.bits + screen.pitch * dst.top + dst.left * 2;
+            s = (unsigned char *)((unsigned int)(image.bits + image.pitch * off.top + off.left * 2) & ~3u);
+            rows = off.bottom - off.top - 1;
+            cols = off.right - off.left - 2;
+            do {
+                dp = (unsigned int *)d;
+                sp = (unsigned int *)s;
+                c = cols;
+                do {
+                    px = *sp & 0xf7def7de;
+                    dp++;
+                    if (px != 0) {
+                        px = (px >> 1) + ((*dp & 0xf7def7de) >> 1);
+                        dp[-1] = px;
+                        *(unsigned int *)((unsigned char *)dp + screen.pitch - 4) = px;
+                    }
+                    sp++;
+                    c -= 2;
+                } while (c >= 0);
+                s += image.pitch * 2;
+                d += screen.pitch * 2;
+                rows -= 2;
+            } while (rows >= 0);
+            result = (int)d;
+        }
+        break;
+    }
+    ReleaseSprite((struct Sprite *)&image);
+    ReleaseSprite((struct Sprite *)&screen);
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00489390
 LEGO_EXPORT void RenderThickBox(int x, int y, int w, int h, int thickness, unsigned int color) {
