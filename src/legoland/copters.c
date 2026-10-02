@@ -709,23 +709,27 @@ void CoptersUpdate(struct Element *elem) {
     struct Bloke *b;
     struct CopterNode *cn;
     struct CopterChainNode *link;
-    struct Ride *ride = elem->ride;
+    struct Ride *volatile ride = elem->ride;
     struct RideNode *next;
-    struct RideNode *node;
+    struct RideNode *volatile node;
+    TileId *tile;
+    struct RideNode *cur;
     int spr;
     int spr2;
 
     CoptersUpdateNodes();
     node = ride->riders;
     while (node != NULL) {
-        next = node->next;
-        b = node->rider;
-        cn = CoptersFindNode((struct CopterSource *)&node->tile);
+        cur = node;
+        next = cur->next;
+        b = cur->rider;
+        tile = &cur->tile;
+        cn = CoptersFindNode((struct CopterSource *)tile);
         if (cn == NULL) {
             break;
         }
-        x = node->tile.pos.x + ride->x;
-        y = node->tile.pos.y + ride->y;
+        x = ride->x + tile->pos.x;
+        y = tile->pos.y + ride->y;
         if (b->field_e == 0) {
             switch (b->param_action) {
             case 0:
@@ -740,11 +744,11 @@ void CoptersUpdate(struct Element *elem) {
             case 1:
                 link = (struct CopterChainNode *)node;
                 switch (CoptersFindChainIndex(link, (struct CopterSource *)&node->tile)) {
-                case 0:
-                    spr = CopterQueueTables[2];
-                    break;
                 case 1:
                     spr = CopterQueueTables[0];
+                    break;
+                case 0:
+                    spr = CopterQueueTables[2];
                     break;
                 case 2:
                     spr = CopterQueueTables[1];
@@ -760,7 +764,8 @@ void CoptersUpdate(struct Element *elem) {
                 CoptersQueueTableToIndex((struct CopterItem *)link);
                 break;
             case 2:
-                FUN_00412300((struct QueueTable *)CopterQueueTables[(int)FUN_004122f0((struct RideSlot *)b)], x, y, b);
+                spr = (int)FUN_004122f0((struct RideSlot *)b);
+                FUN_00412300((struct QueueTable *)CopterQueueTables[spr], x, y, b);
                 break;
             case 3:
             case 7:
@@ -769,7 +774,7 @@ void CoptersUpdate(struct Element *elem) {
             case 4:
                 b->param_action++;
                 cn->field_2++;
-                if ((short)cn->field_2 == ride->seats) {
+                if ((short)(signed char)cn->field_2 == ((struct Ride *)ActiveCopterRide)->seats) {
                     FUN_004048b0((struct CopterSfxNode *)cn);
                 }
                 break;
@@ -787,11 +792,11 @@ void CoptersUpdate(struct Element *elem) {
             case 8:
                 link = (struct CopterChainNode *)node;
                 switch (CoptersFindChainIndex(link, (struct CopterSource *)&node->tile)) {
-                case 0:
-                    spr2 = CopterQueueTables[2];
-                    break;
                 case 1:
                     spr2 = CopterQueueTables[0];
+                    break;
+                case 0:
+                    spr2 = CopterQueueTables[2];
                     break;
                 case 2:
                     spr2 = CopterQueueTables[1];
@@ -807,7 +812,8 @@ void CoptersUpdate(struct Element *elem) {
                 CoptersQueueTableToIndex((struct CopterItem *)link);
                 break;
             case 9:
-                FUN_00412300((struct QueueTable *)CopterQueueTables[(int)FUN_004122f0((struct RideSlot *)b)], x, y, b);
+                spr = (int)FUN_004122f0((struct RideSlot *)b);
+                FUN_00412300((struct QueueTable *)CopterQueueTables[spr], x, y, b);
                 break;
             case 10:
                 b->dest.x = (x << 8) + 0x80;
