@@ -23,21 +23,20 @@ struct InstanceList {
 
 // FUNCTION: LEGOLAND 0x00489e60
 char *ReadResFileLine(struct ResFile *file, char *dest, int maxlen) {
-    int error;
-    int count;
+    int error = 0;
+    int count = 0;
     char c;
-    char *out;
-
-    error = 0;
-    count = 0;
-    out = dest;
-    for (;;) {
+    char *out = dest;
+    while (1) {
         if (RES_ReadFile(file, &c, 1) == 0) {
             error = 1;
             break;
         }
-        if (c == '\r' || c == '\n') {
+        if (c == '\r') {
             break;
+        }
+        if (c == '\n') {
+            goto done;
         }
         *out++ = c;
         count++;
@@ -48,6 +47,7 @@ char *ReadResFileLine(struct ResFile *file, char *dest, int maxlen) {
     if (c == '\r') {
         RES_ReadFile(file, &c, 1);
     }
+done:
     *out = '\0';
     if (error && count == 0) {
         return 0;
