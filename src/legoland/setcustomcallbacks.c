@@ -355,7 +355,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_a0 = FUN_00434740;
     }
 
-    FUN_00403080(head, iface);
+    CastleLevel1_GetInterfaces(head, iface);
     LogFlume_GetInterfaces(head, iface);
     CoptersRide(head, iface);
     FortGetInterfaces(head, iface);
@@ -371,6 +371,6 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     ShopsGetInterfaces(head, iface);
     SpaceTowerRide(head, iface);
     SpinningBarrelsGetInterfaces(head, iface);
-    FUN_0043e220(head, iface);
+    PlaneRide_GetInterfaces(head, iface);
     FUN_004254d0(head, iface);
 }

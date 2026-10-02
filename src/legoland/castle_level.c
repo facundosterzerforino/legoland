@@ -181,7 +181,7 @@ void FUN_00403060(unsigned int param1, unsigned int param2) {
 }
 
 // FUNCTION: LEGOLAND 0x00403080
-void FUN_00403080(struct ClassNode *name, struct CallbackTable *ci) {
+void CastleLevel1_GetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b408c
     if (_stricmp("CASTLE LEVEL 1", name->name) == 0) {
         ci->cb_a4 = FUN_00402ca0;

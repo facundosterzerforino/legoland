@@ -465,7 +465,7 @@ LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e220
-void FUN_0043e220(struct ClassNode *name, struct CallbackTable *iface) {
+void PlaneRide_GetInterfaces(struct ClassNode *name, struct CallbackTable *iface) {
     // STRING: LEGOLAND 0x004b7a6c
     if (_stricmp("PLANE RIDE", name->name) == 0) {
         iface->cb_a4 = FUN_0043dda0;
