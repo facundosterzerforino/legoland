@@ -709,7 +709,7 @@ void CoptersUpdate(struct Element *elem) {
     struct Bloke *b;
     struct CopterNode *cn;
     struct CopterChainNode *link;
-    struct Ride *ride = elem->ride;
+    struct Ride *volatile ride = elem->ride;
     struct RideNode *next;
     struct RideNode *volatile node;
     TileId *tile;
