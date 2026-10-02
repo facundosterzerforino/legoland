@@ -1290,7 +1290,7 @@ struct GoldNode *GoldWashList;
 struct RenderItemNode *DAT_004c1208;
 
 // GLOBAL: LEGOLAND 0x004c1210
-struct Sprite *DAT_004c1210;
+struct Sprite *ZJoustSprite;
 
 // GLOBAL: LEGOLAND 0x004c1214
 unsigned int DAT_004c1214;
@@ -1323,10 +1323,10 @@ struct Sprite *DAT_004c1240;
 struct Sprite *JoustFMaskSprite;
 
 // GLOBAL: LEGOLAND 0x004c1248
-struct Sprite *DAT_004c1248;
+struct Sprite *JoustSpecRMSprite;
 
 // GLOBAL: LEGOLAND 0x004c124c
-struct Sprite *DAT_004c124c;
+struct Sprite *JoustSpecLMSprite;
 
 // GLOBAL: LEGOLAND 0x004c1250
 struct JoustNode *JoustNodeList;
@@ -2703,7 +2703,7 @@ int DAT_006661bc;
 struct Element *SharkCafeBrollyElem;
 
 // GLOBAL: LEGOLAND 0x006661c4
-struct Element *DAT_006661c4;
+struct Element *Entrance1Elem;
 
 // GLOBAL: LEGOLAND 0x006661c8
 int DAT_006661c8;
@@ -4527,7 +4527,7 @@ struct Sprite *ISadSprite;
 struct IconNode *DAT_007fdfcc;
 
 // GLOBAL: LEGOLAND 0x007fdfd0
-struct Sprite *DAT_007fdfd0;
+struct Sprite *IHungrySprite;
 
 // GLOBAL: LEGOLAND 0x007fdfd8
 struct IconNode *PuCornerMaskIcon;

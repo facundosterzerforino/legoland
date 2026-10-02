@@ -1158,9 +1158,9 @@ LEGO_EXPORT int LoadGame(char *path) {
         GamePad |= 0x20;
         CalculateMapRenderOrder();
         // STRING: LEGOLAND 0x004b83d0
-        DAT_006661c4 = ElemID("ENTRANCE 1");
-        entrance = DAT_006661c4->ride;
-        first = GetFirstObjectMatching(DAT_006661c4);
+        Entrance1Elem = ElemID("ENTRANCE 1");
+        entrance = Entrance1Elem->ride;
+        first = GetFirstObjectMatching(Entrance1Elem);
         if (first != 0) {
             DAT_004b8320.x = (first->field_4 + entrance->footprint.v[0]) * 0x100 + -0x100;
             DAT_004b8320.y = (((entrance->footprint.v[3] - entrance->footprint.v[1]) << 7) & ~0xff) + ((first->field_5 + entrance->footprint.v[1]) << 8);

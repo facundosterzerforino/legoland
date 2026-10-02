@@ -134,8 +134,8 @@ LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
     if (SharkCafeBrollyElem == 0) {
         SharkCafeBrollyElem = ElemID("SHARK CAFE BROLLY");
     }
-    if (DAT_006661c4 == 0) {
-        DAT_006661c4 = ElemID("ENTRANCE 1");
+    if (Entrance1Elem == 0) {
+        Entrance1Elem = ElemID("ENTRANCE 1");
     }
     DAT_006661bc++;
     bloke->field_7f = Rand_Tween(12, 24);
@@ -258,8 +258,8 @@ void FUN_0044ebf0(Bloke *bloke) {
 
     switch (bloke->param_action) {
     case 0:
-        object = GetFirstObjectMatching(DAT_006661c4);
-        ride = DAT_006661c4->data;
+        object = GetFirstObjectMatching(Entrance1Elem);
+        ride = Entrance1Elem->data;
         bloke->flags |= 8;
         bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
         bloke->dest.y = (object->field_5 + ride->footprint.y1 - 5) << 8;
@@ -271,8 +271,8 @@ void FUN_0044ebf0(Bloke *bloke) {
         bloke->param_action++;
         break;
     case 1:
-        bloke->target = DAT_006661c4;
-        if (FUN_0044f4a0(bloke, DAT_006661c4->data, 0) != 0) {
+        bloke->target = Entrance1Elem;
+        if (FUN_0044f4a0(bloke, Entrance1Elem->data, 0) != 0) {
             bloke->param_action++;
             PushLongTermAction(bloke);
             NewLongTermAction(bloke, 5);
@@ -401,9 +401,9 @@ void FUN_0044ed70(Bloke *bloke) {
         bloke->param_action = 5;
         return;
     case 10:
-        if (FUN_0044f4a0(bloke, DAT_006661c4->data, 0) != 0) {
+        if (FUN_0044f4a0(bloke, Entrance1Elem->data, 0) != 0) {
             bloke->flags |= 8;
-            bloke->target = DAT_006661c4;
+            bloke->target = Entrance1Elem;
             bloke->param_action++;
             PushLongTermAction(bloke);
             NewLongTermAction(bloke, 5);
@@ -411,8 +411,8 @@ void FUN_0044ed70(Bloke *bloke) {
         }
         break;
     case 11:
-        object = GetFirstObjectMatching(DAT_006661c4);
-        ride = DAT_006661c4->data;
+        object = GetFirstObjectMatching(Entrance1Elem);
+        ride = Entrance1Elem->data;
         bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
         bloke->dest.y = (object->field_5 + ride->footprint.y0 + 8) << 8;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
@@ -610,8 +610,8 @@ int FUN_0044f4a0(Bloke *bloke, Ride *ride, int wait) {
             bloke->field_e = 0;
             bloke->field_10 = 0;
             bloke->field_35 = 0;
-            if (ride == DAT_006661c4->data) {
-                object = GetFirstObjectMatching(DAT_006661c4);
+            if (ride == Entrance1Elem->data) {
+                object = GetFirstObjectMatching(Entrance1Elem);
                 node->tile.pos.x = object->field_4;
                 node->tile.pos.y = object->field_5;
             } else {

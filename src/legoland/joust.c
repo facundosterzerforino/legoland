@@ -193,11 +193,11 @@ void FUN_00407b50(struct JoustRoot *root) {
     // STRING: LEGOLAND 0x004b46f4
     JoustFMaskSprite = LoadSprite("Joust_fmask.lls", 1);
     // STRING: LEGOLAND 0x004b46e0
-    DAT_004c1248 = LoadSprite("Joust_SpecR_m.lls", 1);
+    JoustSpecRMSprite = LoadSprite("Joust_SpecR_m.lls", 1);
     // STRING: LEGOLAND 0x004b46cc
-    DAT_004c124c = LoadSprite("Joust_SpecL_m.lls", 1);
+    JoustSpecLMSprite = LoadSprite("Joust_SpecL_m.lls", 1);
     // STRING: LEGOLAND 0x004b46c0
-    DAT_004c1240 = DAT_004c1210 = LoadSprite("z_joust.lls", 1);
+    DAT_004c1240 = ZJoustSprite = LoadSprite("z_joust.lls", 1);
     // STRING: LEGOLAND 0x004b46a8
     JoustRideBnv = LoadBinV("Zbuffers\\joustride.bnv");
     HideLayer((struct Sprite *)DAT_004c1214, 1);
@@ -250,7 +250,7 @@ void FUN_00407c30(struct Element *elem) {
         hb = jn->phase;
         f1c = jn->field_1c;
         f20 = jn->field_20;
-        (*DAT_004c1210->lls)->frame = jn->frame;
+        (*ZJoustSprite->lls)->frame = jn->frame;
         x = t[0] + ride->x;
         y = t[1] + ride->y;
         if (b->field_e == 0) {
@@ -612,7 +612,7 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
                 }
                 off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 0);
                 AdjustOffsetForViewMode(&off);
-                PrintSprite(DAT_004c1248, coords.x + off.x, coords.y + off.y, param_6, 0);
+                PrintSprite(JoustSpecRMSprite, coords.x + off.x, coords.y + off.y, param_6, 0);
                 for (i = 0; i < n; i++) {
                     if (riders[i]->param_action == 0xc) {
                         IP_RenderBlokeIn3DNow(riders[i]);
@@ -635,7 +635,7 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
                 }
                 off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 0);
                 AdjustOffsetForViewMode(&off);
-                PrintSprite(DAT_004c124c, coords.x + off.x, coords.y + off.y, param_6, 0);
+                PrintSprite(JoustSpecLMSprite, coords.x + off.x, coords.y + off.y, param_6, 0);
                 for (i = 0; i < n; i++) {
                     if (riders[i]->param_action == 0x16) {
                         IP_RenderBlokeIn3DNow(riders[i]);
@@ -749,8 +749,8 @@ void FUN_00408bc0(void) {
 void FUN_00408c00(void) {
     Kill_FXList(JOUST_SFX, 1);
     KillSprite(JoustFMaskSprite);
-    KillSprite(DAT_004c1248);
-    KillSprite(DAT_004c124c);
+    KillSprite(JoustSpecRMSprite);
+    KillSprite(JoustSpecLMSprite);
     FreeBinV(JoustRideBnv);
     KillSprite(DAT_004c1240);
     FreeJoustNodeList();

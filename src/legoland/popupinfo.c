@@ -147,7 +147,7 @@ LEGO_EXPORT void InitPopUpInfo(void) {
         // STRING: LEGOLAND 0x004baabc
         IHappySprite = LoadSprite("i_happy.lls", 0);
         // STRING: LEGOLAND 0x004baaac
-        DAT_007fdfd0 = LoadSprite("i_hungry.lls", 0);
+        IHungrySprite = LoadSprite("i_hungry.lls", 0);
         // STRING: LEGOLAND 0x004baa9c
         IPeckishSprite = LoadSprite("i_peckish.lls", 0);
         // STRING: LEGOLAND 0x004baa90
@@ -317,9 +317,9 @@ int UnloadPopUpSprites(void) {
             KillSprite(IHappySprite);
             IHappySprite = NULL;
         }
-        if (DAT_007fdfd0 != NULL) {
-            KillSprite(DAT_007fdfd0);
-            DAT_007fdfd0 = NULL;
+        if (IHungrySprite != NULL) {
+            KillSprite(IHungrySprite);
+            IHungrySprite = NULL;
         }
         if (IPeckishSprite != NULL) {
             KillSprite(IPeckishSprite);
@@ -1124,7 +1124,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         } else if (hunger == 1) {
             PrintSprite(IPeckishSprite, right - width / 4 - 0x20, mid, 0, 0);
         } else {
-            PrintSprite(DAT_007fdfd0, right - width / 4 - 0x20, mid, 0, 0);
+            PrintSprite(IHungrySprite, right - width / 4 - 0x20, mid, 0, 0);
         }
     }
     if (repairable != 0 || DAT_0066895c != 0) {

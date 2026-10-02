@@ -1285,7 +1285,7 @@ extern struct GoldNode *GoldWashList;
 // 0x004c1208
 extern struct RenderItemNode *DAT_004c1208;
 // 0x004c1210
-extern struct Sprite *DAT_004c1210;
+extern struct Sprite *ZJoustSprite;
 // 0x004c1214
 extern unsigned int DAT_004c1214;
 // 0x004c1218
@@ -1307,9 +1307,9 @@ extern struct Sprite *DAT_004c1240;
 // 0x004c1244
 extern struct Sprite *JoustFMaskSprite;
 // 0x004c1248
-extern struct Sprite *DAT_004c1248;
+extern struct Sprite *JoustSpecRMSprite;
 // 0x004c124c
-extern struct Sprite *DAT_004c124c;
+extern struct Sprite *JoustSpecLMSprite;
 // 0x004c1250
 extern struct JoustNode *JoustNodeList;
 // 0x004c1258
@@ -2215,7 +2215,7 @@ extern int DAT_006661bc;
 // 0x006661c0
 extern struct Element *SharkCafeBrollyElem;
 // 0x006661c4
-extern struct Element *DAT_006661c4;
+extern struct Element *Entrance1Elem;
 // 0x006661c8
 extern int DAT_006661c8;
 // 0x006661cc
@@ -3455,7 +3455,7 @@ extern struct Sprite *ISadSprite;
 // 0x007fdfcc
 extern struct IconNode *DAT_007fdfcc;
 // 0x007fdfd0
-extern struct Sprite *DAT_007fdfd0;
+extern struct Sprite *IHungrySprite;
 // 0x007fdfd8
 extern struct IconNode *PuCornerMaskIcon;
 // 0x007fdfdc

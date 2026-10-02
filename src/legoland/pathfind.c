@@ -719,7 +719,7 @@ void FUN_00482a40(struct Point *pos) {
 // FUNCTION: LEGOLAND 0x00482a80
 void FUN_00482a80(void) {
     DAT_0066b460.x = 0;
-    DAT_006661c4 = 0;
+    Entrance1Elem = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00482a90
@@ -731,13 +731,13 @@ void FUN_00482a90(void) {
         return;
     }
 
-    if (DAT_006661c4 == 0) {
-        DAT_006661c4 = ElemID("ENTRANCE 1");
+    if (Entrance1Elem == 0) {
+        Entrance1Elem = ElemID("ENTRANCE 1");
     }
 
     match = (struct MatchResult *)GetFirstObjectMatching(
-        (Element *)DAT_006661c4);
-    obj = ((struct ElemInfo *)DAT_006661c4)->obj;
+        (Element *)Entrance1Elem);
+    obj = ((struct ElemInfo *)Entrance1Elem)->obj;
 
     DAT_0066b460.x = match->field_4 + obj->field_3c - 1;
     DAT_0066b460.y = ((obj->field_48 + obj->field_40) / 2) + match->field_5;
