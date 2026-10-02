@@ -89,8 +89,8 @@ void FUN_004367b0(int param_1, int param_2, unsigned short *param_3);
 void FUN_00433fc0(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_00434670(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3);
-int FUN_00435c70(void);
-int FUN_00435ec0(void);
+int JungleCruise_Save(void);
+int JungleCruise_Load(void);
 void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor);
 
 void FUN_00433ca0(Element *obj);

@@ -981,7 +981,7 @@ void FUN_0041abd0(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 }
 
 // FUNCTION: LEGOLAND 0x0041acf0
-int FUN_0041acf0(void) {
+int BoatingSchool_Save(void) {
     struct BoatRideNode *score;
     struct BoatRideNode *scoreCur;
     struct PathNode *path;
@@ -1045,7 +1045,7 @@ int FUN_0041acf0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041aee0
-int FUN_0041aee0(void) {
+int BoatingSchool_Load(void) {
     struct BoatRideNode *score;
     struct BoatRideNode *prevScore;
     struct PathNode *path;
@@ -1182,8 +1182,8 @@ LEGO_EXPORT void GetInterface(struct ClassNode *head, struct CallbackTable *ifac
         cb[4] = FUN_0041a530;
         cb[6] = FUN_0041a720;
         cb[9] = FUN_0041abd0;
-        cb[0xc] = FUN_0041acf0;
-        cb[0xb] = FUN_0041aee0;
+        cb[0xc] = BoatingSchool_Save;
+        cb[0xb] = BoatingSchool_Load;
         cb[0xd] = FUN_0041b100;
         return;
     }

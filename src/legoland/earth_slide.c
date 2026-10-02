@@ -272,7 +272,7 @@ void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d2f0
-int FUN_0042d2f0(void) {
+int EarthSlideRide_Save(void) {
     struct EarthNode *node;
     struct EarthQueue *q;
     int count;
@@ -318,7 +318,7 @@ unsigned int FUN_0042d3e0(struct EarthBlokeElem *param_1, struct EarthBlokeElem 
 }
 
 // FUNCTION: LEGOLAND 0x0042d400
-int FUN_0042d400(void) {
+int EarthSlideRide_Load(void) {
     struct EarthNode *node;
     struct EarthNode *prev;
     struct EarthQueue *q;

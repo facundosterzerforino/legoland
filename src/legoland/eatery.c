@@ -2297,7 +2297,7 @@ void FUN_00431d00(int param_1, unsigned int param_2, unsigned int param_3, unsig
 }
 
 // FUNCTION: LEGOLAND 0x004322a0
-int FUN_004322a0(void) {
+int Restaurant1_Save(void) {
     unsigned int one = 1;
     unsigned int zero = 0;
     struct BrollyNode *node = DAT_00616144;
@@ -2314,7 +2314,7 @@ int FUN_004322a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432310
-int FUN_00432310(void) {
+int Restaurant1_Load(void) {
     unsigned int count;
     struct BrollyNode *prev = NULL;
     struct BrollyNode *node;
@@ -2344,7 +2344,7 @@ int FUN_00432310(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432390
-int FUN_00432390(void) {
+int Restaurant2_Save(void) {
     unsigned int one = 1;
     unsigned int zero = 0;
     struct SaveBlock *node = DAT_00616148;
@@ -2361,7 +2361,7 @@ int FUN_00432390(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432400
-int FUN_00432400(void) {
+int Restaurant2_Load(void) {
     unsigned int count;
     struct SaveBlock *current;
     struct SaveBlock *prev = NULL;

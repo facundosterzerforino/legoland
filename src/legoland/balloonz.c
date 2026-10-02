@@ -685,7 +685,7 @@ unsigned int SaveBalloonNodes(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042baf0
-unsigned int FUN_0042baf0(Element *obj) {
+unsigned int Balloonz_Load(Element *obj) {
     Ride *ride = obj->ride;
     BalloonNode *node;
     BalloonNode *prev;

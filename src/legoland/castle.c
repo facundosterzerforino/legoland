@@ -5404,7 +5404,7 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_ac = FUN_004241e0;
         obj->cb_a8 = FUN_004251c0;
         obj->cb_b0 = FUN_00425050;
-        obj->cb_bc = FUN_00426ce0;
+        obj->cb_bc = CastleObj_Save;
         obj->cb_b8 = FUN_00426c20;
         obj->cb_c0 = FUN_004246e0;
         ((struct DispatchRow *)DAT_0082ad20)[0].field_0 = (unsigned int)head;
@@ -5514,7 +5514,7 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_94 = FUN_0041ed00;
         obj->cb_98 = FUN_0041ece0;
         obj->cb_9c = FUN_0041ed50;
-        obj->cb_8c = FUN_00426ce0;
+        obj->cb_8c = CastleObj_Save;
     }
 }
 #pragma optimize("", on)
@@ -6281,7 +6281,7 @@ int FUN_00426c20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00426ce0
-int FUN_00426ce0(void) {
+int CastleObj_Save(void) {
     struct Struct426d80X info;
     unsigned int zero;
     struct SaveRec *rec;

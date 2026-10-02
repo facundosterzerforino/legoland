@@ -41,4 +41,4 @@ void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
 void FUN_0042b9d0(void);
 void FUN_0042ba40(void);
 unsigned int SaveBalloonNodes(void);
-unsigned int FUN_0042baf0(Element *obj);
+unsigned int Balloonz_Load(Element *obj);

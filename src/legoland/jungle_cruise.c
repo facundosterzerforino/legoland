@@ -1541,7 +1541,7 @@ void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short
 }
 
 // FUNCTION: LEGOLAND 0x00435c70
-int FUN_00435c70(void) {
+int JungleCruise_Save(void) {
     struct JungleScore *score;
     struct JungleScore *scoreCur;
     struct JunglePath *path;
@@ -1619,7 +1619,7 @@ int FUN_00435c70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00435ec0
-int FUN_00435ec0(void) {
+int JungleCruise_Load(void) {
     struct JungleScore *score;
     struct JungleScore *prevScore;
     struct JunglePath *path;

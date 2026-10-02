@@ -169,7 +169,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_ac = FUN_0042b9d0;
         iface->cb_a0 = FUN_0042b2a0;
         iface->cb_bc = SaveBalloonNodes;
-        iface->cb_b8 = FUN_0042baf0;
+        iface->cb_b8 = Balloonz_Load;
     }
     // STRING: LEGOLAND 0x004b8970
     else if (_stricmp("EARTH SLIDE RIDE", head->name) == 0) {
@@ -180,8 +180,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_b0 = FUN_0042d070;
         iface->cb_9c = FUN_0042d270;
         iface->cb_98 = FUN_0042d2c0;
-        iface->cb_bc = FUN_0042d2f0;
-        iface->cb_b8 = FUN_0042d400;
+        iface->cb_bc = EarthSlideRide_Save;
+        iface->cb_b8 = EarthSlideRide_Load;
     }
     // STRING: LEGOLAND 0x004b8964
     else if (_stricmp("CASTLE BBQ", head->name) == 0) {
@@ -239,8 +239,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_9c = FUN_0042efb0;
         iface->cb_ac = FUN_0042f720;
         iface->cb_b0 = FUN_0042f4c0;
-        iface->cb_bc = FUN_004322a0;
-        iface->cb_b8 = FUN_00432310;
+        iface->cb_bc = Restaurant1_Save;
+        iface->cb_b8 = Restaurant1_Load;
     }
     // STRING: LEGOLAND 0x004b8900
     else if (_stricmp("RESTAURANT 2", head->name) == 0) {
@@ -251,8 +251,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_9c = FUN_0042fa40;
         iface->cb_a0 = FUN_004304a0;
         iface->cb_ac = FUN_00431120;
-        iface->cb_bc = FUN_00432390;
-        iface->cb_b8 = FUN_00432400;
+        iface->cb_bc = Restaurant2_Save;
+        iface->cb_b8 = Restaurant2_Load;
         iface->cb_b0 = FUN_00430b10;
     }
     // STRING: LEGOLAND 0x004b88f4
@@ -297,8 +297,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_9c = FUN_0041a530;
         iface->cb_a8 = FUN_0041a720;
         iface->cb_b0 = FUN_0041abd0;
-        iface->cb_bc = FUN_0041acf0;
-        iface->cb_b8 = FUN_0041aee0;
+        iface->cb_bc = BoatingSchool_Save;
+        iface->cb_b8 = BoatingSchool_Load;
         iface->cb_c0 = FUN_0041b100;
     }
     // STRING: LEGOLAND 0x004b5354
@@ -328,8 +328,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_9c = FUN_00435470;
         iface->cb_a8 = FUN_00435750;
         iface->cb_b0 = FUN_00435bd0;
-        iface->cb_bc = FUN_00435c70;
-        iface->cb_b8 = FUN_00435ec0;
+        iface->cb_bc = JungleCruise_Save;
+        iface->cb_b8 = JungleCruise_Load;
         iface->cb_c0 = FUN_00436160;
     }
     // STRING: LEGOLAND 0x004b88b8

@@ -62,6 +62,6 @@ void FUN_0042d1f0(struct EarthRideObj *arg1);
 void FUN_0042d230();
 void FUN_0042d270(struct EarthRideObj *param_1, TileId tile, unsigned int param_3);
 void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2);
-int FUN_0042d2f0(void);
-int FUN_0042d400(void);
+int EarthSlideRide_Save(void);
+int EarthSlideRide_Load(void);
 void FUN_0042d610(struct EarthRideObj *param_1);

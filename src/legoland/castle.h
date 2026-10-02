@@ -218,7 +218,7 @@ struct Struct427970Src;
 struct Struct427bc0Src;
 struct CastleRideObj;
 int FUN_00426c20(void);
-int FUN_00426ce0(void);
+int CastleObj_Save(void);
 void FUN_004275d0(struct Element *obj, int x, unsigned int y);
 unsigned int FUN_00427c00(unsigned int key);
 void FUN_00427940(struct Struct427940 *param_1);

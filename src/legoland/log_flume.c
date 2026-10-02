@@ -5289,7 +5289,7 @@ int FUN_00410910(struct FlumeEntry *entry) {
 }
 
 // FUNCTION: LEGOLAND 0x00410930
-int FUN_00410930(void) {
+int LogFlumeEntrance_Save(void) {
     struct FlumeEntry *entry = DAT_004cbe84;
     int marker = 1;
     int end = 0;
@@ -5411,7 +5411,7 @@ void FUN_00410bb0(void *arg0, struct FlumeNode *arg1) {
 }
 
 // FUNCTION: LEGOLAND 0x00410c10
-int FUN_00410c10(void) {
+int LogFlumeEntrance_Load(void) {
     struct FlumeEntry *cur = NULL;
     struct FlumeNode *head;
     struct Queue queue;
@@ -5463,8 +5463,8 @@ void LogFlume_GetInterfaces(struct ClassNode *flume, struct CallbackTable *vtbl)
         vtbl->cb_a8 = FUN_0040bf70;
         vtbl->cb_b0 = FUN_0040b420;
         vtbl->cb_ac = FUN_0040a410;
-        vtbl->cb_bc = FUN_00410930;
-        vtbl->cb_b8 = FUN_00410c10;
+        vtbl->cb_bc = LogFlumeEntrance_Save;
+        vtbl->cb_b8 = LogFlumeEntrance_Load;
         vtbl->cb_c0 = FUN_004119c0;
         return;
     }
