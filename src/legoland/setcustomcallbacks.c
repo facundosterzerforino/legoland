@@ -275,7 +275,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     }
     // STRING: LEGOLAND 0x004b83dc
     else if (_stricmp("SHARK CAFE BROLLY", head->name) == 0) {
-        iface->cb_a4 = FUN_0042e460;
+        iface->cb_a4 = LoadBrollyImages;
         iface->cb_8c = FUN_0042e4c0;
         iface->cb_98 = FUN_0042e500;
         iface->cb_a0 = FUN_0042e560;

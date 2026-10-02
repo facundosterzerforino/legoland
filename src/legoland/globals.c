@@ -2268,10 +2268,10 @@ unsigned int DAT_00616128;
 unsigned short DAT_0061612c;
 
 // GLOBAL: LEGOLAND 0x0061613c
-unsigned int DAT_0061613c;
+unsigned int BrollyImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616140
-struct BrollyData *DAT_00616140;
+struct BrollyData *BrollyImagesData;
 
 // GLOBAL: LEGOLAND 0x00616144
 struct BrollyNode *DAT_00616144;
@@ -2280,16 +2280,16 @@ struct BrollyNode *DAT_00616144;
 struct SaveBlock *DAT_00616148;
 
 // GLOBAL: LEGOLAND 0x0061614c
-unsigned int DAT_0061614c;
+unsigned int HedgeImagesData;
 
 // GLOBAL: LEGOLAND 0x00616150
-unsigned int DAT_00616150;
+unsigned int FlowerImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616158
-unsigned int DAT_00616158;
+unsigned int FlowerImagesData;
 
 // GLOBAL: LEGOLAND 0x0061615c
-unsigned int DAT_0061615c;
+unsigned int HedgeImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616164
 struct JungleRide *DAT_00616164;
@@ -5364,7 +5364,7 @@ struct Cursor DAT_0081ce00[8];
 unsigned int DAT_00828fe0[2];
 
 // GLOBAL: LEGOLAND 0x00829980
-void *DAT_00829980;
+void *BasicTilesData;
 
 // GLOBAL: LEGOLAND 0x00829990
 float DAT_00829990[3];

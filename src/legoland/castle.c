@@ -5436,7 +5436,7 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_98 = FUN_0041ece0;
         obj->cb_9c = FUN_0041ed50;
         obj->cb_a4 = FUN_00427aa0;
-        obj->cb_ac = FUN_00427af0;
+        obj->cb_ac = CastleUnloadBasicTiles;
         obj->cb_b0 = FUN_00427a00;
         obj->cb_90 = FUN_004275d0;
         ((struct DispatchRow *)DAT_0082ad20)[2].field_0 = (unsigned int)head;
@@ -6815,10 +6815,10 @@ struct Struct4274f0Coord {
 // FUNCTION: LEGOLAND 0x004274f0
 void FUN_004274f0(struct Struct4274f0Coord *coord) {
     if (DAT_004b55f4 != 0) {
-        SetMapTile(coord->field_0, coord->field_2, ((struct MapHeader *)DAT_00829980)->field_0 + 1);
-        SetMapTile(coord->field_0 + 1, coord->field_2, ((struct MapHeader *)DAT_00829980)->field_0 + 1);
-        SetMapTile(coord->field_0, coord->field_2 + 1, ((struct MapHeader *)DAT_00829980)->field_0 + 1);
-        SetMapTile(coord->field_0 + 1, coord->field_2 + 1, ((struct MapHeader *)DAT_00829980)->field_0 + 1);
+        SetMapTile(coord->field_0, coord->field_2, ((struct MapHeader *)BasicTilesData)->field_0 + 1);
+        SetMapTile(coord->field_0 + 1, coord->field_2, ((struct MapHeader *)BasicTilesData)->field_0 + 1);
+        SetMapTile(coord->field_0, coord->field_2 + 1, ((struct MapHeader *)BasicTilesData)->field_0 + 1);
+        SetMapTile(coord->field_0 + 1, coord->field_2 + 1, ((struct MapHeader *)BasicTilesData)->field_0 + 1);
     }
 }
 
@@ -7042,14 +7042,14 @@ void FUN_00427aa0(Element *obj) {
     ((struct Ride *)DAT_00829c08)->layer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b5f34
     if (LLIDB_FindElement("BASIC TILES 1", &handle, 0) == 0) {
-        DAT_00829980 = LLIDB_LoadData((void *)handle);
+        BasicTilesData = LLIDB_LoadData((void *)handle);
     }
     FUN_004284d0();
     FUN_00428750();
 }
 
 // FUNCTION: LEGOLAND 0x00427af0
-void FUN_00427af0(void) {
+void CastleUnloadBasicTiles(void) {
     unsigned int handle;
     unsigned int packed;
     // STRING: LEGOLAND 0x004b5f34

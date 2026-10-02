@@ -15,7 +15,7 @@ void FUN_0042e220(struct EateryObj *obj);
 void FUN_0042e250();
 void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value);
 void FUN_0042e2a0(Element *obj);
-void FUN_0042e460(struct EateryObj *obj);
+void LoadBrollyImages(struct EateryObj *obj);
 void FUN_0042e4b0();
 void FUN_0042e4c0();
 void FUN_0042e500(int param_1, unsigned char *param_2);

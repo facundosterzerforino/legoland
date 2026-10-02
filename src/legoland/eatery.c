@@ -212,18 +212,18 @@ void FUN_0042e2a0(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042e460
-void FUN_0042e460(struct EateryObj *obj) {
+void LoadBrollyImages(struct EateryObj *obj) {
     DAT_0081cd38 = obj->fx_c;
     DAT_0081cd38->flags_1c |= 0x400;
     // STRING: LEGOLAND 0x004b6ec8
-    if (LLIDB_FindElement("BROLLY IMAGES", &DAT_0061613c, 0) == 0) {
-        DAT_00616140 = (struct BrollyData *)LLIDB_LoadData((void *)DAT_0061613c);
+    if (LLIDB_FindElement("BROLLY IMAGES", &BrollyImagesHandle, 0) == 0) {
+        BrollyImagesData = (struct BrollyData *)LLIDB_LoadData((void *)BrollyImagesHandle);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0042e4b0
 void FUN_0042e4b0(void) {
-    LLIDB_UnLoadData(DAT_0061613c);
+    LLIDB_UnLoadData(BrollyImagesHandle);
 }
 
 // FUNCTION: LEGOLAND 0x0042e4c0
@@ -241,9 +241,9 @@ void FUN_0042e500(int param_1, unsigned char *param_2) {
     id.pos.x = param_2[0];
     id.pos.y = param_2[4];
     AddObjectToMap(param_1, id, 0);
-    if (DAT_00616140 != NULL) {
+    if (BrollyImagesData != NULL) {
         int r = rand();
-        Set_UserFlags(*(int *)param_2 << 8, *(int *)(param_2 + 4) << 8, (unsigned short)(r % DAT_00616140->count_4));
+        Set_UserFlags(*(int *)param_2 << 8, *(int *)(param_2 + 4) << 8, (unsigned short)(r % BrollyImagesData->count_4));
     }
 }
 
@@ -251,9 +251,9 @@ void FUN_0042e500(int param_1, unsigned char *param_2) {
 struct RideSpriteInfo *FUN_0042e560(int param_1, unsigned int param_2) {
     unsigned char *b = (unsigned char *)&param_2;
     int idx = ((unsigned short)Get_UserFlags((unsigned int)b[0] << 8, (unsigned int)b[1] << 8) & 0xff) * 4;
-    DAT_0082c6a0.sprite = *(int *)((char *)DAT_00616140->table_8 + idx);
-    DAT_0082c6a0.x = *(int *)((char *)DAT_00616140->table_c + idx) >> 1;
-    DAT_0082c6a0.y = *(int *)((char *)DAT_00616140->table_10 + idx) >> 1;
+    DAT_0082c6a0.sprite = *(int *)((char *)BrollyImagesData->table_8 + idx);
+    DAT_0082c6a0.x = *(int *)((char *)BrollyImagesData->table_c + idx) >> 1;
+    DAT_0082c6a0.y = *(int *)((char *)BrollyImagesData->table_10 + idx) >> 1;
     DAT_0082c6a0.field_10 = 0;
     return &DAT_0082c6a0;
 }

@@ -226,7 +226,7 @@ void FUN_00427970(struct Element *obj, const struct Struct427970Src *src);
 void FUN_004279f0(void);
 void FUN_00427a00(unsigned int unused0, unsigned int unused1, unsigned int unused2, const unsigned char *src);
 void FUN_00427aa0(struct Element *obj);
-void FUN_00427af0(void);
+void CastleUnloadBasicTiles(void);
 void FUN_00427b20(struct Element *obj, int x, unsigned int y);
 void FUN_00427bc0(unsigned int unused, const struct Struct427bc0Src *src);
 void FUN_00427c90(struct Element *obj, int x, unsigned int y);

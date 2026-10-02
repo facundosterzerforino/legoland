@@ -1925,21 +1925,21 @@ extern unsigned int DAT_00616128;
 // 0x0061612c
 extern unsigned short DAT_0061612c;
 // 0x0061613c
-extern unsigned int DAT_0061613c;
+extern unsigned int BrollyImagesHandle;
 // 0x00616140
-extern struct BrollyData *DAT_00616140;
+extern struct BrollyData *BrollyImagesData;
 // 0x00616144
 extern struct BrollyNode *DAT_00616144;
 // 0x00616148
 extern struct SaveBlock *DAT_00616148;
 // 0x0061614c
-extern unsigned int DAT_0061614c;
+extern unsigned int HedgeImagesData;
 // 0x00616150
-extern unsigned int DAT_00616150;
+extern unsigned int FlowerImagesHandle;
 // 0x00616158
-extern unsigned int DAT_00616158;
+extern unsigned int FlowerImagesData;
 // 0x0061615c
-extern unsigned int DAT_0061615c;
+extern unsigned int HedgeImagesHandle;
 // 0x00616164
 extern struct JungleRide *DAT_00616164;
 // 0x00629c2c
@@ -4015,7 +4015,7 @@ extern struct Cursor DAT_0081ce00[8];
 // 0x00828fe0
 extern unsigned int DAT_00828fe0[2];
 // 0x00829980
-extern void *DAT_00829980;
+extern void *BasicTilesData;
 // 0x00829990
 extern float DAT_00829990[3];
 // 0x0082999c

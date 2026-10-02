@@ -63,7 +63,7 @@ int FUN_00450f30(char *cd_volume) {
 }
 
 // FUNCTION: LEGOLAND 0x004510e0
-int FUN_004510e0(char *cd_volume) {
+int IsCdVolumePresent(char *cd_volume) {
     int result;
     char root_path[4];
     char volume_name[256];
@@ -185,7 +185,7 @@ int FUN_00451410(HANDLE h, int drive) {
 }
 
 // FUNCTION: LEGOLAND 0x00451480
-int FUN_00451480(void) {
+int OpenVWin32Device(void) {
     // STRING: LEGOLAND 0x004b8634
     HANDLE result = CreateFileA("\\\\.\\vwin32", 0, 0, NULL, 0, 0x4000000, NULL);
     return (int)result;
@@ -278,7 +278,7 @@ int FUN_004515e0(int param_1) {
         }
         return 1;
     } else {
-        while (!FUN_004510e0("LEGOLAND")) {
+        while (!IsCdVolumePresent("LEGOLAND")) {
             if (!minimised) {
                 DebugTrace("Minimising Game");
                 FUN_0047f850();
