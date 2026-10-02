@@ -197,7 +197,7 @@ struct Person *FUN_0043f8c0(struct Bloke *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f970
-void FUN_0043f970(void *buffer) {
+void RelocateLocData(void *buffer) {
     struct Person *p = buffer;
 
     p->field_2c = p->field_2c + (unsigned int)p;
@@ -205,7 +205,7 @@ void FUN_0043f970(void *buffer) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f990
-void *FUN_0043f990(const char *param_1, const char *param_2) {
+void *LoadLocFile(const char *param_1, const char *param_2) {
     char path[256];
     struct ResFile *file;
     unsigned int size;
@@ -220,7 +220,7 @@ void *FUN_0043f990(const char *param_1, const char *param_2) {
         if (buffer != 0) {
             RES_ReadFile(file, buffer, size);
             RES_CloseFile(file);
-            FUN_0043f970(buffer);
+            RelocateLocData(buffer);
             return buffer;
         }
     }
@@ -490,7 +490,7 @@ LEGO_EXPORT void InitMan(void) {
     FUN_00485fc0((DisplayPixelFormat == 2) + 5);
     ctx = FUN_00443710();
     // STRING: LEGOLAND 0x004b7cdc
-    VisitorLocData = FUN_0043f990("NewProject.loc", "visitor");
+    VisitorLocData = LoadLocFile("NewProject.loc", "visitor");
     ((unsigned int *)VisitorLocData)[1] = ctx;
     // STRING: LEGOLAND 0x004b7cec
     FUN_00443720(VisitorLocData, "visitor");
@@ -526,7 +526,7 @@ LEGO_EXPORT void InitMan(void) {
     AltWomanFileData = Load3DDataFile("visitor", "altwoman.txt");
     ctx = FUN_00443710();
     // STRING: LEGOLAND 0x004b7b80
-    GeoffLocData = FUN_0043f990("geoff.loc", "geoff");
+    GeoffLocData = LoadLocFile("geoff.loc", "geoff");
     ((unsigned int *)GeoffLocData)[1] = ctx;
     // STRING: LEGOLAND 0x004b7b8c
     FUN_00443720(GeoffLocData, "geoff");
@@ -536,7 +536,7 @@ LEGO_EXPORT void InitMan(void) {
     GeoffMeshes[1] = FUN_0043fa80("GeofPour.GeofPour.3d", "geoff", ctx);
     ctx = FUN_00443710();
     // STRING: LEGOLAND 0x004b7b3c
-    TracyLocData = FUN_0043f990("tracy.loc", "tracy");
+    TracyLocData = LoadLocFile("tracy.loc", "tracy");
     ((unsigned int *)TracyLocData)[1] = ctx;
     // STRING: LEGOLAND 0x004b7b48
     FUN_00443720(TracyLocData, "tracy");
