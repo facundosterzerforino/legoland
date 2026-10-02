@@ -1549,12 +1549,12 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
             }
             if (AVIStreamInfoA(stream, &stream_info, 0x8c) == 0) {
                 if (stream_info.type == 0x73646976) {
+                    video_stream = stream;
                     AVIStreamAddRef(stream);
                     length = stream_info.length;
                     width = stream_info.frame_right - stream_info.frame_left;
                     rate = stream_info.rate / stream_info.scale;
                     height = stream_info.frame_bottom - stream_info.frame_top;
-                    video_stream = stream;
                 } else if (stream_info.type == 0x73647561) {
                     DAT_00668fa4 = 0x16;
                     audio_stream = stream;
@@ -1566,6 +1566,7 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
             if (audio_stream != NULL) {
                 AVIStreamRelease(audio_stream);
             }
+            AVIFileRelease(file);
         } else {
             handle = (struct MovieHandle *)malloc(sizeof(struct MovieHandle));
             if (handle == NULL) {
@@ -1573,6 +1574,7 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
                 if (audio_stream != NULL) {
                     AVIStreamRelease(audio_stream);
                 }
+                AVIFileRelease(file);
             } else {
                 handle->field_0 = length;
                 handle->field_4 = rate;
@@ -1586,7 +1588,6 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
                 return handle;
             }
         }
-        AVIFileRelease(file);
     }
     if (AviOpenCount == 0) {
         AVIFileExit();
