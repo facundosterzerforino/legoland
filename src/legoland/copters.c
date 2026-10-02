@@ -713,15 +713,17 @@ void CoptersUpdate(struct Element *elem) {
     struct RideNode *next;
     struct RideNode *volatile node;
     TileId *tile;
+    struct RideNode *cur;
     int spr;
     int spr2;
 
     CoptersUpdateNodes();
     node = ride->riders;
     while (node != NULL) {
-        next = node->next;
-        b = node->rider;
-        tile = &node->tile;
+        cur = node;
+        next = cur->next;
+        b = cur->rider;
+        tile = &cur->tile;
         cn = CoptersFindNode((struct CopterSource *)tile);
         if (cn == NULL) {
             break;
