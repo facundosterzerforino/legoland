@@ -326,7 +326,7 @@ int ListHasPointInRect(struct WaterPoint *list, struct WaterRect *rect) {
 }
 
 // FUNCTION: LEGOLAND 0x00417ec0
-unsigned int FUN_00417ec0(unsigned char *point) {
+unsigned int IsPointInBlokeGardenerOrMechanicList(unsigned char *point) {
     struct WaterRect rect;
 
     rect.x0 = point[0];
@@ -348,7 +348,7 @@ void FUN_00417f40(void) {
 
     node = (struct WaterNode *)DAT_004cc02c;
     while (node != NULL) {
-        if (FUN_00417ec0((unsigned char *)&node->key) != 0) {
+        if (IsPointInBlokeGardenerOrMechanicList((unsigned char *)&node->key) != 0) {
             if (node->field_8 == 0) {
                 node->field_8 = 1;
                 node->field_9 = 0;
@@ -547,7 +547,7 @@ void FUN_00418350(void) {
 
     node = (struct WaterNode *)DAT_004cc030;
     while (node != NULL) {
-        if (FUN_00417ec0((unsigned char *)&node->key) != 0) {
+        if (IsPointInBlokeGardenerOrMechanicList((unsigned char *)&node->key) != 0) {
             if (node->field_8 == 0) {
                 node->field_8 = 1;
                 node->field_9 = 0;
@@ -578,7 +578,7 @@ void FUN_004183a0(void) {
                 limit = *(short *)(lls + 0x10);
             }
             if ((int)node->field_9 >= limit) {
-                if (FUN_00417ec0((unsigned char *)&node->key) != 0) {
+                if (IsPointInBlokeGardenerOrMechanicList((unsigned char *)&node->key) != 0) {
                     node->field_8 = 2;
                     node->field_9 = 0xb;
                 } else {
