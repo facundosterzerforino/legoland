@@ -418,7 +418,7 @@ void FUN_00417f90(Element *obj) {
         next = rnode->next;
         rx = tile->pos.x + ride->x;
         ry = tile->pos.y + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 bloke->flags |= 8;
@@ -426,7 +426,7 @@ void FUN_00417f90(Element *obj) {
                 bloke->dest.x = rx * 0x100 + -0x80;
                 bloke->dest.y = ry;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;

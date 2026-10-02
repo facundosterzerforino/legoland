@@ -533,13 +533,13 @@ void FUN_00405bd0(Element *obj) {
     while (node != NULL) {
         bloke = node->rider;
         next = node->next;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 bloke->dest.x = (node->tile.pos.x + ride->x) << 8;
                 bloke->dest.y = (node->tile.pos.y - 3 + ride->y) << 8;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 bloke->field_73 = move + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->field_58 = (rand() & 7) + 1;
@@ -580,7 +580,7 @@ void FUN_00405bd0(Element *obj) {
                 bloke->dest.x = ((node->tile.pos.x + ride->x) << 8) + 0x80;
                 bloke->dest.y = ((node->tile.pos.y + ride->y) << 8) + 0x80;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 bloke->field_73 = move + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->param_action++;

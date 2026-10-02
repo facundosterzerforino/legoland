@@ -511,7 +511,7 @@ void FUN_0043c950(struct Element *elem) {
         }
         iv12 = ride->x + pos->pos.x;
         iv13 = pos->pos.y + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 node->field_18++;
@@ -523,7 +523,7 @@ void FUN_0043c950(struct Element *elem) {
                 bloke->dest.x = iv12;
                 bloke->dest.y = iv13;
                 bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
                 bloke->field_58 = 0;
@@ -558,7 +558,7 @@ void FUN_0043c950(struct Element *elem) {
                     bloke->field_35 = 1;
                     bloke->param_action = 6;
                 }
-                BlokeSetFrame(bloke, bloke->field_74);
+                BlokeSetFrame(bloke, bloke->frame);
                 break;
             case 6:
                 BlokeSitAnim(bloke);
@@ -587,7 +587,7 @@ void FUN_0043c950(struct Element *elem) {
                     free(bloke->path);
                     bloke->path = NULL;
                 }
-                BlokeSetFrame(bloke, bloke->field_74);
+                BlokeSetFrame(bloke, bloke->frame);
                 break;
             case 0xf:
                 bloke->flags &= 0xff7f;
@@ -599,7 +599,7 @@ void FUN_0043c950(struct Element *elem) {
                 bloke->dest.x = iv12 + 0x180;
                 bloke->dest.y = iv13 - 0x80;
                 bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
                 break;
@@ -607,7 +607,7 @@ void FUN_0043c950(struct Element *elem) {
                 bloke->dest.x = ((iv12 + 2) << 8) - (rand() % 2 ? 0x80 : 0);
                 bloke->dest.y = (iv13 << 8) + 0x80;
                 bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
                 break;

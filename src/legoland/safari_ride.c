@@ -438,7 +438,7 @@ void FUN_00415220(Element *obj) {
         }
         y = ride->field_25 + tile->pos.y;
         x = ride->field_24 + tile->pos.x;
-        if (bloke->field_e != 0) {
+        if (bloke->low_level_action != 0) {
             continue;
         }
         switch (bloke->param_action) {
@@ -487,7 +487,7 @@ void FUN_00415220(Element *obj) {
                     bloke->field_54 = 0;
                 }
             }
-            BlokeSetFrame(bloke, bloke->field_74);
+            BlokeSetFrame(bloke, bloke->frame);
             break;
         case 5:
             bloke->flags |= 0x80;
@@ -532,7 +532,7 @@ void FUN_00415220(Element *obj) {
                     bloke->field_54 = 0;
                 }
             }
-            BlokeSetFrame(bloke, bloke->field_74);
+            BlokeSetFrame(bloke, bloke->frame);
             break;
         case 13:
             bloke->flags &= ~0x80;
@@ -546,7 +546,7 @@ void FUN_00415220(Element *obj) {
             bloke->dest.x = (x << 8) + 0x80;
             bloke->dest.y = (y << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
             bloke->param_action++;

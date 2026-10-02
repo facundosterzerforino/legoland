@@ -1429,7 +1429,7 @@ void FUN_00435750(void) {
             }
         }
         bloke = node->rider;
-        if (bloke->field_e != 0) {
+        if (bloke->low_level_action != 0) {
             continue;
         }
         switch (bloke->param_action) {
@@ -1464,7 +1464,7 @@ void FUN_00435750(void) {
             bloke->dest.y = ((DAT_0081cb60->y + tile.pos.y) << 8) + DAT_004b7290[4 - slot].y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             break;
         case 1:
@@ -1493,11 +1493,11 @@ void FUN_00435750(void) {
             ScreenToMapRef2(&pos, &map, 0);
             bloke->flags &= 0xff7f;
             bloke->pos = map;
-            bloke->field_72 = 10;
+            bloke->dir = 10;
             bloke->dest.x = ((DAT_0081cb60->field_24 + tile.pos.x) << 8) - 0x180;
             bloke->dest.y = ((DAT_0081cb60->field_25 + tile.pos.y) << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
@@ -1506,7 +1506,7 @@ void FUN_00435750(void) {
             bloke->dest.x = ((DAT_0081cb60->field_24 + tile.pos.x) << 8) + 0x80;
             bloke->dest.y = ((DAT_0081cb60->field_25 + tile.pos.y) << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;

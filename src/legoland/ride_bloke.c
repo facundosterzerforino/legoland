@@ -1064,14 +1064,14 @@ void FUN_00402780(struct NewBloke *b) {
     ClearOverrideFrame();
     b->bloke->pos.x = sx;
     b->bloke->pos.y = sy;
-    b->bloke->field_72 = (b->f_b8 + 6) & 15;
+    b->bloke->dir = (b->f_b8 + 6) & 15;
     person = Find3DPersonFromBloke(b->bloke);
     person->sort_id = wp0.x;
     scr = &person->screen;
     scr->x = lpConfig->view_x + b->bloke->pos.x + 0x10;
     scr->y = lpConfig->view_y + b->bloke->pos.y + 8;
     AdjustBlokePosition(scr);
-    FUN_004025d0(person, b->bloke->field_72);
+    FUN_004025d0(person, b->bloke->dir);
     for (;;) {
         if (FUN_00402490((struct NearBloke *)b) != NULL) {
             b->f_c8 = b->f_c6 >> 1;

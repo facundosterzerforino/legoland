@@ -5346,17 +5346,17 @@ void FUN_004251c0(Element *obj) {
         switch (bloke->param_action) {
         case 0:
             bloke->flags |= 8;
-            if (bloke->field_e == 0) {
+            if (bloke->low_level_action == 0) {
                 bloke->dest.x = (x - 8) << 8;
                 bloke->dest.y = (y - 1) << 8;
                 bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
             }
             break;
         case 1:
-            if (bloke->field_e == 0) {
+            if (bloke->low_level_action == 0) {
                 bloke->param_action = 0x10;
             }
             break;
@@ -5365,17 +5365,17 @@ void FUN_004251c0(Element *obj) {
             bloke->param_action = 0x20;
             break;
         case 0x21:
-            if (bloke->field_e == 0) {
+            if (bloke->low_level_action == 0) {
                 bloke->dest.x = (x << 8) + 0x80;
                 bloke->dest.y = (y << 8) + 0x80;
                 bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
             }
             break;
         case 0x22:
-            if (bloke->field_e == 0) {
+            if (bloke->low_level_action == 0) {
                 bloke->param_action = 0x40;
             }
             break;

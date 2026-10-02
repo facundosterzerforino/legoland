@@ -322,7 +322,7 @@ void FUN_004035a0(struct CatapultNode *node) {
             continue;
         }
 
-        entry->rider->field_72 = 7;
+        entry->rider->dir = 7;
         entry->rider->field_58 = entry->rider->field_58 - 1;
         if (entry->rider->field_58 > 0) {
             continue;
@@ -389,7 +389,7 @@ void FUN_004036f0(const unsigned short *key, struct RideNode *entry, int x, int 
     bloke->dest.x = (x << 8) - (rand() % 2 ? 0x10 : -0x10) - 0xe0;
     bloke->dest.y = (y << 8) + (rand() % 2 ? 0x20 : -0x20) + DAT_004b40b4[slot];
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-    bloke->field_e = 7;
+    bloke->low_level_action = 7;
     bloke->field_73 = dir + 0x10;
     NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
     bloke->param_action++;
@@ -430,7 +430,7 @@ void FUN_00403820(struct Element *elem) {
         next = node->next;
         x = tile->pos.x + ride->x;
         y = tile->pos.y + ride->y;
-        if (bloke->field_e != 0) {
+        if (bloke->low_level_action != 0) {
             continue;
         }
         switch (bloke->param_action) {
@@ -446,7 +446,7 @@ void FUN_00403820(struct Element *elem) {
             bloke->dest.x = (x << 8) + 0x80;
             bloke->dest.y = (y << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
             bloke->param_action++;

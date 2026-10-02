@@ -730,7 +730,7 @@ void CoptersUpdate(struct Element *elem) {
         }
         x = ride->x + tile->pos.x;
         y = tile->pos.y + ride->y;
-        if (b->field_e == 0) {
+        if (b->low_level_action == 0) {
             switch (b->param_action) {
             case 0:
                 b->flags |= 8;
@@ -819,7 +819,7 @@ void CoptersUpdate(struct Element *elem) {
                 b->dest.x = (x << 8) + 0x80;
                 b->dest.y = (y << 8) + 0x80;
                 b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
-                b->field_e = 7;
+                b->low_level_action = 7;
                 NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
                 b->param_action++;
                 break;

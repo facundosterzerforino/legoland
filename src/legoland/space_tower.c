@@ -165,7 +165,7 @@ void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2)
     bloke->dest.x = base.x;
     bloke->dest.y = base.y;
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-    bloke->field_e = 7;
+    bloke->low_level_action = 7;
     bloke->field_73 = dir + 0x10;
     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
     param_2->bloke->field_38++;
@@ -897,7 +897,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
         tile = (TileId *)&node->id;
         y = tile->pos.y;
         ride_y = ride->field_10 + y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 obj->var_4++;
@@ -909,7 +909,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 bloke->dest.y = ride_y;
                 bloke->dest.x = ride_x;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
@@ -924,7 +924,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 bloke->dest.x = (DAT_004b77e8[seat].x + x) << 8;
                 bloke->dest.y = (DAT_004b77e8[seat].y + node->coord.y) << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;
                 NewDirForAction(bloke, (char)DAT_004b7798[seat >> 1].field_10);
                 bloke->param_action++;
@@ -957,7 +957,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 bloke->dest.x = (((signed char)ride->field_24 + x) << 8) + 0x80;
                 bloke->dest.y = (((signed char)ride->field_25 + tile->pos.y) << 8) + 0x80;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;

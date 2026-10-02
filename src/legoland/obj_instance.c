@@ -278,7 +278,7 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, TileId tile) {
             bloke->person->sprite = NULL;
             bloke->pos.x = tx * 0x100;
             bloke->pos.y = ty * 0x100;
-            bloke->field_70 = 0;
+            bloke->height = 0;
             RemoveBlokeFromRide(ride, node);
             BlokeWalkAnim(bloke);
             bloke->flags &= 0xff7f;

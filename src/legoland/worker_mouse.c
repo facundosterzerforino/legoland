@@ -51,10 +51,10 @@ void PickUpWorker(unsigned int type, Bloke *worker) {
     DBPrintf("Picking up worker (%x) Workorder = %x\n", worker, worker->order);
     WorkerOnMouse = worker;
     DAT_007fdffc = type;
-    worker->field_e = 0xd;
+    worker->low_level_action = 0xd;
     WorkerOldX = WorkerOnMouse->pos.x;
     WorkerOldY = WorkerOnMouse->pos.y;
-    WorkerOnMouse->field_72 = 5;
+    WorkerOnMouse->dir = 5;
     DAT_00668954 = 1;
     if (DAT_007fdffc == 0x307) {
         ClearAGardenersWorkList(WorkerOnMouse);

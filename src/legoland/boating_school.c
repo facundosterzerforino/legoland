@@ -841,7 +841,7 @@ void FUN_0041a720(void) {
             }
         }
         bloke = node->rider;
-        if (bloke->field_e != 0) {
+        if (bloke->low_level_action != 0) {
             continue;
         }
         switch (bloke->param_action) {
@@ -876,7 +876,7 @@ void FUN_0041a720(void) {
             bloke->dest.y = ((DAT_0082c658->y + tile.pos.y) << 8) + DAT_004b5290[4 - slot].y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             break;
         case 1:
@@ -899,11 +899,11 @@ void FUN_0041a720(void) {
             bloke->flags &= 0xff7f;
             bloke->pos.x = (DAT_0082c658->field_24 + tile.pos.x - 4) << 8;
             bloke->pos.y = (DAT_0082c658->field_25 + tile.pos.y + 2) << 8;
-            bloke->field_72 = 10;
+            bloke->dir = 10;
             bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) - 0xc0;
             bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x240;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
@@ -912,7 +912,7 @@ void FUN_0041a720(void) {
             bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) - 0xc0;
             bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
@@ -921,7 +921,7 @@ void FUN_0041a720(void) {
             bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) + 0x80;
             bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 7;
+            bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;

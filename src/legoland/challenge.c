@@ -1137,10 +1137,10 @@ void FUN_00444d70(unsigned int *param_1, unsigned int *param_2, int *param_3) {
     }
     do {
         *param_1 += 1;
-        if (bloke->field_7a > MapStats.field_134) {
+        if (bloke->mood > MapStats.field_134) {
             *param_2 += 1;
         }
-        if (bloke->field_7a > MapStats.field_138) {
+        if (bloke->mood > MapStats.field_138) {
             *param_2 += 1;
         }
         value = FUN_0044eb10(bloke);

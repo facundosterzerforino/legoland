@@ -321,7 +321,7 @@ void FUN_00412300(struct QueueTable *table, int x, int y, struct Bloke *bloke) {
     bloke->dest.x = p.x << 8;
     bloke->dest.y = p.y << 8;
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-    bloke->field_e = 7;
+    bloke->low_level_action = 7;
     bloke->field_73 = dir + 0x10;
     NewDirForAction(bloke, (unsigned char)(bloke->field_73 >> 5) + 3);
     bloke->field_38 += (signed char)bloke->field_34;

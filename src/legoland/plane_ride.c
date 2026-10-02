@@ -567,7 +567,7 @@ void FUN_0043e410(struct Element *elem) {
         if (node == NULL) {
             return;
         }
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0: {
                 struct Point sc;
@@ -613,7 +613,7 @@ void FUN_0043e410(struct Element *elem) {
                     free(bloke->path);
                     bloke->path = NULL;
                 }
-                BlokeSetFrame(bloke, bloke->field_74);
+                BlokeSetFrame(bloke, bloke->frame);
                 break;
             case 5:
                 bloke->flags |= 0x80;
@@ -658,7 +658,7 @@ void FUN_0043e410(struct Element *elem) {
                     free(bloke->path);
                     bloke->path = NULL;
                 }
-                BlokeSetFrame(bloke, bloke->field_74);
+                BlokeSetFrame(bloke, bloke->frame);
                 break;
             case 0xd: {
                 iv12 = ride->field_24 + pos->pos.x;
@@ -676,7 +676,7 @@ void FUN_0043e410(struct Element *elem) {
                 bloke->dest.x = iv12 * 256 + 128;
                 bloke->dest.y = iv13 * 256 + 128;
                 bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->field_e = 7;
+                bloke->low_level_action = 7;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
                 break;

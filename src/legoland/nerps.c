@@ -872,7 +872,7 @@ unsigned int FUN_0046ae70(struct NerpsArg *arg) {
     count = 0;
     bloke = FirstBloke;
     while (bloke != NULL) {
-        if (bloke->field_7a < (int)arg->field_14) {
+        if (bloke->mood < (int)arg->field_14) {
             bloke = bloke->next;
             continue;
         }

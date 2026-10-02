@@ -416,7 +416,7 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     int w;
     int h;
 
-    SetPersonDirection(person, bloke->field_72);
+    SetPersonDirection(person, bloke->dir);
     y = bloke->pos.y;
     x = bloke->pos.x;
     GetTileDimensions(&w, &h);
@@ -428,11 +428,11 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     pt.y -= s;
     person->sort_id = pt.y;
     pt.x += lpConfig->view_x;
-    pt.y += lpConfig->view_y - (bloke->field_70 >> 1);
+    pt.y += lpConfig->view_y - (bloke->height >> 1);
     AdjustBlokePosition(&pt);
     SetPersonPosition(person, pt.x, pt.y);
     if (!(bloke->flags & 0x100)) {
-        person->frame = bloke->field_74;
+        person->frame = bloke->frame;
     }
 }
 
