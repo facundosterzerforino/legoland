@@ -774,7 +774,7 @@ void CoptersUpdate(struct Element *elem) {
             case 4:
                 b->param_action++;
                 cn->field_2++;
-                if ((short)cn->field_2 == ride->seats) {
+                if ((short)(signed char)cn->field_2 == ((struct Ride *)ActiveCopterRide)->seats) {
                     FUN_004048b0((struct CopterSfxNode *)cn);
                 }
                 break;
