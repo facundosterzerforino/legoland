@@ -255,7 +255,7 @@ void FUN_00499240(char *path, char *dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00499300
-int FUN_00499300(char *str) {
+int UppercaseStringAndGetLength(char *str) {
     int i = 0;
 
     str[0] = (char)toupper(str[0]);

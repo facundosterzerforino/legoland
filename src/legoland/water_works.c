@@ -125,22 +125,22 @@ struct WaterListNode {
 #include "power.h"
 
 // FUNCTION: LEGOLAND 0x00417a90
-unsigned int FUN_00417a90(void) {
-    if (DAT_004cc028++ == 0) {
+unsigned int AcquireWaterWorksSfx(void) {
+    if (WaterWorksSfxRefCount++ == 0) {
         Load_FXList(WATERWORKS_SFX, 3);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00417ac0
-void FUN_00417ac0(void) {
-    DAT_004cc028--;
-    if (DAT_004cc028 == 0) {
+void ReleaseWaterWorksSfx(void) {
+    WaterWorksSfxRefCount--;
+    if (WaterWorksSfxRefCount == 0) {
         Kill_FXList(WATERWORKS_SFX, 3);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00417ae0
-void thunk_FUN_00417ac0(void) { FUN_00417ac0(); }
+void thunk_FUN_00417ac0(void) { ReleaseWaterWorksSfx(); }
 
 // FUNCTION: LEGOLAND 0x00417af0
 void FUN_00417af0(unsigned char *src, int index, unsigned int looping) {
@@ -163,7 +163,7 @@ void FUN_00417b40(unsigned char *src) {
 }
 
 // FUNCTION: LEGOLAND 0x00417b80
-void FUN_00417b80(struct WaterNode **head, struct WaterNode *node) {
+void InsertWaterNodeAtHead(struct WaterNode **head, struct WaterNode *node) {
     if (node != NULL) {
         node->next = *head;
         *head = node;
@@ -171,7 +171,7 @@ void FUN_00417b80(struct WaterNode **head, struct WaterNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00417ba0
-struct WaterNode *FUN_00417ba0(struct WaterNode *list, short *key) {
+struct WaterNode *FindWaterNodeByKey(struct WaterNode *list, short *key) {
     if (list != NULL) {
         if ((short)list->key == *key) {
             return list;
@@ -215,7 +215,7 @@ void FUN_00417bd0(struct WaterNode **head, struct WaterNode *node) {
 unsigned int FUN_00417c00(struct WaterArg *arg) {
     DAT_004cbfe4 = (unsigned int)arg;
     DAT_004cc01c = (unsigned int)arg->field_c;
-    return FUN_00417a90();
+    return AcquireWaterWorksSfx();
 }
 
 // FUNCTION: LEGOLAND 0x00417c20
@@ -250,7 +250,7 @@ void FUN_00417cb0(unsigned short key) {
     if (node != NULL) {
         memset(node, 0, sizeof(struct WaterNode));
         node->key = key;
-        FUN_00417b80(&DAT_004cc02c, node);
+        InsertWaterNodeAtHead(&DAT_004cc02c, node);
     }
 }
 
@@ -262,12 +262,12 @@ void FUN_00417cf0(struct WaterNode *node) {
 
 // FUNCTION: LEGOLAND 0x00417d10
 struct WaterNode *FUN_00417d10(unsigned short *key) {
-    return FUN_00417ba0(DAT_004cc02c, key);
+    return FindWaterNodeByKey(DAT_004cc02c, key);
 }
 
 // FUNCTION: LEGOLAND 0x00417d30
 void FUN_00417d30(struct WaterArg *arg) {
-    FUN_00417a90();
+    AcquireWaterWorksSfx();
     DAT_004cc008 = arg->field_c;
     DAT_004cc008->field_1c |= 0x420;
     DAT_004cc008->field_3c = 0;
@@ -306,11 +306,11 @@ void WaterBlockUnload(void) {
         KillSprite(TopwaterSprite);
     }
     LLIDB_UnLoadData(WaterWorksImageListHandle);
-    FUN_00417ac0();
+    ReleaseWaterWorksSfx();
 }
 
 // FUNCTION: LEGOLAND 0x00417e70
-int FUN_00417e70(struct WaterPoint *list, struct WaterRect *rect) {
+int ListHasPointInRect(struct WaterPoint *list, struct WaterRect *rect) {
     struct WaterPoint *current;
 
     current = list;
@@ -333,13 +333,13 @@ unsigned int FUN_00417ec0(unsigned char *point) {
     rect.x1 = point[0];
     rect.y0 = point[1];
     rect.y1 = point[1];
-    if (FUN_00417e70(FirstBloke, &rect) != 0) {
+    if (ListHasPointInRect(FirstBloke, &rect) != 0) {
         return 1;
     }
-    if (FUN_00417e70(GardenerList, &rect) != 0) {
+    if (ListHasPointInRect(GardenerList, &rect) != 0) {
         return 1;
     }
-    return FUN_00417e70(MechanicList, &rect) != 0;
+    return ListHasPointInRect(MechanicList, &rect) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00417f40
@@ -507,7 +507,7 @@ void FUN_00418260(unsigned short key) {
     if (node != NULL) {
         memset(node, 0, sizeof(struct WaterNode));
         node->key = key;
-        FUN_00417b80(&DAT_004cc030, node);
+        InsertWaterNodeAtHead(&DAT_004cc030, node);
     }
 }
 
@@ -519,12 +519,12 @@ void FUN_004182a0(struct WaterNode *node) {
 
 // FUNCTION: LEGOLAND 0x004182c0
 struct WaterNode *FUN_004182c0(unsigned short *key) {
-    return FUN_00417ba0(DAT_004cc030, key);
+    return FindWaterNodeByKey(DAT_004cc030, key);
 }
 
 // FUNCTION: LEGOLAND 0x004182e0
 void FUN_004182e0(struct WaterArg *arg) {
-    FUN_00417a90();
+    AcquireWaterWorksSfx();
     DAT_004cc024 = arg->field_c;
     DAT_004cc024->field_1c |= 0x420;
     DAT_004cbfe0 = DAT_004cc024->field_64;
@@ -538,7 +538,7 @@ void ShowerUnload(void) {
     if (ShowerSprite != 0) {
         KillSprite(ShowerSprite);
     }
-    FUN_00417ac0();
+    ReleaseWaterWorksSfx();
 }
 
 // FUNCTION: LEGOLAND 0x00418350
@@ -682,7 +682,7 @@ void FUN_00418630(unsigned short key) {
     if (node != NULL) {
         memset(node, 0, sizeof(struct WaterNode));
         node->key = key;
-        FUN_00417b80(&DAT_004cc034, node);
+        InsertWaterNodeAtHead(&DAT_004cc034, node);
     }
 }
 
@@ -694,12 +694,12 @@ void FUN_00418670(struct WaterNode *node) {
 
 // FUNCTION: LEGOLAND 0x00418690
 struct WaterNode *FUN_00418690(unsigned short *key) {
-    return FUN_00417ba0(DAT_004cc034, key);
+    return FindWaterNodeByKey(DAT_004cc034, key);
 }
 
 // FUNCTION: LEGOLAND 0x004186b0
 unsigned int FUN_004186b0(struct WaterArg *arg) {
-    FUN_00417a90();
+    AcquireWaterWorksSfx();
     DAT_004cbfdc = arg->field_c;
     DAT_004cbfdc->field_1c |= 0x20;
     DAT_004cbfec = (unsigned int)DAT_004cbfdc->field_64;
@@ -713,7 +713,7 @@ void ElephantFountainUnload(void) {
     if (WwElsquirtSprite != 0) {
         KillSprite(WwElsquirtSprite);
     }
-    FUN_00417ac0();
+    ReleaseWaterWorksSfx();
 }
 
 // FUNCTION: LEGOLAND 0x00418710
@@ -724,13 +724,13 @@ unsigned int FUN_00418710(unsigned char *coords, int *base) {
     rect.x1 = rect.x0 + 3;
     rect.y0 = coords[1] + base[3];
     rect.y1 = rect.y0 + 3;
-    if (FUN_00417e70(FirstBloke, &rect) != 0) {
+    if (ListHasPointInRect(FirstBloke, &rect) != 0) {
         return 1;
     }
-    if (FUN_00417e70(GardenerList, &rect) != 0) {
+    if (ListHasPointInRect(GardenerList, &rect) != 0) {
         return 1;
     }
-    return FUN_00417e70(MechanicList, &rect) != 0;
+    return ListHasPointInRect(MechanicList, &rect) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x004187b0

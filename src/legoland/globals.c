@@ -1093,7 +1093,7 @@ short DAT_004bd32c[8][2] = {
 
 // GLOBAL: LEGOLAND 0x004bd34c
 BlokeAction PTR_FUN_004bd34c[16] = {
-    FUN_004838a0,
+    LogBlokeRethinking,
     FUN_004838c0,
     FUN_00483ef0,
     FUN_00484090,
@@ -1818,7 +1818,7 @@ struct Sprite *WwElsquirtSprite;
 struct WaterContext *DAT_004cc024;
 
 // GLOBAL: LEGOLAND 0x004cc028
-unsigned int DAT_004cc028;
+unsigned int WaterWorksSfxRefCount;
 
 // GLOBAL: LEGOLAND 0x004cc02c
 struct WaterNode *DAT_004cc02c;
@@ -2718,7 +2718,7 @@ int DAT_006664ec;
 struct BuildObj BuildObjArray[256] = {0};
 
 // GLOBAL: LEGOLAND 0x006670f8
-int DAT_006670f8 = 0;
+int BuildObjCount = 0;
 
 // GLOBAL: LEGOLAND 0x006670fc
 unsigned int ButtonRepeatDelay;
@@ -3201,7 +3201,7 @@ int DAT_006688c0;
 int DAT_006688c4;
 
 // GLOBAL: LEGOLAND 0x006688c8
-unsigned int DAT_006688c8;
+unsigned int RenderIconsLastTicks;
 
 // GLOBAL: LEGOLAND 0x006688cc
 unsigned int DAT_006688cc;
@@ -3567,7 +3567,7 @@ void *g_hInstance;
 int g_nCmdShow;
 
 // GLOBAL: LEGOLAND 0x00669210
-HWND DAT_00669210;
+HWND WndEnvHwnd;
 
 // GLOBAL: LEGOLAND 0x00669238
 unsigned int DAT_00669238;
@@ -3609,7 +3609,7 @@ struct DirNode *DAT_0066b454;
 struct DirNode *DAT_0066b458;
 
 // GLOBAL: LEGOLAND 0x0066b460
-struct Point DAT_0066b460; /* park entrance tile */
+struct Point Entrance1Point; /* park entrance tile */
 
 // GLOBAL: LEGOLAND 0x0066b468
 int LastPathUpdateTime;
@@ -4596,16 +4596,16 @@ unsigned int DAT_007fe050;
 unsigned int DAT_007fe054;
 
 // GLOBAL: LEGOLAND 0x007fe114
-unsigned char DAT_007fe114;
+unsigned char LegolandCommonThemeCount;
 
 // GLOBAL: LEGOLAND 0x007fe115
-unsigned char DAT_007fe115;
+unsigned char WesternThemeCount;
 
 // GLOBAL: LEGOLAND 0x007fe116
-unsigned char DAT_007fe116;
+unsigned char CastleThemeCount;
 
 // GLOBAL: LEGOLAND 0x007fe117
-unsigned char DAT_007fe117;
+unsigned char AdventurersThemeCount;
 
 // GLOBAL: LEGOLAND 0x007fe120
 unsigned int DAT_007fe120[256];
@@ -4629,7 +4629,7 @@ struct Sprite *DAT_007fe9c0[9];
 RECT WatchRect;
 
 // GLOBAL: LEGOLAND 0x007fea44
-unsigned int DAT_007fea44;
+unsigned int StoredTransparentColour;
 
 // GLOBAL: LEGOLAND 0x007fea48
 LEGO_EXPORT unsigned int FramesPerSecond;
@@ -5815,7 +5815,7 @@ int DAT_00613908[24][2];
 int DAT_006148b8[546][2];
 
 // GLOBAL: LEGOLAND 0x00667528
-int DAT_00667528;
+int ExceptionReportStarted;
 
 // GLOBAL: LEGOLAND 0x004b8a88
 int DAT_004b8a88 = 0x10;

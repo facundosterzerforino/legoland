@@ -225,7 +225,7 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004917c0
-int FUN_004917c0(int slot) {
+int WriteProfileSlotToFile(int slot) {
     struct ProfileData data;
     char path[120];
     struct ProfileNode *node;

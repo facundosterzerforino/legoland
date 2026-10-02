@@ -31,7 +31,7 @@ void UpdatePathLinks(int force) {
     }
     LastPathUpdateTime = now;
     FUN_00482a90();
-    FUN_00482a40(&DAT_0066b460);
+    FUN_00482a40(&Entrance1Point);
 }
 
 // FUNCTION: LEGOLAND 0x00482b60
@@ -579,7 +579,7 @@ void FUN_00483890(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x004838a0
-void FUN_004838a0(Bloke *bloke) {
+void LogBlokeRethinking(Bloke *bloke) {
     // STRING: LEGOLAND 0x004bdcd8
     DBPrintf("Frame %d.. Bloke %d rethinking\n", FrameCounter, bloke);
 }

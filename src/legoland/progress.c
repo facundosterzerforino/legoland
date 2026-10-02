@@ -373,11 +373,11 @@ void FUN_0048c100(void) {
             rc.right = rc.left + 0x190;
             rc.bottom = rc.top + 0x16;
             if (i == (int)lpConfig->field_28 - 1) {
-                FUN_00454d80(text, 2, rc, 0);
+                DrawTextOnRenderSurface(text, 2, rc, 0);
             } else if (CurrentProfile.flags[4 + i] == 1) {
-                FUN_00454d80(text, 2, rc, 0x323232);
+                DrawTextOnRenderSurface(text, 2, rc, 0x323232);
             } else {
-                FUN_00454d80(text, 2, rc, 0xa0a0a0);
+                DrawTextOnRenderSurface(text, 2, rc, 0xa0a0a0);
             }
             if (CurrentProfile.flags[4 + i] == 1 && DAT_00813a44.x >= rc.left && DAT_00813a44.x < rc.right && DAT_00813a44.y >= rc.top && DAT_00813a44.y < rc.bottom) {
                 Hover.type = 2;

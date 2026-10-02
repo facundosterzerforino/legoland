@@ -535,14 +535,14 @@ LEGO_EXPORT int SaveGame(char *filename) {
                 "FALSE");
         goto fail;
     }
-    if (SaveGameWrite(&DAT_006670f8, 4) == 0) {
+    if (SaveGameWrite(&BuildObjCount, 4) == 0) {
         // STRING: LEGOLAND 0x004bc614
-        LogPrintf("Num Build Objs (%d) Save Failed", DAT_006670f8);
+        LogPrintf("Num Build Objs (%d) Save Failed", BuildObjCount);
         goto fail;
     }
     if (SaveGameWrite(BuildObjArray, sizeof(BuildObjArray)) == 0) {
         // STRING: LEGOLAND 0x004bc5f0
-        LogPrintf("BuildObjList (size %dS) Save Failed", DAT_006670f8);
+        LogPrintf("BuildObjList (size %dS) Save Failed", BuildObjCount);
         goto fail;
     }
     for (i = 0; i < DAT_006691b4; i++) {
@@ -1021,7 +1021,7 @@ LEGO_EXPORT int LoadGame(char *path) {
         if (SaveGameRead(&CastlePlacedFlag, 4) == 0) {
             break;
         }
-        if (SaveGameRead(&DAT_006670f8, 4) == 0) {
+        if (SaveGameRead(&BuildObjCount, 4) == 0) {
             break;
         }
         if (SaveGameRead(BuildObjArray, sizeof(BuildObjArray)) == 0) {

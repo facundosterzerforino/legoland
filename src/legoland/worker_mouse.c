@@ -399,7 +399,7 @@ void FUN_00470950(void *a, void *b) {
 }
 
 // FUNCTION: LEGOLAND 0x00470b00
-void FUN_00470b00(void) {
+void KillPUOKAndCBSprites(void) {
     if (PUOKSprite) {
         KillSprite(PUOKSprite);
         PUOKSprite = NULL;

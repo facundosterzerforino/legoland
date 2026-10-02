@@ -16,7 +16,7 @@ void FUN_00471bf0(void);
 void FUN_00471d40(void);
 void AddNewObjectIcon(struct NewObjInfo *param_1);
 LEGO_EXPORT int UnLoad_PopUpInfo(void);
-void FUN_004714e0(void);
+void RemoveAllNewObjects(void);
 LEGO_EXPORT void ResetInfoStruct(void);
 unsigned int FUN_00473130(void);
 unsigned int FUN_00473160(void);

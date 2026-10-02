@@ -315,7 +315,7 @@ LEGO_EXPORT struct IconNode *FindIcon(unsigned short id) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d680
-void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
+void SetIconSprite(struct IconNode *node, struct Sprite *sprite) {
     if (node) {
         struct Sprite *old = node->sprite;
         if (sprite != old) {
@@ -1218,9 +1218,9 @@ void FUN_0046ee00(void) {
             void *sprite = node->field_20p;
             if (sprite != NULL) {
                 if (node->field_18 == mode) {
-                    FUN_0046d680(node, node->field_1c);
+                    SetIconSprite(node, node->field_1c);
                 } else {
-                    FUN_0046d680(node, sprite);
+                    SetIconSprite(node, sprite);
                 }
             }
         }
@@ -1235,12 +1235,12 @@ LEGO_EXPORT void RenderIcons(void) {
 
     StoreClipping();
     FUN_0046df60(0);
-    elapsed = GetTicks() - DAT_006688c8;
+    elapsed = GetTicks() - RenderIconsLastTicks;
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
     }
     FUN_0046ec50(elapsed * 5 / 33);
-    DAT_006688c8 = GetTicks();
+    RenderIconsLastTicks = GetTicks();
     while (node) {
         if ((node->flags & 0x400) == 0) {
             if (node->flags & 0x8) {
@@ -1370,7 +1370,7 @@ unsigned char FUN_0046f2e0(struct IconNode *node, unsigned char buttons, short d
 }
 
 // FUNCTION: LEGOLAND 0x0046f300
-int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
+int PointInBBox(struct Point *point, struct Bbox *bbox) {
     return point->x >= bbox->min_x && point->x <= bbox->max_x &&
         point->y >= bbox->min_y && point->y <= bbox->max_y;
 }
@@ -1379,7 +1379,7 @@ int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
 int FUN_0046f330(struct Point *point, struct IconNode *icon) {
     struct Bbox bbox;
     FUN_0046de90(icon, &bbox);
-    return FUN_0046f300(point, &bbox);
+    return PointInBBox(point, &bbox);
 }
 
 // FUNCTION: LEGOLAND 0x0046f360
@@ -1472,11 +1472,11 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
         if (sprite != NULL) {
             unsigned short width = sprite->width;
             unsigned short height = sprite->height;
-            FUN_0046d680(icon, sprite);
+            SetIconSprite(icon, sprite);
             icon->field_12 = height;
             icon->field_10 = width;
         } else {
-            FUN_0046d680(icon, NULL);
+            SetIconSprite(icon, NULL);
         }
         icon->field_18p = src->field_78;
         if ((src->field_c4[2] & 0x10000) != 0) {
@@ -1519,9 +1519,9 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
         struct Sprite *sprite = src->field_14;
         unsigned int flags;
         if (sprite != NULL) {
-            FUN_0046d680(icon, sprite);
+            SetIconSprite(icon, sprite);
         } else {
-            FUN_0046d680(icon, NULL);
+            SetIconSprite(icon, NULL);
         }
         flags = icon->flags;
         icon->field_28 = (void *)RenderGBarSpriteIcon;

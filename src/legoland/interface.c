@@ -304,16 +304,16 @@ LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void) {
 void FUN_00474750(void) {
     if (DAT_004bb094 == 0) {
         DAT_004bb094 = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, LegolandThemeOffSprite);
+        SetIconSprite((struct IconNode *)DAT_00668eb0, LegolandThemeOffSprite);
     } else if (DAT_004bb098 == 0) {
         DAT_004bb098 = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, CastleThemeOffSprite);
+        SetIconSprite((struct IconNode *)DAT_00668eb0, CastleThemeOffSprite);
     } else if (DAT_004bb09c == 0) {
         DAT_004bb09c = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, WesternThemeOffSprite);
+        SetIconSprite((struct IconNode *)DAT_00668eb0, WesternThemeOffSprite);
     } else if (DAT_004bb0a0 == 0) {
         DAT_004bb0a0 = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, AdventurersThemeOffSprite);
+        SetIconSprite((struct IconNode *)DAT_00668eb0, AdventurersThemeOffSprite);
     }
 }
 
@@ -539,10 +539,10 @@ LEGO_EXPORT int InitGameInterface(int a) {
         InitPopUpInfo();
     }
     FUN_00474590();
-    DAT_007fe114 = 0;
-    DAT_007fe117 = 0;
-    DAT_007fe116 = 0;
-    DAT_007fe115 = 0;
+    LegolandCommonThemeCount = 0;
+    AdventurersThemeCount = 0;
+    CastleThemeCount = 0;
+    WesternThemeCount = 0;
     ResetMoveAWorkerStruct();
     DAT_007fdd80 = 2;
     DAT_007fdd8c = 0x86;
@@ -705,7 +705,7 @@ unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags) {
                 if (result == 1) {
                     FUN_00474750();
                     DAT_00668eb0 = (unsigned int)param_1;
-                    FUN_0046d680(param_1, LegolandThemeOnSprite);
+                    SetIconSprite(param_1, LegolandThemeOnSprite);
                     DAT_004bb094 = 0;
                 } else {
                     DAT_004baff8 = saved_ff8;
@@ -743,7 +743,7 @@ unsigned char FUN_004752a0(struct IconNode *param_1, unsigned char flags) {
             if (result == 1) {
                 FUN_00474750();
                 DAT_00668eb0 = (unsigned int)param_1;
-                FUN_0046d680(param_1, AdventurersThemeOnSprite);
+                SetIconSprite(param_1, AdventurersThemeOnSprite);
                 DAT_004bb0a0 = 0;
                 return 1;
             }
@@ -780,7 +780,7 @@ unsigned char FUN_004753a0(struct IconNode *param_1, unsigned char flags) {
             if (result == 1) {
                 FUN_00474750();
                 DAT_00668eb0 = (unsigned int)param_1;
-                FUN_0046d680(param_1, CastleThemeOnSprite);
+                SetIconSprite(param_1, CastleThemeOnSprite);
                 DAT_004bb098 = 0;
                 return 1;
             }
@@ -821,7 +821,7 @@ unsigned char FUN_004754b0(struct IconNode *param_1, unsigned char flags) {
             if (result == 1) {
                 FUN_00474750();
                 DAT_00668eb0 = (unsigned int)param_1;
-                FUN_0046d680(param_1, WesternThemeOnSprite);
+                SetIconSprite(param_1, WesternThemeOnSprite);
                 DAT_004bb09c = 0;
                 return 1;
             }
@@ -1978,7 +1978,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004771f0
-int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
+int PlayMovie(char *filename, unsigned int param_2, int param_3) {
     int rect[4];
     char path[0x80];
     struct MovieHandle *handle;

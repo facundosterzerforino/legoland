@@ -895,8 +895,8 @@ void FUN_0044fe10(Bloke *bloke) {
 
     switch (bloke->param_action) {
     case 0:
-        to.x = DAT_0066b460.x << 8;
-        to.y = DAT_0066b460.y << 8;
+        to.x = Entrance1Point.x << 8;
+        to.y = Entrance1Point.y << 8;
         bloke->dest = to;
         dir = CalcMoveLine(bloke->pos, to, &bloke->nav) + 0x10;
         bloke->field_e = 0xf;
@@ -1193,7 +1193,7 @@ LEGO_EXPORT void DoHighLevelAI(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00450500
-int FUN_00450500(Point *a, Point *b) {
+int ArePointsOrthogonallyAdjacent(Point *a, Point *b) {
     Point d;
 
     d.x = abs(a->x - b->x);
@@ -1267,7 +1267,7 @@ void FUN_00450530(Bloke *bloke) {
                         food_score += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         food.x = element->field_4 + cls->x;
                         food.y = element->field_5 + cls->y;
-                        if (FUN_00450500(&origin, &food) != 0 && FUN_00450500(&pos, &food) != 0 &&
+                        if (ArePointsOrthogonallyAdjacent(&origin, &food) != 0 && ArePointsOrthogonallyAdjacent(&pos, &food) != 0 &&
                             Calc_Item_Attractiveness(cls, bloke, 1) > 0x32 && bloke->action == 6 &&
                             (bloke->goal.x >> 8 != food.x || bloke->goal.y >> 8 != food.y)) {
                             bloke->goal.x = food.x << 8;
@@ -1281,7 +1281,7 @@ void FUN_00450530(Bloke *bloke) {
                         toilets += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         spot.x = element->field_4 + cls->x;
                         spot.y = element->field_5 + cls->y;
-                        if (FUN_00450500(&spot, &origin) != 0 && FUN_00450500(&pos, &spot) != 0 &&
+                        if (ArePointsOrthogonallyAdjacent(&spot, &origin) != 0 && ArePointsOrthogonallyAdjacent(&pos, &spot) != 0 &&
                             Calc_Item_Attractiveness(cls, bloke, 1) > 0x32 && bloke->action == 6 &&
                             (bloke->goal.x >> 8 != spot.x || bloke->goal.y >> 8 != spot.y)) {
                             bloke->goal.x = spot.x << 8;

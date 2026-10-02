@@ -169,7 +169,7 @@ void FUN_004393a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004393e0
-void FUN_004393e0(void) {
+void UnloadLegoShop1MatteSpriteAndMoneySFX(void) {
     if (LegoShop1MatteSprite != 0) {
         KillSprite(LegoShop1MatteSprite);
     }
@@ -294,7 +294,7 @@ void FUN_004396d0(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00439700
-void FUN_00439700(void) {
+void UnloadLegoShop2MatteSpriteAndMoneySFX(void) {
     if (LegoShop2MatteSprite != 0) {
         KillSprite(LegoShop2MatteSprite);
     }
@@ -548,7 +548,7 @@ void FUN_00439c90(struct ShopRemoveObject *obj, TileId coords, void *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x00439ce0
-void FUN_00439ce0(void) {
+void UnloadLegMediaShopMaskSpritesAndMoneySFX(void) {
     KillSprite(LegMediaShopMask1Sprite);
     KillSprite(LegMediaShopMask2Sprite);
     KillMoneySFX();
@@ -737,7 +737,7 @@ void FUN_0043a0f0(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a120
-void FUN_0043a120(void) {
+void UnloadExplorersInstituteMatteSpriteAndMoneySFX(void) {
     KillSprite(ExplorersInstituteMatteSprite);
     KillMoneySFX();
 }
@@ -915,7 +915,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b75c4
     if (_stricmp("EXPLORERS INSTITUTE", name->name) == 0) {
         ci->cb_a4 = FUN_0043a0f0;
-        ci->cb_ac = FUN_0043a120;
+        ci->cb_ac = UnloadExplorersInstituteMatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_0043a140;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_0043a1e0;
@@ -928,7 +928,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_00439200;
         ci->cb_98 = FUN_00439320;
         ci->cb_9c = FUN_00439350;
-        ci->cb_ac = FUN_004393e0;
+        ci->cb_ac = UnloadLegoShop1MatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_004393a0;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_00439460;
@@ -938,7 +938,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b75ac
     if (_stricmp("LEGO SHOP 2", name->name) == 0) {
         ci->cb_a4 = FUN_004396d0;
-        ci->cb_ac = FUN_00439700;
+        ci->cb_ac = UnloadLegoShop2MatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_00439720;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_00439950;
@@ -951,7 +951,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_00439c20;
         ci->cb_98 = FUN_00439c60;
         ci->cb_9c = FUN_00439c90;
-        ci->cb_ac = FUN_00439ce0;
+        ci->cb_ac = UnloadLegMediaShopMaskSpritesAndMoneySFX;
         ci->cb_8c = FUN_00439d00;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_00439ef0;

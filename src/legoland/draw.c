@@ -307,7 +307,7 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
             IDirectDrawSurface_Restore(renderEngine);
             IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
         }
-        DAT_007fea44 = GetTransparentColour();
+        StoredTransparentColour = GetTransparentColour();
     }
     DAT_00668144 = 1;
 }
@@ -355,7 +355,7 @@ void FUN_004640f0(void) {
         IDirectDrawSurface_Restore(renderEngine);
         IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
     }
-    DAT_007fea44 = GetTransparentColour();
+    StoredTransparentColour = GetTransparentColour();
     DAT_00668144 = 1;
 }
 
@@ -378,7 +378,7 @@ LEGO_EXPORT void PopRenderingStatus(void) {
                 IDirectDrawSurface_Restore(renderEngine);
                 IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
             }
-            DAT_007fea44 = GetTransparentColour();
+            StoredTransparentColour = GetTransparentColour();
             DAT_00668144 = 1;
         }
         return;
@@ -784,7 +784,7 @@ void DrawWatchSprite(void) {
             cursor.rect.bottom = WatchRect.bottom;
             LastWatchDrawTicks = GetTicks();
             image = WatchSprite->image;
-            FUN_0047d610((struct LLS *)image->data);
+            LLSAdvanceFrame((struct LLS *)image->data);
             PushRenderingStatusAndLockVideoSurface();
             PrintSprite(WatchSprite, WatchRect.left, WatchRect.top, 0, 0);
             PopRenderingStatus();
@@ -804,7 +804,7 @@ LEGO_EXPORT int RenderingComplete(void) {
     int result;
 
     ProcessSystemEvents();
-    FUN_00455f70(0);
+    FlushTextCells(0);
 #if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
         pushad

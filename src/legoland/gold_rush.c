@@ -213,7 +213,7 @@ void FUN_00406ab0(void) {
         KillSprite(GoldMaskSprite);
     }
     if (DAT_004c11e4 != NULL) {
-        FUN_00412290(DAT_004c11e4);
+        FreeIfNotNull(DAT_004c11e4);
     }
     FreeGoldWashList();
 }

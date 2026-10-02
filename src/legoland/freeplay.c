@@ -506,14 +506,14 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
     group->field_18 = y;
     icon = FindIcon(a + 4);
     if (icon != NULL) {
-        FUN_0046d680(icon, sprite);
+        SetIconSprite(icon, sprite);
         icon->x -= 9;
         icon->string_id = 0x94;
         icon->string = GetString(0x94);
     }
     icon = FindIcon(a + 3);
     if (icon != NULL) {
-        FUN_0046d680(icon, sprite2);
+        SetIconSprite(icon, sprite2);
         icon->x -= 9;
         icon->string_id = 0x95;
         icon->string = GetString(0x95);

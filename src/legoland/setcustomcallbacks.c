@@ -279,7 +279,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_8c = FUN_0042e4c0;
         iface->cb_98 = FUN_0042e500;
         iface->cb_a0 = FUN_0042e560;
-        iface->cb_ac = FUN_0042e4b0;
+        iface->cb_ac = UnloadBrollyImages;
     } else if (_stricmp("BOATING SCHOOL WATER", head->name) == 0) {
         iface->cb_a4 = FUN_0041b830;
         iface->cb_8c = FUN_0041b880;

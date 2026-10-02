@@ -9,4 +9,4 @@ void FUN_00499410(void);
 void ResumeGameTimer(void);
 void LoadStringTable(void);
 void AddString(const char *text, int key);
-int FUN_00499300(char *str);
+int UppercaseStringAndGetLength(char *str);

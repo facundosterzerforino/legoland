@@ -16,7 +16,7 @@
 LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) {
     int i;
 
-    if (DAT_006670f8 >= 256) {
+    if (BuildObjCount >= 256) {
         return 0;
     }
     for (i = 0; i < 256; i++) {
@@ -30,19 +30,19 @@ LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) {
     BuildObjArray[i].ride = (struct Ride *)obj;
     BuildObjArray[i].coords = coords;
     BuildObjArray[i].elapsed = 0;
-    DAT_006670f8++;
+    BuildObjCount++;
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00450c00
-void FUN_00450c00(TileId coords) {
+void RemoveObjectFromBuildList(TileId coords) {
     int i;
     BuildObj *b;
 
     i = 0;
     for (b = BuildObjArray; (int)&b->coords < (int)&ButtonRepeatDelay; b++, i++) {
         if (b->coords.id == coords.id) {
-            DAT_006670f8--;
+            BuildObjCount--;
             BuildObjArray[i].ride = NULL;
             return;
         }
@@ -74,7 +74,7 @@ LEGO_EXPORT void ProcessBuildingTimes(void) {
         if (BuildObjArray[i].ride != NULL) {
             BuildObjArray[i].elapsed++;
             if (BuildObjArray[i].elapsed >= GetBuildTime(BuildObjArray[i].ride)) {
-                DAT_006670f8--;
+                BuildObjCount--;
                 ObjectIsBuilt((struct ObjClass *)BuildObjArray[i].ride, BuildObjArray[i].coords);
                 BuildObjArray[i].ride = NULL;
             } else {

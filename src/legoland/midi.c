@@ -51,7 +51,7 @@ LEGO_EXPORT struct MidiFile *LoadMIDIFile(const char *filename) {
     midi->field_0 = division * 5 * 5 * 5 * 5 * 32;
     midi->trackArray = (void **)malloc(midi->trackCount * 4);
     for (i = 0; i < midi->trackCount; ++i) {
-        midi->trackArray[i] = FUN_004801a0(file);
+        midi->trackArray[i] = ReadMidiTrack(file);
         ((struct MidiTrack *)midi->trackArray[i])->parent = midi;
     }
     midi->field_4 = 0x100;
@@ -76,7 +76,7 @@ int ReadMidiVarLen(struct MidiTrack *track) {
 }
 
 // FUNCTION: LEGOLAND 0x004802f0
-unsigned int FUN_004802f0(struct MidiTrack *track) {
+unsigned int ReadMidiEventStatus(struct MidiTrack *track) {
     unsigned int b;
 
     b = track->data[track->pos];
@@ -111,7 +111,7 @@ unsigned int FUN_00480330(struct MidiTrack *track) {
             return 1;
         }
         track->field_1a = 1;
-        ev = FUN_004802f0(track);
+        ev = ReadMidiEventStatus(track);
         switch (ev) {
         case 0xff2f:
             track->field_18 = 0;

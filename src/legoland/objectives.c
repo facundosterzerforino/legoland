@@ -983,7 +983,7 @@ void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469980
-void FUN_00469980(struct ThemeQueryArg *arg) {
+void CountObjectTheme(struct ThemeQueryArg *arg) {
     struct ThemeData *theme;
     unsigned int id;
 
@@ -991,28 +991,28 @@ void FUN_00469980(struct ThemeQueryArg *arg) {
     // STRING: LEGOLAND 0x004ba748
     if (LLIDB_FindElement("LEGOLAND THEME", &id, 0) == 0) {
         if (theme->theme_id == id) {
-            DAT_007fe114++;
+            LegolandCommonThemeCount++;
             return;
         }
         // STRING: LEGOLAND 0x004ba738
         if (LLIDB_FindElement("COMMON THEME", &id, 0) == 0 && theme->theme_id == id) {
-            DAT_007fe114++;
+            LegolandCommonThemeCount++;
             return;
         }
     }
     // STRING: LEGOLAND 0x004ba728
     if (LLIDB_FindElement("WESTERN THEME", &id, 0) == 0 && theme->theme_id == id) {
-        DAT_007fe115++;
+        WesternThemeCount++;
         return;
     }
     // STRING: LEGOLAND 0x004ba718
     if (LLIDB_FindElement("CASTLE THEME", &id, 0) == 0 && theme->theme_id == id) {
-        DAT_007fe116++;
+        CastleThemeCount++;
         return;
     }
     // STRING: LEGOLAND 0x004ba704
     if (LLIDB_FindElement("ADVENTURERS THEME", &id, 0) == 0 && theme->theme_id == id) {
-        DAT_007fe117++;
+        AdventurersThemeCount++;
     }
 }
 
@@ -1024,7 +1024,7 @@ void FUN_00469a80(struct NerpsArg *object) {
         flags = ((struct ObjectiveEvent *)object)->field_8;
         if (flags & 1) {
             ((struct ObjectiveEvent *)object)->field_8 = (flags & 0xfffffffd) | 0x10000;
-            FUN_00469980((struct ThemeQueryArg *)object);
+            CountObjectTheme((struct ThemeQueryArg *)object);
         }
     }
     DAT_0066871c = 1;
@@ -1246,7 +1246,7 @@ int FUN_00469f80(struct RewardArg *arg) {
     PauseGameTimer();
     SetPointer(0);
     FUN_00496e60(1, 0xf);
-    FUN_004771f0(arg->field_8, 1, 1);
+    PlayMovie(arg->field_8, 1, 1);
     ResumeGameTimer();
     FUN_0046ce20();
     FUN_0046b760();

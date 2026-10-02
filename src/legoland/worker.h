@@ -108,7 +108,7 @@ LEGO_EXPORT void RemoveRepairOrderAT(Ride *ride, int x, int y);
 void FUN_0049b270(Ride *ride, TileId tile);
 LEGO_EXPORT void EraseMechanicOrder(WorkOrder *order);
 LEGO_EXPORT void EraseGardenerOrder(WorkOrder *order);
-void FUN_00499eb0(WorkOrder *order);
+void FreeMechanicWorkOrder(WorkOrder *order);
 int BuyGardener(void);
 int BuyMechanic(void);
 void FUN_0049cfc0(void);

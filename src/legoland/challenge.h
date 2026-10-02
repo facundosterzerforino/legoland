@@ -16,7 +16,7 @@ void FUN_0044db40(void);
 void FUN_0044db80(void);
 void FUN_0044dc70(unsigned int param_1, unsigned int param_2);
 unsigned int FUN_00443710(void);
-void FUN_00443720(struct LocFile *param_1, const char *param_2);
+void LoadTextureBitmaps(struct LocFile *param_1, const char *param_2);
 unsigned int FUN_004443b0(unsigned int param_1, unsigned int param_2);
 unsigned int FUN_004443e0(unsigned int param_1, unsigned int param_2);
 unsigned int FUN_00444410(unsigned int param_1, unsigned int param_2);

@@ -1639,7 +1639,7 @@ extern struct Sprite *WwElsquirtSprite;
 // 0x004cc024
 extern struct WaterContext *DAT_004cc024;
 // 0x004cc028
-extern unsigned int DAT_004cc028;
+extern unsigned int WaterWorksSfxRefCount;
 // 0x004cc02c
 extern struct WaterNode *DAT_004cc02c;
 // 0x004cc030
@@ -2225,7 +2225,7 @@ extern int DAT_006664ec;
 // 0x006664f8
 extern struct BuildObj BuildObjArray[256]; /* objects under construction */
 // 0x006670f8
-extern int DAT_006670f8;
+extern int BuildObjCount;
 // 0x006670fc
 extern unsigned int ButtonRepeatDelay;
 // 0x00667104
@@ -2555,7 +2555,7 @@ extern int DAT_006688c0;
 // 0x006688c4
 extern int DAT_006688c4;
 // 0x006688c8
-extern unsigned int DAT_006688c8;
+extern unsigned int RenderIconsLastTicks;
 // 0x006688cc
 extern unsigned int DAT_006688cc;
 // 0x006688d0
@@ -2799,7 +2799,7 @@ extern void *g_hInstance;
 // 0x0066920c
 extern int g_nCmdShow;
 // 0x00669210
-extern HWND DAT_00669210;
+extern HWND WndEnvHwnd;
 // 0x00669238
 extern unsigned int DAT_00669238;
 // 0x00669240
@@ -2830,7 +2830,7 @@ extern struct DirNode *DAT_0066b454;
 // 0x0066b458
 extern struct DirNode *DAT_0066b458;
 // 0x0066b460
-extern struct Point DAT_0066b460;
+extern struct Point Entrance1Point;
 // 0x0066b468
 extern int LastPathUpdateTime;
 // 0x0066b46c
@@ -3501,13 +3501,13 @@ extern unsigned int DAT_007fe050;
 // 0x007fe054
 extern unsigned int DAT_007fe054;
 // 0x007fe114
-extern unsigned char DAT_007fe114;
+extern unsigned char LegolandCommonThemeCount;
 // 0x007fe115
-extern unsigned char DAT_007fe115;
+extern unsigned char WesternThemeCount;
 // 0x007fe116
-extern unsigned char DAT_007fe116;
+extern unsigned char CastleThemeCount;
 // 0x007fe117
-extern unsigned char DAT_007fe117;
+extern unsigned char AdventurersThemeCount;
 // 0x007fe120
 extern unsigned int DAT_007fe120[256];
 // 0x007fe920
@@ -3523,7 +3523,7 @@ extern struct Sprite *DAT_007fe9c0[9];
 // 0x007fea30
 extern RECT WatchRect;
 // 0x007fea44
-extern unsigned int DAT_007fea44;
+extern unsigned int StoredTransparentColour;
 // 0x007fea48
 extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
@@ -4381,7 +4381,7 @@ extern int DAT_00613908[24][2];
 extern int DAT_006148b8[546][2];
 
 // 0x00667528
-extern int DAT_00667528;
+extern int ExceptionReportStarted;
 // 0x004b8a88
 extern int DAT_004b8a88;
 // 0x004b8a8c

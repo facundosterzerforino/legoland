@@ -41,24 +41,24 @@ _WinMainCRTStartup (CRT)                         [TU_CRT, out of match %]
 
 1. Inits sound (`InitSoundSystem`, `SetMusicGrooveLevel`), controllers
    (`SetupControllers`), clears the level DB (`LLIDB_ClearOnLevel`).
-2. Calls `FUN_004588c0` (screens.c, **MATCHED 100%**) which paints the static
+2. Calls `PrintTitleScreen1` (screens.c, **MATCHED 100%**) which paints the static
    **`TitleScreen1.lls`** splash directly to the locked surface (this is the first
    thing visible — but it is a one-shot paint, not the interactive title).
-3. Plays the **intro logo movie** `lmi.avi` via `FUN_004771f0` — **OUT OF SCOPE**
+3. Plays the **intro logo movie** `lmi.avi` via `PlayMovie` — **OUT OF SCOPE**
    (cutscene). Spins a `PeekMessageA`/`Sleep(100)` wait loop until `DAT_007988bc`.
 4. Loads game/world assets (`LoadWorkerInterfaceGFX`, `InitialiseBlokes`,
    `InitGameMap` 100%, `LoadMapTiles`, `CreateObjectClasses`, `Ir50_32.dll` for
    Indeo/AVI, …) interleaved with `DrawWatchSprite` loading-screen ticks.
-5. Plays `Intro.avi` (`FUN_004771f0`) — **OUT OF SCOPE**.
+5. Plays `Intro.avi` (`PlayMovie`) — **OUT OF SCOPE**.
 6. **Enters the real interactive loop:**
    ```c
    while (FUN_00458c00() != 0) { /* per-frame */ }
    ```
 7. On exit, tears everything down (sprites, map, man, sound, input).
 
-> **Port note:** because the two `FUN_004771f0(...avi...)` calls sit inline in this
+> **Port note:** because the two `PlayMovie(...avi...)` calls sit inline in this
 > routine and in the frame loop, a port wraps them in an `#if ENABLE_MOVIES` (or makes
-> `FUN_004771f0` a no-op returning 1). The wait-for-`DAT_007988bc` loop after `lmi.avi`
+> `PlayMovie` a no-op returning 1). The wait-for-`DAT_007988bc` loop after `lmi.avi`
 > also needs the movie-completion signal stubbed so it doesn't spin forever. The asset
 > loads in step 4 are world/game data the title menu does **not** strictly need; an
 > interactive-title-only build can skip most of them, but they are cheap to keep since
@@ -136,10 +136,10 @@ functions it calls are already done.
 ### A. Frame loop / screen routing  (THE backbone — do first)
 | addr | name | file | size | deps | notes |
 |---|---|---|---|---|---|
-| `0x00458c00` | `FUN_00458c00` | screens.c | L | most MATCHED; calls `ReadGameButtons`(B), `InitScreens`(A), `FUN_00458ee0`(in-game, can stay STUB for title), `FUN_00459360`(STUB), `FUN_004771f0`(OOS) | **single per-frame tick + screen switch. Top blocker.** |
+| `0x00458c00` | `FUN_00458c00` | screens.c | L | most MATCHED; calls `ReadGameButtons`(B), `InitScreens`(A), `FUN_00458ee0`(in-game, can stay STUB for title), `FUN_00459360`(STUB), `PlayMovie`(OOS) | **single per-frame tick + screen switch. Top blocker.** |
 | `0x00458640` | `InitScreens` | screens.c | M | `InitTitleScreen`(C), `RenderFrontEndScreen`(below), other screen inits can stay STUB | front-end router |
 | `0x00458740` | `RenderFrontEndScreen` | screens.c | M | needs `PrintSprite`(E), `RenderIcons`(D), `CheckFocussedIcon`(D), `PrintExitCheckBox`(F), `ProcessFrontEndHelp`(F), `RenderingComplete`(E/stub) | **per-frame title render** |
-| `0x00459520` | `FUN_00459520` | screens.c | XL | many MATCHED; `InitSoundSystem`(G), `SetupControllers`(B), `LLIDB_*`, `FUN_004771f0`(OOS, ifdef) | main init that *enters* the loop; large but mostly sequential calls |
+| `0x00459520` | `FUN_00459520` | screens.c | XL | many MATCHED; `InitSoundSystem`(G), `SetupControllers`(B), `LLIDB_*`, `PlayMovie`(OOS, ifdef) | main init that *enters* the loop; large but mostly sequential calls |
 
 ### B. Input (controller / mouse / keyboard poll)
 | addr | name | file | size | deps | notes |
@@ -229,7 +229,7 @@ device I/O, not game logic.
 ### Out of scope entirely (cutscenes / movies)
 | addr | name | notes |
 |---|---|---|
-| `0x004771f0` | `FUN_004771f0` | AVI/Smacker movie player (`lmi.avi`, `Intro.avi`, `Billund/Windsor/California.avi`). Ifdef out / no-op returning 1. |
+| `0x004771f0` | `PlayMovie` | AVI/Smacker movie player (`lmi.avi`, `Intro.avi`, `Billund/Windsor/California.avi`). Ifdef out / no-op returning 1. |
 | `0x00476460` | `OpenAviMovie` | movie open |
 | `0x004766f0` | `FUN_004766f0` | movie play loop |
 | `0x00476630` | `CloseAviMovie` | movie close |

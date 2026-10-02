@@ -308,7 +308,7 @@ void FUN_004779d0(struct Point *p) {
         QueryClass->method_94((unsigned int *)elem, &pos);
         if (tile->flags & 0x20) {
             if (QueryClass->field_1c & 0x200000) {
-                FUN_00450c00(t);
+                RemoveObjectFromBuildList(t);
                 FUN_0045e850((struct ObjNode *)elem, &pos.x);
                 IncrementObjectCount((struct ObjectCount *)QueryClass);
                 RemoveObjectFromMap(t);
@@ -609,7 +609,7 @@ int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int
         // STRING: LEGOLAND 0x004bc098
         ntok = TokenizeString(line, " ,;:(){}\xa0\n\t", tokens);
         if (ntok) {
-            FUN_00499300(tokens[0]);
+            UppercaseStringAndGetLength(tokens[0]);
             found = 0;
             for (i = 0; i < count; i++, cmd++) {
                 if (strcmp(tokens[0], cmd->name) == 0) {

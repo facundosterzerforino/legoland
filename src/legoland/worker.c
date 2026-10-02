@@ -40,7 +40,7 @@ int GetMechanicCount(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499570
-WorkOrder *FUN_00499570(void) {
+WorkOrder *AllocGardenerWorkOrder(void) {
     WorkOrder *node = calloc(sizeof(WorkOrder), 1);
     // STRING: LEGOLAND 0x004bff88
     DBPrintf("Allocated Workorder %x\n", node);
@@ -57,7 +57,7 @@ WorkOrder *FUN_00499570(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004995d0
-WorkOrder *FUN_004995d0(void) {
+WorkOrder *AllocMechanicWorkOrder(void) {
     WorkOrder *node = calloc(sizeof(WorkOrder), 1);
     if (MechanicOrderTail == NULL) {
         MechanicOrderTail = node;
@@ -161,7 +161,7 @@ WorkOrder *FUN_00499780(Element *element, int *coords, int mode) {
     if (DAT_0079a8b8 >= 0xe1) {
         return NULL;
     }
-    order = FUN_00499570();
+    order = AllocGardenerWorkOrder();
     order->element = element;
     order->pos.x = coords[0];
     order->pos.y = coords[1];
@@ -196,7 +196,7 @@ WorkOrder *FUN_00499830(Element *element, int *coords, int mode) {
     if (DAT_0079a8c8 >= 0xe1) {
         return NULL;
     }
-    order = FUN_004995d0();
+    order = AllocMechanicWorkOrder();
     order->element = element;
     order->pos.x = coords[0];
     order->pos.y = coords[1];
@@ -420,7 +420,7 @@ void UnlinkGardenerOrder(WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499e30
-void FUN_00499e30(WorkOrder *order) {
+void FreeGardenerWorkOrder(WorkOrder *order) {
     UnlinkGardenerOrder(order);
     free(order->footprints);
     free(order);
@@ -446,7 +446,7 @@ void FUN_00499e60(WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499eb0
-void FUN_00499eb0(WorkOrder *order) {
+void FreeMechanicWorkOrder(WorkOrder *order) {
     WorkOrder *cur = MechanicOrderHead;
     WorkOrder *next;
 
@@ -858,7 +858,7 @@ LEGO_EXPORT void Gardener_Build(Bloke *worker) {
         coords[0] = order->pos.x;
         coords[1] = order->pos.y;
         if (BuildObject(order->element, coords) != 0) {
-            FUN_00499e30(worker->order);
+            FreeGardenerWorkOrder(worker->order);
             if (FUN_00499d00(worker) == 0) {
                 NewLongTermAction(worker, 0x10);
             }
@@ -958,7 +958,7 @@ LEGO_EXPORT void Mechanic_Build(Bloke *worker) {
     case 0x6d:
         worker->flags &= 0xfff7;
         worker->field_46 = 1;
-        FUN_00499eb0(worker->order);
+        FreeMechanicWorkOrder(worker->order);
         if (FUN_00499d30(worker) == 0) {
             NewLongTermAction(worker, 0x11);
         }
@@ -1205,7 +1205,7 @@ LEGO_EXPORT void EraseMechanicOrder(WorkOrder *order) {
     if (order->type == 1) {
         FUN_0045e4a0(order->element, &order->pos.x);
     }
-    FUN_00499eb0(order);
+    FreeMechanicWorkOrder(order);
 }
 
 // FUNCTION: LEGOLAND 0x0049b230
@@ -1216,7 +1216,7 @@ LEGO_EXPORT void EraseGardenerOrder(WorkOrder *order) {
     if (order->type == 1) {
         FUN_0045e4a0(order->element, &order->pos.x);
     }
-    FUN_00499e30(order);
+    FreeGardenerWorkOrder(order);
 }
 
 // FUNCTION: LEGOLAND 0x0049b270
@@ -1389,7 +1389,7 @@ LEGO_EXPORT void RemoveGardenersWorkOrderAt(int x, int y) {
                 if (esi->assigned != 0) {
                     NewLongTermAction(esi->worker, 0x10);
                 }
-                FUN_00499e30(esi);
+                FreeGardenerWorkOrder(esi);
                 break;
             }
             esi = esi->next;
@@ -1405,7 +1405,7 @@ LEGO_EXPORT void RemoveMechanicsWorkOrderAt(int x, int y) {
             if (current->assigned) {
                 NewLongTermAction(current->worker, 0x11);
             }
-            FUN_00499eb0(current);
+            FreeMechanicWorkOrder(current);
             break;
         }
         current = current->next;
@@ -1649,7 +1649,7 @@ LEGO_EXPORT void Garderner_Repair(Bloke *worker) {
         return;
     case 10:
         worker->flags &= 0xfff7;
-        FUN_00499e30(worker->order);
+        FreeGardenerWorkOrder(worker->order);
         if (FUN_00499d00(worker) == 0) {
             NewLongTermAction(worker, 0x10);
         }
@@ -1758,7 +1758,7 @@ LEGO_EXPORT void Mechanics_Repair(Bloke *worker) {
     case 0x6c:
         worker->flags &= 0xfff7;
         worker->field_46 = 1;
-        FUN_00499eb0(worker->order);
+        FreeMechanicWorkOrder(worker->order);
         if (FUN_00499d30(worker) == 0) {
             NewLongTermAction(worker, 0x11);
         }
@@ -2227,10 +2227,10 @@ void FUN_0049cf00(MapRect *rect) {
 // FUNCTION: LEGOLAND 0x0049cfc0
 void FUN_0049cfc0(void) {
     while (GardenerOrderHead != NULL) {
-        FUN_00499e30(GardenerOrderHead);
+        FreeGardenerWorkOrder(GardenerOrderHead);
     }
     while (MechanicOrderHead != NULL) {
-        FUN_00499eb0(MechanicOrderHead);
+        FreeMechanicWorkOrder(MechanicOrderHead);
     }
     while (DAT_0079a8d4 != NULL) {
         FUN_0049b6e0(DAT_0079a8d4);

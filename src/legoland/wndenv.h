@@ -13,5 +13,5 @@ LEGO_EXPORT int ProcessSystemEvents(void);
 struct ResFile;
 void ReadBigEndianU32(struct ResFile *file, void *out);
 void ReadBigEndianU16(struct ResFile *file, void *out);
-void *FUN_004801a0(struct ResFile *file);
+void *ReadMidiTrack(struct ResFile *file);
 LEGO_EXPORT void WNDENV_Sethwnd(HWND param_1);

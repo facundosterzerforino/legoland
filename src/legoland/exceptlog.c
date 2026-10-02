@@ -37,8 +37,8 @@ int stackdump(void *exc_info, const char *filename) {
     char *dot;
     const char *kind;
 
-    if (DAT_00667528 == 0) {
-        DAT_00667528 = 1;
+    if (ExceptionReportStarted == 0) {
+        ExceptionReportStarted = 1;
         if (GetModuleFileNameA(NULL, path, 0x104) <= 0) {
             path[0] = 0;
         }
@@ -70,7 +70,7 @@ int stackdump(void *exc_info, const char *filename) {
             modname, ctx->SegCs, ctx->Eip);
         // STRING: LEGOLAND 0x004b8c08
         WriteFileFormatted(hFile, "Exception handler called in %s.\r\n", filename);
-        FUN_004545a0(hFile);
+        WriteErrorTimeAndSystemInfo(hFile);
         if (rec->ExceptionCode == EXCEPTION_ACCESS_VIOLATION && rec->NumberParameters >= 2) {
             // STRING: LEGOLAND 0x004b8bfc
             kind = "Read from";
@@ -238,7 +238,7 @@ void FormatLocalFileTime(char *buffer, FILETIME ft) {
 }
 
 // FUNCTION: LEGOLAND 0x004545a0
-void FUN_004545a0(HANDLE file) {
+void WriteErrorTimeAndSystemInfo(HANDLE file) {
     FILETIME ft;
     char timestr[100];
     char path[MAX_PATH];

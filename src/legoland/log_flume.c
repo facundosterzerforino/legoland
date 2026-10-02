@@ -1495,10 +1495,10 @@ void FUN_0040a410(void) {
         KillSprite(LogFlumeBarrelMSprite);
     }
     if (DAT_004c2af8) {
-        FUN_00412290(DAT_004c2af8);
+        FreeIfNotNull(DAT_004c2af8);
     }
     if (DAT_004c2ae8) {
-        FUN_00412290(DAT_004c2ae8);
+        FreeIfNotNull(DAT_004c2ae8);
     }
     if (LogFlumeBarrel1Sprite) {
         KillSprite(LogFlumeBarrel1Sprite);
@@ -1786,7 +1786,7 @@ void FUN_0040abf0(Element *obj, TileId tile, struct Cursor *cursor_arg) {
                 cur = next;
             } while (next != NULL);
         }
-        FUN_00411ed0((struct Queue *)&entry->sub2);
+        FreeAllQueueNodes((struct Queue *)&entry->sub2);
         FUN_00408e80(entry);
         DAT_004cbe30->field_8++;
     }
@@ -2419,7 +2419,7 @@ void FUN_0040be00(struct FlumeSlotSet *set) {
                 if (FUN_0040bb50(set, &slot)) {
                     item = NULL;
                     set->target = slot;
-                    if (FUN_00411e90((struct Queue *)set->queue)) {
+                    if (QueueHasNodes((struct Queue *)set->queue)) {
                         if (FUN_00411ea0((struct Queue *)set->queue)) {
                             set->flags |= 1;
                             FUN_00412060((struct Queue *)set->queue, (struct QueueItemMid **)&item);
@@ -5442,7 +5442,7 @@ int LogFlumeEntrance_Load(void) {
         slot = cur->slots;
         for (i = 4; i != 0; i--) {
             slot->owner = (int)FUN_00410b60(cur->sub, slot->owner);
-            slot->busy = (int)FUN_00412470((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, slot->busy);
+            slot->busy = (int)GetNthNextQueueNode((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, slot->busy);
             slot++;
         }
         SaveGameRead(&marker, 4);

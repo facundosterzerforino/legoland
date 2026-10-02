@@ -351,19 +351,19 @@ void CoptersUnload(void) {
     }
 
     if (CopterQueueTables[0] != 0) {
-        FUN_00412290((struct Sprite *)CopterQueueTables[0]);
+        FreeIfNotNull((struct Sprite *)CopterQueueTables[0]);
     }
     if (CopterQueueTables[1] != 0) {
-        FUN_00412290((struct Sprite *)CopterQueueTables[1]);
+        FreeIfNotNull((struct Sprite *)CopterQueueTables[1]);
     }
     if (CopterQueueTables[3] != 0) {
-        FUN_00412290((struct Sprite *)CopterQueueTables[3]);
+        FreeIfNotNull((struct Sprite *)CopterQueueTables[3]);
     }
     if (CopterQueueTables[4] != 0) {
-        FUN_00412290((struct Sprite *)CopterQueueTables[4]);
+        FreeIfNotNull((struct Sprite *)CopterQueueTables[4]);
     }
     if (CopterQueueTables[2] != 0) {
-        FUN_00412290((struct Sprite *)CopterQueueTables[2]);
+        FreeIfNotNull((struct Sprite *)CopterQueueTables[2]);
     }
 
     CoptersRemoveAllNodes();

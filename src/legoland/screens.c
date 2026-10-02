@@ -208,7 +208,7 @@ void GetProductVersion(char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004588c0
-void FUN_004588c0(void) {
+void PrintTitleScreen1(void) {
     struct ScreenConfig *config;
     struct Sprite *sprite;
 
@@ -308,7 +308,7 @@ void FUN_00458b20(void) {
         SetBricksLimited(0);
         FUN_00489ee0();
         DestroyAllBlokes();
-        FUN_004714e0();
+        RemoveAllNewObjects();
         ResetInfoStruct();
         ClearBuildObjList();
         FUN_0049cfc0();
@@ -425,7 +425,7 @@ int FUN_00458c00(void) {
         if (MapStats.field_3a0 != 0 && EditMode.unk4 == 3) {
             if (MapStats.field_3ac != 0) {
                 SetPointer(0);
-                FUN_004771f0(DAT_008100c0, 1, 1);
+                PlayMovie(DAT_008100c0, 1, 1);
                 MapStats.field_3ac = 0;
                 SetPointer(5);
             }
@@ -709,8 +709,8 @@ void FUN_00459520(void) {
     SetPointer(0);
     ProcessSystemEvents();
     // STRING: LEGOLAND 0x004b9200
-    FUN_004771f0("lmi.avi", 0, 1);
-    FUN_004588c0();
+    PlayMovie("lmi.avi", 0, 1);
+    PrintTitleScreen1();
     ResumeMusicThread();
     LoadWatchSprite(0, 0);
 
@@ -727,7 +727,7 @@ void FUN_00459520(void) {
     InitGameMap();
     SetPointer(0);
     // STRING: LEGOLAND 0x004b91f4
-    FUN_004771f0("Intro.avi", 1, 0);
+    PlayMovie("Intro.avi", 1, 0);
     FUN_00492ca0(0);
     SetPointer(5);
     FrameCounter = 0;

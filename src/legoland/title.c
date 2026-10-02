@@ -182,7 +182,7 @@ unsigned char PlayBillundAvi(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf58c
-        FUN_004771f0("Billund.avi", 1, 1);
+        PlayMovie("Billund.avi", 1, 1);
         SetPointer(6);
     }
     return 1;
@@ -193,7 +193,7 @@ unsigned char PlayWindsorAvi(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf598
-        FUN_004771f0("Windsor.avi", 1, 1);
+        PlayMovie("Windsor.avi", 1, 1);
         SetPointer(6);
     }
     return 1;
@@ -204,7 +204,7 @@ unsigned char PlayCaliforniaAvi(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf5a4
-        FUN_004771f0("California.avi", 1, 1);
+        PlayMovie("California.avi", 1, 1);
         SetPointer(6);
     }
     return 1;
@@ -335,7 +335,7 @@ void FUN_00490410(void) {
             if (DAT_0079876c == 0) {
                 SpeechCloseFile();
                 DAT_006687b0 = 4;
-                DAT_00798768 = FUN_00451e20() ? 0x8c : -0x8c;
+                DAT_00798768 = PrintCertificateWithCurrentDate() ? 0x8c : -0x8c;
             }
         } else if (0 < DAT_00798768) {
             PrintSprite(PrintInfoSprite, 0xc6, 0x28, 0, hit);
@@ -522,7 +522,7 @@ unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2, unsigned
         FUN_00490600(0);
         if (DAT_00798778[0] != 0) {
             SetPointer(0);
-            FUN_004771f0(DAT_00798778, 1, 1);
+            PlayMovie(DAT_00798778, 1, 1);
             SetPointer(6);
             FUN_00490610(DAT_004d8bb0);
         }
@@ -577,7 +577,7 @@ void FUN_00490aa0(void) {
 
 // FUNCTION: LEGOLAND 0x00490b20
 unsigned char FUN_00490b20(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680(DAT_007cb2e4, NextPageLitSprite);
+    SetIconSprite(DAT_007cb2e4, NextPageLitSprite);
     if ((param_2 & 2) != 0) {
         if ((DAT_007cb2e4->flags & 0x400) != 0) {
             return FUN_00490970(0, param_2, 0, 0);
@@ -591,7 +591,7 @@ unsigned char FUN_00490b20(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00490b90
 unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680(DAT_007cb2e0, PreviousPageLitSprite);
+    SetIconSprite(DAT_007cb2e0, PreviousPageLitSprite);
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_004bf670 -= 14;
@@ -602,7 +602,7 @@ unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00490be0
 unsigned char FUN_00490be0(struct IconNode *param_1, unsigned int param_2) {
-    FUN_0046d680(param_1, RepHint2Sprite);
+    SetIconSprite(param_1, RepHint2Sprite);
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         do {
@@ -691,22 +691,22 @@ void FUN_00490ea0(void) {
         (int)DAT_00813a44.y < DAT_007cb2e4->y ||
         (int)DAT_00813a44.y > DAT_007cb2e4->field_12 + DAT_007cb2e4->y) {
         if (GetBlink() != 0) {
-            FUN_0046d680(DAT_007cb2e4, NextPageSprite);
+            SetIconSprite(DAT_007cb2e4, NextPageSprite);
         } else {
-            FUN_0046d680(DAT_007cb2e4, NextPageLitSprite);
+            SetIconSprite(DAT_007cb2e4, NextPageLitSprite);
         }
     }
     if ((int)DAT_00813a44.x < DAT_007cb2e0->x ||
         (int)DAT_00813a44.x > DAT_007cb2e0->field_10 + DAT_007cb2e0->x ||
         (int)DAT_00813a44.y < DAT_007cb2e0->y ||
         (int)DAT_00813a44.y > DAT_007cb2e0->field_12 + DAT_007cb2e0->y) {
-        FUN_0046d680(DAT_007cb2e0, PreviousPageSprite);
+        SetIconSprite(DAT_007cb2e0, PreviousPageSprite);
     }
     if ((int)DAT_00813a44.x < DAT_007cb1c0->x ||
         (int)DAT_00813a44.x > DAT_007cb1c0->field_10 + DAT_007cb1c0->x ||
         (int)DAT_00813a44.y < DAT_007cb1c0->y ||
         (int)DAT_00813a44.y > DAT_007cb1c0->field_12 + DAT_007cb1c0->y) {
-        FUN_0046d680(DAT_007cb1c0, RepHint1Sprite);
+        SetIconSprite(DAT_007cb1c0, RepHint1Sprite);
     }
 }
 

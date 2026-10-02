@@ -21,10 +21,10 @@ struct MidiTrack {
 LEGO_EXPORT void *WNDENV_GethInstance(void) { return g_hInstance; }
 
 // FUNCTION: LEGOLAND 0x0047fe50
-LEGO_EXPORT void WNDENV_Sethwnd(HWND param_1) { DAT_00669210 = param_1; }
+LEGO_EXPORT void WNDENV_Sethwnd(HWND param_1) { WndEnvHwnd = param_1; }
 
 // FUNCTION: LEGOLAND 0x0047fe60
-LEGO_EXPORT HWND WNDENV_Gethwnd(void) { return DAT_00669210; }
+LEGO_EXPORT HWND WNDENV_Gethwnd(void) { return WndEnvHwnd; }
 
 // FUNCTION: LEGOLAND 0x0047fe70
 BOOL MinimizeGameWindow(void) { return ShowWindow(WNDENV_Gethwnd(), 6); }
@@ -142,7 +142,7 @@ void ReadBigEndianU16(struct ResFile *file, void *dst) {
 }
 
 // FUNCTION: LEGOLAND 0x004801a0
-void *FUN_004801a0(struct ResFile *file) {
+void *ReadMidiTrack(struct ResFile *file) {
     struct MidiTrack *track;
     unsigned int chunkSize;
     unsigned int header;

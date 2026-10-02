@@ -250,7 +250,7 @@ LEGO_EXPORT int LoadMusicSegment(const char *filename, void **out) {
 }
 
 // FUNCTION: LEGOLAND 0x00495f00
-int FUN_00495f00(const char *file, const char *name, void **out) {
+int LoadDirectMusicSegment(const char *file, const char *name, void **out) {
     struct ObjectDesc desc;
     unsigned short wideFile[512];
     unsigned short wideName[512];

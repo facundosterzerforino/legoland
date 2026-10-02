@@ -710,7 +710,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         if (obj->flags & 0x400000) {
             FUN_00482a90();
             UpdatePathLinks(1);
-            effect = FUN_00482b00();
+            effect = GetEntrance1Point();
             FUN_00477bd0(out.x, out.y, effect->x, effect->y);
         }
         if (DAT_00667cd8 == 0) {
@@ -728,7 +728,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         if (obj->flags & 0x400000) {
             FUN_00482a90();
             UpdatePathLinks(1);
-            effect = FUN_00482b00();
+            effect = GetEntrance1Point();
             FUN_00477bd0(out.x, out.y, effect->x, effect->y);
         }
     }
@@ -1763,10 +1763,10 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
             if (tile != 0 && tile->field_8 != 0) {
                 if ((tile->flags & 3) && (tile->flags & 8) && tile->field_0 != 0) {
                     if (((Element *)tile->field_0)->obj->field_a0 == 0) {
-                        FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
+                        PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     }
                 } else {
-                    FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
+                    PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     if (FUN_0045ce10((struct MapTile *)tile) != 0) {
                         FUN_00460e90((int *)&cell, col, draw_y, 0);
                     }
@@ -1789,10 +1789,10 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
             if (tile != 0 && tile->field_8 != 0) {
                 if ((tile->flags & 3) && (tile->flags & 8) && tile->field_0 != 0) {
                     if (((Element *)tile->field_0)->obj->field_a0 == 0) {
-                        FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
+                        PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     }
                 } else {
-                    FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col + half_x, draw_y2);
+                    PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col + half_x, draw_y2);
                     if (FUN_0045ce10((struct MapTile *)tile) != 0) {
                         FUN_00460e90((int *)&cell, col + half_x, draw_y2, 0);
                     }
@@ -1807,7 +1807,7 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
         if (ov->field_20 == 0) {
             continue;
         }
-        FUN_00485f00((struct Sprite *)ov->field_20, ov->field_14 - dx, ov->field_18 - dy);
+        PrintSpriteSimple((struct Sprite *)ov->field_20, ov->field_14 - dx, ov->field_18 - dy);
         frame = ov->field_10;
         if ((frame & 0xff00) == 0 || MapStats.field_3e0[(frame >> 8) - 1] == 0) {
             continue;
@@ -1816,7 +1816,7 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
         if ((frame & 0xff) == 0) {
             ox = ov->field_14 - dx;
             oy = ov->field_18 - dy;
-            FUN_00485f00(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9218, oy + DAT_004b921c);
+            PrintSpriteSimple(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9218, oy + DAT_004b921c);
             k = (ov->field_10 + 4) & 0xff;
             if (k < ((struct SpriteSet *)BridgesData)->count) {
                 sprite = ((struct SpriteSet *)BridgesData)->sprites[k];
@@ -1825,7 +1825,7 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
         } else if ((frame & 0xff) == 1) {
             ox = ov->field_14 - dx;
             oy = ov->field_18 - dy;
-            FUN_00485f00(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9210, oy + DAT_004b9214);
+            PrintSpriteSimple(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9210, oy + DAT_004b9214);
             k = (ov->field_10 + 4) & 0xff;
             if (k < ((struct SpriteSet *)BridgesData)->count) {
                 sprite = ((struct SpriteSet *)BridgesData)->sprites[k];
@@ -1864,16 +1864,16 @@ void FUN_00460e90(int *coords, unsigned int x, unsigned int y, unsigned int para
     unsigned char dir = FUN_0045ceb0(coords);
     unsigned int mode = FUN_0045d080(dir, coords);
 
-    FUN_00485f00(TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
+    PrintSpriteSimple(TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
     switch (mode) {
     case 1:
-        FUN_00485f00(TileSpriteArray[19 + *(int *)PathSprite], x, y);
+        PrintSpriteSimple(TileSpriteArray[19 + *(int *)PathSprite], x, y);
         break;
     case 2:
-        FUN_00485f00(TileSpriteArray[20 + *(int *)PathSprite], x, y);
+        PrintSpriteSimple(TileSpriteArray[20 + *(int *)PathSprite], x, y);
         break;
     case 3:
-        FUN_00485f00(TileSpriteArray[21 + *(int *)PathSprite], x, y);
+        PrintSpriteSimple(TileSpriteArray[21 + *(int *)PathSprite], x, y);
         break;
     }
 }
@@ -1883,7 +1883,7 @@ void FUN_00460f50(int *coords, unsigned int x, unsigned int y, unsigned int para
     unsigned char dir = FUN_0045ceb0(coords);
     unsigned int mode = FUN_0045d080(dir, coords);
 
-    FUN_00485f00(TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
+    PrintSpriteSimple(TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
     switch (mode) {
     case 1:
         PrintSprite(TileSpriteArray[19 + *(int *)PathSprite], x, y, param_4, 0);

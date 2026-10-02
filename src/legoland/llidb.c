@@ -1541,7 +1541,7 @@ LEGO_EXPORT void LLSSetDelay(struct LLS *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d610
-void FUN_0047d610(struct LLS *param_1) {
+void LLSAdvanceFrame(struct LLS *param_1) {
     param_1->frame++;
     if (param_1->frame >= param_1->frame_count) {
         param_1->frame = 0;

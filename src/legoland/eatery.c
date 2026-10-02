@@ -222,7 +222,7 @@ void LoadBrollyImages(struct EateryObj *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042e4b0
-void FUN_0042e4b0(void) {
+void UnloadBrollyImages(void) {
     LLIDB_UnLoadData(BrollyImagesHandle);
 }
 

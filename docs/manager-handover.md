@@ -149,7 +149,7 @@ they meant:
 
 | TU | Function | Bytes |
 |---|---|---:|
-| certificate | `FUN_00451e20` | 80 |
+| certificate | `PrintCertificateWithCurrentDate` | 80 |
 | build | `ProcessBuildingTimes` | 112 |
 | mapscreen | `DrawMapScreen` | 128 |
 | man3d | `SetPersonRotation` | 144 |

@@ -153,7 +153,7 @@ unsigned int LoadBmpIntoImage(struct Image *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004436d0
-unsigned int FUN_004436d0(const char *param_1, unsigned char param_2) {
+unsigned int LoadBmpImage(const char *param_1, unsigned char param_2) {
     struct Image *image;
 
     image = CreateSourceImage(param_1, param_2);
@@ -179,7 +179,7 @@ struct LocFile {
 };
 
 // FUNCTION: LEGOLAND 0x00443720
-void FUN_00443720(struct LocFile *param_1, const char *param_2) {
+void LoadTextureBitmaps(struct LocFile *param_1, const char *param_2) {
     int i;
     struct Image *image;
     char filename[64];
@@ -187,7 +187,7 @@ void FUN_00443720(struct LocFile *param_1, const char *param_2) {
     for (i = 0; i < param_1->count; i++) {
         // STRING: LEGOLAND 0x004b7d58
         sprintf(filename, "%s\\%s%04d.BMP", param_2, param_1->name, i);
-        image = (struct Image *)FUN_004436d0(filename, 9);
+        image = (struct Image *)LoadBmpImage(filename, 9);
         if (image == NULL) {
             // STRING: LEGOLAND 0x004b7d3c
             DBPrintf("Failed to load texture %s", filename);
@@ -1235,7 +1235,7 @@ unsigned char FUN_00444ef0(unsigned int param_1, unsigned int param_2) {
         return 1;
     }
     if (((icon->flags == 0) & 0x400) != 0) {
-        FUN_0046d680(icon, NextPageLitSprite);
+        SetIconSprite(icon, NextPageLitSprite);
         icon = DAT_006660a8;
     }
     if ((param_2 & 2) == 0) {
@@ -1257,7 +1257,7 @@ unsigned char FUN_00444ef0(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00444f90
 unsigned char FUN_00444f90(unsigned int param_1, unsigned char param_2) {
-    FUN_0046d680(DAT_006660ac, PreviousPageLitSprite);
+    SetIconSprite(DAT_006660ac, PreviousPageLitSprite);
     if ((param_2 & 2) != 0) {
         DAT_0081c07c = 1;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
@@ -1338,14 +1338,14 @@ void FUN_00445100(void) {
     a = DAT_006660a8;
     x = DAT_00813a44.x;
     if (x < a->x || x > a->field_10 + a->x || (y = DAT_00813a44.y, y < a->y || y > a->field_12 + a->y)) {
-        FUN_0046d680(a, NextPageSprite);
+        SetIconSprite(a, NextPageSprite);
     }
     x = DAT_00813a44.x;
     y = DAT_00813a44.y;
     b = DAT_006660ac;
     if (x < b->x || x > b->field_10 + b->x ||
         y < b->y || y > b->field_12 + b->y) {
-        FUN_0046d680(b, PreviousPageSprite);
+        SetIconSprite(b, PreviousPageSprite);
     }
 }
 
@@ -4774,7 +4774,7 @@ LAB_0044acbb:
                                 rcRow.top = subpass;
                                 rcRow.right = rectr;
                                 rcRow.bottom = subpass + 0x16;
-                                FUN_00454d80((char *)piVar11[-6], 2, rcRow, piVar11[-5]);
+                                DrawTextOnRenderSurface((char *)piVar11[-6], 2, rcRow, piVar11[-5]);
                             }
                             if (piVar11[-4] != 0) {
                                 FUN_00444a70(0x126, ysave, rectr, ysave + 8, piVar11[-3], piVar11[-2], piVar11[-1]);

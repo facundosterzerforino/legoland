@@ -7,6 +7,6 @@ void WriteModuleInfo(HANDLE file, DWORD base);
 void FormatLocalFileTime(char *buffer, FILETIME ft);
 void WriteFileFormatted(HANDLE file, const char *format, ...);
 void WriteModuleList(HANDLE file);
-void FUN_004545a0(HANDLE file);
+void WriteErrorTimeAndSystemInfo(HANDLE file);
 const char *GetExceptionDescription(unsigned int code);
 char *GetFileNameFromPath(char *path);

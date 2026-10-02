@@ -176,7 +176,7 @@ LEGO_EXPORT void PrintLimitedText(int x, int y, int width, const char *text, int
 }
 
 // FUNCTION: LEGOLAND 0x00454d80
-void FUN_00454d80(char *text, int font, RECT rc, COLORREF color) {
+void DrawTextOnRenderSurface(char *text, int font, RECT rc, COLORREF color) {
     HRGN region;
     HDC hdc;
     HGDIOBJ old_region;
@@ -283,7 +283,7 @@ LEGO_EXPORT void PrintCentColref(COLORREF color, int cx, int y, int width, const
 }
 
 // FUNCTION: LEGOLAND 0x004551a0
-int FUN_004551a0(const char *text, int font, int width) {
+int MeasureTextHeight(const char *text, int font, int width) {
     RECT rc;
     HDC hdc;
 
@@ -598,7 +598,7 @@ struct TextCell *CreateTextCell(char *name, int width, int height, int font, uns
     // STRING: LEGOLAND 0x004b9080
     DBPrintf("Creating Cell (%d) %s\n", TextCellCount, name);
     if (TextCellCount >= 0x32) {
-        FUN_00455f70(1);
+        FlushTextCells(1);
     }
     cell = &TextCells[TextCellCount];
     TextCellCount++;
@@ -616,7 +616,7 @@ struct TextCell *CreateTextCell(char *name, int width, int height, int font, uns
 }
 
 // FUNCTION: LEGOLAND 0x00455c80
-struct TextCell *FUN_00455c80(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+struct TextCell *FindTextCell(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
     int i;
 
     for (i = 0; i < TextCellCount; i++) {
@@ -660,7 +660,7 @@ struct TextCell *FindTextCellByName(char *name) {
 void FUN_00455e50(char *name, unsigned int x, unsigned int y, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
     struct TextCell *cell;
 
-    cell = FUN_00455c80(name, width, height, font, format, bg_color, text_color);
+    cell = FindTextCell(name, width, height, font, format, bg_color, text_color);
     if (cell == NULL) {
         cell = CreateTextCell(name, width, height, font, format, bg_color, text_color);
     }
@@ -692,7 +692,7 @@ void DeleteTextCell(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00455f70
-void FUN_00455f70(int evict_all) {
+void FlushTextCells(int evict_all) {
     int i;
     struct TextCell *cell = TextCells;
 

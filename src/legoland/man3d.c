@@ -493,7 +493,7 @@ LEGO_EXPORT void InitMan(void) {
     VisitorLocData = LoadLocFile("NewProject.loc", "visitor");
     ((unsigned int *)VisitorLocData)[1] = ctx;
     // STRING: LEGOLAND 0x004b7cec
-    FUN_00443720(VisitorLocData, "visitor");
+    LoadTextureBitmaps(VisitorLocData, "visitor");
     // STRING: LEGOLAND 0x004b7cc4
     WomanMeshes[1] = FUN_0043fa80("WomanWalk.WomanWalk.3d", "visitor", ctx);
     // STRING: LEGOLAND 0x004b7cac
@@ -529,7 +529,7 @@ LEGO_EXPORT void InitMan(void) {
     GeoffLocData = LoadLocFile("geoff.loc", "geoff");
     ((unsigned int *)GeoffLocData)[1] = ctx;
     // STRING: LEGOLAND 0x004b7b8c
-    FUN_00443720(GeoffLocData, "geoff");
+    LoadTextureBitmaps(GeoffLocData, "geoff");
     // STRING: LEGOLAND 0x004b7b68
     GeoffMeshes[0] = FUN_0043fa80("geofWalk.GeofWalk.3d", "geoff", ctx);
     // STRING: LEGOLAND 0x004b7b50
@@ -539,7 +539,7 @@ LEGO_EXPORT void InitMan(void) {
     TracyLocData = LoadLocFile("tracy.loc", "tracy");
     ((unsigned int *)TracyLocData)[1] = ctx;
     // STRING: LEGOLAND 0x004b7b48
-    FUN_00443720(TracyLocData, "tracy");
+    LoadTextureBitmaps(TracyLocData, "tracy");
     // STRING: LEGOLAND 0x004b7b24
     TracyWalkMesh = FUN_0043fa80("TracyWalk.TraceWalk.3d", "tracy", ctx);
 }

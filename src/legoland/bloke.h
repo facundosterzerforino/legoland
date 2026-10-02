@@ -186,7 +186,7 @@ struct BlokeSave {
 typedef void (*BlokeAction)(Bloke *bloke);
 
 /* Low-level AI handlers (PTR_FUN_004bd34c). */
-void FUN_004838a0(Bloke *bloke);
+void LogBlokeRethinking(Bloke *bloke);
 void FUN_004838c0(Bloke *bloke);
 void FUN_00483ef0(Bloke *bloke);
 void FUN_00484090(Bloke *bloke);

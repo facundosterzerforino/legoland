@@ -316,7 +316,7 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     local.rect.right = w;
     local.rect.top = 0;
     local.rect.bottom = h;
-    DAT_007fea44 = GetTransparentColour();
+    StoredTransparentColour = GetTransparentColour();
     SoftPrint_Clear();
     FUN_00464ee0(param_2, &local.rect, local.off);
     FUN_00485fe0(param_2, param_4, param_5);
@@ -495,7 +495,7 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
         IntersectRect(&DAT_00668108, &clip, &SPRITE_ClipRect);
         off[0] = 0;
         off[1] = 0;
-        DAT_007fea44 = GetTransparentColour();
+        StoredTransparentColour = GetTransparentColour();
         DAT_0066809c.lpSurface = desc2.lpSurface;
         DAT_0066809c.dwWidth = (short)sprite->width;
         DAT_0066809c.dwHeight = (short)sprite->height;

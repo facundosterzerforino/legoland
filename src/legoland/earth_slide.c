@@ -84,13 +84,13 @@ void FUN_0042ce50(struct EarthNode *node, struct EarthBlokeElem *elem) {
         memset(q, 0, sizeof(struct EarthQueue));
         q->elem = elem;
         *(unsigned char *)((char *)elem->bloke + 0x62) |= 0x40;
-        FUN_0042ce90(node, q);
+        EarthNodeAppendQueueEntry(node, q);
         node->field_18++;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0042ce90
-void FUN_0042ce90(struct EarthNode *p, struct EarthQueue *value) {
+void EarthNodeAppendQueueEntry(struct EarthNode *p, struct EarthQueue *value) {
     if (p->queue_head == NULL && p->queue_tail == NULL) {
         p->queue_head = value;
         p->queue_tail = value;
@@ -295,7 +295,7 @@ int EarthSlideRide_Save(void) {
             return 0;
         }
         for (q = node->queue_head; q != NULL; q = q->next) {
-            value = FUN_0042d3e0(*(struct EarthBlokeElem **)(DAT_006160d0 + 0xcc), q->elem);
+            value = CountEarthBlokeElemsUntil(*(struct EarthBlokeElem **)(DAT_006160d0 + 0xcc), q->elem);
             if (SaveGameWrite(&value, 4) == 0) {
                 return 0;
             }
@@ -306,7 +306,7 @@ int EarthSlideRide_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d3e0
-unsigned int FUN_0042d3e0(struct EarthBlokeElem *param_1, struct EarthBlokeElem *param_2) {
+unsigned int CountEarthBlokeElemsUntil(struct EarthBlokeElem *param_1, struct EarthBlokeElem *param_2) {
     unsigned int count = 0;
     struct EarthBlokeElem *node = param_1;
 
@@ -359,7 +359,7 @@ int EarthSlideRide_Load(void) {
             if (SaveGameRead(&value, 4) == 0) {
                 return 0;
             }
-            node->queue_tail->elem = FUN_0042d540(*(struct EarthBlokeElem **)(DAT_006160d0 + 0xcc), value);
+            node->queue_tail->elem = GetNthNextEarthBlokeElem(*(struct EarthBlokeElem **)(DAT_006160d0 + 0xcc), value);
         }
         if (node->queue_tail != NULL) {
             node->queue_tail->next = NULL;
@@ -372,7 +372,7 @@ int EarthSlideRide_Load(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d540
-struct EarthBlokeElem *FUN_0042d540(struct EarthBlokeElem *param_1, unsigned int param_2) {
+struct EarthBlokeElem *GetNthNextEarthBlokeElem(struct EarthBlokeElem *param_1, unsigned int param_2) {
     struct EarthBlokeElem *result = param_1;
 
     while (param_2-- != 0) {
