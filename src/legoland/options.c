@@ -246,7 +246,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     for (;;) {
         if (DAT_0080ff80.unk8 == 5) {
             DAT_006687bc = (unsigned int)FUN_0048f440;
-            if (FUN_0047f820() > 0xea60) {
+            if (GetGameTimerSinceMark() > 0xea60) {
                 DAT_00798754 = 1;
                 // STRING: LEGOLAND 0x004bf4c4
                 icon = LoadSpriteIcon("PU_BigPopupBK.lls", 4, param_1, param_2, 0xe);
@@ -413,7 +413,7 @@ unsigned char OptionsUpIconHandler(struct IconNode *param_1, unsigned int param_
                         CurrentProfile.speech_volume--;
                         result = FUN_0048eaf0(CurrentProfile.speech_volume);
                         SpeechVolumeMarkerIcon->x = (short)result;
-                        if (!DAT_006687b4 && !FUN_00498cf0()) {
+                        if (!DAT_006687b4 && !SpeechIsPlaying()) {
                             FUN_0046d230(-2);
                         }
                         FUN_0046d230(param_1->string_id);
@@ -473,7 +473,7 @@ unsigned char OptionsDownIconHandler(struct IconNode *param_1, unsigned int para
                         CurrentProfile.speech_volume++;
                         result = FUN_0048eaf0(CurrentProfile.speech_volume);
                         SpeechVolumeMarkerIcon->x = (short)result;
-                        if (!DAT_006687b4 && !FUN_00498cf0()) {
+                        if (!DAT_006687b4 && !SpeechIsPlaying()) {
                             FUN_0046d230(-2);
                         }
                         FUN_0046d230(param_1->string_id);
@@ -535,7 +535,7 @@ unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *param_1, unsigned 
             switch ((unsigned int)(unsigned short)param_1->field_18s) {
             case 3:
                 CurrentProfile.speech_volume = result;
-                if (!DAT_006687b4 && !FUN_00498cf0()) {
+                if (!DAT_006687b4 && !SpeechIsPlaying()) {
                     FUN_0046d230(-2);
                 }
                 FUN_0046d230(param_1->string_id);

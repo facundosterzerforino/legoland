@@ -1203,13 +1203,13 @@ LEGO_EXPORT void UnloadSaveGameMap(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047f810
-void FUN_0047f810(void) {
-    DAT_00669204 = GetGameTimer();
+void MarkGameTimer(void) {
+    GameTimerMark = GetGameTimer();
 }
 
 // FUNCTION: LEGOLAND 0x0047f820
-int FUN_0047f820(void) {
-    return GetGameTimer() - DAT_00669204;
+int GetGameTimerSinceMark(void) {
+    return GetGameTimer() - GameTimerMark;
 }
 
 // FUNCTION: LEGOLAND 0x0047f830

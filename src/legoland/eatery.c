@@ -976,7 +976,7 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
 }
 
 // FUNCTION: LEGOLAND 0x0042f720
-void FUN_0042f720(void) {
+void KillRestMaskSpritesAndMoneySFX(void) {
     KillSprite(RestMaskMainSprite);
     KillSprite(RestMaskLevel1aaSprite);
     KillSprite(RestMaskLevel1Sprite);

@@ -44,7 +44,7 @@ void FUN_0042efb0(unsigned int param_1, TileId tile, unsigned int param_3);
 void FUN_0042f030(struct EateryObj *obj);
 void FUN_0042f1a0(Element *obj);
 void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
-void FUN_0042f720();
+void KillRestMaskSpritesAndMoneySFX();
 void FUN_0042f770(struct EateryObj *obj);
 void FUN_0042f9a0(unsigned int param_1, unsigned char *param_2);
 void FUN_0042fa40(unsigned int arg1, TileId tile, unsigned int arg3, unsigned int arg4, unsigned int arg5);

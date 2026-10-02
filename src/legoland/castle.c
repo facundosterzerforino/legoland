@@ -2476,7 +2476,7 @@ void FUN_00420410(void *param, unsigned int count) {
 }
 
 // FUNCTION: LEGOLAND 0x00420440
-void FUN_00420440(void) {
+void LoadRollercoasterFiles(void) {
     char buf[256];
     int i;
     int n;
@@ -2633,7 +2633,7 @@ int LoadLtxFile(const char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x00420780
-unsigned int FUN_00420780(unsigned int param) {
+unsigned int GetLtxFileTableEntry(unsigned int param) {
     return LtxFileTable[param];
 }
 
@@ -2649,7 +2649,7 @@ int LoadRollercoasterLpt(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004207c0
-unsigned int FUN_004207c0(void) {
+unsigned int GetRollercoasterLpt(void) {
     return RollercoasterLpt;
 }
 
@@ -2997,11 +2997,11 @@ struct Obj4215d0 *FUN_004215d0(struct BlokeInfo *a1) {
     }
     self->field_0 = 0;
     if (a1->sex == 0) {
-        self->field_4 = GetLmsByName(DAT_004b59f8);
-        self->field_8 = GetLfmByName(DAT_004b59f8);
+        self->field_4 = GetLmsByName(SitLoManSitName);
+        self->field_8 = GetLfmByName(SitLoManSitName);
     } else {
-        self->field_4 = GetLmsByName(DAT_004b59e8);
-        self->field_8 = GetLfmByName(DAT_004b59e8);
+        self->field_4 = GetLmsByName(SitLoGirlSitName);
+        self->field_8 = GetLfmByName(SitLoGirlSitName);
     }
     self->field_8 = FUN_00421660(a1);
     if (self->field_8 == 0) {
@@ -3045,15 +3045,15 @@ unsigned int FUN_00421660(struct BlokeInfo *p) {
     struct LmsRef *r;
 
     if (p->sex == 0) {
-        lms = (struct LmsFile *)GetLmsByName(DAT_004b59f8);
-        src = (struct LmsRec *)GetLfmByName(DAT_004b59f8);
-        size = GetLfmSizeByName(DAT_004b59f8);
+        lms = (struct LmsFile *)GetLmsByName(SitLoManSitName);
+        src = (struct LmsRec *)GetLfmByName(SitLoManSitName);
+        size = GetLfmSizeByName(SitLoManSitName);
         names = DAT_004b596c;
         colours = DAT_004b5964;
     } else {
-        lms = (struct LmsFile *)GetLmsByName(DAT_004b59e8);
-        src = (struct LmsRec *)GetLfmByName(DAT_004b59e8);
-        size = GetLfmSizeByName(DAT_004b59e8);
+        lms = (struct LmsFile *)GetLmsByName(SitLoGirlSitName);
+        src = (struct LmsRec *)GetLfmByName(SitLoGirlSitName);
+        size = GetLfmSizeByName(SitLoGirlSitName);
         names = DAT_004b597c;
         colours = DAT_004b5974;
     }
@@ -4086,7 +4086,7 @@ void FUN_00422e40(int param1, char *entry) {
 
 // FUNCTION: LEGOLAND 0x00422fe0
 void FUN_00422fe0(void) {
-    int *p = (int *)FUN_004207c0();
+    int *p = (int *)GetRollercoasterLpt();
     int n = *p++;
     int i;
 
@@ -4664,7 +4664,7 @@ void FUN_00424150(struct Element *param_1) {
     CastleMatteSprite = LoadSprite("Castle Matte.lls", 1);
     FUN_00425a50();
     FUN_00421470();
-    FUN_00420440();
+    LoadRollercoasterFiles();
     FUN_00423740();
     FUN_00422210();
     FUN_00428b70();

@@ -710,7 +710,7 @@ extern struct SpiderBnv DAT_004b4d94;
 // 0x004b4e20
 extern Point DAT_004b4e20;
 // 0x004b78b4
-extern char DAT_004b78b4[];
+extern char BoxBlokeBnvName[];
 // 0x004b4f08
 extern char *DAT_004b4f08[4];
 // 0x004b4f18
@@ -760,9 +760,9 @@ extern int DAT_004b5b4c;
 // 0x004b5b50
 extern int DAT_004b5b50;
 // 0x004b59e8
-extern char DAT_004b59e8[];
+extern char SitLoGirlSitName[];
 // 0x004b59f8
-extern char DAT_004b59f8[];
+extern char SitLoManSitName[];
 // 0x004b5abc
 extern float DAT_004b5abc[4][4];
 // 0x004b5b58
@@ -950,7 +950,7 @@ extern unsigned int DAT_004b7e9c;
 // 0x004b81c0
 extern char *GraphicsPath;
 // 0x004b81c4
-extern char *DAT_004b81c4;
+extern char *GraphicsPathPrefix;
 // 0x004b81c8
 extern char *GraphicsSmallPath;
 // 0x004b81cc
@@ -1068,9 +1068,9 @@ extern int DAT_004b960c;
 // 0x004b9610
 extern int DAT_004b9610;
 // 0x004b9ca4
-extern int (*DAT_004b9ca4)(void);
+extern int (*BlitFrameFunc)(void);
 // 0x004b9ca8
-extern unsigned int DAT_004b9ca8;
+extern unsigned int OverrideFrame;
 // 0x004b9e5c
 extern unsigned int DAT_004b9e5c[1];
 // 0x004b9f78
@@ -1269,9 +1269,9 @@ extern struct RenderItemNode *DAT_004c11e0;
 // 0x004c11e4
 extern struct Sprite *DAT_004c11e4;
 // 0x004c11e8
-extern struct Sprite *DAT_004c11e8;
+extern struct Sprite *GoldRushLayer;
 // 0x004c11f0
-extern void *DAT_004c11f0;
+extern void *GoldRushRide;
 // 0x004c11f4
 extern struct Sprite *GoldMaskSprite;
 // 0x004c11f8
@@ -1291,7 +1291,7 @@ extern unsigned int DAT_004c1214;
 // 0x004c1218
 extern void *JoustRideBnv;
 // 0x004c121c
-extern unsigned int DAT_004c121c;
+extern unsigned int JoustRide;
 // 0x004c1228
 extern unsigned int DAT_004c1228;
 // 0x004c122c
@@ -1359,7 +1359,7 @@ extern struct Sprite *LogFlumeFc1M2Sprite;
 // 0x004c2b98
 extern unsigned int DAT_004c2b98;
 // 0x004c2b9c
-extern struct Ride *DAT_004c2b9c;
+extern struct Ride *LogFlumeEntranceRide;
 // 0x004c2ba0
 extern void *DAT_004c2ba0;
 // 0x004c2c18
@@ -1395,7 +1395,7 @@ extern void *DAT_004c8d4c;
 // 0x004c8d50
 extern unsigned int DAT_004c8d50;
 // 0x004c8d54
-extern struct Sprite *DAT_004c8d54;
+extern struct Sprite *LogFlumeEntranceLayer;
 // 0x004c8d68
 extern struct Sprite *LogFlumeFc3M3Sprite;
 // 0x004c8d78
@@ -1429,7 +1429,7 @@ extern unsigned int DAT_004cbe28;
 // 0x004cbe2c
 extern unsigned int DAT_004cbe2c;
 // 0x004cbe30
-extern struct Ride *DAT_004cbe30;
+extern struct Ride *LogFlumeTrackRide;
 // 0x004cbe48
 extern void *DAT_004cbe48;
 // 0x004cbe4c
@@ -1473,7 +1473,7 @@ extern int DAT_004cbeb4;
 // 0x004cbeb8
 extern unsigned int DAT_004cbeb8;
 // 0x004cbec4
-extern struct SafariOwner *DAT_004cbec4;
+extern struct SafariOwner *SafariRide;
 // 0x004cbed0
 extern unsigned int DAT_004cbed0;
 // 0x004cbed4
@@ -1485,7 +1485,7 @@ extern unsigned short DAT_004cbedc;
 // 0x004cbec0
 extern void *SafariOffBNV;
 // 0x004cbec8
-extern struct Sprite *DAT_004cbec8;
+extern struct Sprite *SafariLayer;
 // 0x004cbecc
 extern struct RenderItemNode *DAT_004cbecc;
 // 0x004cbee8
@@ -1503,7 +1503,7 @@ extern unsigned char *DAT_00799c1c[35];
 // 0x0079a608
 extern int DAT_0079a608[35];
 // 0x0079a69c
-extern void *DAT_0079a69c;
+extern void *DMusicNotificationEvent;
 // 0x0079a6b0
 extern int DAT_0079a6b0;
 // 0x007fe9a4
@@ -1657,7 +1657,7 @@ extern int *DAT_004cc070;
 // 0x004cc074
 extern struct BoatRideNode *DAT_004cc074;
 // 0x004cc078
-extern struct Footprint DAT_004cc078;
+extern struct Footprint BoatingSchoolFootprint;
 // 0x004cc088
 extern int *DAT_004cc088;
 // 0x004cc08c
@@ -1977,11 +1977,11 @@ extern unsigned int DAT_0062fd50;
 // 0x0062fd54
 extern unsigned short DAT_0062fd54;
 // 0x0062fd60
-extern void *DAT_0062fd60;
+extern void *SpaceTowerLayers;
 // 0x0062fd64
 extern struct Sprite *SpaceTowerSeatMatteSprites[4];
 // 0x0062fd74
-extern void *DAT_0062fd74;
+extern void *SpaceTowerRideObj;
 // 0x0062fd7c
 extern struct Sprite *SpaceTowerMatte2Sprite;
 // 0x0062fd80
@@ -2005,9 +2005,9 @@ extern struct Sprite *SpinningBarrelsEntranceMatte2Sprite;
 // 0x0062fdd0
 extern struct Sprite *SpinningBarrelsEntranceMatteSprite;
 // 0x0062fde4
-extern struct Ride *DAT_0062fde4;
+extern struct Ride *SpinningBarrelsRide;
 // 0x0062fde0
-extern struct Sprite *DAT_0062fde0;
+extern struct Sprite *SpinningBarrelsLayer;
 // 0x0062fdd8
 extern struct Point DAT_0062fdd8;
 // 0x0062fde8
@@ -2391,9 +2391,9 @@ extern int DAT_00667d58;
 // 0x00667d60
 extern int LastWatchDrawTicks;
 // 0x00667d68
-extern unsigned int DAT_00667d68;
+extern unsigned int LastRenderingCompleteTick;
 // 0x00667d6c
-extern int DAT_00667d6c;
+extern int WinDebugMode;
 // 0x00667d70
 /* DX6 DDCAPS is 0x17c; this SDK's DX5 DDCAPS is 0x16c, so each caps block has a four-DWORD DDSCAPS2 tail. */
 struct DDRAWENV {
@@ -2421,13 +2421,13 @@ extern unsigned int DDPalette;
 // 0x00668088
 extern unsigned int DisplayPixelFormat;
 // 0x0066808c
-extern HFONT PTR_0066808c;
+extern HFONT LegoFont20Bold;
 // 0x00668090
-extern HFONT PTR_00668090;
+extern HFONT LegoFont24Bold;
 // 0x00668094
-extern HFONT PTR_00668094;
+extern HFONT LegoFont18SemiBold;
 // 0x00668098
-extern HFONT PTR_00668098;
+extern HFONT LegoFont28Normal;
 // 0x0066809c
 extern DDSURFACEDESC DAT_0066809c;
 // 0x00668108
@@ -2447,7 +2447,7 @@ extern int DAT_00668164[32];
 // 0x006681e4
 extern int DAT_006681e4;
 // 0x006681e8
-extern unsigned int DAT_006681e8;
+extern unsigned int OverridePalette;
 // 0x006681ec
 extern void *DAT_006681ec;
 // 0x006681f0
@@ -2710,13 +2710,13 @@ extern struct InterfaceResearchNode *ResearchList;
 // 0x00668ee0
 extern int DAT_00668ee0;
 // 0x00668ee8
-extern unsigned int DAT_00668ee8[0x15];
+extern unsigned int AviAcmStreamHeader[0x15];
 // 0x00668f3c
 extern unsigned int DAT_00668f3c;
 // 0x00668f44
-extern int DAT_00668f44;
+extern int AcmStreamOpenResult;
 // 0x00668f48
-extern void *DAT_00668f48;
+extern void *AviSoundBuffer;
 // 0x00668f4c
 extern unsigned int DAT_00668f4c;
 // 0x00668f50
@@ -2726,15 +2726,15 @@ extern int DAT_00668f54;
 // 0x00668f58
 extern unsigned int DAT_00668f58;
 // 0x00668f5c
-extern void *DAT_00668f5c;
+extern void *AviAcmStream;
 // 0x00668f60
 extern int DAT_00668f60;
 // 0x00668f64
-extern unsigned int DAT_00668f64;
+extern unsigned int AviAudioSampleSize;
 // 0x00668f70
-extern WAVEFORMATEX DAT_00668f70;
+extern WAVEFORMATEX AviPcmFormat;
 // 0x00668f84
-extern void *DAT_00668f84;
+extern void *AviAudioStream;
 // 0x00668f88
 extern int DAT_00668f88;
 // 0x00668f8c
@@ -2749,7 +2749,7 @@ extern unsigned int AviOpenCount;
 // 0x00668fa4
 extern unsigned int DAT_00668fa4;
 // 0x00668fac
-extern unsigned int DAT_00668fac;
+extern unsigned int PerfCounterState;
 // 0x00668fb0
 extern unsigned int DAT_00668fb0;
 // 0x00668fb4
@@ -2793,7 +2793,7 @@ extern int MeasuredBlockDepth;
 // 0x00669200
 extern struct Element **DAT_00669200;
 // 0x00669204
-extern unsigned int DAT_00669204;
+extern unsigned int GameTimerMark;
 // 0x00669208
 extern void *g_hInstance;
 // 0x0066920c
@@ -2801,7 +2801,7 @@ extern int g_nCmdShow;
 // 0x00669210
 extern HWND WndEnvHwnd;
 // 0x00669238
-extern unsigned int DAT_00669238;
+extern unsigned int PauseGameTimerResult;
 // 0x00669240
 extern LEGO_EXPORT struct Ride *ObjectClassList;
 // 0x00669244
@@ -3077,7 +3077,7 @@ extern void *AviLockPtr1;
 // 0x007988a8
 extern void *AviLockPtr2;
 // 0x007988b0
-extern void *DAT_007988b0;
+extern void *SoundHwnd;
 // 0x007988bc
 extern unsigned int DAT_007988bc;
 // 0x007988c0
@@ -3131,11 +3131,11 @@ extern unsigned int DAT_0079a878[6];
 // 0x0079a890
 extern unsigned int GameTimerPaused;
 // 0x0079a894
-extern unsigned int DAT_0079a894;
+extern unsigned int GameTimerPausedTicks;
 // 0x0079a898
 extern unsigned int DAT_0079a898;
 // 0x0079a89c
-extern unsigned int DAT_0079a89c;
+extern unsigned int GameTimerPausedFrame;
 // 0x0079a8a0
 extern unsigned int DAT_0079a8a0;
 // 0x0079a8a8
@@ -3347,7 +3347,7 @@ extern int SelectedElementIndex;
 // 0x007fdca4
 extern unsigned int DAT_007fdca4;
 // 0x007fdca8
-extern float DAT_007fdca8;
+extern float PerfCounterScale;
 // 0x007fdcc0
 extern struct Sprite *LegolandThemeOnSprite;
 // 0x007fdcc4
@@ -3493,9 +3493,9 @@ extern unsigned int DAT_007fe040;
 // 0x007fe044
 extern unsigned int DAT_007fe044;
 // 0x007fe048
-extern char *DAT_007fe048;
+extern char *AdvisorHelpText;
 // 0x007fe04c
-extern unsigned int DAT_007fe04c;
+extern unsigned int AdvisorHelpStartTime;
 // 0x007fe050
 extern unsigned int DAT_007fe050;
 // 0x007fe054
@@ -4140,7 +4140,7 @@ extern struct Cursor DAT_0082ae20;
 // 0x0082c654
 extern struct Sprite *BoatingSchoolRailmSprite;
 // 0x0082c658
-extern struct Ride *DAT_0082c658;
+extern struct Ride *BoatingSchoolRide;
 // 0x0082c65c
 extern struct SpriteSet *BoatingSchoolBoats;
 // 0x0082c668

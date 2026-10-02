@@ -33,7 +33,7 @@ void FUN_004169c0(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00416a30
-void FUN_00416a30(void) {
+void KillTempleMatteSprites(void) {
     if (TempleMatte1Sprite != 0) {
         KillSprite(TempleMatte1Sprite);
     }
@@ -208,7 +208,7 @@ void Temple_GetInterfaces(struct ClassNode *str, struct CallbackTable *obj) {
     // STRING: LEGOLAND 0x004b4ef0
     if (_stricmp("TEMPLE", str->name) == 0) {
         obj->cb_a4 = FUN_004169c0;
-        obj->cb_ac = FUN_00416a30;
+        obj->cb_ac = KillTempleMatteSprites;
         obj->cb_8c = FUN_00416dc0;
         obj->cb_a8 = FUN_00416b50;
         obj->cb_b0 = FUN_00416a60;

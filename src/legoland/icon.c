@@ -365,7 +365,7 @@ LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
     if (result) {
         result->width = ((struct Config *)lpConfig)->field_0;
         result->height = ((struct Config *)lpConfig)->field_2;
-        result->render_func = (void *)FUN_0046df60;
+        result->render_func = (void *)SetClippingToScreenRect;
         result->flags = result->flags | 0x29;
     }
     return result;
@@ -683,7 +683,7 @@ int FUN_0046df30(struct Rect16 *src) {
 }
 
 // FUNCTION: LEGOLAND 0x0046df60
-int FUN_0046df60(int param) {
+int SetClippingToScreenRect(int param) {
     SetClipping(&ScreenRect);
     return 0;
 }
@@ -1234,7 +1234,7 @@ LEGO_EXPORT void RenderIcons(void) {
     int elapsed;
 
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     elapsed = GetTicks() - RenderIconsLastTicks;
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
@@ -1274,7 +1274,7 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
     struct IconNode *node = (struct IconNode *)DAT_006687c8;
 
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     while (node) {
         if ((node->flags & 0x400) == 0 && node->y > 0 && node->y < 0x1e0 &&
             ((short)node->id == param_1 || (short)node->id == param_2 || (short)node->id == param_3)) {
@@ -1310,7 +1310,7 @@ void FUN_0046f100(short param_1) {
     DAT_006688cc = GetTicks();
     node = DAT_006687c8;
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     for (; node != NULL; node = node->next) {
         if ((node->flags & 0x400) == 0 && (short)node->id != param_1) {
             if (node->flags & 0x8) {
@@ -1327,7 +1327,7 @@ void FUN_0046f100(short param_1) {
             }
         }
     }
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     FUN_004760a0();
     RestoreClipping();
 }
@@ -1337,7 +1337,7 @@ LEGO_EXPORT void RenderHelpIcons(void) {
     struct PrintCtx ctx = {2};
     struct IconNode *node = DAT_006687cc;
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     for (; node != NULL; node = node->next) {
         if ((node->flags & 0x400) == 0 && node->x < 0x1e0 && node->x > 0) {
             if ((node->flags & 8) != 0) {

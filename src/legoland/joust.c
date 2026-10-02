@@ -105,7 +105,7 @@ struct JoustNode *AddJoustNode(TileId *key) {
 }
 
 // FUNCTION: LEGOLAND 0x004079e0
-void FUN_004079e0(Element *editObj, int *coords) {
+void JoustAddObject(Element *editObj, int *coords) {
     TileId key;
 
     key.pos.x = (unsigned char)coords[0];
@@ -186,9 +186,9 @@ void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
 // FUNCTION: LEGOLAND 0x00407b50
 void FUN_00407b50(struct JoustRoot *root) {
     Load_FXList(JOUST_SFX, 1);
-    DAT_004c121c = (unsigned int)root->field_c;
-    ((struct JoustBlock *)DAT_004c121c)->flags_1c |= 0x420;
-    DAT_004c1214 = (unsigned int)((struct JoustBlock *)DAT_004c121c)->field_64;
+    JoustRide = (unsigned int)root->field_c;
+    ((struct JoustBlock *)JoustRide)->flags_1c |= 0x420;
+    DAT_004c1214 = (unsigned int)((struct JoustBlock *)JoustRide)->field_64;
     ((struct JoustBlockData *)DAT_004c1214)->field_10 |= 0x2000;
     // STRING: LEGOLAND 0x004b46f4
     JoustFMaskSprite = LoadSprite("Joust_fmask.lls", 1);
@@ -738,9 +738,9 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
 }
 
 // FUNCTION: LEGOLAND 0x00408bc0
-void FUN_00408bc0(void) {
+void JoustSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = (void *)DAT_004c121c;
+    EditMode.unk8 = (void *)JoustRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
@@ -862,11 +862,11 @@ LEGO_EXPORT void Joust_GetInterfaces(struct ClassNode *head, struct CallbackTabl
     if (_stricmp("JOUST", head->name) == 0) {
         iface->cb_a4 = FUN_00407b50;
         iface->cb_ac = FUN_00408c00;
-        iface->cb_8c = FUN_00408bc0;
+        iface->cb_8c = JoustSetEditMode;
         iface->cb_a8 = FUN_00407c30;
         iface->cb_b0 = FUN_00408580;
         iface->cb_9c = FUN_00407ad0;
-        iface->cb_98 = FUN_004079e0;
+        iface->cb_98 = JoustAddObject;
         iface->cb_a0 = FUN_00408c50;
         iface->cb_bc = SaveJoust;
         iface->cb_b8 = LoadJoust;

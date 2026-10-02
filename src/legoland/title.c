@@ -146,7 +146,7 @@ unsigned char FUN_0048ff70(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ffb0
-void FUN_0048ffb0(void) {
+void KillTitleScreenBkSpriteAndRemoveIconGroup7(void) {
     if (SPRITE_TitleScreenBk != 0) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = 0;
@@ -171,7 +171,7 @@ unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
 unsigned char FUN_00490050(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        FUN_0048ffb0();
+        KillTitleScreenBkSpriteAndRemoveIconGroup7();
         FUN_0048fa40(DAT_007cb30c, DAT_007cb300, DAT_007cb2f0);
     }
     return 1;
@@ -544,7 +544,7 @@ void FUN_00490a20(unsigned int param_1) {
     sprintf(buffer, "%s%02d.wav", DAT_007cae80, param_1 + 1);
     SpeechCloseFile();
     SpeechLoadWavFile(buffer);
-    FUN_00498b00();
+    SpeechPlay();
     FUN_0046d390();
 }
 
@@ -555,7 +555,7 @@ void FUN_00490a60(unsigned int param_1) {
     sprintf(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
     SpeechCloseFile();
     SpeechLoadWavFile(buffer);
-    FUN_00498b00();
+    SpeechPlay();
     FUN_0046d390();
 }
 

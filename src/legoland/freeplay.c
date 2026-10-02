@@ -187,7 +187,7 @@ void FUN_0048abb0(void) {
     sprintf(buf, "FreePlayTest.txt");
     PauseGameTimer();
     FUN_00499410();
-    FUN_0047f810();
+    MarkGameTimer();
     CastlePlacedFlag = 0;
     ResetMapAI();
     DAT_00667c4c = FUN_0047afb0(buf);

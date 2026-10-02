@@ -671,7 +671,7 @@ void FUN_004784c0(void) {
     FUN_00482d70();
     FUN_00462e90();
     FUN_00476000();
-    FUN_00476050();
+    ClearButtonFlashStates();
     FUN_00490610(DAT_004d8bb0);
     FUN_00463560();
     ResetPathUpdateTimer();

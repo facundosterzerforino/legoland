@@ -1427,7 +1427,7 @@ void FUN_00473660(void) {
     if (DAT_00668960 == 0) {
         return;
     }
-    if (FUN_00498cf0() != 0) {
+    if (SpeechIsPlaying() != 0) {
         return;
     }
     FUN_004735b0();

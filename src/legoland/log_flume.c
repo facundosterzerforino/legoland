@@ -1430,11 +1430,11 @@ void FUN_0040a2a0(void *other, struct StateNode **ctx) {
 void FUN_0040a2e0(Element *elem) {
     struct LLS *lls;
 
-    DAT_004c2b9c = elem->ride;
-    DAT_004c2b9c->flags |= 0x20;
-    DAT_004c8d54 = DAT_004c2b9c->layer;
-    if (DAT_004c8d54 != NULL) {
-        DAT_004c8d54->flags |= 0x2000;
+    LogFlumeEntranceRide = elem->ride;
+    LogFlumeEntranceRide->flags |= 0x20;
+    LogFlumeEntranceLayer = LogFlumeEntranceRide->layer;
+    if (LogFlumeEntranceLayer != NULL) {
+        LogFlumeEntranceLayer->flags |= 0x2000;
     }
     DAT_004c2ae8 = (void *)FUN_00412100(&DAT_004b47b8);
     DAT_004c2af8 = (void *)FUN_00412100(&DAT_004b47e8);
@@ -1527,9 +1527,9 @@ void FUN_0040a410(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040a540
-void FUN_0040a540(void) {
+void LogFlumeEntranceSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_004c2b9c;
+    EditMode.unk8 = LogFlumeEntranceRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
@@ -1603,7 +1603,7 @@ void FUN_0040a600(Element *elem, int *pt) {
         if (node != NULL) {
             node->mode = 3;
             node->submode = 0;
-            node->ride = DAT_004cbe30;
+            node->ride = LogFlumeTrackRide;
             node->parent = entry;
             node->link28 = NULL;
             node->flags10d |= 3;
@@ -1613,13 +1613,13 @@ void FUN_0040a600(Element *elem, int *pt) {
         FUN_004091f0((struct Node *)entry, (struct ListNode *)node);
         coords[0] = node->tile.pos.x;
         coords[1] = node->tile.pos.y;
-        memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
-        DAT_004cbe30->footprint.x1--;
-        DAT_004cbe30->footprint.y1--;
+        memcpy(&LogFlumeTrackRide->footprint, &DAT_004b4728, sizeof(struct Footprint));
+        LogFlumeTrackRide->footprint.x1--;
+        LogFlumeTrackRide->footprint.y1--;
         AddBasicObject(DAT_004c74f4, coords);
         mid = FUN_00409010();
         mid->parent = entry;
-        mid->ride = DAT_004c2b9c;
+        mid->ride = LogFlumeEntranceRide;
         mid->tile = entry->tile;
         FUN_004091f0((struct Node *)entry, (struct ListNode *)mid);
         entry->link = mid;
@@ -1634,7 +1634,7 @@ void FUN_0040a600(Element *elem, int *pt) {
                 node->mode = 1;
                 node->submode = 0;
                 node->link28 = mid;
-                node->ride = DAT_004cbe30;
+                node->ride = LogFlumeTrackRide;
                 node->parent = entry;
                 node->flags10d |= 7;
                 node->tile.pos.x = pos[0] - DAT_004b4728;
@@ -1663,7 +1663,7 @@ void FUN_0040a600(Element *elem, int *pt) {
             node->submode = 2;
             node->flags10d |= 3;
             node->link28 = NULL;
-            node->ride = DAT_004cbe30;
+            node->ride = LogFlumeTrackRide;
             node->parent = entry;
             node->tile.pos.x = coords[0] - DAT_004b4728;
             node->tile.pos.y = coords[1] - DAT_004b472c;
@@ -1709,11 +1709,11 @@ void FUN_0040a930(Element *elem, int *param_2, unsigned int param_3) {
     FUN_0045f460(&DAT_004c8d78);
     x = EditCursor.tile_x;
     y = EditCursor.tile_y;
-    DAT_004c8d78.tile_x = DAT_004c2b9c->footprint.x0 + x;
-    DAT_004c8d78.tile_y = DAT_004c2b9c->footprint.y0 + y - h;
+    DAT_004c8d78.tile_x = LogFlumeEntranceRide->footprint.x0 + x;
+    DAT_004c8d78.tile_y = LogFlumeEntranceRide->footprint.y0 + y - h;
     DAT_004c8d78.tile_x++;
-    DAT_004c2c18.tile_x = DAT_004c2b9c->footprint.x0 + x;
-    DAT_004c2c18.tile_y = DAT_004c2b9c->footprint.y1 + y - 1 + h;
+    DAT_004c2c18.tile_x = LogFlumeEntranceRide->footprint.x0 + x;
+    DAT_004c2c18.tile_y = LogFlumeEntranceRide->footprint.y1 + y - 1 + h;
     DAT_004c2c18.tile_x++;
     memcpy(DAT_004c2c18.footprint.v, DAT_004c8d78.footprint.v, 20);
     FUN_0045f460(&DAT_004c2c18);
@@ -1772,15 +1772,15 @@ void FUN_0040abf0(Element *obj, TileId tile, struct Cursor *cursor_arg) {
         if (cur != NULL) {
             do {
                 next = cur->next;
-                memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, 20);
-                DAT_004cbe30->footprint.x1--;
-                DAT_004cbe30->footprint.y1--;
+                memcpy(&LogFlumeTrackRide->footprint, &DAT_004b4728, 20);
+                LogFlumeTrackRide->footprint.x1--;
+                LogFlumeTrackRide->footprint.y1--;
                 cursor.tile_x = cur->tile.pos.x + DAT_004b4728;
                 cursor.tile_y = cur->tile.pos.y + DAT_004b4730;
-                memcpy(cursor.footprint.v, &DAT_004cbe30->footprint, 20);
-                StandardRemoveObject(DAT_004cbe30->element, cur->tile, &cursor);
+                memcpy(cursor.footprint.v, &LogFlumeTrackRide->footprint, 20);
+                StandardRemoveObject(LogFlumeTrackRide->element, cur->tile, &cursor);
                 if (cur->flags10 & 2) {
-                    UseBricks(GetObjCost(DAT_004cbe30));
+                    UseBricks(GetObjCost(LogFlumeTrackRide));
                 }
                 FUN_00409270((struct Node *)entry, (struct Node *)cur);
                 cur = next;
@@ -1788,7 +1788,7 @@ void FUN_0040abf0(Element *obj, TileId tile, struct Cursor *cursor_arg) {
         }
         FreeAllQueueNodes((struct Queue *)&entry->sub2);
         FUN_00408e80(entry);
-        DAT_004cbe30->field_8++;
+        LogFlumeTrackRide->field_8++;
     }
     RemoveAllBlokesFromRide(obj->ride, tile);
 }
@@ -2432,7 +2432,7 @@ void FUN_0040be00(struct FlumeSlotSet *set) {
     } else {
         FUN_0040a580((struct ParticleEmitter *)set);
     }
-    FUN_004120a0((struct Queue *)set->queue, DAT_004c2b9c->x + set->tile.pos.x, DAT_004c2b9c->y + set->tile.pos.y);
+    FUN_004120a0((struct Queue *)set->queue, LogFlumeEntranceRide->x + set->tile.pos.x, LogFlumeEntranceRide->y + set->tile.pos.y);
     if (FUN_00411e60((struct Queue *)set->queue)) {
         Ride_SetFlagToNotLetAnyoneOn(&set->tile);
     } else {
@@ -2649,10 +2649,10 @@ int FUN_0040c2e0(struct FlumeChainOwner *owner) {
 void FUN_0040c350(Element *elem) {
     int i;
 
-    DAT_004cbe30 = elem->ride;
-    DAT_004cbe30->flags |= 0x400;
-    DAT_004cbe30->field_18 = 0;
-    DAT_004cbe30->field_14 = 0;
+    LogFlumeTrackRide = elem->ride;
+    LogFlumeTrackRide->flags |= 0x400;
+    LogFlumeTrackRide->field_18 = 0;
+    LogFlumeTrackRide->field_14 = 0;
     DAT_004c74f4 = elem;
     // STRING: LEGOLAND 0x004b4a0c
     if (LLIDB_FindElement("LOG FLUME IMAGE LIST", &LogFlumeImageListId, 0) == 0) {
@@ -2810,7 +2810,7 @@ void FUN_0040c780(int unused, struct Point *pt) {
     coords[1] = t.pos.y;
     entry = FUN_00409010();
     if (entry != NULL) {
-        entry->ride = DAT_004cbe30;
+        entry->ride = LogFlumeTrackRide;
         entry->link28 = NULL;
         entry->tile.pos.x = DAT_004b4728 + coords[0];
         entry->tile.pos.y = DAT_004b472c + coords[1];
@@ -2840,9 +2840,9 @@ void FUN_0040c780(int unused, struct Point *pt) {
             entry->parent = (struct FlumeEntry *)key;
             FUN_004094b0(key, list);
             FUN_004091f0((struct Node *)key, (struct ListNode *)entry);
-            memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
-            DAT_004cbe30->footprint.x1--;
-            DAT_004cbe30->footprint.y1--;
+            memcpy(&LogFlumeTrackRide->footprint, &DAT_004b4728, sizeof(struct Footprint));
+            LogFlumeTrackRide->footprint.x1--;
+            LogFlumeTrackRide->footprint.y1--;
             AddBasicObject(DAT_004c74f4, coords);
             FUN_00409c20(entry, (unsigned int *)list);
             FUN_004097a0(entry, (struct StateSlots *)list);
@@ -2854,9 +2854,9 @@ void FUN_0040c780(int unused, struct Point *pt) {
 void FUN_0040c8d0(Element *elem, TileId tile, struct Cursor *cursor) {
     struct FlumeEntry *entry;
 
-    memcpy(&DAT_004cbe30->footprint, &DAT_004b4728, sizeof(struct Footprint));
-    DAT_004cbe30->footprint.x1--;
-    DAT_004cbe30->footprint.y1--;
+    memcpy(&LogFlumeTrackRide->footprint, &DAT_004b4728, sizeof(struct Footprint));
+    LogFlumeTrackRide->footprint.x1--;
+    LogFlumeTrackRide->footprint.y1--;
     StandardRemoveObject(elem, tile, cursor);
     entry = FUN_00408ef0(&tile);
     FUN_004119a0((struct ParticleEmitter *)entry->parent, -1);
@@ -3195,10 +3195,10 @@ struct Point FUN_0040cfd0(struct FlumeEntry *entry) {
     struct Point off;
     int idx;
 
-    if (entry->ride == DAT_004c2b9c) {
-        return GetScreenCoordsForObject(&entry->parent->tile, DAT_004c2b9c);
+    if (entry->ride == LogFlumeEntranceRide) {
+        return GetScreenCoordsForObject(&entry->parent->tile, LogFlumeEntranceRide);
     }
-    if (entry->ride == DAT_004cbe30) {
+    if (entry->ride == LogFlumeTrackRide) {
         entry->ride->field_18 = 0;
         entry->ride->field_14 = 0;
         pos = GetScreenCoordsForObject(&entry->tile, entry->ride);
@@ -3227,13 +3227,13 @@ void FUN_0040d090(struct FlumeEntry *entry, struct Footprint **out, TileId *tile
     if (cur->link28 == (struct FlumeEntry *)-1) {
         tile->pos.x = cur->parent->tile.pos.x;
         tile->pos.y = cur->parent->tile.pos.y;
-        DAT_004c2aa8 = DAT_004c2b9c->footprint;
+        DAT_004c2aa8 = LogFlumeEntranceRide->footprint;
         DAT_004c2aa8.x1 = DAT_004c2aa8.x0 + (DAT_004b4730 - DAT_004b4728) * 2;
         *out = &DAT_004c2aa8;
         return;
     }
     r = cur->ride;
-    if (r == DAT_004cbe30) {
+    if (r == LogFlumeTrackRide) {
         v = DAT_004b4730;
         memcpy(&DAT_004c8d38, &DAT_004b4728, sizeof(struct Footprint));
         DAT_004c8d38.x1 = v - 1;
@@ -3618,7 +3618,7 @@ void FUN_0040dbb0(void) {
     memcpy(local, &DAT_004b4728, sizeof(local));
     local[2] = v - 1;
     local[3] = local[3] - 1;
-    FUN_0040d3b0(DAT_004cbe30, local);
+    FUN_0040d3b0(LogFlumeTrackRide, local);
 }
 
 // FUNCTION: LEGOLAND 0x0040dc00
@@ -3643,7 +3643,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
             if (n != NULL) {
                 n->mode = 3;
                 n->submode = 0;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->slotset = entry->slotset;
                 n->flags10d |= 4;
                 n->link28 = entry;
@@ -3660,7 +3660,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 0;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3675,7 +3675,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 0;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3690,7 +3690,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3705,7 +3705,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3722,7 +3722,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3737,7 +3737,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3752,7 +3752,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3767,7 +3767,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 0;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3782,7 +3782,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 2;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3799,7 +3799,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 2;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3814,7 +3814,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 0;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3829,7 +3829,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 2;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3844,7 +3844,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3859,7 +3859,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 3;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3874,7 +3874,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 3;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3889,7 +3889,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 1;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3904,7 +3904,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 3;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3919,7 +3919,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 0;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -3934,7 +3934,7 @@ void FUN_0040dc00(struct FlumeEntry *entry) {
                 n->submode = 0;
                 n->slotset = entry->slotset;
                 n->link28 = entry;
-                n->ride = DAT_004cbe30;
+                n->ride = LogFlumeTrackRide;
                 n->flags10d |= 4;
                 n->tile.pos.x = t.x;
                 n->tile.pos.y = t.y;
@@ -4481,7 +4481,7 @@ static __inline struct FlumeNode *NewFlumeNode(struct FlumeNode *parent, int mod
         node->submode = submode;
         node->owner = parent->owner;
         node->entry = parent;
-        node->ride = (struct Ride *)DAT_004cbe30;
+        node->ride = (struct Ride *)LogFlumeTrackRide;
         node->flags |= 4;
         node->tile.pos.x = x;
         node->tile.pos.y = y;
@@ -5305,10 +5305,10 @@ int LogFlumeEntrance_Save(void) {
             buf.field_c = (struct FlumeNode *)FUN_004107b0((struct FlumeNode *)buf.sub, buf.field_c);
             buf.link = (struct FlumeEntry *)FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)buf.link);
             buf.target = (void *)FUN_00410910(entry);
-            FUN_004123c0((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, &buf.queue);
+            FUN_004123c0((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, &buf.queue);
             for (i = 0; i < 4; i++) {
                 buf.slots[i].owner = FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)buf.slots[i].owner);
-                buf.slots[i].busy = FUN_004123a0((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, (struct QueueNode *)buf.slots[i].busy);
+                buf.slots[i].busy = FUN_004123a0((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, (struct QueueNode *)buf.slots[i].busy);
             }
             SaveGameWrite(&buf, sizeof(buf));
             entry = entry->next;
@@ -5431,7 +5431,7 @@ int LogFlumeEntrance_Load(void) {
         }
         head = FUN_00410a50(cur, NULL);
         FUN_00410bb0(head, head);
-        FUN_00412490((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, &queue);
+        FUN_00412490((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, &queue);
         SaveGameRead(cur, 0xd4);
         cur->sub = (struct FlumeEntry *)head;
         cur->queue = queue;
@@ -5442,7 +5442,7 @@ int LogFlumeEntrance_Load(void) {
         slot = cur->slots;
         for (i = 4; i != 0; i--) {
             slot->owner = (int)FUN_00410b60(cur->sub, slot->owner);
-            slot->busy = (int)GetNthNextQueueNode((struct QueueNode *)((struct Ride *)DAT_004c2b9c)->riders, slot->busy);
+            slot->busy = (int)GetNthNextQueueNode((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, slot->busy);
             slot++;
         }
         SaveGameRead(&marker, 4);
@@ -5455,7 +5455,7 @@ void LogFlume_GetInterfaces(struct ClassNode *flume, struct CallbackTable *vtbl)
     // STRING: LEGOLAND 0x004b4bb4
     if (_stricmp("LOG FLUME ENTRANCE", flume->name) == 0) {
         vtbl->cb_a4 = FUN_0040a2e0;
-        vtbl->cb_8c = FUN_0040a540;
+        vtbl->cb_8c = LogFlumeEntranceSetEditMode;
         vtbl->cb_90 = FUN_0040a930;
         vtbl->cb_94 = FUN_0040aac0;
         vtbl->cb_98 = FUN_0040a600;

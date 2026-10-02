@@ -102,7 +102,7 @@ int GetBlokeMood(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00482d60
-void FUN_00482d60(unsigned int index, int value) {
+void SetMoodDelta(unsigned int index, int value) {
     MapStats.mood_delta[index] = value;
 }
 

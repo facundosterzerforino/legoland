@@ -150,7 +150,7 @@ void FUN_00432700(Element *obj, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x00432810
-struct RideSpriteInfo *FUN_00432810(int unused, TileId tile) {
+struct RideSpriteInfo *GetHedgeSpriteInfo(int unused, TileId tile) {
     struct GardenTable *t;
     int i;
 
@@ -201,7 +201,7 @@ void FUN_00432900(int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00432960
-struct RideSpriteInfo *FUN_00432960(int unused, TileId tile) {
+struct RideSpriteInfo *GetFlowerSpriteInfo(int unused, TileId tile) {
     struct GardenTable *t;
     int i;
 
@@ -221,7 +221,7 @@ void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
         iface->cb_8c = FUN_004324d0;
         iface->cb_98 = FUN_004325e0;
         iface->cb_9c = FUN_00432700;
-        iface->cb_a0 = FUN_00432810;
+        iface->cb_a0 = GetHedgeSpriteInfo;
         iface->cb_ac = UnloadHedgeImages;
         return;
     }
@@ -230,7 +230,7 @@ void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
         iface->cb_a4 = LoadFlowerImages;
         iface->cb_8c = FUN_004328c0;
         iface->cb_98 = FUN_00432900;
-        iface->cb_a0 = FUN_00432960;
+        iface->cb_a0 = GetFlowerSpriteInfo;
         iface->cb_ac = UnloadFlowerImages;
     }
 }

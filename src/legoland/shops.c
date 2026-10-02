@@ -857,7 +857,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b75fc
     if (_stricmp("GENERAL STORE", name->name) == 0) {
         ci->cb_a4 = FUN_004375d0;
-        ci->cb_ac = FUN_00437610;
+        ci->cb_ac = KillGStoreMatteSpritesAndMoneySFX;
         ci->cb_8c = FUN_00437630;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_004378e0;
@@ -868,7 +868,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b75f4
     if (_stricmp("SHERIFF", name->name) == 0) {
         ci->cb_a4 = FUN_00437ba0;
-        ci->cb_ac = FUN_00437bd0;
+        ci->cb_ac = KillSherifshutMatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_00437bf0;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_00437c90;
@@ -893,7 +893,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b75e0
     if (_stricmp("BANK", name->name) == 0) {
         ci->cb_a4 = FUN_00438870;
-        ci->cb_ac = FUN_004388a0;
+        ci->cb_ac = KillBankMatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_004388c0;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_00438960;
@@ -904,7 +904,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b75d8
     if (_stricmp("SALOON", name->name) == 0) {
         ci->cb_a4 = FUN_00438c60;
-        ci->cb_ac = FUN_00438ca0;
+        ci->cb_ac = KillSaloonMatteSpritesAndMoneySFX;
         ci->cb_8c = FUN_00438cc0;
         ci->cb_a0 = FUN_0043a390;
         ci->cb_a8 = FUN_00438f10;

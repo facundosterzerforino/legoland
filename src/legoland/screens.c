@@ -274,7 +274,7 @@ void FUN_00458a50(void) {
         CastlePlacedFlag = 0;
         PauseGameTimer();
         FUN_00499410();
-        FUN_0047f810();
+        MarkGameTimer();
         // STRING: LEGOLAND 0x004b9150
         sprintf(buf, "objlist%d.txt", lpConfig->level);
         SetBricksLimited(0);
@@ -368,7 +368,7 @@ int FUN_00458c00(void) {
     } else if (DAT_00667c64 != 0) {
         PauseGameTimer();
         FUN_00499410();
-        FUN_0047f810();
+        MarkGameTimer();
         DAT_006687bc = 0;
         DAT_006687c0 = 0;
         CastlePlacedFlag = 0;

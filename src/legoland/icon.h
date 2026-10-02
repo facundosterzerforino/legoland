@@ -64,7 +64,7 @@ LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprit
 LEGO_EXPORT struct IconNode *LoadSpriteIcon(const char *filename, unsigned int param_2, short param_3, short param_4, int param_5);
 void FUN_0046dac0(void);
 void FUN_0046db40(void);
-int FUN_0046df60(int param);
+int SetClippingToScreenRect(int param);
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node);
 LEGO_EXPORT void RenderHelpIcons(void);
 void FUN_0046fb40(unsigned int group);

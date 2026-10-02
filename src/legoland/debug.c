@@ -219,11 +219,11 @@ int __cdecl wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
     // STRING: LEGOLAND 0x004bcd70
     if (StrIStr(lpCmdLine, "WINDEBUG")) {
-        DAT_004b9ca4 = BlitFrameToWindow;
-        DAT_00667d6c = 1;
+        BlitFrameFunc = BlitFrameToWindow;
+        WinDebugMode = 1;
         // STRING: LEGOLAND 0x004bcd6c
     } else if (StrIStr(lpCmdLine, "BLT")) {
-        DAT_004b9ca4 = BlitFrameToWindow;
+        BlitFrameFunc = BlitFrameToWindow;
     }
 
     // STRING: LEGOLAND 0x004bcd60

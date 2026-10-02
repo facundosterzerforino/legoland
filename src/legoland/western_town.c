@@ -73,7 +73,7 @@ void FUN_004375d0(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00437610
-void FUN_00437610(void) {
+void KillGStoreMatteSpritesAndMoneySFX(void) {
     KillSprite(GStoreMatteSprite);
     KillSprite(GStoreMatte2Sprite);
     KillMoneySFX();
@@ -319,7 +319,7 @@ void FUN_00437ba0(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00437bd0
-void FUN_00437bd0(void) {
+void KillSherifshutMatteSpriteAndMoneySFX(void) {
     KillSprite(SherifshutMatteSprite);
     KillMoneySFX();
 }
@@ -847,7 +847,7 @@ void FUN_00438870(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x004388a0
-void FUN_004388a0(void) {
+void KillBankMatteSpriteAndMoneySFX(void) {
     KillSprite(BankMatteSprite);
     KillMoneySFX();
 }
@@ -1007,7 +1007,7 @@ void FUN_00438c60(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00438ca0
-void FUN_00438ca0(void) {
+void KillSaloonMatteSpritesAndMoneySFX(void) {
     KillSprite(SaloonMatte1Sprite);
     KillSprite(SaloonMatte2Sprite);
     KillMoneySFX();

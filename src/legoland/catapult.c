@@ -187,7 +187,7 @@ void FUN_004031e0(struct CatapultLayer *param1) {
 }
 
 // FUNCTION: LEGOLAND 0x00403250
-void FUN_00403250(void) {
+void CatapultFreeNodesAndKillSfx(void) {
     Catapult_FreeNodes();
     Kill_FXList(Catapult_SFX, 4);
 }
@@ -460,7 +460,7 @@ void FUN_00403820(struct Element *elem) {
 }
 
 // FUNCTION: LEGOLAND 0x00403930
-void FUN_00403930(void) {
+void CatapultSetEditMode(void) {
     EditMode.unk8 = DAT_004c10f4;
     EditMode.unk0 = 1;
     EditMode.unk8 = DAT_004c10f4;
@@ -469,7 +469,7 @@ void FUN_00403930(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403970
-void FUN_00403970(struct EditObject *edit2, struct CatapultEdit *edit) {
+void CatapultAddObject(struct EditObject *edit2, struct CatapultEdit *edit) {
     struct CatapultKey key;
 
     key.field_0 = edit->field_0;
@@ -611,12 +611,12 @@ void Catapult_GetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b412c
     if (_stricmp("CATAPULT", name->name) == 0) {
         ci->cb_a4 = FUN_004031e0;
-        ci->cb_ac = FUN_00403250;
-        ci->cb_8c = FUN_00403930;
+        ci->cb_ac = CatapultFreeNodesAndKillSfx;
+        ci->cb_8c = CatapultSetEditMode;
         ci->cb_a8 = FUN_00403820;
         ci->cb_b0 = FUN_00403270;
         ci->cb_9c = FUN_004039a0;
-        ci->cb_98 = FUN_00403970;
+        ci->cb_98 = CatapultAddObject;
         ci->cb_a0 = FUN_004039e0;
         ci->cb_bc = Catapult_Save;
         ci->cb_b8 = Catapult_Load;

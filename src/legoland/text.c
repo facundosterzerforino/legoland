@@ -117,13 +117,13 @@ void UnloadBubbleHelpGFX(void) {
 LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id) {
     switch (font_id) {
     case 1:
-        return SelectObject(hdc, PTR_0066808c);
+        return SelectObject(hdc, LegoFont20Bold);
     case 2:
-        return SelectObject(hdc, PTR_00668094);
+        return SelectObject(hdc, LegoFont18SemiBold);
     case 3:
-        return SelectObject(hdc, PTR_00668098);
+        return SelectObject(hdc, LegoFont28Normal);
     default:
-        return SelectObject(hdc, PTR_00668090);
+        return SelectObject(hdc, LegoFont24Bold);
     }
 }
 

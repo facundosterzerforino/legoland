@@ -1298,19 +1298,19 @@ void FUN_00476000(void) {
 void FUN_00476020(void) {}
 
 // FUNCTION: LEGOLAND 0x00476030
-void FUN_00476030(int index, unsigned int value) {
+void SetButtonFlashState(int index, unsigned int value) {
     if (index >= 0 && index < 9) {
         ButtonFlashStates[index] = value;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00476050
-void FUN_00476050(void) {
+void ClearButtonFlashStates(void) {
     int i;
 
     i = 0;
     while (i < 9) {
-        FUN_00476030(i, 0);
+        SetButtonFlashState(i, 0);
         i++;
     }
 }
@@ -1324,7 +1324,7 @@ void FUN_00476070(int mask, unsigned int value) {
     bit = 1;
     while (1) {
         if (mask & bit) {
-            FUN_00476030(i, value);
+            SetButtonFlashState(i, value);
         }
         i++;
         bit <<= 1;
@@ -1619,21 +1619,21 @@ int GetPerformanceTime(void) {
     LARGE_INTEGER count;
     unsigned int state;
 
-    state = DAT_00668fac;
+    state = PerfCounterState;
     if (state == 0) {
         if (QueryPerformanceFrequency(&freq) == 0) {
             state = 1;
-            DAT_00668fac = state;
+            PerfCounterState = state;
         } else {
             state = 2;
-            DAT_00668fac = state;
-            DAT_007fdca8 = DAT_004ab528 / (float)freq.QuadPart;
+            PerfCounterState = state;
+            PerfCounterScale = DAT_004ab528 / (float)freq.QuadPart;
         }
     }
     switch (state) {
     case 2:
         QueryPerformanceCounter(&count);
-        return (float)count.QuadPart * DAT_007fdca8;
+        return (float)count.QuadPart * PerfCounterScale;
     default:
         return GetTickCount();
     }
@@ -1746,20 +1746,20 @@ int FUN_00476910(struct MovieHandle *handle) {
     if (AVIStreamInfoA(handle->audio_stream, &info, 0x8c) != 0) {
         return 0;
     }
-    DAT_00668f64 = info.sample_size;
+    AviAudioSampleSize = info.sample_size;
     AVIStreamReadFormat(handle->audio_stream, 0, 0, &fmt_size);
     fmt = (WAVEFORMATEX *)malloc(fmt_size);
     if (fmt == NULL) {
         return 0;
     }
     AVIStreamReadFormat(handle->audio_stream, 0, fmt, &fmt_size);
-    DAT_00668f70.wFormatTag = 1;
-    DAT_00668f70.nChannels = fmt->nChannels;
-    DAT_00668f70.nSamplesPerSec = fmt->nSamplesPerSec;
-    DAT_00668f70.nBlockAlign = fmt->nChannels << 1;
-    DAT_00668f70.nAvgBytesPerSec = (DAT_00668f70.nBlockAlign & 0xffff) * fmt->nSamplesPerSec;
-    DAT_00668f70.wBitsPerSample = 0x10;
-    DAT_00668f70.cbSize = 0;
+    AviPcmFormat.wFormatTag = 1;
+    AviPcmFormat.nChannels = fmt->nChannels;
+    AviPcmFormat.nSamplesPerSec = fmt->nSamplesPerSec;
+    AviPcmFormat.nBlockAlign = fmt->nChannels << 1;
+    AviPcmFormat.nAvgBytesPerSec = (AviPcmFormat.nBlockAlign & 0xffff) * fmt->nSamplesPerSec;
+    AviPcmFormat.wBitsPerSample = 0x10;
+    AviPcmFormat.cbSize = 0;
     if (fmt->wFormatTag != 2 && fmt->wFormatTag != 0x11) {
         DAT_00668ee0 = 0;
         DAT_00668f9c = 0;
@@ -1767,50 +1767,50 @@ int FUN_00476910(struct MovieHandle *handle) {
         DAT_00668f3c = fmt->nAvgBytesPerSec / handle->field_4;
         DAT_00668f90 = fmt->nSamplesPerSec / handle->field_4;
         DAT_00668f4c = fmt->wBitsPerSample;
-        DAT_00668f84 = handle->audio_stream;
-        DAT_00668f48 = KLIBAUDIO_CreateAVISoundBuffer(fmt, DAT_00668f3c * DAT_00668fa4);
+        AviAudioStream = handle->audio_stream;
+        AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(fmt, DAT_00668f3c * DAT_00668fa4);
         return 1;
     }
     DAT_00668ee0 = 1;
-    DAT_00668f70.wFormatTag = 1;
-    DAT_00668f70.nChannels = fmt->nChannels;
-    DAT_00668f70.nSamplesPerSec = fmt->nSamplesPerSec;
-    DAT_00668f70.nBlockAlign = fmt->nChannels << 1;
-    DAT_00668f70.nAvgBytesPerSec = (DAT_00668f70.nBlockAlign & 0xffff) * fmt->nSamplesPerSec;
-    DAT_00668f70.wBitsPerSample = 0x10;
-    DAT_00668f70.cbSize = 0;
-    DAT_00668f44 = acmStreamOpen(&DAT_00668f5c, 0, fmt, &DAT_00668f70, 0, 0, 0, 4);
-    if (DAT_00668f44 != 0) {
+    AviPcmFormat.wFormatTag = 1;
+    AviPcmFormat.nChannels = fmt->nChannels;
+    AviPcmFormat.nSamplesPerSec = fmt->nSamplesPerSec;
+    AviPcmFormat.nBlockAlign = fmt->nChannels << 1;
+    AviPcmFormat.nAvgBytesPerSec = (AviPcmFormat.nBlockAlign & 0xffff) * fmt->nSamplesPerSec;
+    AviPcmFormat.wBitsPerSample = 0x10;
+    AviPcmFormat.cbSize = 0;
+    AcmStreamOpenResult = acmStreamOpen(&AviAcmStream, 0, fmt, &AviPcmFormat, 0, 0, 0, 4);
+    if (AcmStreamOpenResult != 0) {
         return 0;
     }
     DAT_00668f9c = 0;
     DAT_00668f50 = DAT_00668fa4;
-    DAT_00668f3c = DAT_00668f70.nAvgBytesPerSec / handle->field_4;
-    DAT_00668f90 = DAT_00668f70.nSamplesPerSec / handle->field_4;
-    DAT_00668f4c = DAT_00668f70.wBitsPerSample;
-    DAT_00668f84 = handle->audio_stream;
-    DAT_00668f48 = KLIBAUDIO_CreateAVISoundBuffer(&DAT_00668f70, DAT_00668f3c * DAT_00668fa4);
-    p = DAT_00668ee8;
+    DAT_00668f3c = AviPcmFormat.nAvgBytesPerSec / handle->field_4;
+    DAT_00668f90 = AviPcmFormat.nSamplesPerSec / handle->field_4;
+    DAT_00668f4c = AviPcmFormat.wBitsPerSample;
+    AviAudioStream = handle->audio_stream;
+    AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(&AviPcmFormat, DAT_00668f3c * DAT_00668fa4);
+    p = AviAcmStreamHeader;
     for (i = 0x15; i != 0; i--) {
         *p = 0;
         p++;
     }
-    DAT_00668ee8[8] = DAT_00668f3c;
-    DAT_00668ee8[0] = 0x54;
-    acmStreamSize(DAT_00668f5c, DAT_00668f3c, &DAT_00668ee8[4], 1);
-    DAT_00668ee8[3] = (unsigned int)malloc(DAT_00668ee8[4]);
-    DAT_00668ee8[7] = (unsigned int)malloc(DAT_00668ee8[8] * 3);
-    DAT_00668f8c = (void *)DAT_00668ee8[7];
+    AviAcmStreamHeader[8] = DAT_00668f3c;
+    AviAcmStreamHeader[0] = 0x54;
+    acmStreamSize(AviAcmStream, DAT_00668f3c, &AviAcmStreamHeader[4], 1);
+    AviAcmStreamHeader[3] = (unsigned int)malloc(AviAcmStreamHeader[4]);
+    AviAcmStreamHeader[7] = (unsigned int)malloc(AviAcmStreamHeader[8] * 3);
+    DAT_00668f8c = (void *)AviAcmStreamHeader[7];
     DAT_00668f54 = 0;
-    if (DAT_00668ee8[3] != 0 && DAT_00668ee8[7] != 0) {
+    if (AviAcmStreamHeader[3] != 0 && AviAcmStreamHeader[7] != 0) {
         return 1;
     }
-    acmStreamClose(DAT_00668f5c, 0);
-    if (DAT_00668ee8[3] != 0) {
-        free((void *)DAT_00668ee8[3]);
+    acmStreamClose(AviAcmStream, 0);
+    if (AviAcmStreamHeader[3] != 0) {
+        free((void *)AviAcmStreamHeader[3]);
     }
-    if (DAT_00668ee8[7] != 0) {
-        free((void *)DAT_00668ee8[7]);
+    if (AviAcmStreamHeader[7] != 0) {
+        free((void *)AviAcmStreamHeader[7]);
     }
     return 0;
 }
@@ -1820,7 +1820,7 @@ int StartMovieAudio(struct MovieHandle *handle) {
     unsigned int start;
     unsigned int len_start;
 
-    if (handle->audio_stream != NULL && DAT_00668f48 != NULL) {
+    if (handle->audio_stream != NULL && AviSoundBuffer != NULL) {
         start = AVIStreamStart(handle->audio_stream);
         len_start = AVIStreamLength(handle->audio_stream) + AVIStreamStart(handle->audio_stream);
         DAT_00668f58 = start;
@@ -1828,8 +1828,8 @@ int StartMovieAudio(struct MovieHandle *handle) {
         DAT_00668f88 = len_start;
         DAT_00668f9c = 1;
         FUN_00476d20(0, 0);
-        KLIBAUDIO_SetAVIVolume(DAT_00668f48, (int)DAT_004bb4dc);
-        KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, 0);
+        KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)DAT_004bb4dc);
+        KLIBAUDIO_PlayAVISoundBuffer(AviSoundBuffer, 0);
         return 1;
     }
     return 0;
@@ -1839,19 +1839,19 @@ int StartMovieAudio(struct MovieHandle *handle) {
 int StopMovieAudio(void) {
     if (DAT_00668f9c != 0) {
         DAT_00668f9c = 0;
-        KLIBAUDIO_StopAVISoundBuffer(DAT_00668f48);
+        KLIBAUDIO_StopAVISoundBuffer(AviSoundBuffer);
         if (DAT_00668ee0 != 0) {
-            if (DAT_00668ee8[3] != 0) {
-                free((void *)DAT_00668ee8[3]);
-                DAT_00668ee8[3] = 0;
+            if (AviAcmStreamHeader[3] != 0) {
+                free((void *)AviAcmStreamHeader[3]);
+                AviAcmStreamHeader[3] = 0;
             }
             if (DAT_00668f8c != NULL) {
                 free(DAT_00668f8c);
                 DAT_00668f8c = NULL;
             }
-            acmStreamClose(DAT_00668f5c, 0);
+            acmStreamClose(AviAcmStream, 0);
         }
-        return KLIBAUDIO_DestroyAVISoundBuffer(DAT_00668f48);
+        return KLIBAUDIO_DestroyAVISoundBuffer(AviSoundBuffer);
     }
     return 0;
 }
@@ -1868,7 +1868,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
     unsigned int count;
 
     play = 0;
-    if (DAT_00668f9c == 0 || DAT_00668f84 == NULL) {
+    if (DAT_00668f9c == 0 || AviAudioStream == NULL) {
         return 0;
     }
     do {
@@ -1879,7 +1879,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
         } else {
             loops = param_1 - param_2;
             if (loops >= DAT_00668f50) {
-                KLIBAUDIO_StopAVISoundBuffer(DAT_00668f48);
+                KLIBAUDIO_StopAVISoundBuffer(AviSoundBuffer);
                 DAT_00668f60 = DAT_00668f90 * param_1;
                 DAT_00668fa0 = param_1 % DAT_00668f50;
                 play = 1;
@@ -1891,7 +1891,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
         }
         count = loops;
         do {
-            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(DAT_00668f48, DAT_00668f3c * DAT_00668fa0, DAT_00668f3c);
+            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, DAT_00668f3c * DAT_00668fa0, DAT_00668f3c);
             if (DAT_00668f60 < DAT_00668f88 && DAT_00668f60 >= 0) {
                 if (DAT_00668ee0 != 0) {
                     produced = 0;
@@ -1909,13 +1909,13 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                                 }
                             } else {
                                 while (DAT_00668fb4 < DAT_00668f3c) {
-                                    AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
-                                    DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
-                                    acmStreamPrepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                                    acmStreamConvert(DAT_00668f5c, DAT_00668ee8, 0x10);
-                                    acmStreamUnprepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                                    produced += DAT_00668ee8[9];
-                                    DAT_00668fb4 += DAT_00668ee8[9];
+                                    AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
+                                    AviAcmStreamHeader[7] = (unsigned int)DAT_00668f8c + produced;
+                                    acmStreamPrepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
+                                    acmStreamConvert(AviAcmStream, AviAcmStreamHeader, 0x10);
+                                    acmStreamUnprepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
+                                    produced += AviAcmStreamHeader[9];
+                                    DAT_00668fb4 += AviAcmStreamHeader[9];
                                     DAT_00668f60++;
                                 }
                                 memcpy(dst + (DAT_00668f3c - rem), DAT_00668f8c, rem);
@@ -1933,13 +1933,13 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                         }
                     } else {
                         while (DAT_00668fb4 < DAT_00668f3c) {
-                            AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
-                            DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
-                            acmStreamPrepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                            acmStreamConvert(DAT_00668f5c, DAT_00668ee8, 0x10);
-                            acmStreamUnprepareHeader(DAT_00668f5c, DAT_00668ee8, 0);
-                            produced += DAT_00668ee8[9];
-                            DAT_00668fb4 += DAT_00668ee8[9];
+                            AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
+                            AviAcmStreamHeader[7] = (unsigned int)DAT_00668f8c + produced;
+                            acmStreamPrepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
+                            acmStreamConvert(AviAcmStream, AviAcmStreamHeader, 0x10);
+                            acmStreamUnprepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
+                            produced += AviAcmStreamHeader[9];
+                            DAT_00668fb4 += AviAcmStreamHeader[9];
                             DAT_00668f60++;
                         }
                         memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
@@ -1947,7 +1947,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                         DAT_00668fb4 -= DAT_00668f3c;
                     }
                 } else {
-                    AVIStreamRead(DAT_00668f84, DAT_00668f60, DAT_00668f90, dst, DAT_00668f3c, &bytes_out, &param_2);
+                    AVIStreamRead(AviAudioStream, DAT_00668f60, DAT_00668f90, dst, DAT_00668f3c, &bytes_out, &param_2);
                 }
             } else {
                 if (DAT_00668f4c == 8) {
@@ -1959,7 +1959,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                     DAT_00668f60++;
                 }
             }
-            KLIBAUDIO_UnLockAVISoundBuffer(DAT_00668f48);
+            KLIBAUDIO_UnLockAVISoundBuffer(AviSoundBuffer);
             if (DAT_00668ee0 == 0) {
                 DAT_00668f60 += DAT_00668f90;
             }
@@ -1971,8 +1971,8 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
         } while (count != 0);
     } while (0);
     if (play != 0) {
-        KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, play_pos);
-        KLIBAUDIO_SetAVIVolume(DAT_00668f48, (int)DAT_004bb4dc);
+        KLIBAUDIO_PlayAVISoundBuffer(AviSoundBuffer, play_pos);
+        KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)DAT_004bb4dc);
     }
     return 1;
 }

@@ -735,7 +735,7 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
         goto stop_perf;
     }
     UpdateSoundVols();
-    DAT_0079a69c = CreateEvent(NULL, TRUE, FALSE, NULL);
+    DMusicNotificationEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     DAT_0079a6a0 = CreateEvent(NULL, TRUE, FALSE, NULL);
     if (DAT_0079a6a0 == NULL) {
         goto clear_loader;
@@ -875,7 +875,7 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
         // STRING: LEGOLAND 0x004bf894
         IMT_GET(33, L"wmtran2");
     }
-    DMusicPerformance->vtable->SetNotificationHandle(DMusicPerformance, DAT_0079a69c, 0);
+    DMusicPerformance->vtable->SetNotificationHandle(DMusicPerformance, DMusicNotificationEvent, 0);
     DMusicPerformance->vtable->AddNotificationType(DMusicPerformance, &GUID_NOTIFICATION_MEASUREANDBEAT);
     DMusicPerformance->vtable->AddNotificationType(DMusicPerformance, &GUID_NOTIFICATION_SEGMENT);
     for (theme = 1; theme < 5; theme++) {
@@ -892,7 +892,7 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
     }
     DAT_007988bc = 1;
     DMusicInitialised = 1;
-    events[0] = DAT_0079a69c;
+    events[0] = DMusicNotificationEvent;
     events[1] = DAT_0079a6a0;
     // STRING: LEGOLAND 0x004bf87c
     DBPrintf("Entering IMT Control\n");
@@ -929,8 +929,8 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
                 DAT_0079a6a4 = 0;
             }
         }
-        if (WaitForSingleObject(DAT_0079a69c, 0) == WAIT_OBJECT_0) {
-            ResetEvent(DAT_0079a69c);
+        if (WaitForSingleObject(DMusicNotificationEvent, 0) == WAIT_OBJECT_0) {
+            ResetEvent(DMusicNotificationEvent);
             while (DMusicPerformance->vtable->GetNotificationPMsg(DMusicPerformance, &msg) == S_OK) {
                 if (IsEqualGUID(&msg->guidNotificationType, &GUID_NOTIFICATION_SEGMENT)) {
                     switch (msg->dwNotificationOption) {

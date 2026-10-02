@@ -1507,7 +1507,7 @@ int FUN_0047aa90(struct CommandArgs *arg, int argc) {
     if (r == -1) {
         return 0;
     }
-    FUN_00482d60(r, n);
+    SetMoodDelta(r, n);
     return 1;
 }
 
@@ -1528,7 +1528,7 @@ int FUN_0047ab00(struct CommandArgs *arg, int argc) {
         return 0;
     }
     if (DAT_00669054 == 1) {
-        FUN_00462e50(index, value);
+        SetClassPercent(index, value);
     } else {
         FUN_0046bbb0(index, value);
     }
@@ -1550,7 +1550,7 @@ int FUN_0047ab80(struct CommandArgs *arg, int argc) {
             return 0;
         }
         if (DAT_00669054 == 1) {
-            FUN_00462e70(index, v);
+            SetClassLimit(index, v);
             return 1;
         }
         FUN_0046bbe0(index, v);

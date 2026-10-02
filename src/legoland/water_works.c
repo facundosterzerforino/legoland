@@ -219,7 +219,7 @@ unsigned int FUN_00417c00(struct WaterArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417c20
-void FUN_00417c20(struct EditObject *editObj, int *coords) {
+void WaterWorksEntranceAddObject(struct EditObject *editObj, int *coords) {
     struct SampleParams params;
 
     AddBasicObject(editObj, coords);
@@ -230,7 +230,7 @@ void FUN_00417c20(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00417c70
-void FUN_00417c70(unsigned int a, unsigned int b, unsigned int c) {
+void WaterWorksEntranceRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
     RemoveSoundObject(a, b, c);
 }
 
@@ -489,7 +489,7 @@ void FUN_004181e0(struct EditObject *editObj, unsigned char *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418230
-void FUN_00418230(unsigned int a, unsigned int b, unsigned int c) {
+void WaterBlockRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -616,7 +616,7 @@ void FUN_00418450(struct WaterRender *render, unsigned int p2, unsigned int p3, 
 }
 
 // FUNCTION: LEGOLAND 0x004184e0
-void FUN_004184e0(struct EditObject *editObj, unsigned char *coords) {
+void ShowerAddObject(struct EditObject *editObj, unsigned char *coords) {
     unsigned short key;
 
     *(unsigned char *)&key = coords[0];
@@ -626,7 +626,7 @@ void FUN_004184e0(struct EditObject *editObj, unsigned char *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418510
-void FUN_00418510(unsigned int a, unsigned int b, unsigned int c) {
+void ShowerRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -789,7 +789,7 @@ void FUN_004187f0(void) {
 void FUN_004188c0(void) {}
 
 // FUNCTION: LEGOLAND 0x004188d0
-void FUN_004188d0(struct EditObject *editObj, unsigned char *coords) {
+void ElephantFountainAddObject(struct EditObject *editObj, unsigned char *coords) {
     unsigned short key;
 
     *(unsigned char *)&key = coords[0];
@@ -828,7 +828,7 @@ void FUN_00418950(struct WaterArg *arg, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004189c0
-void FUN_004189c0(struct EditObject *editObj, int *coords) {
+void CrocodileFountainAddObject(struct EditObject *editObj, int *coords) {
     struct SampleParams params;
 
     AddBasicObject(editObj, coords);
@@ -839,7 +839,7 @@ void FUN_004189c0(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418a10
-void FUN_00418a10(unsigned int a, unsigned int b, unsigned int c) {
+void CrocodileFountainRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
     RemoveSoundObject(a, b, c);
 }
 
@@ -965,15 +965,15 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     if (_stricmp("WATER WORKS ENTRANCE", name->name) == 0) {
         ci->cb_a4 = FUN_00417c00;
         ci->cb_ac = thunk_FUN_00417ac0;
-        ci->cb_98 = FUN_00417c20;
-        ci->cb_9c = FUN_00417c70;
+        ci->cb_98 = WaterWorksEntranceAddObject;
+        ci->cb_9c = WaterWorksEntranceRemoveObject;
         return;
     }
     // STRING: LEGOLAND 0x004b50dc
     if (_stricmp("WATER WORKS WATER BLOCK", name->name) == 0) {
         ci->cb_a4 = FUN_00417d30;
         ci->cb_98 = FUN_004181e0;
-        ci->cb_9c = FUN_00418230;
+        ci->cb_9c = WaterBlockRemoveObject;
         ci->cb_a8 = FUN_00417f90;
         ci->cb_ac = WaterBlockUnload;
         ci->cb_a0 = FUN_00418110;
@@ -986,8 +986,8 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b50c8
     if (_stricmp("WATER WORKS SHOWER", name->name) == 0) {
         ci->cb_a4 = FUN_004182e0;
-        ci->cb_98 = FUN_004184e0;
-        ci->cb_9c = FUN_00418510;
+        ci->cb_98 = ShowerAddObject;
+        ci->cb_9c = ShowerRemoveObject;
         ci->cb_ac = ShowerUnload;
         ci->cb_a0 = FUN_00418540;
         ci->cb_b0 = FUN_00418450;
@@ -998,7 +998,7 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b50a8
     if (_stricmp("WATER WORKS ELEPHANT FOUNTAIN", name->name) == 0) {
         ci->cb_a4 = FUN_004186b0;
-        ci->cb_98 = FUN_004188d0;
+        ci->cb_98 = ElephantFountainAddObject;
         ci->cb_9c = FUN_00418910;
         ci->cb_ac = ElephantFountainUnload;
         ci->cb_b0 = FUN_004188c0;
@@ -1011,7 +1011,7 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b5088
     if (_stricmp("WATER WORKS CROCODILE FOUNTAIN", name->name) == 0) {
         ci->cb_90 = FUN_00418a30;
-        ci->cb_98 = FUN_004189c0;
-        ci->cb_9c = FUN_00418a10;
+        ci->cb_98 = CrocodileFountainAddObject;
+        ci->cb_9c = CrocodileFountainRemoveObject;
     }
 }

@@ -2957,12 +2957,12 @@ LEGO_EXPORT void ResetMapAI(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00462e50
-void FUN_00462e50(unsigned int index, unsigned int value) {
+void SetClassPercent(unsigned int index, unsigned int value) {
     MapStats.classes[index].percent = value;
 }
 
 // FUNCTION: LEGOLAND 0x00462e70
-void FUN_00462e70(unsigned int index, unsigned int value) {
+void SetClassLimit(unsigned int index, unsigned int value) {
     MapStats.classes[index].limit = value;
 }
 
@@ -3198,11 +3198,11 @@ int FUN_00463520(void) {
     if (MapStats.field_180 == 0) {
         return 0;
     }
-    curr = FUN_00499460();
+    curr = GetGameTimerFrames();
     diff = curr - DAT_00667d58;
     quotient = 0x168 / (int)MapStats.field_180;
     if (diff > quotient) {
-        DAT_00667d58 = FUN_00499460();
+        DAT_00667d58 = GetGameTimerFrames();
         return 1;
     }
     return 0;
@@ -3211,7 +3211,7 @@ int FUN_00463520(void) {
 // FUNCTION: LEGOLAND 0x00463560
 void FUN_00463560(void) {
     DAT_00667d54 = GetGameTimer();
-    DAT_00667d58 = FUN_00499460();
+    DAT_00667d58 = GetGameTimerFrames();
 }
 
 // FUNCTION: LEGOLAND 0x00463580

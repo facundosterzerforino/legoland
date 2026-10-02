@@ -69,10 +69,10 @@ LEGO_EXPORT void KillHostSystemGPU(void) {
         IDirectDraw2_Release(DDRAWENV.ddraw2);
         DDRAWENV.ddraw2 = 0;
     }
-    DeleteObject((HGDIOBJ)PTR_00668090);
-    DeleteObject((HGDIOBJ)PTR_00668098);
-    DeleteObject((HGDIOBJ)PTR_0066808c);
-    DeleteObject((HGDIOBJ)PTR_00668094);
+    DeleteObject((HGDIOBJ)LegoFont24Bold);
+    DeleteObject((HGDIOBJ)LegoFont28Normal);
+    DeleteObject((HGDIOBJ)LegoFont20Bold);
+    DeleteObject((HGDIOBJ)LegoFont18SemiBold);
     if (DDRAWENV.ddraw != 0) {
         IDirectDraw_Release(DDRAWENV.ddraw);
         DDRAWENV.ddraw = 0;
@@ -132,23 +132,23 @@ LEGO_EXPORT int InitScreen(void) {
     font.lfPitchAndFamily = 0;
     // STRING: LEGOLAND 0x004b86e0
     strcpy(font.lfFaceName, "Lego");
-    PTR_00668090 = CreateFontIndirectA(&font);
+    LegoFont24Bold = CreateFontIndirectA(&font);
 
     font.lfWeight = 0x190;
     font.lfHeight = 0x1c;
     font.lfWidth = 0;
-    PTR_00668098 = CreateFontIndirectA(&font);
+    LegoFont28Normal = CreateFontIndirectA(&font);
     font.lfHeight = 0x14;
     font.lfWidth = 0;
     font.lfWeight = 0x2bc;
-    PTR_0066808c = CreateFontIndirectA(&font);
+    LegoFont20Bold = CreateFontIndirectA(&font);
     font.lfWeight = 0x258;
     font.lfHeight = 0x12;
     font.lfWidth = 0;
     strcpy(font.lfFaceName, "Lego");
-    PTR_00668094 = CreateFontIndirectA(&font);
+    LegoFont18SemiBold = CreateFontIndirectA(&font);
 
-    if (DAT_00667d6c == 0) {
+    if (WinDebugMode == 0) {
         DisplayPixelFormat = 2;
         WNDENV_Sethwnd(CreateWindowExA(8, "LEGOLANDMAIN",
             // STRING: LEGOLAND 0x004b86d0
@@ -169,7 +169,7 @@ LEGO_EXPORT int InitScreen(void) {
         if (lpConfig->field_1e == 0) {
             ShowCursor(0);
         }
-        DAT_004b9ca4 = BlitFrameToWindow;
+        BlitFrameFunc = BlitFrameToWindow;
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 1;
         desc.ddsCaps.dwCaps = 0x4200;
@@ -263,7 +263,7 @@ int SetDisplayModeAndDetectPixelFormat(void) {
     DDSURFACEDESC desc;
     LPDIRECTDRAW2 ddraw2;
 
-    if (DAT_00667d6c == 0) {
+    if (WinDebugMode == 0) {
         ddraw2 = DDRAWENV.ddraw2;
         if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->screen_width, lpConfig->screen_height, 0x10, 0, 0) != 0) {
             ddraw2 = DDRAWENV.ddraw2;
@@ -427,27 +427,27 @@ LEGO_EXPORT void CommitCliprectToHardware(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00464400
-LEGO_EXPORT void SetOverridePalette(unsigned int param_1) { DAT_006681e8 = param_1; }
+LEGO_EXPORT void SetOverridePalette(unsigned int param_1) { OverridePalette = param_1; }
 
 // FUNCTION: LEGOLAND 0x00464410
-LEGO_EXPORT unsigned int GetOverridePalette(void) { return DAT_006681e8; }
+LEGO_EXPORT unsigned int GetOverridePalette(void) { return OverridePalette; }
 
 // FUNCTION: LEGOLAND 0x00464420
-LEGO_EXPORT void SetOverrideFrame(unsigned int param_1) { DAT_004b9ca8 = param_1; }
+LEGO_EXPORT void SetOverrideFrame(unsigned int param_1) { OverrideFrame = param_1; }
 
 // FUNCTION: LEGOLAND 0x00464430
-LEGO_EXPORT unsigned int GetOverrideFrame(void) { return DAT_004b9ca8; }
+LEGO_EXPORT unsigned int GetOverrideFrame(void) { return OverrideFrame; }
 
 // FUNCTION: LEGOLAND 0x00464440
-LEGO_EXPORT void ClearOverrideFrame(void) { DAT_004b9ca8 = 0xffffffff; }
+LEGO_EXPORT void ClearOverrideFrame(void) { OverrideFrame = 0xffffffff; }
 
 // FUNCTION: LEGOLAND 0x00464450
-LEGO_EXPORT void ClearOverridePalette(void) { DAT_006681e8 = 0; }
+LEGO_EXPORT void ClearOverridePalette(void) { OverridePalette = 0; }
 
 // FUNCTION: LEGOLAND 0x00464460
 LEGO_EXPORT void ClearSpriteOverrides(void) {
-    DAT_004b9ca8 = 0xffffffff;
-    DAT_006681e8 = 0;
+    OverrideFrame = 0xffffffff;
+    OverridePalette = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00464480
@@ -601,10 +601,10 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     DAT_007febac.width = clip->right - clip->left;
     DAT_007fea4c.top = clip->top;
     DAT_007febac.height = clip->bottom - clip->top;
-    if ((int)DAT_004b9ca8 < 0) {
+    if ((int)OverrideFrame < 0) {
         frame_index = lls->frame;
     } else {
-        frame_index = (int)DAT_004b9ca8;
+        frame_index = (int)OverrideFrame;
     }
     if (frame_index >= lls->frame_count) {
         frame_index = lls->frame_count - 1;
@@ -823,8 +823,8 @@ LEGO_EXPORT int RenderingComplete(void) {
         DAT_00813a2c += tsc;
     }
 #endif
-    DAT_00667d68 = GetTickCount();
-    result = DAT_004b9ca4();
+    LastRenderingCompleteTick = GetTickCount();
+    result = BlitFrameFunc();
     DAT_00813a2c = 0;
 #if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
@@ -937,7 +937,7 @@ void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     DAT_007febac.width = clip->right - clip->left;
     DAT_007fea4c.top = clip->top;
     DAT_007febac.height = clip->bottom - clip->top;
-    frame_index = (int)DAT_004b9ca8;
+    frame_index = (int)OverrideFrame;
     if (frame_index < 0) {
         frame_index = lls->frame;
     }

@@ -26,7 +26,7 @@ struct HelpAdvisor {
 // FUNCTION: LEGOLAND 0x0046ce20
 void FUN_0046ce20(void) {
     if ((DAT_007fe040 & 0x3) != 0) {
-        free((void *)DAT_007fe048);
+        free((void *)AdvisorHelpText);
         FUN_004748a0((void *)1);
     }
     DAT_007fe040 &= ~0x3;
@@ -41,9 +41,9 @@ LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned
         return 0;
     }
     DAT_007fe040 |= 1;
-    DAT_007fe048 = (char *)malloc(strlen(param_1) + 1);
-    strcpy(DAT_007fe048, param_1);
-    DAT_007fe04c = GetGameTimer();
+    AdvisorHelpText = (char *)malloc(strlen(param_1) + 1);
+    strcpy(AdvisorHelpText, param_1);
+    AdvisorHelpStartTime = GetGameTimer();
     DAT_007fe044 = param_2;
     FUN_004748a0((void *)0);
     return 1;
@@ -73,7 +73,7 @@ unsigned int FUN_0046cee0(void) {
 
 // FUNCTION: LEGOLAND 0x0046cf20
 unsigned int FUN_0046cf20(void) {
-    int diff = (int)(GetGameTimer() - DAT_007fe04c);
+    int diff = (int)(GetGameTimer() - AdvisorHelpStartTime);
 
     if (diff > 0x7530 || (DAT_007fe044 != 0 && DAT_00668724 != NULL && ((struct HelpAdvisor *)DAT_00668724)->field_c != 0)) {
         return 1;
@@ -98,7 +98,7 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
             FUN_0046ce20();
             DAT_007fe050 = GetGameTimer();
         } else {
-            BubbleHelp(DAT_004b9f78, DAT_007fe048, 2);
+            BubbleHelp(DAT_004b9f78, AdvisorHelpText, 2);
             DAT_007fe050 = GetGameTimer();
         }
     } else {
@@ -203,7 +203,7 @@ void FUN_0046d110(void) {
                     break;
                 }
                 SpeechLoadWavFile(buf);
-                FUN_00498b00();
+                SpeechPlay();
             }
         }
     }
@@ -211,7 +211,7 @@ void FUN_0046d110(void) {
 
 // FUNCTION: LEGOLAND 0x0046d230
 void FUN_0046d230(unsigned int a1) {
-    if (FUN_00498cf0() == 0) {
+    if (SpeechIsPlaying() == 0) {
         if (a1 == 0xffffffff) {
             return;
         }
@@ -228,7 +228,7 @@ void FUN_0046d230(unsigned int a1) {
 
 // FUNCTION: LEGOLAND 0x0046d280
 unsigned int FUN_0046d280(unsigned int a1) {
-    if (FUN_00498cf0() == 0) {
+    if (SpeechIsPlaying() == 0) {
         if (a1 != 0xffffffff && a1 != DAT_004b9f8c) {
             DAT_004b9f8c = a1;
             DAT_007fe920 = GetTickCount();
@@ -246,7 +246,7 @@ unsigned int FUN_0046d280(unsigned int a1) {
 
 // FUNCTION: LEGOLAND 0x0046d2f0
 void FUN_0046d2f0(unsigned int a1) {
-    if (FUN_00498cf0() != 0) {
+    if (SpeechIsPlaying() != 0) {
         DAT_006687a8 = 1;
         return;
     }

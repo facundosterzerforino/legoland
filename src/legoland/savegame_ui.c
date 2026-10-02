@@ -750,7 +750,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
 
     sprintf(save_path, "%s\\%dsave%d.sav", "profiles", CurrentProfile.profile_slot, *(unsigned int *)&CurrentProfile.save_slot & 0xff);
     LoadWatchSprite(0, 0);
-    FUN_0047f810();
+    MarkGameTimer();
     if (SaveGame(save_path) == 0) {
         // STRING: LEGOLAND 0x004bf360
         LogPrintf("Failed to save game %s", save_path);

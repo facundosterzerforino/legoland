@@ -539,9 +539,9 @@ void FUN_00419d10(Element *obj) {
     int lls;
 
     Load_FXList(PTR_s_Boat_Noise_wav, 2);
-    DAT_0082c658 = obj->ride;
-    DAT_0082c658->flags |= 0x20;
-    DAT_0082c658->layer->flags |= 0x2000;
+    BoatingSchoolRide = obj->ride;
+    BoatingSchoolRide->flags |= 0x20;
+    BoatingSchoolRide->layer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b5334
     if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", &handle, 0) == 0) {
         BoatingSchoolTileMapping = (struct TileMap *)LLIDB_LoadData((void *)handle);
@@ -558,20 +558,20 @@ void FUN_00419d10(Element *obj) {
     BoatingSchoolHullMaskSprite = LoadSprite("bs_hullmask.lls", 1);
     // STRING: LEGOLAND 0x004b52fc
     BoatingSchoolRailmSprite = LoadSprite("bs_railm.lls", 1);
-    lls = GetLLSForSprite((struct SpriteLLS *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->layer, 5)));
+    lls = GetLLSForSprite((struct SpriteLLS *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct LayerContainer *)BoatingSchoolRide->layer, 5)));
     LLSStop(lls);
     LLSSetFrame((struct LLS *)lls, *(short *)(lls + 0x10));
-    DAT_004cc078 = DAT_0082c658->footprint;
+    BoatingSchoolFootprint = BoatingSchoolRide->footprint;
     DAT_004cc048 = DAT_004b5260;
-    DAT_004cc048.v[1] += DAT_004cc078.v[1];
-    DAT_004cc048.v[0] += DAT_004cc078.v[0];
-    DAT_004cc048.v[2] += DAT_004cc078.v[0];
-    DAT_004cc048.v[3] += DAT_004cc078.v[1];
+    DAT_004cc048.v[1] += BoatingSchoolFootprint.v[1];
+    DAT_004cc048.v[0] += BoatingSchoolFootprint.v[0];
+    DAT_004cc048.v[2] += BoatingSchoolFootprint.v[0];
+    DAT_004cc048.v[3] += BoatingSchoolFootprint.v[1];
     DAT_004cc060 = DAT_004b5278;
-    DAT_004cc060.v[1] += DAT_004cc078.v[3] + 1;
-    DAT_004cc060.v[0] += DAT_004cc078.v[0];
-    DAT_004cc060.v[2] += DAT_004cc078.v[0];
-    DAT_004cc060.v[3] += DAT_004cc078.v[3] + 1;
+    DAT_004cc060.v[1] += BoatingSchoolFootprint.v[3] + 1;
+    DAT_004cc060.v[0] += BoatingSchoolFootprint.v[0];
+    DAT_004cc060.v[2] += BoatingSchoolFootprint.v[0];
+    DAT_004cc060.v[3] += BoatingSchoolFootprint.v[3] + 1;
 }
 
 // FUNCTION: LEGOLAND 0x00419ef0
@@ -612,11 +612,11 @@ void FUN_00419ef0(void) {
 // FUNCTION: LEGOLAND 0x0041a000
 void FUN_0041a000(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0082c658;
+    EditMode.unk8 = BoatingSchoolRide;
     DefaultCursor(&EditCursor);
     DAT_004cc088 = DAT_004cc060.v;
     DAT_004cc070 = DAT_004cc048.v;
-    SetEditCursorFootPrint(DAT_004cc078.v);
+    SetEditCursorFootPrint(BoatingSchoolFootprint.v);
 }
 
 // FUNCTION: LEGOLAND 0x0041a040
@@ -650,23 +650,23 @@ void FUN_0041a040(struct EditObject *obj, int *coords) {
     AddBasicObject(obj, coords);
     FUN_0041c4c0(coords[0] + DAT_004cc060.v[0] + 2, coords[1] + DAT_004cc060.v[1] + 2, 1, &score->id);
     FUN_0041c4c0(coords[0] + DAT_004cc048.v[0] + 2, coords[1] + DAT_004cc048.v[1] + 2, 4, &score->id);
-    for (y = DAT_004cc078.v[1]; y <= DAT_004cc078.v[3]; y++) {
-        for (x = DAT_004cc078.v[0]; x <= DAT_004cc078.v[2]; x++) {
-            if (x == DAT_004cc078.v[0]) {
+    for (y = BoatingSchoolFootprint.v[1]; y <= BoatingSchoolFootprint.v[3]; y++) {
+        for (x = BoatingSchoolFootprint.v[0]; x <= BoatingSchoolFootprint.v[2]; x++) {
+            if (x == BoatingSchoolFootprint.v[0]) {
                 SetMapTile(coords[0] + x, coords[1] + y, *BoatingSchoolTileMapping->tiles + 9);
-            } else if (x == DAT_004cc078.v[2]) {
+            } else if (x == BoatingSchoolFootprint.v[2]) {
                 SetMapTile(coords[0] + x, coords[1] + y, *BoatingSchoolTileMapping->tiles + 0xc);
             } else {
                 SetMapTile(coords[0] + x, coords[1] + y, *BoatingSchoolTileMapping->tiles);
             }
         }
     }
-    SetMapTile(coords[0] + DAT_004cc078.v[2], coords[1] + DAT_004cc078.v[1], *BoatingSchoolTileMapping->tiles + 8);
-    SetMapTile(coords[0] + DAT_004cc078.v[2], coords[1] + DAT_004cc078.v[3], *BoatingSchoolTileMapping->tiles + 7);
-    SetMapTile(coords[0] + 4 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[3], *BoatingSchoolTileMapping->tiles + 4);
-    SetMapTile(coords[0] + 4 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[1], *BoatingSchoolTileMapping->tiles + 1);
-    SetMapTile(coords[0] + 5 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[3], *BoatingSchoolTileMapping->tiles + 0xb);
-    SetMapTile(coords[0] + 5 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[1], *BoatingSchoolTileMapping->tiles + 10);
+    SetMapTile(coords[0] + BoatingSchoolFootprint.v[2], coords[1] + BoatingSchoolFootprint.v[1], *BoatingSchoolTileMapping->tiles + 8);
+    SetMapTile(coords[0] + BoatingSchoolFootprint.v[2], coords[1] + BoatingSchoolFootprint.v[3], *BoatingSchoolTileMapping->tiles + 7);
+    SetMapTile(coords[0] + 4 + BoatingSchoolFootprint.v[0], coords[1] + BoatingSchoolFootprint.v[3], *BoatingSchoolTileMapping->tiles + 4);
+    SetMapTile(coords[0] + 4 + BoatingSchoolFootprint.v[0], coords[1] + BoatingSchoolFootprint.v[1], *BoatingSchoolTileMapping->tiles + 1);
+    SetMapTile(coords[0] + 5 + BoatingSchoolFootprint.v[0], coords[1] + BoatingSchoolFootprint.v[3], *BoatingSchoolTileMapping->tiles + 0xb);
+    SetMapTile(coords[0] + 5 + BoatingSchoolFootprint.v[0], coords[1] + BoatingSchoolFootprint.v[1], *BoatingSchoolTileMapping->tiles + 10);
 }
 
 // FUNCTION: LEGOLAND 0x0041a2f0
@@ -676,7 +676,7 @@ void FUN_0041a2f0(int param_1, unsigned int param_2, unsigned int param_3) {
     DAT_004cc088 = DAT_004cc060.v;
     DAT_004cc070 = DAT_004cc048.v;
     DAT_004cc070[4] = 0;
-    memcpy(EditCursor.field_1414, DAT_004cc078.v, 20);
+    memcpy(EditCursor.field_1414, BoatingSchoolFootprint.v, 20);
     EditCursor.field_1830 = 0;
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
     PathCursor.tile_x = EditCursor.tile_x;
@@ -748,8 +748,8 @@ void FUN_0041a530(Element *obj, TileId tile, struct Cursor *cursor) {
     int savedY;
 
     StandardRemoveObject((Element *)obj, tile, cursor);
-    for (y = DAT_004cc078.v[1]; y <= DAT_004cc078.v[3]; y++) {
-        for (x = DAT_004cc078.v[0]; x <= DAT_004cc078.v[2]; x++) {
+    for (y = BoatingSchoolFootprint.v[1]; y <= BoatingSchoolFootprint.v[3]; y++) {
+        for (x = BoatingSchoolFootprint.v[0]; x <= BoatingSchoolFootprint.v[2]; x++) {
             RestoreBaseMap(cursor->tile_x + x, cursor->tile_y + y);
         }
     }
@@ -811,7 +811,7 @@ void FUN_0041a530(Element *obj, TileId tile, struct Cursor *cursor) {
 
 // FUNCTION: LEGOLAND 0x0041a720
 void FUN_0041a720(void) {
-    struct RideNode *node = DAT_0082c658->riders;
+    struct RideNode *node = BoatingSchoolRide->riders;
     struct RideNode *next;
     struct BoatRideNode *score;
     struct Bloke *bloke;
@@ -855,7 +855,7 @@ void FUN_0041a720(void) {
             }
             if (i == 5) {
                 if (score->bloke_count == 5 || score->blokes[4] != 0) {
-                    RemoveBlokeFromRide(DAT_0082c658, node);
+                    RemoveBlokeFromRide(BoatingSchoolRide, node);
                     break;
                 }
                 score->blokes[slot] = (unsigned int)bloke;
@@ -872,8 +872,8 @@ void FUN_0041a720(void) {
                 }
             }
             bloke->flags |= 8;
-            bloke->dest.x = ((DAT_0082c658->x + tile.pos.x) << 8) + DAT_004b5290[4 - slot].x;
-            bloke->dest.y = ((DAT_0082c658->y + tile.pos.y) << 8) + DAT_004b5290[4 - slot].y;
+            bloke->dest.x = ((BoatingSchoolRide->x + tile.pos.x) << 8) + DAT_004b5290[4 - slot].x;
+            bloke->dest.y = ((BoatingSchoolRide->y + tile.pos.y) << 8) + DAT_004b5290[4 - slot].y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->low_level_action = 7;
@@ -897,11 +897,11 @@ void FUN_0041a720(void) {
             BlokeWalkAnim(bloke);
             BlokeSetFrame(bloke, 0);
             bloke->flags &= 0xff7f;
-            bloke->pos.x = (DAT_0082c658->field_24 + tile.pos.x - 4) << 8;
-            bloke->pos.y = (DAT_0082c658->field_25 + tile.pos.y + 2) << 8;
+            bloke->pos.x = (BoatingSchoolRide->field_24 + tile.pos.x - 4) << 8;
+            bloke->pos.y = (BoatingSchoolRide->field_25 + tile.pos.y + 2) << 8;
             bloke->dir = 10;
-            bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) - 0xc0;
-            bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x240;
+            bloke->dest.x = ((BoatingSchoolRide->field_24 + tile.pos.x) << 8) - 0xc0;
+            bloke->dest.y = ((BoatingSchoolRide->field_25 + tile.pos.y) << 8) + 0x240;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
@@ -909,8 +909,8 @@ void FUN_0041a720(void) {
             bloke->param_action++;
             break;
         case 4:
-            bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) - 0xc0;
-            bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x80;
+            bloke->dest.x = ((BoatingSchoolRide->field_24 + tile.pos.x) << 8) - 0xc0;
+            bloke->dest.y = ((BoatingSchoolRide->field_25 + tile.pos.y) << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
@@ -918,8 +918,8 @@ void FUN_0041a720(void) {
             bloke->param_action++;
             break;
         case 5:
-            bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) + 0x80;
-            bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x80;
+            bloke->dest.x = ((BoatingSchoolRide->field_24 + tile.pos.x) << 8) + 0x80;
+            bloke->dest.y = ((BoatingSchoolRide->field_25 + tile.pos.y) << 8) + 0x80;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->low_level_action = 7;
             bloke->field_73 = dir + 0x10;
@@ -931,7 +931,7 @@ void FUN_0041a720(void) {
             break;
         case 6:
             bloke->flags &= 0xfff7;
-            RemoveBlokeFromRide(DAT_0082c658, node);
+            RemoveBlokeFromRide(BoatingSchoolRide, node);
             break;
         }
     }
@@ -962,9 +962,9 @@ void FUN_0041abd0(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 
     FUN_00418fe0(1);
     pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
-    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->layer, 3);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)BoatingSchoolRide->layer, 3);
     AdjustOffsetForViewMode(&offset);
-    lls = (short *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->layer, 3));
+    lls = (short *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer((struct LayerContainer *)BoatingSchoolRide->layer, 3));
     hull = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)BoatingSchoolHullMaskSprite);
     LLSSetFrame(hull, *lls);
     PrintSprite(BoatingSchoolHullMaskSprite, pos.x + offset.x, pos.y + offset.y, clip, 0);
@@ -973,7 +973,7 @@ void FUN_0041abd0(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(node->rider);
         }
     }
-    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->layer, 3);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)BoatingSchoolRide->layer, 3);
     offset.x += 0x71;
     offset.y += 0xac;
     AdjustOffsetForViewMode(&offset);
@@ -1612,8 +1612,8 @@ void FUN_0041bfb0(unsigned int param_1, int *coords) {
             coords[0] = QueryObj.pos.x;
             QueryObj.pos.y = path->owner.pos.y;
             coords[1] = QueryObj.pos.y;
-            memcpy(&QueryClass->footprint, &DAT_004cc078, sizeof(DAT_004cc078));
-            fake.ride = DAT_0082c658;
+            memcpy(&QueryClass->footprint, &BoatingSchoolFootprint, sizeof(BoatingSchoolFootprint));
+            fake.ride = BoatingSchoolRide;
             FUN_0041a3d0(&fake, (unsigned int)coords);
             return;
         }
@@ -1655,7 +1655,7 @@ void FUN_0041c130(Element *obj, TileId tile, struct Cursor *cursor) {
         elem = NULL;
     }
     if (elem->field_0 != DAT_0082adf0->element) {
-        fake.ride = DAT_0082c658;
+        fake.ride = BoatingSchoolRide;
         FUN_0041a530(&fake, tile, cursor);
         return;
     }

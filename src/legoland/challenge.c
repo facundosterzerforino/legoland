@@ -4787,7 +4787,7 @@ LAB_0044acbb:
                         DAT_0081c07c = 0;
                     }
                     if ((int)rowp < (int)flags) {
-                        iVar3 = FUN_00498cf0();
+                        iVar3 = SpeechIsPlaying();
                         iVar4 = flat[(int)rowp];
                         if ((iVar3 == 0) && (iVar4 != -1)) {
                             rowp = (int *)((int)rowp + 1);
@@ -4795,10 +4795,10 @@ LAB_0044acbb:
                             sprintf(wavbuf, "TEXT%04d.WAV", iVar4);
                             SpeechCloseFile();
                             SpeechLoadWavFile(wavbuf + 8);
-                            FUN_00498b00();
+                            SpeechPlay();
                         }
                     } else {
-                        iVar3 = FUN_00498cf0();
+                        iVar3 = SpeechIsPlaying();
                         if (iVar3 == 0) {
                             FUN_0046d110();
                         }

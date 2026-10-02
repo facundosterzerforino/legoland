@@ -50,21 +50,21 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         _stricmp(head->name, "FOUNTAIN 2") == 0 ||
         // STRING: LEGOLAND 0x004b8a4c
         _stricmp(head->name, "FOUNTAIN 3") == 0) {
-        iface->cb_98 = FUN_004529e0;
+        iface->cb_98 = FountainAddObject;
         iface->cb_9c = RemoveSoundObject;
         iface->cb_ac = KillFountainSFX;
         LoadFountainSFX(head);
     }
     // STRING: LEGOLAND 0x004b8a34
     else if (_stricmp(head->name, "crystal power station") == 0) {
-        iface->cb_98 = FUN_00452b20;
+        iface->cb_98 = CrystalPowerStationAddObject;
         iface->cb_9c = RemoveSoundObject;
         iface->cb_ac = KillPowerStationSFX;
         LoadPowerStationSFX(head);
     }
     // STRING: LEGOLAND 0x004b8a20
     else if (_stricmp(head->name, "small power station") == 0) {
-        iface->cb_98 = FUN_00452ad0;
+        iface->cb_98 = SmallPowerStationAddObject;
         iface->cb_9c = RemoveSoundObject;
         iface->cb_ac = KillPowerStationSFX;
         LoadPowerStationSFX(head);
@@ -128,9 +128,9 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_9c = FUN_0042df70;
     } else if (_stricmp("POTTING SHED", head->name) == 0) {
         iface->cb_a4 = FUN_0043ce60;
-        iface->cb_8c = FUN_0043d1d0;
-        iface->cb_98 = FUN_0043ceb0;
-        iface->cb_9c = FUN_0043ced0;
+        iface->cb_8c = PottingShedSetEditMode;
+        iface->cb_98 = PottingShedAddObject;
+        iface->cb_9c = PottingShedRemoveObject;
         iface->cb_a8 = FUN_0043cf00;
         iface->cb_b0 = FUN_0043d0b0;
         iface->cb_ac = KillGShedMatteSprite;
@@ -237,7 +237,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_a8 = FUN_0042f1a0;
         iface->cb_98 = FUN_0042ef10;
         iface->cb_9c = FUN_0042efb0;
-        iface->cb_ac = FUN_0042f720;
+        iface->cb_ac = KillRestMaskSpritesAndMoneySFX;
         iface->cb_b0 = FUN_0042f4c0;
         iface->cb_bc = Restaurant1_Save;
         iface->cb_b8 = Restaurant1_Load;
