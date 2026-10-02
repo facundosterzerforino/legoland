@@ -320,7 +320,7 @@ void FUN_00458b20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458bb0
-void FUN_00458bb0(unsigned int param_1) { MapLoaded = param_1; }
+void SetMapLoaded(unsigned int param_1) { MapLoaded = param_1; }
 
 // FUNCTION: LEGOLAND 0x00458bc0
 void FUN_00458bc0(void) {

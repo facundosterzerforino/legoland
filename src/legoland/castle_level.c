@@ -20,7 +20,7 @@
 void FUN_00402ca0(Element *obj) {
     struct Ride *ride = obj->ride;
 
-    DAT_004c10dc = ride;
+    CastleLevelRide = ride;
     if (ride != NULL) {
         ride->flags |= 0x20;
     }
@@ -164,7 +164,7 @@ void FUN_00402dc0(Element *obj) {
 // FUNCTION: LEGOLAND 0x00402ff0
 void FUN_00402ff0(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_004c10dc;
+    EditMode.unk8 = CastleLevelRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&((struct EditCursorData *)EditMode.unk8)->field_3c);
 }

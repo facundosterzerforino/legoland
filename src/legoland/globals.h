@@ -1189,7 +1189,7 @@ extern const int DAT_004bff28[12][2];
 // 0x004c10d4
 extern void *DAT_004c10d4;
 // 0x004c10dc
-extern struct Ride *DAT_004c10dc;
+extern struct Ride *CastleLevelRide;
 // 0x004c10e4
 extern struct Sprite *CastleLevelMatteSprite;
 // 0x004c10e8
@@ -1261,9 +1261,9 @@ extern struct RideQueueEntry *DAT_004c11c8;
 // 0x004c11cc
 extern struct Sprite *FortMaskSprite;
 // 0x004c11d8
-extern struct Sprite *DAT_004c11d8;
+extern struct Sprite *FortLayer;
 // 0x004c11dc
-extern struct Ride *DAT_004c11dc;
+extern struct Ride *FortRide;
 // 0x004c11e0
 extern struct RenderItemNode *DAT_004c11e0;
 // 0x004c11e4
@@ -2023,11 +2023,11 @@ extern struct Sprite *ZSpinningBarrelsSprite;
 // 0x0062fe08
 extern struct BarrelNode *DAT_0062fe08;
 // 0x0062fe48
-extern struct RideLayer *DAT_0062fe48;
+extern struct RideLayer *PottingShedLayer;
 // 0x0062fe4c
 extern struct Sprite *GShedMatteSprite;
 // 0x0062fe50
-extern struct RideLayer *DAT_0062fe50;
+extern struct RideLayer *MechanicsHutLayer;
 // 0x0062fe54
 extern struct Sprite *MechHutMaskSprite;
 // 0x0062fe58
@@ -3841,9 +3841,9 @@ extern int DAT_0081cae8;
 // 0x0081caec
 extern int DAT_0081caec;
 // 0x0081caf0
-extern struct Ride *DAT_0081caf0;
+extern struct Ride *PottingShedRide;
 // 0x0081caf4
-extern struct Ride *DAT_0081caf4;
+extern struct Ride *MechanicsHutRide;
 // 0x0081cb00
 extern struct Sprite *SaloonMatte1Sprite;
 // 0x0081cb04

@@ -201,7 +201,7 @@ void FUN_0048abb0(void) {
     UnloadWatchSprite();
     FUN_00490600(1);
     FUN_004911c0(DAT_0066861c, 0);
-    FUN_00458bb0(1);
+    SetMapLoaded(1);
     ResumeGameTimer();
     UpdateSoundVols();
 }

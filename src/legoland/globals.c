@@ -1146,7 +1146,7 @@ const int DAT_004bff28[12][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {0, 2}, {0, -
 void *DAT_004c10d4;
 
 // GLOBAL: LEGOLAND 0x004c10dc
-struct Ride *DAT_004c10dc;
+struct Ride *CastleLevelRide;
 
 // GLOBAL: LEGOLAND 0x004c10e4
 struct Sprite *CastleLevelMatteSprite;
@@ -1254,10 +1254,10 @@ struct RideQueueEntry *DAT_004c11c8;
 struct Sprite *FortMaskSprite;
 
 // GLOBAL: LEGOLAND 0x004c11d8
-struct Sprite *DAT_004c11d8;
+struct Sprite *FortLayer;
 
 // GLOBAL: LEGOLAND 0x004c11dc
-struct Ride *DAT_004c11dc;
+struct Ride *FortRide;
 
 // GLOBAL: LEGOLAND 0x004c11e0
 struct RenderItemNode *DAT_004c11e0;
@@ -2415,13 +2415,13 @@ struct Sprite *ZSpinningBarrelsSprite;
 struct BarrelNode *DAT_0062fe08;
 
 // GLOBAL: LEGOLAND 0x0062fe48
-struct RideLayer *DAT_0062fe48;
+struct RideLayer *PottingShedLayer;
 
 // GLOBAL: LEGOLAND 0x0062fe4c
 struct Sprite *GShedMatteSprite;
 
 // GLOBAL: LEGOLAND 0x0062fe50
-struct RideLayer *DAT_0062fe50;
+struct RideLayer *MechanicsHutLayer;
 
 // GLOBAL: LEGOLAND 0x0062fe54
 struct Sprite *MechHutMaskSprite;
@@ -5103,10 +5103,10 @@ int DAT_0081cae8;
 int DAT_0081caec;
 
 // GLOBAL: LEGOLAND 0x0081caf0
-struct Ride *DAT_0081caf0;
+struct Ride *PottingShedRide;
 
 // GLOBAL: LEGOLAND 0x0081caf4
-struct Ride *DAT_0081caf4;
+struct Ride *MechanicsHutRide;
 
 // GLOBAL: LEGOLAND 0x0081cb00
 struct Sprite *SaloonMatte1Sprite;

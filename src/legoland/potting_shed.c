@@ -41,10 +41,10 @@ struct EditTarget {
 
 // FUNCTION: LEGOLAND 0x0043ce60
 void FUN_0043ce60(Element *obj) {
-    DAT_0081caf0 = obj->ride;
-    DAT_0081caf0->flags |= 0x420;
-    DAT_0062fe48 = DAT_0081caf0->layer;
-    DAT_0081caf0->flags |= 0x2000;
+    PottingShedRide = obj->ride;
+    PottingShedRide->flags |= 0x420;
+    PottingShedLayer = PottingShedRide->layer;
+    PottingShedRide->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b7994
     GShedMatteSprite = LoadSprite("gshedmatte.lls", 1);
 }
@@ -157,7 +157,7 @@ void KillGShedMatteSprite(void) {
 
 // FUNCTION: LEGOLAND 0x0043d1d0
 void FUN_0043d1d0(void) {
-    void *p = DAT_0081caf0;
+    void *p = PottingShedRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = p;
     DefaultCursor(&EditCursor);

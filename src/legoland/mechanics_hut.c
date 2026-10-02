@@ -17,10 +17,10 @@
 
 // FUNCTION: LEGOLAND 0x0043d250
 void FUN_0043d250(Element *ctx) {
-    DAT_0081caf4 = ctx->ride;
-    DAT_0081caf4->flags |= 0x420;
-    DAT_0062fe50 = DAT_0081caf4->layer;
-    DAT_0081caf4->flags |= 0x2000;
+    MechanicsHutRide = ctx->ride;
+    MechanicsHutRide->flags |= 0x420;
+    MechanicsHutLayer = MechanicsHutRide->layer;
+    MechanicsHutRide->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b79a4
     MechHutMaskSprite = LoadSprite("MechHutMask.lls", 1);
 }
@@ -188,7 +188,7 @@ void KillMechHutMaskSprite(void) {
 // FUNCTION: LEGOLAND 0x0043d740
 void FUN_0043d740(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081caf4;
+    EditMode.unk8 = MechanicsHutRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&((struct EditCursorData *)EditMode.unk8)->field_3c);
 }

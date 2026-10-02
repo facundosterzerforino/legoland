@@ -20,12 +20,12 @@
 // FUNCTION: LEGOLAND 0x00406240
 void FUN_00406240(Element *elem) {
     struct Ride *ride = elem->ride;
-    DAT_004c11dc = ride;
+    FortRide = ride;
     if (ride != NULL) {
         ride->flags |= 0x20;
-        if (DAT_004c11dc->layer != NULL) {
-            DAT_004c11dc->layer->flags |= 0x2000;
-            DAT_004c11d8 = DAT_004c11dc->layer;
+        if (FortRide->layer != NULL) {
+            FortRide->layer->flags |= 0x2000;
+            FortLayer = FortRide->layer;
         }
     }
     // STRING: LEGOLAND 0x004b4590
@@ -58,18 +58,18 @@ void FUN_004062c0(Element *elem, unsigned int param_2, unsigned int param_3, Til
         }
     }
     RenderBlokeList((struct BlokeListHead *)&DAT_004c11e0);
-    if (DAT_004c11d8 != NULL) {
+    if (FortLayer != NULL) {
         struct Point off;
-        sprite = GetSpriteForLayer(DAT_004c11d8, 2);
+        sprite = GetSpriteForLayer(FortLayer, 2);
         if (sprite != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
             if (lls != NULL) {
                 LLSStop((unsigned int)lls);
             }
         }
-        off = GetRenderOffsetForLayer(DAT_004c11d8, 2);
+        off = GetRenderOffsetForLayer(FortLayer, 2);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_004c11d8, 2), pos.x + off.x, pos.y + off.y, clip, 0);
+        PrintSprite(GetSpriteForLayer(FortLayer, 2), pos.x + off.x, pos.y + off.y, clip, 0);
     }
     RenderItems_New();
     DAT_004c11e0 = NULL;
@@ -85,7 +85,7 @@ void FUN_004062c0(Element *elem, unsigned int param_2, unsigned int param_3, Til
         off2.y = -0x7b;
         AdjustOffsetForViewMode(&off2);
         lls = NULL;
-        sprite = GetSpriteForLayer(DAT_004c11d8, 2);
+        sprite = GetSpriteForLayer(FortLayer, 2);
         if (sprite != NULL) {
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
         }
@@ -158,7 +158,7 @@ void FUN_00406660(Element *elem) {
     unsigned char tx;
     char dir;
 
-    spr = GetSpriteForLayer(DAT_004c11d8, 2);
+    spr = GetSpriteForLayer(FortLayer, 2);
     if (spr != NULL) {
         lls = (short *)GetLLSForSprite((struct SpriteLLS *)spr);
         if (lls != NULL) {
@@ -223,7 +223,7 @@ void FUN_00406660(Element *elem) {
 
 // FUNCTION: LEGOLAND 0x00406820
 void FUN_00406820(void) {
-    EditMode.unk8 = DAT_004c11dc;
+    EditMode.unk8 = FortRide;
     EditMode.unk0 = 1;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&((struct EditCursorData *)EditMode.unk8)->field_3c);

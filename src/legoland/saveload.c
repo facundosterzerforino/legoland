@@ -1166,7 +1166,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             DAT_004b8320.y = (((entrance->footprint.v[3] - entrance->footprint.v[1]) << 7) & ~0xff) + ((first->field_5 + entrance->footprint.v[1]) << 8);
         }
         FUN_00475f10();
-        FUN_00458bb0(1);
+        SetMapLoaded(1);
         DAT_00810140 = 1;
         DAT_00667c48 = 1;
         GamePad &= ~0x1000;
