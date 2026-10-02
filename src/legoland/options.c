@@ -194,7 +194,7 @@ unsigned char OptionsAcceptIconHandler(unsigned int param_1, unsigned int param_
         SpeechCloseFile();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        if (CurrentProfile.field_44 != 0) {
+        if (CurrentProfile.save_slot != 0) {
             UpDateCurrentSaveSlotInfo();
         }
         DAT_00668e38 = 0;

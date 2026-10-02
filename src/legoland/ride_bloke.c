@@ -1029,7 +1029,7 @@ void FUN_00402780(struct NewBloke *b) {
     struct Person *person;
     struct Point *scr;
 
-    cfg.field_0 = 0x306;
+    cfg.type = 0x306;
     cfg.field_4 = b->owner;
     cfg.field_8 = 0;
     r.i = MapToPlayfieldInl(b->fx >> 8, b->fy >> 8);

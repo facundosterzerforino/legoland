@@ -15,8 +15,8 @@ struct BoatRide {
     /* 0x010 */ int next_y;
     /* 0x014 */ unsigned int screen_x;
     /* 0x018 */ unsigned int screen_y;
-    /* 0x01c */ int field_1c[0xa0];
-    /* 0x29c */ unsigned int field_29c[0x50];
+    /* 0x01c */ int step_xy[0xa0];
+    /* 0x29c */ unsigned int step_sprite[0x50];
     /* 0x3dc */ unsigned int field_3dc;
     /* 0x3e0 */ unsigned int field_3e0;
     /* 0x3e4 */ unsigned int field_3e4;
@@ -42,12 +42,12 @@ struct BoatRideNode {
 struct PathNode {
     /* 0x00 */ TileId tile;
     /* 0x02 */ TileId owner;
-    /* 0x04 */ unsigned int field_4;
-    /* 0x08 */ unsigned int field_8;
-    /* 0x0c */ unsigned int field_c;
+    /* 0x04 */ unsigned int dir_mask;
+    /* 0x08 */ unsigned int dist_to_end;
+    /* 0x0c */ unsigned int visited;
     /* 0x10 */ struct PathNode *next;
-    /* 0x14 */ struct PathNode *field_14;
-    /* 0x18 */ struct PathNode *field_18;
+    /* 0x14 */ struct PathNode *wave_next;
+    /* 0x18 */ struct PathNode *parent;
 };
 
 struct MermaidNode {

@@ -185,14 +185,14 @@ WorkOrder *FUN_004704b0(Point *out) {
         ride = elem->field_0->ride;
         if (ride->durability != 0) {
             do {
-                if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
+                if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->gardeners_enabled != 0) {
                     if (!(0x4000 & flags)) {
                         order = AddRepairOrderForObject(ride, pos);
                         if (order == NULL) {
                             break;
                         }
                     }
-                } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
+                } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->mechanics_enabled != 0) {
                     if (!(0x4000 & flags)) {
                         order = AddRepairOrderForObject(ride, pos);
                     }

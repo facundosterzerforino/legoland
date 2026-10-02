@@ -16,7 +16,7 @@ LEGO_EXPORT int SetupControllers(void) {
         return 1;
     }
     CONTROLLERBUFFER = malloc(sizeof(struct CtrlBuffer));
-    CONTROLLERBUFFER->field_18 = 0;
+    CONTROLLERBUFFER->buttons = 0;
     DAT_00813a5c = 2;
     DAT_00813ac8 = 2;
     GamePad = 0;
@@ -239,7 +239,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
     struct Point mp;
 
     DAT_00667c48 = 0;
-    held = CONTROLLERBUFFER->field_18;
+    held = CONTROLLERBUFFER->buttons;
     pressed = (DAT_00813a94 ^ held) & held;
     released = ~pressed & (DAT_00813a94 ^ held);
     if (released != 0 && DAT_00667108 != 0) {

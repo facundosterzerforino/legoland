@@ -41,7 +41,7 @@ struct IconNode {
         void *field_20p;
     };
     /* 0x24 */ void *field_24;
-    /* 0x28 */ void *field_28;
+    /* 0x28 */ void *render_func;
     /* 0x2c */ void *event_handler;
     /* 0x30 */ void *field_30;
     /* 0x34 */ unsigned int flags;

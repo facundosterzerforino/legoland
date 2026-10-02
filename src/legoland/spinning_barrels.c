@@ -44,7 +44,7 @@ void FUN_0043bdb0(void *param1) {
     }
     memset(block, 0, 0x34);
     block->tile_id = ((struct BarrelSource *)param1)->field_0;
-    block->field_8 = 0;
+    block->frame = 0;
     block->next = DAT_0062fe08;
     DAT_0062fe08 = block;
     FUN_0043c2f0(block);
@@ -119,12 +119,12 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
         }
     }
     if (count != 0) {
-        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->field_8);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->frame);
         off = GetRenderOffsetForLayer(DAT_0062fde0, 3);
         AdjustOffsetForViewMode(&off);
         PrintSprite(GetSpriteForLayer(DAT_0062fde0, 3), screen.x + off.x, screen.y + off.y, 0, 0);
         riders = ride->riders;
-        (*((struct Sprite *)DAT_0062fe00[0])->lls)->frame = state->field_8;
+        (*((struct Sprite *)DAT_0062fe00[0])->lls)->frame = state->frame;
         for (; riders != NULL; riders = riders->next) {
             if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
                 bloke = riders->rider;
@@ -158,7 +158,7 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
         off2 = GetRenderOffsetForLayer(DAT_0062fde0, 1);
         AdjustOffsetForViewMode(&off2);
         PrintSprite(SpinningBarrelsEntranceMatteSprite, screen.x + off2.x, screen.y + off2.y, 0, 0);
-        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->field_20);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->layer2_frame);
         off2 = GetRenderOffsetForLayer(DAT_0062fde0, 2);
         AdjustOffsetForViewMode(&off2);
         PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off2.x, screen.y + off2.y, 0, 0);
@@ -176,11 +176,11 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
         AdjustOffsetForViewMode(&off2);
         PrintSprite(SpinningBarrelsEntranceMatte2Sprite, screen.x + off2.x, screen.y + off2.y, 0, 0);
     } else {
-        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->field_8);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 3), state->frame);
         off = GetRenderOffsetForLayer(DAT_0062fde0, 3);
         AdjustOffsetForViewMode(&off);
         PrintSprite(GetSpriteForLayer(DAT_0062fde0, 3), screen.x + off.x, screen.y + off.y, 0, 0);
-        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->field_20);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fde0, 2), state->layer2_frame);
         off2 = GetRenderOffsetForLayer(DAT_0062fde0, 2);
         AdjustOffsetForViewMode(&off2);
         PrintSprite(GetSpriteForLayer(DAT_0062fde0, 2), screen.x + off2.x, screen.y + off2.y, 0, 0);
@@ -189,23 +189,23 @@ void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
 
 // FUNCTION: LEGOLAND 0x0043c2f0
 void FUN_0043c2f0(struct BarrelNode *node) {
-    node->field_14 = 0;
-    node->field_8 = 0;
-    node->field_18 = 0;
-    node->field_6 = 0;
-    node->field_c = node->field_c & 0xffffbffe;
-    node->field_10 = 3;
+    node->frame_ticks = 0;
+    node->frame = 0;
+    node->boarding_count = 0;
+    node->seated_count = 0;
+    node->flags = node->flags & 0xffffbffe;
+    node->cycles_left = 3;
 }
 
 // FUNCTION: LEGOLAND 0x0043c320
 void FUN_0043c320(struct BarrelNode *node) {
-    unsigned int packed = node->field_c;
-    unsigned char prev = node->field_6;
+    unsigned int packed = node->flags;
+    unsigned char prev = node->seated_count;
     packed &= 0xffffbfff;
-    node->field_7 = prev;
+    node->leaving_count = prev;
     packed |= 0x1;
-    node->field_6 = 0;
-    node->field_c = packed;
+    node->seated_count = 0;
+    node->flags = packed;
 }
 
 // FUNCTION: LEGOLAND 0x0043c340
@@ -432,15 +432,15 @@ void FUN_0043c7f0(struct BarrelNode *node) {
     struct RideNode *r = DAT_0062fde4->riders;
     unsigned int flags;
 
-    node->field_20++;
-    if (node->field_20 >= 0x20) {
-        node->field_20 = 0;
+    node->layer2_frame++;
+    if (node->layer2_frame >= 0x20) {
+        node->layer2_frame = 0;
     }
-    flags = node->field_c;
+    flags = node->flags;
     if (flags & 1) {
         unsigned char c;
-        int v = ++node->field_14;
-        c = node->field_10;
+        int v = ++node->frame_ticks;
+        c = node->cycles_left;
         if (c == 0) {
             if (GetAllBlokesOffRide(DAT_0062fde4, node->tile_id) == 0) {
                 return;
@@ -449,34 +449,34 @@ void FUN_0043c7f0(struct BarrelNode *node) {
             return;
         }
         if (v > 2) {
-            node->field_14 = 0;
-            node->field_8++;
-            if (node->field_8 >= 0x40) {
-                node->field_8 = 0;
-                node->field_10 = c - 1;
+            node->frame_ticks = 0;
+            node->frame++;
+            if (node->frame >= 0x40) {
+                node->frame = 0;
+                node->cycles_left = c - 1;
             }
         }
     } else if (flags & 0x4000) {
-        if (node->field_6 == node->field_18) {
-            node->field_c = flags & 0xffffbfff;
+        if (node->seated_count == node->boarding_count) {
+            node->flags = flags & 0xffffbfff;
             FUN_0043c320(node);
             return;
         }
-    } else if (node->field_6 != 0) {
-        if (node->field_1c == 0) {
-            node->field_c = flags | 0x4000;
+    } else if (node->seated_count != 0) {
+        if (node->boarding_timer == 0) {
+            node->flags = flags | 0x4000;
             Ride_SetFlagToNotLetAnyoneOn(&node->tile_id);
         } else {
-            node->field_1c--;
+            node->boarding_timer--;
         }
     }
     for (; r != NULL; r = r->next) {
         if (node->tile_id == r->tile.id && r->rider->field_35 == 1) {
             sprintf(&DAT_004b78b4[8], "%02d", r->rider->field_36);
-            SetBlokePositionFromBNV(SpinningBarrelsBNV, r->rider, DAT_004b78b4, node->field_8, -1617922.25f, -1618065.75f, 0);
+            SetBlokePositionFromBNV(SpinningBarrelsBNV, r->rider, DAT_004b78b4, node->frame, -1617922.25f, -1618065.75f, 0);
         }
     }
-    *(short *)*((struct Sprite *)DAT_0062fe00[0])->lls = (short)node->field_8;
+    *(short *)*((struct Sprite *)DAT_0062fe00[0])->lls = (short)node->frame;
 }
 
 // FUNCTION: LEGOLAND 0x0043c930
@@ -514,9 +514,9 @@ void FUN_0043c950(struct Element *elem) {
         if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
-                node->field_18++;
+                node->boarding_count++;
                 iv13 -= 5;
-                node->field_1c = 0x190;
+                node->boarding_timer = 0x190;
                 bloke->flags |= 8;
                 iv12 <<= 8;
                 iv13 <<= 8;
@@ -564,7 +564,7 @@ void FUN_0043c950(struct Element *elem) {
                 BlokeSitAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 bloke->param_action++;
-                if ((short)(signed char)++node->field_6 == DAT_0062fde4->seats) {
+                if ((short)(signed char)++node->seated_count == DAT_0062fde4->seats) {
                     FUN_0043c320(node);
                 }
                 break;
@@ -614,8 +614,8 @@ void FUN_0043c950(struct Element *elem) {
             case 0x11:
                 RemoveBlokeFromRide(ride, rn);
                 bloke->flags &= 0xfff7;
-                if (--node->field_7 == 0) {
-                    node->field_6 = 0;
+                if (--node->leaving_count == 0) {
+                    node->seated_count = 0;
                     Ride_ClearFlagToNotLetAnyoneOn(&node->tile_id);
                 }
                 break;

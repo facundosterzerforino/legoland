@@ -422,7 +422,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_1c = IfPathIconPressedSprite;
         icon->field_20p = IfPathIconSprite;
         icon->field_8 = obj;
-        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->render_func = (void *)RenderGBarSpriteIcon;
         icon->event_handler = (void *)FUN_00474fc0;
         icon->flags = (icon->flags & 0xfffffdff) | 0x300a;
 
@@ -491,12 +491,12 @@ LEGO_EXPORT int InitGameInterface(int a) {
 
         // STRING: LEGOLAND 0x004bb48c
         bar = LoadSpriteIcon("Bar_Energy.lls", 4, 0x180, 6, 0x9a);
-        bar->field_28 = (void *)RenderEnergyBar;
+        bar->render_func = (void *)RenderEnergyBar;
         bar->flags |= 0x400a;
 
         // STRING: LEGOLAND 0x004bb47c
         bar = LoadSpriteIcon("Bar_Coins.lls", 4, 0x1c, 6, 0x9a);
-        bar->field_28 = (void *)RenderMoneyBar;
+        bar->render_func = (void *)RenderMoneyBar;
         bar->flags |= 0x400a;
 
         icon = InsertIcon(0x19e, 0x179, 0x9a, BriefIcon2Sprite);
@@ -505,7 +505,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_18p = BriefIconSprite;
         icon->flags |= 0x600a;
         icon->event_handler = (void *)FUN_00474f40;
-        icon->field_28 = (void *)FUN_0046e040;
+        icon->render_func = (void *)FUN_0046e040;
         DAT_00668e9c = icon;
         icon->flags |= 0x400;
         FUN_00491240(DAT_0066861c);
@@ -517,7 +517,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string = GetString(0x24f);
         icon->event_handler = (void *)FUN_00474fa0;
         icon->flags |= 0x4008;
-        icon->field_28 = (void *)FUN_00443e30;
+        icon->render_func = (void *)FUN_00443e30;
         DAT_00668eb8 = (unsigned int)icon;
         if (a != 0) {
             FUN_0046b240(0);
@@ -1004,14 +1004,14 @@ LEGO_EXPORT void RedrawObjectList(struct InterfacePanel *panel, int param_2, int
         MoveIcons(0xffff, panel->group, 0, 0);
         return;
     }
-    top = panel->field_10;
-    if (top + delta > panel->field_20) {
-        delta = panel->field_20 - top;
-    } else if (panel->field_18 + delta < panel->field_28) {
-        delta = panel->field_28 - panel->field_18;
+    top = panel->content_top;
+    if (top + delta > panel->clip_top) {
+        delta = panel->clip_top - top;
+    } else if (panel->content_bottom + delta < panel->clip_bottom) {
+        delta = panel->clip_bottom - panel->content_bottom;
     }
-    panel->field_10 = top + delta;
-    panel->field_18 = panel->field_18 + delta;
+    panel->content_top = top + delta;
+    panel->content_bottom = panel->content_bottom + delta;
     MoveIcons(0xffff, panel->group, (short)param_2, (short)delta);
 }
 
@@ -1040,13 +1040,13 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     icon = SetupInterfacePanelIcons((unsigned int)panel, panel_arg, param_3, 1, param_4, param_1);
     panel->icon = icon;
     x = icon->x;
-    panel->field_1c = x;
-    panel->field_c = x;
+    panel->clip_left = x;
+    panel->content_left = x;
     y = icon->y;
-    panel->field_20 = y;
-    panel->field_10 = y;
-    panel->field_24 = icon->width + icon->x;
-    panel->field_28 = icon->height + icon->y;
+    panel->clip_top = y;
+    panel->content_top = y;
+    panel->clip_right = icon->width + icon->x;
+    panel->clip_bottom = icon->height + icon->y;
     panel->field_4 = 1;
     panel->group = (short)param_1;
     SetNewGroup_Callbacks(0, (void *)RenderBuildObjectIcon, (void *)FUN_00470000);
@@ -1081,7 +1081,7 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     }
     AddFullScreenIcon((void *)(param_1 + 6));
     panel->field_14 = x;
-    panel->field_18 = y;
+    panel->content_bottom = y;
     if (y < panel->icon->height + panel->icon->y) {
         icon = FindIcon((unsigned short)(param_1 + 4));
         if (icon != NULL) {

@@ -199,14 +199,14 @@ void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
                     IP_RenderBlokeIn3DNow(blokes[i]);
                 }
             }
-            LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->field_4);
+            LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->frame);
             off = GetRenderOffsetForLayer(DAT_004cbf28, 1);
             AdjustOffsetForViewMode(&off);
             PrintSprite(GetSpriteForLayer(DAT_004cbf28, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
             off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
             AdjustOffsetForViewMode(&off);
             PrintSprite(SpiderHutMask2Sprite, screen.x + off.x, screen.y + off.y, param_6, 0);
-            *(short *)*ZSpiderSprite->lls = state->field_4;
+            *(short *)*ZSpiderSprite->lls = state->frame;
             for (elem = ride->riders; elem != NULL; elem = elem->next) {
                 Bloke *b;
                 if (tile->id == elem->tile.id && ((b = elem->rider)->flags & 0x80) != 0) {
@@ -239,7 +239,7 @@ void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
         }
     }
     {
-        LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->field_4);
+        LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->frame);
         off = GetRenderOffsetForLayer(DAT_004cbf28, 1);
         AdjustOffsetForViewMode(&off);
         PrintSprite(GetSpriteForLayer(DAT_004cbf28, 1), screen.x + off.x, screen.y + off.y, param_6, 0);

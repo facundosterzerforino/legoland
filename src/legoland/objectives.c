@@ -1183,11 +1183,11 @@ int FUN_00469c80(struct MapRectArg *arg) {
                     QueryObj.pos.x = (unsigned char)point.x;
                     QueryClass = cls;
                     QueryObj.pos.y = (unsigned char)point.y;
-                    cls->method_94(cls->field_c4, &point);
+                    cls->method_94(cls->element, &point);
                     BuildCursorPtr(&QueryCursor, 0, 0);
                     if (FUN_0045f4b0(&QueryCursor) != 0) {
                         FUN_0045d3d0(QueryClass, &point.x);
-                        RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->field_c4, QueryObj,
+                        RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->element, QueryObj,
                             &QueryCursor);
                     }
                     memcpy(&QueryCursor, &saved, sizeof(struct Cursor));

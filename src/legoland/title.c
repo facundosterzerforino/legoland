@@ -49,7 +49,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     if (FUN_0048fc30() == 0) {
         // STRING: LEGOLAND 0x004bf548
         icon->alt_sprite = LoadSprite("Dark_New_On_Title.lls", 4);
-        icon->field_28 = (void *)FUN_0046e920;
+        icon->render_func = (void *)FUN_0046e920;
         icon->flags |= 8;
     } else {
         icon->alt_sprite = NULL;

@@ -509,7 +509,7 @@ void FUN_0048d230(void) {
         if (node->slot == CurrentProfile.profile_slot) {
             strcpy((char *)&CurrentProfile, node->data.name);
             CurrentProfile.field_20 = node->data.field_20;
-            CurrentProfile.field_44 = 0;
+            CurrentProfile.save_slot = 0;
             CurrentProfile.speech_volume = node->data.speech_volume;
             CurrentProfile.music_volume = node->data.music_volume;
             CurrentProfile.fx_volume = node->data.fx_volume;

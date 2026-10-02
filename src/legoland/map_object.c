@@ -187,7 +187,7 @@ LEGO_EXPORT void AddObjectToMap(Element *param_1, TileId param_2, int param_3) {
                     tile->field_0 = (unsigned int)param_1;
                     *(unsigned short *)&tile->field_4 = param_2.id;
                     tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
-                    tile->field_11 = obj->field_2c;
+                    tile->durability_level = obj->field_2c;
                     if (obj->flags & 2) {
                         tile->field_10 = 2;
                     }
@@ -778,7 +778,7 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
         saved_140c = EditCursor.field_140c;
         saved_1410 = EditCursor.field_1410;
     }
-    ((struct MapObject *)obj)->method_90(obj->field_c4, out, 0x8f8);
+    ((struct MapObject *)obj)->method_90(obj->element, out, 0x8f8);
     node = &EditCursor;
     if (node != 0) {
         cfg = lpConfig;
@@ -811,7 +811,7 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
             node = (struct Cursor *)node->field_1830;
         } while (node != 0);
     }
-    PutObjOnMap(obj, obj->field_c4, &pos);
+    PutObjOnMap(obj, obj->element, &pos);
     EditCursor.field_1830 = 0;
     if (GamePad & 0x1000) {
         *(struct FootprintNode *)EditCursor.field_1414 = saved_rect;
@@ -820,7 +820,7 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
         EditCursor.field_140c = saved_140c;
         EditCursor.field_1410 = saved_1410;
     } else if (EditMode.unk8 != 0) {
-        ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->field_c4, &DAT_00813a44, 0x8f8);
+        ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->element, &DAT_00813a44, 0x8f8);
     }
 }
 
@@ -957,7 +957,7 @@ LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cu
     if (obj->flags & 0x20000) {
         BGFullUpdate = 1;
     }
-    AddBricks(GetObjSalvageValue(obj, tile->field_11));
+    AddBricks(GetObjSalvageValue(obj, tile->durability_level));
     if (tile->flags & 0x80) {
         ApplyDestrTileMap(editObj, coords);
         FUN_0045e850((struct ObjNode *)editObj, (int *)&pos);
@@ -2829,8 +2829,8 @@ LEGO_EXPORT void AddOvSav(struct OverlayParam *param) {
         } else {
             OverlayList = node;
         }
-        node->field_14 = param->field_0;
-        node->field_18 = param->field_4;
+        node->field_14 = param->x;
+        node->field_18 = param->y;
         *(struct OverlayParam *)node = *param;
         if (param->field_10 & 0xff00) {
             sample = *(int *)(*(int *)((int)BridgesData + 8) + (param->field_10 & 0xff) * 4);
@@ -2862,8 +2862,8 @@ void FUN_00462c00(struct OverlayParam *param) {
         } else {
             OverlayList = node;
         }
-        node->field_14 = param->field_0;
-        node->field_18 = param->field_4;
+        node->field_14 = param->x;
+        node->field_18 = param->y;
         *(struct OverlayParam *)node = *param;
     }
 }
@@ -2947,11 +2947,11 @@ LEGO_EXPORT void ResetMapAI(void) {
     MapStats.capacity = 0;
     MapStats.field_0 = 0x1fff;
     memset(MapStats.leave_ratings, 2, sizeof(MapStats.leave_ratings));
-    MapStats.field_128 = 0xffffe0c0;
-    MapStats.field_12c = 0xfffffc18;
-    MapStats.field_130 = 100;
-    MapStats.field_134 = 1000;
-    MapStats.field_138 = 5000;
+    MapStats.mood_threshold0 = 0xffffe0c0;
+    MapStats.mood_threshold1 = 0xfffffc18;
+    MapStats.mood_threshold2 = 100;
+    MapStats.mood_threshold3 = 1000;
+    MapStats.mood_threshold4 = 5000;
     MapStats.leave_rating_index = 0;
     MapStats.field_184 = 0;
 }
@@ -3032,7 +3032,7 @@ LEGO_EXPORT void DoMapAI(void) {
                             if (FUN_0044f360((unsigned int)obj, (unsigned char *)&id) != 0) {
                                 MapStats.classes[obj->type].scan_built++;
                                 MapStats.classes[obj->type].scan_salvage +=
-                                    GetObjSalvageValue(obj, tile->field_11);
+                                    GetObjSalvageValue(obj, tile->durability_level);
                                 MapStats.classes[obj->type].scan_capacity += obj->field_2e;
                             }
                         }
@@ -3136,14 +3136,14 @@ void PrintCapacityStats(void) {
 LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
     int rating;
 
-    if (param_1 < MapStats.field_128) {
+    if (param_1 < MapStats.mood_threshold0) {
         rating = 0;
-    } else if (param_1 < MapStats.field_130) {
+    } else if (param_1 < MapStats.mood_threshold2) {
         rating = 1;
-    } else if (param_1 < MapStats.field_134) {
+    } else if (param_1 < MapStats.mood_threshold3) {
         rating = 2;
     } else {
-        rating = (param_1 >= MapStats.field_138) + 3;
+        rating = (param_1 >= MapStats.mood_threshold4) + 3;
     }
     MapStats.leave_ratings[MapStats.leave_rating_index] = (char)rating;
     MapStats.leave_rating_index = MapStats.leave_rating_index + 1;
@@ -3159,15 +3159,15 @@ void FUN_00463460(struct MapElement *tile, struct Point *pos) {
     int threshold;
     int power;
 
-    if (tile->field_11 != 0) {
+    if (tile->durability_level != 0) {
         ride = tile->field_0->ride;
         flags = tile->flags;
         tile->flags &= 0xfdff;
         threshold = ride->durability >> 2;
-        if (tile->field_11 < threshold) {
+        if (tile->durability_level < threshold) {
             if (tile->flags & 4) {
                 tile->flags |= 0x200;
-                tile->field_11 = threshold;
+                tile->durability_level = threshold;
                 return;
             }
             if (lpConfig->field_3c != 0 && (tile->flags & 0x4000) == 0) {
@@ -3178,8 +3178,8 @@ void FUN_00463460(struct MapElement *tile, struct Point *pos) {
             if ((flags & 0x200) == 0) {
                 power = FindObjectsPower(ride);
                 if (power > 0) {
-                    MapStats.field_3d0 -= power;
-                    if (MapStats.field_3d4 - (int)MapStats.field_3d8 > MapStats.field_3d0) {
+                    MapStats.power_supply -= power;
+                    if (MapStats.power_demand - (int)MapStats.unpowered_demand > MapStats.power_supply) {
                         FUN_0045a0d0();
                     }
                 }
@@ -3245,11 +3245,11 @@ LEGO_EXPORT void ProcessDamage(void) {
                 tile = 0;
             }
             if (tile->flags & 0x80) {
-                if (tile->field_11 > 1) {
-                    if (tile->field_11 > amount) {
-                        tile->field_11 -= amount;
+                if (tile->durability_level > 1) {
+                    if (tile->durability_level > amount) {
+                        tile->durability_level -= amount;
                     } else {
-                        tile->field_11 = 1;
+                        tile->durability_level = 1;
                     }
                 }
                 FUN_00463460(tile, &pt);

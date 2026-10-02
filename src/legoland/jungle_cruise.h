@@ -33,7 +33,7 @@ struct JungleScore {
     /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;
     /* 0x10 */ unsigned int field_10;
-    /* 0x14 */ unsigned int field_14;
+    /* 0x14 */ unsigned int bloke_count;
     /* 0x18 */ struct Bloke *blokes[5];
     /* 0x2c */ int timer;
     /* 0x30 */ struct Bloke *seats[3];

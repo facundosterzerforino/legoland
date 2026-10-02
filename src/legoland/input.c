@@ -186,17 +186,17 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
         buffer->y = 0;
     }
     buffer->delta_x = buffer->x - buffer->prev_x;
-    flags = buffer->field_18 & 0xfffffff8;
+    flags = buffer->buttons & 0xfffffff8;
     buffer->delta_y = buffer->y - buffer->prev_y;
-    buffer->field_18 = flags;
+    buffer->buttons = flags;
     if ((MouseState.rgbButtons[0] & 0x80) != 0) {
-        buffer->field_18 = flags | 1;
+        buffer->buttons = flags | 1;
     }
     if ((MouseState.rgbButtons[2] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 4;
+        buffer->buttons = buffer->buttons | 4;
     }
     if ((MouseState.rgbButtons[1] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 2;
+        buffer->buttons = buffer->buttons | 2;
     }
 }
 
@@ -205,7 +205,7 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
     char c;
     int arg;
 
-    buffer->field_18 = buffer->field_18 & 0xfffff807;
+    buffer->buttons = buffer->buttons & 0xfffff807;
     c = FUN_00474130();
     if (c != 0) {
         memcpy(CheatKeyBuffer, CheatKeyBuffer + 1, 19);
@@ -250,21 +250,21 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
                 if (CheatKeyBuffer[0x12] == '1') {
                     if (CheatKeyBuffer[0x13] == '0') {
                         arg = 0xa;
-                        lpConfig->field_28 = 0xf;
+                        lpConfig->level = 0xf;
                         // STRING: LEGOLAND 0x004baed0
                         DBPrintf("CHEAT:Level %d\n", arg);
                         MapStats.field_3a0 = 2;
                     }
                 } else if (CheatKeyBuffer[0x12] == '0') {
                     if (CheatKeyBuffer[0x13] >= '1' && CheatKeyBuffer[0x13] <= '9') {
-                        lpConfig->field_28 = CheatKeyBuffer[0x13] - 0x2b;
-                        arg = lpConfig->field_28;
+                        lpConfig->level = CheatKeyBuffer[0x13] - 0x2b;
+                        arg = lpConfig->level;
                         DBPrintf("CHEAT:Level %d\n", arg);
                         MapStats.field_3a0 = 2;
                     }
                 } else if (CheatKeyBuffer[0x12] == 'T' && CheatKeyBuffer[0x13] >= '1' && CheatKeyBuffer[0x13] <= '5') {
-                    lpConfig->field_28 = CheatKeyBuffer[0x13] - 0x30;
-                    arg = lpConfig->field_28;
+                    lpConfig->level = CheatKeyBuffer[0x13] - 0x30;
+                    arg = lpConfig->level;
                     DBPrintf("CHEAT:Level %d\n", arg);
                     MapStats.field_3a0 = 2;
                 }
@@ -286,12 +286,12 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
                 // STRING: LEGOLAND 0x004bae50
             } else if (_memicmp(":WELOVELEGOLAND", &CheatKeyBuffer[5], 0xf) == 0) {
                 // STRING: LEGOLAND 0x004bae3c
-                DBPrintf("CHEAT:Win Level\n", lpConfig->field_28);
+                DBPrintf("CHEAT:Win Level\n", lpConfig->level);
                 FUN_00459820(1);
                 // STRING: LEGOLAND 0x004bae30
             } else if (memcmp(":IMPROVISE", &CheatKeyBuffer[10], 10) == 0) {
                 // STRING: LEGOLAND 0x004bae1c
-                DBPrintf("CHEAT:Stop Script\n", lpConfig->field_28);
+                DBPrintf("CHEAT:Stop Script\n", lpConfig->level);
                 FUN_0046b240(1);
                 // STRING: LEGOLAND 0x004bae14
             } else if (_memicmp(":DIGGER", &CheatKeyBuffer[0xd], 7) == 0) {
@@ -310,28 +310,28 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
         }
     }
     if ((KeyboardState[0xcb] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 8;
+        buffer->buttons = buffer->buttons | 8;
     }
     if ((KeyboardState[0xcd] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x10;
+        buffer->buttons = buffer->buttons | 0x10;
     }
     if ((KeyboardState[0xc8] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x20;
+        buffer->buttons = buffer->buttons | 0x20;
     }
     if ((KeyboardState[0xd0] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x40;
+        buffer->buttons = buffer->buttons | 0x40;
     }
     if ((KeyboardState[0x39] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x80;
+        buffer->buttons = buffer->buttons | 0x80;
     }
     if ((KeyboardState[0xf] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x100;
+        buffer->buttons = buffer->buttons | 0x100;
     }
     if ((KeyboardState[1] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x200;
+        buffer->buttons = buffer->buttons | 0x200;
     }
     if ((KeyboardState[0x1c] & 0x80) != 0) {
-        buffer->field_18 = buffer->field_18 | 0x400;
+        buffer->buttons = buffer->buttons | 0x400;
     }
 }
 

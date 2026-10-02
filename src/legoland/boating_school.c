@@ -64,8 +64,8 @@ int FUN_00418e60(TileId tile, unsigned int bloke) {
     fresh->field_3e8 = (rand() & 0xf) + 4;
     fresh->bloke = bloke;
     DAT_004cc03c = fresh;
-    memset(fresh->field_1c, 0xf1, sizeof(fresh->field_1c));
-    memset(fresh->field_29c, 0, sizeof(fresh->field_29c));
+    memset(fresh->step_xy, 0xf1, sizeof(fresh->step_xy));
+    memset(fresh->step_sprite, 0, sizeof(fresh->step_sprite));
     if (fresh->field_3e0 == 3) {
         fresh->field_3e0 = 2;
     }
@@ -114,33 +114,33 @@ void FUN_00418fe0(int param_1) {
     for (; ride != NULL; ride = ride->next) {
         if ((param_1 != 0 && (ride->field_3e4 == 1 || ride->field_3e4 == 0x10)) ||
             (param_1 == 0 && ride->field_3e4 != 1 && ride->field_3e4 != 0x10)) {
-            dy = ride->field_1c[DAT_004cc08c * 2 + 1];
-            dx = ride->field_1c[DAT_004cc08c * 2];
+            dy = ride->step_xy[DAT_004cc08c * 2 + 1];
+            dx = ride->step_xy[DAT_004cc08c * 2];
             GetTileDimensions(&tw2, &th2);
             bx = (dx - dy) * tw2 >> 9;
             by = (dx + dy) * th2 >> 9;
             sx = (ride->tile_x - ride->tile_y) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
             sy = (ride->tile_x + ride->tile_y) * (th >> 1) - (ScrollY >> 8);
-            off.x = BoatingSchoolBoats->offset_x[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
-            off.y = BoatingSchoolBoats->offset_y[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
+            off.x = BoatingSchoolBoats->offset_x[ride->step_sprite[DAT_004cc08c] & 0xff] >> 1;
+            off.y = BoatingSchoolBoats->offset_y[ride->step_sprite[DAT_004cc08c] & 0xff] >> 1;
             AdjustOffsetForViewMode(&off);
             ride->screen_x = lpConfig->view_x + bx + off.x + sx;
             ride->screen_y = lpConfig->view_y + by + off.y + sy;
-            PrintSprite(BoatingSchoolBoats->sprites[ride->field_29c[DAT_004cc08c] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
+            PrintSprite(BoatingSchoolBoats->sprites[ride->step_sprite[DAT_004cc08c] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             if (ride->bloke != 0) {
                 person = (int)Find3DPersonFromBloke(ride->bloke);
-                *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
+                *(float *)(person + 0x44) = ((float)(int)ride->step_sprite[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
                 SetPersonRotation((struct Person *)person, (float *)(person + 0x40));
                 off.x = lpConfig->view_x + bx + sx;
                 off.y = lpConfig->view_y + by + sy;
                 AdjustBlokePosition((struct Point *)&off);
-                seat.x = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2] + 0x44;
-                seat.y = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2 + 1] + 0x34;
+                seat.x = DAT_004b51d8[(ride->step_sprite[DAT_004cc08c] & 0xf) * 2] + 0x44;
+                seat.y = DAT_004b51d8[(ride->step_sprite[DAT_004cc08c] & 0xf) * 2 + 1] + 0x34;
                 AdjustOffsetForViewMode(&seat);
                 *(int *)(person + 0x1c) = seat.x + off.x;
                 *(int *)(person + 0x20) = seat.y + off.y;
                 IP_RenderBlokeIn3DNow((struct Bloke *)ride->bloke);
-                PrintSprite(BoatingSchoolBoats->sprites[(ride->field_29c[DAT_004cc08c] + 0x30) & 0xff], ride->screen_x, ride->screen_y, 0, 0);
+                PrintSprite(BoatingSchoolBoats->sprites[(ride->step_sprite[DAT_004cc08c] + 0x30) & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             }
         }
         if (ride->field_3e4 == 0x10 && ride->field_3e8 == 2 && DAT_004cc08c == 0x4f && param_1 != 0 && ride->bloke != 0) {
@@ -237,19 +237,19 @@ struct BoatRide *FUN_00419420(struct BoatRide *param_1) {
     param_1->field_3dc = 1;
     if (param_1->field_3e8 == 3) {
         i = 0x10;
-        p = &param_1->field_1c[0x81];
+        p = &param_1->step_xy[0x81];
         do {
-            p[-1] = param_1->field_1c[0x80];
-            *p = param_1->field_1c[0x81];
+            p[-1] = param_1->step_xy[0x80];
+            *p = param_1->step_xy[0x81];
             p = p + 2;
             i = i - 1;
         } while (i != 0);
     } else if (param_1->field_3e8 == 2) {
-        p = &param_1->field_1c[1];
+        p = &param_1->step_xy[1];
         i = 0x40;
         do {
-            p[-1] = param_1->field_1c[0x80];
-            *p = param_1->field_1c[0x81];
+            p[-1] = param_1->step_xy[0x80];
+            *p = param_1->step_xy[0x81];
             p = p + 2;
             i = i - 1;
         } while (i != 0);
@@ -258,11 +258,11 @@ struct BoatRide *FUN_00419420(struct BoatRide *param_1) {
         param_1->next_y = param_1->tile_y + 5;
     }
     if (param_1->field_3e8 == 1) {
-        p = &param_1->field_1c[0x9e];
+        p = &param_1->step_xy[0x9e];
         i = 7;
         do {
-            p[0] = param_1->field_1c[0x90];
-            p[1] = param_1->field_1c[0x91];
+            p[0] = param_1->step_xy[0x90];
+            p[1] = param_1->step_xy[0x91];
             p = p + -2;
             i = i - 1;
         } while (i != 0);
@@ -291,7 +291,7 @@ void FUN_00419520(struct BoatRide *ride, int param_2) {
             break;
         }
     }
-    mask = path->field_4;
+    mask = path->dir_mask;
     if (path->tile.id == score->start.id) {
         mask &= ~1;
     } else if (path->tile.id == score->end.id) {
@@ -319,9 +319,9 @@ void FUN_00419520(struct BoatRide *ride, int param_2) {
             mask &= ~8;
         }
     }
-    if (param_2 != 0 && path->field_18 != NULL) {
-        d.x = path->field_18->tile.pos.x - path->tile.pos.x;
-        d.y = path->field_18->tile.pos.y - path->tile.pos.y;
+    if (param_2 != 0 && path->parent != NULL) {
+        d.x = path->parent->tile.pos.x - path->tile.pos.x;
+        d.y = path->parent->tile.pos.y - path->tile.pos.y;
         if (d.y != 0) {
             if (d.x < 0) {
                 mask &= ~8;
@@ -419,7 +419,7 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
 
     if (to == -1) {
         if (from == -1) {
-            memset(ride->field_1c, 0, sizeof(ride->field_1c));
+            memset(ride->step_xy, 0, sizeof(ride->step_xy));
         } else {
             for (bit = 0; bit < 4; bit++) {
                 if ((from & (1 << bit)) != 0) {
@@ -430,11 +430,11 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
             sy = (int)((float)(DAT_004b5118[bit].oy * 40) * DAT_004ab3fc);
             for (i = 0; i < 80; i++) {
                 if (i < 40) {
-                    ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + sx);
-                    ride->field_1c[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * i) * DAT_004ab3fc + sy);
+                    ride->step_xy[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + sx);
+                    ride->step_xy[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * i) * DAT_004ab3fc + sy);
                 } else {
-                    ride->field_1c[i * 2] = 0;
-                    ride->field_1c[i * 2 + 1] = 0;
+                    ride->step_xy[i * 2] = 0;
+                    ride->step_xy[i * 2 + 1] = 0;
                 }
             }
         }
@@ -447,11 +447,11 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
         idx = (bit + 2) % 4;
         for (i = 0; i < 80; i++) {
             if (i >= 40) {
-                ride->field_1c[i * 2] = DAT_004b5118[idx].dx * 16 + ride->field_1c[i * 2 - 2];
-                ride->field_1c[i * 2 + 1] = DAT_004b5118[idx].dy * 16 + ride->field_1c[i * 2 - 1];
+                ride->step_xy[i * 2] = DAT_004b5118[idx].dx * 16 + ride->step_xy[i * 2 - 2];
+                ride->step_xy[i * 2 + 1] = DAT_004b5118[idx].dy * 16 + ride->step_xy[i * 2 - 1];
             } else {
-                ride->field_1c[i * 2] = 0;
-                ride->field_1c[i * 2 + 1] = 0;
+                ride->step_xy[i * 2] = 0;
+                ride->step_xy[i * 2 + 1] = 0;
             }
         }
     } else {
@@ -475,9 +475,9 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
             arc += bit;
             step = (arc->a1 - arc->a0) * DAT_004ab3f8;
             angle = arc->a0;
-            ride->field_1c[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
-            ride->field_1c[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
-            p = &ride->field_1c[3];
+            ride->step_xy[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
+            ride->step_xy[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+            p = &ride->step_xy[3];
             for (i = 0x4f; i != 0; i--) {
                 angle += step;
                 p[-1] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
@@ -495,39 +495,39 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
             if (from == to) {
                 for (i = 0; i < 80; i++) {
                     if (i < 40) {
-                        ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + sx);
-                        ride->field_1c[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * i) * DAT_004ab3fc + sy);
+                        ride->step_xy[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + sx);
+                        ride->step_xy[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * i) * DAT_004ab3fc + sy);
                     } else {
-                        ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
-                        ride->field_1c[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
+                        ride->step_xy[i * 2] = (int)((float)(DAT_004b5118[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
+                        ride->step_xy[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
                     }
                 }
             } else {
                 fx = (float)sx;
                 fy = (float)sy;
                 for (i = 0; i < 80; i++) {
-                    ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + fx);
-                    ride->field_1c[i * 2 + 1] = (int)((float)(i * DAT_004b5118[bit].dy) * DAT_004ab3fc + fy);
+                    ride->step_xy[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + fx);
+                    ride->step_xy[i * 2 + 1] = (int)((float)(i * DAT_004b5118[bit].dy) * DAT_004ab3fc + fy);
                 }
             }
         }
     }
     for (i = 0; i < 80; i++) {
         if (i < 76) {
-            tx = ride->field_1c[(i + 4) * 2];
-            ty = ride->field_1c[(i + 4) * 2 + 1];
+            tx = ride->step_xy[(i + 4) * 2];
+            ty = ride->step_xy[(i + 4) * 2 + 1];
         } else {
-            tx = ride->field_1c[0x9e];
-            ty = ride->field_1c[0x9f];
+            tx = ride->step_xy[0x9e];
+            ty = ride->step_xy[0x9f];
         }
         if (i > 3) {
-            dx = tx - ride->field_1c[(i - 3) * 2];
-            dy = ty - ride->field_1c[(i - 3) * 2 + 1];
+            dx = tx - ride->step_xy[(i - 3) * 2];
+            dy = ty - ride->step_xy[(i - 3) * 2 + 1];
         } else {
-            dx = tx - ride->field_1c[0];
-            dy = ty - ride->field_1c[1];
+            dx = tx - ride->step_xy[0];
+            dy = ty - ride->step_xy[1];
         }
-        ride->field_29c[i] = ((ArcTan256(dx, dy) >> 4) + 6 & 0xf) + ride->field_3e0 * 16;
+        ride->step_sprite[i] = ((ArcTan256(dx, dy) >> 4) + 6 & 0xf) + ride->field_3e0 * 16;
     }
 }
 
@@ -1462,7 +1462,7 @@ void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
         }
     }
     if (path != NULL) {
-        mask = path->field_4;
+        mask = path->dir_mask;
         if (path->tile.id == score->start.id) {
             mask = mask & 0xfffffffe;
         } else if (path->tile.id == score->end.id) {
@@ -1757,11 +1757,11 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
             return;
         }
         node->next = DAT_004d823c;
-        node->field_18 = NULL;
+        node->parent = NULL;
         DAT_004d823c = node;
     }
     node->tile = tile;
-    node->field_4 = mask;
+    node->dir_mask = mask;
     if (owner != NULL) {
         node->owner.id = *owner;
     }
@@ -1913,7 +1913,7 @@ int FUN_0041c8c0(int a, int b, int c, int d) {
 
     result = 0;
     for (node = DAT_004d823c; node != NULL; node = node->next) {
-        node->field_c = 0;
+        node->visited = 0;
     }
     node = FUN_0041c890(a, b);
     if (node == NULL) {
@@ -1940,17 +1940,17 @@ void FUN_0041c940(int x, int y, int tx, int ty, TileId *owner, int *found) {
         *found = 1;
         return;
     }
-    node->field_c = 1;
-    if ((node->field_4 & 1) != 0 && (next = FUN_0041c890(x, y - 5)) != NULL && next->field_c == 0) {
+    node->visited = 1;
+    if ((node->dir_mask & 1) != 0 && (next = FUN_0041c890(x, y - 5)) != NULL && next->visited == 0) {
         FUN_0041c940(x, y - 5, tx, ty, owner, found);
     }
-    if ((node->field_4 & 2) != 0 && (next = FUN_0041c890(x + 5, y)) != NULL && next->field_c == 0) {
+    if ((node->dir_mask & 2) != 0 && (next = FUN_0041c890(x + 5, y)) != NULL && next->visited == 0) {
         FUN_0041c940(x + 5, y, tx, ty, owner, found);
     }
-    if ((node->field_4 & 4) != 0 && (next = FUN_0041c890(x, y + 5)) != NULL && next->field_c == 0) {
+    if ((node->dir_mask & 4) != 0 && (next = FUN_0041c890(x, y + 5)) != NULL && next->visited == 0) {
         FUN_0041c940(x, y + 5, tx, ty, owner, found);
     }
-    if ((node->field_4 & 8) != 0 && (next = FUN_0041c890(x - 5, y)) != NULL && next->field_c == 0) {
+    if ((node->dir_mask & 8) != 0 && (next = FUN_0041c890(x - 5, y)) != NULL && next->visited == 0) {
         FUN_0041c940(x - 5, y, tx, ty, owner, found);
     }
 }
@@ -1963,15 +1963,15 @@ void FUN_0041caa0(unsigned short param_1) {
 
     for (node = DAT_004d823c; node != NULL; node = node->next) {
         if (node->owner.id == param_1) {
-            node->field_18 = NULL;
+            node->parent = NULL;
         }
     }
     while (score != NULL && score->id != param_1) {
         score = score->next;
     }
     node = FUN_0041c890(score->end.pos.x, score->end.pos.y);
-    node->field_8 = 0;
-    node->field_14 = NULL;
+    node->dist_to_end = 0;
+    node->wave_next = NULL;
     DAT_004d8240 = node;
     DAT_004d8244 = NULL;
     do {
@@ -1990,33 +1990,33 @@ void FUN_0041cb20(short param_1) {
     struct PathNode *n3;
     struct PathNode *n4;
 
-    for (p = DAT_004d8240; p != NULL; p = p->field_14) {
+    for (p = DAT_004d8240; p != NULL; p = p->wave_next) {
         n1 = FUN_0041c890(p->tile.pos.x, p->tile.pos.y - 5);
         n2 = FUN_0041c890(p->tile.pos.x + 5, p->tile.pos.y);
         n3 = FUN_0041c890(p->tile.pos.x, p->tile.pos.y + 5);
         n4 = FUN_0041c890(p->tile.pos.x - 5, p->tile.pos.y);
-        if (n1 != NULL && (short)n1->owner.id == param_1 && n1->field_18 == NULL) {
-            n1->field_18 = p;
-            n1->field_8 = p->field_8 + 1;
-            n1->field_14 = DAT_004d8244;
+        if (n1 != NULL && (short)n1->owner.id == param_1 && n1->parent == NULL) {
+            n1->parent = p;
+            n1->dist_to_end = p->dist_to_end + 1;
+            n1->wave_next = DAT_004d8244;
             DAT_004d8244 = n1;
         }
-        if (n2 != NULL && (short)n2->owner.id == param_1 && n2->field_18 == NULL) {
-            n2->field_18 = p;
-            n2->field_8 = p->field_8 + 1;
-            n2->field_14 = DAT_004d8244;
+        if (n2 != NULL && (short)n2->owner.id == param_1 && n2->parent == NULL) {
+            n2->parent = p;
+            n2->dist_to_end = p->dist_to_end + 1;
+            n2->wave_next = DAT_004d8244;
             DAT_004d8244 = n2;
         }
-        if (n3 != NULL && (short)n3->owner.id == param_1 && n3->field_18 == NULL) {
-            n3->field_18 = p;
-            n3->field_8 = p->field_8 + 1;
-            n3->field_14 = DAT_004d8244;
+        if (n3 != NULL && (short)n3->owner.id == param_1 && n3->parent == NULL) {
+            n3->parent = p;
+            n3->dist_to_end = p->dist_to_end + 1;
+            n3->wave_next = DAT_004d8244;
             DAT_004d8244 = n3;
         }
-        if (n4 != NULL && (short)n4->owner.id == param_1 && n4->field_18 == NULL) {
-            n4->field_18 = p;
-            n4->field_8 = p->field_8 + 1;
-            n4->field_14 = DAT_004d8244;
+        if (n4 != NULL && (short)n4->owner.id == param_1 && n4->parent == NULL) {
+            n4->parent = p;
+            n4->dist_to_end = p->dist_to_end + 1;
+            n4->wave_next = DAT_004d8244;
             DAT_004d8244 = n4;
         }
     }

@@ -610,7 +610,7 @@ LEGO_EXPORT void RenderView(void) {
             GetTileBounds(&pt, bounds);
             if (tile->flags & 0x20) {
                 iVar1 = info->field_10;
-                hit_a.field_0 = 0x104;
+                hit_a.type = 0x104;
                 hit_a.element = tile->field_0;
                 hit_a.coords = tile->anchor.id;
                 if (ride->anim != NULL) {
@@ -636,7 +636,7 @@ LEGO_EXPORT void RenderView(void) {
                 }
             } else {
                 iVar1 = info->field_10;
-                hit_b.field_0 = 0x103;
+                hit_b.type = 0x103;
                 hit_b.element = tile->field_0;
                 hit_b.coords = tile->anchor.id;
                 iVar4 = HALF(info->x);

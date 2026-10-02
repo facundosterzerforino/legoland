@@ -276,7 +276,7 @@ void FUN_00458a50(void) {
         FUN_00499410();
         FUN_0047f810();
         // STRING: LEGOLAND 0x004b9150
-        sprintf(buf, "objlist%d.txt", lpConfig->field_28);
+        sprintf(buf, "objlist%d.txt", lpConfig->level);
         SetBricksLimited(0);
         ResetMapAI();
         DAT_00667c4c = FUN_0047afb0(buf);
@@ -376,7 +376,7 @@ int FUN_00458c00(void) {
         PauseAllSamples();
         if (DAT_00667c80 != 0) {
             DeletePlayableSamples(0);
-            sprintf(path, "%s\\%dsave%d.sav", "profiles", CurrentProfile.profile_slot, *(unsigned int *)&CurrentProfile.field_44 & 0xff);
+            sprintf(path, "%s\\%dsave%d.sav", "profiles", CurrentProfile.profile_slot, *(unsigned int *)&CurrentProfile.save_slot & 0xff);
             LoadWatchSprite(0, 0);
             LoadGame(path);
             DAT_00667c80 = 0;
@@ -526,7 +526,7 @@ void FUN_00458ee0(void) {
                     query_class = QueryClass;
                     if (query_class != NULL) {
                         HTBubbleHelp(&frame.help_rect, query_class->name, 2);
-                        class_data = query_class->field_c4;
+                        class_data = query_class->element;
                         FUN_0046d340(*class_data);
                     }
                     break;
@@ -582,7 +582,7 @@ void FUN_00458ee0(void) {
             query_class = QueryClass;
             if (query_class != NULL) {
                 HTBubbleHelp(&frame.help_rect, query_class->name, 2);
-                class_data = query_class->field_c4;
+                class_data = query_class->element;
                 FUN_0046d340(*class_data);
             }
         }
@@ -623,13 +623,13 @@ void FUN_00459360(void) {
     int ticks;
 
     var_4 = 1;
-    hit_info.field_0 = 0;
+    hit_info.type = 0;
     hit_info.field_4 = 0;
     ResetHitInfo();
     PushRenderingStatusAndLockVideoSurface();
     DrawMapScreen();
     SetPointer(5);
-    PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit_info.field_0);
+    PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit_info.type);
     FUN_0046ee00();
     RenderIcons();
     CheckFocussedIcon();

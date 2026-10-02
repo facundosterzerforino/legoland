@@ -166,7 +166,7 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     void *stream;
 
     memset(&temp, 0, sizeof(struct ProfileData));
-    if (LoadDateIntoTempProfile(CurrentProfile.profile_slot, CurrentProfile.field_44 & 0xff) == 0) {
+    if (LoadDateIntoTempProfile(CurrentProfile.profile_slot, CurrentProfile.save_slot & 0xff) == 0) {
         return -1;
     }
     strcpy(temp.name, DAT_007cad60.name);
@@ -177,7 +177,7 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\%dsave%d.sh", CurrentProfile.profile_slot, CurrentProfile.field_44 & 0xff);
+    sprintf(path, "profiles\\%dsave%d.sh", CurrentProfile.profile_slot, CurrentProfile.save_slot & 0xff);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");

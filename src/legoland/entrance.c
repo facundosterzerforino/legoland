@@ -25,7 +25,7 @@ void FUN_0042d970(TileId *tile, unsigned int arg) {
     config.field_0 = 1;
     config.field_4 = arg;
     PlayInstanceOfSample(*(void **)(ENTRANCE_SFX + 8), 0, 1, &config);
-    if (MapStats.field_170 != 0) {
+    if (MapStats.entrance_fee != 0) {
         PlayMoneySFX(tile, 1, 0);
     }
 }
@@ -233,7 +233,7 @@ void FUN_0042dfa0(Element *elem) {
             break;
         case 1:
             if (bloke->field_36 == 1) {
-                AddBricks(MapStats.field_170);
+                AddBricks(MapStats.entrance_fee);
                 FUN_0042d970(&node->tile, (unsigned int)bloke);
                 table = ENTRANCE_DEST_RIGHT;
                 bloke->dest.x = (x0 << 8) - 0x80;

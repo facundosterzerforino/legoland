@@ -6,7 +6,7 @@
 struct SpiderNode {
     unsigned short tile_id;
     unsigned char pad_2[2];
-    char field_4;
+    char frame;
     unsigned char pad_5[0x27];
     struct SpiderNode *next;
 };

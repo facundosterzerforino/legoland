@@ -1153,7 +1153,7 @@ void FUN_00434f90(struct EditObject *obj, int *coords) {
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->field_14 = 0;
+    score->bloke_count = 0;
     score->timer = 150;
     score->field_40 = 3;
     for (x = 0; x < 5; x++) {
@@ -1442,12 +1442,12 @@ void FUN_00435750(void) {
                 }
             }
             if (i == 5) {
-                if (score->field_14 == 5 || score->blokes[4] != NULL) {
+                if (score->bloke_count == 5 || score->blokes[4] != NULL) {
                     RemoveBlokeFromRide(DAT_0081cb60, node);
                     break;
                 }
                 score->blokes[slot] = bloke;
-                score->field_14++;
+                score->bloke_count++;
             } else {
                 bloke = score->blokes[slot];
                 if (score->blokes[slot - 1] != NULL) {
@@ -1475,7 +1475,7 @@ void FUN_00435750(void) {
                         bloke->pos.y = -9999;
                         score->seats[i] = bloke;
                         score->blokes[0] = NULL;
-                        score->field_14--;
+                        score->bloke_count--;
                         break;
                     }
                 }

@@ -803,7 +803,7 @@ void FUN_0043b810(struct SpaceTowerCar *param_1) {
             AdjustBlokePosition((struct Point *)&pos);
             person = node->person;
             SetPersonPosition(person, pos.x, pos.y);
-            SetPersonDirection(person, DAT_004b7798[idx].field_10);
+            SetPersonDirection(person, DAT_004b7798[idx].direction);
         }
     }
 }
@@ -926,7 +926,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (char)DAT_004b7798[seat >> 1].field_10);
+                NewDirForAction(bloke, (char)DAT_004b7798[seat >> 1].direction);
                 bloke->param_action++;
                 break;
             case 4:

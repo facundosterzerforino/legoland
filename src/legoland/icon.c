@@ -365,7 +365,7 @@ LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
     if (result) {
         result->width = ((struct Config *)lpConfig)->field_0;
         result->height = ((struct Config *)lpConfig)->field_2;
-        result->field_28 = (void *)FUN_0046df60;
+        result->render_func = (void *)FUN_0046df60;
         result->flags = result->flags | 0x29;
     }
     return result;
@@ -574,7 +574,7 @@ LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int par
     icon->height = (short)param_5 - 0x3c;
     icon->box.box_color = GetNearestColour(0, 10, 0x14);
     icon->flags = icon->flags | 0x29;
-    icon->field_28 = (void *)RenderBoxIcon;
+    icon->render_func = (void *)RenderBoxIcon;
     return icon;
 }
 
@@ -858,19 +858,19 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
     int scale;
     RECT clip;
 
-    if (MapStats.field_3d0 == 0 && MapStats.field_3d4 == 0) {
+    if (MapStats.power_supply == 0 && MapStats.power_demand == 0) {
         fill1 = 0;
         fill2 = 0;
     } else {
-        scale = MapStats.field_3d4 * 2;
-        if (MapStats.field_3d0 > scale) {
-            scale = MapStats.field_3d0;
+        scale = MapStats.power_demand * 2;
+        if (MapStats.power_supply > scale) {
+            scale = MapStats.power_supply;
         }
         if (scale == 0) {
             scale = 1;
         }
-        fill1 = (node->width * MapStats.field_3d0) / scale;
-        fill2 = (node->width * MapStats.field_3d4) / scale;
+        fill1 = (node->width * MapStats.power_supply) / scale;
+        fill2 = (node->width * MapStats.power_demand) / scale;
     }
     if (node->sprite != NULL && MapStats.field_18c != 0) {
         StoreClipping();
@@ -1095,7 +1095,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int 
     DAT_006688b8 = 0;
     AddFullScreenIcon((void *)(param_6 + 6));
     icon = InsertIcon(param_2 - 3, 0x20, param_6, IfSidebar1Sprite);
-    icon->field_28 = (void *)RenderGBarSprite;
+    icon->render_func = (void *)RenderGBarSprite;
     icon->field_18 = 10;
     icon->flags = icon->flags | 9;
     icon = InsertIcon(param_2 - 1, param_3, param_6 + 3, IfSideBUpSprite);
@@ -1105,7 +1105,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int 
     icon->width = 0x79;
     icon->height = 0x1e;
     icon->flags = icon->flags | 0x201b;
-    icon->field_28 = (void *)RenderScroll_Icons;
+    icon->render_func = (void *)RenderScroll_Icons;
     icon->event_handler = (void *)FUN_0046d980;
     icon->field_18 = 1;
     icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, IfSideBDownSprite);
@@ -1115,7 +1115,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int 
     icon->width = 0x79;
     icon->height = 0x1e;
     icon->flags = icon->flags | 0x201b;
-    icon->field_28 = (void *)RenderScroll_Icons;
+    icon->render_func = (void *)RenderScroll_Icons;
     icon->event_handler = (void *)FUN_0046da20;
     icon->field_18 = 2;
     icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
@@ -1124,7 +1124,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int 
     icon->height = (short)param_5 - 0x3e;
     icon->box.box_color = GetNearestColour(0, 10, 0x14);
     icon->flags = icon->flags | 0x29;
-    icon->field_28 = (void *)RenderBoxIcon;
+    icon->render_func = (void *)RenderBoxIcon;
     return icon;
 }
 
@@ -1244,7 +1244,7 @@ LEGO_EXPORT void RenderIcons(void) {
     while (node) {
         if ((node->flags & 0x400) == 0) {
             if (node->flags & 0x8) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
@@ -1279,7 +1279,7 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
         if ((node->flags & 0x400) == 0 && node->y > 0 && node->y < 0x1e0 &&
             ((short)node->id == param_1 || (short)node->id == param_2 || (short)node->id == param_3)) {
             if (node->flags & 0x8) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
@@ -1314,7 +1314,7 @@ void FUN_0046f100(short param_1) {
     for (; node != NULL; node = node->next) {
         if ((node->flags & 0x400) == 0 && (short)node->id != param_1) {
             if (node->flags & 0x8) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
@@ -1341,7 +1341,7 @@ LEGO_EXPORT void RenderHelpIcons(void) {
     for (; node != NULL; node = node->next) {
         if ((node->flags & 0x400) == 0 && node->x < 0x1e0 && node->x > 0) {
             if ((node->flags & 8) != 0) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite != NULL) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
@@ -1492,7 +1492,7 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
         }
         flags = icon->flags & 0xfffffdff;
         icon->field_30 = (void *)param_1;
-        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->render_func = (void *)RenderGBarSpriteIcon;
         icon->flags = flags | 0x3008;
         icon->field_8 = src;
         icon->field_16 = a6;
@@ -1501,7 +1501,7 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
             icon->flags = icon->flags | 4;
         }
         if (DAT_006688ac != 0) {
-            icon->field_28 = DAT_006688ac;
+            icon->render_func = DAT_006688ac;
             icon->flags = icon->flags | 8;
         }
         if (DAT_006688b0 != 0) {
@@ -1524,7 +1524,7 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
             SetIconSprite(icon, NULL);
         }
         flags = icon->flags;
-        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->render_func = (void *)RenderGBarSpriteIcon;
         icon->string = (char *)src->field_10;
         icon->string_id = 0xffffffff;
         icon->flags = flags | 0x3008;
@@ -1538,7 +1538,7 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
             icon->flags = icon->flags | 4;
         }
         if (DAT_006688ac != 0) {
-            icon->field_28 = DAT_006688ac;
+            icon->render_func = DAT_006688ac;
             icon->flags = icon->flags | 8;
         }
         if (DAT_006688b0 != 0) {
@@ -1720,7 +1720,7 @@ LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite,
     ReferenceSprite(sprite);
     icon = InsertIcon(0, 0, 0xe000, sprite);
     ind->field_14 = icon;
-    icon->field_28 = (void *)FUN_0046eaa0;
+    icon->render_func = (void *)FUN_0046eaa0;
 
     icon = ind->field_14;
     icon->event_handler = (void *)FUN_0046fbc0;
@@ -1752,7 +1752,7 @@ LEGO_EXPORT struct TimedIndicator *AllocatePermanentIndicator(struct Sprite *spr
     ReferenceSprite(sprite);
     icon = InsertIcon(0, 0, 0xe000, sprite);
     ind->field_14 = icon;
-    icon->field_28 = (void *)FUN_0046eaa0;
+    icon->render_func = (void *)FUN_0046eaa0;
 
     icon = ind->field_14;
     icon->event_handler = (void *)FUN_0046fbc0;

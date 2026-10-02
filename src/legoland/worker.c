@@ -242,7 +242,7 @@ WorkOrder *FUN_00499830(Element *element, int *coords, int mode) {
         } else {
             cell = NULL;
         }
-        level = cell->field_11;
+        level = cell->durability_level;
         cost = GetObjRepairCost(ride, level) / (float)(ride->durability - level);
         FUN_00499760(order, cost);
     }
@@ -977,7 +977,7 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
     if (element == CastleObjElem && CastlePlacedFlag != 0) {
         return 0;
     }
-    if ((ride->flags & 0x200000) != 0 && lpConfig->field_38 != 0) {
+    if ((ride->flags & 0x200000) != 0 && lpConfig->gardeners_enabled != 0) {
         order = FUN_00499780(element, &pos->x, 1);
         result = order != NULL;
         if (result != 0) {
@@ -1124,20 +1124,20 @@ LEGO_EXPORT void RenderWorkerInterfaceGFX(void) {
 
 // FUNCTION: LEGOLAND 0x0049b0d0
 unsigned int FUN_0049b0d0(MapElement *tile, Ride *ride) {
-    tile->field_11 = tile->field_11 + 1;
+    tile->durability_level = tile->durability_level + 1;
 
-    if (tile->field_11 == (ride->durability >> 2)) {
+    if (tile->durability_level == (ride->durability >> 2)) {
         int result = FindObjectsPower(ride);
         tile->flags &= 0xfdff;
         if (result > 0) {
-            MapStats.field_3d0 += result;
-            if (MapStats.field_3d8) {
+            MapStats.power_supply += result;
+            if (MapStats.unpowered_demand) {
                 FUN_0045a060();
             }
         }
     }
 
-    return tile->field_11;
+    return tile->durability_level;
 }
 
 // FUNCTION: LEGOLAND 0x0049b130
@@ -1285,8 +1285,8 @@ MapElement *FUN_0049b350(Bloke *worker, int x, int y) {
             } else {
                 target = NULL;
             }
-            if (ride->durability != 0 && target->field_11 < ride->durability && (ride->flags & 0x400000) != 0 &&
-                lpConfig->field_34 != 0 && (target->flags & 0x4000) == 0) {
+            if (ride->durability != 0 && target->durability_level < ride->durability && (ride->flags & 0x400000) != 0 &&
+                lpConfig->mechanics_enabled != 0 && (target->flags & 0x4000) == 0) {
                 return target;
             }
         }
@@ -1371,9 +1371,9 @@ LEGO_EXPORT void ClearAGardenersWorkList(Bloke *param) {
 
 // FUNCTION: LEGOLAND 0x0049b580
 LEGO_EXPORT void RemoveRepairOrderAT(Ride *ride, int x, int y) {
-    if ((ride->flags & 0x200000) && (lpConfig->field_38 != 0)) {
+    if ((ride->flags & 0x200000) && (lpConfig->gardeners_enabled != 0)) {
         RemoveGardenersWorkOrderAt(x, y);
-    } else if ((ride->flags & 0x400000) && (lpConfig->field_34 != 0)) {
+    } else if ((ride->flags & 0x400000) && (lpConfig->mechanics_enabled != 0)) {
         RemoveMechanicsWorkOrderAt(x, y);
     } else {
         RemoveNoneWorkersRepairOrderAT(x, y);
@@ -1519,9 +1519,9 @@ LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
             ride = tile->field_0->ride;
             DAT_00668610 |= 0x200;
             FUN_0049b0d0(tile, ride);
-            if (tile->field_11 >= ride->durability) {
+            if (tile->durability_level >= ride->durability) {
                 tile->flags &= 0xbfff;
-                tile->field_11 = ride->durability;
+                tile->durability_level = ride->durability;
                 FUN_0049b6e0(order);
             }
         } else {
@@ -1542,12 +1542,12 @@ LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, struct Point pos) {
     } else {
         cell = NULL;
     }
-    level = cell->field_11;
+    level = cell->durability_level;
     rate = GetObjRepairCost(ride, level) / (float)(ride->durability - level);
-    if ((ride->flags & 0x200000) != 0 && lpConfig->field_38 != 0) {
+    if ((ride->flags & 0x200000) != 0 && lpConfig->gardeners_enabled != 0) {
         return FUN_00499780(ride->element, &pos.x, 2);
     }
-    if ((ride->flags & 0x400000) != 0 && lpConfig->field_34 != 0) {
+    if ((ride->flags & 0x400000) != 0 && lpConfig->mechanics_enabled != 0) {
         return FUN_00499830(ride->element, &pos.x, 2);
     }
     FUN_0049b690(&ride->footprint, &pos.x, rate);
@@ -1638,9 +1638,9 @@ LEGO_EXPORT void Garderner_Repair(Bloke *worker) {
             ride = tile->field_0->ride;
             DAT_00668610 |= 0x200;
             FUN_0049b0d0(tile, ride);
-            if (tile->field_11 >= ride->durability) {
+            if (tile->durability_level >= ride->durability) {
                 tile->flags &= 0xbfff;
-                tile->field_11 = ride->durability;
+                tile->durability_level = ride->durability;
                 worker->param_action++;
             }
             return;
@@ -1742,9 +1742,9 @@ LEGO_EXPORT void Mechanics_Repair(Bloke *worker) {
                 ride = tile->field_0->ride;
                 DAT_00668610 |= 0x200;
                 FUN_0049b0d0(tile, ride);
-                if (tile->field_11 >= ride->durability) {
+                if (tile->durability_level >= ride->durability) {
                     tile->flags &= 0xbfff;
-                    tile->field_11 = ride->durability;
+                    tile->durability_level = ride->durability;
                     worker->param_action++;
                 }
                 return;

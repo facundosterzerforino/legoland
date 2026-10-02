@@ -883,7 +883,7 @@ int FUN_004723f0(void) {
     QueryCursor.tile_y = v >> 8;
     QueryClass = cls;
     QueryCursor.tile_x = v & 0xff;
-    cls->method_94(cls->field_c4, local_8);
+    cls->method_94(cls->element, local_8);
     BuildCursorPtr(&QueryCursor, 0, 0);
     FUN_0045f4b0(&QueryCursor);
     memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
@@ -1280,12 +1280,12 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
         QueryClass = cls;
         QueryCursor.tile_x = local_8[0];
         QueryObj.pos.x = (unsigned char)local_8[0];
-        cls->method_94(cls->field_c4, local_8);
+        cls->method_94(cls->element, local_8);
         BuildCursorPtr(&QueryCursor, 0, 0);
         if ((int)FUN_0045f4b0(&QueryCursor) != 0) {
             FUN_0045d3d0(QueryClass, local_8);
             cls = QueryClass;
-            RemObjFromMap(cls, cls->field_c4, QueryObj, &QueryCursor);
+            RemObjFromMap(cls, cls->element, QueryObj, &QueryCursor);
         }
         memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
         QueryClass = saved_class;
