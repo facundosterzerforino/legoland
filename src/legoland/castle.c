@@ -1218,6 +1218,7 @@ void FUN_0041e100(struct Hooked *self, unsigned int arg) {
     self->field_34 = saved;
 }
 
+// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0041e130
 void FUN_0041e130(void) { STUB(); }
 
@@ -2325,12 +2326,15 @@ void FUN_0041f880(struct Walker *walker) {
     } while (walker->field_4->field_50 != NULL);
 }
 
+// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0041f8d0
 void FUN_0041f8d0(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0041fa10
 void FUN_0041fa10(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0041fba0
 void FUN_0041fba0(void) { STUB(); }
 
@@ -2349,9 +2353,11 @@ void FUN_0041fd30(void) {
     }
 }
 
+// Hand-written assembly in the original (ebp frame + ror, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0041fd80
 void FUN_0041fd80(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0041ff80
 void FUN_0041ff80(void) { STUB(); }
 
@@ -2667,15 +2673,19 @@ int FUN_004207d0(unsigned int key) {
     return -1;
 }
 
+// Hand-written assembly in the original (ebp frame + fistp, rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00420810
 void FUN_00420810(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fistp, rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00420a20
 void FUN_00420a20(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fistp, rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00420c40
 void FUN_00420c40(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00420e90
 unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsigned int e) { STUB(); }
 
@@ -4139,6 +4149,7 @@ struct RecSrc {
     int f2c;
 };
 
+// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00423140
 void FUN_00423140(int param_1) { STUB(); }
 
@@ -4201,6 +4212,7 @@ void FUN_004232b0(struct RecBuf *rb) {
     FUN_00423350(n, idx, src);
 }
 
+// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00423350
 void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *src) { STUB(); }
 
@@ -4220,12 +4232,15 @@ void FUN_00423480(struct ClearRect *r) {
     }
 }
 
+// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004234e0
 void FUN_004234e0(void *param1) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fldcw, fstcw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004236f0
 unsigned short FUN_004236f0(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fldcw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00423730
 unsigned short FUN_00423730(unsigned short control_word) { STUB(); }
 
@@ -5834,9 +5849,11 @@ unsigned int FUN_00426230(float in[][3], int out[][4], int n) {
     return FUN_00426250(in, out, &DAT_008299fc.m[0][0], 0x10, n);
 }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00426250
 unsigned int FUN_00426250(float in[][3], int out[][4], float *m, unsigned int stride, int n) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004263a0
 void FUN_004263a0(void *pts, unsigned int m[4][4], int n, unsigned int out) { STUB(); }
 
@@ -7606,6 +7623,7 @@ unsigned int FUN_00428840(unsigned int param_1) {
     return result;
 }
 
+// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00428860
 void FUN_00428860(void) { STUB(); }
 
@@ -7645,6 +7663,7 @@ void FUN_00428b80(struct Curve *curve, float *off) {
     FUN_004238a0(&DAT_006159c8[0][0], 0x5a, -1);
 }
 
+// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00428cb0
 void FUN_00428cb0(void *p, unsigned int a, unsigned int b, unsigned int c, const char *name) { STUB(); }
 
@@ -7818,6 +7837,7 @@ void FUN_00429270(void) {
     }
 }
 
+// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004292f0
 void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis) { STUB(); }
 
@@ -8439,6 +8459,7 @@ void FUN_0042a2e0(void) {
     FUN_00421540(&DAT_00615f98, 3);
 }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0042a2f0
 void FUN_0042a2f0(void) { STUB(); }
 

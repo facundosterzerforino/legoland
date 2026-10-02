@@ -450,12 +450,15 @@ LEGO_EXPORT void ClearSpriteOverrides(void) {
     OverridePalette = 0;
 }
 
+// Hand-written assembly in the original (ebp frame + xchg, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00464480
 void FUN_00464480(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + pusha/popa, shrd, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00464a90
 LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + pusha/popa): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00464ee0
 void __fastcall FUN_00464ee0(struct Sprite *sprite, RECT *rect, int *off) { STUB(); }
 
@@ -481,6 +484,7 @@ LEGO_EXPORT void SoftPrint_Clear(void) {
     }
 }
 
+// Hand-written assembly in the original (ebp frame + pusha/popa, shrd, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00465240
 void FUN_00465240(void) { STUB(); }
 
@@ -582,6 +586,7 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
     }
 }
 
+// Hand-written assembly in the original (ebp frame + pusha/popa): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00465a40
 LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4) { STUB(); }
 
@@ -1047,12 +1052,15 @@ void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     }
 }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00466d80
 void FUN_00466d80(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00467180
 void FUN_00467180(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004673f0
 void FUN_004673f0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
@@ -1140,12 +1148,15 @@ void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs,
     } while (--h != 0);
 }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004677b0
 void FUN_004677b0(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00467b00
 void FUN_00467b00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00467d10
 void FUN_00467d10(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
@@ -1226,9 +1237,11 @@ void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs,
     } while (--h != 0);
 }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00468040
 void FUN_00468040(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) { STUB(); }
 
+// Hand-written assembly in the original (rol, rep movsw/stosw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00468410
 void FUN_00468410(void) { STUB(); }
 

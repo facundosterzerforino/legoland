@@ -96,6 +96,7 @@ void FUN_00441910(int *param_1, float *param_2, int *param_3) {
     param_3[1] += param_1[8];
 }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00441980
 void FUN_00441980(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) { STUB(); }
 
@@ -1262,6 +1263,7 @@ LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out) {
     out[7] = 0.0f;
 }
 
+// Hand-written assembly in the original (ebp frame + shrd): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004433b0
 LEGO_EXPORT void TransformVectorsL(void) { STUB(); }
 

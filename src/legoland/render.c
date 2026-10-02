@@ -209,15 +209,19 @@ int FUN_00486540(void) {
     return 0;
 }
 
+// Hand-written assembly in the original (ebp frame + shrd, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00486590
 void FUN_00486590(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fistp, shrd, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00486c70
 void FUN_00486c70(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + shrd, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004877b0
 void FUN_004877b0(void) { STUB(); }
 
+// Hand-written assembly in the original (ebp frame + fistp, shrd, xchg): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00487d40
 void FUN_00487d40(void) { STUB(); }
 

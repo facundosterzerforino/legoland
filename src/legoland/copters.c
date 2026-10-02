@@ -548,6 +548,7 @@ void CoptersAddObject(Element *obj, int *coords) {
     CoptersAddNode((struct CopterSource *)&tile);
 }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00404630
 void FUN_00404630(struct CopterNode *node, int index) { STUB(); }
 

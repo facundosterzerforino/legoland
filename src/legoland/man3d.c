@@ -251,6 +251,7 @@ void FUN_0043fa10(float *param_1, int param_2) {
     }
 }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x0043fa80
 void *FUN_0043fa80(const char *name, const char *dir, unsigned int ctx) { STUB(); }
 
@@ -359,6 +360,7 @@ LEGO_EXPORT void IP_RenderBlokeIn3DNow(struct Bloke *bloke) {
     RenderBlokeIn3D(bloke);
 }
 
+// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00440020
 LEGO_EXPORT void SetPersonRotation(struct Person *person, float *src) { STUB(); }
 
@@ -843,5 +845,6 @@ void FUN_00440980(struct MeshElem *elem, struct IntVec3 *out) {
     out[1] = mx;
 }
 
+// Hand-written assembly in the original (ebp frame + fistp, shrd): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00440a30
 void FUN_00440a30(struct Person *person) { STUB(); }
