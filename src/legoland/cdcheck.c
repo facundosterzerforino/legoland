@@ -11,7 +11,7 @@
 #include "wndenv.h"
 
 // FUNCTION: LEGOLAND 0x00450f30
-int FUN_00450f30(char *cd_volume) {
+int FindCdDriveWithVolume(char *cd_volume) {
     DWORD drives;
     int result;
     DWORD bit;
@@ -105,7 +105,7 @@ void FUN_00451210(int param_1) {
         FUN_00451280(DAT_004b85c4, drive);
         FUN_00451410(DAT_004b85c4, drive);
         FUN_00451550(DAT_004b85c4, drive);
-        FUN_004514a0(DAT_004b85c4);
+        CloseDeviceHandle(DAT_004b85c4);
         DAT_004b85c4 = INVALID_HANDLE_VALUE;
     }
 }
@@ -192,7 +192,7 @@ int OpenVWin32Device(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004514a0
-BOOL __stdcall FUN_004514a0(HANDLE param_1) { return CloseHandle(param_1); }
+BOOL __stdcall CloseDeviceHandle(HANDLE param_1) { return CloseHandle(param_1); }
 
 // FUNCTION: LEGOLAND 0x004514b0
 BOOL __stdcall FUN_004514b0(HANDLE h, int drive, int param_3, int param_4) {
@@ -244,19 +244,19 @@ BOOL __stdcall FUN_00451550(HANDLE h, int drive) {
 }
 
 // FUNCTION: LEGOLAND 0x004515e0
-int FUN_004515e0(int param_1) {
+int WaitForLegolandCd(int param_1) {
     char text[256];
     int minimised;
 
     minimised = 0;
     if (param_1 != 0) {
         // STRING: LEGOLAND 0x004b86d0
-        while (!FUN_00450f30("LEGOLAND")) {
+        while (!FindCdDriveWithVolume("LEGOLAND")) {
             if (!minimised) {
                 // STRING: LEGOLAND 0x004b86c0
                 DebugTrace("Minimising Game");
                 FUN_0047f850();
-                FUN_0047fe70();
+                MinimizeGameWindow();
                 minimised = 1;
             }
             if (MessageBoxA(WNDENV_Gethwnd(),
@@ -267,14 +267,14 @@ int FUN_004515e0(int param_1) {
                 // STRING: LEGOLAND 0x004b8670
                 DebugTrace("Maximising Game");
                 FUN_0047f850();
-                FUN_0047fe80();
+                RestoreGameWindow();
                 return 0;
             }
         }
         if (minimised) {
             DebugTrace("Maximising Game");
             FUN_0047f850();
-            FUN_0047fe80();
+            RestoreGameWindow();
         }
         return 1;
     } else {
@@ -282,7 +282,7 @@ int FUN_004515e0(int param_1) {
             if (!minimised) {
                 DebugTrace("Minimising Game");
                 FUN_0047f850();
-                FUN_0047fe70();
+                MinimizeGameWindow();
                 minimised = 1;
             }
             // STRING: LEGOLAND 0x004b8640
@@ -290,14 +290,14 @@ int FUN_004515e0(int param_1) {
             if (MessageBoxA(WNDENV_Gethwnd(), text, "CD Missing", 0x50015) == IDCANCEL) {
                 DebugTrace("Maximising Game");
                 FUN_0047f850();
-                FUN_0047fe80();
+                RestoreGameWindow();
                 return 0;
             }
         }
         if (minimised) {
             DebugTrace("Maximising Game");
             FUN_0047f850();
-            FUN_0047fe80();
+            RestoreGameWindow();
         }
         return 1;
     }

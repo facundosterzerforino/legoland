@@ -20,4 +20,4 @@ int CloseLogFile(void);
 void FUN_0047f850(void);
 LEGO_EXPORT void UnloadSaveGameMap(void);
 LEGO_EXPORT int LoadGame(char *path);
-int FUN_0047d7e0(void);
+int SkipSaveGameDword(void);

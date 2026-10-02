@@ -23,9 +23,9 @@ _WinMainCRTStartup (CRT)                         [TU_CRT, out of match %]
       ├─ CheckHostSystemGPU             0x004637c0  draw.c    MATCHED (zeroes DDRAWENV, calls InitHostSystemGPU)
       └─ GameMain      (main init+loop) 0x0047f880  debug.c   MATCHED 99.62%
          ├─ OpenLogFile open log
-         ├─ FUN_004515e0 (alloc/profile init)
+         ├─ WaitForLegolandCd (alloc/profile init)
          ├─ RES_OpenVolume ×3           0x00489750  resource.c MATCHED 91.5%   (LEGO000/001/002 .res)
-         ├─ FUN_00498d00
+         ├─ LoadStringTable
          ├─ InitHostSystemGPU           0x00463700  draw.c    STUB  *** DDraw device glue — STUB ***
          ├─ InitScreen                  0x00463870  draw.c    STUB  *** DDraw surfaces+window — STUB ***
          ├─ InitInputSystem             0x00473870  input.c   STUB  *** DInput device glue — STUB ***
@@ -149,8 +149,8 @@ functions it calls are already done.
 | `0x00480050` | `ProcessSystemEvents` | wndenv.c | M | `PeekMessageA/GetMessageA/TranslateMessage/DispatchMessageA`, `ScanKeyboard`(MATCHED), `ScanMouse`(MATCHED), `UpdateControllerFromMouseData/KeyboardData`(STUB) | Win32 message pump + DInput scan. Called from `RenderingComplete` every frame. |
 | `0x00473b00` | `UpdateControllerFromMouseData` | input.c | M | DInput mouse state → `CONTROLLERBUFFER` | fills the buffer `ReadGameButtons` reads |
 | `0x00473c10` | `UpdateControllerFromKeyboardData` | input.c | M | keyboard state → `CONTROLLERBUFFER` | same |
-| `0x004738b0` | `FUN_004738b0` | input.c | M | DInput create mouse device | sub of `InitInputSystem`(stub) — see §4 |
-| `0x00473970` | `FUN_00473970` | input.c | M | DInput create keyboard device | sub of `InitInputSystem`(stub) — see §4 |
+| `0x004738b0` | `CreateKeyboardDevice` | input.c | M | DInput create mouse device | sub of `InitInputSystem`(stub) — see §4 |
+| `0x00473970` | `CreateMouseDevice` | input.c | M | DInput create keyboard device | sub of `InitInputSystem`(stub) — see §4 |
 | `0x004740b0` | `GetInputChar` | input.c | S | keyboard buffer → char | needed only for name-entry popups, not bare title |
 
 ### C. Title UI load
@@ -186,7 +186,7 @@ functions it calls are already done.
 |---|---|---|---|---|
 | `0x0048f2d0` | `PrintExitCheckBox` | options.c | M | drawn for title (id 1) + options (id 5); the "are you sure you want to exit" box. Needed for the Exit button flow. |
 | `0x0046d080` | `ProcessFrontEndHelp` | help.c | M | tooltip/help text under the cursor; non-essential, can stay STUB initially |
-| `0x004585c0` | `FUN_004585c0` | screens.c | S | screen-clear helper called by `InitScreens` on change + `FUN_004594e0` |
+| `0x004585c0` | `CloseFrontEndScreen` | screens.c | S | screen-clear helper called by `InitScreens` on change + `FUN_004594e0` |
 
 ### G. Audio (called during boot; not strictly required to *see* the title)
 | addr | name | file | size | notes |
@@ -217,8 +217,8 @@ device I/O, not game logic.
 | `0x00488a10` | `RenderSprite` | (image) | software sprite rasterizer into locked surface |
 | `0x00488b90` | `RenderSpriteX` | (image) | transparent/blended sprite raster |
 | `0x00473870` | `InitInputSystem` | input.c | `DirectInputCreateA` + device setup |
-| `0x004738b0` | `FUN_004738b0` | input.c | DInput mouse `CreateDevice`/`SetDataFormat`/`SetCooperativeLevel` |
-| `0x00473970` | `FUN_00473970` | input.c | DInput keyboard device setup |
+| `0x004738b0` | `CreateKeyboardDevice` | input.c | DInput mouse `CreateDevice`/`SetDataFormat`/`SetCooperativeLevel` |
+| `0x00473970` | `CreateMouseDevice` | input.c | DInput keyboard device setup |
 | `0x004964f0` | `InitSoundSystem` | sound_music.c | DirectSound init (if kept as stub) |
 
 > The input *polling logic* on top of these (`ScanKeyboard` MATCHED, `ScanMouse`
@@ -243,7 +243,7 @@ device I/O, not game logic.
 **In-scope STUBs that block an interactive title screen** (areas A–F above, excluding
 the §4 stubs and OOS movies): **~22 functions**, concentrated in:
 `screens.c` (frame loop + routing: `FUN_00458c00`, `InitScreens`, `RenderFrontEndScreen`,
-`FUN_00459520`, `FUN_004585c0`), `icon.c` (`RenderIcons`, `RenderIcons2`,
+`FUN_00459520`, `CloseFrontEndScreen`), `icon.c` (`RenderIcons`, `RenderIcons2`,
 `CheckFocussedIcon`, `RemoveIconGroup`, `InsertIcon`, `FUN_0046ec50`, `FUN_0046f2e0`,
 `GetIconAtPos`), `controller.c` (`ReadGameButtons`, `SetupControllers`), `wndenv.c`
 (`ProcessSystemEvents`), `input.c` (`UpdateControllerFromMouseData/KeyboardData`),

@@ -547,7 +547,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
         if (t.type == 0x307) {
             if (*(short *)((char *)t.ptr + 0xc) != 5) {
                 PlayInstanceOfSample(DAT_004b92e4, 0, 1, 0);
-                FUN_00470100(0x307, t.ptr);
+                PickUpWorker(0x307, t.ptr);
                 ResetInfoStruct();
                 return;
             }
@@ -609,7 +609,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
             FUN_00499eb0(iVar4);
         }
         PlayInstanceOfSample(DAT_004b9308, 0, 1, 0);
-        FUN_00470100(0x308, t.ptr);
+        PickUpWorker(0x308, t.ptr);
     }
     ResetInfoStruct();
 }
@@ -699,8 +699,8 @@ void FUN_00471d40(void) {
 
 // FUNCTION: LEGOLAND 0x00471d60
 void FUN_00471d60(void) {
-    FUN_0046d680((struct IconNode *)DAT_007fdea8, DAT_00668938);
-    FUN_0046d680((struct IconNode *)DAT_007fe000, DAT_0066893c);
+    FUN_0046d680((struct IconNode *)DAT_007fdea8, PUOKSprite);
+    FUN_0046d680((struct IconNode *)DAT_007fe000, CBCloseSprite);
 }
 
 // FUNCTION: LEGOLAND 0x00471d90
@@ -723,13 +723,13 @@ void FUN_00471d90(void) {
     ctx.field_8 = 0;
     ctx.flags = 1;
     iVar1 = DAT_007fded0 + 0x48 + iVar5;
-    PrintSprite(DAT_00668904, DAT_007fdecc, iVar1, 0, (int *)&ctx);
+    PrintSprite(CBBGLeftSprite, DAT_007fdecc, iVar1, 0, (int *)&ctx);
     iVar6 = iVar6 + 0x7a;
     for (; uVar4 > 0; uVar4 = uVar4 - 1) {
-        PrintSprite(DAT_00668908, iVar6, iVar1, 0, (int *)&ctx);
+        PrintSprite(CBBGCentreSprite, iVar6, iVar1, 0, (int *)&ctx);
         iVar6 = iVar6 + 0x20;
     }
-    PrintSprite(DAT_0066890c, iVar6, iVar1, 0, (int *)&ctx);
+    PrintSprite(CBBGRightSprite, iVar6, iVar1, 0, (int *)&ctx);
     DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
     iVar6 = iVar6 + 0x4e;
     DAT_007fdea8->x = (short)iVar6 - 0x4b;
@@ -1098,7 +1098,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     }
     PopRenderingStatus();
     if (DAT_007fdf9c == 0x306) {
-        mood = FUN_00482d30(bloke);
+        mood = GetBlokeMood(bloke);
         hunger = FUN_0044eb10(bloke);
         left = x + 0xc;
         right = size * 32 + x + 0xb0;
@@ -1132,7 +1132,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             frac = (float)DAT_007fdf84[0x11] / ride->durability;
         } else {
             entry_index = 0;
-            for (entry = DAT_006664f8;; entry++, entry_index++) {
+            for (entry = BuildObjArray;; entry++, entry_index++) {
                 if ((int)&entry->coords >= (int)&ButtonRepeatDelay) {
                     return;
                 }
@@ -1143,7 +1143,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             if (entry_index >= 0x100) {
                 return;
             }
-            frac = (float)DAT_006664f8[entry_index].elapsed / GetBuildTime((struct Ride *)DAT_007fdf7c);
+            frac = (float)BuildObjArray[entry_index].elapsed / GetBuildTime((struct Ride *)DAT_007fdf7c);
             if (frac == 1.0f) {
                 DAT_007fdec0.type = 0x103;
                 PopUpInfoSetUp(DAT_007fdec0, DAT_007fdecc, DAT_007fded0);
@@ -1280,7 +1280,7 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
     unsigned int v;
 
     FUN_00471d60();
-    FUN_0046d680(param_1, DAT_00668934);
+    FUN_0046d680(param_1, PUOKOnSprite);
     if ((flags & 2) != 0) {
         v = DAT_007fdec0.data.value & 0xffff;
         saved_class = QueryClass;
@@ -1310,7 +1310,7 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
 // FUNCTION: LEGOLAND 0x00473310
 unsigned char FUN_00473310(void *param1, unsigned char param2) {
     FUN_00471d60();
-    FUN_0046d680(param1, DAT_00668940);
+    FUN_0046d680(param1, CBCloseOnSprite);
 
     if (param2 & 0x2) {
         DAT_007fdea8->flags |= 0x400;
@@ -1475,17 +1475,17 @@ void FUN_004736f0(void) {
         ctx.node = 0;
         ctx.flags = 1;
         ctx.field_8 = 0;
-        PrintSprite(DAT_00668904, iVar3, iVar1, 0, (int *)&ctx);
+        PrintSprite(CBBGLeftSprite, iVar3, iVar1, 0, (int *)&ctx);
         iVar3 = iVar3 + 0x7a;
         iVar2 = 0;
         if (0 < DAT_00668964) {
             do {
-                PrintSprite(DAT_00668908, iVar3, iVar1, 0, (int *)&ctx);
+                PrintSprite(CBBGCentreSprite, iVar3, iVar1, 0, (int *)&ctx);
                 iVar3 = iVar3 + 0x20;
                 iVar2 = iVar2 + 1;
             } while (iVar2 < DAT_00668964);
         }
-        PrintSprite(DAT_0066890c, iVar3, iVar1, 0, (int *)&ctx);
+        PrintSprite(CBBGRightSprite, iVar3, iVar1, 0, (int *)&ctx);
         iVar3 = iVar3 + 0x4e;
         DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
         DAT_007fdea8->x = (short)(iVar3 - 0x4b);

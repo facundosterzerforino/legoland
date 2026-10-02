@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     result = -1;
     __try {
-        FUN_00458830((char *)&DAT_0066752c);
+        GetProductVersion((char *)&ProductVersionString);
         result = wWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
         // STRING: LEGOLAND 0x004b8a94
     } __except (stackdump((void *)GetExceptionInformation(), "main thread")) {

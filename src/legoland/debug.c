@@ -34,7 +34,7 @@ int GameMain(void) {
     if (OpenLogFile("legoland.log") == 0) {
         return 1;
     }
-    if (FUN_004515e0(1) == 0) {
+    if (WaitForLegolandCd(1) == 0) {
         return 1;
     }
 
@@ -52,7 +52,7 @@ int GameMain(void) {
         }
     }
 
-    FUN_00498d00();
+    LoadStringTable();
     InitHostSystemGPU();
     if (InitScreen() == 0) {
         MessageBoxA(GetDesktopWindow(), GetString(0xcc), GetString(0xcb), 0x30);

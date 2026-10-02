@@ -373,7 +373,7 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
         if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
             int i;
             unsigned int *p;
-            sprite->field_c = DAT_008119a4;
+            sprite->field_c = FrameCounter;
             src.left = dst.left;
             src.top = dst.top;
             src.right = dst.right;
@@ -396,7 +396,7 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
         }
     } else {
         if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
-            sprite->field_c = DAT_008119a4;
+            sprite->field_c = FrameCounter;
             src.left = dst.left;
             src.top = dst.top;
             src.right = dst.right;
@@ -422,7 +422,7 @@ LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsi
     src.bottom = (short)sprite->height;
     src.right = (short)sprite->width;
     if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
-        sprite->field_c = DAT_008119a4;
+        sprite->field_c = FrameCounter;
         src.left = dst.left;
         src.top = dst.top;
         src.right = dst.right;

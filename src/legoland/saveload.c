@@ -56,13 +56,13 @@ LEGO_EXPORT int BeginMeasuredBlock(void) {
     if (pos == -1) {
         return 0;
     }
-    DAT_006691bc[DAT_006691fc] = pos;
-    DAT_006691fc = DAT_006691fc + 1;
+    MeasuredBlockStarts[MeasuredBlockDepth] = pos;
+    MeasuredBlockDepth = MeasuredBlockDepth + 1;
     return SaveGameWrite(&marker, 4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x0047d7e0
-int FUN_0047d7e0(void) {
+int SkipSaveGameDword(void) {
     unsigned int buffer;
 
     return SaveGameRead(&buffer, 4);
@@ -76,8 +76,8 @@ LEGO_EXPORT int EndMeasuredBlock(void) {
     if (end_pos == -1) {
         return 0;
     }
-    DAT_006691fc = DAT_006691fc - 1;
-    if (_lseek(SaveFileHandle, DAT_006691bc[DAT_006691fc], 0) == -1) {
+    MeasuredBlockDepth = MeasuredBlockDepth - 1;
+    if (_lseek(SaveFileHandle, MeasuredBlockStarts[MeasuredBlockDepth], 0) == -1) {
         return 0;
     }
     if (SaveGameWrite(&end_pos, 4) == 0) {
@@ -145,7 +145,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             return 0;
         }
     }
-    DAT_006691fc = 0;
+    MeasuredBlockDepth = 0;
     if (SaveGameWrite(header, 0x20) == 0) {
         // STRING: LEGOLAND 0x004bca54
         LogPrintf("Header write failed");
@@ -327,22 +327,22 @@ LEGO_EXPORT int SaveGame(char *filename) {
         goto fail;
     }
     FUN_00474190();
-    if (FUN_0046c920() == 0) {
+    if (SaveScripts() == 0) {
         // STRING: LEGOLAND 0x004bc828
         LogPrintf("Scripts Save Failed");
         goto fail;
     }
-    if (FUN_00444200() == 0) {
+    if (SaveReport() == 0) {
         // STRING: LEGOLAND 0x004bc814
         LogPrintf("Report Save Failed");
         goto fail;
     }
-    if (FUN_00457910() == 0) {
+    if (SaveCurrency() == 0) {
         // STRING: LEGOLAND 0x004bc7fc
         LogPrintf("Currency Save Failed");
         goto fail;
     }
-    if (SaveGameWrite(DAT_007fdd00, 0x24) == 0) {
+    if (SaveGameWrite(ButtonFlashStates, 0x24) == 0) {
         // STRING: LEGOLAND 0x004bc7dc
         LogPrintf("Button flash states Save Failed");
         goto fail;
@@ -526,12 +526,12 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("Begin Measured Block 9");
         goto fail;
     }
-    if (SaveGameWrite(&DAT_0079a8d0, 4) == 0) {
+    if (SaveGameWrite(&CastlePlacedFlag, 4) == 0) {
         // STRING: LEGOLAND 0x004bc634
         LogPrintf("Castle Placed Flag %s",
             // STRING: LEGOLAND 0x004bc654
-            DAT_0079a8d0 != 0 ? "TRUE" :
-                              // STRING: LEGOLAND 0x004bc64c
+            CastlePlacedFlag != 0 ? "TRUE" :
+                                  // STRING: LEGOLAND 0x004bc64c
                 "FALSE");
         goto fail;
     }
@@ -540,7 +540,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("Num Build Objs (%d) Save Failed", DAT_006670f8);
         goto fail;
     }
-    if (SaveGameWrite(DAT_006664f8, sizeof(DAT_006664f8)) == 0) {
+    if (SaveGameWrite(BuildObjArray, sizeof(BuildObjArray)) == 0) {
         // STRING: LEGOLAND 0x004bc5f0
         LogPrintf("BuildObjList (size %dS) Save Failed", DAT_006670f8);
         goto fail;
@@ -755,7 +755,7 @@ LEGO_EXPORT int LoadGame(char *path) {
     if (SaveFileHandle == -1) {
         return 0;
     }
-    DAT_006691fc = 0;
+    MeasuredBlockDepth = 0;
     DAT_00667ca0 = 1;
     for (;;) {
         if (SaveGameRead(header, 0x20) == 0) {
@@ -765,10 +765,10 @@ LEGO_EXPORT int LoadGame(char *path) {
         if (atoi(header) != 2) {
             return 0;
         }
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         if (SaveGameRead(&DAT_006691b4, 4) == 0) {
@@ -820,7 +820,7 @@ LEGO_EXPORT int LoadGame(char *path) {
                 LLIDB_LoadData((void *)n);
                 tab[i] = ((struct Element *)n)->data;
             }
-            if (FUN_0047d7e0() == 0) {
+            if (SkipSaveGameDword() == 0) {
                 break;
             }
             if (SaveGameRead(lpConfig, 0x44) == 0) {
@@ -848,7 +848,7 @@ LEGO_EXPORT int LoadGame(char *path) {
                 }
             }
         }
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         if (SaveGameRead(&MapStats, 0x3f0) == 0) {
@@ -868,21 +868,21 @@ LEGO_EXPORT int LoadGame(char *path) {
         FUN_004741c0();
         FUN_00474880();
         DrawWatchSprite();
-        if (FUN_0046cb60() == 0) {
+        if (LoadScripts() == 0) {
             break;
         }
-        if (FUN_00444260() == 0) {
+        if (LoadReport() == 0) {
             break;
         }
-        if (FUN_00457940() == 0) {
+        if (LoadCurrency() == 0) {
             break;
         }
-        if (SaveGameRead(DAT_007fdd00, 0x24) == 0) {
+        if (SaveGameRead(ButtonFlashStates, 0x24) == 0) {
             break;
         }
         DrawWatchSprite();
         DAT_00667d50 = 1;
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         while (FirstBloke != 0) {
@@ -897,7 +897,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             if (SaveGameRead(&m, 4) == 0) {
                 LOAD_FAIL();
             }
-            bloke = &DAT_0066b57c[m];
+            bloke = &BlokePool[m];
             bloke->next = FirstBloke;
             FirstBloke = bloke;
             if (SaveGameRead(&DAT_007fda60, sizeof(DAT_007fda60)) == 0) {
@@ -970,7 +970,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             bloke->field_75 = DAT_007fda60.field_75;
             bloke->nav = DAT_007fda60.nav;
             bloke->person = malloc(sizeof(Person));
-            FUN_0043f810(bloke->person);
+            AddPersonToList(bloke->person);
             bloke->person->bloke = bloke;
             bloke->person->field_8 = DAT_007fda60.person_8;
             bloke->person->scale = DAT_007fda60.scale;
@@ -995,36 +995,36 @@ LEGO_EXPORT int LoadGame(char *path) {
             bloke->person->field_2c = 0;
             bloke->person->field_30 = DAT_007fda60.field_30;
             anim = GetBlokeAnim3DFromPerson(bloke->person);
-            bloke->person->field_50 = FUN_00442580(bloke->person, DAT_0081c8c0, (unsigned int)anim->field_8, anim->elems->shared->count, bloke->person->random);
+            bloke->person->field_50 = FUN_00442580(bloke->person, VisitorLocData, (unsigned int)anim->field_8, anim->elems->shared->count, bloke->person->random);
         }
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         LoadGardeners();
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         LoadMechanics();
         DrawWatchSprite();
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         LoadGardenerOrders();
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         FUN_0049ce00();
         DrawWatchSprite();
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
-        if (SaveGameRead(&DAT_0079a8d0, 4) == 0) {
+        if (SaveGameRead(&CastlePlacedFlag, 4) == 0) {
             break;
         }
         if (SaveGameRead(&DAT_006670f8, 4) == 0) {
             break;
         }
-        if (SaveGameRead(DAT_006664f8, sizeof(DAT_006664f8)) == 0) {
+        if (SaveGameRead(BuildObjArray, sizeof(BuildObjArray)) == 0) {
             break;
         }
         for (i = 0; i < DAT_006691b4; i++) {
@@ -1112,18 +1112,18 @@ LEGO_EXPORT int LoadGame(char *path) {
             break;
         }
         DrawWatchSprite();
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         if (FUN_00482920() == 0) {
             break;
         }
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         FUN_00450b10();
         DrawWatchSprite();
-        if (FUN_0047d7e0() == 0) {
+        if (SkipSaveGameDword() == 0) {
             break;
         }
         {

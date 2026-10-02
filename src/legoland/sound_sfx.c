@@ -52,7 +52,7 @@ struct AcmHeader {
 };
 
 // FUNCTION: LEGOLAND 0x004921c0
-void *FUN_004921c0(void *data, WAVEFORMATEX *has, unsigned int *size) {
+void *ConvertWaveToPcm16(void *data, WAVEFORMATEX *has, unsigned int *size) {
     WAVEFORMATEX *src = has;
     WAVEFORMATEX dst;
     struct AcmHeader hdr;
@@ -162,7 +162,7 @@ LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) {
                         }
                         data = malloc(size);
                         if (RES_ReadFile(file, data, size) == size) {
-                            converted = FUN_004921c0(data, format, &size);
+                            converted = ConvertWaveToPcm16(data, format, &size);
                             if (converted != NULL) {
                                 data = converted;
                                 desc.dwSize = sizeof(desc);
@@ -284,7 +284,7 @@ LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x004927b0
-int FUN_004927b0(struct Sample *sample) {
+int StopSampleBuffer(struct Sample *sample) {
     if (SoundAvailable == 0) {
         return 0;
     }
@@ -302,17 +302,17 @@ int FUN_004927b0(struct Sample *sample) {
 }
 // FUNCTION: LEGOLAND 0x00492800
 LEGO_EXPORT int PauseSingleSample(struct Sample *sample) {
-    if ((sample->flags & 1) == 0 && FUN_004927b0(sample) != 0) {
+    if ((sample->flags & 1) == 0 && StopSampleBuffer(sample) != 0) {
         sample->flags |= 1;
         return 1;
     }
     return 0;
 }
 // FUNCTION: LEGOLAND 0x00492830
-void FUN_00492830(void) {
+void PauseAllSamples(void) {
     struct Sample *sample;
 
-    sample = DAT_007988cc;
+    sample = SampleListHead;
     if (sample != 0) {
         do {
             PauseSingleSample(sample);
@@ -322,10 +322,10 @@ void FUN_00492830(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492850
-void FUN_00492850(void) {
+void ResumeAllSamples(void) {
     struct Sample *sample;
 
-    sample = DAT_007988cc;
+    sample = SampleListHead;
     if (sample != 0) {
         do {
             ResumeSinglyPausedSample(sample);
@@ -338,14 +338,14 @@ void FUN_00492850(void) {
 LEGO_EXPORT void Mute_SFX(void) {
     struct Sample *sample;
 
-    sample = DAT_007988cc;
+    sample = SampleListHead;
     if (sample != 0) {
         do {
-            FUN_004927b0(sample);
+            StopSampleBuffer(sample);
             sample = sample->next;
         } while (sample != 0);
     }
-    DAT_007988c4 = 1;
+    SfxMuted = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004928a0
@@ -376,7 +376,7 @@ int FUN_004928a0(struct Sample *sample) {
 LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample) {
     if (SoundAvailable != 0 && sample != 0 && (sample->flags & 1) != 0) {
         sample->flags &= 0xfffe;
-        if (DAT_007988c4 == 0) {
+        if (SfxMuted == 0) {
             FUN_004928a0(sample);
         }
         return 1;
@@ -388,12 +388,12 @@ LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample) {
 LEGO_EXPORT void UnMute_FX(void) {
     struct Sample *sample;
 
-    sample = DAT_007988cc;
+    sample = SampleListHead;
     while (sample != 0) {
         FUN_004928a0(sample);
         sample = sample->next;
     }
-    DAT_007988c4 = 0;
+    SfxMuted = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00492980
@@ -454,7 +454,7 @@ LEGO_EXPORT int SetSampleFrequency(struct Sample *sample, int frequency) {
 }
 
 // FUNCTION: LEGOLAND 0x00492a60
-struct Sample *FUN_00492a60(struct Sample *sample) {
+struct Sample *GetSampleFrequency(struct Sample *sample) {
     struct SampleBuffer *buffer;
 
     if (SoundAvailable == 0) {
@@ -476,7 +476,7 @@ LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2) 
     unsigned short range = (unsigned short)param_2;
     int percent = rand() % (range * 2) - range + 100;
 
-    SetSampleFrequency(sample, (int)FUN_00492a60(sample) * percent / 100);
+    SetSampleFrequency(sample, (int)GetSampleFrequency(sample) * percent / 100);
 }
 
 // FUNCTION: LEGOLAND 0x00492af0
@@ -507,10 +507,10 @@ void FUN_00492b20(struct Sample *sample) {
 LEGO_EXPORT void KillPlayableSample(struct Sample *sample) {
     struct Sample *node;
 
-    if (DAT_007988cc == sample) {
-        DAT_007988cc = sample->next;
-    } else if (DAT_007988cc != 0) {
-        node = DAT_007988cc;
+    if (SampleListHead == sample) {
+        SampleListHead = sample->next;
+    } else if (SampleListHead != 0) {
+        node = SampleListHead;
         while (node != 0) {
             if (node->next == sample) {
                 node->next = sample->next;
@@ -528,7 +528,7 @@ LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1) {
     struct Sample *previous;
     struct Sample *next;
 
-    current = DAT_007988cc;
+    current = SampleListHead;
     previous = 0;
     if (current == 0) {
         return;
@@ -539,7 +539,7 @@ LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1) {
             if (previous != 0) {
                 previous->next = next;
             } else {
-                DAT_007988cc = next;
+                SampleListHead = next;
             }
             FUN_00492b20(current);
             current = next;
@@ -575,14 +575,14 @@ LEGO_EXPORT int KillSoundSampleSystem(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492c60
-void FUN_00492c60(void) {
+void SuspendMusicThread(void) {
     if (MusicEnabled != 0) {
         SuspendThread(MusicThread);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00492c80
-void FUN_00492c80(void) {
+void ResumeMusicThread(void) {
     if (MusicEnabled != 0) {
         ResumeThread(MusicThread);
     }
@@ -676,7 +676,7 @@ void FUN_00492da0(void) {
  * FUN_00492d80 (DAT_0079a6a4, signalled through DAT_0079a6a0) and DirectMusic notifications.
  * Setup failures jump into one release chain, as in the original. */
 // FUNCTION: LEGOLAND 0x00492db0
-DWORD WINAPI FUN_00492db0(LPVOID param) {
+DWORD WINAPI MusicThreadProc(LPVOID param) {
     unsigned char groove;
     int beat = -1;
     struct DirectMusicPort *port = NULL;
@@ -720,11 +720,11 @@ DWORD WINAPI FUN_00492db0(LPVOID param) {
     bufferDesc.dwBufferBytes = bufferSize;
     bufferDesc.dwReserved = 0;
     bufferDesc.lpwfxFormat = format;
-    if (IDirectSound_CreateSoundBuffer((LPDIRECTSOUND)DSound, (LPCDSBUFFERDESC)&bufferDesc, (LPDIRECTSOUNDBUFFER *)&DAT_007cad4c, NULL) != DS_OK) {
+    if (IDirectSound_CreateSoundBuffer((LPDIRECTSOUND)DSound, (LPCDSBUFFERDESC)&bufferDesc, (LPDIRECTSOUNDBUFFER *)&DMusicSoundBuffer, NULL) != DS_OK) {
         goto fail;
     }
     free(format);
-    port->vtable->SetDirectSound(port, DSound, DAT_007cad4c);
+    port->vtable->SetDirectSound(port, DSound, DMusicSoundBuffer);
     port->vtable->Activate(port, TRUE);
     DMusicPerformance->vtable->AddPort(DMusicPerformance, port);
     DMusicPerformance->vtable->AssignPChannelBlock(DMusicPerformance, 0, port, 1);
@@ -1007,9 +1007,9 @@ fail:
 }
 
 // FUNCTION: LEGOLAND 0x00495a10
-int FUN_00495a10(void *hwnd) {
+int StartMusicThread(void *hwnd) {
     if (MusicEnabled != 0) {
-        MusicThread = CreateThread(0, 0x4000, FUN_00492db0, 0, 0, (LPDWORD)&MusicThreadId);
+        MusicThread = CreateThread(0, 0x4000, MusicThreadProc, 0, 0, (LPDWORD)&MusicThreadId);
         return 1;
     }
     DAT_007988bc = 1;
@@ -1032,17 +1032,17 @@ LEGO_EXPORT int UpdateSoundVols(void) {
 
     if (SoundAvailable != 0) {
         if (MusicEnabled != 0 && DMusicInitialised != 0) {
-            vol = FUN_00495a50(DAT_0080ffa0.field_28);
-            ((struct SampleBuffer *)DAT_007cad4c)->vtable->method_0x3c((struct SampleBuffer *)DAT_007cad4c, vol);
+            vol = FUN_00495a50(CurrentProfile.field_28);
+            ((struct SampleBuffer *)DMusicSoundBuffer)->vtable->method_0x3c((struct SampleBuffer *)DMusicSoundBuffer, vol);
         }
-        DAT_007988a0 = FUN_00495a50(DAT_0080ffa0.field_2c);
+        DAT_007988a0 = FUN_00495a50(CurrentProfile.field_2c);
         FUN_004967b0();
-        FUN_00498900(FUN_00495a50(DAT_0080ffa0.field_24));
+        SpeechSetVolume(FUN_00495a50(CurrentProfile.field_24));
     }
     return 0;
 }
 // FUNCTION: LEGOLAND 0x00495b00
-int FUN_00495b00(void) {
+int ShutDownDirectMusic(void) {
     if (MusicEnabled != 0 && DMusicInitialised != 0) {
         TerminateThread(MusicThread, 0);
 

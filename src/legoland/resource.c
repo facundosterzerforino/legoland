@@ -84,12 +84,12 @@ struct ResDirEntry {
 };
 
 // FUNCTION: LEGOLAND 0x00489440
-struct MasterDirNode *FUN_00489440(char *name) {
+struct MasterDirNode *FindOrAddMasterDir(char *name) {
     struct MasterDirNode *node;
     struct MasterDirNode *new_node;
     char *copy;
 
-    for (node = DAT_00798624; node != 0; node = node->next) {
+    for (node = MasterDirList; node != 0; node = node->next) {
         if (_stricmp(name, node->name) == 0) {
             return node;
         }
@@ -100,9 +100,9 @@ struct MasterDirNode *FUN_00489440(char *name) {
     new_node->name = copy;
     strcpy(copy, name);
 
-    new_node->next = DAT_00798624;
+    new_node->next = MasterDirList;
     new_node->pad_4 = 0;
-    DAT_00798624 = new_node;
+    MasterDirList = new_node;
     return new_node;
 }
 
@@ -110,7 +110,7 @@ struct MasterDirNode *FUN_00489440(char *name) {
 LEGO_EXPORT struct MasterDirNode *GetMasterDirPtr(const char *name) {
     struct MasterDirNode *node;
 
-    for (node = DAT_00798624; node != 0; node = node->next) {
+    for (node = MasterDirList; node != 0; node = node->next) {
         if (_stricmp(name, node->name) == 0) {
             return node;
         }
@@ -122,7 +122,7 @@ LEGO_EXPORT struct MasterDirNode *GetMasterDirPtr(const char *name) {
 LEGO_EXPORT struct MasterVolNode *GetMasterVolPtr(const char *name) {
     struct MasterVolNode *node;
 
-    for (node = DAT_00798628; node != 0; node = node->next) {
+    for (node = MasterVolList; node != 0; node = node->next) {
         if (_stricmp(name, node->name) == 0) {
             return node;
         }
@@ -154,7 +154,7 @@ void FUN_004895a0(struct ResDirRecord *node, struct ResVolume *volume, struct Re
     struct ResVolEntry *entry;
 
     strcpy(buffer, path);
-    master = FUN_00489440(buffer);
+    master = FindOrAddMasterDir(buffer);
 
     if (node->is_dir == 0) {
         entry = (struct ResVolEntry *)malloc(0x20);
@@ -205,7 +205,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     int i;
 
     volume = (struct ResVolume *)malloc(0x28);
-    cur = DAT_00798628;
+    cur = MasterVolList;
 
     _splitpath(path, 0, 0, fname, 0);
     // STRING: LEGOLAND 0x004bde74
@@ -286,8 +286,8 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     FUN_004895a0(dir_data, volume, dir_data, DAT_004d8bb0);
     free(dir_data);
 
-    volume->next = DAT_00798628;
-    DAT_00798628 = volume;
+    volume->next = MasterVolList;
+    MasterVolList = volume;
     volume->refcount = 1;
     volume->current = 0;
     return volume;
@@ -376,7 +376,7 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
     base_name[0] = '\0';
     memset(base_name + 1, 0, sizeof(base_name) - 1);
 
-    if (FUN_004515e0(0) == 0) {
+    if (WaitForLegolandCd(0) == 0) {
         exit(1);
     }
 

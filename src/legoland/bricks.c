@@ -27,56 +27,56 @@ struct TileSetView {
 };
 
 // FUNCTION: LEGOLAND 0x00457870
-void FUN_00457870(int param_1) {
-    DAT_004b90fc = (param_1 == 0);
+void SetBricksLimited(int param_1) {
+    UnlimitedBricks = (param_1 == 0);
 }
 
 // FUNCTION: LEGOLAND 0x00457890
-int FUN_00457890(void) {
-    return DAT_004b90fc == 0;
+int AreBricksLimited(void) {
+    return UnlimitedBricks == 0;
 }
 
 // FUNCTION: LEGOLAND 0x004578a0
 LEGO_EXPORT void AddBricks(unsigned int param_1) {
-    if (DAT_004b90fc == 0) {
-        DAT_004b90f8 += param_1;
+    if (UnlimitedBricks == 0) {
+        BrickCount += param_1;
     }
 }
 
 // FUNCTION: LEGOLAND 0x004578c0
 LEGO_EXPORT void UseBricks(unsigned int param_1) {
-    if (DAT_004b90fc == 0) {
-        DAT_004b90f8 -= param_1;
+    if (UnlimitedBricks == 0) {
+        BrickCount -= param_1;
     }
 }
 
 // FUNCTION: LEGOLAND 0x004578e0
 LEGO_EXPORT int GetBrickCount(void) {
-    if (DAT_004b90fc != 0) {
+    if (UnlimitedBricks != 0) {
         return 0x7fffffff;
     }
-    return DAT_004b90f8;
+    return BrickCount;
 }
 
 // FUNCTION: LEGOLAND 0x00457900
-void FUN_00457900(unsigned int param_1) {
-    DAT_004b90f8 = param_1;
+void SetBrickCount(unsigned int param_1) {
+    BrickCount = param_1;
 }
 
 // FUNCTION: LEGOLAND 0x00457910
-int FUN_00457910(void) {
-    if (SaveGameWrite(&DAT_004b90fc, 4) == 0) {
+int SaveCurrency(void) {
+    if (SaveGameWrite(&UnlimitedBricks, 4) == 0) {
         return 0;
     }
-    return SaveGameWrite(&DAT_004b90f8, 4) != 0;
+    return SaveGameWrite(&BrickCount, 4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00457940
-int FUN_00457940(void) {
-    if (SaveGameRead(&DAT_004b90fc, 4) == 0) {
+int LoadCurrency(void) {
+    if (SaveGameRead(&UnlimitedBricks, 4) == 0) {
         return 0;
     }
-    return SaveGameRead(&DAT_004b90f8, 4) != 0;
+    return SaveGameRead(&BrickCount, 4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00457970
@@ -343,7 +343,7 @@ void FUN_00457a70(void) {
                                 if (WorkOrderBuildObject(EditMode.unk8->element, &pt)) {
                                     DAT_00668610 |= 0x10;
                                 }
-                                DAT_0066b46c = 1;
+                                PathUpdateNeeded = 1;
                             }
                         }
                     }

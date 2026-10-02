@@ -29,12 +29,12 @@ void FUN_00406240(Element *elem) {
         }
     }
     // STRING: LEGOLAND 0x004b4590
-    DAT_004c11cc = LoadSprite("fortmask.lls", 1);
+    FortMaskSprite = LoadSprite("fortmask.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x004062a0
-void FUN_004062a0(void) {
-    struct Sprite *sprite = DAT_004c11cc;
+void KillFortMaskSprite(void) {
+    struct Sprite *sprite = FortMaskSprite;
     if (sprite != NULL) {
         KillSprite(sprite);
     }
@@ -79,7 +79,7 @@ void FUN_004062c0(Element *elem, unsigned int param_2, unsigned int param_3, Til
         }
     }
     RenderBlokeList((struct BlokeListHead *)&DAT_004c11e0);
-    if (DAT_004c11cc != NULL) {
+    if (FortMaskSprite != NULL) {
         struct Point off2;
         off2.x = 0x173;
         off2.y = -0x7b;
@@ -94,11 +94,11 @@ void FUN_004062c0(Element *elem, unsigned int param_2, unsigned int param_3, Til
         } else {
             frame = clip;
         }
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004c11cc);
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)FortMaskSprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
-        PrintSprite(DAT_004c11cc, pos.x + off2.x, pos.y + off2.y, clip, 0);
+        PrintSprite(FortMaskSprite, pos.x + off2.x, pos.y + off2.y, clip, 0);
     }
 }
 
@@ -241,13 +241,13 @@ void FUN_00406880(Element *elem, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x004068b0
-void FUN_004068b0(struct ClassNode *name, struct CallbackTable *ci) {
+void FortGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b45a0
     if (_stricmp("FORT", name->name) != 0) {
         return;
     }
     ci->cb_a4 = FUN_00406240;
-    ci->cb_ac = FUN_004062a0;
+    ci->cb_ac = KillFortMaskSprite;
     ci->cb_8c = FUN_00406820;
     ci->cb_a8 = FUN_00406660;
     ci->cb_b0 = FUN_004062c0;

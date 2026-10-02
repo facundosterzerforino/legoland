@@ -686,8 +686,8 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
     if (GetBrickCount() < cost) {
         return 0;
     }
-    if (editObj == DAT_0080ff64) {
-        DAT_0079a8d0 = 1;
+    if (editObj == CastleObjElem) {
+        CastlePlacedFlag = 1;
     }
     if (DAT_00667cd8 == 0) {
         PlayAppropriateBuildEffect((struct ObjClass *)obj, coords);
@@ -709,7 +709,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         out.y = out.y + coords[1];
         if (obj->flags & 0x400000) {
             FUN_00482a90();
-            FUN_00482b20(1);
+            UpdatePathLinks(1);
             effect = FUN_00482b00();
             FUN_00477bd0(out.x, out.y, effect->x, effect->y);
         }
@@ -727,7 +727,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         PutObjOnMap((struct ObjClass *)obj, (unsigned int)editObj, (struct Point *)coords);
         if (obj->flags & 0x400000) {
             FUN_00482a90();
-            FUN_00482b20(1);
+            UpdatePathLinks(1);
             effect = FUN_00482b00();
             FUN_00477bd0(out.x, out.y, effect->x, effect->y);
         }
@@ -1570,16 +1570,16 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     code = FUN_0045e6b0((struct ObjBox *)EditMode.unk8);
     switch (code) {
     case 8:
-        PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
+        PrintSprite(Arrow02Sprite, screen[0], screen[1], 0, 0);
         break;
     case 4:
-        PrintSprite(DAT_00667c90, screen[0], screen[1], 0, 0);
+        PrintSprite(Arrow04Sprite, screen[0], screen[1], 0, 0);
         break;
     case 2:
-        PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
+        PrintSprite(Arrow03Sprite, screen[0], screen[1], 0, 0);
         break;
     case 1:
-        PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
+        PrintSprite(Arrow01Sprite, screen[0], screen[1], 0, 0);
         break;
     }
     if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)EditMode.unk8) != 0) {
@@ -1589,16 +1589,16 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         code = FUN_0045e710((struct ObjBox *)EditMode.unk8);
         switch (code) {
         case 0x80:
-            PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
+            PrintSprite(Arrow02Sprite, screen[0], screen[1], 0, 0);
             return;
         case 0x40:
-            PrintSprite(DAT_00667c90, screen[0], screen[1], 0, 0);
+            PrintSprite(Arrow04Sprite, screen[0], screen[1], 0, 0);
             return;
         case 0x20:
-            PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
+            PrintSprite(Arrow03Sprite, screen[0], screen[1], 0, 0);
             return;
         case 0x10:
-            PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
+            PrintSprite(Arrow01Sprite, screen[0], screen[1], 0, 0);
             break;
         }
     }
@@ -2994,7 +2994,7 @@ LEGO_EXPORT void DoMapAI(void) {
     int v;
     struct MapObject *cls;
 
-    if (DAT_008119a4 & 0x3f) {
+    if (FrameCounter & 0x3f) {
         for (i = 0; i < 0x100; i++) {
             switch (MapStats.scan_stage) {
             case 0: {

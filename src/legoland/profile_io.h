@@ -19,7 +19,7 @@ int FUN_00491e40(char *text, int font, RECT rc, int color_flag);
 
 struct IconNode;
 LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite);
-unsigned int FUN_00491540(void);
+unsigned int TempProfileHasName(void);
 
 struct ProfileNode {
     /* 0x00 */ struct ProfileNode *next;
@@ -28,7 +28,7 @@ struct ProfileNode {
     /* 0x118 */ unsigned char slot;
 };
 
-struct ProfileNode *FUN_004919a0(unsigned char slot);
+struct ProfileNode *FindProfileNodeBySlot(unsigned char slot);
 char FUN_004920a0(unsigned int param1, unsigned char flags);
 int InitDirectSound(void *hwnd);
 LEGO_EXPORT void ResetTempProfile(void);

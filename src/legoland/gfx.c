@@ -280,7 +280,7 @@ LEGO_EXPORT void LoadColourTable(void) {
         entry++;
     } while ((int)src < (int)&DAT_00813b20[0x301]);
 
-    RES_ReadFile(file, DAT_00814020, 0x8000);
+    RES_ReadFile(file, ColourLookupTable, 0x8000);
 
     ddraw = DDRAWENV.ddraw2;
     ddraw->lpVtbl->CreatePalette(ddraw, 0x44, entries, (LPDIRECTDRAWPALETTE *)&DDPalette, NULL);
@@ -320,7 +320,7 @@ LEGO_EXPORT unsigned int GetNearestColour(int r, int g, int b) {
         color |= (g & 0xf8);
         color <<= 2;
         color |= (b >> 3) & 0x1f;
-        return DAT_00814020[color];
+        return ColourLookupTable[color];
     case 1:
         color = (r & 0xf8) << 5;
         color |= (g & 0xf8);

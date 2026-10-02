@@ -27,10 +27,10 @@ LEGO_EXPORT void WNDENV_Sethwnd(HWND param_1) { DAT_00669210 = param_1; }
 LEGO_EXPORT HWND WNDENV_Gethwnd(void) { return DAT_00669210; }
 
 // FUNCTION: LEGOLAND 0x0047fe70
-BOOL FUN_0047fe70(void) { return ShowWindow(WNDENV_Gethwnd(), 6); }
+BOOL MinimizeGameWindow(void) { return ShowWindow(WNDENV_Gethwnd(), 6); }
 
 // FUNCTION: LEGOLAND 0x0047fe80
-void FUN_0047fe80(void) { ShowWindow(WNDENV_Gethwnd(), 9); }
+void RestoreGameWindow(void) { ShowWindow(WNDENV_Gethwnd(), 9); }
 
 // FUNCTION: LEGOLAND 0x0047fe90
 LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -47,12 +47,12 @@ LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wPar
         return 0;
     case 8:
     case 0x1f:
-        DAT_00669238 = FUN_00499380();
+        DAT_00669238 = PauseGameTimer();
         lpConfig->field_1c |= 1;
         break;
     case 7:
         if (DAT_00669238 == 0) {
-            FUN_004993c0();
+            ResumeGameTimer();
         }
         *(unsigned short *)&lpConfig->field_1c &= (unsigned short)~1;
         break;
@@ -92,7 +92,7 @@ LEGO_EXPORT int ProcessSystemEvents(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480150
-void FUN_00480150(struct ResFile *file, void *dst) {
+void ReadBigEndianU32(struct ResFile *file, void *dst) {
     RES_ReadFile(file, dst, 4);
 #if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
@@ -120,7 +120,7 @@ void FUN_00480150(struct ResFile *file, void *dst) {
 }
 
 // FUNCTION: LEGOLAND 0x00480170
-void FUN_00480170(struct ResFile *file, void *dst) {
+void ReadBigEndianU16(struct ResFile *file, void *dst) {
     RES_ReadFile(file, dst, 2);
 #if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
@@ -149,7 +149,7 @@ void *FUN_004801a0(struct ResFile *file) {
 
     track = (struct MidiTrack *)malloc(0x1c);
     RES_ReadFile(file, &header, 4);
-    FUN_00480150(file, &chunkSize);
+    ReadBigEndianU32(file, &chunkSize);
     track->size = chunkSize;
     track->data = malloc(chunkSize);
     RES_ReadFile(file, track->data, chunkSize);

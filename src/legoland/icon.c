@@ -684,7 +684,7 @@ int FUN_0046df30(struct Rect16 *src) {
 
 // FUNCTION: LEGOLAND 0x0046df60
 int FUN_0046df60(int param) {
-    SetClipping(&DAT_007fe020);
+    SetClipping(&ScreenRect);
     return 0;
 }
 
@@ -821,7 +821,7 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
             if (sprite != NULL) {
                 PrintSprite(sprite, node->x, y, 0, (int *)&ctx);
             }
-            PrintSprite(DAT_007cb398, node->x + 0x46, node->y, 0, (int *)&ctx);
+            PrintSprite(FreePlayTickSprite, node->x + 0x46, node->y, 0, (int *)&ctx);
         }
     }
     return 0;
@@ -921,7 +921,7 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     RECT clip;
     char buf[100];
 
-    if (FUN_00457890() == 0) {
+    if (AreBricksLimited() == 0) {
         return 0;
     }
     width = node->field_10;

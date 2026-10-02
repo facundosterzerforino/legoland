@@ -319,7 +319,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
     if (lpConfig->field_1e != 0) {
         DAT_00813a44.x = CONTROLLERBUFFER->field_8;
         DAT_00813a44.y = CONTROLLERBUFFER->field_c;
-        if (DAT_00667c7c != 0) {
+        if (MapLoaded != 0) {
             scroll = FUN_00451f70();
             if ((GamePad & 0x1000) != 0 || FocussedIconPtr == 0) {
                 if (scroll == 0 && (GamePad & 0x20) != 0) {

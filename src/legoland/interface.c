@@ -521,7 +521,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         DAT_00668eb8 = (unsigned int)icon;
         if (a != 0) {
             FUN_0046b240(0);
-            if (DAT_0080ffa0.field_45 == 2) {
+            if (CurrentProfile.field_45 == 2) {
                 FUN_004748a0((void *)0);
             } else {
                 FUN_004748a0((void *)1);
@@ -530,7 +530,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
             FUN_0046b240(1);
         } else {
             FUN_0046b240(0);
-            if (DAT_0080ffa0.field_45 == 2) {
+            if (CurrentProfile.field_45 == 2) {
                 FUN_004748a0((void *)0);
             } else {
                 FUN_004748a0((void *)1);
@@ -649,7 +649,7 @@ unsigned char FUN_00475080(unsigned int a, unsigned char flags) {
         do {
             PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
             if (EditMode.unk4 != 1) {
-                FUN_00498920();
+                SpeechCloseFile();
                 DAT_00667c60 = EditMode.unk4;
                 EditMode.unk4 = 1;
                 GamePad = GamePad & 0xffffebff;
@@ -678,7 +678,7 @@ unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, u
             EditMode.unk4 = 2;
             DAT_0080ff80.unk4 = 0xffffffff;
             DAT_0080ff80.unk8 = 5;
-            FUN_00498920();
+            SpeechCloseFile();
             DAT_006687b0 = 4;
         }
     }
@@ -1300,7 +1300,7 @@ void FUN_00476020(void) {}
 // FUNCTION: LEGOLAND 0x00476030
 void FUN_00476030(int index, unsigned int value) {
     if (index >= 0 && index < 9) {
-        DAT_007fdd00[index] = value;
+        ButtonFlashStates[index] = value;
     }
 }
 
@@ -1346,7 +1346,7 @@ void FUN_004760a0(void) {
         coords = DAT_004bb04c;
         i = 0;
         do {
-            if (DAT_007fdd00[i] != 0) {
+            if (ButtonFlashStates[i] != 0) {
                 if (GetBlink() != 0) {
                     PrintSprite((&LegolandThemeOnSprite)[i], coords[0], coords[1], 0, 0);
                     played = 1;
@@ -1372,7 +1372,7 @@ void FUN_00476140(int index, int value) {
     if (obj != NULL) {
         if (value != 0) {
             obj->flags &= 0xfffffbff;
-            DAT_0080ffa0.flags[index] = 1;
+            CurrentProfile.flags[index] = 1;
             UpDateCurrentProfile();
         } else {
             obj->flags |= 0x400;
@@ -1386,7 +1386,7 @@ void FUN_00476180(void) {
     struct ProfileObj **items;
     unsigned int counter;
 
-    flags = DAT_0080ffa0.flags;
+    flags = CurrentProfile.flags;
     items = (struct ProfileObj **)DAT_007fdd70;
     counter = 4;
     while (counter != 0) {
@@ -1677,12 +1677,12 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
                     DAT_00668fb0 = 1;
                     break;
                 }
-                if ((DAT_007fdda0[0x39] & 0x80) != 0) {
+                if ((KeyboardState[0x39] & 0x80) != 0) {
                     break;
                 }
             } else {
                 ProcessSystemEvents();
-                if (((DAT_007fdda0[0x1d] | DAT_007fdda0[0x9d]) & 0x80) != 0 && (DAT_007fdda0[0x10] & 0x80) != 0) {
+                if (((KeyboardState[0x1d] | KeyboardState[0x9d]) & 0x80) != 0 && (KeyboardState[0x10] & 0x80) != 0) {
                     break;
                 }
             }
@@ -1993,7 +1993,7 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
         return 0;
     }
     if (lpConfig->field_40 == 0) {
-        FUN_00498920();
+        SpeechCloseFile();
         // STRING: LEGOLAND 0x004bb588
         strcpy(path, "FMV\\");
         DAT_006687b0 = 4;
@@ -2012,7 +2012,7 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
             // STRING: LEGOLAND 0x004bb554
             DebugTrace("Movie openned OK (%s)", path);
             FUN_0047f850();
-            FUN_00492830();
+            PauseAllSamples();
             FUN_00492d80();
             PushRenderingStatusAndUnlockVideoSurface();
             // STRING: LEGOLAND 0x004bb538
@@ -2032,7 +2032,7 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
                 ProcessSystemEvents();
                 ReadGameButtons();
             } while ((DAT_00813ad4 & 7) != 0);
-            FUN_00492850();
+            ResumeAllSamples();
             FUN_00492da0();
             return result;
         }

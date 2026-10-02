@@ -60,11 +60,11 @@ LEGO_EXPORT void AddPathSquare(struct Point *pos) {
     unsigned int x;
     unsigned int y;
 
-    if (FUN_00481790(pos)) {
+    if (FindBestNodeAtPoint(pos)) {
         return;
     }
 
-    node = FUN_00481730();
+    node = AddBestNode();
     x = pos->x;
     node->x_max = x;
     node->x_min = x;
@@ -80,15 +80,15 @@ LEGO_EXPORT void RemovePathSquare(struct Point *pos) {
     struct BestNode *node;
     struct BestBox box;
 
-    found = FUN_00481790(pos);
+    found = FindBestNodeAtPoint(pos);
     if (found == NULL) {
         return;
     }
     box = found->box;
-    FUN_00481750(found);
+    RemoveBestNode(found);
 
     if (box.y_min < pos->y) {
-        node = FUN_00481730();
+        node = AddBestNode();
         node->y_min = box.y_min;
         node->y_max = pos->y - 1;
         node->x_min = box.x_min;
@@ -96,7 +96,7 @@ LEGO_EXPORT void RemovePathSquare(struct Point *pos) {
         FUN_00481b10(node);
     }
     if (box.y_max > pos->y) {
-        node = FUN_00481730();
+        node = AddBestNode();
         node->y_min = pos->y + 1;
         node->y_max = box.y_max;
         node->x_min = box.x_min;
@@ -104,14 +104,14 @@ LEGO_EXPORT void RemovePathSquare(struct Point *pos) {
         FUN_00481b10(node);
     }
     if (box.x_min < pos->x) {
-        node = FUN_00481730();
+        node = AddBestNode();
         node->y_min = node->y_max = pos->y;
         node->x_min = box.x_min;
         node->x_max = pos->x - 1;
         FUN_00481b10(node);
     }
     if (box.x_max > pos->x) {
-        node = FUN_00481730();
+        node = AddBestNode();
         node->y_min = node->y_max = pos->y;
         node->x_min = pos->x + 1;
         node->x_max = box.x_max;
@@ -710,7 +710,7 @@ void FUN_00482a40(struct Point *pos) {
         }
     }
 
-    found = FUN_00481790(pos);
+    found = FindBestNodeAtPoint(pos);
     if (found != NULL) {
         FUN_004829c0(found);
     }

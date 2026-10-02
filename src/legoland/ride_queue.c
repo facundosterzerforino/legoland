@@ -684,28 +684,28 @@ void FUN_00412680(int x, int y, int param_3, int param_4) {
     case 0:
         for (col = 0; col < 4; col++) {
             for (row = 0; row < 4; row++) {
-                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[row * 4 + col] >> 8].base[0] + (tiles[row * 4 + col] & 0xff));
+                SetMapTile(x + col, y + row, DSchoolMappingData[tiles[row * 4 + col] >> 8].base[0] + (tiles[row * 4 + col] & 0xff));
             }
         }
         break;
     case 1:
         for (col = 0; col < 4; col++) {
             for (row = 0; row < 4; row++) {
-                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[(3 - col) * 4 + row] >> 8].base[0] + (tiles[(3 - col) * 4 + row] & 0xff));
+                SetMapTile(x + col, y + row, DSchoolMappingData[tiles[(3 - col) * 4 + row] >> 8].base[0] + (tiles[(3 - col) * 4 + row] & 0xff));
             }
         }
         break;
     case 2:
         for (col = 0; col < 4; col++) {
             for (row = 0; row < 4; row++) {
-                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[(3 - row) * 4 + (3 - col)] >> 8].base[0] + (tiles[(3 - row) * 4 + (3 - col)] & 0xff));
+                SetMapTile(x + col, y + row, DSchoolMappingData[tiles[(3 - row) * 4 + (3 - col)] >> 8].base[0] + (tiles[(3 - row) * 4 + (3 - col)] & 0xff));
             }
         }
         break;
     case 3:
         for (col = 0; col < 4; col++) {
             for (row = 0; row < 4; row++) {
-                SetMapTile(x + col, y + row, DAT_0082c67c[tiles[col * 4 + (3 - row)] >> 8].base[0] + (tiles[col * 4 + (3 - row)] & 0xff));
+                SetMapTile(x + col, y + row, DSchoolMappingData[tiles[col * 4 + (3 - row)] >> 8].base[0] + (tiles[col * 4 + (3 - row)] & 0xff));
             }
         }
         break;

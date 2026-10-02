@@ -46,7 +46,7 @@ void FUN_0043ce60(Element *obj) {
     DAT_0062fe48 = DAT_0081caf0->layer;
     DAT_0081caf0->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b7994
-    DAT_0062fe4c = LoadSprite("gshedmatte.lls", 1);
+    GShedMatteSprite = LoadSprite("gshedmatte.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x0043ceb0
@@ -147,12 +147,12 @@ void FUN_0043d0b0(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         }
     }
     pos = GetScreenCoordsForObject((unsigned char *)tile, shed);
-    PrintSprite(DAT_0062fe4c, pos.x, pos.y, 0, 0);
+    PrintSprite(GShedMatteSprite, pos.x, pos.y, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043d1c0
-void FUN_0043d1c0(void) {
-    KillSprite(DAT_0062fe4c);
+void KillGShedMatteSprite(void) {
+    KillSprite(GShedMatteSprite);
 }
 
 // FUNCTION: LEGOLAND 0x0043d1d0

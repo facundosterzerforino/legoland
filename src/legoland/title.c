@@ -111,10 +111,10 @@ unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
 // FUNCTION: LEGOLAND 0x0048feb0
 unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        FUN_00498920();
+        SpeechCloseFile();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ffa0.field_45 = 1;
+        CurrentProfile.field_45 = 1;
         RemoveIconGroup(7);
         KillTitleScreenSprites();
         EditMode.unk4 = 2;
@@ -127,7 +127,7 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x0048ff20
 unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        FUN_00498920();
+        SpeechCloseFile();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_0080ff80.unk8 = 3;
@@ -323,7 +323,7 @@ void FUN_00490410(void) {
         rc.bottom = 0x130;
         rc.left = 0;
         rc.right = 0x280;
-        NewPrintCent((char *)&DAT_0080ffa0, 0, rc, 0);
+        NewPrintCent((char *)&CurrentProfile, 0, rc, 0);
         if (DAT_0079876c != 0) {
             PrintSprite(PrintInfoSprite, 0xc6, 0x28, 0, hit);
             rc.top = 0x2d;
@@ -333,7 +333,7 @@ void FUN_00490410(void) {
             NewPrintCent(GetString(0x23a), 1, rc, 1);
             DAT_0079876c = DAT_0079876c + -1;
             if (DAT_0079876c == 0) {
-                FUN_00498920();
+                SpeechCloseFile();
                 DAT_006687b0 = 4;
                 DAT_00798768 = FUN_00451e20() ? 0x8c : -0x8c;
             }
@@ -526,10 +526,10 @@ unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2, unsigned
             SetPointer(6);
             FUN_00490610(DAT_004d8bb0);
         }
-        FUN_00498920();
+        SpeechCloseFile();
         DAT_006687b0 = 4;
-        FUN_004993c0();
-        FUN_00492850();
+        ResumeGameTimer();
+        ResumeAllSamples();
         FUN_0046ce20();
         FUN_0046b760();
     }
@@ -542,8 +542,8 @@ void FUN_00490a20(unsigned int param_1) {
 
     // STRING: LEGOLAND 0x004bf688
     sprintf(buffer, "%s%02d.wav", DAT_007cae80, param_1 + 1);
-    FUN_00498920();
-    FUN_00498630(buffer);
+    SpeechCloseFile();
+    SpeechLoadWavFile(buffer);
     FUN_00498b00();
     FUN_0046d390();
 }
@@ -553,8 +553,8 @@ void FUN_00490a60(unsigned int param_1) {
     char buffer[256];
 
     sprintf(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
-    FUN_00498920();
-    FUN_00498630(buffer);
+    SpeechCloseFile();
+    SpeechLoadWavFile(buffer);
     FUN_00498b00();
     FUN_0046d390();
 }
@@ -622,8 +622,8 @@ void FUN_00490c70(void) {
     struct IconNode *accept;
     struct IconNode *icon;
 
-    FUN_00499380();
-    FUN_00492830();
+    PauseGameTimer();
+    PauseAllSamples();
     // STRING: LEGOLAND 0x004bf6cc
     SPRITE_TitleScreenBk = LoadSprite("Interval_Screen.lls", 0);
     // STRING: LEGOLAND 0x004b8198

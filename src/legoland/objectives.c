@@ -293,8 +293,8 @@ void FUN_00468c00(void) {
         at = strchr((char *)event->field_8, 0x40);
         if (at != NULL) {
             *at = 0;
-            FUN_00498920();
-            FUN_00498630(at + 1);
+            SpeechCloseFile();
+            SpeechLoadWavFile(at + 1);
             FUN_00498b00();
             FUN_0046d3a0();
         }
@@ -1082,13 +1082,13 @@ int FUN_00469b70(struct ObjectiveEvent *event) {
 
 // FUNCTION: LEGOLAND 0x00469b90
 int FUN_00469b90(struct ObjectiveEvent *event) {
-    FUN_00457900(GetBrickCount() + event->field_1c);
+    SetBrickCount(GetBrickCount() + event->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469bb0
 int FUN_00469bb0(struct ObjectiveEvent *event) {
-    FUN_00457900(event->field_1c);
+    SetBrickCount(event->field_1c);
     return 1;
 }
 
@@ -1100,14 +1100,14 @@ void FUN_00469bd0(unsigned int a, void *b) {
 
     object = (struct PlaceObject *)a;
     cls = object->cls;
-    FUN_00457870(0);
+    SetBricksLimited(0);
     GetTileCentre((struct Point *)b, &centre.x);
     EditCursor.field_1404 = centre.x;
     EditCursor.field_1408 = centre.y;
     cls->method_90(a, &centre, 0x8f8);
     FUN_0045d770(&EditCursor);
     PutObjOnMap(object->cls, a, (struct Point *)&EditCursor.field_1404);
-    FUN_00457870(1);
+    SetBricksLimited(1);
 }
 
 // FUNCTION: LEGOLAND 0x00469c40
@@ -1243,11 +1243,11 @@ int FUN_00469f70(struct RewardArg *arg) {
 
 // FUNCTION: LEGOLAND 0x00469f80
 int FUN_00469f80(struct RewardArg *arg) {
-    FUN_00499380();
+    PauseGameTimer();
     SetPointer(0);
     FUN_00496e60(1, 0xf);
     FUN_004771f0(arg->field_8, 1, 1);
-    FUN_004993c0();
+    ResumeGameTimer();
     FUN_0046ce20();
     FUN_0046b760();
     return 1;

@@ -611,7 +611,7 @@ void FUN_004441f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444200
-unsigned int FUN_00444200(void) {
+unsigned int SaveReport(void) {
     unsigned int elapsed;
 
     if (SaveGameWrite(&DAT_00665ff8, 0xa0) == 0) {
@@ -626,7 +626,7 @@ unsigned int FUN_00444200(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444260
-unsigned int FUN_00444260(void) {
+unsigned int LoadReport(void) {
     unsigned int elapsed;
 
     if (SaveGameRead(&DAT_00665ff8, 0xa0) == 0) {
@@ -1063,7 +1063,7 @@ void FUN_00444bf0(unsigned int *param_1, unsigned int *param_2) {
 
 // FUNCTION: LEGOLAND 0x00444c40
 int FUN_00444c40(struct ObjectClass *node) {
-    return FUN_004781b0((const char *)**(int **)((char *)node + 0xc4), &DAT_004b7e9c, 0x16) >= 0;
+    return FindStringNoCase((const char *)**(int **)((char *)node + 0xc4), &DAT_004b7e9c, 0x16) >= 0;
 }
 
 // FUNCTION: LEGOLAND 0x00444c70
@@ -1186,7 +1186,7 @@ int FUN_00444df0(void) {
     obj = (struct RenderObj *)GetFirstRenderObject();
     linked = 0;
     total = 0;
-    FUN_00482b20(1);
+    UpdatePathLinks(1);
     if (obj != NULL) {
         do {
             if ((obj->flags & 0x80) != 0) {
@@ -1246,7 +1246,7 @@ unsigned char FUN_00444ef0(unsigned int param_1, unsigned int param_2) {
     }
     DAT_0081c07c = 1;
     PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-    FUN_00498920();
+    SpeechCloseFile();
     DAT_006687b0 = 4;
     if (DAT_006660a4 < DAT_006660a0 - 1) {
         DAT_006660a4 = DAT_006660a4 + 1;
@@ -1264,7 +1264,7 @@ unsigned char FUN_00444f90(unsigned int param_1, unsigned char param_2) {
         if (DAT_006660a4 != 0) {
             DAT_006660a4 = DAT_006660a4 - 1;
         }
-        FUN_00498920();
+        SpeechCloseFile();
         DAT_006687b0 = 4;
         FUN_00445310();
     }
@@ -4667,7 +4667,7 @@ LAB_0044acbb:
                     if (DAT_0081c038 == 0) {
                         FUN_00445000();
                         PopRenderingStatus();
-                        FUN_00498920();
+                        SpeechCloseFile();
                         FUN_00474880();
                         iVar3 = 0;
                         if (0 < iVar13) {
@@ -4682,7 +4682,7 @@ LAB_0044acbb:
                         }
                         return 1;
                     }
-                    FUN_00498b40();
+                    SpeechStreamUpdate();
                     SetPointer(5);
                     ReadGameButtons();
                     ResetHitInfo();
@@ -4793,8 +4793,8 @@ LAB_0044acbb:
                             rowp = (int *)((int)rowp + 1);
                             // STRING: LEGOLAND 0x004b81a8
                             sprintf(wavbuf, "TEXT%04d.WAV", iVar4);
-                            FUN_00498920();
-                            FUN_00498630(wavbuf + 8);
+                            SpeechCloseFile();
+                            SpeechLoadWavFile(wavbuf + 8);
                             FUN_00498b00();
                         }
                     } else {
@@ -5060,9 +5060,9 @@ int FUN_0044db90(void) {
 
     now = GetGameTimer();
     if (FUN_0046b280() == 0 && DAT_00666098 != 0 && (int)DAT_00666098 <= now) {
-        FUN_00499380();
-        FUN_00492830();
-        FUN_00498920();
+        PauseGameTimer();
+        PauseAllSamples();
+        SpeechCloseFile();
         DAT_006687b0 = 4;
         DAT_0066609c = FUN_004453a0();
         if (DAT_0066609c != 0) {
@@ -5087,8 +5087,8 @@ int FUN_0044db90(void) {
         }
         DAT_00666098 = 0;
         FUN_0044db40();
-        FUN_004993c0();
-        FUN_00492850();
+        ResumeGameTimer();
+        ResumeAllSamples();
         return 1;
     }
     return 0;

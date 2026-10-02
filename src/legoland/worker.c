@@ -974,7 +974,7 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
     int result;
     SampleSource source;
 
-    if (element == DAT_0080ff64 && DAT_0079a8d0 != 0) {
+    if (element == CastleObjElem && CastlePlacedFlag != 0) {
         return 0;
     }
     if ((ride->flags & 0x200000) != 0 && lpConfig->field_38 != 0) {
@@ -1197,9 +1197,9 @@ LEGO_EXPORT void EraseMechanicOrder(WorkOrder *order) {
     if (order->assigned != 0) {
         NewLongTermAction(order->worker, 0x11);
     }
-    if (order->element == DAT_0080ff64) {
-        if (DAT_0079a8d0 != 0) {
-            DAT_0079a8d0 = 0;
+    if (order->element == CastleObjElem) {
+        if (CastlePlacedFlag != 0) {
+            CastlePlacedFlag = 0;
         }
     }
     if (order->type == 1) {
@@ -1888,7 +1888,7 @@ void LoadGardeners(void) {
         worker->field_75 = rec.field_75;
         worker->nav = rec.nav;
         worker->person = malloc(sizeof(Person));
-        FUN_0043f810(worker->person);
+        AddPersonToList(worker->person);
         worker->person->bloke = worker;
         worker->person->field_8 = rec.person_8;
         worker->person->scale = rec.scale;
@@ -2031,7 +2031,7 @@ void LoadMechanics(void) {
         worker->field_75 = rec.field_75;
         worker->nav = rec.nav;
         worker->person = malloc(sizeof(Person));
-        FUN_0043f810(worker->person);
+        AddPersonToList(worker->person);
         worker->person->bloke = worker;
         worker->person->field_8 = rec.person_8;
         worker->person->scale = rec.scale;

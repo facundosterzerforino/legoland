@@ -74,7 +74,7 @@ struct RemBlock {
 // FUNCTION: LEGOLAND 0x00459850
 LEGO_EXPORT void InitGameMap(void) {
     // STRING: LEGOLAND 0x004b5c0c
-    DAT_0080ff64 = ElemID("CASTLE OBJ");
+    CastleObjElem = ElemID("CASTLE OBJ");
     Load_FXList(DAT_004b9228, 0x17);
 }
 
@@ -140,7 +140,7 @@ void FUN_00459970(void) {
         matched = 0;
         total = 0;
         DAT_00667d10 = now;
-        for (node = (struct RectListNode *)FUN_00481720(); node != NULL; node = node->next) {
+        for (node = (struct RectListNode *)GetBestNodeList(); node != NULL; node = node->next) {
             total = total + 4 + (((node->field_14 - node->field_8) - node->field_c) + node->field_10) * 2;
             coord.x = node->field_8;
             while (coord.x <= node->field_10) {
@@ -175,8 +175,8 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
     struct ObjClass *entrance;
     struct MapCell *cell;
 
-    if (classid == DAT_0080ff64) {
-        DAT_0079a8d0 = 1;
+    if (classid == CastleObjElem) {
+        CastlePlacedFlag = 1;
     }
     obj->method_98(classid, pos);
     if (obj == PathControlObject) {
@@ -232,8 +232,8 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
     struct RemBlock blk;
 
     FUN_0049b270(obj, tile);
-    if (classid == DAT_0080ff64) {
-        DAT_0079a8d0 = 0;
+    if (classid == CastleObjElem) {
+        CastlePlacedFlag = 0;
     }
     if (DAT_00667cd8 == 0) {
         blk.f8 = tile.pos.x;
@@ -548,7 +548,7 @@ void FUN_0045a3e0(int *param) {
     struct MapRenderOrderEntry *entry;
     int i;
 
-    for (i = 0, entry = MapRenderOrderList; (int)&entry->x < (int)((char *)&DAT_0080ff64 + 2); entry++, i++) {
+    for (i = 0, entry = MapRenderOrderList; (int)&entry->x < (int)((char *)&CastleObjElem + 2); entry++, i++) {
         if (entry->flag != 0 && (unsigned int)entry->x == *param) {
             param[1] = MapRenderOrderList[i].height;
             MapRenderOrderList[i].flag = 0;
@@ -563,7 +563,7 @@ void FUN_0045a430(short param_1, int *param_2) {
     struct MapRenderOrderEntry *entry;
     int i;
 
-    for (i = 0, entry = MapRenderOrderList; (int)&entry->coords < (int)&DAT_0080ff64; entry++, i++) {
+    for (i = 0, entry = MapRenderOrderList; (int)&entry->coords < (int)&CastleObjElem; entry++, i++) {
         if (entry->flag != 0 && (short)entry->coords == param_1) {
             *param_2 = MapRenderOrderList[i].x;
             param_2[1] = MapRenderOrderList[i].height;

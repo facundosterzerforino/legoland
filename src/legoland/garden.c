@@ -45,7 +45,7 @@ void LoadHedgeImages(struct GardenLayer *arg0) {
 }
 
 // FUNCTION: LEGOLAND 0x004324c0
-void FUN_004324c0(void) {
+void UnloadHedgeImages(void) {
     LLIDB_UnLoadData(HedgeImagesHandle);
 }
 
@@ -175,7 +175,7 @@ void LoadFlowerImages(struct GardenLayer *param) {
 }
 
 // FUNCTION: LEGOLAND 0x004328b0
-void FUN_004328b0(void) {
+void UnloadFlowerImages(void) {
     LLIDB_UnLoadData(FlowerImagesHandle);
 }
 
@@ -222,7 +222,7 @@ void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
         iface->cb_98 = FUN_004325e0;
         iface->cb_9c = FUN_00432700;
         iface->cb_a0 = FUN_00432810;
-        iface->cb_ac = FUN_004324c0;
+        iface->cb_ac = UnloadHedgeImages;
         return;
     }
     // STRING: LEGOLAND 0x004b7130
@@ -231,6 +231,6 @@ void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
         iface->cb_8c = FUN_004328c0;
         iface->cb_98 = FUN_00432900;
         iface->cb_a0 = FUN_00432960;
-        iface->cb_ac = FUN_004328b0;
+        iface->cb_ac = UnloadFlowerImages;
     }
 }

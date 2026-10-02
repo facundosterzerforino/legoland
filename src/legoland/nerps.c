@@ -165,7 +165,7 @@ unsigned int FUN_0046a170(struct NerpsArg *arg) {
 unsigned int FUN_0046a190(struct NerpsArg *arg) {
     int i;
 
-    FUN_00457870(0);
+    SetBricksLimited(0);
     i = 0;
     if ((int)arg->field_1c > 0) {
         do {
@@ -177,7 +177,7 @@ unsigned int FUN_0046a190(struct NerpsArg *arg) {
             i++;
         } while (i < (int)arg->field_1c);
     }
-    FUN_00457870(1);
+    SetBricksLimited(1);
     return 1;
 }
 
@@ -1222,7 +1222,7 @@ void FUN_0046b2d0(void) {
     }
     for (;;) {
         if ((DAT_00668610 & 0x10) != 0) {
-            FUN_00482b20(1);
+            UpdatePathLinks(1);
         }
         DAT_00668794 = GetGameTimer();
         while (node != NULL) {
@@ -2390,7 +2390,7 @@ struct ObjectiveEvent *FUN_0046c7e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c920
-unsigned int FUN_0046c920(void) {
+unsigned int SaveScripts(void) {
     struct NerpsListNode *node;
     int scratch;
     int i;
@@ -2470,7 +2470,7 @@ unsigned int FUN_0046cb20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046cb60
-unsigned int FUN_0046cb60(void) {
+unsigned int LoadScripts(void) {
     struct NerpsListNode *node;
     struct NerpsListNode *prev;
     int i;

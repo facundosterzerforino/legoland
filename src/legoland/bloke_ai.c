@@ -131,8 +131,8 @@ Element *FUN_0044e890(void) {
 
 // FUNCTION: LEGOLAND 0x0044e920
 LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
-    if (DAT_006661c0 == 0) {
-        DAT_006661c0 = ElemID("SHARK CAFE BROLLY");
+    if (SharkCafeBrollyElem == 0) {
+        SharkCafeBrollyElem = ElemID("SHARK CAFE BROLLY");
     }
     if (DAT_006661c4 == 0) {
         DAT_006661c4 = ElemID("ENTRANCE 1");
@@ -151,7 +151,7 @@ LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
     if (DAT_004b8344 > 'Z') {
         DAT_004b8344 = 'A';
     }
-    FUN_00482c60(bloke);
+    RandomiseBlokeName(bloke);
     bloke->favourite_attraction_0 = FUN_0044e790();
     bloke->favourite_attraction_1 = FUN_0044e790();
     bloke->favourite_attraction_2 = FUN_0044e790();
@@ -160,7 +160,7 @@ LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ea40
-int FUN_0044ea40(void) {
+int GetMapCapacity(void) {
     return MapStats.capacity;
 }
 
@@ -168,7 +168,7 @@ int FUN_0044ea40(void) {
 void FUN_0044ea50(void) {
     Bloke *bloke;
 
-    if (++DAT_006661c8 >= 0x1e && DAT_006661bc < FUN_0044ea40()) {
+    if (++DAT_006661c8 >= 0x1e && DAT_006661bc < GetMapCapacity()) {
         bloke = MakeBloke(0);
         if (bloke != NULL) {
             DAT_006661c8 = 0;
@@ -225,7 +225,7 @@ void FUN_0044eb50(Bloke *bloke) {
         NewLongTermAction(bloke, 3);
         return;
     }
-    if ((DAT_008119a4 & 0x1f) != 0xf) {
+    if ((FrameCounter & 0x1f) != 0xf) {
         return;
     }
     if (extended > DAT_004b8334[3]) {
@@ -923,7 +923,7 @@ void FUN_0044fe80(Bloke *bloke) {
 
     switch (bloke->param_action) {
     case 0:
-        for (object = GetFirstObjectMatching(DAT_006661c0); object != NULL; object = GetNextObjectMatching(object, DAT_006661c0)) {
+        for (object = GetFirstObjectMatching(SharkCafeBrollyElem); object != NULL; object = GetNextObjectMatching(object, SharkCafeBrollyElem)) {
             ride = object->field_0->data;
             if ((object->flags & 1) == 0) {
                 bloke->brolly = object->anchor;
@@ -982,7 +982,7 @@ void FUN_0044fe80(Bloke *bloke) {
         } else {
             element = NULL;
         }
-        if (element->field_0 == DAT_006661c0 && (flags = element->flags, (flags & 0x80) != 0)) {
+        if (element->field_0 == SharkCafeBrollyElem && (flags = element->flags, (flags & 0x80) != 0)) {
             if ((flags & 1) != 0) {
                 bloke->param_action = 0;
                 return;
@@ -1008,7 +1008,7 @@ void FUN_0044fe80(Bloke *bloke) {
         } else {
             element = NULL;
         }
-        if (element->field_0 == DAT_006661c0 && (element->flags & 0x80) != 0) {
+        if (element->field_0 == SharkCafeBrollyElem && (element->flags & 0x80) != 0) {
             if (bloke->field_5c <= 300) {
                 return;
             }
@@ -1024,7 +1024,7 @@ void FUN_0044fe80(Bloke *bloke) {
         } else {
             element = NULL;
         }
-        if (element->field_0 == DAT_006661c0 && (element->flags & 0x80) != 0) {
+        if (element->field_0 == SharkCafeBrollyElem && (element->flags & 0x80) != 0) {
             element->flags &= 0xfffe;
             bloke->dest.x = bloke->goal.x + 0x80;
             bloke->dest.y = bloke->goal.y;
@@ -1359,7 +1359,7 @@ void FUN_00450a40(Bloke *bloke) {
         NewLongTermAction(bloke, 14);
         return;
     }
-    bloke->field_54 = DAT_008119a4;
+    bloke->field_54 = FrameCounter;
 }
 
 // FUNCTION: LEGOLAND 0x00450a80
@@ -1371,15 +1371,15 @@ void FUN_00450a80(void) {
 
     count = 0;
     for (i = 0; i < 256; i++) {
-        if (DAT_006664f8[i].ride != NULL) {
+        if (BuildObjArray[i].ride != NULL) {
             count++;
         }
     }
     SaveGameWrite(&count, 4);
     for (i = 0; i < 256; i++) {
-        if (DAT_006664f8[i].ride != NULL) {
-            record = DAT_006664f8[i];
-            handle.element = DAT_006664f8[i].ride->element;
+        if (BuildObjArray[i].ride != NULL) {
+            record = BuildObjArray[i];
+            handle.element = BuildObjArray[i].ride->element;
             FindeIneList(&handle);
             record.index = handle.index;
             SaveGameWrite(&record, sizeof(record));
@@ -1395,10 +1395,10 @@ void FUN_00450b10(void) {
     count = 0;
     SaveGameRead(&count, 4);
     for (i = 0; i < count; i++) {
-        SaveGameRead(&DAT_006664f8[i], sizeof(BuildObj));
-        DAT_006664f8[i].ride = GeteListPtr(DAT_006664f8[i].index)->data;
+        SaveGameRead(&BuildObjArray[i], sizeof(BuildObj));
+        BuildObjArray[i].ride = GeteListPtr(BuildObjArray[i].index)->data;
     }
     for (; i < 256; i++) {
-        DAT_006664f8[i].ride = NULL;
+        BuildObjArray[i].ride = NULL;
     }
 }
