@@ -744,11 +744,11 @@ void CoptersUpdate(struct Element *elem) {
             case 1:
                 link = (struct CopterChainNode *)node;
                 switch (CoptersFindChainIndex(link, (struct CopterSource *)&node->tile)) {
-                case 0:
-                    spr = CopterQueueTables[2];
-                    break;
                 case 1:
                     spr = CopterQueueTables[0];
+                    break;
+                case 0:
+                    spr = CopterQueueTables[2];
                     break;
                 case 2:
                     spr = CopterQueueTables[1];
@@ -792,11 +792,11 @@ void CoptersUpdate(struct Element *elem) {
             case 8:
                 link = (struct CopterChainNode *)node;
                 switch (CoptersFindChainIndex(link, (struct CopterSource *)&node->tile)) {
-                case 0:
-                    spr2 = CopterQueueTables[2];
-                    break;
                 case 1:
                     spr2 = CopterQueueTables[0];
+                    break;
+                case 0:
+                    spr2 = CopterQueueTables[2];
                     break;
                 case 2:
                     spr2 = CopterQueueTables[1];
