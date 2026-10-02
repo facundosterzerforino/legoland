@@ -1809,16 +1809,15 @@ LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
 // FUNCTION: LEGOLAND 0x0046fda0
 LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
     struct Indicator *cur = DAT_006688d8;
-    struct Indicator *next;
     if (cur == ind) {
         DAT_006688d8 = cur->next;
     } else {
-        for (; cur != NULL; cur = next) {
-            next = cur->next;
-            if (next == ind) {
+        while (cur != NULL) {
+            if (cur->next == ind) {
                 cur->next = ind->next;
                 break;
             }
+            cur = cur->next;
         }
     }
     if (cur != NULL) {
