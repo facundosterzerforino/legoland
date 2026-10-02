@@ -44,7 +44,7 @@ void FUN_0042cdc0(struct EarthNode *node) {
         prev = DAT_006160e8;
         while (cur != node) {
             prev = prev->next;
-            if (node == NULL) {
+            if (prev == NULL) {
                 break;
             }
             cur = prev->next;
