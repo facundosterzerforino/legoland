@@ -44,7 +44,7 @@ void FUN_0042cdc0(struct EarthNode *node) {
         prev = DAT_006160e8;
         while (cur != node) {
             prev = prev->next;
-            if (prev == NULL) {
+            if (node == NULL) {
                 break;
             }
             cur = prev->next;
@@ -319,8 +319,8 @@ unsigned int FUN_0042d3e0(struct EarthBlokeElem *param_1, struct EarthBlokeElem 
 
 // FUNCTION: LEGOLAND 0x0042d400
 int EarthSlideRide_Load(void) {
-    struct EarthNode *node;
-    struct EarthNode *prev;
+    struct EarthNode *node = NULL;
+    struct EarthNode *next;
     struct EarthQueue *q;
     int flag;
     int count;
@@ -329,14 +329,14 @@ int EarthSlideRide_Load(void) {
     if (SaveGameRead(&flag, 4) == 0) {
         return 0;
     }
-    prev = NULL;
     while (flag != 0) {
-        if (prev == NULL) {
+        if (node == NULL) {
             node = (struct EarthNode *)malloc(sizeof(struct EarthNode));
             DAT_006160e8 = node;
         } else {
-            node = (struct EarthNode *)malloc(sizeof(struct EarthNode));
-            prev->next = node;
+            next = (struct EarthNode *)malloc(sizeof(struct EarthNode));
+            node->next = next;
+            node = next;
         }
         if (SaveGameRead(node, 0x24) == 0) {
             return 0;
@@ -346,8 +346,7 @@ int EarthSlideRide_Load(void) {
         }
         node->queue_head = NULL;
         node->queue_tail = NULL;
-        while (count != 0) {
-            count--;
+        while (count-- != 0) {
             if (node->queue_tail == NULL) {
                 q = (struct EarthQueue *)malloc(sizeof(struct EarthQueue));
                 node->queue_tail = q;
@@ -368,7 +367,6 @@ int EarthSlideRide_Load(void) {
         if (SaveGameRead(&flag, 4) == 0) {
             return 0;
         }
-        prev = node;
     }
     return 1;
 }
