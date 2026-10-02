@@ -1785,16 +1785,15 @@ LEGO_EXPORT void SetClickFunc(struct IndicatorFuncs *ind, unsigned int func) {
 // FUNCTION: LEGOLAND 0x0046fd40
 LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
     struct Indicator *cur = DAT_006688d4;
-    struct Indicator *next;
     if (cur == ind) {
         DAT_006688d4 = cur->next;
     } else {
-        for (; cur != NULL; cur = next) {
-            next = cur->next;
-            if (next == ind) {
+        while (cur != NULL) {
+            if (cur->next == ind) {
                 cur->next = ind->next;
                 break;
             }
+            cur = cur->next;
         }
     }
     if (cur != NULL) {
