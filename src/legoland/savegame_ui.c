@@ -39,15 +39,15 @@ struct SaveNode {
 struct SaveScreenIcon {
     unsigned char pad_0[0x18];
     void *field_18;
-    unsigned char field_1c;
+    unsigned char slot;
     unsigned char pad_1d[0x20 - 0x1d];
     unsigned char field_20;
     unsigned char pad_21[0x2c - 0x21];
-    void *field_2c;
+    void *event_handler;
     unsigned char pad_30[0x34 - 0x30];
-    unsigned int field_34;
-    unsigned int field_38;
-    unsigned int field_3c;
+    unsigned int flags;
+    unsigned int string;
+    unsigned int string_id;
 };
 
 struct SaveScreenNode {
@@ -100,43 +100,43 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
 
     // STRING: LEGOLAND 0x004bf170
     icon = (struct SaveScreenIcon *)LoadSpriteIcon("GoBack_on_SavedGame.lls", 4, 0x1c2, 0x13, 7);
-    icon->field_34 |= 0x6002;
+    icon->flags |= 0x6002;
     if (DAT_007cb324) {
-        icon->field_2c = (void *)FUN_0048fb80;
-        icon->field_3c = 0x26;
-        icon->field_38 = GetString(0x26);
+        icon->event_handler = (void *)FUN_0048fb80;
+        icon->string_id = 0x26;
+        icon->string = GetString(0x26);
     } else {
-        icon->field_2c = (void *)FUN_0048db10;
-        icon->field_3c = 0x28;
-        icon->field_38 = GetString(0x28);
+        icon->event_handler = (void *)FUN_0048db10;
+        icon->string_id = 0x28;
+        icon->string = GetString(0x28);
     }
-    DAT_006687c0 = (unsigned int)icon->field_2c;
+    DAT_006687c0 = (unsigned int)icon->event_handler;
 
     if (!DAT_007cb328) {
         // STRING: LEGOLAND 0x004bf15c
         AcceptIcon = (unsigned int)LoadSpriteIcon("Accept_On_Save.lls", 4, 0x1dc, 0x142, 7);
-        ((struct SaveScreenIcon *)AcceptIcon)->field_34 |= 0x2000;
-        ((struct SaveScreenIcon *)AcceptIcon)->field_34 |= 0x4002;
-        ((struct SaveScreenIcon *)AcceptIcon)->field_34 |= 0x400;
+        ((struct SaveScreenIcon *)AcceptIcon)->flags |= 0x2000;
+        ((struct SaveScreenIcon *)AcceptIcon)->flags |= 0x4002;
+        ((struct SaveScreenIcon *)AcceptIcon)->flags |= 0x400;
         if (DAT_007cb310) {
-            ((struct SaveScreenIcon *)AcceptIcon)->field_2c = (void *)FUN_0048f5a0;
-            ((struct SaveScreenIcon *)AcceptIcon)->field_3c = 0x29;
-            ((struct SaveScreenIcon *)AcceptIcon)->field_38 = GetString(0x29);
+            ((struct SaveScreenIcon *)AcceptIcon)->event_handler = (void *)FUN_0048f5a0;
+            ((struct SaveScreenIcon *)AcceptIcon)->string_id = 0x29;
+            ((struct SaveScreenIcon *)AcceptIcon)->string = GetString(0x29);
         } else {
-            ((struct SaveScreenIcon *)AcceptIcon)->field_2c = (void *)FUN_0048da50;
-            ((struct SaveScreenIcon *)AcceptIcon)->field_3c = 0x2a;
-            ((struct SaveScreenIcon *)AcceptIcon)->field_38 = GetString(0x2a);
+            ((struct SaveScreenIcon *)AcceptIcon)->event_handler = (void *)FUN_0048da50;
+            ((struct SaveScreenIcon *)AcceptIcon)->string_id = 0x2a;
+            ((struct SaveScreenIcon *)AcceptIcon)->string = GetString(0x2a);
         }
     } else {
         AcceptIcon = (unsigned int)LoadSpriteIcon("Accept_On_Save.lls", 4, 0x1dc, 0x142, 7);
-        ((struct SaveScreenIcon *)AcceptIcon)->field_3c = 0x2b;
-        ((struct SaveScreenIcon *)AcceptIcon)->field_38 = GetString(0x2b);
-        ((struct SaveScreenIcon *)AcceptIcon)->field_34 |= 0x2000;
-        ((struct SaveScreenIcon *)AcceptIcon)->field_34 |= 0x4002;
-        ((struct SaveScreenIcon *)AcceptIcon)->field_34 |= 0x400;
-        ((struct SaveScreenIcon *)AcceptIcon)->field_2c = (void *)FUN_0048d970;
+        ((struct SaveScreenIcon *)AcceptIcon)->string_id = 0x2b;
+        ((struct SaveScreenIcon *)AcceptIcon)->string = GetString(0x2b);
+        ((struct SaveScreenIcon *)AcceptIcon)->flags |= 0x2000;
+        ((struct SaveScreenIcon *)AcceptIcon)->flags |= 0x4002;
+        ((struct SaveScreenIcon *)AcceptIcon)->flags |= 0x400;
+        ((struct SaveScreenIcon *)AcceptIcon)->event_handler = (void *)FUN_0048d970;
     }
-    DAT_006687bc = (unsigned int)((struct SaveScreenIcon *)AcceptIcon)->field_2c;
+    DAT_006687bc = (unsigned int)((struct SaveScreenIcon *)AcceptIcon)->event_handler;
 
     FUN_0048d470();
     DeleteSavedGameList();
@@ -147,28 +147,28 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
         do {
             if (node->has_header) {
                 icon = (struct SaveScreenIcon *)InsertIcon(0x51, (short)(node->slot * 38 + 0x6f), 7, GetSavePanelBK(node->slot));
-                icon->field_2c = (void *)FUN_0048e4a0;
-                icon->field_34 |= 0x4002;
+                icon->event_handler = (void *)FUN_0048e4a0;
+                icon->flags |= 0x4002;
                 icon->field_18 = node->name;
-                icon->field_1c = node->slot;
+                icon->slot = node->slot;
                 if (node->field_28 == 1) {
                     icon->field_20 |= 3;
-                    icon->field_3c = 0x2c;
-                    icon->field_38 = GetString(0x2c);
+                    icon->string_id = 0x2c;
+                    icon->string = GetString(0x2c);
                 } else {
                     icon->field_20 |= 5;
-                    icon->field_3c = 0x2d;
-                    icon->field_38 = GetString(0x2d);
+                    icon->string_id = 0x2d;
+                    icon->string = GetString(0x2d);
                 }
             } else {
                 icon = (struct SaveScreenIcon *)InsertIcon(0x51, (short)(node->slot * 38 + 0x6f), 7, GetSavePanelBK(node->slot));
-                icon->field_3c = 0x2e;
-                icon->field_38 = GetString(0x2e);
-                icon->field_34 |= 0x6002;
-                icon->field_2c = (void *)FUN_0048e4f0;
+                icon->string_id = 0x2e;
+                icon->string = GetString(0x2e);
+                icon->flags |= 0x6002;
+                icon->event_handler = (void *)FUN_0048e4f0;
                 // STRING: LEGOLAND 0x004befa0
                 icon->field_18 = "EMPTY";
-                icon->field_1c = node->slot;
+                icon->slot = node->slot;
                 icon->field_20 |= 1;
             }
             node = node->next;

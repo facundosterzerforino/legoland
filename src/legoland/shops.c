@@ -43,7 +43,7 @@ struct RideBuilding {
     unsigned int field_14;
     unsigned int field_18;
     unsigned char pad_1c[0x64 - 0x1c];
-    struct RideBuilding *field_64;
+    struct RideBuilding *layer;
 };
 
 struct ShopRideObject {
@@ -838,11 +838,11 @@ void FUN_0043a1e0(struct Element *obj) {
 // FUNCTION: LEGOLAND 0x0043a390
 unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
     struct RideBuilding *building = obj->building;
-    DAT_0082c6a0.sprite = building->field_64;
+    DAT_0082c6a0.sprite = building->layer;
     DAT_0082c6a0.x = building->field_14;
     DAT_0082c6a0.y = building->field_18;
     DAT_0082c6a0.id = param_2;
-    building->field_64->field_10 |= 0x2000;
+    building->layer->field_10 |= 0x2000;
     return &DAT_0082c6a0;
 }
 

@@ -25,13 +25,13 @@ struct MapCellObjKind {
     /* 0x00 */ unsigned char pad_0[0x20];
     /* 0x20 */ short field_20;
     /* 0x22 */ unsigned char pad_22[0x44 - 0x22];
-    /* 0x44 */ int field_44;
-    /* 0x48 */ char field_48;
+    /* 0x44 */ int footprint_x1;
+    /* 0x48 */ char footprint_y1;
 };
 
 struct MapCellObj {
     unsigned char pad_0[0xc];
-    struct MapCellObjKind *field_c;
+    struct MapCellObjKind *ride;
 };
 
 struct MapCell {
@@ -58,10 +58,10 @@ struct MapCell {
 struct RectListNode {
     /* 0x00 */ struct RectListNode *next;
     /* 0x04 */ unsigned char pad_4[4];
-    /* 0x08 */ int field_8;
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
+    /* 0x08 */ int x0;
+    /* 0x0c */ int y0;
+    /* 0x10 */ int x1;
+    /* 0x14 */ int y1;
 };
 
 struct RemBlock {
@@ -110,11 +110,11 @@ void FUN_004598d0(struct Point *coord, int *param_2, int *param_3) {
         return;
     }
     if ((cell->flags.word & 0x80) != 0) {
-        if (cell->obj->field_c == PathControlObject) {
+        if (cell->obj->ride == PathControlObject) {
             *param_2 = *param_2 + -1;
             return;
         }
-        kind = cell->obj->field_c->field_20;
+        kind = cell->obj->ride->field_20;
         if (kind == 2 || kind == 3) {
             *param_3 = *param_3 + 1;
         }
@@ -141,20 +141,20 @@ void FUN_00459970(void) {
         total = 0;
         DAT_00667d10 = now;
         for (node = (struct RectListNode *)GetBestNodeList(); node != NULL; node = node->next) {
-            total = total + 4 + (((node->field_14 - node->field_8) - node->field_c) + node->field_10) * 2;
-            coord.x = node->field_8;
-            while (coord.x <= node->field_10) {
-                coord.y = node->field_c + -1;
+            total = total + 4 + (((node->y1 - node->x0) - node->y0) + node->x1) * 2;
+            coord.x = node->x0;
+            while (coord.x <= node->x1) {
+                coord.y = node->y0 + -1;
                 FUN_004598d0(&coord, &total, &matched);
-                coord.y = node->field_14 + 1;
+                coord.y = node->y1 + 1;
                 FUN_004598d0(&coord, &total, &matched);
                 coord.x++;
             }
-            coord.y = node->field_c;
-            while (coord.y <= node->field_14) {
-                coord.x = node->field_8 + -1;
+            coord.y = node->y0;
+            while (coord.y <= node->y1) {
+                coord.x = node->x0 + -1;
                 FUN_004598d0(&coord, &total, &matched);
-                coord.x = node->field_10 + 1;
+                coord.x = node->x1 + 1;
                 FUN_004598d0(&coord, &total, &matched);
                 coord.y++;
             }
@@ -475,10 +475,10 @@ LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos) {
             cell->flags.word = cell->flags.word & 0xfeff;
         }
         if (MapStats.power_supply <= MapStats.power_demand) {
-            MapStats.field_3cc = 0;
+            MapStats.power_spare_percent = 0;
             return;
         }
-        MapStats.field_3cc = 100 - (MapStats.power_demand * 100) / MapStats.power_supply;
+        MapStats.power_spare_percent = 100 - (MapStats.power_demand * 100) / MapStats.power_supply;
     }
 }
 
@@ -525,10 +525,10 @@ LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, TileId coords) {
             }
         }
         if (MapStats.power_supply <= MapStats.power_demand) {
-            MapStats.field_3cc = 0;
+            MapStats.power_spare_percent = 0;
             return;
         }
-        MapStats.field_3cc = 100 - (MapStats.power_demand * 100) / MapStats.power_supply;
+        MapStats.power_spare_percent = 100 - (MapStats.power_demand * 100) / MapStats.power_supply;
     }
 }
 
@@ -619,7 +619,7 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
                 } else {
                     src = NULL;
                 }
-                tile = src->obj->field_c;
+                tile = src->obj->ride;
                 DAT_00801408 = DAT_00801408 + 1;
                 if (DAT_00801408 == 0x1000) {
                     DAT_00801408 = 0;
@@ -627,8 +627,8 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
                 MapRenderOrderList[idx].coords = cell->src.coords;
                 MapRenderOrderList[idx].x = (unsigned char)pt.x;
                 MapRenderOrderList[idx].flag = 1;
-                MapRenderOrderList[idx].height = tile->field_48 + sy + 1;
-                if (pt.x == tile->field_44 + sx || pt.x == cfg->width - 1) {
+                MapRenderOrderList[idx].height = tile->footprint_y1 + sy + 1;
+                if (pt.x == tile->footprint_x1 + sx || pt.x == cfg->width - 1) {
                     *out_coords = src->src.coords;
                     FUN_0045a430(cell->src.coords, &pt.x);
                     cfg = lpConfig;
@@ -698,7 +698,7 @@ void FUN_0045a660(void) {
                 } else {
                     src = NULL;
                 }
-                tile = src->obj->field_c;
+                tile = src->obj->ride;
                 DAT_00801408 = DAT_00801408 + 1;
                 if (DAT_00801408 == 0x1000) {
                     DAT_00801408 = 0;
@@ -706,8 +706,8 @@ void FUN_0045a660(void) {
                 MapRenderOrderList[idx].coords = cell->src.coords;
                 MapRenderOrderList[idx].x = (unsigned char)pt.x;
                 MapRenderOrderList[idx].flag = 1;
-                MapRenderOrderList[idx].height = tile->field_48 + sy + 1;
-                if (pt.x == tile->field_44 + sx || pt.x == cfg->width - 1) {
+                MapRenderOrderList[idx].height = tile->footprint_y1 + sy + 1;
+                if (pt.x == tile->footprint_x1 + sx || pt.x == cfg->width - 1) {
                     *out_coords = src->src.coords;
                     FUN_0045a430(cell->src.coords, &pt.x);
                     cfg = lpConfig;

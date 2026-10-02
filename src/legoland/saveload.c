@@ -431,7 +431,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             DAT_007fda60.frame = bloke->frame;
             DAT_007fda60.field_75 = bloke->field_75;
             DAT_007fda60.nav = bloke->nav;
-            DAT_007fda60.person_8 = bloke->person->field_8;
+            DAT_007fda60.person_8 = bloke->person->character;
             DAT_007fda60.scale = bloke->person->scale;
             DAT_007fda60.screen = bloke->person->screen;
             DAT_007fda60.offset = bloke->person->offset;
@@ -972,7 +972,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             bloke->person = malloc(sizeof(Person));
             AddPersonToList(bloke->person);
             bloke->person->bloke = bloke;
-            bloke->person->field_8 = DAT_007fda60.person_8;
+            bloke->person->character = DAT_007fda60.person_8;
             bloke->person->scale = DAT_007fda60.scale;
             bloke->person->screen = DAT_007fda60.screen;
             bloke->person->offset = DAT_007fda60.offset;

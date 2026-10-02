@@ -96,13 +96,13 @@ void FUN_0046a040(unsigned int param_1, unsigned int param_2) {
         FUN_0044db40();
         break;
     case 7:
-        lpConfig->field_3c = param_2;
+        lpConfig->repair_orders_enabled = param_2;
         break;
     case 8:
         lpConfig->field_2c = param_2;
         break;
     case 9:
-        MapStats.field_174 = param_2;
+        MapStats.brick_meter_max = param_2;
         break;
     case 10:
         MapStats.field_194 = param_2;
@@ -203,10 +203,10 @@ struct TileGroup {
     unsigned char pad_0[0x4];
     struct TileNode *list;
     int count;
-    int field_c;
-    int field_10;
+    int x;
+    int y;
     unsigned char pad_14[0x2c - 0x14];
-    unsigned char field_2c;
+    unsigned char durability;
 };
 
 struct TileGroupHolder {
@@ -226,7 +226,7 @@ unsigned int FUN_0046a230(struct NerpsArg *arg) {
 
     group = ((struct TileGroupHolder *)arg->field_4)->group;
     node = group->list;
-    value = (unsigned int)group->field_2c * arg->field_14;
+    value = (unsigned int)group->durability * arg->field_14;
     threshold = (char)(value / 100);
     limit = arg->field_1c;
     if (limit > group->count || limit == 0) {
@@ -437,8 +437,8 @@ unsigned int FUN_0046a690(struct NerpsArg *arg) {
     node = group->list;
     if (node != NULL) {
         do {
-            x = node->x + group->field_c;
-            y = node->y + group->field_10;
+            x = node->x + group->x;
+            y = node->y + group->y;
             if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
                 y >= (int)(unsigned int)lpConfig->height ||
                 (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
@@ -495,8 +495,8 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
         do {
             ox = node->x;
             oy = node->y;
-            pt.x = group->field_c + ox;
-            pt.y = group->field_10 + oy;
+            pt.x = group->x + ox;
+            pt.y = group->y + oy;
             tile = GetTileAtPoint(&pt);
             if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                 total++;
@@ -516,8 +516,8 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
             if (FUN_0046a730((struct NerpsArg *)group) != 0) {
                 ox = robj->field_4;
                 oy = robj->field_5;
-                pt.x = group->field_c + ox;
-                pt.y = group->field_10 + oy;
+                pt.x = group->x + ox;
+                pt.y = group->y + oy;
                 tile = GetTileAtPoint(&pt);
                 if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                     total++;
@@ -971,8 +971,8 @@ unsigned int FUN_0046afe0(struct NerpsArg *arg) {
         robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj)) {
         if (robj->field_11 != 0) {
             group = robj->field_0->group;
-            if (group->field_2c != 0) {
-                pct = robj->field_11 * 100 / group->field_2c;
+            if (group->durability != 0) {
+                pct = robj->field_11 * 100 / group->durability;
             } else {
                 pct = 100;
             }
@@ -1411,7 +1411,7 @@ int FUN_0046b5d0(struct SortNode *node) {
 }
 
 struct TimedNode {
-    struct TimedNode *field_0;
+    struct TimedNode *next;
     unsigned char pad_4[0x40 - 0x4];
     unsigned int field_40;
 };
@@ -1425,7 +1425,7 @@ struct TimedList {
 void FUN_0046b610(struct TimedNode *node, struct TimedList *list) {
     node->field_40 = DAT_007fdca4;
     if (list->field_c != NULL) {
-        node->field_0 = list->field_c;
+        node->next = list->field_c;
     }
     list->field_c = node;
 }
@@ -1443,18 +1443,18 @@ void InsertObjectiveEventAtHead(struct ObjectiveEvent *node, struct EventList *l
 
 struct StringHolder {
     unsigned char pad_0[0x8];
-    char *field_8;
+    char *string;
 };
 
 // FUNCTION: LEGOLAND 0x0046b650
 void FUN_0046b650(const char *src, struct StringHolder *holder) {
     char *dst;
 
-    if (holder->field_8 != NULL) {
-        free(holder->field_8);
+    if (holder->string != NULL) {
+        free(holder->string);
     }
     dst = (char *)malloc(strlen(src) + 1);
-    holder->field_8 = dst;
+    holder->string = dst;
     strcpy(dst, src);
 }
 

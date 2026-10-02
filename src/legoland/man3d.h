@@ -37,7 +37,7 @@ struct Anim3D {
 struct Person {
     struct Person *prev;
     struct Person *next;
-    unsigned int field_8;
+    unsigned int character;
     struct Bloke *bloke;
     union {
         struct {

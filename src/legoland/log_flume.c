@@ -68,7 +68,7 @@ struct FlumeOut {
 
 struct Obj {
     unsigned char pad_0[0xc];
-    void *field_0c;
+    void *ride;
 };
 
 struct ResA {
@@ -4145,7 +4145,7 @@ void FUN_0040e8b0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c445c = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c445c = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c445c;
     resA->flags_1c |= 0x400;
 
@@ -4173,7 +4173,7 @@ void FUN_0040e920(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2aa0 = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c2aa0 = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c2aa0;
     resA->flags_1c |= 0x400;
 
@@ -4195,7 +4195,7 @@ void FUN_0040e970(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2b0c = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c2b0c = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c2b0c;
     resA->flags_1c |= 0x400;
 
@@ -4223,7 +4223,7 @@ void FUN_0040e9e0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c74d4 = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c74d4 = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c74d4;
     resA->flags_1c |= 0x400;
     DAT_004c2ba0 = obj_ptr;
@@ -4570,7 +4570,7 @@ void FUN_0040f3e0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004cbe18 = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004cbe18 = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004cbe18;
     resA->flags_1c |= 0x400;
     DAT_004cbe48 = obj_ptr;
@@ -4726,7 +4726,7 @@ struct Sprite *FUN_0040f8b0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2bf0 = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c2bf0 = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c2bf0;
     resA->flags_1c |= 0x400;
     DAT_004c4460 = obj_ptr;
@@ -4911,7 +4911,7 @@ void FUN_0040ff30(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2b60 = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c2b60 = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c2b60;
     resA->flags_1c |= 0x400;
 
@@ -5089,7 +5089,7 @@ struct Sprite *FUN_004103e0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c8d6c = (struct CursorSource *)obj_ptr->field_0c;
+    DAT_004c8d6c = (struct CursorSource *)obj_ptr->ride;
     resA = (struct ResA *)DAT_004c8d6c;
     resA->flags_1c |= 0x400;
 

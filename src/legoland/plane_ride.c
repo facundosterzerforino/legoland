@@ -39,7 +39,7 @@ struct PlaneRideNode {
 
 struct PlaneRideObject {
     unsigned char pad_0[0xc];
-    unsigned int field_c;
+    unsigned int ride;
 };
 
 struct PlaneRideBlockData {
@@ -52,7 +52,7 @@ struct PlaneRideBlock {
     unsigned int field_14;
     unsigned int field_18;
     unsigned char pad_1c[0x48];
-    struct PlaneRideBlockData *field_64;
+    struct PlaneRideBlockData *layer;
 };
 
 struct PlaneRideRoot {
@@ -269,7 +269,7 @@ void FUN_0043dda0(Element *input) {
 
 // FUNCTION: LEGOLAND 0x0043dee0
 void FUN_0043dee0(struct PlaneRideObject *input) {
-    DAT_0062fe58 = (struct Ride *)input->field_c;
+    DAT_0062fe58 = (struct Ride *)input->ride;
     if (ZoomerSprite) {
         KillSprite(ZoomerSprite);
     }
@@ -301,7 +301,7 @@ void FUN_0043df90(struct PlaneRideObject *a1, TileId a2, struct PlaneRideObject 
         RemovePlaneRideNode((void *)temp);
     }
     StandardRemoveObject((unsigned int)a1, a2, (unsigned int)a3);
-    RemoveAllBlokesFromRide(a1->field_c, a2);
+    RemoveAllBlokesFromRide(a1->ride, a2);
 }
 
 // FUNCTION: LEGOLAND 0x0043dfe0
@@ -318,11 +318,11 @@ void FUN_0043dfe0(Element *a, int *p) {
 unsigned int *FUN_0043e010(struct PlaneRideRoot *param1, unsigned short param2) {
     struct PlaneRideBlock *block = param1->field_c;
 
-    DAT_0062fe60 = (unsigned int)block->field_64;
+    DAT_0062fe60 = (unsigned int)block->layer;
     DAT_0062fe64 = block->field_14;
     DAT_0062fe68 = block->field_18;
     DAT_0062fe6c = param2;
-    block->field_64->field_10 |= 0x2000;
+    block->layer->field_10 |= 0x2000;
 
     return &DAT_0062fe60;
 }
@@ -395,14 +395,14 @@ struct ZoomerCar {
 struct ZoomerListNode {
     struct ZoomerListNode *next;
     unsigned char pad_4[4];
-    struct ZoomerData *field_8;
+    struct ZoomerData *rider;
     unsigned char pad_c[4];
-    struct ZoomerCar *field_10;
+    struct ZoomerCar *person;
 };
 
 struct ZoomerGameObject {
     unsigned char pad_0[0xcc];
-    struct ZoomerListNode *field_cc;
+    struct ZoomerListNode *riders;
 };
 
 struct ZoomerLoadArg {
@@ -445,16 +445,16 @@ LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
         }
     }
 
-    list = obj->field_cc;
+    list = obj->riders;
     while (list != NULL) {
-        car = list->field_10;
+        car = list->person;
         if (car->field_30 != 0) {
             car->field_2c = (&Zoomer0nBinV)[car->field_30];
         } else {
             car->field_2c = NULL;
-            list->field_10->field_30 = 0;
+            list->person->field_30 = 0;
         }
-        data = list->field_8;
+        data = list->rider;
         tc = data->field_54;
         if (tc != NULL) {
             tc->field_0 = DAT_0062fe84[tc->field_4];

@@ -18,7 +18,7 @@
 struct ObjClassNames {
     char *name;
     unsigned char pad_4[0xc - 0x4];
-    void *field_c;
+    void *ride;
 };
 
 struct ObjectInfo {
@@ -86,8 +86,8 @@ struct ClassObjNode {
 
 struct ObjClassInfo {
     /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
+    /* 0x0c */ int x;
+    /* 0x10 */ int y;
     /* 0x14 */ unsigned char pad_14[0x20 - 0x14];
     /* 0x20 */ short type;
     /* 0x22 */ unsigned char pad_22[0x24 - 0x22];
@@ -235,7 +235,7 @@ LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls) {
 void FUN_00480b70(struct ObjClassNames *param) {
     void *value;
 
-    value = param->field_c;
+    value = param->ride;
     EditMode.unk0 = 1;
     EditMode.unk8 = value;
     DefaultCursor(&EditCursor);
@@ -608,8 +608,8 @@ LEGO_EXPORT void BuildObjInfoList(void) {
                 }
                 if (node != NULL) {
                     if (rand() % 256 < 0x50) {
-                        node->x = cls->field_c + at.x;
-                        node->y = cls->field_10 + at.y;
+                        node->x = cls->x + at.x;
+                        node->y = cls->y + at.y;
                         node->origin_x = cls->field_24 + at.x;
                         node->origin_y = cls->field_25 + at.y;
                     }
@@ -619,8 +619,8 @@ LEGO_EXPORT void BuildObjInfoList(void) {
                     DAT_00669248 = node;
                     node->classid = cls;
                     node->coords = tile.id;
-                    node->x = cls->field_c + at.x;
-                    node->y = cls->field_10 + at.y;
+                    node->x = cls->x + at.x;
+                    node->y = cls->y + at.y;
                     node->origin_x = cls->field_24 + at.x;
                     node->origin_y = cls->field_25 + at.y;
                 }

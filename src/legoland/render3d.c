@@ -47,14 +47,14 @@ struct RenderListNode *FUN_00441830(void *param_1, short *param_2) {
 
 struct ViewportEntry {
     unsigned char pad_0[0x2e];
-    short field_2e;
+    short seats;
     unsigned char pad_30[0xcc - 0x30];
-    void *field_cc;
+    void *riders;
 };
 
 // FUNCTION: LEGOLAND 0x00441870
 struct RenderListNode *FUN_00441870(struct ViewportEntry *param_1, short *param_2) {
-    DAT_0081c8cc = param_1->field_cc;
+    DAT_0081c8cc = param_1->riders;
     return FUN_00441830(param_1, param_2);
 }
 
@@ -73,7 +73,7 @@ struct RenderListNode *FUN_004418c0(int param_1, struct ViewportEntry *param_2, 
     struct RenderListNode *node = FUN_00441870(param_2, param_3);
     int i = 0;
     if (node != NULL) {
-        for (; i < param_2->field_2e; i++) {
+        for (; i < param_2->seats; i++) {
             if (i == param_1) {
                 return node;
             }
@@ -422,8 +422,8 @@ struct CellContainer {
 
 struct CellEntry {
     short field_0;
-    unsigned char field_2;
-    unsigned char field_3;
+    unsigned char x;
+    unsigned char y;
     unsigned char field_4;
     unsigned char field_5;
 };
@@ -434,10 +434,10 @@ void FUN_00442040(struct CellContainer *param_1, int param_2, int param_3, float
     struct CellEntry *entry2 = (struct CellEntry *)((char *)param_1->entries + param_3 * 6);
     unsigned char bVar3 = entry1->field_4;
     int iVar22 = entry2->field_0 + param_1->field_4;
-    int lo_x = entry1->field_2;
-    int hi_x = bVar3 + entry1->field_2 + 1;
-    int lo_y = entry1->field_3;
-    int hi_y = entry1->field_5 + entry1->field_3 + 1;
+    int lo_x = entry1->x;
+    int hi_x = bVar3 + entry1->x + 1;
+    int lo_y = entry1->y;
+    int hi_y = entry1->field_5 + entry1->y + 1;
     int idx1 = entry1->field_0 + param_1->field_4;
     float *p;
     int local_18;
@@ -480,15 +480,15 @@ void FUN_00442040(struct CellContainer *param_1, int param_2, int param_3, float
                     (float)lo_y <= v1 && v1 <= (float)hi_y &&
                     (float)lo_y <= v3 && v3 <= (float)hi_y &&
                     (float)lo_y <= v5 && v5 <= (float)hi_y) {
-                    float e1_2 = (float)entry1->field_2;
+                    float e1_2 = (float)entry1->x;
                     float e1_4 = (float)entry1->field_4;
                     float e2_4 = (float)entry2->field_4;
-                    float e2_2 = (float)entry2->field_2;
+                    float e2_2 = (float)entry2->x;
                     float t0 = (float)DAT_0081c0c0[iVar22 * 2];
-                    float e1_3 = (float)entry1->field_3;
+                    float e1_3 = (float)entry1->y;
                     float e1_5 = (float)entry1->field_5;
                     float e2_5 = (float)entry2->field_5;
-                    float e2_3 = (float)entry2->field_3;
+                    float e2_3 = (float)entry2->y;
                     float t1 = (float)DAT_0081c0c0[iVar22 * 2 + 1];
                     *(int *)(p - 1) = entry2->field_0 + param_1->field_4;
                     p[1] = (((v1 - e1_3) / e1_5) * e2_5 + e2_3) / t1;
@@ -572,7 +572,7 @@ void *FUN_00442580(struct Person *person, void *context, unsigned int src, unsig
     int modI;
     int modJ;
 
-    if (person->field_8 == 1) {
+    if (person->character == 1) {
         if (flag == 0) {
             arrA = DAT_00655a38;
             arrD = DAT_0062fea8;
@@ -618,10 +618,10 @@ void *FUN_00442580(struct Person *person, void *context, unsigned int src, unsig
         }
     } else {
         for (;;) {
-            if (person->field_8 == 3) {
+            if (person->character == 3) {
                 a = 4;
                 b = 1;
-            } else if (person->field_8 == 2) {
+            } else if (person->character == 2) {
                 a = 0;
                 b = 3;
             } else {
@@ -642,7 +642,7 @@ void *FUN_00442580(struct Person *person, void *context, unsigned int src, unsig
     mem = malloc(size);
     if (mem != 0) {
         memcpy(mem, (void *)src, size);
-        if ((int)person->field_8 < 2) {
+        if ((int)person->character < 2) {
             FUN_00442040(context, valC, arrA[idxI], (float *)mem, count);
             FUN_00442040(context, valE, arrD[idxJ], (float *)mem, count);
         }

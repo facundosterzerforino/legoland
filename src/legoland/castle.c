@@ -3476,13 +3476,13 @@ struct Struct1e40 {
     float field_18;
     float field_1c;
     float pad_20;
-    float field_24;
-    float field_28;
-    float field_2c;
-    float field_30;
+    float coef_t3;
+    float coef_t2;
+    float coef_t1;
+    float coef_t0;
     unsigned char pad_34[0x44 - 0x34];
-    float field_44;
-    float field_48;
+    float t_start;
+    float t_end;
 };
 
 // FUNCTION: LEGOLAND 0x00421e40
@@ -3492,9 +3492,9 @@ void FUN_00421e40(struct Struct1e40 *ptr1, float multiplier, struct Floats3 *ptr
     ptr2->field_0 = multiplier * ptr1->field_c + ptr1->field_0 - ptr1->field_18;
     ptr2->field_4 = multiplier * ptr1->field_10 + ptr1->field_4 - ptr1->field_1c;
 
-    temp = multiplier * ptr1->field_24 + ptr1->field_28;
-    temp = temp * multiplier + ptr1->field_2c;
-    temp = temp * multiplier + ptr1->field_30;
+    temp = multiplier * ptr1->coef_t3 + ptr1->coef_t2;
+    temp = temp * multiplier + ptr1->coef_t1;
+    temp = temp * multiplier + ptr1->coef_t0;
     ptr2->field_8 = temp;
 }
 
@@ -3512,10 +3512,10 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
     m = (y1 - y0) / (x1 - x0);
     b = y0 - m * x0;
     {
-        float a = o->field_24 * 3.0f;
-        volatile float b2 = o->field_28 + o->field_28;
+        float a = o->coef_t3 * 3.0f;
+        volatile float b2 = o->coef_t2 + o->coef_t2;
         volatile float sq;
-        float c = o->field_2c - m;
+        float c = o->coef_t1 - m;
         sq = (float)sqrt(b2 * b2 - c * a * 4.0f);
         roots[0] = (sq - b2) / (a + a);
         roots[1] = (-b2 - sq) / (a + a);
@@ -3524,9 +3524,9 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
         float y;
         float d;
         if (roots[i] >= x0 && roots[i] <= x1) {
-            y = roots[i] * o->field_24 + o->field_28;
-            y = y * roots[i] + o->field_2c;
-            y = y * roots[i] + o->field_30;
+            y = roots[i] * o->coef_t3 + o->coef_t2;
+            y = y * roots[i] + o->coef_t1;
+            y = y * roots[i] + o->coef_t0;
             d = (float)fabs(y - m * roots[i] - b);
             if (d > best) {
                 bx = roots[i];
@@ -3553,11 +3553,11 @@ int FUN_00422000(struct Struct1e40 *o, float *out) {
     DAT_004dd648 = o;
     DAT_004dd650 = 2;
     DAT_004dd64c = out;
-    *DAT_004dd64c = o->field_44;
+    *DAT_004dd64c = o->t_start;
     DAT_004dd64c++;
-    *DAT_004dd64c = o->field_48;
+    *DAT_004dd64c = o->t_end;
     DAT_004dd64c++;
-    FUN_00421e90(o->field_44, ((o->field_44 * o->field_24 + o->field_28) * o->field_44 + o->field_2c) * o->field_44 + o->field_30, o->field_48, ((o->field_48 * o->field_24 + o->field_28) * o->field_48 + o->field_2c) * o->field_48 + o->field_30);
+    FUN_00421e90(o->t_start, ((o->t_start * o->coef_t3 + o->coef_t2) * o->t_start + o->coef_t1) * o->t_start + o->coef_t0, o->t_end, ((o->t_end * o->coef_t3 + o->coef_t2) * o->t_end + o->coef_t1) * o->t_end + o->coef_t0);
     for (i = DAT_004dd650 - 1; i >= 0; i--) {
         for (j = 0; j < i; j++) {
             if (out[j] > out[j + 1]) {
