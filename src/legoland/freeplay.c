@@ -168,7 +168,7 @@ void FUN_0048ab60(void) {
         return;
     }
     do {
-        FUN_004663f0();
+        DrawWatchSprite();
         if (node->field_18 == 1) {
             if (FUN_00478b20(node->field_1c) != 0) {
                 FUN_00469900((struct NerpsArg *)ElemID((const char *)node->field_1c), 0, 1);
@@ -198,7 +198,7 @@ void FUN_0048abb0(void) {
     MapStats.field_3a0 = 0;
     FUN_00489ee0();
     UpdateMenu();
-    FUN_004663c0();
+    UnloadWatchSprite();
     FUN_00490600(1);
     FUN_004911c0(DAT_0066861c, 0);
     FUN_00458bb0(1);
@@ -214,7 +214,7 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
 
     if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
         DAT_0080ffa0.field_45 = 2;
-        FUN_00466360(0x127, 0x170);
+        LoadWatchSprite(0x127, 0x170);
         FUN_00498920();
         DAT_006687b0 = 0x4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);

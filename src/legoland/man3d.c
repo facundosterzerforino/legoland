@@ -487,7 +487,7 @@ LEGO_EXPORT void InitMan(void) {
     // STRING: LEGOLAND 0x004b7bb0
     const char *proj = "NewProject.txt";
 
-    FUN_00485fc0((DAT_00668088 == 2) + 5);
+    FUN_00485fc0((DisplayPixelFormat == 2) + 5);
     ctx = FUN_00443710();
     // STRING: LEGOLAND 0x004b7cdc
     DAT_0081c8c0 = FUN_0043f990("NewProject.loc", "visitor");

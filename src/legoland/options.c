@@ -46,7 +46,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x3c;
     icon->string = GetString(0x3c);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048efd0;
+    icon->event_handler = (void *)OptionsAcceptIconHandler;
     DAT_006687bc = 0;
 
     // STRING: LEGOLAND 0x004bf470
@@ -62,13 +62,13 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x3f2;
     icon->string = GetString(0x3f2);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f550;
+    icon->event_handler = (void *)OptionsLoadIconHandler;
 
     // STRING: LEGOLAND 0x004bf448
     icon = LoadSpriteIcon("Save_on_Options.lls", 4, 0x1df, 0xbd, 7);
     icon->string_id = 0x3f;
     icon->string = GetString(0x3f);
-    icon->event_handler = (void *)FUN_0048f050;
+    icon->event_handler = (void *)OptionsSaveIconHandler;
     icon->flags |= flag_mask;
 
     FUN_0048eb20();
@@ -78,14 +78,14 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x46;
     icon->string = GetString(0x46);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f760;
+    icon->event_handler = (void *)OptionsDownIconHandler;
     icon->field_18s = 1;
 
     // STRING: LEGOLAND 0x004bf434
     icon = LoadSpriteIcon("Up1.lls", 4, 0x26, 0x2e, 7);
     icon->string_id = 0x45;
     icon->string = GetString(0x45);
-    icon->event_handler = (void *)FUN_0048f5f0;
+    icon->event_handler = (void *)OptionsUpIconHandler;
     icon->flags |= flag_mask;
     icon->field_18s = 2;
 
@@ -95,16 +95,16 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x47;
     icon->string = GetString(0x47);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f8d0;
+    icon->event_handler = (void *)OptionsVolumeMarkerIconHandler;
     icon->field_18s = 3;
-    DAT_00798748 = icon;
+    SpeechVolumeMarkerIcon = icon;
 
     // STRING: LEGOLAND 0x004bf414
     icon = LoadSpriteIcon("Down2.lls", 4, 0x19c, 0x72, 7);
     icon->string_id = 0x49;
     icon->string = GetString(0x49);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f760;
+    icon->event_handler = (void *)OptionsDownIconHandler;
     icon->field_18s = 4;
 
     // STRING: LEGOLAND 0x004bf40c
@@ -112,7 +112,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x48;
     icon->string = GetString(0x48);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f5f0;
+    icon->event_handler = (void *)OptionsUpIconHandler;
     icon->field_18s = 5;
 
     x = FUN_0048eaf0(DAT_0080ffa0.field_28);
@@ -121,23 +121,23 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x4a;
     icon->string = GetString(0x4a);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f8d0;
+    icon->event_handler = (void *)OptionsVolumeMarkerIconHandler;
     icon->field_18s = 6;
-    DAT_00798750 = icon;
+    MusicVolumeMarkerIcon = icon;
 
     // STRING: LEGOLAND 0x004bf3ec
     icon = LoadSpriteIcon("Down3.lls", 4, 0x19c, 0xb6, 7);
     icon->string_id = 0x4c;
     icon->string = GetString(0x4c);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f760;
+    icon->event_handler = (void *)OptionsDownIconHandler;
     icon->field_18s = 7;
 
     // STRING: LEGOLAND 0x004bf3e4
     icon = LoadSpriteIcon("Up3.lls", 4, 0x26, 0xb6, 7);
     icon->string_id = 0x4b;
     icon->string = GetString(0x4b);
-    icon->event_handler = (void *)FUN_0048f5f0;
+    icon->event_handler = (void *)OptionsUpIconHandler;
     icon->flags |= flag_mask;
     icon->field_18s = 8;
 
@@ -147,9 +147,9 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string_id = 0x4d;
     icon->string = GetString(0x4d);
     icon->flags |= flag_mask;
-    icon->event_handler = (void *)FUN_0048f8d0;
+    icon->event_handler = (void *)OptionsVolumeMarkerIconHandler;
     icon->field_18s = 9;
-    DAT_0079874c = icon;
+    FxVolumeMarkerIcon = icon;
 
     DAT_007cb320 = 0;
     DAT_00798754 = 0;
@@ -189,7 +189,7 @@ unsigned char FUN_0048ef90(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048efd0
-unsigned char FUN_0048efd0(unsigned int param_1, unsigned int param_2) {
+unsigned char OptionsAcceptIconHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         FUN_00498920();
         DAT_006687b0 = 4;
@@ -209,7 +209,7 @@ unsigned char FUN_0048efd0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f050
-unsigned char FUN_0048f050(unsigned int param_1, unsigned int param_2) {
+unsigned char OptionsSaveIconHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_007cb328 = 0;
@@ -236,8 +236,8 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     struct IconNode *icon;
 
     FUN_0048eb20();
-    DAT_00798678 = LoadSprite("PU_OK.lls", 4);
-    DAT_00798674 = LoadSprite("PU_OKON.lls", 4);
+    PuOkSprite = LoadSprite("PU_OK.lls", 4);
+    PuOkOnSprite = LoadSprite("PU_OKON.lls", 4);
     DAT_0079867c = LoadSprite("PU_ClosePopUp.lls", 4);
     DAT_00798680 = LoadSprite("PU_ClosePopUpON.lls", 4);
     DAT_00798684 = LoadSprite("PU_ClosePopUp.lls", 4);
@@ -263,7 +263,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
         y_offset = 0x78;
         break;
     }
-    DAT_007986d8 = InsertIcon(icon->x + 0x7d, icon->y + y_offset, 0xe, DAT_00798678);
+    DAT_007986d8 = InsertIcon(icon->x + 0x7d, icon->y + y_offset, 0xe, PuOkSprite);
     DAT_007986d8->string_id = 0x4e;
     DAT_007986d8->string = GetString(0x4e);
     DAT_007986d8->flags |= 0x2000;
@@ -360,7 +360,7 @@ unsigned char FUN_0048f4f0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f550
-unsigned char FUN_0048f550(unsigned int param_1, unsigned int param_2) {
+unsigned char OptionsLoadIconHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_007cb328 = 1;
@@ -388,7 +388,7 @@ unsigned char FUN_0048f5d0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f5f0
-unsigned char FUN_0048f5f0(struct IconNode *param_1, unsigned int param_2) {
+unsigned char OptionsUpIconHandler(struct IconNode *param_1, unsigned int param_2) {
     unsigned char pos;
     struct Sample *sample;
     unsigned int result;
@@ -412,7 +412,7 @@ unsigned char FUN_0048f5f0(struct IconNode *param_1, unsigned int param_2) {
                     if (DAT_0080ffa0.field_24 != 0) {
                         DAT_0080ffa0.field_24--;
                         result = FUN_0048eaf0(DAT_0080ffa0.field_24);
-                        DAT_00798748->x = (short)result;
+                        SpeechVolumeMarkerIcon->x = (short)result;
                         if (!DAT_006687b4 && !FUN_00498cf0()) {
                             FUN_0046d230(-2);
                         }
@@ -423,14 +423,14 @@ unsigned char FUN_0048f5f0(struct IconNode *param_1, unsigned int param_2) {
                     if (DAT_0080ffa0.field_28 != 0) {
                         DAT_0080ffa0.field_28--;
                         result = FUN_0048eaf0(DAT_0080ffa0.field_28);
-                        DAT_00798750->x = (short)result;
+                        MusicVolumeMarkerIcon->x = (short)result;
                     }
                     break;
                 case 8:
                     if (DAT_0080ffa0.field_2c != 0) {
                         DAT_0080ffa0.field_2c--;
                         result = FUN_0048eaf0(DAT_0080ffa0.field_2c);
-                        DAT_0079874c->x = (short)result;
+                        FxVolumeMarkerIcon->x = (short)result;
                     }
                     break;
                 }
@@ -448,7 +448,7 @@ unsigned char FUN_0048f5f0(struct IconNode *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f760
-unsigned char FUN_0048f760(struct IconNode *param_1, unsigned int param_2) {
+unsigned char OptionsDownIconHandler(struct IconNode *param_1, unsigned int param_2) {
     unsigned char pos;
     struct Sample *sample;
     unsigned int result;
@@ -472,7 +472,7 @@ unsigned char FUN_0048f760(struct IconNode *param_1, unsigned int param_2) {
                     if (DAT_0080ffa0.field_24 < 0x64) {
                         DAT_0080ffa0.field_24++;
                         result = FUN_0048eaf0(DAT_0080ffa0.field_24);
-                        DAT_00798748->x = (short)result;
+                        SpeechVolumeMarkerIcon->x = (short)result;
                         if (!DAT_006687b4 && !FUN_00498cf0()) {
                             FUN_0046d230(-2);
                         }
@@ -483,14 +483,14 @@ unsigned char FUN_0048f760(struct IconNode *param_1, unsigned int param_2) {
                     if (DAT_0080ffa0.field_28 < 0x64) {
                         DAT_0080ffa0.field_28++;
                         result = FUN_0048eaf0(DAT_0080ffa0.field_28);
-                        DAT_00798750->x = (short)result;
+                        MusicVolumeMarkerIcon->x = (short)result;
                     }
                     break;
                 case 7:
                     if (DAT_0080ffa0.field_2c < 0x64) {
                         DAT_0080ffa0.field_2c++;
                         result = FUN_0048eaf0(DAT_0080ffa0.field_2c);
-                        DAT_0079874c->x = (short)result;
+                        FxVolumeMarkerIcon->x = (short)result;
                     }
                     break;
                 }
@@ -508,7 +508,7 @@ unsigned char FUN_0048f760(struct IconNode *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f8d0
-unsigned char FUN_0048f8d0(struct IconNode *param_1, unsigned int param_2) {
+unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *param_1, unsigned int param_2) {
     struct Sample *sample;
     int initial_offset;
     int x;

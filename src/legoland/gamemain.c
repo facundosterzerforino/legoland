@@ -602,7 +602,7 @@ int FUN_00478280(struct ResFile *file, struct ScriptCommand *commands, int count
         deflt = cmd->fn;
     while (FUN_00489e60(file, line, 1024)) {
         DAT_00668fcc++;
-        FUN_004663f0();
+        DrawWatchSprite();
         p = strchr(line, '#');
         if (p)
             *p = 0;

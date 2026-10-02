@@ -121,7 +121,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
             image->field_14 = 3;
         }
         image->data = lls;
-        if (DAT_00668088 == 2) {
+        if (DisplayPixelFormat == 2) {
             LLS555To565((struct LLSImage *)lls);
         }
         return 1;
@@ -196,7 +196,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         lut = (unsigned char *)malloc(0x208);
         image->aux = lut;
         entry = (unsigned char *)palette + 1;
-        if (DAT_00668088 == 2) {
+        if (DisplayPixelFormat == 2) {
             for (i = 4; i < 0x204; i += 2) {
                 *(unsigned short *)((unsigned char *)image->aux + i - 2) = (unsigned short)(((((entry[1] & 0xf8) << 5) | (entry[0] & 0xfc)) << 3) | (entry[-1] >> 3));
                 entry += 4;
@@ -222,7 +222,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         return 0;
     }
     out = (unsigned short *)image->data + (image->height - 1) * image->width;
-    if (DAT_00668088 == 2) {
+    if (DisplayPixelFormat == 2) {
         for (i = 0; i < image->height; i++) {
             unsigned char *src = pixels;
             unsigned short *dst = out;
@@ -284,22 +284,22 @@ LEGO_EXPORT void LoadColourTable(void) {
 
     ddraw = DDRAWENV.ddraw2;
     ddraw->lpVtbl->CreatePalette(ddraw, 0x44, entries, (LPDIRECTDRAWPALETTE *)&DDPalette, NULL);
-    surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
+    surface = (LPDIRECTDRAWSURFACE)PrimarySurface;
     surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DDPalette);
     RES_CloseFile(file);
 }
 
 // FUNCTION: LEGOLAND 0x0044e670
 LEGO_EXPORT void ResendPalette(void) {
-    if (DAT_00668088 == 0) {
-        LPDIRECTDRAWSURFACE surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
+    if (DisplayPixelFormat == 0) {
+        LPDIRECTDRAWSURFACE surface = (LPDIRECTDRAWSURFACE)PrimarySurface;
         surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DDPalette);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0044e690
 LEGO_EXPORT unsigned int GetTransparentColour(void) {
-    switch (DAT_00668088) {
+    switch (DisplayPixelFormat) {
     case 0:
         return 0xfe;
     case 1:
@@ -314,7 +314,7 @@ LEGO_EXPORT unsigned int GetTransparentColour(void) {
 // FUNCTION: LEGOLAND 0x0044e6c0
 LEGO_EXPORT unsigned int GetNearestColour(int r, int g, int b) {
     unsigned int color;
-    switch (DAT_00668088) {
+    switch (DisplayPixelFormat) {
     case 0:
         color = (r & 0xf8) << 5;
         color |= (g & 0xf8);

@@ -186,7 +186,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         DAT_00669200 = malloc(DAT_006691b4 * 4);
         k = 0;
         for (i = 0; i < n_elems; i++) {
-            FUN_004663f0();
+            DrawWatchSprite();
             LLIDB_GetElement(i, &elem);
             if ((elem->flags & 4) != 0) {
                 len = strlen(elem->name);
@@ -218,7 +218,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             goto fail;
         }
         for (i = 0; i < tab_count; i++) {
-            FUN_004663f0();
+            DrawWatchSprite();
             LLIDB_FindElementFromDataPtr(tab[i], (unsigned int *)&elem, 0);
             len = strlen(elem->name);
             if (SaveGameWrite(&len, 4) == 0) {
@@ -258,7 +258,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             for (x = 0; x < lpConfig->width; x++) {
                 struct FXSpriteList *src;
                 tile = GameMap[y][x];
-                FUN_004663f0();
+                DrawWatchSprite();
                 if ((tile.flags & 0x8a8) != 0) {
                     if (FindeIneList((union SavedElement *)&tile) == 0) {
                         // STRING: LEGOLAND 0x004bc8d8
@@ -347,7 +347,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("Button flash states Save Failed");
         goto fail;
     }
-    FUN_004663f0();
+    DrawWatchSprite();
     if (EndMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc7c8
         LogPrintf("EndMeasured Block 3");
@@ -372,7 +372,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             goto fail;
         }
         for (bloke = FirstBloke; bloke != 0; bloke = bloke->next) {
-            FUN_004663f0();
+            DrawWatchSprite();
             num = GetBlokeNum(bloke);
             if (SaveGameWrite(&num, 4) == 0) {
                 // STRING: LEGOLAND 0x004bc764
@@ -480,7 +480,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("Begin Measured Block 5");
         goto fail;
     }
-    FUN_0049c140();
+    SaveGardeners();
     if (EndMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc704
         LogPrintf("EndMeasuredBlock5");
@@ -491,8 +491,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("Begin Measured Block 6");
         goto fail;
     }
-    FUN_004663f0();
-    FUN_0049c630();
+    DrawWatchSprite();
+    SaveMechanics();
     if (EndMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc6d4
         LogPrintf("End Measured Block 6");
@@ -503,19 +503,19 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("Begin measured block 7");
         goto fail;
     }
-    FUN_0049cb20();
+    SaveGardenerOrders();
     if (EndMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc6a4
         LogPrintf("End Measured Block 7");
         goto fail;
     }
-    FUN_004663f0();
+    DrawWatchSprite();
     if (BeginMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc68c
         LogPrintf("Begin Measured Block 8");
         goto fail;
     }
-    FUN_0049cd10();
+    SaveMechanicOrders();
     if (EndMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc674
         LogPrintf("End Measured Block 8");
@@ -550,7 +550,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         struct ObjInstance *inst;
         struct RideNode *rnode;
         int count;
-        FUN_004663f0();
+        DrawWatchSprite();
         if ((DAT_00669200[i]->flags & 0x10) != 0) {
             ride = DAT_00669200[i]->ride;
             SaveGameWrite(ride->element->name, 8);
@@ -654,7 +654,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("End Measured VBlock 9");
         goto fail;
     }
-    FUN_004663f0();
+    DrawWatchSprite();
     if (BeginMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc498
         LogPrintf("Begin Measured Block 10");
@@ -681,7 +681,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("End Measured Block 11");
         goto fail;
     }
-    FUN_004663f0();
+    DrawWatchSprite();
     if (BeginMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc428
         LogPrintf("Begin Measured Block 12");
@@ -690,17 +690,17 @@ LEGO_EXPORT int SaveGame(char *filename) {
     {
         struct OverlayNode *ov;
         int n;
-        n = strlen(((struct Element *)DAT_00801410)->name);
+        n = strlen(((struct Element *)OverlayILFHandle)->name);
         SaveGameWrite(&n, 4);
-        SaveGameWrite(((struct Element *)DAT_00801410)->name, n);
-        if (DAT_00801404 != 0) {
-            n = strlen(((struct Element *)DAT_00801404)->name);
+        SaveGameWrite(((struct Element *)OverlayILFHandle)->name, n);
+        if (BridgesHandle != 0) {
+            n = strlen(((struct Element *)BridgesHandle)->name);
         } else {
             n = 0;
         }
         SaveGameWrite(&n, 4);
         if (n != 0) {
-            SaveGameWrite(((struct Element *)DAT_00801404)->name, n);
+            SaveGameWrite(((struct Element *)BridgesHandle)->name, n);
         }
         n = 0;
         for (ov = OverlayList; ov != 0; ov = ov->next) {
@@ -716,7 +716,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("End Measured Block 12");
         goto fail;
     }
-    FUN_004663f0();
+    DrawWatchSprite();
     if (EndMeasuredBlock() == 0) {
         // STRING: LEGOLAND 0x004bc3f8
         LogPrintf("End Measured Block 13");
@@ -780,7 +780,7 @@ LEGO_EXPORT int LoadGame(char *path) {
         }
         DAT_00669200 = malloc(DAT_006691b4 * 4);
         for (i = 0; i < DAT_006691b4; i++) {
-            FUN_004663f0();
+            DrawWatchSprite();
             if (SaveGameRead(&len, 4) == 0) {
                 LOAD_FAIL();
             }
@@ -805,7 +805,7 @@ LEGO_EXPORT int LoadGame(char *path) {
                 break;
             }
             for (i = 0; i < DAT_007fdb84; i++) {
-                FUN_004663f0();
+                DrawWatchSprite();
                 if (SaveGameRead(&len, 4) == 0) {
                     LOAD_FAIL();
                 }
@@ -826,9 +826,9 @@ LEGO_EXPORT int LoadGame(char *path) {
             if (SaveGameRead(lpConfig, 0x44) == 0) {
                 break;
             }
-            FUN_00463680();
+            ClearGameMap();
             for (y = 0; y < lpConfig->height; y++) {
-                FUN_004663f0();
+                DrawWatchSprite();
                 for (x = 0; x < lpConfig->width; x++) {
                     tile = &GameMap[y][x];
                     if (SaveGameRead(tile, 0x14) == 0) {
@@ -867,7 +867,7 @@ LEGO_EXPORT int LoadGame(char *path) {
         EditMode.unk8 = 0;
         FUN_004741c0();
         FUN_00474880();
-        FUN_004663f0();
+        DrawWatchSprite();
         if (FUN_0046cb60() == 0) {
             break;
         }
@@ -880,7 +880,7 @@ LEGO_EXPORT int LoadGame(char *path) {
         if (SaveGameRead(DAT_007fdd00, 0x24) == 0) {
             break;
         }
-        FUN_004663f0();
+        DrawWatchSprite();
         DAT_00667d50 = 1;
         if (FUN_0047d7e0() == 0) {
             break;
@@ -889,7 +889,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             DestroyBloke(FirstBloke);
         }
         n = 0;
-        FUN_004663f0();
+        DrawWatchSprite();
         if (SaveGameRead(&n, 4) == 0) {
             break;
         }
@@ -1000,21 +1000,21 @@ LEGO_EXPORT int LoadGame(char *path) {
         if (FUN_0047d7e0() == 0) {
             break;
         }
-        FUN_0049c3c0();
+        LoadGardeners();
         if (FUN_0047d7e0() == 0) {
             break;
         }
-        FUN_0049c8b0();
-        FUN_004663f0();
+        LoadMechanics();
+        DrawWatchSprite();
         if (FUN_0047d7e0() == 0) {
             break;
         }
-        FUN_0049cc10();
+        LoadGardenerOrders();
         if (FUN_0047d7e0() == 0) {
             break;
         }
         FUN_0049ce00();
-        FUN_004663f0();
+        DrawWatchSprite();
         if (FUN_0047d7e0() == 0) {
             break;
         }
@@ -1028,7 +1028,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             break;
         }
         for (i = 0; i < DAT_006691b4; i++) {
-            FUN_004663f0();
+            DrawWatchSprite();
             e = DAT_00669200[i];
             if ((e->flags & 0x10) != 0) {
                 // STRING: LEGOLAND 0x004bcb94
@@ -1111,7 +1111,7 @@ LEGO_EXPORT int LoadGame(char *path) {
         if (SaveGameRead(DAT_007cb3e0, sizeof(DAT_007cb3e0)) == 0) {
             break;
         }
-        FUN_004663f0();
+        DrawWatchSprite();
         if (FUN_0047d7e0() == 0) {
             break;
         }
@@ -1122,7 +1122,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             break;
         }
         FUN_00450b10();
-        FUN_004663f0();
+        DrawWatchSprite();
         if (FUN_0047d7e0() == 0) {
             break;
         }
@@ -1132,18 +1132,18 @@ LEGO_EXPORT int LoadGame(char *path) {
             SaveGameRead(&n, 4);
             SaveGameRead(name2, n);
             name2[n] = 0;
-            LLIDB_FindElement(name2, (unsigned int *)&DAT_00801410, 0);
-            OverlayILF = (unsigned int)LLIDB_LoadData(DAT_00801410);
+            LLIDB_FindElement(name2, (unsigned int *)&OverlayILFHandle, 0);
+            OverlayILF = (unsigned int)LLIDB_LoadData(OverlayILFHandle);
             SaveGameRead(&n, 4);
             if (n != 0) {
                 SaveGameRead(name2, n);
                 name2[n] = 0;
-                LLIDB_FindElement(name2, (unsigned int *)&DAT_00801404, 0);
-                DAT_00667cb0 = LLIDB_LoadData(DAT_00801404);
-                FUN_004618d0(name2);
+                LLIDB_FindElement(name2, (unsigned int *)&BridgesHandle, 0);
+                BridgesData = LLIDB_LoadData(BridgesHandle);
+                SetBridgeParamsByName(name2);
             } else {
-                DAT_00801404 = 0;
-                DAT_00667cb0 = 0;
+                BridgesHandle = 0;
+                BridgesData = 0;
             }
             SaveGameRead(&n, 4);
             for (i = 0; i < n; i++) {
@@ -1152,7 +1152,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             }
         }
         _close(SaveFileHandle);
-        FUN_004663f0();
+        DrawWatchSprite();
         DAT_00667ca0 = 0;
         EditMode.unk0 = 0;
         GamePad |= 0x20;
@@ -1192,10 +1192,10 @@ LEGO_EXPORT void UnloadSaveGameMap(void) {
         LLIDB_UnLoadData(DAT_007fd660[i]);
     }
 
-    FUN_00463680();
-    LLIDB_UnLoadData((unsigned int)DAT_00801410);
-    if (DAT_00801404 != 0) {
-        LLIDB_UnLoadData((unsigned int)DAT_00801404);
+    ClearGameMap();
+    LLIDB_UnLoadData((unsigned int)OverlayILFHandle);
+    if (BridgesHandle != 0) {
+        LLIDB_UnLoadData((unsigned int)BridgesHandle);
     }
     ClearOverlays();
     FUN_004828f0();

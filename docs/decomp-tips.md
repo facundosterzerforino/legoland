@@ -114,7 +114,7 @@
 - Individual global access (`param[1] = DAT_xxx`) gives correct standalone symbol names but different register allocation.
 - This is a known limitation — some functions may not reach 100% if the original used individual globals but the register allocation only matches with struct copy semantics.
 
-## Do-While Loops and Post-Increment (FUN_00490680)
+## Do-While Loops and Post-Increment (ReadResourceLines)
 - `do {} while (buffer[pos++] != '\r' && pos < size);` (empty body, post-increment in subscript) generates load-inc-cmp: `mov (%eax,%esi,1),%bl; inc %eax; cmp $0xd,%bl`. This is what the original compiler emits.
 - `do { pos++; } while (buffer[pos-1] != '\r' && ...);` (separate increment) hoists `mov $0xd,%bl` BEFORE the loop and uses `cmp %bl,mem` inside -- completely different structure.
 - `buffer[pos-1] ^ '\r'` generates XOR opcode (0xF3) instead of CMP (0xFB) -- semantically equivalent but different bytes.

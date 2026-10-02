@@ -1654,7 +1654,7 @@ void FUN_0041e990(unsigned char *obj) {
     } s;
 
     FUN_0041e9e0(obj, s.loc1);
-    FUN_00420fb0((unsigned char *)DAT_0082add0, (unsigned int)s.loc1, (unsigned int)s.b, (unsigned int)&s.r);
+    FUN_00420fb0((unsigned char *)CoasterTrainHeadCarLms, (unsigned int)s.loc1, (unsigned int)s.b, (unsigned int)&s.r);
     FUN_00426700((struct RectI *)(obj + 0xc8), &s.r);
 }
 
@@ -1683,7 +1683,7 @@ void FUN_0041ea70(unsigned int a) {
     FUN_0042a680(o + 8);
     FUN_0042a680(o + 0x40);
     FUN_0041e9e0(o, x);
-    FUN_00420e90(((unsigned int *)&DAT_0082add0)[*(unsigned int *)(o + 4)], ((unsigned int *)&DAT_0082ade0)[*(unsigned int *)(o + 4)], x, x + 3, 0);
+    FUN_00420e90(((unsigned int *)&CoasterTrainHeadCarLms)[*(unsigned int *)(o + 4)], ((unsigned int *)&CoasterTrainHeadCarLfm)[*(unsigned int *)(o + 4)], x, x + 3, 0);
     (*(void (**)(unsigned char *, float *))(o + 0x94))(o + 0x78, x);
     (*(void (**)(unsigned char *, float *))(o + 0xb4))(o + 0x98, x);
 }
@@ -1714,16 +1714,16 @@ void FUN_0041eb60(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0041eb70
-void FUN_0041eb70(void) {
+void LoadCoasterTrainCarModels(void) {
     // STRING: LEGOLAND 0x004b55d8
-    DAT_0082add0 = FUN_004206b0("coastertrain.headcar");
+    CoasterTrainHeadCarLms = GetLmsByName("coastertrain.headcar");
     // STRING: LEGOLAND 0x004b55c4
-    DAT_0082add4 = FUN_004206b0("coastertrain.midcar");
+    CoasterTrainMidCarLms = GetLmsByName("coastertrain.midcar");
     // STRING: LEGOLAND 0x004b55ac
-    DAT_0082add8 = FUN_004206b0("coastertrain.tailcar");
-    DAT_0082ade0 = FUN_00420710("coastertrain.headcar");
-    DAT_0082ade4 = FUN_00420710("coastertrain.midcar");
-    DAT_0082ade8 = FUN_00420710("coastertrain.tailcar");
+    CoasterTrainTailCarLms = GetLmsByName("coastertrain.tailcar");
+    CoasterTrainHeadCarLfm = GetLfmByName("coastertrain.headcar");
+    CoasterTrainMidCarLfm = GetLfmByName("coastertrain.midcar");
+    CoasterTrainTailCarLfm = GetLfmByName("coastertrain.tailcar");
 }
 
 struct DispatchRow {
@@ -1871,7 +1871,7 @@ unsigned int FUN_0041ede0(struct KindObj *obj) {
     } else {
         info = NULL;
     }
-    if ((flags & 0x8) && owner != NULL && info == DAT_007fd624) {
+    if ((flags & 0x8) && owner != NULL && info == PathControlObject) {
         return 0;
     }
     if (flags & 0x800) {
@@ -2481,27 +2481,27 @@ void FUN_00420440(void) {
     int i;
     int n;
 
-    DAT_004d8bac = FUN_004207a0();
+    RollercoasterLpt = LoadRollercoasterLpt();
     // STRING: LEGOLAND 0x004b56a0
     FUN_00420530("RollerCoaster\\RollerCoaster\\CreatedData");
     // STRING: LEGOLAND 0x004b5690
-    FUN_004226c0("ROLLERCOASTER");
+    LoadObjAndTxtFiles("ROLLERCOASTER");
     // STRING: LEGOLAND 0x004b5684
     FUN_00420530("..\\..\\..");
     n = FUN_004225d0();
     for (i = 0; i < n; i++) {
         FUN_004225b0(i, buf);
-        DAT_004d8a40[i] = (unsigned int)FUN_00420640(buf);
+        LmsFileTable[i] = (unsigned int)LoadLmsFile(buf);
     }
     n = FUN_004225d0();
     for (i = 0; i < n; i++) {
         FUN_004225b0(i, buf);
-        DAT_004d8abc[i] = FUN_004206d0(buf, &DAT_004d8b34[i]);
+        LfmFileTable[i] = LoadLfmFile(buf, &LfmFileSizes[i]);
     }
     n = FUN_00422640();
     for (i = 0; i < n; i++) {
         FUN_00422620(i, buf);
-        DAT_004d89c8[i] = FUN_00420750(buf);
+        LtxFileTable[i] = LoadLtxFile(buf);
     }
 }
 
@@ -2514,7 +2514,7 @@ unsigned int FUN_00420530(const char *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00420550
-int FUN_00420550(const char *fileName, unsigned int *sizeOut) {
+int LoadCreatedDataFile(const char *fileName, unsigned int *sizeOut) {
     HANDLE hFile;
     unsigned int fileSize;
     void *buffer;
@@ -2571,12 +2571,12 @@ struct LmsFile {
 };
 
 // FUNCTION: LEGOLAND 0x00420640
-struct LmsFile *FUN_00420640(const char *name) {
+struct LmsFile *LoadLmsFile(const char *name) {
     char buffer[256];
     struct LmsFile *f;
     // STRING: LEGOLAND 0x004b56c8
     wsprintfA(buffer, "%s.lms", name);
-    f = (struct LmsFile *)FUN_00420550(buffer, 0);
+    f = (struct LmsFile *)LoadCreatedDataFile(buffer, 0);
     if (f != 0) {
         f->field_c += (unsigned int)f;
         f->field_14 += (unsigned int)f;
@@ -2590,51 +2590,51 @@ struct LmsFile *FUN_00420640(const char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x004206b0
-unsigned int FUN_004206b0(const char *s) {
+unsigned int GetLmsByName(const char *s) {
     unsigned int index = FUN_00422590(s);
     if (index != 0xffffffff) {
-        return DAT_004d8a40[index];
+        return LmsFileTable[index];
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x004206d0
-int FUN_004206d0(const char *name, unsigned int *param2) {
+int LoadLfmFile(const char *name, unsigned int *param2) {
     char buffer[256];
     // STRING: LEGOLAND 0x004b56d0
     wsprintfA(buffer, "%s.lfm", name);
-    return FUN_00420550(buffer, param2);
+    return LoadCreatedDataFile(buffer, param2);
 }
 
 // FUNCTION: LEGOLAND 0x00420710
-unsigned int FUN_00420710(const char *s) {
+unsigned int GetLfmByName(const char *s) {
     unsigned int index = FUN_00422590(s);
     if (index != 0xffffffff) {
-        return DAT_004d8abc[index];
+        return LfmFileTable[index];
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00420730
-unsigned int FUN_00420730(const char *s) {
+unsigned int GetLfmSizeByName(const char *s) {
     unsigned int index = FUN_00422590(s);
     if (index != 0xffffffff) {
-        return DAT_004d8b34[index];
+        return LfmFileSizes[index];
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00420750
-int FUN_00420750(const char *name) {
+int LoadLtxFile(const char *name) {
     char buffer[256];
     // STRING: LEGOLAND 0x004b56d8
     wsprintfA(buffer, "%s.ltx", name);
-    return FUN_00420550(buffer, 0);
+    return LoadCreatedDataFile(buffer, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00420780
 unsigned int FUN_00420780(unsigned int param) {
-    return DAT_004d89c8[param];
+    return LtxFileTable[param];
 }
 
 // FUNCTION: LEGOLAND 0x00420790
@@ -2643,19 +2643,19 @@ unsigned int FUN_00420790(const char *param) {
 }
 
 // FUNCTION: LEGOLAND 0x004207a0
-int FUN_004207a0(void) {
+int LoadRollercoasterLpt(void) {
     // STRING: LEGOLAND 0x004b56e0
-    return FUN_00420550("Rollercoaster.lpt", 0);
+    return LoadCreatedDataFile("Rollercoaster.lpt", 0);
 }
 
 // FUNCTION: LEGOLAND 0x004207c0
 unsigned int FUN_004207c0(void) {
-    return DAT_004d8bac;
+    return RollercoasterLpt;
 }
 
 // FUNCTION: LEGOLAND 0x004207d0
 int FUN_004207d0(unsigned int key) {
-    int *table = (int *)DAT_004d8bac;
+    int *table = (int *)RollercoasterLpt;
     int count = table[0];
     int i;
     int *p = table + 1;
@@ -2997,11 +2997,11 @@ struct Obj4215d0 *FUN_004215d0(struct BlokeInfo *a1) {
     }
     self->field_0 = 0;
     if (a1->sex == 0) {
-        self->field_4 = FUN_004206b0(DAT_004b59f8);
-        self->field_8 = FUN_00420710(DAT_004b59f8);
+        self->field_4 = GetLmsByName(DAT_004b59f8);
+        self->field_8 = GetLfmByName(DAT_004b59f8);
     } else {
-        self->field_4 = FUN_004206b0(DAT_004b59e8);
-        self->field_8 = FUN_00420710(DAT_004b59e8);
+        self->field_4 = GetLmsByName(DAT_004b59e8);
+        self->field_8 = GetLfmByName(DAT_004b59e8);
     }
     self->field_8 = FUN_00421660(a1);
     if (self->field_8 == 0) {
@@ -3045,15 +3045,15 @@ unsigned int FUN_00421660(struct BlokeInfo *p) {
     struct LmsRef *r;
 
     if (p->sex == 0) {
-        lms = (struct LmsFile *)FUN_004206b0(DAT_004b59f8);
-        src = (struct LmsRec *)FUN_00420710(DAT_004b59f8);
-        size = FUN_00420730(DAT_004b59f8);
+        lms = (struct LmsFile *)GetLmsByName(DAT_004b59f8);
+        src = (struct LmsRec *)GetLfmByName(DAT_004b59f8);
+        size = GetLfmSizeByName(DAT_004b59f8);
         names = DAT_004b596c;
         colours = DAT_004b5964;
     } else {
-        lms = (struct LmsFile *)FUN_004206b0(DAT_004b59e8);
-        src = (struct LmsRec *)FUN_00420710(DAT_004b59e8);
-        size = FUN_00420730(DAT_004b59e8);
+        lms = (struct LmsFile *)GetLmsByName(DAT_004b59e8);
+        src = (struct LmsRec *)GetLfmByName(DAT_004b59e8);
+        size = GetLfmSizeByName(DAT_004b59e8);
         names = DAT_004b597c;
         colours = DAT_004b5974;
     }
@@ -3769,12 +3769,12 @@ void *FUN_00422470(const char *fileName, unsigned int *bytesReadPtr) {
 
 // FUNCTION: LEGOLAND 0x00422590
 unsigned int FUN_00422590(const char *s) {
-    return FUN_00422400(&DAT_004dd860, (unsigned int)s);
+    return FUN_00422400(&CoasterObjFile, (unsigned int)s);
 }
 
 // FUNCTION: LEGOLAND 0x004225b0
 void FUN_004225b0(unsigned int param_1, char *param_2) {
-    FUN_00422390((unsigned int)&DAT_004dd860, (unsigned int)param_2, param_1);
+    FUN_00422390((unsigned int)&CoasterObjFile, (unsigned int)param_2, param_1);
 }
 
 // FUNCTION: LEGOLAND 0x004225d0
@@ -3784,7 +3784,7 @@ unsigned int FUN_004225d0(void) {
 
 // FUNCTION: LEGOLAND 0x00422600
 unsigned int FUN_00422600(unsigned int param) {
-    return FUN_00422400(&DAT_004dd758, param);
+    return FUN_00422400(&CoasterTxtFile, param);
 }
 
 // FUNCTION: LEGOLAND 0x00422620
@@ -3799,32 +3799,32 @@ unsigned int FUN_00422640(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004226c0
-int FUN_004226c0(const char *name) {
+int LoadObjAndTxtFiles(const char *name) {
     char buffer[256];
 
     // STRING: LEGOLAND 0x004b5b04
     wsprintfA(buffer, "%s.obj", name);
-    DAT_004dd860 = (unsigned int)FUN_00422470(buffer, &DAT_004dd864);
-    if (DAT_004dd860 == 0) {
+    CoasterObjFile = (unsigned int)FUN_00422470(buffer, &DAT_004dd864);
+    if (CoasterObjFile == 0) {
         return 0;
     }
     // STRING: LEGOLAND 0x004b5b0c
     wsprintfA(buffer, "%s.txt", name);
-    DAT_004dd758 = (unsigned int)FUN_00422470(buffer, &DAT_004dd75c);
-    if (DAT_004dd758 == 0) {
-        FUN_004775d0((void *)DAT_004dd860);
+    CoasterTxtFile = (unsigned int)FUN_00422470(buffer, &DAT_004dd75c);
+    if (CoasterTxtFile == 0) {
+        FUN_004775d0((void *)CoasterObjFile);
         return 0;
     }
-    DAT_004dd868 = FUN_004223c0(&DAT_004dd860);
-    DAT_004dd86c = FUN_004223c0(&DAT_004dd758);
+    DAT_004dd868 = FUN_004223c0(&CoasterObjFile);
+    DAT_004dd86c = FUN_004223c0(&CoasterTxtFile);
     strcpy(DAT_004dd760, name);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x004227a0
-void FUN_004227a0(void) {
-    FUN_004775d0(DAT_004dd758);
-    FUN_004775d0(DAT_004dd860);
+void FreeObjAndTxtFiles(void) {
+    FUN_004775d0(CoasterTxtFile);
+    FUN_004775d0(CoasterObjFile);
 }
 
 struct MVert {
@@ -4046,7 +4046,7 @@ void FUN_00422e40(int param1, char *entry) {
     double ab;
     int i;
 
-    if (DAT_00668088 == 2) {
+    if (DisplayPixelFormat == 2) {
         gbits = 6;
         rshift = 11;
     } else {
@@ -4661,7 +4661,7 @@ void FUN_00424150(struct Element *param_1) {
         ((struct Ride *)DAT_00829bf8)->layer->flags |= 0x2000;
     }
     ((struct Ride *)DAT_00829bf8)->flags |= 0x20;
-    DAT_00829c04 = LoadSprite("Castle Matte.lls", 1);
+    CastleMatteSprite = LoadSprite("Castle Matte.lls", 1);
     FUN_00425a50();
     FUN_00421470();
     FUN_00420440();
@@ -4672,13 +4672,13 @@ void FUN_00424150(struct Element *param_1) {
     FUN_0042a2e0();
     FUN_00423db0();
     FUN_0041e620();
-    FUN_0041eb70();
-    FUN_0042a780();
+    LoadCoasterTrainCarModels();
+    LoadCoasterTrainWheelModel();
 }
 
 // FUNCTION: LEGOLAND 0x004241e0
 void FUN_004241e0(void) {
-    KillSprite(DAT_00829c04);
+    KillSprite(CastleMatteSprite);
     DAT_00829b8c = 0;
     DAT_00829ba4 = 0;
     FUN_0041d1b0(&DAT_00829b8c);
@@ -5286,11 +5286,11 @@ void FUN_00425050(Element *obj, unsigned int param_2, unsigned int param_3, Tile
         walk = walk->next;
     }
     RenderBlokeList((struct BlokeListHead *)&DAT_00610a18);
-    if (DAT_00829c04 != NULL) {
+    if (CastleMatteSprite != NULL) {
         pos = GetScreenCoordsForObject(tile, r);
         off = GetRenderOffsetForLayer(r->layer, 2);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(DAT_00829c04, pos.x + off.x, pos.y + off.y, clip, 0);
+        PrintSprite(CastleMatteSprite, pos.x + off.x, pos.y + off.y, clip, 0);
     }
 }
 #pragma optimize("", on)
@@ -8504,16 +8504,16 @@ void FUN_0042a680(unsigned char *p) {
         D[2][2] = (float)sin(o->ang[i]);
         FUN_00426120(B, D, E);
         FUN_00426460(G, E);
-        FUN_00420e90(DAT_00616000, DAT_00616004, C, G, 0);
+        FUN_00420e90(CoasterTrainWheelLms, CoasterTrainWheelLfm, C, G, 0);
     }
     o->id1 = o->id0;
     o->d1 = o->d0;
 }
 
 // FUNCTION: LEGOLAND 0x0042a780
-void FUN_0042a780(void) {
+void LoadCoasterTrainWheelModel(void) {
     // STRING: LEGOLAND 0x004b6414
     const char *str = "coastertrain.wheel01";
-    DAT_00616000 = FUN_004206b0(str);
-    DAT_00616004 = FUN_00420710(str);
+    CoasterTrainWheelLms = GetLmsByName(str);
+    CoasterTrainWheelLfm = GetLfmByName(str);
 }

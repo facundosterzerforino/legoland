@@ -163,13 +163,13 @@ unsigned char FUN_0048bc20(unsigned char *arg0, unsigned int arg1, unsigned int 
             PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
             FUN_0048b770();
             if ((int)lpConfig->field_28 <= 0xf) {
-                FUN_00466360(0xfa, 0x181);
+                LoadWatchSprite(0xfa, 0x181);
                 DAT_00668e38 = 0;
                 InitGameInterface(1);
                 EditMode.unk4 = 3;
                 FUN_00474880();
                 FUN_00458a50();
-                FUN_004663c0();
+                UnloadWatchSprite();
                 DAT_00798660 = 0;
                 DAT_00798668 = 0;
             } else {
@@ -297,13 +297,13 @@ unsigned char FUN_0048bf90(unsigned char *arg0, unsigned int arg1, unsigned int 
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         FUN_0048bd70();
-        FUN_00466360(0x186, 0x18b);
+        LoadWatchSprite(0x186, 0x18b);
         DAT_00668e38 = 0;
         InitGameInterface(1);
         EditMode.unk4 = 3;
         FUN_00474880();
         FUN_00458a50();
-        FUN_004663c0();
+        UnloadWatchSprite();
         DAT_00798660 = 0;
         DAT_00798668 = 0;
     }

@@ -94,14 +94,14 @@ int FUN_00435ec0(void);
 void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor);
 
 void FUN_00433ca0(Element *obj);
-void FUN_00433cd0();
+void KillBrijMaskSprite();
 void FUN_00433ce0();
 void FUN_00433d20(unsigned int param_1, int *param_2);
 void FUN_00433d90(Element *obj, unsigned int param_2, unsigned int param_3);
 unsigned int FUN_00433fa0(unsigned int param_1, unsigned int param_2);
 struct RideSpriteInfo *FUN_00434040(Element *obj, unsigned short param_2);
 void FUN_00434080(Element *obj);
-void FUN_004340b0();
+void KillMFish2Sprite();
 void FUN_004340c0();
 void FUN_00434100(struct EditObject *obj, int *coords);
 void FUN_00434330(Element *obj, unsigned int param_2, int *param_3);

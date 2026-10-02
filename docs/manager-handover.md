@@ -45,11 +45,11 @@ what worked and what didn't in the session that produced commits `47fd6bb`..`736
   `ReloadImageBitmapAndBuildSprites` 91.0%, `RemakeAllDetailDependentSprites` 98.9%).
   The current function-count table is 2,019 matched, 575 partial, 659 unmatched (62.1%
   by function weighting; verify's headline is effective byte-weighted).
-- This session matched `draw.c`'s `InitHostSystemGPU`, `FUN_004661d0`, and `InitScreen`
+- This session matched `draw.c`'s `InitHostSystemGPU`, `BlitFrameToWindow`, and `InitScreen`
   (all 100%), plus `screens.c`'s `FUN_004585c0`, `FUN_00458a50`, and `FUN_00459520`
   (100%*). Four screens partials remain parked at 91%, 85%, 60%, and 59%; see
   `docs/handover-screens.md` for function-level hypotheses, not duplicated here.
-- Still parked in `draw.c`: `FUN_004659a0` 48%, `FUN_00466360` 79%, and `PushSetTarget`
+- Still parked in `draw.c`: `FUN_004659a0` 48%, `LoadWatchSprite` 79%, and `PushSetTarget`
   80%. One worker exhausted source-shape variants; remaining differences are
   register-allocation/ordering residue.
 - The session's cast-removal sweep made `DDRAWENV` a real struct (including DX6-sized

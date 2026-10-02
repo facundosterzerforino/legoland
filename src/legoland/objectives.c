@@ -143,7 +143,7 @@ void FUN_004688f0(int index, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00468910
-struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
+struct ObjectiveEvent *AllocObjectiveEvent(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
     event = (struct ObjectiveEvent *)calloc(1, 0x44);
@@ -157,7 +157,7 @@ struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
 }
 
 // FUNCTION: LEGOLAND 0x00468940
-void FUN_00468940(struct ObjectiveEvent *event) {
+void FreeObjectiveEvent(struct ObjectiveEvent *event) {
     if (event->flags_10 & 0x20) {
         if (event->field_8 != 0) {
             free((void *)event->field_8);
@@ -167,12 +167,12 @@ void FUN_00468940(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00468970
-void FUN_00468970(struct ObjectiveEvent *event) {
+void FreeObjectiveEventList(struct ObjectiveEvent *event) {
     if (event != NULL) {
         if (event->next != NULL) {
-            FUN_00468970(event->next);
+            FreeObjectiveEventList(event->next);
         }
-        FUN_00468940(event);
+        FreeObjectiveEvent(event);
     }
 }
 
@@ -273,7 +273,7 @@ struct ObjectiveEvent *FUN_00468bb0(const char *format, ...) {
     struct ObjectiveEvent *event;
     va_list args;
 
-    event = FUN_00468910(0, 1);
+    event = AllocObjectiveEvent(0, 1);
     if (event != NULL) {
         va_start(args, format);
         vsprintf(DAT_0066820c, format, args);
@@ -301,7 +301,7 @@ void FUN_00468c00(void) {
         if (DisplayAdvisorHelp((char *)event->field_8, event->type == 0, 0) != 0) {
             FUN_00444070(5, 0);
             DAT_00668724 = DAT_00668724->next;
-            FUN_00468940(event);
+            FreeObjectiveEvent(event);
         }
     }
 }
@@ -338,7 +338,7 @@ void FUN_00468c80(struct ObjectiveEvent *event) {
 struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
-    event = FUN_00468910(type, sort_key);
+    event = AllocObjectiveEvent(type, sort_key);
     if (event != NULL) {
         event->timestamp = GetGameTimer();
     }
@@ -752,7 +752,7 @@ void FUN_004693b0(unsigned int type) {
             } else {
                 DAT_00668728 = next;
             }
-            FUN_00468940(node);
+            FreeObjectiveEvent(node);
         } else {
             prev = node;
         }
@@ -971,7 +971,7 @@ void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
                 obj->flags = (flags & 0xfffeffff) | 2;
                 FUN_0048a6e0((struct ClippedObject *)obj);
                 if (a != 0) {
-                    FUN_00471c10(obj->info);
+                    AddNewObjectIcon(obj->info);
                 }
             } else {
                 // STRING: LEGOLAND 0x004ba6e4
@@ -1044,14 +1044,14 @@ void FUN_00469ab0(struct NerpsArg *object) {
 }
 
 // FUNCTION: LEGOLAND 0x00469ae0
-int FUN_00469ae0(struct RewardArg *arg) {
+int ProcessUnimplementedReward(struct RewardArg *arg) {
     // STRING: LEGOLAND 0x004ba758
     DBPrintf("Processing unimplemented reward [ Type = %d ]\n", arg->reward_type);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b00
-int FUN_00469b00(struct RewardArg *arg) {
+int ProcessUnimplementedObjective(struct RewardArg *arg) {
     // STRING: LEGOLAND 0x004ba788
     DBPrintf("Processing unimplemented objective [ Type = %d ]\n", arg->reward_type);
     return 1;
@@ -1238,7 +1238,7 @@ int FUN_00469f20(struct MapRectArg *arg) {
 
 // FUNCTION: LEGOLAND 0x00469f70
 int FUN_00469f70(struct RewardArg *arg) {
-    return FUN_00469ae0(arg);
+    return ProcessUnimplementedReward(arg);
 }
 
 // FUNCTION: LEGOLAND 0x00469f80
@@ -1277,5 +1277,5 @@ int FUN_00469fc0(struct RewardArg *arg) {
 
 // FUNCTION: LEGOLAND 0x0046a030
 int FUN_0046a030(struct RewardArg *arg) {
-    return FUN_00469ae0(arg);
+    return ProcessUnimplementedReward(arg);
 }

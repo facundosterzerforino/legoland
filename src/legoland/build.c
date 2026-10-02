@@ -40,7 +40,7 @@ void FUN_00450c00(TileId coords) {
     BuildObj *b;
 
     i = 0;
-    for (b = DAT_006664f8; (int)&b->coords < (int)&DAT_006670fc; b++, i++) {
+    for (b = DAT_006664f8; (int)&b->coords < (int)&ButtonRepeatDelay; b++, i++) {
         if (b->coords.id == coords.id) {
             DAT_006670f8--;
             DAT_006664f8[i].ride = NULL;
@@ -95,7 +95,7 @@ LEGO_EXPORT int GetBuildAnimFrame(Ride *ride, TileId coords) {
     LLS *lls;
 
     i = 0;
-    for (b = DAT_006664f8; (int)&b->coords < (int)&DAT_006670fc; b++, i++) {
+    for (b = DAT_006664f8; (int)&b->coords < (int)&ButtonRepeatDelay; b++, i++) {
         if (b->coords.id == coords.id) {
             break;
         }
@@ -154,7 +154,7 @@ LEGO_EXPORT void DoBuildEffects(Ride *ride, TileId coords) {
         w = cx - x + 33;
         h = cy - y + 6;
         i = 0;
-        for (o = DAT_006664f8; (int)&o->coords < (int)&DAT_006670fc; o++, i++) {
+        for (o = DAT_006664f8; (int)&o->coords < (int)&ButtonRepeatDelay; o++, i++) {
             if (o->coords.id == coords.id) {
                 if (i < 256) {
                     RenderBlock(x, y, w, h, 0);

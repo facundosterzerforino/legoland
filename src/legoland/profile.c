@@ -40,7 +40,7 @@ LEGO_EXPORT void InitListProfiles(void) {
     // STRING: LEGOLAND 0x004bf114
     DAT_0079868c = LoadSprite("RegDeleteOn.lls", 4);
     // STRING: LEGOLAND 0x004bf104
-    DAT_00798690 = LoadSprite("RegDelete.lls", 4);
+    RegDeleteSprite = LoadSprite("RegDelete.lls", 4);
     // STRING: LEGOLAND 0x004bf0f0
     DAT_007986b4 = LoadSprite("RegProfileON.lls", 4);
     // STRING: LEGOLAND 0x004bf0dc
@@ -111,7 +111,7 @@ LEGO_EXPORT void InitListProfiles(void) {
         icon->field_20b |= 1;
     }
 
-    DAT_007cb360 = InsertIcon(0, 0, 7, DAT_00798690);
+    DAT_007cb360 = InsertIcon(0, 0, 7, RegDeleteSprite);
     DAT_007cb360->string_id = 2;
     DAT_007cb360->string = GetString(2);
     DAT_007cb360->flags |= 0x2000;
@@ -165,14 +165,14 @@ LEGO_EXPORT void EnterNewProfileCheckBoxIcons(struct IconNode *param_1) {
 
 // FUNCTION: LEGOLAND 0x0048c720
 LEGO_EXPORT void InitProfileCheckBoxIcons(struct IconNode *param_1) {
-    DAT_00798678 = LoadSprite("PU_OK.lls", 4);
-    DAT_00798674 = LoadSprite("PU_OKON.lls", 4);
+    PuOkSprite = LoadSprite("PU_OK.lls", 4);
+    PuOkOnSprite = LoadSprite("PU_OKON.lls", 4);
     DAT_0079867c = LoadSprite("RegClose.lls", 4);
     DAT_00798680 = LoadSprite("RegCloseON.lls", 4);
     DAT_00798684 = LoadSprite("PU_ClosePopUp.lls", 4);
     DAT_00798688 = LoadSprite("PU_ClosePopUpON.lls", 4);
 
-    DAT_007986d8 = InsertIcon(param_1->x - 0x24, param_1->y - 0x18, 0xe, DAT_00798678);
+    DAT_007986d8 = InsertIcon(param_1->x - 0x24, param_1->y - 0x18, 0xe, PuOkSprite);
     DAT_007986d8->string_id = 0x2;
     DAT_007986d8->string = GetString(0x2);
     DAT_007986d8->flags |= 0x2000;
@@ -189,14 +189,14 @@ LEGO_EXPORT void InitProfileCheckBoxIcons(struct IconNode *param_1) {
 
 // FUNCTION: LEGOLAND 0x0048c860
 void FUN_0048c860(struct IconNode *param_1) {
-    DAT_00798678 = LoadSprite("PU_OK.lls", 4);
-    DAT_00798674 = LoadSprite("PU_OKON.lls", 4);
+    PuOkSprite = LoadSprite("PU_OK.lls", 4);
+    PuOkOnSprite = LoadSprite("PU_OKON.lls", 4);
     DAT_0079867c = LoadSprite("RegClose.lls", 4);
     DAT_00798680 = LoadSprite("RegCloseON.lls", 4);
     DAT_00798684 = LoadSprite("PU_ClosePopUp.lls", 4);
     DAT_00798688 = LoadSprite("PU_ClosePopUpON.lls", 4);
 
-    DAT_007986d8 = InsertIcon(param_1->x - 0x42, param_1->y - 0x18, 0xe, DAT_00798678);
+    DAT_007986d8 = InsertIcon(param_1->x - 0x42, param_1->y - 0x18, 0xe, PuOkSprite);
     DAT_007986d8->string_id = 5;
     DAT_007986d8->string = GetString(5);
     DAT_007986d8->flags |= 0x2000;
@@ -213,13 +213,13 @@ void FUN_0048c860(struct IconNode *param_1) {
 
 // FUNCTION: LEGOLAND 0x0048c9a0
 LEGO_EXPORT void KillFrontEndCheckBoxSprite(void) {
-    if (DAT_00798674 != NULL) {
-        KillSprite(DAT_00798674);
-        DAT_00798674 = NULL;
+    if (PuOkOnSprite != NULL) {
+        KillSprite(PuOkOnSprite);
+        PuOkOnSprite = NULL;
     }
-    if (DAT_00798678 != NULL) {
-        KillSprite(DAT_00798678);
-        DAT_00798678 = NULL;
+    if (PuOkSprite != NULL) {
+        KillSprite(PuOkSprite);
+        PuOkSprite = NULL;
     }
     if (DAT_00798680 != NULL) {
         KillSprite(DAT_00798680);
@@ -247,10 +247,10 @@ LEGO_EXPORT void KillListProfileSprite(void) {
         KillSprite(sprite);
         DAT_0079868c = NULL;
     }
-    sprite = DAT_00798690;
+    sprite = RegDeleteSprite;
     if (sprite != NULL) {
         KillSprite(sprite);
-        DAT_00798690 = NULL;
+        RegDeleteSprite = NULL;
     }
     sprite = DAT_00798694;
     if (sprite != NULL) {
@@ -378,7 +378,7 @@ LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
         }
         DAT_007cb360->x = icon->x + 0xff;
     }
-    FUN_0046d680(DAT_007cb360, DAT_00798690);
+    FUN_0046d680(DAT_007cb360, RegDeleteSprite);
     bx = DAT_007cb360->x;
     by = DAT_007cb360->y;
     if (DAT_00813a44.x < bx + 0x24 && bx < DAT_00813a44.x && DAT_00813a44.y < by + 0x1b && by < DAT_00813a44.y) {
@@ -394,7 +394,7 @@ LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
     int y;
 
     if (DAT_007986d8) {
-        FUN_0046d680(DAT_007986d8, DAT_00798678);
+        FUN_0046d680(DAT_007986d8, PuOkSprite);
     }
     if (DAT_007986e8) {
         FUN_0046d680(DAT_007986dc, DAT_00798684);
@@ -406,7 +406,7 @@ LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
         x = a->x;
         y = a->y;
         if (DAT_00813a44.x < x + 0x24 && x < DAT_00813a44.x && DAT_00813a44.y < y + 0x1b && y < DAT_00813a44.y) {
-            FUN_0046d680(a, DAT_00798674);
+            FUN_0046d680(a, PuOkOnSprite);
         }
     }
     b = DAT_007986dc;

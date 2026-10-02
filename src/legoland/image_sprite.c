@@ -792,7 +792,7 @@ LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2) {
     }
     *param_1 = *(unsigned int *)(surfDesc + 0x10);
     param_1[3] = *(unsigned int *)(surfDesc + 0x24);
-    if (DAT_00668088 == 0) {
+    if (DisplayPixelFormat == 0) {
         param_1[5] = 1;
     } else {
         param_1[5] = 2;

@@ -48,7 +48,7 @@ _WinMainCRTStartup (CRT)                         [TU_CRT, out of match %]
    (cutscene). Spins a `PeekMessageA`/`Sleep(100)` wait loop until `DAT_007988bc`.
 4. Loads game/world assets (`LoadWorkerInterfaceGFX`, `InitialiseBlokes`,
    `InitGameMap` 100%, `LoadMapTiles`, `CreateObjectClasses`, `Ir50_32.dll` for
-   Indeo/AVI, …) interleaved with `FUN_004663f0` loading-screen ticks.
+   Indeo/AVI, …) interleaved with `DrawWatchSprite` loading-screen ticks.
 5. Plays `Intro.avi` (`FUN_004771f0`) — **OUT OF SCOPE**.
 6. **Enters the real interactive loop:**
    ```c
@@ -120,7 +120,7 @@ FUN_00458c00 ──case 2──▶ InitScreens ──▶ RenderFrontEndScreen
 
 The title's button handlers already exist in `title.c` and are mostly **MATCHED**
 (`FUN_0048fe20` Load, `FUN_0048ff20` Free-play, `FUN_0048ff70` Reg, `FUN_0048feb0`
-New-game (decompiled in Ghidra), `FUN_00490090/d0/110` the per-region movie buttons →
+New-game (decompiled in Ghidra), `PlayBillundAvi/d0/110` the per-region movie buttons →
 out of scope AVI, `FUN_0048f0a0` Exit). They are wired up by `InitTitleScreen` into
 `SpriteIcon.event_handler` (offset +0x2c) — so once the loop + icon plumbing match,
 input already routes to real code.
@@ -179,7 +179,7 @@ functions it calls are already done.
 | `0x004853a0` | `PrintSprite` | print_sprite.c | L | `GetVRAMAddress`(100%), `FUN_00499500`(100%), `RenderSprite`(E/stub), `RenderSpriteX`(E/stub) | **sprite draw routing + hit-info writeback (`DAT_004bdd00`).** The routing/hit logic is real game code worth matching; it calls the rasterizer below. |
 | `0x004856a0` | `PrintSpriteEx` | print_sprite.c | L | same | variant |
 | `0x00489390` | `RenderThickBox` | (interface/icon) | S/M | line draws into surface | focus highlight box |
-| `0x00466500` | `RenderingComplete` | draw.c | S | `ProcessSystemEvents`(B), `PTR_FUN_004b9ca4`→`FUN_004661d0`(stub blit), `rdtsc`, `GetTickCount` | **the per-frame "present" + input pump.** Small; logic is real, but the actual flip is the stub `FUN_004661d0`. |
+| `0x00466500` | `RenderingComplete` | draw.c | S | `ProcessSystemEvents`(B), `PTR_FUN_004b9ca4`→`BlitFrameToWindow`(stub blit), `rdtsc`, `GetTickCount` | **the per-frame "present" + input pump.** Small; logic is real, but the actual flip is the stub `BlitFrameToWindow`. |
 
 ### F. Title overlays / help (only if you want the full title behavior)
 | addr | name | file | size | notes |
@@ -207,13 +207,13 @@ device I/O, not game logic.
 | `0x00463700` | `InitHostSystemGPU` | draw.c | DirectDraw object creation |
 | `0x004637e0` | `KillHostSystemGPU` | draw.c | DDraw teardown |
 | `0x00463870` | `InitScreen` | draw.c | `RegisterClassExA`+`CreateWindowExA`, DDraw `CreateSurface` (primary/back/work), `SetCooperativeLevel`, palette — **XL Win32+DDraw glue** |
-| `0x00463ef0` | `FUN_00463ef0` | draw.c | DDraw mode set helper |
+| `0x00463ef0` | `SetDisplayModeAndDetectPixelFormat` | draw.c | DDraw mode set helper |
 | `0x00463fc0` | `PushRenderingStatusAndLockVideoSurface` | draw.c | `IDirectDrawSurface::Lock` (+clip rect) |
 | `0x00464080` | `PushRenderingStatusAndUnlockVideoSurface` | draw.c | surface unlock |
 | `0x004641f0` | `PopRenderingStatus` | draw.c | restore lock state |
 | `0x00464310` | `GetVideoSurface` | draw.c | surface ptr accessor |
-| `0x004661d0` | `FUN_004661d0` | draw.c | **the blit/flip** (`IDirectDrawSurface::Blt`, vtbl+0x14) — `PTR_FUN_004b9ca4` callback driven by `RenderingComplete` |
-| `0x004663f0` | `FUN_004663f0` | draw.c | loading-screen cursor blit (DDraw) |
+| `0x004661d0` | `BlitFrameToWindow` | draw.c | **the blit/flip** (`IDirectDrawSurface::Blt`, vtbl+0x14) — `PTR_FUN_004b9ca4` callback driven by `RenderingComplete` |
+| `0x004663f0` | `DrawWatchSprite` | draw.c | loading-screen cursor blit (DDraw) |
 | `0x00488a10` | `RenderSprite` | (image) | software sprite rasterizer into locked surface |
 | `0x00488b90` | `RenderSpriteX` | (image) | transparent/blended sprite raster |
 | `0x00473870` | `InitInputSystem` | input.c | `DirectInputCreateA` + device setup |
@@ -230,9 +230,9 @@ device I/O, not game logic.
 | addr | name | notes |
 |---|---|---|
 | `0x004771f0` | `FUN_004771f0` | AVI/Smacker movie player (`lmi.avi`, `Intro.avi`, `Billund/Windsor/California.avi`). Ifdef out / no-op returning 1. |
-| `0x00476460` | `FUN_00476460` | movie open |
+| `0x00476460` | `OpenAviMovie` | movie open |
 | `0x004766f0` | `FUN_004766f0` | movie play loop |
-| `0x00476630` | `FUN_00476630` | movie close |
+| `0x00476630` | `CloseAviMovie` | movie close |
 | `Ir50_32.dll` load in `FUN_00459520` | — | Indeo codec for the AVIs; drop with the movies |
 | `0x00490090/d0/110` | per-region movie buttons (title.c) | already real, but call the OOS movie player |
 

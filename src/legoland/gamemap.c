@@ -110,7 +110,7 @@ void FUN_004598d0(struct Point *coord, int *param_2, int *param_3) {
         return;
     }
     if ((cell->flags.word & 0x80) != 0) {
-        if (cell->obj->field_c == DAT_007fd624) {
+        if (cell->obj->field_c == PathControlObject) {
             *param_2 = *param_2 + -1;
             return;
         }
@@ -179,7 +179,7 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
         DAT_0079a8d0 = 1;
     }
     obj->method_98(classid, pos);
-    if (obj == DAT_007fd624) {
+    if (obj == PathControlObject) {
         DAT_00667cf4 = DAT_00667cf4 + 1;
         DAT_00667ce0 = DAT_00667ce0 + 1;
         DAT_00667d0c = 1;
@@ -245,7 +245,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
     }
     RemoveObjectsPowerStats(classid, tile);
     obj->method_9c(classid, tile, cursor);
-    if (obj == DAT_007fd624) {
+    if (obj == PathControlObject) {
         DAT_00667cf4 = DAT_00667cf4 + -1;
         DAT_00667ce0 = DAT_00667ce0 + -1;
         DAT_00667d0c = 1;

@@ -377,10 +377,10 @@ int FUN_00458c00(void) {
         if (DAT_00667c80 != 0) {
             DeletePlayableSamples(0);
             sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, *(unsigned int *)&DAT_0080ffa0.field_44 & 0xff);
-            FUN_00466360(0, 0);
+            LoadWatchSprite(0, 0);
             LoadGame(path);
             DAT_00667c80 = 0;
-            FUN_004663c0();
+            UnloadWatchSprite();
             InitGameInterface(0);
             FUN_00474880();
         } else {
@@ -493,7 +493,7 @@ void FUN_00458ee0(void) {
     }
     saved_value = Hover.ptr;
     saved_action = Hover.data.value;
-    PrintSprite(DAT_00668e68, Hover.type, saved_value, saved_action, frame.outgoing);
+    PrintSprite(InterfaceBgSprite, Hover.type, saved_value, saved_action, frame.outgoing);
     FUN_0046f100(0x2c3);
     FUN_0046ee00();
     // STRING: LEGOLAND 0x004b91b0
@@ -607,7 +607,7 @@ void FUN_00458ee0(void) {
     PopRenderingStatus();
     if (MapStats.field_194 != 0) {
         if (FUN_00474070() != 0 && FUN_00474080() != 0) {
-            FUN_004632b0();
+            PrintCapacityStats();
         }
     }
     RenderingComplete();
@@ -629,7 +629,7 @@ void FUN_00459360(void) {
     PushRenderingStatusAndLockVideoSurface();
     DrawMapScreen();
     SetPointer(5);
-    PrintSprite(DAT_00668e68, 0, 0, 0, &hit_info.field_0);
+    PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit_info.field_0);
     FUN_0046ee00();
     RenderIcons();
     CheckFocussedIcon();
@@ -712,15 +712,15 @@ void FUN_00459520(void) {
     FUN_004771f0("lmi.avi", 0, 1);
     FUN_004588c0();
     FUN_00492c80();
-    FUN_00466360(0, 0);
+    LoadWatchSprite(0, 0);
 
     while (DAT_007988bc == 0) {
         PeekMessageA(&msg, NULL, 0, 0, 0);
         Sleep(100);
-        FUN_004663f0();
+        DrawWatchSprite();
     }
 
-    FUN_0046f890();
+    LoadGBarSprites();
     LoadWorkerInterfaceGFX();
     LoadBubbleHelpGFX();
     InitialiseBlokes();
@@ -732,24 +732,24 @@ void FUN_00459520(void) {
     SetPointer(5);
     DAT_008119a4 = 0;
     Load_Interface_ControlIcons();
-    FUN_004663f0();
+    DrawWatchSprite();
     Load_Interface_ThemeIcons();
     FreeTileSpace(0, 0x800);
     EditMode.unk4 = 3;
     LoadMapTiles();
-    FUN_004663f0();
+    DrawWatchSprite();
     InitMan();
-    FUN_004663f0();
+    DrawWatchSprite();
     CreateObjectClasses();
-    FUN_004663f0();
+    DrawWatchSprite();
     FUN_00458bc0();
-    FUN_004663f0();
+    DrawWatchSprite();
     // STRING: LEGOLAND 0x004b91e8
     ir50 = LoadLibraryA("Ir50_32.dll");
-    FUN_004663f0();
-    FUN_00444090();
-    FUN_004663f0();
-    FUN_004663c0();
+    DrawWatchSprite();
+    LoadAdvisorAnims();
+    DrawWatchSprite();
+    UnloadWatchSprite();
     FUN_00492c80();
     while (FUN_00458c00() != 0) {
     }
@@ -759,8 +759,8 @@ void FUN_00459520(void) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = NULL;
     }
-    FUN_00451f40();
-    FUN_0046f920();
+    FreeControllers();
+    UnloadGBarSprites();
     FUN_00454a10();
     FUN_00482ec0();
     KillGameMap();
@@ -768,7 +768,7 @@ void FUN_00459520(void) {
     UnLoad_Interface_ThemeIcons();
     FUN_0045ac20();
     UnInitMan();
-    FUN_00444150();
+    FreeAdvisorAnims();
     FreeLibrary(ir50);
     FreeBlokeCounters();
     KillHelp();

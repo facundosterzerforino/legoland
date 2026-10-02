@@ -335,7 +335,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     // STRING: LEGOLAND 0x004b88b8
     else if (_stricmp("JUNGLE CRUISE MONKEY TREE", head->name) == 0) {
         iface->cb_a4 = FUN_00433ca0;
-        iface->cb_ac = FUN_00433cd0;
+        iface->cb_ac = KillBrijMaskSprite;
         iface->cb_8c = FUN_00433ce0;
         iface->cb_90 = FUN_00433d90;
         iface->cb_94 = FUN_00433fa0;
@@ -346,7 +346,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     // STRING: LEGOLAND 0x004b889c
     else if (_stricmp("JUNGLE CRUISE MONKEY FISH", head->name) == 0) {
         iface->cb_a4 = FUN_00434080;
-        iface->cb_ac = FUN_004340b0;
+        iface->cb_ac = KillMFish2Sprite;
         iface->cb_8c = FUN_004340c0;
         iface->cb_90 = FUN_00434330;
         iface->cb_94 = FUN_00434650;
@@ -356,7 +356,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     }
 
     FUN_00403080(head, iface);
-    FUN_00410d60(head, iface);
+    LogFlume_GetInterfaces(head, iface);
     FUN_00405110(head, iface);
     FUN_004068b0(head, iface);
     FUN_004078f0(head, iface);
@@ -366,7 +366,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     TempleSlide_GetInterfaces(head, iface);
     SpiderRide(head, iface);
     FUN_00415030(head, iface);
-    FUN_00418c80(head, iface);
+    WaterWorksGetInterfaces(head, iface);
     FUN_004329c0(head, iface);
     FUN_0043a400(head, iface);
     SpaceTowerRide(head, iface);

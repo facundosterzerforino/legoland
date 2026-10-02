@@ -443,7 +443,7 @@ unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3,
     if ((buttons & 1) != 0) {
         do {
             region = (struct ScrollRegion *)icon->field_30;
-            DAT_006688b4 = GetTickCount();
+            LastScrollIconTick = GetTickCount();
             if ((region->field_4 & 1) != 0) {
                 FUN_0046d850(region, 0, 6);
             } else {
@@ -454,9 +454,9 @@ unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3,
     }
     if ((buttons & 4) != 0) {
         do {
-            if (GetTickCount() - DAT_006688b4 >= 0xfa) {
+            if (GetTickCount() - LastScrollIconTick >= 0xfa) {
                 region = (struct ScrollRegion *)icon->field_30;
-                DAT_006688b4 = GetTickCount();
+                LastScrollIconTick = GetTickCount();
                 if ((region->field_4 & 1) != 0) {
                     FUN_0046d850(region, 0, 6);
                 } else {
@@ -474,7 +474,7 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
     struct ScrollRegion *region;
     if ((buttons & 1) != 0) {
         region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
+        LastScrollIconTick = GetTickCount();
         if ((region->field_4 & 1) != 0) {
             FUN_0046d850(region, 0, -6);
             return 2;
@@ -483,9 +483,9 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
         return 2;
     }
     if ((buttons & 4) != 0) {
-        if (GetTickCount() - DAT_006688b4 >= 0xfa) {
+        if (GetTickCount() - LastScrollIconTick >= 0xfa) {
             region = (struct ScrollRegion *)icon->field_30;
-            DAT_006688b4 = GetTickCount();
+            LastScrollIconTick = GetTickCount();
             if ((region->field_4 & 1) != 0) {
                 FUN_0046d850(region, 0, -6);
                 return 2;
@@ -554,14 +554,14 @@ LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int par
     struct IconNode *icon;
 
     AddFullScreenIcon((void *)(param_6 + 6));
-    icon = InsertIcon(param_2, param_3, param_6 + 3, DAT_0066882c);
+    icon = InsertIcon(param_2, param_3, param_6 + 3, IfSideBUpSprite);
     icon->field_30 = (void *)param_1;
     icon->string_id = 0x95;
     icon->string = GetString(0x95);
     icon->field_12 = 0x1e;
     icon->flags = icon->flags | 0x2013;
     icon->event_handler = (void *)FUN_0046d980;
-    icon = InsertIcon(param_2, param_5 - 0x1e + param_3, param_6 + 4, DAT_00668830);
+    icon = InsertIcon(param_2, param_5 - 0x1e + param_3, param_6 + 4, IfSideBDownSprite);
     icon->field_30 = (void *)param_1;
     icon->string_id = 0x94;
     icon->string = GetString(0x94);
@@ -759,24 +759,24 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
             }
             switch (node->field_20b) {
             case 1:
-                PrintSprite(DAT_00668e8c, node->x, node->y, 0, 0);
+                PrintSprite(LinkMiddleSprite, node->x, node->y, 0, 0);
                 break;
             case 2:
-                PrintSprite(DAT_00668e90, node->x, node->y, 0, 0);
+                PrintSprite(LinkBottomSprite, node->x, node->y, 0, 0);
                 break;
             }
             if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
                 // STRING: LEGOLAND 0x004ba888
                 if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) != 0 &&
                     *(unsigned int **)((char *)EditMode.unk8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
-                    struct Sprite *s = GetBlink() != 0 ? DAT_00668e78 : DAT_00668e74;
+                    struct Sprite *s = GetBlink() != 0 ? AttractHighlightOffSprite : AttractHighlightOnSprite;
                     PrintSprite(s, node->x, node->y, 0, 0);
                 }
             }
             if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
-                struct Sprite *s = DAT_00668e7c;
+                struct Sprite *s = AttractNewOffSprite;
                 if (GetBlink() == 0) {
-                    s = DAT_00668e80;
+                    s = AttractNewOnSprite;
                 }
                 PrintSprite(s, node->x, node->y, 0, 0);
             }
@@ -838,12 +838,12 @@ LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
     }
     if (GetBlink() != 0) {
         if ((DAT_006688b8 & 2) != 0 && (char)node->field_18 == 2) {
-            PrintSprite(DAT_00668e84, node->x, node->y, 0, (int *)&ctx);
+            PrintSprite(SideScrollDownLitSprite, node->x, node->y, 0, (int *)&ctx);
             DAT_006688b8 = DAT_006688b8 & 0xfffffffd;
             return 0;
         }
         if ((DAT_006688b8 & 1) != 0 && (char)node->field_18 == 1) {
-            PrintSprite(DAT_00668e88, node->x, node->y, 0, (int *)&ctx);
+            PrintSprite(SideScrollUpLitSprite, node->x, node->y, 0, (int *)&ctx);
             DAT_006688b8 = DAT_006688b8 & 0xfffffffe;
         }
     }
@@ -903,11 +903,11 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
         SetClipping(&clip);
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
         RestoreClipping();
-        PrintSprite(DAT_00668e70, (node->x - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
+        PrintSprite(BarPointerSprite, (node->x - BarPointerSprite->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
         return 0;
     }
     if (MapStats.field_18c == 0) {
-        PrintSprite(DAT_00668e6c, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
+        PrintSprite(NoEnergySprite, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
     }
     return 0;
 }
@@ -1094,11 +1094,11 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int 
 
     DAT_006688b8 = 0;
     AddFullScreenIcon((void *)(param_6 + 6));
-    icon = InsertIcon(param_2 - 3, 0x20, param_6, DAT_00668834);
+    icon = InsertIcon(param_2 - 3, 0x20, param_6, IfSidebar1Sprite);
     icon->field_28 = (void *)RenderGBarSprite;
     icon->field_18 = 10;
     icon->flags = icon->flags | 9;
-    icon = InsertIcon(param_2 - 1, param_3, param_6 + 3, DAT_0066882c);
+    icon = InsertIcon(param_2 - 1, param_3, param_6 + 3, IfSideBUpSprite);
     icon->field_30 = (void *)param_1;
     icon->string_id = 0x95;
     icon->string = GetString(0x95);
@@ -1108,7 +1108,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int 
     icon->field_28 = (void *)RenderScroll_Icons;
     icon->event_handler = (void *)FUN_0046d980;
     icon->field_18 = 1;
-    icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, DAT_00668830);
+    icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, IfSideBDownSprite);
     icon->field_30 = (void *)param_1;
     icon->string_id = 0x94;
     icon->string = GetString(0x94);
@@ -1464,7 +1464,7 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
 
 // FUNCTION: LEGOLAND 0x0046f690
 LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6) {
-    struct IconNode *icon = InsertIcon(a3, a4, a5, DAT_00668828);
+    struct IconNode *icon = InsertIcon(a3, a4, a5, GBarFrameSprite);
     if (icon != NULL) {
         struct Sprite *sprite = src->field_68;
         void *value;
@@ -1514,7 +1514,7 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
 
 // FUNCTION: LEGOLAND 0x0046f7a0
 LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6, void *a7) {
-    struct IconNode *icon = InsertIcon(a3, a4, a5, DAT_00668828);
+    struct IconNode *icon = InsertIcon(a3, a4, a5, GBarFrameSprite);
     if (icon != NULL) {
         struct Sprite *sprite = src->field_14;
         unsigned int flags;
@@ -1550,48 +1550,48 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
 }
 
 // FUNCTION: LEGOLAND 0x0046f890
-void FUN_0046f890(void) {
-    if (DAT_006688d0 != 0) {
+void LoadGBarSprites(void) {
+    if (GBarSpritesLoaded != 0) {
         return;
     }
-    if (DAT_00668828 == 0) {
+    if (GBarFrameSprite == 0) {
         // STRING: LEGOLAND 0x004ba8c8
-        DAT_00668828 = LoadSprite("GBarFrame.lls", 4);
+        GBarFrameSprite = LoadSprite("GBarFrame.lls", 4);
     }
-    if (DAT_0066882c == 0) {
+    if (IfSideBUpSprite == 0) {
         // STRING: LEGOLAND 0x004ba8b8
-        DAT_0066882c = LoadSprite("IF_Side_BUp.lls", 4);
+        IfSideBUpSprite = LoadSprite("IF_Side_BUp.lls", 4);
     }
-    if (DAT_00668830 == 0) {
+    if (IfSideBDownSprite == 0) {
         // STRING: LEGOLAND 0x004ba8a4
-        DAT_00668830 = LoadSprite("IF_Side_BDown.lls", 4);
+        IfSideBDownSprite = LoadSprite("IF_Side_BDown.lls", 4);
     }
-    if (DAT_00668834 == 0) {
+    if (IfSidebar1Sprite == 0) {
         // STRING: LEGOLAND 0x004ba894
-        DAT_00668834 = LoadSprite("IF_Sidebar1.lls", 4);
+        IfSidebar1Sprite = LoadSprite("IF_Sidebar1.lls", 4);
     }
-    DAT_006688d0 = 1;
+    GBarSpritesLoaded = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046f920
-void FUN_0046f920(void) {
-    if (DAT_006688d0 != 0) {
-        DAT_006688d0 = 0;
-        if (DAT_00668828 != 0) {
-            KillSprite(DAT_00668828);
-            DAT_00668828 = 0;
+void UnloadGBarSprites(void) {
+    if (GBarSpritesLoaded != 0) {
+        GBarSpritesLoaded = 0;
+        if (GBarFrameSprite != 0) {
+            KillSprite(GBarFrameSprite);
+            GBarFrameSprite = 0;
         }
-        if (DAT_0066882c != 0) {
-            KillSprite(DAT_0066882c);
-            DAT_0066882c = 0;
+        if (IfSideBUpSprite != 0) {
+            KillSprite(IfSideBUpSprite);
+            IfSideBUpSprite = 0;
         }
-        if (DAT_00668830 != 0) {
-            KillSprite(DAT_00668830);
-            DAT_00668830 = 0;
+        if (IfSideBDownSprite != 0) {
+            KillSprite(IfSideBDownSprite);
+            IfSideBDownSprite = 0;
         }
-        if (DAT_00668834 != 0) {
-            KillSprite(DAT_00668834);
-            DAT_00668834 = 0;
+        if (IfSidebar1Sprite != 0) {
+            KillSprite(IfSidebar1Sprite);
+            IfSidebar1Sprite = 0;
         }
     }
 }
@@ -1956,7 +1956,7 @@ unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
                 flags = sub[2];
                 if ((flags & 0x20000) != 0) {
                     sub[2] = flags & 0xfffdffff;
-                    FUN_00471ca0(node->field_8);
+                    RemoveNewObject(node->field_8);
                 }
                 PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
             } else {

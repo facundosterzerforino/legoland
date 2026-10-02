@@ -512,7 +512,7 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
         FUN_00464ee0(sprite, &r2, off);
         IDirectDrawSurface_Unlock(DAT_0079861c, desc2.lpSurface);
     }
-    IDirectDrawSurface_SetClipper(renderEngine, DAT_00668080);
+    IDirectDrawSurface_SetClipper(renderEngine, DDrawClipper);
     hr = IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x1008000, NULL);
     for (;;) {
         if (hr != 0) {
@@ -526,8 +526,8 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
                 return 0;
             }
             MakeSprite(sprite);
-            if (IDirectDrawSurface_IsLost(DAT_00668070) == 0x887601c2) {
-                if (IDirectDrawSurface_Restore(DAT_00668070) != 0) {
+            if (IDirectDrawSurface_IsLost(PrimarySurface) == 0x887601c2) {
+                if (IDirectDrawSurface_Restore(PrimarySurface) != 0) {
                     break;
                 }
             }
@@ -571,7 +571,7 @@ LEGO_EXPORT unsigned int RenderBlock(int x, int y, int w, int h, unsigned int co
         return 1;
     }
     PushRenderingStatusAndUnlockVideoSurface();
-    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->SetClipper((LPDIRECTDRAWSURFACE)renderEngine, (LPDIRECTDRAWCLIPPER)DAT_00668080);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->SetClipper((LPDIRECTDRAWSURFACE)renderEngine, (LPDIRECTDRAWCLIPPER)DDrawClipper);
     if (((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, NULL, NULL, 0x1000400, &fx) == 0) {
         ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->SetClipper((LPDIRECTDRAWSURFACE)renderEngine, NULL);
         PopRenderingStatus();
@@ -624,7 +624,7 @@ LEGO_EXPORT int RenderTransSprite(struct Sprite *sprite, int x, int y) {
     if (!GetSprite((unsigned int *)&image, sprite)) {
         return 0;
     }
-    switch (DAT_00668088) {
+    switch (DisplayPixelFormat) {
     case 0:
         result = 0;
         break;

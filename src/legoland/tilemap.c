@@ -396,7 +396,7 @@ LEGO_EXPORT void RenderView(void) {
     GetClipping(&clip);
     FUN_00460e00();
     PrintBackground(DAT_00667cd0, DAT_00667cd4);
-    if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == DAT_007fd624)) {
+    if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == PathControlObject)) {
         DAT_00667d40 = 1;
         DAT_00667d48 = (GetTickCount() & 0x100) ? 0xff : 0;
     } else {

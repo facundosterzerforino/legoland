@@ -29,7 +29,7 @@ struct CommandArgs {
 };
 
 // FUNCTION: LEGOLAND 0x004787b0
-int FUN_004787b0(char **pp_str) {
+int IsStringEmpty(char **pp_str) {
     if (strlen(*pp_str) == 0) {
         return 1;
     }

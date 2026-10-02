@@ -112,7 +112,7 @@ int FUN_00470270(void) {
         elem = NULL;
     }
     ride = elem->field_0->ride;
-    if (ride->element == (Element *)DAT_007fdfb0 && DAT_007fdffc == 0x307) {
+    if (ride->element == (Element *)PottingShedHandle && DAT_007fdffc == 0x307) {
         PutWorkerOnRide(DAT_007fdff0, elem);
         DAT_007fdff0->pos.x = (ride->x + x) << 8;
         DAT_007fdff0->dest.x = DAT_007fdff0->pos.x;
@@ -123,7 +123,7 @@ int FUN_00470270(void) {
         PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
         return 1;
     }
-    if (ride->element == (Element *)DAT_007fdfb4 && DAT_007fdffc == 0x308) {
+    if (ride->element == (Element *)MechanicsHutHandle && DAT_007fdffc == 0x308) {
         PutWorkerOnRide(DAT_007fdff0, elem);
         DAT_007fdff0->pos.x = ((ride->x + x) << 8) + 0x80;
         DAT_007fdff0->dest.x = DAT_007fdff0->pos.x;
@@ -134,7 +134,7 @@ int FUN_00470270(void) {
         PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
         return 1;
     }
-    return ride->element == (Element *)DAT_007fdfb8;
+    return ride->element == (Element *)PathControlHandle;
 }
 
 // FUNCTION: LEGOLAND 0x00470410
@@ -185,30 +185,30 @@ WorkOrder *FUN_004704b0(Point *out) {
         ride = elem->field_0->ride;
         if (ride->durability != 0) {
             do {
-            if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
-                if (!(0x4000 & flags)) {
-                    order = AddRepairOrderForObject(ride, pos);
-                    if (order == NULL) {
-                        break;
+                if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->field_38 != 0) {
+                    if (!(0x4000 & flags)) {
+                        order = AddRepairOrderForObject(ride, pos);
+                        if (order == NULL) {
+                            break;
+                        }
+                    }
+                } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
+                    if (!(0x4000 & flags)) {
+                        order = AddRepairOrderForObject(ride, pos);
                     }
                 }
-            } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->field_34 != 0) {
-                if (!(0x4000 & flags)) {
-                    order = AddRepairOrderForObject(ride, pos);
+                if (order != NULL) {
+                    elem->flags |= 0x4000;
+                    if (out != NULL) {
+                        out->x = order->pos.x + order->footprints->x0;
+                        out->y = order->footprints->y1 + order->pos.y;
+                    }
+                    if (DAT_007fdffc == 0x307) {
+                        PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
+                    } else {
+                        PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
+                    }
                 }
-            }
-            if (order != NULL) {
-                elem->flags |= 0x4000;
-                if (out != NULL) {
-                    out->x = order->pos.x + order->footprints->x0;
-                    out->y = order->footprints->y1 + order->pos.y;
-                }
-                if (DAT_007fdffc == 0x307) {
-                    PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
-                } else {
-                    PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
-                }
-            }
             } while (0);
         }
         return order;

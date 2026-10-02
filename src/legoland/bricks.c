@@ -192,7 +192,7 @@ void FUN_00457a70(void) {
         pt.x = v & 0xff;
         pt.y = v >> 8;
         DAT_00810144 = 0;
-        if (DAT_0080ff6c != NULL && (DAT_0080ff6c == DAT_007fd624 || DAT_0080ff6c == DAT_0081cd08)) {
+        if (DAT_0080ff6c != NULL && (DAT_0080ff6c == PathControlObject || DAT_0080ff6c == DAT_0081cd08)) {
             GamePad |= 0x800;
         } else {
             GamePad &= ~0x800;
@@ -305,7 +305,7 @@ void FUN_00457a70(void) {
         } else {
             SetPointer(3);
         }
-        if (EditMode.unk8 == DAT_007fd624 || EditMode.unk8 == DAT_0081cd08) {
+        if (EditMode.unk8 == PathControlObject || EditMode.unk8 == DAT_0081cd08) {
             GamePad |= 0x800;
         } else {
             GamePad &= ~0x800;
@@ -319,7 +319,7 @@ void FUN_00457a70(void) {
                 if (EditMode.unk8->flags & 0x2000000) {
                     DAT_00667cd8 = 1;
                     DAT_00667cdc = 0;
-                    if (EditMode.unk8 == DAT_007fd624) {
+                    if (EditMode.unk8 == PathControlObject) {
                         for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a70) {
                             for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
                                 pt.x = x - EditMode.unk8->footprint.x0;
