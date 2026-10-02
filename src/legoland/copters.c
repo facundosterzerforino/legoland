@@ -711,7 +711,8 @@ void CoptersUpdate(struct Element *elem) {
     struct CopterChainNode *link;
     struct Ride *ride = elem->ride;
     struct RideNode *next;
-    struct RideNode *node;
+    struct RideNode *volatile node;
+    TileId *tile;
     int spr;
     int spr2;
 
@@ -720,12 +721,13 @@ void CoptersUpdate(struct Element *elem) {
     while (node != NULL) {
         next = node->next;
         b = node->rider;
-        cn = CoptersFindNode((struct CopterSource *)&node->tile);
+        tile = &node->tile;
+        cn = CoptersFindNode((struct CopterSource *)tile);
         if (cn == NULL) {
             break;
         }
-        x = node->tile.pos.x + ride->x;
-        y = node->tile.pos.y + ride->y;
+        x = ride->x + tile->pos.x;
+        y = tile->pos.y + ride->y;
         if (b->field_e == 0) {
             switch (b->param_action) {
             case 0:
