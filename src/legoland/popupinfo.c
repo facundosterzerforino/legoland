@@ -819,11 +819,11 @@ void DrawNewObjectPopup(void) {
     PrevPopUpIcon->x = 0xc1;
     PrevPopUpIcon->y = 0x46;
     NextPopUpIcon->flags = NextPopUpIcon->flags & 0xfffffbff;
-    NextPopUpIcon->x = NewPopMockSprite->width - ClosePopUpIcon->field_10 + 0xbb;
+    NextPopUpIcon->x = NewPopMockSprite->width - ClosePopUpIcon->width + 0xbb;
     NextPopUpIcon->y = 0x46;
     ClosePopUpIcon->flags = ClosePopUpIcon->flags & 0xfffffbff;
-    ClosePopUpIcon->x = NewPopMockSprite->width - ClosePopUpIcon->field_10 + 0xbb;
-    ClosePopUpIcon->y = NewPopMockSprite->height - ClosePopUpIcon->field_12 + 0x25;
+    ClosePopUpIcon->x = NewPopMockSprite->width - ClosePopUpIcon->width + 0xbb;
+    ClosePopUpIcon->y = NewPopMockSprite->height - ClosePopUpIcon->height + 0x25;
     PushRenderingStatusAndUnlockVideoSurface();
     if (NewObjects.count == 1) {
         // STRING: LEGOLAND 0x004bad04
@@ -842,16 +842,16 @@ void DrawNewObjectPopup(void) {
     FUN_00455e50(local_80, 0xf0, 0xd1, 0x43, 0x12, 2, 1, 0xff0000, 0xffffff);
     PopRenderingStatus();
     PrintSprite(NewObjects.sprites[NewObjects.current], 0xc4, 100, 0, 0);
-    if (((unsigned int)(int)ClosePopUpIcon->field_10 <= (unsigned int)(DAT_00813a44.x - ClosePopUpIcon->x)) ||
-        ((unsigned int)(int)ClosePopUpIcon->field_12 <= (unsigned int)(DAT_00813a44.y - ClosePopUpIcon->y))) {
+    if (((unsigned int)(int)ClosePopUpIcon->width <= (unsigned int)(DAT_00813a44.x - ClosePopUpIcon->x)) ||
+        ((unsigned int)(int)ClosePopUpIcon->height <= (unsigned int)(DAT_00813a44.y - ClosePopUpIcon->y))) {
         SetIconSprite((struct IconNode *)ClosePopUpIcon, PuClosePopUpSprite);
     }
-    if (((unsigned int)(int)NextPopUpIcon->field_10 <= (unsigned int)(DAT_00813a44.x - NextPopUpIcon->x)) ||
-        ((unsigned int)(int)NextPopUpIcon->field_12 <= (unsigned int)(DAT_00813a44.y - NextPopUpIcon->y))) {
+    if (((unsigned int)(int)NextPopUpIcon->width <= (unsigned int)(DAT_00813a44.x - NextPopUpIcon->x)) ||
+        ((unsigned int)(int)NextPopUpIcon->height <= (unsigned int)(DAT_00813a44.y - NextPopUpIcon->y))) {
         SetIconSprite((struct IconNode *)NextPopUpIcon, NextIconSprite);
     }
-    if (((unsigned int)(int)PrevPopUpIcon->field_10 <= (unsigned int)(DAT_00813a44.x - PrevPopUpIcon->x)) ||
-        ((unsigned int)(int)PrevPopUpIcon->field_12 <= (unsigned int)(DAT_00813a44.y - PrevPopUpIcon->y))) {
+    if (((unsigned int)(int)PrevPopUpIcon->width <= (unsigned int)(DAT_00813a44.x - PrevPopUpIcon->x)) ||
+        ((unsigned int)(int)PrevPopUpIcon->height <= (unsigned int)(DAT_00813a44.y - PrevPopUpIcon->y))) {
         SetIconSprite((struct IconNode *)PrevPopUpIcon, PrevIconSprite);
     }
     if (NewObjects.current == 0) {
@@ -880,9 +880,9 @@ int FUN_004723f0(void) {
     local_8[0] = v & 0xff;
     local_8[1] = v >> 8;
     cls = *(struct ObjClass **)((char *)DAT_007fdec0.ptr + 0xc);
-    QueryCursor.field_1408 = v >> 8;
+    QueryCursor.tile_y = v >> 8;
     QueryClass = cls;
-    QueryCursor.field_1404 = v & 0xff;
+    QueryCursor.tile_x = v & 0xff;
     cls->method_94(cls->field_c4, local_8);
     BuildCursorPtr(&QueryCursor, 0, 0);
     FUN_0045f4b0(&QueryCursor);
@@ -1275,10 +1275,10 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
         local_8[0] = v & 0xff;
         local_8[1] = v >> 8;
         cls = *(struct ObjClass **)((char *)DAT_007fdec0.ptr + 0xc);
-        QueryCursor.field_1408 = local_8[1];
+        QueryCursor.tile_y = local_8[1];
         QueryObj.pos.y = (unsigned char)local_8[1];
         QueryClass = cls;
-        QueryCursor.field_1404 = local_8[0];
+        QueryCursor.tile_x = local_8[0];
         QueryObj.pos.x = (unsigned char)local_8[0];
         cls->method_94(cls->field_c4, local_8);
         BuildCursorPtr(&QueryCursor, 0, 0);

@@ -546,8 +546,8 @@ LEGO_EXPORT int InitGameInterface(int a) {
     ResetMoveAWorkerStruct();
     DAT_007fdd80 = 2;
     DAT_007fdd8c = 0x86;
-    lpConfig->field_20 = 0;
-    lpConfig->field_10 = 0x280;
+    lpConfig->view_x = 0;
+    lpConfig->view_width = 0x280;
     DAT_007fdd84 = 1;
     DAT_007fdd88 = 0;
     DAT_004baff8 = 5;
@@ -1045,8 +1045,8 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     y = icon->y;
     panel->field_20 = y;
     panel->field_10 = y;
-    panel->field_24 = icon->field_10 + icon->x;
-    panel->field_28 = icon->field_12 + icon->y;
+    panel->field_24 = icon->width + icon->x;
+    panel->field_28 = icon->height + icon->y;
     panel->field_4 = 1;
     panel->group = (short)param_1;
     SetNewGroup_Callbacks(0, (void *)RenderBuildObjectIcon, (void *)FUN_00470000);
@@ -1082,7 +1082,7 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     AddFullScreenIcon((void *)(param_1 + 6));
     panel->field_14 = x;
     panel->field_18 = y;
-    if (y < panel->icon->field_12 + panel->icon->y) {
+    if (y < panel->icon->height + panel->icon->y) {
         icon = FindIcon((unsigned short)(param_1 + 4));
         if (icon != NULL) {
             icon->y = (short)param_3 + (short)param_4 - 0x1e;

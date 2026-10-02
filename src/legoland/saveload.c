@@ -439,8 +439,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
             DAT_007fda60.field_38 = bloke->person->field_38;
             DAT_007fda60.depth = bloke->person->depth;
             DAT_007fda60.rotation = bloke->person->rotation;
-            DAT_007fda60.person_4c = bloke->person->field_4c;
-            DAT_007fda60.anim = (unsigned int)bloke->person->field_88;
+            DAT_007fda60.person_4c = bloke->person->frame;
+            DAT_007fda60.anim = (unsigned int)bloke->person->anim;
             DAT_007fda60.sort_id = bloke->person->sort_id;
             DAT_007fda60.field_38 = bloke->person->field_38;
             memcpy(DAT_007fda60.m, bloke->person->m, sizeof(DAT_007fda60.m));
@@ -555,7 +555,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             ride = DAT_00669200[i]->ride;
             SaveGameWrite(ride->element->name, 8);
             if (ride->type != 2 && ride->type != 0) {
-                if (SaveGameWrite(ride->counters, lpConfig->field_1a) == 0) {
+                if (SaveGameWrite(ride->counters, lpConfig->max_blokes) == 0) {
                     // STRING: LEGOLAND 0x004bc5c4
                     {
                         LogPrintf("BeenOn Flags for %s Save Failed", ride->element->name);
@@ -980,8 +980,8 @@ LEGO_EXPORT int LoadGame(char *path) {
             bloke->person->field_38 = DAT_007fda60.field_38;
             bloke->person->depth = DAT_007fda60.depth;
             bloke->person->rotation = DAT_007fda60.rotation;
-            bloke->person->field_4c = DAT_007fda60.person_4c;
-            bloke->person->field_88 = DAT_007fda60.anim;
+            bloke->person->frame = DAT_007fda60.person_4c;
+            bloke->person->anim = DAT_007fda60.anim;
             bloke->person->sort_id = DAT_007fda60.sort_id;
             bloke->person->field_38 = DAT_007fda60.field_38;
             memcpy(bloke->person->m, DAT_007fda60.m, sizeof(DAT_007fda60.m));
@@ -1041,8 +1041,8 @@ LEGO_EXPORT int LoadGame(char *path) {
                 // STRING: LEGOLAND 0x004bcb90
                 DBPrintf("%s\n", label);
                 if (ride->type != 2 && ride->type != 0) {
-                    ride->counters = malloc(lpConfig->field_1a);
-                    if (SaveGameRead(ride->counters, lpConfig->field_1a) == 0) {
+                    ride->counters = malloc(lpConfig->max_blokes);
+                    if (SaveGameRead(ride->counters, lpConfig->max_blokes) == 0) {
                         LOAD_FAIL();
                     }
                 }

@@ -404,9 +404,9 @@ void FUN_00417430(Element *obj) {
                     cy >>= 9;
                 }
                 sx = Get_XScroll();
-                cx = (lpConfig->field_20 - sx) + tw;
+                cx = (lpConfig->view_x - sx) + tw;
                 sy = Get_YScroll();
-                cy = cy + (lpConfig->field_22 - sy);
+                cy = cy + (lpConfig->view_y - sy);
                 cx = cx - DAT_004cbfc8 / 2 - coords.x;
                 bloke->flags |= 0x80;
                 cy = cy - DAT_004cbfcc[0] / 2 - coords.y;

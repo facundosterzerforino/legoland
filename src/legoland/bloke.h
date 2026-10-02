@@ -27,15 +27,15 @@ struct BNVPath {
     /* 0x00 */ struct BinVFile *file;
     /* 0x04 */ unsigned int field_4;
     /* 0x08 */ char name[0x14];
-    /* 0x1c */ float field_1c;
-    /* 0x20 */ float field_20;
+    /* 0x1c */ float z_scale;
+    /* 0x20 */ float z_origin;
     /* 0x24 */ float x;
     /* 0x28 */ float y;
     /* 0x2c */ unsigned char pad_2c[0x30 - 0x2c];
     /* 0x30 */ float dx;
     /* 0x34 */ float dy;
     /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
-    /* 0x3c */ float field_3c;
+    /* 0x3c */ float z_skew;
     /* 0x40 */ unsigned int frame_index;
     /* 0x44 */ unsigned int field_44;
 };

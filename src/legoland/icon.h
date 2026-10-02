@@ -13,8 +13,8 @@ struct IconNode {
     /* 0x08 */ void *field_8;
     /* 0x0c */ short x;
     /* 0x0e */ short y;
-    /* 0x10 */ short field_10;
-    /* 0x12 */ short field_12;
+    /* 0x10 */ short width;
+    /* 0x12 */ short height;
     /* 0x14 */ unsigned short id;
     /* 0x16 */ unsigned short field_16;
     /* 0x18 */ union {

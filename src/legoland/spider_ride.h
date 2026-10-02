@@ -4,7 +4,7 @@
 #include "objclass.h"
 
 struct SpiderNode {
-    unsigned short field_0;
+    unsigned short tile_id;
     unsigned char pad_2[2];
     char field_4;
     unsigned char pad_5[0x27];

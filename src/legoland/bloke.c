@@ -138,8 +138,8 @@ int FUN_00482df0(Bloke *bloke, int index, int mul) {
 // FUNCTION: LEGOLAND 0x00482e50
 void AllocateBlokePool(void) {
     int i;
-    BlokePool = malloc(lpConfig->field_1a * sizeof(Bloke));
-    for (i = 0; i < lpConfig->field_1a; i++) {
+    BlokePool = malloc(lpConfig->max_blokes * sizeof(Bloke));
+    for (i = 0; i < lpConfig->max_blokes; i++) {
         memset(&BlokePool[i], 0, sizeof(Bloke));
     }
 }
@@ -158,7 +158,7 @@ LEGO_EXPORT Bloke *NewBloke(void) {
     Bloke *bloke = NULL;
     int i;
 
-    for (i = 0; i < lpConfig->field_1a; i++) {
+    for (i = 0; i < lpConfig->max_blokes; i++) {
         if ((BlokePool[i].flags & 1) == 0) {
             bloke = &BlokePool[i];
             break;
@@ -220,7 +220,7 @@ LEGO_EXPORT void DestroyBloke(Bloke *bloke) {
         OutputDebugStringA("DestroyBloke: Badly linked list\n");
     }
     source.type = 1;
-    source.field_4 = bloke;
+    source.bloke = bloke;
     KillAllSamplesFromSource(&source);
     RemovePersonFromList(bloke->person);
     FreePerson(bloke->person);
@@ -1213,16 +1213,16 @@ LEGO_EXPORT BNVPath *NewBNVPath(BinVFile *file, unsigned int param_2, char *name
     float scale = 49152.0f / (param_4 - param_5);
     path->file = file;
     strcpy(path->name, name);
-    path->field_1c = scale;
+    path->z_scale = scale;
     path->frame_index = 0;
-    path->field_20 = param_5;
+    path->z_origin = param_5;
     path->field_44 = 1;
     path->x = coords[0];
     path->y = coords[1];
     frame = GetBinVFrame(file, 0);
     object = GetObjectFromName(frame, name);
     vertex = GetVertex(object, 0);
-    path->field_3c = GetZSkew(file, object, vertex);
+    path->z_skew = GetZSkew(file, object, vertex);
     path->field_4 = param_2;
     return path;
 }
@@ -1305,14 +1305,14 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, struct BNVPath *path) {
         }
         dx = sumX * 0.125 - path->x;
         dy = sumY * 0.125 - path->y;
-        depth = (sumZ * 0.125 - path->field_20) * path->field_1c;
+        depth = (sumZ * 0.125 - path->z_origin) * path->z_scale;
         z = depth + 8192.0f;
         bloke->person->field_34 = z >> 8;
         angle = atan2(dy, dx);
         path->dx = bloke->field_7f * cos(angle) * 0.25;
         path->dy = bloke->field_7f * sin(angle) * 0.25;
     }
-    person->field_38 = path->field_3c + path->field_3c;
+    person->field_38 = path->z_skew + path->z_skew;
     bloke->screen_x = path->x * 0.5f;
     bloke->screen_y = path->y * 0.5f;
     AdvanceBlokeFrame(bloke);
@@ -1394,7 +1394,7 @@ LEGO_EXPORT void BNVPath_SetDFrame(Bloke *bloke, BNVPath *path, int frame) {
         }
         dx = sumX * 0.125 - path->x;
         dy = sumY * 0.125 - path->y;
-        depth = (sumZ * 0.125 - path->field_20) * path->field_1c;
+        depth = (sumZ * 0.125 - path->z_origin) * path->z_scale;
         z = depth + 8192.0f;
         bloke->person->field_34 = z >> 8;
         angle = atan2(dy, dx);

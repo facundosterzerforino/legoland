@@ -249,8 +249,8 @@ void FUN_00403430(struct CatapultItem *node) {
     node->field_8 = 1;
     node->field_d = 0;
     params.field_0 = 2;
-    params.field_8 = node->field_0;
-    params.field_c = node->field_1;
+    params.x = node->field_0;
+    params.y = node->field_1;
     PlayInstanceOfSample(((struct CatapultFX *)Catapult_SFX)->field_8[9], 0, 1, &params);
 }
 
@@ -277,8 +277,8 @@ void FUN_004034c0(unsigned char *data, unsigned int index) {
     data[index + 0x20] = 1;
     data[index + 0x24] = 0;
     params.field_0 = 2;
-    params.field_8 = data[0];
-    params.field_c = data[1];
+    params.x = data[0];
+    params.y = data[1];
     {
         int r = rand() % 3;
         PlayInstanceOfSample(fx->field_8[r * 3], 0, 1, &params);

@@ -474,7 +474,7 @@ struct RideQueueEntry *FUN_00412650(unsigned short param_1) {
         return NULL;
     }
     while (entry != NULL) {
-        if (entry->field_8 == param_1 && (entry->field_14 & 0xf) == 6) {
+        if (entry->id == param_1 && (entry->field_14 & 0xf) == 6) {
             return entry;
         }
         entry = entry->next;

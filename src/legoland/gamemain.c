@@ -653,8 +653,8 @@ void FUN_004784c0(void) {
     lpConfig->field_30 = 0;
     lpConfig->field_38 = 1;
     lpConfig->field_34 = 1;
-    lpConfig->field_1a = 0xc8;
-    MapStats.capacity_max = lpConfig->field_1a;
+    lpConfig->max_blokes = 0xc8;
+    MapStats.capacity_max = lpConfig->max_blokes;
     MapStats.capacity_min = 0;
 
     FUN_004689a0();

@@ -177,7 +177,7 @@ struct Person *FUN_0043f8c0(struct Bloke *param_1, unsigned int param_2) {
         person->bloke = param_1;
         person->field_7c = 0xffffffff;
         person->field_80 = 0xffffffff;
-        person->field_88 = 0xffffffff;
+        person->anim = 0xffffffff;
         person->field_90 = 0xffffffff;
         person->field_8c = 0xffffffff;
         person->field_10 = 0x40000000;
@@ -185,7 +185,7 @@ struct Person *FUN_0043f8c0(struct Bloke *param_1, unsigned int param_2) {
         person->field_18 = 0x40000000;
         person->prev = 0;
         person->next = 0;
-        person->field_4c = 0;
+        person->frame = 0;
         person->field_1c = 0;
         person->field_20 = 0;
         person->field_2c = 0;
@@ -299,9 +299,9 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
     if (IntersectRect(&clip, &bounds, &clip) != 0) {
         OffsetRect(&clip, -(int)person->field_1c, -(int)person->field_20);
         if (GetVideoSurface(&vid) != 0) {
-            ptr = (unsigned int)vid.field_c + person->field_20 * vid.field_0 + person->field_1c * 2;
-            FUN_00485f30(ptr, vid.field_0, vid.field_4, vid.field_8);
-            FUN_00488700((unsigned int)vid.field_c, &DAT_00813a44);
+            ptr = (unsigned int)vid.bits + person->field_20 * vid.pitch + person->field_1c * 2;
+            FUN_00485f30(ptr, vid.pitch, vid.field_4, vid.field_8);
+            FUN_00488700((unsigned int)vid.bits, &DAT_00813a44);
             Render_SetViewport(&clip);
             __asm { fstcw word ptr [DAT_00638358] }
             __asm {fldcw word ptr[DAT_004b7abc]} FUN_00440a30(person);
@@ -427,12 +427,12 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     s = (short)Get_YScroll();
     pt.y -= s;
     person->sort_id = pt.y;
-    pt.x += lpConfig->field_20;
-    pt.y += lpConfig->field_22 - (bloke->field_70 >> 1);
+    pt.x += lpConfig->view_x;
+    pt.y += lpConfig->view_y - (bloke->field_70 >> 1);
     AdjustBlokePosition(&pt);
     SetPersonPosition(person, pt.x, pt.y);
     if (!(bloke->flags & 0x100)) {
-        person->field_4c = bloke->field_74;
+        person->frame = bloke->field_74;
     }
 }
 
@@ -615,9 +615,9 @@ LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, int anim) {
     void *context;
 
     person = bloke->person;
-    if (person->field_88 != (unsigned int)anim) {
+    if (person->anim != (unsigned int)anim) {
         kind = person->field_8;
-        person->field_88 = anim;
+        person->anim = anim;
         switch (kind) {
         case 1:
             if (person->random == 0) {
@@ -685,7 +685,7 @@ LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) {
             base = &TracyWalkMesh;
             break;
         }
-        result = (struct Anim3D *)base[person->field_88];
+        result = (struct Anim3D *)base[person->anim];
     }
     return result;
 }
@@ -712,7 +712,7 @@ LEGO_EXPORT struct Anim3D *GetBlokeAnim3DFromPerson(struct Person *person) {
             base = &TracyWalkMesh;
             break;
         }
-        result = (struct Anim3D *)base[person->field_88];
+        result = (struct Anim3D *)base[person->anim];
     }
     return result;
 }
@@ -725,7 +725,7 @@ LEGO_EXPORT void BlokeSetFrame(struct Bloke *bloke, int frame) {
     person = bloke->person;
     if (person != 0) {
         anim = GetBlokeAnim3D(bloke);
-        person->field_4c = frame % anim->divisor;
+        person->frame = frame % anim->divisor;
     }
 }
 
@@ -738,10 +738,10 @@ LEGO_EXPORT int PlayBlokeAnim(struct Bloke *bloke) {
     person = bloke->person;
     if (person != 0) {
         anim = GetBlokeAnim3DFromPerson(person);
-        frame = person->field_4c + 1;
-        person->field_4c = frame;
+        frame = person->frame + 1;
+        person->frame = frame;
         if (anim->divisor <= frame) {
-            person->field_4c = 0;
+            person->frame = 0;
             return 1;
         }
     }
@@ -756,7 +756,7 @@ LEGO_EXPORT void BlokeAnimNextFrame(struct Bloke *bloke) {
     person = bloke->person;
     if (person != 0) {
         anim = GetBlokeAnim3D(bloke);
-        person->field_4c = (person->field_4c + 1) % anim->divisor;
+        person->frame = (person->frame + 1) % anim->divisor;
     }
 }
 

@@ -10,7 +10,7 @@ struct CarouselNode {
     /* 0x04 */ unsigned short id;
     /* 0x06 */ unsigned char field_6;
     /* 0x07 */ unsigned char field_7;
-    /* 0x08 */ unsigned char field_8;
+    /* 0x08 */ unsigned char frame;
     /* 0x09 */ unsigned char pad_9[0xc - 0x9];
     /* 0x0c */ unsigned int flags;
     /* 0x10 */ unsigned char field_10;

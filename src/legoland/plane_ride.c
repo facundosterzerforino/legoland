@@ -99,8 +99,8 @@ void RemovePlaneRideNode(struct PlaneRideNode *node) {
         }
     }
     src.type = 2;
-    src.field_8 = node->b0;
-    src.field_c = node->b1;
+    src.x = node->b0;
+    src.y = node->b1;
     UnSourceAndFadeAllSamplesFromSource(&src, -200);
     free(node);
 }
@@ -585,8 +585,8 @@ void FUN_0043e410(struct Element *elem) {
                 iv12 = (ix - iy) * tw;
                 sXs = Get_XScroll();
                 sYs = Get_YScroll();
-                coords[0] = ((((unsigned int)lpConfig->field_20 - (int)sXs) + (iv12 >> 9)) - DAT_0081cae8 / 2 - sc.x) * 2;
-                coords[1] = (((iv13 >> 9) + ((unsigned int)lpConfig->field_22 - (int)sYs)) - DAT_0081caec / 2 - sc.y) * 2;
+                coords[0] = ((((unsigned int)lpConfig->view_x - (int)sXs) + (iv12 >> 9)) - DAT_0081cae8 / 2 - sc.x) * 2;
+                coords[1] = (((iv13 >> 9) + ((unsigned int)lpConfig->view_y - (int)sYs)) - DAT_0081caec / 2 - sc.y) * 2;
                 bloke->flags |= 0x80;
                 bloke->person->sprite = DAT_0062fe98;
                 bloke->person->field_30 = 1;

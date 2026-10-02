@@ -307,8 +307,8 @@ int FUN_00478d30(int param_1, int param_2) {
         GetTileDimensions(&param_2, &param_1);
         local[0] = ((a - b) * param_2) >> 9;
         local[1] = ((a + b) * param_1) >> 9;
-        ScrollX = (local[0] - (lpConfig->field_0 >> 1)) << 8;
-        ScrollY = (local[1] - (lpConfig->field_2 >> 1)) << 8;
+        ScrollX = (local[0] - (lpConfig->screen_width >> 1)) << 8;
+        ScrollY = (local[1] - (lpConfig->screen_height >> 1)) << 8;
         return 1;
     }
     FUN_0046bda0((unsigned int *)local);
@@ -1589,8 +1589,8 @@ int FUN_0047ac80(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 1, 1) == 0) {
             return 0;
         }
-        lpConfig->field_1a = (unsigned short)atoi((char *)arg->field_4);
-        MapStats.capacity_max = lpConfig->field_1a;
+        lpConfig->max_blokes = (unsigned short)atoi((char *)arg->field_4);
+        MapStats.capacity_max = lpConfig->max_blokes;
         MapStats.capacity_min = 0;
     }
     return 1;

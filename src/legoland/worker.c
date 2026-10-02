@@ -219,8 +219,8 @@ WorkOrder *FUN_00499830(Element *element, int *coords, int mode) {
         order->count = 0;
         for (cursor = &EditCursor; cursor != NULL; cursor = cursor->next) {
             if ((cursor->field_1828 & 0x3000) == 0) {
-                dx = cursor->field_1404 - order->pos.x;
-                dy = cursor->field_1408 - order->pos.y;
+                dx = cursor->tile_x - order->pos.x;
+                dy = cursor->tile_y - order->pos.y;
                 for (fp = &cursor->footprint; fp != NULL; fp = fp->next) {
                     order->footprints[order->count] = *fp;
                     order->footprints[order->count].x0 += dx;
@@ -997,9 +997,9 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
         result = BuildObject(element, &pos->x);
     }
     if (result != 0 && DAT_00667cd8 == 0) {
-        source.field_8 = pos->x;
+        source.x = pos->x;
         source.type = 2;
-        source.field_c = pos->y;
+        source.y = pos->y;
         PlayInstanceOfSample(DAT_004b9248, 0, 1, &source);
     }
     return result;
@@ -1828,8 +1828,8 @@ void SaveGardeners(void) {
         rec.scale = worker->person->scale;
         rec.screen = worker->person->screen;
         rec.rotation = worker->person->rotation;
-        rec.person_4c = worker->person->field_4c;
-        rec.anim = worker->person->field_88;
+        rec.person_4c = worker->person->frame;
+        rec.anim = worker->person->anim;
         rec.sort_id = worker->person->sort_id;
         memcpy(rec.m, worker->person->m, sizeof(rec.m));
         rec.prev_param = worker->prev_param;
@@ -1894,8 +1894,8 @@ void LoadGardeners(void) {
         worker->person->scale = rec.scale;
         worker->person->screen = rec.screen;
         worker->person->rotation = rec.rotation;
-        worker->person->field_4c = rec.person_4c;
-        worker->person->field_88 = 0xffffffff;
+        worker->person->frame = rec.person_4c;
+        worker->person->anim = 0xffffffff;
         worker->person->sort_id = rec.sort_id;
         memcpy(worker->person->m, rec.m, sizeof(rec.m));
         worker->prev_param = rec.prev_param;
@@ -1971,8 +1971,8 @@ void SaveMechanics(void) {
         rec.scale = worker->person->scale;
         rec.screen = worker->person->screen;
         rec.rotation = worker->person->rotation;
-        rec.person_4c = worker->person->field_4c;
-        rec.anim = worker->person->field_88;
+        rec.person_4c = worker->person->frame;
+        rec.anim = worker->person->anim;
         rec.sort_id = worker->person->sort_id;
         memcpy(rec.m, worker->person->m, sizeof(rec.m));
         rec.prev_param = worker->prev_param;
@@ -2037,8 +2037,8 @@ void LoadMechanics(void) {
         worker->person->scale = rec.scale;
         worker->person->screen = rec.screen;
         worker->person->rotation = rec.rotation;
-        worker->person->field_4c = rec.person_4c;
-        worker->person->field_88 = 0xffffffff;
+        worker->person->frame = rec.person_4c;
+        worker->person->anim = 0xffffffff;
         worker->person->sort_id = rec.sort_id;
         memcpy(worker->person->m, rec.m, sizeof(rec.m));
         worker->prev_param = rec.prev_param;

@@ -193,7 +193,7 @@ void FUN_0048abb0(void) {
     DAT_00667c4c = FUN_0047afb0(buf);
     SetBricksLimited(0);
     FUN_0048ab60();
-    AllocBlokeCounters(lpConfig->field_1a);
+    AllocBlokeCounters(lpConfig->max_blokes);
     FUN_00458940();
     MapStats.field_3a0 = 0;
     FUN_00489ee0();
@@ -491,8 +491,8 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
     y = icon->y;
     group->field_20 = y;
     group->field_10 = y;
-    group->field_24 = icon->field_10 + icon->x;
-    group->field_28 = icon->field_12 + icon->y;
+    group->field_24 = icon->width + icon->x;
+    group->field_28 = icon->height + icon->y;
     group->field_4 = 1;
     group->field_0 = (short)a;
     SetNewGroup_Callbacks(0, (void *)RenderFreePlayIcons, (void *)FUN_0048b000);

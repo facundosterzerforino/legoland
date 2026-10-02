@@ -250,7 +250,7 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                         isOrder = 1;
                     }
                 } else {
-                    if (Hover.type == 0x10a || Hover.type == 2 || DAT_00813a44.y < 0x20 || DAT_00813a44.y >= 0x174 || DAT_00813a44.x < lpConfig->field_20 + 9) {
+                    if (Hover.type == 0x10a || Hover.type == 2 || DAT_00813a44.y < 0x20 || DAT_00813a44.y >= 0x174 || DAT_00813a44.x < lpConfig->view_x + 9) {
                         break;
                     }
                     ScreenToMapRef(&DAT_00813a44.x, pt, 0);

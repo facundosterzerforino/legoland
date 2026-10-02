@@ -43,7 +43,7 @@ void FUN_0043bdb0(void *param1) {
         return;
     }
     memset(block, 0, 0x34);
-    block->field_4 = ((struct BarrelSource *)param1)->field_0;
+    block->tile_id = ((struct BarrelSource *)param1)->field_0;
     block->field_8 = 0;
     block->next = DAT_0062fe08;
     DAT_0062fe08 = block;
@@ -80,7 +80,7 @@ struct BarrelNode *FUN_0043be40(unsigned short *key) {
 
     if (cur != NULL) {
         do {
-            if (memcmp(&cur->field_4, key, 2) == 0) {
+            if (memcmp(&cur->tile_id, key, 2) == 0) {
                 return cur;
             }
             cur = cur->next;
@@ -442,7 +442,7 @@ void FUN_0043c7f0(struct BarrelNode *node) {
         int v = ++node->field_14;
         c = node->field_10;
         if (c == 0) {
-            if (GetAllBlokesOffRide(DAT_0062fde4, node->field_4) == 0) {
+            if (GetAllBlokesOffRide(DAT_0062fde4, node->tile_id) == 0) {
                 return;
             }
             FUN_0043c2f0(node);
@@ -465,13 +465,13 @@ void FUN_0043c7f0(struct BarrelNode *node) {
     } else if (node->field_6 != 0) {
         if (node->field_1c == 0) {
             node->field_c = flags | 0x4000;
-            Ride_SetFlagToNotLetAnyoneOn(&node->field_4);
+            Ride_SetFlagToNotLetAnyoneOn(&node->tile_id);
         } else {
             node->field_1c--;
         }
     }
     for (; r != NULL; r = r->next) {
-        if (node->field_4 == r->tile.id && r->rider->field_35 == 1) {
+        if (node->tile_id == r->tile.id && r->rider->field_35 == 1) {
             sprintf(&DAT_004b78b4[8], "%02d", r->rider->field_36);
             SetBlokePositionFromBNV(SpinningBarrelsBNV, r->rider, DAT_004b78b4, node->field_8, -1617922.25f, -1618065.75f, 0);
         }
@@ -540,8 +540,8 @@ void FUN_0043c950(struct Element *elem) {
                 iv12 = (ix - iy) * tw;
                 iv12 >>= 9;
                 iv13 >>= 9;
-                coords[0] = ((((unsigned int)lpConfig->field_20 - Get_XScroll()) + iv12) - DAT_0062fdd8.x / 2 - sc.x) * 2;
-                coords[1] = ((iv13 + ((unsigned int)lpConfig->field_22 - Get_YScroll())) - DAT_0062fdd8.y / 2 - sc.y) * 2;
+                coords[0] = ((((unsigned int)lpConfig->view_x - Get_XScroll()) + iv12) - DAT_0062fdd8.x / 2 - sc.x) * 2;
+                coords[1] = ((iv13 + ((unsigned int)lpConfig->view_y - Get_YScroll())) - DAT_0062fdd8.y / 2 - sc.y) * 2;
                 bloke->person->sprite = ZSpinningBarrelsSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617922.25f, -1618065.75f);
@@ -616,7 +616,7 @@ void FUN_0043c950(struct Element *elem) {
                 bloke->flags &= 0xfff7;
                 if (--node->field_7 == 0) {
                     node->field_6 = 0;
-                    Ride_ClearFlagToNotLetAnyoneOn(&node->field_4);
+                    Ride_ClearFlagToNotLetAnyoneOn(&node->tile_id);
                 }
                 break;
             }

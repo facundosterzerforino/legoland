@@ -158,7 +158,7 @@ void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2)
     char dir;
 
     bloke = param_2->bloke;
-    base = FUN_0043a7a0((struct AnimLayout *)DAT_004b7758[bloke->field_50].field_4, bloke->field_4a, bloke->field_38);
+    base = FUN_0043a7a0((struct AnimLayout *)DAT_004b7758[bloke->field_50].anim_layout, bloke->field_4a, bloke->field_38);
     ride = (struct SpaceTowerRide *)DAT_0062fd74;
     base.x += (param_2->coord.x + ride->field_c) << 8;
     base.y += (param_2->coord.y + ride->field_10) << 8;
@@ -178,7 +178,7 @@ void FUN_0043a8c0(struct SpaceTowerRideNode *param_1) {
     struct AnimEntry *entry;
 
     bloke = param_1->bloke;
-    layout = (struct AnimLayout *)DAT_004b7758[bloke->field_50].field_4;
+    layout = (struct AnimLayout *)DAT_004b7758[bloke->field_50].anim_layout;
     entry = layout->entries[bloke->field_4a];
     if ((int)bloke->field_4a >= layout->count) {
         bloke->param_action = bloke->param_action + '\x01';
@@ -426,7 +426,7 @@ int FUN_0043ad00(unsigned char *param_1, int param_2) {
     GetTileDimensions(&w, &h);
     p.y = ((p.y + p.x) * h) >> 9;
     Get_XScroll();
-    return lpConfig->field_22 - (short)Get_YScroll() + p.y;
+    return lpConfig->view_y - (short)Get_YScroll() + p.y;
 }
 
 // FUNCTION: LEGOLAND 0x0043ad90
@@ -508,7 +508,7 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->id, param_4, 2) == 0) {
                 bloke = node->bloke;
-                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].field_4 == &DAT_004b7750) {
+                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].anim_layout == &DAT_004b7750) {
                     IP_RenderBlokeIn3DNow(bloke);
                 }
             }
@@ -522,7 +522,7 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->id, param_4, 2) == 0) {
                 bloke = node->bloke;
-                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].field_4 == &DAT_004b76b8) {
+                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].anim_layout == &DAT_004b76b8) {
                     IP_RenderBlokeIn3DNow(bloke);
                 }
             }

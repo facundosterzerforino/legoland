@@ -189,8 +189,8 @@ void FUN_00452030(void) {
     EditCursor.field_1414[1] = DAT_00813a88 - local_10;
     EditCursor.field_1414[4] = 0;
     EditCursor.field_1830 = 0;
-    EditCursor.field_1404 = local_14;
-    EditCursor.field_1408 = local_10;
+    EditCursor.tile_x = local_14;
+    EditCursor.tile_y = local_10;
     if (bValidate == 0) {
         FUN_0045f460(&EditCursor);
         return;
@@ -317,16 +317,16 @@ LEGO_EXPORT void ReadGameButtons(void) {
     if ((repeat & DAT_00813ad8) != 0) DAT_00813adc |= 8;
 
     if (lpConfig->field_1e != 0) {
-        DAT_00813a44.x = CONTROLLERBUFFER->field_8;
-        DAT_00813a44.y = CONTROLLERBUFFER->field_c;
+        DAT_00813a44.x = CONTROLLERBUFFER->x;
+        DAT_00813a44.y = CONTROLLERBUFFER->y;
         if (MapLoaded != 0) {
             scroll = FUN_00451f70();
             if ((GamePad & 0x1000) != 0 || FocussedIconPtr == 0) {
                 if (scroll == 0 && (GamePad & 0x20) != 0) {
                     MouseScrollMap();
                 }
-                if (CONTROLLERBUFFER->field_10 != 0 ||
-                    CONTROLLERBUFFER->field_14 != 0 || (GamePad & 0x10) != 0) {
+                if (CONTROLLERBUFFER->delta_x != 0 ||
+                    CONTROLLERBUFFER->delta_y != 0 || (GamePad & 0x10) != 0) {
                     GamePad = GamePad | 8;
                     DAT_00813ae0 = GetTicks();
                 }

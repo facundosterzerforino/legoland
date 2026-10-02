@@ -303,7 +303,7 @@ LEGO_EXPORT void DrawAndClearPrintList(void) {
     DAT_0066b5ac = 0;
     for (; node != NULL; node = node->right) {
         if ((node->flags & 1) != 0) {
-            if (node->field_28 < 0 || node->field_30 > (int)(unsigned int)lpConfig->field_0 || node->field_2c < 0 || node->field_34 > (int)(unsigned int)lpConfig->field_2) {
+            if (node->field_28 < 0 || node->field_30 > (int)(unsigned int)lpConfig->screen_width || node->field_2c < 0 || node->field_34 > (int)(unsigned int)lpConfig->screen_height) {
                 // STRING: LEGOLAND 0x004bdd0c
                 printf("error");
             }

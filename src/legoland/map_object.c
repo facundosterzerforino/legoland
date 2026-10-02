@@ -240,8 +240,8 @@ LEGO_EXPORT void SetObjRectFlags(Element *editObj, struct Point *pos, unsigned s
                 for (;;) {
                     for (y = rect.y0; y <= rect.y1; y++) {
                         for (x = rect.x0; x <= rect.x1; x++) {
-                            tx = node->field_1404 + x;
-                            ty = node->field_1408 + y;
+                            tx = node->tile_x + x;
+                            ty = node->tile_y + y;
                             if (tx >= 0 && tx < cfg->width && ty >= 0 && ty < cfg->height) {
                                 tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14);
                                 if (tile != 0) {
@@ -298,8 +298,8 @@ void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
                 for (;;) {
                     for (y = rect.y0; y <= rect.y1; y++) {
                         for (x = rect.x0; x <= rect.x1; x++) {
-                            coord.x = node->field_1404 + x;
-                            coord.y = node->field_1408 + y;
+                            coord.x = node->tile_x + x;
+                            coord.y = node->tile_y + y;
                             if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height) {
                                 tile = &GameMap[coord.y][coord.x];
                             } else {
@@ -327,8 +327,8 @@ void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
                 for (;;) {
                     for (y = rect.y0; y <= rect.y1; y++) {
                         for (x = rect.x0; x <= rect.x1; x++) {
-                            coord.x = node->field_1404 + x;
-                            coord.y = node->field_1408 + y;
+                            coord.x = node->tile_x + x;
+                            coord.y = node->tile_y + y;
                             if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height) {
                                 tile = &GameMap[coord.y][coord.x];
                             } else {
@@ -387,8 +387,8 @@ void FUN_0045e300(Element *editObj, struct Point *pos) {
                             x = rect->x0;
                             if (x <= rect->x1) {
                                 do {
-                                    coord[0] = node->field_1404 + x;
-                                    coord[1] = node->field_1408 + y;
+                                    coord[0] = node->tile_x + x;
+                                    coord[1] = node->tile_y + y;
                                     if (coord[0] >= 0 && coord[0] < cfg->width && coord[1] >= 0 &&
                                         coord[1] < cfg->height &&
                                         (tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14)) != 0 &&
@@ -443,8 +443,8 @@ void FUN_0045e4a0(Element *editObj, struct Point *pos) {
                 for (;;) {
                     for (y = rect.y0; y <= rect.y1; y++) {
                         for (x = rect.x0; x <= rect.x1; x++) {
-                            tx = node->field_1404 + x;
-                            ty = node->field_1408 + y;
+                            tx = node->tile_x + x;
+                            ty = node->tile_y + y;
                             if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
                                 tile = &GameMap[ty][tx];
                             } else {
@@ -766,15 +766,15 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
     pos.x = coords.pos.x;
     pos.y = coords.pos.y;
     source.field_0 = 2;
-    source.field_8 = pos.x;
-    source.field_c = pos.y;
+    source.x = pos.x;
+    source.y = pos.y;
     UnSourceAndFadeAllSamplesFromSource(&source, -200);
     GetTileCentre(&pos, out);
     EditCursor.field_1830 = 0;
     if (GamePad & 0x1000) {
         saved_rect = *(struct FootprintNode *)EditCursor.field_1414;
-        source.field_0 = EditCursor.field_1404;
-        source.field_4 = EditCursor.field_1408;
+        source.field_0 = EditCursor.tile_x;
+        source.field_4 = EditCursor.tile_y;
         saved_140c = EditCursor.field_140c;
         saved_1410 = EditCursor.field_1410;
     }
@@ -789,8 +789,8 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
                 if ((node->field_1828 & 0x3000) == 0) {
                     for (y = rect.y0; y <= rect.y1; y++) {
                         for (x = rect.x0; x <= rect.x1; x++) {
-                            tx = node->field_1404 + x;
-                            ty = node->field_1408 + y;
+                            tx = node->tile_x + x;
+                            ty = node->tile_y + y;
                             if (tx >= 0 && tx < cfg->width && ty >= 0 && ty < cfg->height) {
                                 tile = &GameMap[ty][tx];
                             } else {
@@ -815,8 +815,8 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
     EditCursor.field_1830 = 0;
     if (GamePad & 0x1000) {
         *(struct FootprintNode *)EditCursor.field_1414 = saved_rect;
-        EditCursor.field_1404 = source.field_0;
-        EditCursor.field_1408 = source.field_4;
+        EditCursor.tile_x = source.field_0;
+        EditCursor.tile_y = source.field_4;
         EditCursor.field_140c = saved_140c;
         EditCursor.field_1410 = saved_1410;
     } else if (EditMode.unk8 != 0) {
@@ -968,10 +968,10 @@ LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cu
         for (;;) {
             for (y = rect.y0; y <= rect.y1; y++) {
                 for (x = rect.x0; x <= rect.x1; x++) {
-                    RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
-                    SetMapFlags(cursor->field_1404 + x, cursor->field_1408 + y, 0);
-                    Set_RFFlags((cursor->field_1404 + x) * 0x100, (cursor->field_1408 + y) * 0x100, 0);
-                    GameMap[cursor->field_1408 + y][cursor->field_1404 + x].field_0 = 0;
+                    RestoreBaseMap(cursor->tile_x + x, cursor->tile_y + y);
+                    SetMapFlags(cursor->tile_x + x, cursor->tile_y + y, 0);
+                    Set_RFFlags((cursor->tile_x + x) * 0x100, (cursor->tile_y + y) * 0x100, 0);
+                    GameMap[cursor->tile_y + y][cursor->tile_x + x].field_0 = 0;
                 }
             }
             if (rect.next == 0) {
@@ -1062,8 +1062,8 @@ struct Cursor *FUN_0045f540(struct Cursor *cursor) {
         }
     }
     FUN_0045f460(&PathCursor);
-    PathCursor.field_1404 = cursor->field_1404;
-    PathCursor.field_1408 = cursor->field_1408;
+    PathCursor.tile_x = cursor->tile_x;
+    PathCursor.tile_y = cursor->tile_y;
     PathCursor.field_1414[0] = cursor->field_1414[0] - 1;
     PathCursor.field_1414[1] = cursor->field_1414[1] - 1;
     PathCursor.field_1414[2] = cursor->field_1414[2] + 1;
@@ -1182,10 +1182,10 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
             bounds.left = 0;
             bounds.bottom = lpConfig->height;
             bounds.right = lpConfig->height;
-            box.right = rect->x1 + cursor->field_1404;
-            box.left = rect->x0 + cursor->field_1404;
-            box.top = rect->y0 + cursor->field_1408;
-            box.bottom = rect->y1 + cursor->field_1408;
+            box.right = rect->x1 + cursor->tile_x;
+            box.left = rect->x0 + cursor->tile_x;
+            box.top = rect->y0 + cursor->tile_y;
+            box.bottom = rect->y1 + cursor->tile_y;
             if (IntersectRect(&inter, &box, &bounds) != 0) {
                 people = CheckForPeople(&inter);
                 switch (people) {
@@ -1199,8 +1199,8 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
             }
             for (y = rect->y0; y <= rect->y1; y++) {
                 for (x = rect->x0; x <= rect->x1; x++) {
-                    tx = cursor->field_1404 + x;
-                    ty = cursor->field_1408 + y;
+                    tx = cursor->tile_x + x;
+                    ty = cursor->tile_y + y;
                     if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
                         tile = &GameMap[ty][tx];
                     } else {
@@ -1247,7 +1247,7 @@ LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, u
 
     v1 = obj->field_c;
     DefaultCursor(&EditCursor);
-    ScreenToMapRef(a2, &EditCursor.field_1404, a3);
+    ScreenToMapRef(a2, &EditCursor.tile_x, a3);
     v1 += 0x3c;
     memcpy(EditCursor.field_1414, (void *)v1, 20);
     ValidateCursor(&EditCursor, obj->field_c);
@@ -1470,10 +1470,10 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     RECT saved_clip;
     struct VideoArg surf;
 
-    clip.left = lpConfig->field_20;
-    clip.top = lpConfig->field_22;
-    clip.right = lpConfig->field_10 + lpConfig->field_20;
-    clip.bottom = lpConfig->field_12 + lpConfig->field_22;
+    clip.left = lpConfig->view_x;
+    clip.top = lpConfig->view_y;
+    clip.right = lpConfig->view_width + lpConfig->view_x;
+    clip.bottom = lpConfig->view_height + lpConfig->view_y;
     GetClipping(&saved_clip);
     SetClipping(&clip);
     nextp = (struct FootprintNode *)&cursor->field_1414[0];
@@ -1482,8 +1482,8 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         if ((cursor->field_1828 & 0x10) == 0) {
             for (y = rect.y0; y <= rect.y1; y++) {
                 for (x = rect.x0; x <= rect.x1; x++) {
-                    tilept.x = cursor->field_1404 + x;
-                    tilept.y = cursor->field_1408 + y;
+                    tilept.x = cursor->tile_x + x;
+                    tilept.y = cursor->tile_y + y;
                     GetTileBounds(&tilept, screen);
                     if (cursor->field_1828 & 6) {
                         PrintSprite(TileSpriteArray[(DAT_0080ff60 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
@@ -1512,7 +1512,7 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     pts = (struct CursorPts *)cursor;
     size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     for (i = 0; i < (int)pts->count; i++) {
-        GetTileBounds((struct Point *)&cursor->field_1404, screen);
+        GetTileBounds((struct Point *)&cursor->tile_x, screen);
         bx = (short)pts->xpts[i] + screen[0];
         by = (short)pts->ypts[i] + screen[1];
         if (cursor->field_1828 & 4) {
@@ -1564,8 +1564,8 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     if (EditMode.unk0 != 1) {
         return;
     }
-    tilept.x = ((struct ObjBox *)EditMode.unk8)->pos.x + cursor->field_1404;
-    tilept.y = ((struct ObjBox *)EditMode.unk8)->pos.y + cursor->field_1408;
+    tilept.x = ((struct ObjBox *)EditMode.unk8)->pos.x + cursor->tile_x;
+    tilept.y = ((struct ObjBox *)EditMode.unk8)->pos.y + cursor->tile_y;
     GetTileBounds(&tilept, screen);
     code = FUN_0045e6b0((struct ObjBox *)EditMode.unk8);
     switch (code) {
@@ -1583,8 +1583,8 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         break;
     }
     if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)EditMode.unk8) != 0) {
-        tilept.x = ((signed char *)EditMode.unk8)[0x24] + cursor->field_1404;
-        tilept.y = ((signed char *)EditMode.unk8)[0x25] + cursor->field_1408;
+        tilept.x = ((signed char *)EditMode.unk8)[0x24] + cursor->tile_x;
+        tilept.y = ((signed char *)EditMode.unk8)[0x25] + cursor->tile_y;
         GetTileBounds(&tilept, screen);
         code = FUN_0045e710((struct ObjBox *)EditMode.unk8);
         switch (code) {
@@ -1625,8 +1625,8 @@ void FUN_00460560(int index) {
 
     for (ov = (struct Overlay *)OverlayList; ov != 0; ov = ov->next) {
         if (ov->field_10 >> 8 == index + 1) {
-            sc[0] = (lpConfig->field_20 - (ScrollX >> 8)) + ov->field_14;
-            sc[1] = (lpConfig->field_22 - (ScrollY >> 8)) + ov->field_18;
+            sc[0] = (lpConfig->view_x - (ScrollX >> 8)) + ov->field_14;
+            sc[1] = (lpConfig->view_y - (ScrollY >> 8)) + ov->field_18;
             ScreenToMapRef(sc, (int *)&pt, 0);
             if ((char)ov->field_10 == 0) {
                 pt.x += 0xf;
@@ -1847,10 +1847,10 @@ void FUN_00460e00(void) {
     sy = ScrollY >> 8;
     pos.x = sx;
     pos.y = sy;
-    clip.left = lpConfig->field_20;
-    clip.top = lpConfig->field_22;
-    clip.right = lpConfig->field_10 + clip.left;
-    clip.bottom = lpConfig->field_12 + clip.top;
+    clip.left = lpConfig->view_x;
+    clip.top = lpConfig->view_y;
+    clip.right = lpConfig->view_width + clip.left;
+    clip.bottom = lpConfig->view_height + clip.top;
     FUN_004608c0(&pos, &clip);
     DAT_004b95ec = sy;
     DAT_004b95e8 = sx;
@@ -1971,10 +1971,10 @@ void FUN_00461220(void) {
 
     local[0] = ScrollX >> 8;
     local[1] = ScrollY >> 8;
-    local[2] = lpConfig->field_20;
-    local[3] = lpConfig->field_22;
-    local[4] = lpConfig->field_10 + local[2];
-    local[5] = lpConfig->field_12 + local[3];
+    local[2] = lpConfig->view_x;
+    local[3] = lpConfig->view_y;
+    local[4] = lpConfig->view_width + local[2];
+    local[5] = lpConfig->view_height + local[3];
     FUN_004610f0((struct Point *)&local[0], &local[2]);
 }
 
@@ -2066,7 +2066,7 @@ void FUN_00461290(int param_1, int param_2, int param_3, int param_4) {
 LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
     ScrollX = ScrollX + a;
     ScrollY = ScrollY + b;
-    FUN_00461290(lpConfig->field_10 << 8, lpConfig->field_12 << 8, 0, 0);
+    FUN_00461290(lpConfig->view_width << 8, lpConfig->view_height << 8, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x004614f0
@@ -2074,24 +2074,24 @@ LEGO_EXPORT void MouseScrollMap(void) {
     struct Point mouse;
 
     mouse = DAT_00813a44;
-    if (mouse.x < lpConfig->field_4) {
-        if (ScrollSpeedX > -(int)lpConfig->field_c) {
-            ScrollSpeedX -= lpConfig->field_8;
+    if (mouse.x < lpConfig->scroll_border_x) {
+        if (ScrollSpeedX > -(int)lpConfig->scroll_max_x) {
+            ScrollSpeedX -= lpConfig->scroll_accel_x;
         }
-    } else if (mouse.x > lpConfig->field_0 - lpConfig->field_4) {
-        if (ScrollSpeedX < lpConfig->field_c) {
-            ScrollSpeedX += lpConfig->field_8;
+    } else if (mouse.x > lpConfig->screen_width - lpConfig->scroll_border_x) {
+        if (ScrollSpeedX < lpConfig->scroll_max_x) {
+            ScrollSpeedX += lpConfig->scroll_accel_x;
         }
     } else {
         ScrollSpeedX = 0;
     }
-    if (mouse.y < lpConfig->field_6) {
-        if (ScrollSpeedY > -(int)lpConfig->field_e) {
-            ScrollSpeedY -= lpConfig->field_a;
+    if (mouse.y < lpConfig->scroll_border_y) {
+        if (ScrollSpeedY > -(int)lpConfig->scroll_max_y) {
+            ScrollSpeedY -= lpConfig->scroll_accel_y;
         }
-    } else if (mouse.y > lpConfig->field_2 - lpConfig->field_6) {
-        if (ScrollSpeedY < lpConfig->field_e) {
-            ScrollSpeedY += lpConfig->field_a;
+    } else if (mouse.y > lpConfig->screen_height - lpConfig->scroll_border_y) {
+        if (ScrollSpeedY < lpConfig->scroll_max_y) {
+            ScrollSpeedY += lpConfig->scroll_accel_y;
         }
     } else {
         ScrollSpeedY = 0;
@@ -2946,13 +2946,13 @@ LEGO_EXPORT void ResetMapAI(void) {
     memset(&MapStats, 0, sizeof(MapStats));
     MapStats.capacity = 0;
     MapStats.field_0 = 0x1fff;
-    memset(MapStats.field_3b0, 2, sizeof(MapStats.field_3b0));
+    memset(MapStats.leave_ratings, 2, sizeof(MapStats.leave_ratings));
     MapStats.field_128 = 0xffffe0c0;
     MapStats.field_12c = 0xfffffc18;
     MapStats.field_130 = 100;
     MapStats.field_134 = 1000;
     MapStats.field_138 = 5000;
-    MapStats.field_3c9 = 0;
+    MapStats.leave_rating_index = 0;
     MapStats.field_184 = 0;
 }
 
@@ -3084,8 +3084,8 @@ LEGO_EXPORT void DoMapAI(void) {
                 if ((int)MapStats.capacity > (int)MapStats.capacity_max) {
                     MapStats.capacity = MapStats.capacity_max;
                 }
-                if ((int)MapStats.capacity > (int)lpConfig->field_1a) {
-                    MapStats.capacity = lpConfig->field_1a;
+                if ((int)MapStats.capacity > (int)lpConfig->max_blokes) {
+                    MapStats.capacity = lpConfig->max_blokes;
                 }
                 break;
             }
@@ -3145,10 +3145,10 @@ LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
     } else {
         rating = (param_1 >= MapStats.field_138) + 3;
     }
-    MapStats.field_3b0[MapStats.field_3c9] = (char)rating;
-    MapStats.field_3c9 = MapStats.field_3c9 + 1;
-    if (MapStats.field_3c9 == 0x19) {
-        MapStats.field_3c9 = 0;
+    MapStats.leave_ratings[MapStats.leave_rating_index] = (char)rating;
+    MapStats.leave_rating_index = MapStats.leave_rating_index + 1;
+    if (MapStats.leave_rating_index == 0x19) {
+        MapStats.leave_rating_index = 0;
     }
 }
 

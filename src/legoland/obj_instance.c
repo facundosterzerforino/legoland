@@ -282,7 +282,7 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, TileId tile) {
             RemoveBlokeFromRide(ride, node);
             BlokeWalkAnim(bloke);
             bloke->flags &= 0xff7f;
-            source.field_4 = bloke;
+            source.bloke = bloke;
             KillAllSamplesFromSource(&source);
         }
     }

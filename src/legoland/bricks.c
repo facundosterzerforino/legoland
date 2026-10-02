@@ -208,8 +208,8 @@ void FUN_00457a70(void) {
                 memset(QueryCursor.field_1414, 0, 20);
                 QueryCursor.field_1828 = 8;
                 FUN_0045f480(&QueryCursor, 1);
-                QueryCursor.field_1404 = DAT_00813a64;
-                QueryCursor.field_1408 = DAT_00813a68;
+                QueryCursor.tile_x = DAT_00813a64;
+                QueryCursor.tile_y = DAT_00813a68;
                 DAT_00667c5c = 0;
                 GamePad &= ~0x400;
                 if (!(DAT_00813ac4 & 2)) {
@@ -237,16 +237,16 @@ void FUN_00457a70(void) {
                 for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a3c) {
                     for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a38) {
                         QueryCursor.field_1414[4] = 0;
-                        QueryCursor.field_1404 = x;
-                        QueryCursor.field_1408 = y;
+                        QueryCursor.tile_x = x;
+                        QueryCursor.tile_y = y;
                         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                             tile = &GameMap[y][x];
                         } else {
                             tile = NULL;
                         }
                         if (tile != NULL) {
-                            QueryObj.pos.x = QueryCursor.field_1404 = tile->field_4;
-                            QueryObj.pos.y = QueryCursor.field_1408 = tile->field_5;
+                            QueryObj.pos.x = QueryCursor.tile_x = tile->field_4;
+                            QueryObj.pos.y = QueryCursor.tile_y = tile->field_5;
                             if ((tile->flags & 0x88) && !(tile->flags & 0x40) &&
                                 tile->field_0 == (struct Element *)((struct ObjClass *)DAT_0080ff6c)->field_c4) {
                                 RemObjFromMap((struct ObjClass *)DAT_0080ff6c,
@@ -354,7 +354,7 @@ void FUN_00457a70(void) {
                         CalculateMapRenderOrder();
                     }
                     DAT_00667cd8 = 0;
-                } else if (WorkOrderBuildObject(EditMode.unk8->element, (Point *)&EditCursor.field_1404)) {
+                } else if (WorkOrderBuildObject(EditMode.unk8->element, (Point *)&EditCursor.tile_x)) {
                     FUN_00475f40();
                     DAT_00668610 |= 2;
                 }
@@ -383,8 +383,8 @@ void FUN_00457a70(void) {
             memset(QueryCursor.field_1414, 0, 20);
             QueryCursor.field_1828 = 8;
             FUN_0045f480(&QueryCursor, 1);
-            QueryCursor.field_1404 = DAT_00813a64;
-            QueryCursor.field_1408 = DAT_00813a68;
+            QueryCursor.tile_x = DAT_00813a64;
+            QueryCursor.tile_y = DAT_00813a68;
             DAT_00667c5c = 0;
             GamePad &= ~0x400;
             if (!(DAT_00813ac4 & 2)) {

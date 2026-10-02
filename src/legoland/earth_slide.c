@@ -85,7 +85,7 @@ void FUN_0042ce50(struct EarthNode *node, struct EarthBlokeElem *elem) {
         q->elem = elem;
         *(unsigned char *)((char *)elem->bloke + 0x62) |= 0x40;
         EarthNodeAppendQueueEntry(node, q);
-        node->field_18++;
+        node->queue_count++;
     }
 }
 
@@ -174,7 +174,7 @@ void FUN_0042d040(struct EarthNode *list) {
         if (list->queue_tail == node) {
             list->queue_tail = NULL;
         }
-        list->field_18--;
+        list->queue_count--;
     }
 }
 

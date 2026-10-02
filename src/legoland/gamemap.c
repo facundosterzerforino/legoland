@@ -288,10 +288,10 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
     while (query != NULL) {
         if ((query->field_1828 & 0x1000) != 0) {
             if (query != NULL) {
-                for (blk.f4 = query->field_1414[1] + query->field_1408;
-                    blk.f4 <= (int)(query->field_1408 + query->field_1414[3]); blk.f4 = blk.f4 + 1) {
-                    for (blk.f0 = query->field_1404 + query->field_1414[0];
-                        blk.f0 <= (int)(query->field_1404 + query->field_1414[2]); blk.f0 = blk.f0 + 1) {
+                for (blk.f4 = query->field_1414[1] + query->tile_y;
+                    blk.f4 <= (int)(query->tile_y + query->field_1414[3]); blk.f4 = blk.f4 + 1) {
+                    for (blk.f0 = query->tile_x + query->field_1414[0];
+                        blk.f0 <= (int)(query->tile_x + query->field_1414[2]); blk.f0 = blk.f0 + 1) {
                         cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
                         cell->flags.word = cell->flags.word & 0xffe7;
                         cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
@@ -534,12 +534,12 @@ LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, TileId coords) {
 
 // FUNCTION: LEGOLAND 0x0045a390
 LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
-    unsigned int saved_1404 = cursor->field_1404;
-    unsigned int saved_1408 = cursor->field_1408;
+    unsigned int saved_1404 = cursor->tile_x;
+    unsigned int saved_1408 = cursor->tile_y;
     memset(cursor, 0, 0x1834);
-    cursor->field_1404 = saved_1404;
+    cursor->tile_x = saved_1404;
     cursor->field_1828 = 0xc00;
-    cursor->field_1408 = saved_1408;
+    cursor->tile_y = saved_1408;
     FUN_0045f460(cursor);
 }
 

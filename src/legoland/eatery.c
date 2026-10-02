@@ -440,8 +440,8 @@ void FUN_0042e910(int param_1, unsigned int param_2, unsigned int param_3, short
 void FUN_0042e9c0(unsigned int param_1, unsigned int *param_2) {
     struct SampleParams params;
     AddBasicObject(param_1, (unsigned int)param_2);
-    params.field_8 = *param_2;
-    params.field_c = param_2[1];
+    params.x = *param_2;
+    params.y = param_2[1];
     params.field_0 = 2;
     PlayInstanceOfSample(*(void **)(RESTAURANT_SFX + 8), 1, 1, &params);
 }
@@ -451,8 +451,8 @@ void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param
     unsigned char *b = (unsigned char *)&param_2;
     struct SampleParams params;
     StandardRemoveObject(param_1, *(TileId *)&param_2, param_3);
-    params.field_8 = b[0];
-    params.field_c = b[1];
+    params.x = b[0];
+    params.y = b[1];
     params.field_0 = 2;
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
@@ -721,8 +721,8 @@ void FUN_0042efb0(unsigned int param_1, TileId tile, unsigned int param_3) {
     }
     StandardRemoveObject(param_1, tile, param_3);
     RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)param_1)->fx_c, tile);
-    params.field_8 = tile.pos.x;
-    params.field_c = tile.pos.y;
+    params.x = tile.pos.x;
+    params.y = tile.pos.y;
     params.field_0 = 2;
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
@@ -1126,8 +1126,8 @@ void FUN_0042fa90(struct RideNode *node, int dir, int idx) {
 void FUN_0042fb00(unsigned int param_1) {
     unsigned char *b = (unsigned char *)&param_1;
     struct SampleParams params;
-    params.field_8 = b[0];
-    params.field_c = b[1];
+    params.x = b[0];
+    params.y = b[1];
     params.field_0 = 2;
     PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 8), 0, 1, &params);
     PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 0x14), 1, 1, &params);
@@ -1138,8 +1138,8 @@ void FUN_0042fb60(unsigned int param_1) {
     unsigned char *b = (unsigned char *)&param_1;
     struct SampleParams params;
     params.field_0 = 2;
-    params.field_8 = b[0];
-    params.field_c = b[1];
+    params.x = b[0];
+    params.y = b[1];
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
     PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 0x20), 0, 1, &params);
 }

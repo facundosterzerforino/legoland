@@ -9,19 +9,19 @@ struct Cursor;
 struct BoatRide {
     /* 0x000 */ unsigned short id;
     /* 0x002 */ unsigned char pad_2[2];
-    /* 0x004 */ int field_4;
-    /* 0x008 */ int field_8;
-    /* 0x00c */ int field_c;
-    /* 0x010 */ int field_10;
-    /* 0x014 */ unsigned int field_14;
-    /* 0x018 */ unsigned int field_18;
+    /* 0x004 */ int tile_x;
+    /* 0x008 */ int tile_y;
+    /* 0x00c */ int next_x;
+    /* 0x010 */ int next_y;
+    /* 0x014 */ unsigned int screen_x;
+    /* 0x018 */ unsigned int screen_y;
     /* 0x01c */ int field_1c[0xa0];
     /* 0x29c */ unsigned int field_29c[0x50];
     /* 0x3dc */ unsigned int field_3dc;
     /* 0x3e0 */ unsigned int field_3e0;
     /* 0x3e4 */ unsigned int field_3e4;
     /* 0x3e8 */ unsigned int field_3e8;
-    /* 0x3ec */ unsigned int field_3ec;
+    /* 0x3ec */ unsigned int bloke;
     /* 0x3f0 */ struct BoatRide *next;
 };
 
@@ -30,10 +30,10 @@ struct BoatRideNode {
     /* 0x02 */ TileId start;
     /* 0x04 */ TileId end;
     /* 0x06 */ unsigned char pad_6[2];
-    /* 0x08 */ unsigned int field_8;
+    /* 0x08 */ unsigned int connected;
     /* 0x0c */ unsigned int field_c;
     /* 0x10 */ unsigned int field_10;
-    /* 0x14 */ unsigned int field_14;
+    /* 0x14 */ unsigned int bloke_count;
     /* 0x18 */ unsigned int blokes[5];
     /* 0x2c */ struct BoatRideNode *next;
     /* 0x30 */ unsigned int value;
@@ -52,7 +52,7 @@ struct PathNode {
 
 struct MermaidNode {
     /* 0x00 */ TileId tile;
-    /* 0x02 */ unsigned short field_2;
+    /* 0x02 */ unsigned short owner;
     /* 0x04 */ struct MermaidNode *next;
 };
 

@@ -1337,14 +1337,14 @@ void FUN_00445100(void) {
 
     a = DAT_006660a8;
     x = DAT_00813a44.x;
-    if (x < a->x || x > a->field_10 + a->x || (y = DAT_00813a44.y, y < a->y || y > a->field_12 + a->y)) {
+    if (x < a->x || x > a->width + a->x || (y = DAT_00813a44.y, y < a->y || y > a->height + a->y)) {
         SetIconSprite(a, NextPageSprite);
     }
     x = DAT_00813a44.x;
     y = DAT_00813a44.y;
     b = DAT_006660ac;
-    if (x < b->x || x > b->field_10 + b->x ||
-        y < b->y || y > b->field_12 + b->y) {
+    if (x < b->x || x > b->width + b->x ||
+        y < b->y || y > b->height + b->y) {
         SetIconSprite(b, PreviousPageSprite);
     }
 }

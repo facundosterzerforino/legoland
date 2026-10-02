@@ -7,7 +7,7 @@ struct RideNode;
 
 struct BarrelNode {
     struct BarrelNode *next;
-    unsigned short field_4;
+    unsigned short tile_id;
     unsigned char field_6;
     unsigned char field_7;
     signed char field_8;

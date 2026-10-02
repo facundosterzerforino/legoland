@@ -139,7 +139,7 @@ LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point) {
                           DAT_008139c4 -
                       DAT_008139c0 / 2 + DAT_00667c04)
             << 8;
-        FUN_00461290(lpConfig->field_10 << 8, lpConfig->field_12 << 8, 0, 0);
+        FUN_00461290(lpConfig->view_width << 8, lpConfig->view_height << 8, 0, 0);
     }
 }
 
@@ -271,10 +271,10 @@ LEGO_EXPORT void RenderFullMap(void) {
             (short)((float)DAT_008139c0 * tile_size.y / DAT_00667c18 + 1.0f);
         half = (tile_size.y + 1) >> 1;
         RenderBlock(0, 0, DAT_008139c4, DAT_008139c0, GetNearestColour(0, 0, 0));
-        saved_scroll.x = lpConfig->field_20;
-        saved_scroll.y = lpConfig->field_22;
-        lpConfig->field_20 = 0;
-        lpConfig->field_22 = 0;
+        saved_scroll.x = lpConfig->view_x;
+        saved_scroll.y = lpConfig->view_y;
+        lpConfig->view_x = 0;
+        lpConfig->view_y = 0;
         DAT_00667c30 = 1;
         DAT_00667c20 =
             (DAT_008139c0 -
@@ -618,8 +618,8 @@ LEGO_EXPORT void RenderFullMap(void) {
             }
         }
         PopRenderingStatus();
-        lpConfig->field_20 = saved_scroll.x;
-        lpConfig->field_22 = saved_scroll.y;
+        lpConfig->view_x = saved_scroll.x;
+        lpConfig->view_y = saved_scroll.y;
         RestoreClipping();
         CommitCliprectToHardware();
         if (blob != NULL) {

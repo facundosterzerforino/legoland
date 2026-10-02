@@ -154,40 +154,40 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
     if (buffer == NULL) {
         return;
     }
-    buffer->field_0 = buffer->field_8;
-    buffer->field_4 = buffer->field_c;
-    mode = buffer->field_24;
+    buffer->prev_x = buffer->x;
+    buffer->prev_y = buffer->y;
+    mode = buffer->mouse_accel;
     dx = MouseState.lX;
     dy = MouseState.lY;
     if (mode != 0) {
-        if (abs(dx) > buffer->field_1c || abs(dy) > buffer->field_1c) {
+        if (abs(dx) > buffer->mouse_threshold1 || abs(dy) > buffer->mouse_threshold1) {
             dx += dx;
             dy += dy;
         }
         if (mode == 2) {
-            if (abs(dx) > buffer->field_20 || abs(dy) > buffer->field_20) {
+            if (abs(dx) > buffer->mouse_threshold2 || abs(dy) > buffer->mouse_threshold2) {
                 dx <<= 1;
                 dy <<= 1;
             }
         }
     }
-    buffer->field_8 += dx;
-    buffer->field_c += dy;
-    if (buffer->field_8 >= lpConfig->field_0) {
-        buffer->field_8 = lpConfig->field_0 - 1;
+    buffer->x += dx;
+    buffer->y += dy;
+    if (buffer->x >= lpConfig->screen_width) {
+        buffer->x = lpConfig->screen_width - 1;
     }
-    if (buffer->field_8 < 0) {
-        buffer->field_8 = 0;
+    if (buffer->x < 0) {
+        buffer->x = 0;
     }
-    if (buffer->field_c >= lpConfig->field_2) {
-        buffer->field_c = lpConfig->field_2 - 1;
+    if (buffer->y >= lpConfig->screen_height) {
+        buffer->y = lpConfig->screen_height - 1;
     }
-    if (buffer->field_c < 0) {
-        buffer->field_c = 0;
+    if (buffer->y < 0) {
+        buffer->y = 0;
     }
-    buffer->field_10 = buffer->field_8 - buffer->field_0;
+    buffer->delta_x = buffer->x - buffer->prev_x;
     flags = buffer->field_18 & 0xfffffff8;
-    buffer->field_14 = buffer->field_c - buffer->field_4;
+    buffer->delta_y = buffer->y - buffer->prev_y;
     buffer->field_18 = flags;
     if ((MouseState.rgbButtons[0] & 0x80) != 0) {
         buffer->field_18 = flags | 1;

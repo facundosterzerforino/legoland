@@ -98,8 +98,8 @@ LEGO_EXPORT int InitScreen(void) {
 
     rect_slot.left = 0;
     rect_slot.top = 0;
-    rect_slot.right = lpConfig->field_0;
-    rect_slot.bottom = lpConfig->field_2;
+    rect_slot.right = lpConfig->screen_width;
+    rect_slot.bottom = lpConfig->screen_height;
     FrameNumber = 0;
 
     wc.cbSize = sizeof(wc);
@@ -152,7 +152,7 @@ LEGO_EXPORT int InitScreen(void) {
         DisplayPixelFormat = 2;
         WNDENV_Sethwnd(CreateWindowExA(8, "LEGOLANDMAIN",
             // STRING: LEGOLAND 0x004b86d0
-            "LEGOLAND", 0x90000000, 0, 0, lpConfig->field_0, lpConfig->field_2, GetDesktopWindow(), NULL, WNDENV_GethInstance(), NULL));
+            "LEGOLAND", 0x90000000, 0, 0, lpConfig->screen_width, lpConfig->screen_height, GetDesktopWindow(), NULL, WNDENV_GethInstance(), NULL));
         if (WNDENV_Gethwnd() == NULL) {
             return 0;
         }
@@ -180,8 +180,8 @@ LEGO_EXPORT int InitScreen(void) {
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x800;
-        desc.dwWidth = lpConfig->field_0;
-        desc.dwHeight = lpConfig->field_2;
+        desc.dwWidth = lpConfig->screen_width;
+        desc.dwHeight = lpConfig->screen_height;
         if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668078, NULL) != 0) {
             return 0;
         }
@@ -189,8 +189,8 @@ LEGO_EXPORT int InitScreen(void) {
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x4000;
-        desc.dwWidth = lpConfig->field_0;
-        desc.dwHeight = lpConfig->field_2;
+        desc.dwWidth = lpConfig->screen_width;
+        desc.dwHeight = lpConfig->screen_height;
         if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668074, NULL) != 0) {
             return 0;
         }
@@ -208,8 +208,8 @@ LEGO_EXPORT int InitScreen(void) {
     } else {
         window_rect.left = 0;
         window_rect.top = 0;
-        window_rect.right = lpConfig->field_0 - 1;
-        window_rect.bottom = lpConfig->field_2 - 1;
+        window_rect.right = lpConfig->screen_width - 1;
+        window_rect.bottom = lpConfig->screen_height - 1;
         AdjustWindowRect(&window_rect, 0x10cf0000, 0);
         WNDENV_Sethwnd(CreateWindowExA(0, "LEGOLANDMAIN",
             // STRING: LEGOLAND 0x004b9cf0
@@ -238,8 +238,8 @@ LEGO_EXPORT int InitScreen(void) {
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x40;
-        desc.dwWidth = lpConfig->field_0;
-        desc.dwHeight = lpConfig->field_2;
+        desc.dwWidth = lpConfig->screen_width;
+        desc.dwHeight = lpConfig->screen_height;
         if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668078, NULL) != 0) {
             IDirectDrawSurface_Release(PrimarySurface);
             DestroyWindow(WNDENV_Gethwnd());
@@ -249,8 +249,8 @@ LEGO_EXPORT int InitScreen(void) {
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x40;
-        desc.dwWidth = lpConfig->field_0;
-        desc.dwHeight = lpConfig->field_2;
+        desc.dwWidth = lpConfig->screen_width;
+        desc.dwHeight = lpConfig->screen_height;
         if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668074, NULL) != 0) {
             return 0;
         }
@@ -265,9 +265,9 @@ int SetDisplayModeAndDetectPixelFormat(void) {
 
     if (DAT_00667d6c == 0) {
         ddraw2 = DDRAWENV.ddraw2;
-        if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 0x10, 0, 0) != 0) {
+        if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->screen_width, lpConfig->screen_height, 0x10, 0, 0) != 0) {
             ddraw2 = DDRAWENV.ddraw2;
-            if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 8, 0, 0) != 0) {
+            if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->screen_width, lpConfig->screen_height, 8, 0, 0) != 0) {
                 return 0;
             }
         }
@@ -298,8 +298,8 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
     if (value == 0) {
         local.left = value;
         local.top = value;
-        local.right = lpConfig->field_0 - 1;
-        local.bottom = lpConfig->field_2 - 1;
+        local.right = lpConfig->screen_width - 1;
+        local.bottom = lpConfig->screen_height - 1;
         DAT_0066809c.dwSize = 0x6c;
         IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
         surface = renderEngine;
@@ -337,8 +337,8 @@ void FUN_004640f0(void) {
     wasLocked = DAT_00668144;
     local.left = 0;
     local.top = 0;
-    local.right = lpConfig->field_0 - 1;
-    local.bottom = lpConfig->field_2 - 1;
+    local.right = lpConfig->screen_width - 1;
+    local.bottom = lpConfig->screen_height - 1;
     DAT_00668164[DAT_006681e4] = DAT_00668144;
     DAT_006681e4 = DAT_006681e4 + 1;
     if (wasLocked != 0) {
@@ -369,8 +369,8 @@ LEGO_EXPORT void PopRenderingStatus(void) {
         if (DAT_00668144 == 0) {
             local.left = 0;
             local.top = 0;
-            local.right = lpConfig->field_0 - 1;
-            local.bottom = lpConfig->field_2 - 1;
+            local.right = lpConfig->screen_width - 1;
+            local.bottom = lpConfig->screen_height - 1;
             DAT_0066809c.dwSize = 0x6c;
             IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
             surface = renderEngine;
@@ -398,10 +398,10 @@ LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
     if (DAT_00668144 == 0) {
         return 0;
     }
-    arg->field_0 = DAT_0066809c.lPitch;
-    arg->field_4 = lpConfig->field_0;
-    arg->field_8 = lpConfig->field_2;
-    arg->field_c = DAT_0066809c.lpSurface;
+    arg->pitch = DAT_0066809c.lPitch;
+    arg->field_4 = lpConfig->screen_width;
+    arg->field_8 = lpConfig->screen_height;
+    arg->bits = DAT_0066809c.lpSurface;
     arg->field_14 = 2;
     return 1;
 }
@@ -504,7 +504,7 @@ void FUN_00465850(struct AviFrame *frame) {
     DAT_006681ec = (DAT_006681ec != dst) ? dst : 0;
     height = frame->height;
     width = frame->width;
-    rest = lpConfig->field_2 - height * 2;
+    rest = lpConfig->screen_height - height * 2;
     half = rest / 2;
     rest = rest - half;
     row = frame->pixels + (height - 1) * width;

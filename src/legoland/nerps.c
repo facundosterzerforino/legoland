@@ -297,8 +297,8 @@ unsigned int FUN_0046a3b0(struct NerpsArg *arg) {
     v24 = arg->field_24;
     v20 = arg->field_20;
     GetTileDimensions(&dimX, &dimY);
-    ScrollX = (((v20 - v24) * dimX >> 9) - (lpConfig->field_10 >> 1)) * 0x100;
-    ScrollY = (((v20 + v24) * dimY >> 9) - (lpConfig->field_12 >> 1)) * 0x100;
+    ScrollX = (((v20 - v24) * dimX >> 9) - (lpConfig->view_width >> 1)) * 0x100;
+    ScrollY = (((v20 + v24) * dimY >> 9) - (lpConfig->view_height >> 1)) * 0x100;
     return 1;
 }
 
