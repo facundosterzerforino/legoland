@@ -1877,7 +1877,7 @@ LEGO_EXPORT void RestoreBaseMap(int tile_x, int row_y) {
     unsigned short flags = *(volatile unsigned short *)&TileSpriteInfo[id].sprite;
 
     tile->tile = id;
-    flags & 0x20;
+    (void)(flags & 0x20);
 }
 
 // FUNCTION: LEGOLAND 0x0045daa0
