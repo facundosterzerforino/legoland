@@ -1871,12 +1871,13 @@ void FUN_0045d770(struct Cursor *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045da60
-LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y) {
+LEGO_EXPORT void RestoreBaseMap(int tile_x, int row_y) {
     struct MapTile *tile = (struct MapTile *)((char *)GameMap[row_y] + tile_x * 0x14);
     unsigned short id = tile->base_id;
+    unsigned short flags = *(volatile unsigned short *)&TileSpriteInfo[id].sprite;
 
     tile->tile = id;
-    return TileSpriteInfo[id].sprite & 0x20;
+    (void)(flags & 0x20);
 }
 
 // FUNCTION: LEGOLAND 0x0045daa0

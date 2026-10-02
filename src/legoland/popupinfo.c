@@ -810,32 +810,20 @@ void FUN_00472090(void) {
 
 // FUNCTION: LEGOLAND 0x004720a0
 void DrawNewObjectPopup(void) {
-    short sVar2;
-    short sVar3;
-    short sVar4;
-    unsigned int uVar5;
     struct NewObjInfo *obj;
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {1, 0, 0};
     char local_80[128];
 
-    ctx.node = 0;
-    ctx.flags = 1;
-    ctx.field_8 = 0;
     PrintSprite(NewPopMockSprite, 0xbe, 0x28, 0, (int *)&ctx);
     PrevPopUpIcon->flags = PrevPopUpIcon->flags & 0xfffffbff;
     PrevPopUpIcon->x = 0xc1;
     PrevPopUpIcon->y = 0x46;
-    sVar2 = ClosePopUpIcon->field_10;
-    sVar3 = NewPopMockSprite->width;
     NextPopUpIcon->flags = NextPopUpIcon->flags & 0xfffffbff;
-    NextPopUpIcon->x = (sVar3 - sVar2) + 0xbb;
+    NextPopUpIcon->x = NewPopMockSprite->width - ClosePopUpIcon->field_10 + 0xbb;
     NextPopUpIcon->y = 0x46;
-    sVar2 = NewPopMockSprite->width;
-    sVar3 = NewPopMockSprite->height;
-    sVar4 = ClosePopUpIcon->field_12;
     ClosePopUpIcon->flags = ClosePopUpIcon->flags & 0xfffffbff;
-    ClosePopUpIcon->x = (sVar2 - ClosePopUpIcon->field_10) + 0xbb;
-    ClosePopUpIcon->y = (sVar3 - sVar4) + 0x25;
+    ClosePopUpIcon->x = NewPopMockSprite->width - ClosePopUpIcon->field_10 + 0xbb;
+    ClosePopUpIcon->y = NewPopMockSprite->height - ClosePopUpIcon->field_12 + 0x25;
     PushRenderingStatusAndUnlockVideoSurface();
     if (NewObjects.count == 1) {
         // STRING: LEGOLAND 0x004bad04
@@ -844,9 +832,9 @@ void DrawNewObjectPopup(void) {
         // STRING: LEGOLAND 0x004bacec
         sprintf(local_80, "You have %d new objects", NewObjects.count);
     }
-    FUN_00455e50(local_80, 0xc1, 0x30, NewPopMockSprite->width + -6, 0x14, 2, 5, 0xff0000, 0xffffff);
+    FUN_00455e50(local_80, 0xc1, 0x30, NewPopMockSprite->width + 0xbb - 0xc1, 0x14, 2, 5, 0xff0000, 0xffffff);
     obj = (struct NewObjInfo *)NewObjects.objs[NewObjects.current];
-    FUN_00455e50(obj->field_78, 0xc1, 0x4b, NewPopMockSprite->width + -6, 0x14, 2, 5, 0xff0000, 0xffffff);
+    FUN_00455e50(obj->field_78, 0xc1, 0x4b, NewPopMockSprite->width + 0xbb - 0xc1, 0x14, 2, 5, 0xff0000, 0xffffff);
     obj = (struct NewObjInfo *)NewObjects.objs[NewObjects.current];
     FUN_00455e50(obj->field_80, 0x13e, 0x68, 0xfc, 0x77, 2, 0x10, 0xff0000, 0xffffff);
     obj = (struct NewObjInfo *)NewObjects.objs[NewObjects.current];
@@ -867,11 +855,10 @@ void DrawNewObjectPopup(void) {
         FUN_0046d680((struct IconNode *)PrevPopUpIcon, PrevIconSprite);
     }
     if (NewObjects.current == 0) {
-        uVar5 = PrevPopUpIcon->flags | 0x400;
+        PrevPopUpIcon->flags = PrevPopUpIcon->flags | 0x400;
     } else {
-        uVar5 = PrevPopUpIcon->flags & 0xfffffbff;
+        PrevPopUpIcon->flags = PrevPopUpIcon->flags & 0xfffffbff;
     }
-    PrevPopUpIcon->flags = uVar5;
     if (NewObjects.current == (int)(NewObjects.count + -1)) {
         NextPopUpIcon->flags = NextPopUpIcon->flags | 0x400;
         return;
