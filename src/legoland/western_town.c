@@ -463,8 +463,8 @@ void FUN_00437f10(unsigned short *param) {
         cell->field_10 = 0;
         cell->field_14 = 0;
         cell->field_18 = 0;
-        cell->next = DAT_0062fd3c;
-        DAT_0062fd3c = cell;
+        cell->next = JailCellList;
+        JailCellList = cell;
     }
 }
 
@@ -481,7 +481,7 @@ void FUN_00437f60(struct EditObject *editObj, int *coords) {
 struct JailCell *FUN_00437f90(unsigned short *key) {
     struct JailCell *cell;
 
-    cell = DAT_0062fd3c;
+    cell = JailCellList;
     if (cell == NULL) {
         return NULL;
     }
@@ -499,11 +499,11 @@ void FUN_00437fc0(struct JailCell *cell) {
     struct JailCell *cur;
     struct JailCell *prev;
 
-    if (DAT_0062fd3c == cell) {
-        DAT_0062fd3c = cell->next;
+    if (JailCellList == cell) {
+        JailCellList = cell->next;
     } else {
-        cur = DAT_0062fd3c->next;
-        prev = DAT_0062fd3c;
+        cur = JailCellList->next;
+        prev = JailCellList;
         while (cur != cell) {
             prev = prev->next;
             if (prev == NULL) {
@@ -520,8 +520,8 @@ void FUN_00437fc0(struct JailCell *cell) {
 
 // FUNCTION: LEGOLAND 0x00438000
 void FUN_00438000(void) {
-    while (DAT_0062fd3c != NULL) {
-        FUN_00437fc0(DAT_0062fd3c);
+    while (JailCellList != NULL) {
+        FUN_00437fc0(JailCellList);
     }
 }
 
@@ -761,7 +761,7 @@ void FUN_00438430(Element *obj) {
         cell->field_18 = field_18;
         node = next;
     }
-    for (jc = DAT_0062fd3c; jc != NULL; jc = jc->next) {
+    for (jc = JailCellList; jc != NULL; jc = jc->next) {
         field_14 = jc->field_14;
         field_6 = jc->frame;
         field_8 = jc->field_8;
@@ -793,7 +793,7 @@ void FUN_00438430(Element *obj) {
 
 // FUNCTION: LEGOLAND 0x00438780
 LEGO_EXPORT unsigned int SaveJailCells(void) {
-    struct JailCell *cell = DAT_0062fd3c;
+    struct JailCell *cell = JailCellList;
     unsigned int marker = 1;
     unsigned int terminator = 0;
 
@@ -826,7 +826,7 @@ LEGO_EXPORT unsigned int LoadJailCells(void) {
         if (prev != NULL) {
             prev->next = cell;
         } else {
-            DAT_0062fd3c = cell;
+            JailCellList = cell;
         }
         prev = cell;
         if (SaveGameRead(&marker, 4) == 0) {

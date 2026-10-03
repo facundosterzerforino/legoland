@@ -244,32 +244,32 @@ void FUN_00417cb0(unsigned short key) {
     if (node != NULL) {
         memset(node, 0, sizeof(struct WaterNode));
         node->key = key;
-        InsertWaterNodeAtHead(&DAT_004cc02c, node);
+        InsertWaterNodeAtHead(&WaterNodeList, node);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00417cf0
 void FUN_00417cf0(struct WaterNode *node) {
-    FUN_00417bd0(&DAT_004cc02c, node);
+    FUN_00417bd0(&WaterNodeList, node);
     free(node);
 }
 
 // FUNCTION: LEGOLAND 0x00417d10
 struct WaterNode *FUN_00417d10(unsigned short *key) {
-    return FindWaterNodeByKey(DAT_004cc02c, key);
+    return FindWaterNodeByKey(WaterNodeList, key);
 }
 
 // FUNCTION: LEGOLAND 0x00417d30
 void FUN_00417d30(struct WaterArg *arg) {
     AcquireWaterWorksSfx();
-    DAT_004cc008 = arg->ride;
-    DAT_004cc008->flags |= 0x420;
-    DAT_004cc008->footprint_x0 = 0;
-    DAT_004cc008->footprint_x1 = 0;
-    DAT_004cc008->footprint_y0 = 0;
-    DAT_004cc008->footprint_y1 = 0;
-    DAT_004cc008->field_14 = 0;
-    DAT_004cc008->field_18 = 0;
+    WaterBlockRide = arg->ride;
+    WaterBlockRide->flags |= 0x420;
+    WaterBlockRide->footprint_x0 = 0;
+    WaterBlockRide->footprint_x1 = 0;
+    WaterBlockRide->footprint_y0 = 0;
+    WaterBlockRide->footprint_y1 = 0;
+    WaterBlockRide->field_14 = 0;
+    WaterBlockRide->field_18 = 0;
     // STRING: LEGOLAND 0x004b501c
     if (LLIDB_FindElement("WATER WORKS IMAGE LIST", &WaterWorksImageListHandle, 0) == 0) {
         WaterWorksImageListData = LLIDB_LoadData((void *)WaterWorksImageListHandle);
@@ -340,7 +340,7 @@ unsigned int IsPointInBlokeGardenerOrMechanicList(unsigned char *point) {
 void FUN_00417f40(void) {
     struct WaterNode *node;
 
-    node = (struct WaterNode *)DAT_004cc02c;
+    node = (struct WaterNode *)WaterNodeList;
     while (node != NULL) {
         if (IsPointInBlokeGardenerOrMechanicList((unsigned char *)&node->key) != 0) {
             if (node->field_8 == 0) {
@@ -370,7 +370,7 @@ void FUN_00417f90(Element *obj) {
     char dir;
 
     FUN_00417f40();
-    node = (struct WaterNode *)DAT_004cc02c;
+    node = (struct WaterNode *)WaterNodeList;
     while (node != NULL) {
         if (node->field_8 == 1) {
             limit = 0;
@@ -676,19 +676,19 @@ void FUN_00418630(unsigned short key) {
     if (node != NULL) {
         memset(node, 0, sizeof(struct WaterNode));
         node->key = key;
-        InsertWaterNodeAtHead(&DAT_004cc034, node);
+        InsertWaterNodeAtHead(&ElephantFountainList, node);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00418670
 void FUN_00418670(struct WaterNode *node) {
-    FUN_00417bd0(&DAT_004cc034, node);
+    FUN_00417bd0(&ElephantFountainList, node);
     free(node);
 }
 
 // FUNCTION: LEGOLAND 0x00418690
 struct WaterNode *FUN_00418690(unsigned short *key) {
-    return FindWaterNodeByKey(DAT_004cc034, key);
+    return FindWaterNodeByKey(ElephantFountainList, key);
 }
 
 // FUNCTION: LEGOLAND 0x004186b0
@@ -731,7 +731,7 @@ unsigned int FUN_00418710(unsigned char *coords, int *base) {
 void FUN_004187b0(void) {
     struct WaterNode *node;
 
-    node = (struct WaterNode *)DAT_004cc034;
+    node = (struct WaterNode *)ElephantFountainList;
     while (node != NULL) {
         if (FUN_00418710((unsigned char *)&node->key, (int *)&DAT_004cbfdc->footprint_x0) != 0) {
             if (node->field_8 == 0) {
@@ -753,7 +753,7 @@ void FUN_004187f0(void) {
     struct Point sc;
 
     FUN_004187b0();
-    for (node = DAT_004cc034; node != NULL; node = node->next) {
+    for (node = ElephantFountainList; node != NULL; node = node->next) {
         if (node->field_8 == 1) {
             limit = 0;
             lls = GetLLSForSprite((struct SpriteLLS *)WwElsquirtSprite);
@@ -861,7 +861,7 @@ LEGO_EXPORT int Save_WaterBlock(void) {
 
     one = 1;
     zero = 0;
-    current = (struct WaterListItem *)DAT_004cc02c;
+    current = (struct WaterListItem *)WaterNodeList;
     while (current != NULL) {
         if (SaveGameWrite(&one, 4) == 0) {
             return 0;
@@ -893,7 +893,7 @@ LEGO_EXPORT int Load_WaterBlock(void) {
         if (prev != NULL) {
             prev->next = node;
         } else {
-            DAT_004cc02c = node;
+            WaterNodeList = node;
         }
         prev = node;
         if (SaveGameRead(&count, 4) == 0) {
@@ -911,7 +911,7 @@ LEGO_EXPORT int Save_ElephantF(void) {
 
     one = 1;
     zero = 0;
-    current = (struct WaterListItem *)DAT_004cc034;
+    current = (struct WaterListItem *)ElephantFountainList;
     while (current != NULL) {
         if (SaveGameWrite(&one, 4) == 0) {
             return 0;
@@ -943,7 +943,7 @@ LEGO_EXPORT int Load_ElephantF(void) {
         if (prev != NULL) {
             prev->next = node;
         } else {
-            DAT_004cc034 = node;
+            ElephantFountainList = node;
         }
         prev = node;
         if (SaveGameRead(&count, 4) == 0) {

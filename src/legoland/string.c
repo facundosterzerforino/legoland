@@ -290,7 +290,7 @@ void ResumeGameTimer(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499410
-void FUN_00499410(void) {
+void ResetGameTimer(void) {
     unsigned int ticks;
     unsigned int counter;
 

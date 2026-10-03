@@ -205,7 +205,7 @@ LEGO_EXPORT void AddObjectToMap(Element *param_1, TileId param_2, int param_3) {
         }
         rect = *rect.next;
     }
-    if (DAT_00667cd8 == 0 && DAT_00667ca0 == 0) {
+    if (DAT_00667cd8 == 0 && LoadInProgress == 0) {
         CalculateMapRenderOrder();
     }
 }
@@ -2304,7 +2304,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     char strbuf[512];
     struct Point pos;
 
-    if (DAT_00667d50 != 0) {
+    if (MapDataLoaded != 0) {
         return 0xffffffff;
     }
     if (LLIDB_FindElement((const char *)param_1, (unsigned int *)&elem, 0) != 0) {
@@ -2317,7 +2317,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     if (file == 0) {
         return 0xfffffffd;
     }
-    DAT_00667ca0 = 1;
+    LoadInProgress = 1;
     FUN_00459880();
     RES_ReadFile(file, &len, 4);
     RES_ReadFile(file, namebuf, len);
@@ -2338,8 +2338,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     RES_ReadFile(file, &lpConfig->height, 2);
     if (RES_ReadFile(file, &DAT_00801b28, 4) != 4) {
         RES_CloseFile(file);
-        DAT_00667d50 = 1;
-        DAT_00667ca0 = 0;
+        MapDataLoaded = 1;
+        LoadInProgress = 0;
         return 1;
     }
     for (row = 0; row < lpConfig->height; row++) {
@@ -2718,8 +2718,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
                 case 0:
                     if (RES_ReadFile(file, &len, 1) != 1) {
                         RES_CloseFile(file);
-                        DAT_00667d50 = 1;
-                        DAT_00667ca0 = 0;
+                        MapDataLoaded = 1;
+                        LoadInProgress = 0;
                         DAT_00810140 = 0;
                         FUN_00462c60();
                         return 1;
@@ -2740,8 +2740,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
         }
     }
     RES_CloseFile(file);
-    DAT_00667d50 = 1;
-    DAT_00667ca0 = 0;
+    MapDataLoaded = 1;
+    LoadInProgress = 0;
     DAT_00810140 = 0;
     FUN_00462c60();
     return 1;
@@ -2757,7 +2757,7 @@ unsigned int UnloadBaseMap(void) {
     struct Element *elem;
     struct Element *elem2;
 
-    if (DAT_00667d50 == 0) {
+    if (MapDataLoaded == 0) {
         return 0;
     }
     FUN_00459880();
@@ -2806,7 +2806,7 @@ unsigned int UnloadBaseMap(void) {
     free(DAT_00801a70);
     ClearOverlays();
     FUN_004828f0();
-    DAT_00667d50 = 0;
+    MapDataLoaded = 0;
     return 1;
 }
 

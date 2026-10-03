@@ -67,7 +67,7 @@ void FUN_0046db40(void);
 int SetClippingToScreenRect(int param);
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node);
 LEGO_EXPORT void RenderHelpIcons(void);
-void FUN_0046fb40(unsigned int group);
+void DestroyIconGroup(unsigned int group);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 LEGO_EXPORT struct IconNode *FindIcon(unsigned short id);
 LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3);

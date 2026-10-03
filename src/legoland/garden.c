@@ -35,7 +35,7 @@ struct GardenTable {
 // FUNCTION: LEGOLAND 0x00432480
 void LoadHedgeImages(struct GardenLayer *arg0) {
     struct GardenInner *temp = arg0->field_c;
-    DAT_0081cd08 = temp;
+    HedgeObjectClass = temp;
     temp->field_1c |= 0x404;
     // STRING: LEGOLAND 0x004b7114
     if (LLIDB_FindElement("HEDGE IMAGES", &HedgeImagesHandle, 0) != 0) {
@@ -51,7 +51,7 @@ void UnloadHedgeImages(void) {
 
 // FUNCTION: LEGOLAND 0x004324d0
 void FUN_004324d0(void) {
-    void *var = DAT_0081cd08;
+    void *var = HedgeObjectClass;
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);
@@ -59,28 +59,28 @@ void FUN_004324d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432510
-void FUN_00432510(int x, int y) {
+void UpdateHedgeTileImage(int x, int y) {
     int pos[2];
     int mask = 0;
 
     pos[0] = x;
     pos[1] = y - 1;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
         mask = 1;
     }
     pos[0] = x + 1;
     pos[1] = y;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
         mask |= 2;
     }
     pos[0] = x;
     pos[1] = y + 1;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
         mask |= 4;
     }
     pos[0] = x - 1;
     pos[1] = y;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
         mask |= 8;
     }
     if (mask == 0) {
@@ -97,26 +97,26 @@ void FUN_004325e0(Element *obj, int *param_2) {
     packed.pos.x = param_2[0];
     packed.pos.y = param_2[1];
     AddObjectToMap(obj, packed, 0);
-    FUN_00432510(param_2[0], param_2[1]);
+    UpdateHedgeTileImage(param_2[0], param_2[1]);
     pos[0] = param_2[0];
     pos[1] = param_2[1] - 1;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
     pos[0] = param_2[0] + 1;
     pos[1] = param_2[1];
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
     pos[0] = param_2[0];
     pos[1] = param_2[1] + 1;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
     pos[0] = param_2[0] - 1;
     pos[1] = param_2[1];
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
 }
 
@@ -129,23 +129,23 @@ void FUN_00432700(Element *obj, TileId tile, struct Cursor *cursor) {
     StandardRemoveObject(obj, tile, cursor);
     pos[0] = x;
     pos[1] = y - 1;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
     pos[0] = x + 1;
     pos[1] = y;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
     pos[0] = x;
     pos[1] = y + 1;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
     pos[0] = x - 1;
     pos[1] = y;
-    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)DAT_0081cd08) {
-        FUN_00432510(pos[0], pos[1]);
+    if (GetObjectClassAndInstance(pos, 0) == (unsigned int)HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
     }
 }
 

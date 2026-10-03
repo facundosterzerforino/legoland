@@ -617,10 +617,10 @@ unsigned int SaveReport(void) {
     if (SaveGameWrite(&ReportFlags, 0xa0) == 0) {
         return 0;
     }
-    if (DAT_00666098 == 0) {
+    if (AppraisalDeadline == 0) {
         elapsed = 0xffffffff;
     } else {
-        elapsed = DAT_00666098 - GetGameTimer();
+        elapsed = AppraisalDeadline - GetGameTimer();
     }
     return SaveGameWrite(&elapsed, 0x4) != 0;
 }
@@ -636,10 +636,10 @@ unsigned int LoadReport(void) {
         return 0;
     }
     if (elapsed == 0xffffffff) {
-        DAT_00666098 = 0;
+        AppraisalDeadline = 0;
         return 1;
     }
-    DAT_00666098 = GetGameTimer() + elapsed;
+    AppraisalDeadline = GetGameTimer() + elapsed;
     return 1;
 }
 
@@ -4800,7 +4800,7 @@ LAB_0044acbb:
                     } else {
                         iVar3 = SpeechIsPlaying();
                         if (iVar3 == 0) {
-                            FUN_0046d110();
+                            UpdateSpeechPlayback();
                         }
                     }
                     ProcessFrontEndHelp();
@@ -5044,13 +5044,13 @@ void FUN_0044db40(void) {
     } else {
         t = 0;
     }
-    DAT_00666098 = t;
+    AppraisalDeadline = t;
 }
 
 // FUNCTION: LEGOLAND 0x0044db80
 void FUN_0044db80(void) {
     MapStats.timer_minutes = 0;
-    DAT_00666098 = 0;
+    AppraisalDeadline = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0044db90
@@ -5059,7 +5059,7 @@ int FUN_0044db90(void) {
     int v;
 
     now = GetGameTimer();
-    if (FUN_0046b280() == 0 && DAT_00666098 != 0 && (int)DAT_00666098 <= now) {
+    if (FUN_0046b280() == 0 && AppraisalDeadline != 0 && (int)AppraisalDeadline <= now) {
         PauseGameTimer();
         PauseAllSamples();
         SpeechCloseFile();
@@ -5085,7 +5085,7 @@ int FUN_0044db90(void) {
                 FUN_00459820(2);
             }
         }
-        DAT_00666098 = 0;
+        AppraisalDeadline = 0;
         FUN_0044db40();
         ResumeGameTimer();
         ResumeAllSamples();

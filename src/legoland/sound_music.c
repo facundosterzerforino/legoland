@@ -698,10 +698,10 @@ void AutoKillFinishedSamples(void) {
             }
             if (prev != 0) {
                 prev->next = sample->next;
-                FUN_00492b20(sample);
+                FreeSample(sample);
             } else {
                 SampleListHead = sample->next;
-                FUN_00492b20(sample);
+                FreeSample(sample);
             }
         } else {
             prev = sample;
@@ -848,7 +848,7 @@ LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source) {
                 } else {
                     SampleListHead = next;
                 }
-                FUN_00492b20(sample);
+                FreeSample(sample);
                 continue;
             }
         }

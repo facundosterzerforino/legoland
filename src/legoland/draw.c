@@ -292,9 +292,9 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
     LPDIRECTDRAWSURFACE surface;
     int value;
 
-    value = DAT_00668144;
-    DAT_00668164[DAT_006681e4] = DAT_00668144;
-    DAT_006681e4 = DAT_006681e4 + 1;
+    value = VideoSurfaceLocked;
+    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (value == 0) {
         local.left = value;
         local.top = value;
@@ -309,23 +309,23 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
         }
         StoredTransparentColour = GetTransparentColour();
     }
-    DAT_00668144 = 1;
+    VideoSurfaceLocked = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00464080
 LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) {
     LPDIRECTDRAWSURFACE surface;
 
-    DAT_00668164[DAT_006681e4] = DAT_00668144;
-    DAT_006681e4 = DAT_006681e4 + 1;
-    if (DAT_00668144 != 0) {
+    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
+    if (VideoSurfaceLocked != 0) {
         surface = renderEngine;
         if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
             IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
     }
-    DAT_00668144 = 0;
+    VideoSurfaceLocked = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004640f0
@@ -334,13 +334,13 @@ void FUN_004640f0(void) {
     LPDIRECTDRAWSURFACE surface;
     int wasLocked;
 
-    wasLocked = DAT_00668144;
+    wasLocked = VideoSurfaceLocked;
     local.left = 0;
     local.top = 0;
     local.right = lpConfig->screen_width - 1;
     local.bottom = lpConfig->screen_height - 1;
-    DAT_00668164[DAT_006681e4] = DAT_00668144;
-    DAT_006681e4 = DAT_006681e4 + 1;
+    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (wasLocked != 0) {
         surface = renderEngine;
         if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
@@ -356,7 +356,7 @@ void FUN_004640f0(void) {
         IDirectDrawSurface_Lock(renderEngine, NULL, &CurrentSurfaceDesc, 0x21, NULL);
     }
     StoredTransparentColour = GetTransparentColour();
-    DAT_00668144 = 1;
+    VideoSurfaceLocked = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004641f0
@@ -364,9 +364,9 @@ LEGO_EXPORT void PopRenderingStatus(void) {
     RECT local;
     LPDIRECTDRAWSURFACE surface;
 
-    DAT_006681e4 = DAT_006681e4 - 1;
-    if (DAT_00668164[DAT_006681e4] != 0) {
-        if (DAT_00668144 == 0) {
+    RenderingStatusStackDepth = RenderingStatusStackDepth - 1;
+    if (DAT_00668164[RenderingStatusStackDepth] != 0) {
+        if (VideoSurfaceLocked == 0) {
             local.left = 0;
             local.top = 0;
             local.right = lpConfig->screen_width - 1;
@@ -379,23 +379,23 @@ LEGO_EXPORT void PopRenderingStatus(void) {
                 IDirectDrawSurface_Lock(renderEngine, NULL, &CurrentSurfaceDesc, 0x21, NULL);
             }
             StoredTransparentColour = GetTransparentColour();
-            DAT_00668144 = 1;
+            VideoSurfaceLocked = 1;
         }
         return;
     }
-    if (DAT_00668144 != 0) {
+    if (VideoSurfaceLocked != 0) {
         surface = renderEngine;
         if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
             IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
-        DAT_00668144 = 0;
+        VideoSurfaceLocked = 0;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00464310
 LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
-    if (DAT_00668144 == 0) {
+    if (VideoSurfaceLocked == 0) {
         return 0;
     }
     arg->pitch = CurrentSurfaceDesc.lPitch;
@@ -849,9 +849,9 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     LPDIRECTDRAWSURFACE surface;
     int locked;
 
-    locked = DAT_00668144;
-    DAT_00668164[DAT_006681e4] = DAT_00668144;
-    DAT_006681e4 = DAT_006681e4 + 1;
+    locked = VideoSurfaceLocked;
+    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (locked != 0) {
         surface = renderEngine;
         if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
@@ -859,7 +859,7 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
             IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
     }
-    DAT_00668144 = 0;
+    VideoSurfaceLocked = 0;
     renderEngineTargets[renderEngineTargetIdx] = renderEngine;
     renderEngine = sprite->surface;
     renderEngineTargetIdx++;

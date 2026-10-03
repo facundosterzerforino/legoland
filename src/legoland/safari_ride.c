@@ -73,8 +73,8 @@ void FUN_004149c0(struct SafariNode *param) {
     if (s) {
         memset(s, 0, sizeof(struct SafariNode));
         s->tile_id = param->tile_id;
-        s->next = DAT_004cbf0c;
-        DAT_004cbf0c = s;
+        s->next = SafariNodeList;
+        SafariNodeList = s;
         FUN_00414b10(s);
     }
 }
@@ -84,11 +84,11 @@ void RemoveSafariNode(struct SafariNode *node) {
     struct SafariNode *prev;
     struct SafariNode *cur;
 
-    if (DAT_004cbf0c == node) {
-        DAT_004cbf0c = node->next;
+    if (SafariNodeList == node) {
+        SafariNodeList = node->next;
     } else {
-        cur = DAT_004cbf0c->next;
-        prev = DAT_004cbf0c;
+        cur = SafariNodeList->next;
+        prev = SafariNodeList;
         while (cur != node) {
             prev = prev->next;
             if (prev == NULL) {
@@ -105,8 +105,8 @@ void RemoveSafariNode(struct SafariNode *node) {
 
 // FUNCTION: LEGOLAND 0x00414a60
 void FUN_00414a60(void) {
-    while (DAT_004cbf0c != NULL) {
-        RemoveSafariNode(DAT_004cbf0c);
+    while (SafariNodeList != NULL) {
+        RemoveSafariNode(SafariNodeList);
     }
 }
 
@@ -117,7 +117,7 @@ struct SafariKey {
 
 // FUNCTION: LEGOLAND 0x00414a80
 void *FUN_00414a80(struct SafariKey *key) {
-    struct SafariNode *cur = DAT_004cbf0c;
+    struct SafariNode *cur = SafariNodeList;
 
     if (cur != NULL) {
         do {
@@ -401,7 +401,7 @@ void FUN_004150c0(struct SafariNode *node) {
 
 // FUNCTION: LEGOLAND 0x00415200
 void FUN_00415200(void) {
-    struct SafariNode *current = DAT_004cbf0c;
+    struct SafariNode *current = SafariNodeList;
     if (current != NULL) {
         while (current != NULL) {
             FUN_004150c0(current);
@@ -594,7 +594,7 @@ int FUN_00415760(struct SafariListEntry *node, unsigned short *key) {
 
 // FUNCTION: LEGOLAND 0x004157b0
 LEGO_EXPORT int SaveSafariRide(void) {
-    struct SafariNode *current = DAT_004cbf0c;
+    struct SafariNode *current = SafariNodeList;
     unsigned int value1 = 1;
     unsigned int value0 = 0;
 
@@ -670,7 +670,7 @@ LEGO_EXPORT int LoadSafariRide(struct SafariLoadArg *arg) {
         if (prev != NULL) {
             prev->next = node;
         } else {
-            DAT_004cbf0c = node;
+            SafariNodeList = node;
         }
         prev = node;
         if (!SaveGameRead(&marker, 4)) {

@@ -85,7 +85,7 @@ void FUN_004776c0(struct QueryNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004776e0
-void FUN_004776e0(struct EventNode *node) {
+void InsertOpenListSorted(struct EventNode *node) {
     struct EventNode *current;
     struct EventNode *previous;
 
@@ -130,7 +130,7 @@ struct GameMainNode *FUN_00477730(struct Point *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00477760
-void FUN_00477760(struct QueryNode *ctx) {
+void RemoveQueryNode(struct QueryNode *ctx) {
     struct QueryNode *prev;
     struct QueryNode *node;
 
@@ -151,7 +151,7 @@ void FUN_00477760(struct QueryNode *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00477790
-void FUN_00477790(struct EventNode *param_1) {
+void RemoveFromOpenList(struct EventNode *param_1) {
     struct EventNode *prev;
     struct EventNode *node;
 
@@ -361,7 +361,7 @@ void FUN_00477bd0(int x, int y, int a, int b) {
     DAT_004bb5a4 = b;
     nb = FUN_004777f0(&DAT_004bb598, &result);
     nb->path_cost = 0;
-    FUN_004776e0((struct EventNode *)nb);
+    InsertOpenListSorted((struct EventNode *)nb);
     while ((cur = DAT_00668fc0) != NULL) {
         DAT_00668fc0 = cur->next;
 
@@ -387,12 +387,12 @@ void FUN_00477bd0(int x, int y, int a, int b) {
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                FUN_00477760((struct QueryNode *)nb);
+                                RemoveQueryNode((struct QueryNode *)nb);
                             }
                             if (result == 1) {
-                                FUN_00477790((struct EventNode *)nb);
+                                RemoveFromOpenList((struct EventNode *)nb);
                             }
-                            FUN_004776e0((struct EventNode *)nb);
+                            InsertOpenListSorted((struct EventNode *)nb);
                         }
                     }
                 }
@@ -417,12 +417,12 @@ void FUN_00477bd0(int x, int y, int a, int b) {
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                FUN_00477760((struct QueryNode *)nb);
+                                RemoveQueryNode((struct QueryNode *)nb);
                             }
                             if (result == 1) {
-                                FUN_00477790((struct EventNode *)nb);
+                                RemoveFromOpenList((struct EventNode *)nb);
                             }
-                            FUN_004776e0((struct EventNode *)nb);
+                            InsertOpenListSorted((struct EventNode *)nb);
                         }
                     }
                 }
@@ -447,12 +447,12 @@ void FUN_00477bd0(int x, int y, int a, int b) {
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                FUN_00477760((struct QueryNode *)nb);
+                                RemoveQueryNode((struct QueryNode *)nb);
                             }
                             if (result == 1) {
-                                FUN_00477790((struct EventNode *)nb);
+                                RemoveFromOpenList((struct EventNode *)nb);
                             }
-                            FUN_004776e0((struct EventNode *)nb);
+                            InsertOpenListSorted((struct EventNode *)nb);
                         }
                     }
                 }
@@ -477,12 +477,12 @@ void FUN_00477bd0(int x, int y, int a, int b) {
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                FUN_00477760((struct QueryNode *)nb);
+                                RemoveQueryNode((struct QueryNode *)nb);
                             }
                             if (result == 1) {
-                                FUN_00477790((struct EventNode *)nb);
+                                RemoveFromOpenList((struct EventNode *)nb);
                             }
-                            FUN_004776e0((struct EventNode *)nb);
+                            InsertOpenListSorted((struct EventNode *)nb);
                         }
                     }
                 }
@@ -507,7 +507,7 @@ void FUN_00477bd0(int x, int y, int a, int b) {
         nb = nb->parent;
     }
     while (DAT_00668fc4 != NULL) {
-        FUN_00477760((struct QueryNode *)DAT_00668fc4);
+        RemoveQueryNode((struct QueryNode *)DAT_00668fc4);
     }
 }
 
@@ -744,7 +744,7 @@ unsigned int FUN_004786c0(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00478700
-void FUN_00478700(int *param_1, char **param_2, int param_3) {
+void ParseRect(int *param_1, char **param_2, int param_3) {
     int temp;
 
     param_1[0] = atoi(param_2[param_3 + 0]);

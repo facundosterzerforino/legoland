@@ -122,7 +122,7 @@ struct CastleObj {
 
 #include "image_sprite.h"
 // FUNCTION: LEGOLAND 0x0041cc50
-unsigned int FUN_0041cc50(unsigned int dir) {
+unsigned int GetOppositeDirection(unsigned int dir) {
     if (dir == 1) return 4;
     if (dir == 4) return 1;
     if (dir == 2) return 8;
@@ -137,7 +137,7 @@ unsigned int FUN_0041cc90(unsigned int shift) {
 }
 
 // FUNCTION: LEGOLAND 0x0041cca0
-unsigned int FUN_0041cca0(unsigned int dir) {
+unsigned int DirMaskToIndex(unsigned int dir) {
     if (dir == 1) return 0;
     if (dir == 4) return 2;
     if (dir == 2) return 1;
@@ -203,7 +203,7 @@ struct Anim {
 };
 
 // FUNCTION: LEGOLAND 0x0041ce10
-void FUN_0041ce10(struct Anim *anim) {
+void ResetAnim(struct Anim *anim) {
     anim->field_8 = 0;
     anim->field_0 = 0xffffffff;
     anim->field_4 = 0;
@@ -227,8 +227,8 @@ void FUN_0041ce30(struct AnimPair *pair) {
     pair->field_6 = 0;
     pair->field_c = 0;
     pair->field_10 = 0;
-    FUN_0041ce10(&pair->anim_20);
-    FUN_0041ce10(&pair->anim_14);
+    ResetAnim(&pair->anim_20);
+    ResetAnim(&pair->anim_14);
 }
 
 // FUNCTION: LEGOLAND 0x0041ce60
@@ -238,14 +238,14 @@ unsigned int FUN_0041ce60(struct AnimPair *pair) {
     unsigned int b;
 
     if (a == 0xffffffff) {
-        a = FUN_0041cc50(pair->anim_20.field_0);
+        a = GetOppositeDirection(pair->anim_20.field_0);
     }
-    lo = FUN_0041cca0(a);
+    lo = DirMaskToIndex(a);
     b = pair->anim_20.field_0;
     if (b == 0xffffffff) {
-        b = FUN_0041cc50(pair->anim_14.field_0);
+        b = GetOppositeDirection(pair->anim_14.field_0);
     }
-    return (FUN_0041cca0(b) << 2) | lo;
+    return (DirMaskToIndex(b) << 2) | lo;
 }
 
 // FUNCTION: LEGOLAND 0x0041ceb0
@@ -664,7 +664,7 @@ void FUN_0041d440(struct SprObj *obj, struct SprEnt *ent) {
     if (ent->id_a != -1) {
         FUN_0041d430(owner->f_a8, obj);
         owner->f_a8->dir_b = FUN_0041cc90(ent->id_a);
-        obj->dir_a = FUN_0041cc50(owner->f_a8->dir_b);
+        obj->dir_a = GetOppositeDirection(owner->f_a8->dir_b);
         FUN_0041cfd0((struct HandlerHost2 *)obj, owner->f_a8->f24);
         owner->f_a8 = obj;
         FUN_0041d170(obj, (unsigned int)&owner->pts_a);
@@ -672,7 +672,7 @@ void FUN_0041d440(struct SprObj *obj, struct SprEnt *ent) {
     if (ent->id_b != -1) {
         FUN_0041d430(obj, owner->f_c0);
         owner->f_c0->dir_a = FUN_0041cc90(ent->id_b);
-        obj->dir_b = FUN_0041cc50(owner->f_c0->dir_a);
+        obj->dir_b = GetOppositeDirection(owner->f_c0->dir_a);
         FUN_0041cfd0((struct HandlerHost2 *)obj, owner->f_c0->f18);
         owner->f_c0 = obj;
         FUN_0041d190(obj, (unsigned int)&owner->pts_b);
@@ -812,8 +812,8 @@ void FUN_0041d7f0(void *arg) {
         FUN_0041d760((unsigned char *)obj);
         FUN_0041d6d0(-1);
         if (owner->flags == 2) {
-            FUN_0041ce10((struct Anim *)&obj->next->dir_a);
-            FUN_0041ce10((struct Anim *)&obj->prev->dir_b);
+            ResetAnim((struct Anim *)&obj->next->dir_a);
+            ResetAnim((struct Anim *)&obj->prev->dir_b);
             owner->f_a8 = obj->prev;
             FUN_0041d170(obj->prev, (unsigned int)&DAT_00829b8c);
             owner->f_c0 = obj->next;
@@ -825,13 +825,13 @@ void FUN_0041d7f0(void *arg) {
             owner->flags = 1;
             FUN_00424e70(owner);
         } else if (obj == owner->f_a8) {
-            FUN_0041ce10((struct Anim *)&obj->prev->dir_b);
+            ResetAnim((struct Anim *)&obj->prev->dir_b);
             owner->f_a8 = obj->prev;
             FUN_0041d170(obj->prev, (unsigned int)&DAT_00829b8c);
             FUN_004299e0((struct PathSeg *)owner->f_a8);
             FUN_0041cfc0((struct HandlerHost1 *)owner->f_a8);
         } else {
-            FUN_0041ce10((struct Anim *)&obj->next->dir_a);
+            ResetAnim((struct Anim *)&obj->next->dir_a);
             owner->f_c0 = obj->next;
             FUN_0041d190(obj->next, (unsigned int)&DAT_00829ba4);
             FUN_00429a30((struct PathSeg *)owner->f_c0);
@@ -1278,7 +1278,7 @@ unsigned int FUN_0041e2f0(struct RingHost *host) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e330
-void FUN_0041e330(struct RingHost *host, void (*visit)()) {
+void ForEachRingNode(struct RingHost *host, void (*visit)()) {
     struct RingNode *start = &host->head;
     struct RingNode *node = start;
     do {
@@ -1289,17 +1289,17 @@ void FUN_0041e330(struct RingHost *host, void (*visit)()) {
 
 // FUNCTION: LEGOLAND 0x0041e360
 void FUN_0041e360(struct RingHost *host) {
-    FUN_0041e330(host, FUN_0041e950);
+    ForEachRingNode(host, FUN_0041e950);
 }
 
 // FUNCTION: LEGOLAND 0x0041e380
 void FUN_0041e380(struct RingHost *host) {
-    FUN_0041e330(host, FUN_0041e970);
+    ForEachRingNode(host, FUN_0041e970);
 }
 
 // FUNCTION: LEGOLAND 0x0041e3a0
 void FUN_0041e3a0(struct RingHost *host) {
-    FUN_0041e330(host, FUN_0041e990);
+    ForEachRingNode(host, FUN_0041e990);
 }
 
 // FUNCTION: LEGOLAND 0x0041e3c0
@@ -1310,12 +1310,12 @@ unsigned int FUN_0041e3c0(unsigned int param) {
 // FUNCTION: LEGOLAND 0x0041e3e0
 void FUN_0041e3e0(struct RingHost *host, unsigned int value) {
     DAT_0082adec = value;
-    FUN_0041e330(host, FUN_0041e3c0);
+    ForEachRingNode(host, FUN_0041e3c0);
 }
 
 // FUNCTION: LEGOLAND 0x0041e400
 void FUN_0041e400(struct RingHost *host) {
-    FUN_0041e330(host, FUN_0041e630);
+    ForEachRingNode(host, FUN_0041e630);
 }
 
 // FUNCTION: LEGOLAND 0x0041e420
@@ -2363,7 +2363,7 @@ void FUN_0041ff80(void) { STUB(); }
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00420200
-float FUN_00420200(float (*fn)(unsigned int), unsigned int a, unsigned int b, float tol) {
+float IntegrateSimpson(float (*fn)(unsigned int), unsigned int a, unsigned int b, float tol) {
     int it2;
     int iib;
     float hh_;
@@ -4701,8 +4701,8 @@ void FUN_004241e0(void) {
     FUN_0041d1b0(&DAT_00829ba4);
     DAT_00829b88 = 0;
     DAT_00829ba0 = 0;
-    FUN_0041ce10((struct Anim *)&DAT_00829af8);
-    FUN_0041ce10((struct Anim *)&DAT_00829b04);
+    ResetAnim((struct Anim *)&DAT_00829af8);
+    ResetAnim((struct Anim *)&DAT_00829b04);
     DAT_00829ae0 = 0;
 }
 
@@ -7029,10 +7029,10 @@ struct Struct427a40 {
 // FUNCTION: LEGOLAND 0x00427a40
 void FUN_00427a40(struct Struct427a40 *param_1) {
     if (param_1->field_20 == 0xffffffff) {
-        param_1->field_20 = FUN_0041cc50(param_1->field_14);
+        param_1->field_20 = GetOppositeDirection(param_1->field_14);
         param_1->field_24 = param_1->field_18;
     } else if (param_1->field_14 == 0xffffffff) {
-        param_1->field_14 = FUN_0041cc50(param_1->field_20);
+        param_1->field_14 = GetOppositeDirection(param_1->field_20);
         param_1->field_18 = param_1->field_24;
     }
 }
@@ -7138,12 +7138,12 @@ struct Struct427c30 {
 // FUNCTION: LEGOLAND 0x00427c30
 void FUN_00427c30(struct Struct427c30 *param_1) {
     if (param_1->field_20 == 0xffffffff) {
-        param_1->field_20 = FUN_0041cc50(param_1->field_14);
+        param_1->field_20 = GetOppositeDirection(param_1->field_14);
         param_1->field_24 = param_1->field_18;
         return;
     }
     if (param_1->field_14 == 0xffffffff) {
-        param_1->field_14 = FUN_0041cc50(param_1->field_20);
+        param_1->field_14 = GetOppositeDirection(param_1->field_20);
         param_1->field_18 = param_1->field_24;
     }
 }
@@ -7446,7 +7446,7 @@ unsigned int FUN_004283c0(struct AnimPair *pair) {
     unsigned int kind = FUN_0041ce60(pair);
     int v = (((int)*(float *)&pair->anim_20.field_4 - (int)*(float *)&pair->anim_14.field_4) >> 1) + 2;
 
-    if (pair->anim_14.field_0 == FUN_0041cc50(pair->anim_20.field_0)) {
+    if (pair->anim_14.field_0 == GetOppositeDirection(pair->anim_20.field_0)) {
         if (kind == 8) {
             v += kind;
         } else if (kind == 2) {
@@ -7903,8 +7903,8 @@ void FUN_00429560(struct PathSeg *seg, struct PathSeg *end, int count, float h, 
     struct FVec3 b;
     struct FVec3 a;
     struct SegBlob blob;
-    unsigned int di = FUN_0041cca0(seg->dir_in);
-    unsigned int dout = FUN_0041cca0(end->dir_out);
+    unsigned int di = DirMaskToIndex(seg->dir_in);
+    unsigned int dout = DirMaskToIndex(end->dir_out);
     int i;
 
     step = 1.0f / (float)count;
@@ -8038,8 +8038,8 @@ struct PathSeg *FUN_00429840(struct PathSeg *n, int x) {
 // FUNCTION: LEGOLAND 0x004298a0
 int FUN_004298a0(struct SprInfo *info, struct SprOwner *owner, unsigned int *a, unsigned int *b) {
     int n = FUN_00429940((struct PathSeg *)owner->f_a8, (struct PathSeg **)a) + FUN_00429990((struct PathSeg *)owner->f_c0, (struct PathSeg **)b);
-    unsigned int da = FUN_0041cc50(owner->f_a8->dir_b);
-    unsigned int db = FUN_0041cc50(owner->f_c0->dir_a);
+    unsigned int da = GetOppositeDirection(owner->f_a8->dir_b);
+    unsigned int db = GetOppositeDirection(owner->f_c0->dir_a);
 
     if (FUN_00429910(&info->f0, da, db)) {
         n++;
@@ -8052,7 +8052,7 @@ unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c) {
     unsigned int flag = (*s == 0);
     flag &= 1;
     if (flag) {
-        if (c == FUN_0041cc50(v)) {
+        if (c == GetOppositeDirection(v)) {
             return 1;
         }
     }
@@ -8438,19 +8438,19 @@ float FUN_0042a1b0(struct Struct42a110 *a, unsigned int hi, struct Struct42a110 
     DAT_00615ff4 = c;
     if (FUN_0042a110(a, b)) {
         DAT_00615f80 = a;
-        return FUN_00420200(FUN_0042a150, lo, hi, 0.01f);
+        return IntegrateSimpson(FUN_0042a150, lo, hi, 0.01f);
     }
     cur = *b;
     DAT_00615f80 = &cur;
-    acc = FUN_00420200(FUN_0042a150, lo, cur.field_4->f48, 0.01f);
+    acc = IntegrateSimpson(FUN_0042a150, lo, cur.field_4->f48, 0.01f);
     FUN_0041f850((struct AnimWalker *)&cur);
     while (!FUN_0042a110(&cur, a)) {
         DAT_00615f80 = &cur;
-        acc = FUN_00420200(FUN_0042a150, cur.field_4->f44, cur.field_4->f48, 0.01f) + acc;
+        acc = IntegrateSimpson(FUN_0042a150, cur.field_4->f44, cur.field_4->f48, 0.01f) + acc;
         FUN_0041f850((struct AnimWalker *)&cur);
     }
     DAT_00615f80 = &cur;
-    return FUN_00420200(FUN_0042a150, cur.field_4->f44, hi, 0.01f) + acc;
+    return IntegrateSimpson(FUN_0042a150, cur.field_4->f44, hi, 0.01f) + acc;
 }
 
 // FUNCTION: LEGOLAND 0x0042a2e0

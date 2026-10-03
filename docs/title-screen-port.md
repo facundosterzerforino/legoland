@@ -80,7 +80,7 @@ One tick of the main loop. Returns 0 to quit. Each tick it:
   | 3 | in-game | `FUN_00458ee0` (STUB) |
 - then runs input + audio for the frame: `UpdateSound` (sound, MATCHED) →
   **`ReadGameButtons`** (controller poll, STUB) → frame counter → handles a couple of
-  `DAT_00832ba0` mode-change transitions → `FUN_0046d110`.
+  `DAT_00832ba0` mode-change transitions → `UpdateSpeechPlayback`.
 
 ### Front-end state machine: `InitScreens` @ `0x00458640` (screens.c) — **STUB, critical**
 Called from frame-loop case 2 with the screen id in `DAT_0080ff88`. On a screen change

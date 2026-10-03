@@ -67,7 +67,7 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to);
 unsigned int FUN_004192d0(struct BoatRide *param_1);
 void FUN_00418f90(struct BoatRide *param_1);
 void FUN_0041b0d0(unsigned short id, unsigned int value);
-struct PathNode *FUN_0041c890(unsigned int a, unsigned int b);
+struct PathNode *FindBoatPathAt(unsigned int a, unsigned int b);
 unsigned int FUN_0041c690(int param_1, int param_2, unsigned short *param_3);
 void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4);
 void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3);

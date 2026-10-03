@@ -73,9 +73,9 @@ void FUN_004860f0(void) {
     for (i = 0; i < 256; i++) {
         f = i * FLOAT_004ab550;
         v = (unsigned short)(int)(f * FLOAT_004ab444);
-        DAT_0066b638[i].shifted = v << sh;
-        DAT_0066b638[i].scaled = (int)(f * mask) << 5;
-        DAT_0066b638[i].value = v;
+        ColorLut[i].shifted = v << sh;
+        ColorLut[i].scaled = (int)(f * mask) << 5;
+        ColorLut[i].value = v;
     }
 }
 
@@ -165,7 +165,7 @@ unsigned int FUN_00486280(int param_1, void *param_2) {
         i = 0;
         if (param_1 > 0) {
             do {
-                frame->data[i++] = DAT_0066b638[(unsigned char)(int)ar].value | DAT_0066b638[(unsigned char)(int)ag].scaled | DAT_0066b638[(unsigned char)(int)ab].shifted;
+                frame->data[i++] = ColorLut[(unsigned char)(int)ar].value | ColorLut[(unsigned char)(int)ag].scaled | ColorLut[(unsigned char)(int)ab].shifted;
                 ab += sb;
                 ag += sg;
                 ar += sr;
@@ -180,7 +180,7 @@ unsigned int FUN_00486280(int param_1, void *param_2) {
         if (param_1 > 0) {
             i = param_1;
             do {
-                frame->data[i++] = DAT_0066b638[(unsigned char)(int)ar].value | DAT_0066b638[(unsigned char)(int)ag].scaled | DAT_0066b638[(unsigned char)(int)ab].shifted;
+                frame->data[i++] = ColorLut[(unsigned char)(int)ar].value | ColorLut[(unsigned char)(int)ag].scaled | ColorLut[(unsigned char)(int)ab].shifted;
                 ab += sb;
                 ag += sg;
                 ar += sr;

@@ -471,7 +471,7 @@ void FUN_0043ae20(struct SpaceTowerCar *param_1, int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0043aee0
-void FUN_0043aee0(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
+void RenderSpaceTowerSeat(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     FUN_0043ae20(param_1, param_2, param_3);
     if ((param_1->seats[param_2].flags & 1) != 0) {
         FUN_0043ad00((unsigned char *)param_1, param_2);
@@ -513,11 +513,11 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
                 }
             }
         }
-        FUN_0043aee0(car, 1, param_6);
-        FUN_0043aee0(car, 2, param_6);
+        RenderSpaceTowerSeat(car, 1, param_6);
+        RenderSpaceTowerSeat(car, 2, param_6);
         PrintSprite(SpaceTowerMatte2Sprite, coords.x + off1.x, coords.y + off1.y, param_6, 0);
-        FUN_0043aee0(car, 0, param_6);
-        FUN_0043aee0(car, 3, param_6);
+        RenderSpaceTowerSeat(car, 0, param_6);
+        RenderSpaceTowerSeat(car, 3, param_6);
         node = ride->list;
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->id, param_4, 2) == 0) {
@@ -537,11 +537,11 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
         AdjustOffsetForViewMode(&off2);
         PrintSprite(GetSpriteForLayer((struct LayerContainer *)SpaceTowerLayers, 3), off2.x + coords.x, off2.y + coords.y, param_6, 0);
     } else {
-        FUN_0043aee0(car, 1, param_6);
-        FUN_0043aee0(car, 2, param_6);
+        RenderSpaceTowerSeat(car, 1, param_6);
+        RenderSpaceTowerSeat(car, 2, param_6);
         PrintSprite(SpaceTowerMatte2Sprite, coords.x + off1.x, coords.y + off1.y, param_6, 0);
-        FUN_0043aee0(car, 0, param_6);
-        FUN_0043aee0(car, 3, param_6);
+        RenderSpaceTowerSeat(car, 0, param_6);
+        RenderSpaceTowerSeat(car, 3, param_6);
         LLSSetFrame(GetLLSForLayer(SpaceTowerLayers, 5), (char)car->var_ad);
         off2 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)SpaceTowerLayers, 5);
         AdjustOffsetForViewMode(&off2);

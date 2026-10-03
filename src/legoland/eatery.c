@@ -408,7 +408,7 @@ void FUN_0042e8b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042e8d0
-void FUN_0042e8d0(struct EditArg *arg) {
+void EaterySetEditMode(struct EditArg *arg) {
     unsigned int temp = arg->var_c;
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)temp;
@@ -731,8 +731,8 @@ void FUN_0042efb0(unsigned int param_1, TileId tile, unsigned int param_3) {
 void FUN_0042f030(struct EateryObj *obj) {
     DAT_0081cd40 = (unsigned int)obj->fx_c;
     ((struct EateryFX *)DAT_0081cd40)->flags_1c |= 0x20;
-    DAT_0081cd2c = (unsigned int)((struct EateryFX *)DAT_0081cd40)->inner_64;
-    ((struct EateryInner *)DAT_0081cd2c)->flags_10 |= 0x2000;
+    EateryFxInner = (unsigned int)((struct EateryFX *)DAT_0081cd40)->inner_64;
+    ((struct EateryInner *)EateryFxInner)->flags_10 |= 0x2000;
     // STRING: LEGOLAND 0x004b6f2c
     RestMaskMainSprite = LoadSprite("RestMask_Main.lls", 1);
     // STRING: LEGOLAND 0x004b6f14
@@ -743,9 +743,9 @@ void FUN_0042f030(struct EateryObj *obj) {
     RestMaskLevel2Sprite = LoadSprite("RestMaskLevel2.lls", 1);
     // STRING: LEGOLAND 0x004b6ed8
     RestMaskLevel3Sprite = LoadSprite("RestMaskLevel3.lls", 1);
-    HideLayer((struct LayerOwner *)DAT_0081cd2c, 1);
-    StopLayerPlaying(DAT_0081cd2c, 1);
-    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_0081cd2c, 1), 0);
+    HideLayer((struct LayerOwner *)EateryFxInner, 1);
+    StopLayerPlaying(EateryFxInner, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(EateryFxInner, 1), 0);
     LoadMoneySFX();
 }
 
@@ -966,10 +966,10 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
         if (frame > 0xf) {
             frame = 0;
         }
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_0081cd2c, 1), frame);
-        offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd2c, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryFxInner, 1), frame);
+        offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryFxInner, 1);
         AdjustOffsetForViewMode(&offset);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd2c, 1),
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryFxInner, 1),
             coords.x + offset.x, coords.y + offset.y, param_6, (int *)&cfg);
         state->field_9 = frame;
     }
@@ -1030,7 +1030,7 @@ void FUN_0042f920(unsigned short *param_1) {
             p = p + 1;
         }
         node->value = *param_1;
-        node->next = DAT_00616148;
+        node->next = SaveBlockList;
         node->field_6 = 0;
         node->field_7 = 0;
         node->field_8 = 0;
@@ -1049,7 +1049,7 @@ void FUN_0042f920(unsigned short *param_1) {
         node->field_34 = 0;
         node->field_38 = 0x143;
         node->field_3c = 0;
-        DAT_00616148 = node;
+        SaveBlockList = node;
     }
 }
 
@@ -1064,7 +1064,7 @@ void FUN_0042f9a0(unsigned int param_1, unsigned char *param_2) {
 
 // FUNCTION: LEGOLAND 0x0042f9d0
 struct SaveBlock *FindSaveBlock(unsigned short *param) {
-    struct SaveBlock *node = DAT_00616148;
+    struct SaveBlock *node = SaveBlockList;
     if (node == NULL) {
         return NULL;
     }
@@ -1082,11 +1082,11 @@ void RemoveSaveBlock(struct SaveBlock *param) {
     struct SaveBlock *node;
     struct SaveBlock *prev;
 
-    if (DAT_00616148 == param) {
-        DAT_00616148 = param->next;
+    if (SaveBlockList == param) {
+        SaveBlockList = param->next;
     } else {
-        node = DAT_00616148->next;
-        prev = DAT_00616148;
+        node = SaveBlockList->next;
+        prev = SaveBlockList;
         while (node != param) {
             prev = prev->next;
             if (prev == NULL) {
@@ -1398,7 +1398,7 @@ void FUN_0042fbb0(int param_1) {
         node = next;
     }
     {
-        struct SaveBlock *v = DAT_00616148;
+        struct SaveBlock *v = SaveBlockList;
         unsigned char counter;
         char vf6;
         int vf18;
@@ -1855,7 +1855,7 @@ void FUN_00431170(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x004312c0
-void FUN_004312c0(unsigned int param_1, TileId tile, unsigned int param_3) {
+void EateryRemoveObject(unsigned int param_1, TileId tile, unsigned int param_3) {
     StandardRemoveObject(param_1, tile, param_3);
     RemoveAllBlokesFromRide(*(unsigned int *)(param_1 + 0xc), tile);
     StopMoneySFX(&tile.pos.x);
@@ -2347,7 +2347,7 @@ int Restaurant1_Load(void) {
 int Restaurant2_Save(void) {
     unsigned int one = 1;
     unsigned int zero = 0;
-    struct SaveBlock *node = DAT_00616148;
+    struct SaveBlock *node = SaveBlockList;
     while (node != NULL) {
         if (SaveGameWrite(&one, 4) == 0) {
             return 0;
@@ -2381,7 +2381,7 @@ int Restaurant2_Load(void) {
         if (prev != NULL) {
             prev->next = current;
         } else {
-            DAT_00616148 = current;
+            SaveBlockList = current;
         }
         prev = current;
         if (!SaveGameRead(&count, 4)) {

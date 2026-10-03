@@ -88,7 +88,7 @@ int FUN_00457970(int dx, int dy) {
     dx += ride->footprint.x0;
     dy += ride->footprint.y0;
     for (y = dy; y < dy + (int)FootprintHeight; y++) {
-        for (x = dx; x < dx + (int)DAT_00813a6c; x++) {
+        for (x = dx; x < dx + (int)FootprintWidth; x++) {
             if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 elem = &GameMap[y][x];
             } else {
@@ -127,18 +127,18 @@ void FUN_00457a70(void) {
     if (EditMode.unk0 == 0 || EditMode.unk0 == 2) {
         QueryClass = NULL;
         if (Hover.type == 0x100 || Hover.type == 0x103) {
-            if ((int)DAT_00813a64 >= 0 && (int)DAT_00813a64 < lpConfig->width && (int)DAT_00813a68 >= 0 &&
-                (int)DAT_00813a68 < lpConfig->height) {
-                tile = &GameMap[DAT_00813a68][DAT_00813a64];
+            if ((int)MouseTileX >= 0 && (int)MouseTileX < lpConfig->width && (int)MouseTileY >= 0 &&
+                (int)MouseTileY < lpConfig->height) {
+                tile = &GameMap[MouseTileY][MouseTileX];
             } else {
                 tile = NULL;
             }
             if (tile) {
                 if (tile->flags & 0x888) {
                     if (tile->flags & 0x800) {
-                        if ((Hover.ptr = (struct Bloke *)GetGardenerWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
+                        if ((Hover.ptr = (struct Bloke *)GetGardenerWorkOrderAt(MouseTileX, MouseTileY)) != 0) {
                             Hover.type = 0x10b;
-                        } else if ((Hover.ptr = (struct Bloke *)GetMechanicWorkOrderAt(DAT_00813a64, DAT_00813a68)) != 0) {
+                        } else if ((Hover.ptr = (struct Bloke *)GetMechanicWorkOrderAt(MouseTileX, MouseTileY)) != 0) {
                             Hover.type = 0x10c;
                         }
                         id = tile->anchor.id;
@@ -155,7 +155,7 @@ void FUN_00457a70(void) {
                             Hover.type = 0x103;
                             if (tile->field_0 == roads) {
                                 struct RideQueueEntry *entry;
-                                if ((entry = FUN_004125f0(tile->field_4, tile->field_5)) != 0 && (entry->field_14 & 0x10)) {
+                                if ((entry = FindQueueEntryAtTile(tile->field_4, tile->field_5)) != 0 && (entry->field_14 & 0x10)) {
                                     Hover.ptr = (struct Bloke *)zebra;
                                 }
                             }
@@ -192,7 +192,7 @@ void FUN_00457a70(void) {
         pt.x = v & 0xff;
         pt.y = v >> 8;
         DAT_00810144 = 0;
-        if (DAT_0080ff6c != NULL && (DAT_0080ff6c == PathControlObject || DAT_0080ff6c == DAT_0081cd08)) {
+        if (DAT_0080ff6c != NULL && (DAT_0080ff6c == PathControlObject || DAT_0080ff6c == HedgeObjectClass)) {
             GamePad |= 0x800;
         } else {
             GamePad &= ~0x800;
@@ -208,8 +208,8 @@ void FUN_00457a70(void) {
                 memset(QueryCursor.field_1414, 0, 20);
                 QueryCursor.field_1828 = 8;
                 FUN_0045f480(&QueryCursor, 1);
-                QueryCursor.tile_x = DAT_00813a64;
-                QueryCursor.tile_y = DAT_00813a68;
+                QueryCursor.tile_x = MouseTileX;
+                QueryCursor.tile_y = MouseTileY;
                 DAT_00667c5c = 0;
                 GamePad &= ~0x400;
                 if (!(DAT_00813ac4 & 2)) {
@@ -305,7 +305,7 @@ void FUN_00457a70(void) {
         } else {
             SetPointer(3);
         }
-        if (EditMode.unk8 == PathControlObject || EditMode.unk8 == DAT_0081cd08) {
+        if (EditMode.unk8 == PathControlObject || EditMode.unk8 == HedgeObjectClass) {
             GamePad |= 0x800;
         } else {
             GamePad &= ~0x800;
@@ -321,7 +321,7 @@ void FUN_00457a70(void) {
                     DAT_00667cdc = 0;
                     if (EditMode.unk8 == PathControlObject) {
                         for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += FootprintHeight) {
-                            for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
+                            for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += FootprintWidth) {
                                 pt.x = x - EditMode.unk8->footprint.x0;
                                 pt.y = y - EditMode.unk8->footprint.y0;
                                 if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
@@ -336,7 +336,7 @@ void FUN_00457a70(void) {
                         }
                     }
                     for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += FootprintHeight) {
-                        for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
+                        for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += FootprintWidth) {
                             pt.x = x - EditMode.unk8->footprint.x0;
                             pt.y = y - EditMode.unk8->footprint.y0;
                             if (FUN_00457970(pt.x, pt.y)) {
@@ -383,8 +383,8 @@ void FUN_00457a70(void) {
             memset(QueryCursor.field_1414, 0, 20);
             QueryCursor.field_1828 = 8;
             FUN_0045f480(&QueryCursor, 1);
-            QueryCursor.tile_x = DAT_00813a64;
-            QueryCursor.tile_y = DAT_00813a68;
+            QueryCursor.tile_x = MouseTileX;
+            QueryCursor.tile_y = MouseTileY;
             DAT_00667c5c = 0;
             GamePad &= ~0x400;
             if (!(DAT_00813ac4 & 2)) {

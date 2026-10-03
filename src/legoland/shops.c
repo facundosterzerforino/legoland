@@ -836,7 +836,7 @@ void FUN_0043a1e0(struct Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a390
-unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
+unsigned int *GetShopSpriteInfo(struct ShopRideObject *obj, unsigned short param_2) {
     struct RideBuilding *building = obj->building;
     RideSpriteInfoBuffer.sprite = building->layer;
     RideSpriteInfoBuffer.x = building->field_14;
@@ -847,7 +847,7 @@ unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a3d0
-void FUN_0043a3d0(struct ShopRideObject *obj, TileId tile, void *param_3) {
+void RemoveObjectAndBlokes(struct ShopRideObject *obj, TileId tile, void *param_3) {
     StandardRemoveObject((unsigned int)obj, tile, (unsigned int)param_3);
     RemoveAllBlokesFromRide((unsigned int)obj->building, tile);
 }
@@ -859,9 +859,9 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_004375d0;
         ci->cb_ac = KillGStoreMatteSpritesAndMoneySFX;
         ci->cb_8c = FUN_00437630;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_004378e0;
-        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = FUN_00437670;
         return;
     }
@@ -870,9 +870,9 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_00437ba0;
         ci->cb_ac = KillSherifshutMatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_00437bf0;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00437c90;
-        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = FUN_00437c30;
         return;
     }
@@ -881,7 +881,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_00438070;
         ci->cb_ac = FUN_004380f0;
         ci->cb_8c = FUN_00438110;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00438430;
         ci->cb_98 = FUN_00437f60;
         ci->cb_9c = FUN_00438020;
@@ -895,9 +895,9 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_00438870;
         ci->cb_ac = KillBankMatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_004388c0;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00438960;
-        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = FUN_00438900;
         return;
     }
@@ -906,9 +906,9 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_00438c60;
         ci->cb_ac = KillSaloonMatteSpritesAndMoneySFX;
         ci->cb_8c = FUN_00438cc0;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00438f10;
-        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = FUN_00438d00;
         return;
     }
@@ -917,9 +917,9 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_0043a0f0;
         ci->cb_ac = UnloadExplorersInstituteMatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_0043a140;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_0043a1e0;
-        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = FUN_0043a180;
         return;
     }
@@ -930,7 +930,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_9c = FUN_00439350;
         ci->cb_ac = UnloadLegoShop1MatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_004393a0;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00439460;
         ci->cb_b0 = FUN_00439400;
         return;
@@ -940,9 +940,9 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = FUN_004396d0;
         ci->cb_ac = UnloadLegoShop2MatteSpriteAndMoneySFX;
         ci->cb_8c = FUN_00439720;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00439950;
-        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = FUN_00439760;
         return;
     }
@@ -953,7 +953,7 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_9c = FUN_00439c90;
         ci->cb_ac = UnloadLegMediaShopMaskSpritesAndMoneySFX;
         ci->cb_8c = FUN_00439d00;
-        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a0 = GetShopSpriteInfo;
         ci->cb_a8 = FUN_00439ef0;
         ci->cb_b0 = FUN_00439d40;
     }

@@ -50,13 +50,13 @@ void PickUpWorker(unsigned int type, Bloke *worker) {
     // STRING: LEGOLAND 0x004ba9ec
     DBPrintf("Picking up worker (%x) Workorder = %x\n", worker, worker->order);
     WorkerOnMouse = worker;
-    DAT_007fdffc = type;
+    WorkerOnMouseType = type;
     worker->low_level_action = 0xd;
     WorkerOldX = WorkerOnMouse->pos.x;
     WorkerOldY = WorkerOnMouse->pos.y;
     WorkerOnMouse->dir = 5;
     DAT_00668954 = 1;
-    if (DAT_007fdffc == 0x307) {
+    if (WorkerOnMouseType == 0x307) {
         ClearAGardenersWorkList(WorkerOnMouse);
         NewLongTermAction(WorkerOnMouse, 0x18);
         ClearAGardenersWorkList(WorkerOnMouse);
@@ -67,7 +67,7 @@ void PickUpWorker(unsigned int type, Bloke *worker) {
     }
     worker->order = 0;
     WorkerOnMouse->order = 0;
-    if (DAT_007fdffc == 0x307) {
+    if (WorkerOnMouseType == 0x307) {
         NewLongTermAction(WorkerOnMouse, 0x18);
     } else {
         NewLongTermAction(WorkerOnMouse, 0x19);
@@ -112,7 +112,7 @@ int FUN_00470270(void) {
         elem = NULL;
     }
     ride = elem->field_0->ride;
-    if (ride->element == (Element *)PottingShedHandle && DAT_007fdffc == 0x307) {
+    if (ride->element == (Element *)PottingShedHandle && WorkerOnMouseType == 0x307) {
         PutWorkerOnRide(WorkerOnMouse, elem);
         WorkerOnMouse->pos.x = (ride->x + x) << 8;
         WorkerOnMouse->dest.x = WorkerOnMouse->pos.x;
@@ -123,7 +123,7 @@ int FUN_00470270(void) {
         PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
         return 1;
     }
-    if (ride->element == (Element *)MechanicsHutHandle && DAT_007fdffc == 0x308) {
+    if (ride->element == (Element *)MechanicsHutHandle && WorkerOnMouseType == 0x308) {
         PutWorkerOnRide(WorkerOnMouse, elem);
         WorkerOnMouse->pos.x = ((ride->x + x) << 8) + 0x80;
         WorkerOnMouse->dest.x = WorkerOnMouse->pos.x;
@@ -144,7 +144,7 @@ WorkOrder *FUN_00470410(Point *out) {
     int x = v & 0xff;
     int y = v >> 8;
 
-    if (DAT_007fdffc == 0x307) {
+    if (WorkerOnMouseType == 0x307) {
         order = GetGardenerWorkOrderAt(x, y);
     } else {
         order = GetMechanicWorkOrderAt(x, y);
@@ -154,7 +154,7 @@ WorkOrder *FUN_00470410(Point *out) {
             out->x = order->pos.x + order->footprints->x0;
             out->y = order->footprints->y1 + order->pos.y;
         }
-        if (DAT_007fdffc == 0x307) {
+        if (WorkerOnMouseType == 0x307) {
             PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
         } else {
             PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
@@ -185,14 +185,14 @@ WorkOrder *FUN_004704b0(Point *out) {
         ride = elem->field_0->ride;
         if (ride->durability != 0) {
             do {
-                if ((ride->flags & 0x200000) && DAT_007fdffc == 0x307 && lpConfig->gardeners_enabled != 0) {
+                if ((ride->flags & 0x200000) && WorkerOnMouseType == 0x307 && lpConfig->gardeners_enabled != 0) {
                     if (!(0x4000 & flags)) {
                         order = AddRepairOrderForObject(ride, pos);
                         if (order == NULL) {
                             break;
                         }
                     }
-                } else if ((ride->flags & 0x400000) && DAT_007fdffc == 0x308 && lpConfig->mechanics_enabled != 0) {
+                } else if ((ride->flags & 0x400000) && WorkerOnMouseType == 0x308 && lpConfig->mechanics_enabled != 0) {
                     if (!(0x4000 & flags)) {
                         order = AddRepairOrderForObject(ride, pos);
                     }
@@ -203,7 +203,7 @@ WorkOrder *FUN_004704b0(Point *out) {
                         out->x = order->pos.x + order->footprints->x0;
                         out->y = order->footprints->y1 + order->pos.y;
                     }
-                    if (DAT_007fdffc == 0x307) {
+                    if (WorkerOnMouseType == 0x307) {
                         PlayInstanceOfSample(DAT_004b9320, 0, 1, 0);
                     } else {
                         PlayInstanceOfSample(DAT_004b932c, 0, 1, 0);
@@ -262,7 +262,7 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                         elem = &GameMap[pt[1]][x];
                         if (elem != NULL && (elem->field_10 & 2)) {
                             DAT_00668954 = 1;
-                            if (DAT_007fdffc == 0x307 && (elem->flags & 0x800)) {
+                            if (WorkerOnMouseType == 0x307 && (elem->flags & 0x800)) {
                                 DAT_00668954 = 0;
                             } else {
                                 SetWorkersPositionAtMouse();
@@ -278,7 +278,7 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                         return;
                     }
                 }
-                if (DAT_007fdffc == 0x307) {
+                if (WorkerOnMouseType == 0x307) {
                     WorkerOnMouse->pos.x = (x << 8) + 0x80;
                     WorkerOnMouse->pos.y = (pt[1] << 8) + 0x80;
                     result = SetGardenerWorkOrderAtPostion(WorkerOnMouse, pt[0], pt[1]);
@@ -328,7 +328,7 @@ LEGO_EXPORT void ResetWorkersOldCoords(void) {
         bloke->pos.y = WorkerOldY;
         bloke = WorkerOnMouse;
         bloke->field_50 = 0;
-        if (DAT_007fdffc == 0x307) {
+        if (WorkerOnMouseType == 0x307) {
             NewLongTermAction(WorkerOnMouse, 0x10);
         } else {
             NewLongTermAction(WorkerOnMouse, 0x11);
@@ -341,7 +341,7 @@ LEGO_EXPORT void ResetWorkersOldCoords(void) {
 LEGO_EXPORT void ResetMoveAWorkerStruct(void) {
     DAT_00668954 = 0;
     WorkerOnMouse = NULL;
-    DAT_007fdffc = 0;
+    WorkerOnMouseType = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00470950

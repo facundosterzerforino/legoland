@@ -186,7 +186,7 @@ void FUN_0048abb0(void) {
     // STRING: LEGOLAND 0x004beb4c
     sprintf(buf, "FreePlayTest.txt");
     PauseGameTimer();
-    FUN_00499410();
+    ResetGameTimer();
     MarkGameTimer();
     CastlePlacedFlag = 0;
     ResetMapAI();
@@ -602,10 +602,10 @@ LEGO_EXPORT void CleanUpFreePlay(void) {
         KillSprite(FreePlayCoverSprite);
         FreePlayCoverSprite = NULL;
     }
-    FUN_0046fb40(0xc8);
-    FUN_0046fb40(0x12c);
-    FUN_0046fb40(0x190);
-    FUN_0046fb40(0x1f4);
+    DestroyIconGroup(0xc8);
+    DestroyIconGroup(0x12c);
+    DestroyIconGroup(0x190);
+    DestroyIconGroup(0x1f4);
     FUN_0048b4a0(0xc8);
     FUN_0048b4a0(0x12c);
     FUN_0048b4a0(0x190);

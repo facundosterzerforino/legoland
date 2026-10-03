@@ -4,7 +4,7 @@
 
 struct Cursor;
 
-/* Earth-slide class node (one 0x24 allocation), head at DAT_006160e8. */
+/* Earth-slide class node (one 0x24 allocation), head at EarthNodeHead. */
 struct EarthNode {
     /* 0x00 */ unsigned short id;
     /* 0x02 */ unsigned char pad_2[0x4 - 0x2];
@@ -37,7 +37,7 @@ struct EarthBlokeElem {
     /* 0x0d */ unsigned char id_y;
 };
 
-/* Callback argument; field_c points at the ride/cursor object (DAT_006160d0). */
+/* Callback argument; field_c points at the ride/cursor object (EarthSlideRide). */
 struct EarthRideObj {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ struct Cursor *ride;

@@ -1416,8 +1416,8 @@ LEGO_EXPORT void RemoveMechanicsWorkOrderAt(int x, int y) {
 void AddRepairOrder(Footprint *footprint, int *coords, float rate) {
     RepairOrder *order = malloc(sizeof(RepairOrder));
 
-    order->next = DAT_0079a8d4;
-    DAT_0079a8d4 = order;
+    order->next = RepairOrderList;
+    RepairOrderList = order;
     order->footprint = *footprint;
     order->pos.x = coords[0];
     order->pos.y = coords[1];
@@ -1430,11 +1430,11 @@ void FUN_0049b6e0(RepairOrder *order) {
     RepairOrder *cur;
     RepairOrder *prev;
 
-    if (DAT_0079a8d4 == order) {
-        DAT_0079a8d4 = order->next;
+    if (RepairOrderList == order) {
+        RepairOrderList = order->next;
     } else {
-        cur = DAT_0079a8d4->next;
-        prev = DAT_0079a8d4;
+        cur = RepairOrderList->next;
+        prev = RepairOrderList;
         while (cur != order) {
             prev = prev->next;
             if (prev == NULL) {
@@ -1451,7 +1451,7 @@ void FUN_0049b6e0(RepairOrder *order) {
 
 // FUNCTION: LEGOLAND 0x0049b720
 LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(int x, int y) {
-    RepairOrder *current = DAT_0079a8d4;
+    RepairOrder *current = RepairOrderList;
     while (current != NULL) {
         if (current->pos.x == x && current->pos.y == y) {
             FUN_0049b6e0(current);
@@ -1478,7 +1478,7 @@ LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
     Point pt;
     int bounds[4];
 
-    for (order = DAT_0079a8d4; order != NULL; order = next) {
+    for (order = RepairOrderList; order != NULL; order = next) {
         next = order->next;
         r.x0 = order->footprint.x0 + order->pos.x;
         r.y0 = order->footprint.y0 + order->pos.y;
@@ -2232,8 +2232,8 @@ void FUN_0049cfc0(void) {
     while (MechanicOrderHead != NULL) {
         FreeMechanicWorkOrder(MechanicOrderHead);
     }
-    while (DAT_0079a8d4 != NULL) {
-        FUN_0049b6e0(DAT_0079a8d4);
+    while (RepairOrderList != NULL) {
+        FUN_0049b6e0(RepairOrderList);
     }
     while (GardenerList != NULL) {
         RemoveAGardener(GardenerList);

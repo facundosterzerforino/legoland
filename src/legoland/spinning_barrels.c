@@ -45,8 +45,8 @@ void FUN_0043bdb0(void *param1) {
     memset(block, 0, 0x34);
     block->tile_id = ((struct BarrelSource *)param1)->field_0;
     block->frame = 0;
-    block->next = DAT_0062fe08;
-    DAT_0062fe08 = block;
+    block->next = SpinningBarrelList;
+    SpinningBarrelList = block;
     FUN_0043c2f0(block);
 }
 
@@ -55,11 +55,11 @@ void FUN_0043be00(struct BarrelNode *node) {
     struct BarrelNode *prev;
     struct BarrelNode *cur;
 
-    if (DAT_0062fe08 == node) {
-        DAT_0062fe08 = node->next;
+    if (SpinningBarrelList == node) {
+        SpinningBarrelList = node->next;
     } else {
-        cur = DAT_0062fe08->next;
-        prev = DAT_0062fe08;
+        cur = SpinningBarrelList->next;
+        prev = SpinningBarrelList;
         while (cur != node) {
             prev = prev->next;
             if (prev == NULL) {
@@ -76,7 +76,7 @@ void FUN_0043be00(struct BarrelNode *node) {
 
 // FUNCTION: LEGOLAND 0x0043be40
 struct BarrelNode *FUN_0043be40(unsigned short *key) {
-    struct BarrelNode *cur = DAT_0062fe08;
+    struct BarrelNode *cur = SpinningBarrelList;
 
     if (cur != NULL) {
         do {
@@ -249,8 +249,8 @@ void SpinningBarrelsSetEditMode(void) {
 
 // FUNCTION: LEGOLAND 0x0043c4d0
 void FUN_0043c4d0(void) {
-    while (DAT_0062fe08 != NULL) {
-        FUN_0043be00(DAT_0062fe08);
+    while (SpinningBarrelList != NULL) {
+        FUN_0043be00(SpinningBarrelList);
     }
 }
 
@@ -306,7 +306,7 @@ void FUN_0043c5b0(void) {
 
 // FUNCTION: LEGOLAND 0x0043c620
 LEGO_EXPORT int SaveSBarrel(void) {
-    struct BarrelNode *node = DAT_0062fe08;
+    struct BarrelNode *node = SpinningBarrelList;
     unsigned int marker = 1;
     unsigned int terminator = 0;
 
@@ -383,7 +383,7 @@ LEGO_EXPORT int LoadSBarrel(struct BarrelLoadArg *arg) {
         if (prev != NULL) {
             prev->next = node;
         } else {
-            DAT_0062fe08 = node;
+            SpinningBarrelList = node;
         }
         prev = node;
         if (!SaveGameRead(&marker, 4)) {
@@ -481,7 +481,7 @@ void FUN_0043c7f0(struct BarrelNode *node) {
 
 // FUNCTION: LEGOLAND 0x0043c930
 void FUN_0043c930(void) {
-    struct BarrelNode *node = DAT_0062fe08;
+    struct BarrelNode *node = SpinningBarrelList;
     while (node != NULL) {
         FUN_0043c7f0(node);
         node = node->next;

@@ -874,36 +874,36 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
     }
     if (node->sprite != NULL && MapStats.field_18c != 0) {
         StoreClipping();
-        if (fill1 > DAT_006688c0) {
-            DAT_006688c0 += 6;
-            if (DAT_006688c0 > fill1) {
-                DAT_006688c0 = fill1;
+        if (fill1 > EnergyBarSupplyWidth) {
+            EnergyBarSupplyWidth += 6;
+            if (EnergyBarSupplyWidth > fill1) {
+                EnergyBarSupplyWidth = fill1;
             }
         } else {
-            DAT_006688c0 -= 6;
-            if (DAT_006688c0 < fill1) {
-                DAT_006688c0 = fill1;
+            EnergyBarSupplyWidth -= 6;
+            if (EnergyBarSupplyWidth < fill1) {
+                EnergyBarSupplyWidth = fill1;
             }
         }
-        if (fill2 > DAT_006688bc) {
-            DAT_006688bc += 6;
-            if (DAT_006688bc > fill2) {
-                DAT_006688bc = fill2;
+        if (fill2 > PowerDemandBarPos) {
+            PowerDemandBarPos += 6;
+            if (PowerDemandBarPos > fill2) {
+                PowerDemandBarPos = fill2;
             }
         } else {
-            DAT_006688bc -= 6;
-            if (DAT_006688bc < fill2) {
-                DAT_006688bc = fill2;
+            PowerDemandBarPos -= 6;
+            if (PowerDemandBarPos < fill2) {
+                PowerDemandBarPos = fill2;
             }
         }
         clip.left = node->x;
         clip.top = node->y;
-        clip.right = DAT_006688c0 + clip.left;
+        clip.right = EnergyBarSupplyWidth + clip.left;
         clip.bottom = node->height + clip.top;
         SetClipping(&clip);
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
         RestoreClipping();
-        PrintSprite(BarPointerSprite, (node->x - BarPointerSprite->width / 2) + DAT_006688bc, node->height / 2 + node->y, 0, (int *)&ctx);
+        PrintSprite(BarPointerSprite, (node->x - BarPointerSprite->width / 2) + PowerDemandBarPos, node->height / 2 + node->y, 0, (int *)&ctx);
         return 0;
     }
     if (MapStats.field_18c == 0) {
@@ -1168,7 +1168,7 @@ void FUN_0046ec50(char param) {
                         DAT_007fdd80 = 2;
                         saved_mode = 2;
                         DAT_007fdd8c = 0x86;
-                        FUN_0046fb40(0xd2);
+                        DestroyIconGroup(0xd2);
                         break;
                     }
                     diff = diff + 0x7a;
@@ -1661,13 +1661,13 @@ int FUN_0046f9a0(int param_1, int param_2, int param_3, int param_4, unsigned in
         }
     }
     if (found == 0) {
-        FUN_0046fb40(saved);
+        DestroyIconGroup(saved);
     }
     return found;
 }
 
 // FUNCTION: LEGOLAND 0x0046fb40
-void FUN_0046fb40(unsigned int group) {
+void DestroyIconGroup(unsigned int group) {
     struct IconNode *icon1;
     struct IconNode *icon2;
     struct IconNode *icon3;
@@ -1797,8 +1797,8 @@ LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
         }
     }
     if (cur != NULL) {
-        ind->next = DAT_006688d8;
-        DAT_006688d8 = ind;
+        ind->next = ActiveIndicators;
+        ActiveIndicators = ind;
         ind->field_4 = ind->field_4 | 8;
         ind->field_14->x = 0xf000;
         ind->field_14->flags = ind->field_14->flags & 0xfffffbff;
@@ -1807,9 +1807,9 @@ LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
 
 // FUNCTION: LEGOLAND 0x0046fda0
 LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
-    struct Indicator *cur = DAT_006688d8;
+    struct Indicator *cur = ActiveIndicators;
     if (cur == ind) {
-        DAT_006688d8 = cur->next;
+        ActiveIndicators = cur->next;
     } else {
         while (cur != NULL) {
             if (cur->next == ind) {
@@ -1834,12 +1834,12 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
     FUN_0046d4e0(ind->field_14);
 
     if ((ind->field_4 & 0x8) != 0) {
-        if (DAT_006688d8 == ind) {
-            DAT_006688d8 = ((struct Indicator *)DAT_006688d8)->next;
+        if (ActiveIndicators == ind) {
+            ActiveIndicators = ((struct Indicator *)ActiveIndicators)->next;
             free(ind);
             return;
         }
-        cur = DAT_006688d8;
+        cur = ActiveIndicators;
         while (cur != 0) {
             if (cur->next == ind) {
                 cur->next = ind->next;
@@ -1871,14 +1871,14 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
 
 // FUNCTION: LEGOLAND 0x0046feb0
 LEGO_EXPORT void ControlIndicators(void) {
-    struct Indicator *node = DAT_006688d8;
+    struct Indicator *node = ActiveIndicators;
     int now = GetGameTimer();
     int x = ((struct Config *)lpConfig)->field_0 - 0x50;
     struct Indicator *cur;
     struct Indicator *head;
     struct Indicator *prev;
 
-    DAT_006688d8 = NULL;
+    ActiveIndicators = NULL;
     while (node != NULL) {
         node->field_10 &= 0xffff;
         if (now - (int)node->field_8 < 0x1388) {
@@ -1891,19 +1891,19 @@ LEGO_EXPORT void ControlIndicators(void) {
         } else if (now - (int)node->field_8 >= (int)node->field_c) {
             cur = node;
             node = node->next;
-            cur->next = DAT_006688d8;
-            DAT_006688d8 = cur;
+            cur->next = ActiveIndicators;
+            ActiveIndicators = cur;
             RemoveIndicator(cur);
             if ((cur->field_4 & 2) != 0) {
                 DeleteIndicator(cur);
             }
             continue;
         }
-        head = DAT_006688d8;
+        head = ActiveIndicators;
         cur = node;
         node = node->next;
         if (head == NULL) {
-            DAT_006688d8 = cur;
+            ActiveIndicators = cur;
             cur->next = NULL;
             continue;
         }
@@ -1912,7 +1912,7 @@ LEGO_EXPORT void ControlIndicators(void) {
                 if (prev != NULL) {
                     prev->next = cur;
                 } else {
-                    DAT_006688d8 = cur;
+                    ActiveIndicators = cur;
                 }
                 cur->next = head;
                 break;
@@ -1924,7 +1924,7 @@ LEGO_EXPORT void ControlIndicators(void) {
         }
     }
 
-    for (node = DAT_006688d8; node != NULL; node = node->next) {
+    for (node = ActiveIndicators; node != NULL; node = node->next) {
         node->field_14->x = (short)x;
         x = x - 0x34;
         node->field_14->y = 8;

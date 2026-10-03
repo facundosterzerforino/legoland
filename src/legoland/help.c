@@ -164,7 +164,7 @@ LEGO_EXPORT void ProcessFrontEndHelp(void) {
 LEGO_EXPORT void KillHelp(void) { FUN_0046c5c0(); }
 
 // FUNCTION: LEGOLAND 0x0046d110
-void FUN_0046d110(void) {
+void UpdateSpeechPlayback(void) {
     char buf[256];
 
     if (DAT_006687a8 == 0) {
@@ -237,7 +237,7 @@ unsigned int FUN_0046d280(unsigned int a1) {
             DAT_006687ac = 1;
             FUN_004735b0();
             DAT_006687a8 = 1;
-            FUN_0046d110();
+            UpdateSpeechPlayback();
             return 1;
         }
     }

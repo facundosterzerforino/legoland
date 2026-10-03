@@ -188,8 +188,8 @@ void FUN_00407b50(struct JoustRoot *root) {
     Load_FXList(JOUST_SFX, 1);
     JoustRide = (unsigned int)root->field_c;
     ((struct JoustBlock *)JoustRide)->flags_1c |= 0x420;
-    DAT_004c1214 = (unsigned int)((struct JoustBlock *)JoustRide)->layer;
-    ((struct JoustBlockData *)DAT_004c1214)->field_10 |= 0x2000;
+    JoustLayer = (unsigned int)((struct JoustBlock *)JoustRide)->layer;
+    ((struct JoustBlockData *)JoustLayer)->field_10 |= 0x2000;
     // STRING: LEGOLAND 0x004b46f4
     JoustFMaskSprite = LoadSprite("Joust_fmask.lls", 1);
     // STRING: LEGOLAND 0x004b46e0
@@ -200,9 +200,9 @@ void FUN_00407b50(struct JoustRoot *root) {
     DAT_004c1240 = ZJoustSprite = LoadSprite("z_joust.lls", 1);
     // STRING: LEGOLAND 0x004b46a8
     JoustRideBnv = LoadBinV("Zbuffers\\joustride.bnv");
-    HideLayer((struct Sprite *)DAT_004c1214, 1);
-    StopLayerPlaying((struct Sprite *)DAT_004c1214, 1);
-    LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)DAT_004c1214, 1), 0);
+    HideLayer((struct Sprite *)JoustLayer, 1);
+    StopLayerPlaying((struct Sprite *)JoustLayer, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)JoustLayer, 1), 0);
 }
 
 // FUNCTION: LEGOLAND 0x00407c20
@@ -610,7 +610,7 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
                         IP_RenderBlokeIn3DNow(riders[i]);
                     }
                 }
-                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 0);
+                off = GetRenderOffsetForLayer((struct Sprite *)JoustLayer, 0);
                 AdjustOffsetForViewMode(&off);
                 PrintSprite(JoustSpecRMSprite, coords.x + off.x, coords.y + off.y, param_6, 0);
                 for (i = 0; i < n; i++) {
@@ -633,7 +633,7 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
                         IP_RenderBlokeIn3DNow(riders[i]);
                     }
                 }
-                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 0);
+                off = GetRenderOffsetForLayer((struct Sprite *)JoustLayer, 0);
                 AdjustOffsetForViewMode(&off);
                 PrintSprite(JoustSpecLMSprite, coords.x + off.x, coords.y + off.y, param_6, 0);
                 for (i = 0; i < n; i++) {
@@ -651,10 +651,10 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
                         IP_RenderBlokeIn3DNow(riders[i]);
                     }
                 }
-                LLSSetFrame(GetLLSForLayer((struct Sprite *)DAT_004c1214, 1), frame);
-                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 1);
+                LLSSetFrame(GetLLSForLayer((struct Sprite *)JoustLayer, 1), frame);
+                off = GetRenderOffsetForLayer((struct Sprite *)JoustLayer, 1);
                 AdjustOffsetForViewMode(&off);
-                PrintSprite(GetSpriteForLayer((struct Sprite *)DAT_004c1214, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
+                PrintSprite(GetSpriteForLayer((struct Sprite *)JoustLayer, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
                 for (r = ride->riders; r != NULL; r = r->next) {
                     if (tile->id == r->tile.id) {
                         bloke = r->rider;
@@ -724,16 +724,16 @@ void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int pa
                         IP_RenderBlokeIn3DNow(riders[i]);
                     }
                 }
-                off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 1);
+                off = GetRenderOffsetForLayer((struct Sprite *)JoustLayer, 1);
                 AdjustOffsetForViewMode(&off);
                 PrintSprite(JoustFMaskSprite, coords.x + off.x, coords.y + off.y, param_6, 0);
                 return;
             }
         }
-        LLSSetFrame(GetLLSForLayer((struct Sprite *)DAT_004c1214, 1), frame);
-        off = GetRenderOffsetForLayer((struct Sprite *)DAT_004c1214, 1);
+        LLSSetFrame(GetLLSForLayer((struct Sprite *)JoustLayer, 1), frame);
+        off = GetRenderOffsetForLayer((struct Sprite *)JoustLayer, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer((struct Sprite *)DAT_004c1214, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
+        PrintSprite(GetSpriteForLayer((struct Sprite *)JoustLayer, 1), coords.x + off.x, coords.y + off.y, param_6, 0);
     }
 }
 

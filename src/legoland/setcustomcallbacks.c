@@ -187,7 +187,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     else if (_stricmp("CASTLE BBQ", head->name) == 0) {
         iface->cb_a4 = FUN_0042e870;
         iface->cb_ac = FUN_0042e8b0;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_0042ea60;
         iface->cb_b0 = FUN_0042e910;
         iface->cb_98 = FUN_0042e9c0;
@@ -197,43 +197,43 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     else if (_stricmp("FOODCART DRINK", head->name) == 0) {
         iface->cb_a4 = FUN_0042e770;
         iface->cb_ac = FUN_0042e7a0;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_0042ec10;
-        iface->cb_9c = FUN_004312c0;
+        iface->cb_9c = EateryRemoveObject;
         iface->cb_b0 = FUN_0042e830;
     }
     // STRING: LEGOLAND 0x004b8944
     else if (_stricmp("FOODCART FOOD", head->name) == 0) {
         iface->cb_a4 = FUN_0042e7f0;
         iface->cb_ac = FUN_0042e820;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_0042ed70;
-        iface->cb_9c = FUN_004312c0;
+        iface->cb_9c = EateryRemoveObject;
         iface->cb_b0 = FUN_0042e830;
     }
     // STRING: LEGOLAND 0x004b8930
     else if (_stricmp("FOODCART ICECREAM", head->name) == 0) {
         iface->cb_a4 = FUN_0042e7b0;
         iface->cb_ac = FUN_0042e7e0;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_00431170;
-        iface->cb_9c = FUN_004312c0;
+        iface->cb_9c = EateryRemoveObject;
         iface->cb_b0 = FUN_0042e830;
     }
     // STRING: LEGOLAND 0x004b8920
     else if (_stricmp("OCTOPUS CAFE", head->name) == 0) {
         iface->cb_a4 = FUN_00431300;
         iface->cb_98 = FUN_004314f0;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_004316f0;
-        iface->cb_9c = FUN_004312c0;
+        iface->cb_9c = EateryRemoveObject;
         iface->cb_b0 = FUN_00431d00;
         iface->cb_ac = FUN_00431520;
     }
     // STRING: LEGOLAND 0x004b8910
     else if (_stricmp("RESTAURANT 1", head->name) == 0) {
         iface->cb_a4 = FUN_0042f030;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_0042f1a0;
         iface->cb_98 = FUN_0042ef10;
         iface->cb_9c = FUN_0042efb0;
@@ -245,7 +245,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     // STRING: LEGOLAND 0x004b8900
     else if (_stricmp("RESTAURANT 2", head->name) == 0) {
         iface->cb_a4 = FUN_0042f770;
-        iface->cb_8c = FUN_0042e8d0;
+        iface->cb_8c = EaterySetEditMode;
         iface->cb_a8 = FUN_0042fbb0;
         iface->cb_98 = FUN_0042f9a0;
         iface->cb_9c = FUN_0042fa40;
@@ -258,8 +258,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     // STRING: LEGOLAND 0x004b88f4
     else if (_stricmp("CHUCK WAGON", head->name) == 0) {
         iface->cb_a4 = FUN_0042e220;
-        iface->cb_8c = FUN_0042e8d0;
-        iface->cb_9c = FUN_004312c0;
+        iface->cb_8c = EaterySetEditMode;
+        iface->cb_9c = EateryRemoveObject;
         iface->cb_a8 = FUN_0042e2a0;
         iface->cb_b0 = FUN_0042e260;
         iface->cb_ac = FUN_0042e250;
@@ -268,8 +268,8 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     else if (_stricmp("SHARK CAFE", head->name) == 0) {
         iface->cb_a4 = FUN_0042e5d0;
         iface->cb_ac = FUN_0042e600;
-        iface->cb_8c = FUN_0042e8d0;
-        iface->cb_9c = FUN_004312c0;
+        iface->cb_8c = EaterySetEditMode;
+        iface->cb_9c = EateryRemoveObject;
         iface->cb_a8 = FUN_0042e610;
         iface->cb_b0 = FUN_0042e830;
     }

@@ -523,7 +523,7 @@ int FUN_00479300(struct CommandArgs *arg, int argc) {
     }
     id = ElemID((const char *)arg->arg1);
     v = atoi(arg->arg2);
-    FUN_00478700((int *)&vec, (char **)arg, 3);
+    ParseRect((int *)&vec, (char **)arg, 3);
     if (id != 0) {
         FUN_0046be40(CurrentObjectiveEventFlags, id, v, &vec);
     }
@@ -602,7 +602,7 @@ int FUN_004794d0(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 2, 4) == 0) {
             return 0;
         }
-        FUN_00478700((int *)&vec, (char **)arg, 1);
+        ParseRect((int *)&vec, (char **)arg, 1);
         if (argc >= 5) {
             v = atoi(((char **)arg)[5]);
         } else {
@@ -901,7 +901,7 @@ int FUN_00479c40(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 2, 5) == 0) {
             return 0;
         }
-        FUN_00478700((int *)&vec, (char **)arg, 1);
+        ParseRect((int *)&vec, (char **)arg, 1);
         v = atoi(((char **)arg)[5]);
         FUN_0046c240(CurrentObjectiveEventFlags, &vec, v);
     }
@@ -1323,7 +1323,7 @@ int FUN_0047a650(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 4, 4) == 0) {
             return 0;
         }
-        FUN_00478700((int *)&vec, (char **)arg, 1);
+        ParseRect((int *)&vec, (char **)arg, 1);
         FUN_0046b8c0(&vec);
     }
     return 1;
@@ -1337,7 +1337,7 @@ int FUN_0047a6a0(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 4, 4) == 0) {
             return 0;
         }
-        FUN_00478700((int *)&vec, (char **)arg, 1);
+        ParseRect((int *)&vec, (char **)arg, 1);
         FUN_0046b900(&vec);
     }
     return 1;
@@ -1353,7 +1353,7 @@ int FUN_0047a6f0(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 5, 4) == 0) {
             return 0;
         }
-        FUN_00478700(rect, (char **)arg, 1);
+        ParseRect(rect, (char **)arg, 1);
         if (DAT_00669054 == 4) {
             FUN_0046b940((struct Vec4 *)rect);
             return 1;
@@ -1375,7 +1375,7 @@ int FUN_0047a7b0(struct CommandArgs *arg, int argc) {
         if (FUN_004786c0((unsigned int)arg, argc, 4, 4) == 0) {
             return 0;
         }
-        FUN_00478700((int *)&vec, (char **)arg, 1);
+        ParseRect((int *)&vec, (char **)arg, 1);
         FUN_0046b980(&vec);
     }
     return 1;

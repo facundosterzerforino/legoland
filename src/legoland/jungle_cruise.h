@@ -82,7 +82,7 @@ void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3);
 unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3);
 struct JunglePath *FindJunglePathAt(int x, int y);
 int AreJunglePathsConnected(int a, int b, int c, int d);
-void FUN_00437260(int x, int y, int tx, int ty, TileId *owner, int *found);
+void SearchJunglePathConnected(int x, int y, int tx, int ty, TileId *owner, int *found);
 void FUN_004373c0(unsigned short param_1);
 void FUN_00437440(short param_1);
 void FUN_004367b0(int param_1, int param_2, unsigned short *param_3);

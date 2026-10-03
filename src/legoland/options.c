@@ -212,7 +212,7 @@ unsigned char OptionsAcceptIconHandler(unsigned int param_1, unsigned int param_
 unsigned char OptionsSaveIconHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_007cb328 = 0;
+        LoadMode = 0;
         DAT_007cb324 = 0;
         DAT_0080ff80.unk8 = 4;
     }
@@ -238,8 +238,8 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     FUN_0048eb20();
     PuOkSprite = LoadSprite("PU_OK.lls", 4);
     PuOkOnSprite = LoadSprite("PU_OKON.lls", 4);
-    DAT_0079867c = LoadSprite("PU_ClosePopUp.lls", 4);
-    DAT_00798680 = LoadSprite("PU_ClosePopUpON.lls", 4);
+    PopUpCloseSprite = LoadSprite("PU_ClosePopUp.lls", 4);
+    PuCloseOnSprite = LoadSprite("PU_ClosePopUpON.lls", 4);
     ClosePopUpSprite = LoadSprite("PU_ClosePopUp.lls", 4);
     ClosePopUpOnSprite = LoadSprite("PU_ClosePopUpON.lls", 4);
 
@@ -270,7 +270,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     PopUpOkIcon->flags |= 0x4002;
     PopUpOkIcon->event_handler = (void *)DAT_006687bc;
 
-    PopUpCloseIcon = InsertIcon(PopUpOkIcon->x + 0x24, PopUpOkIcon->y, 0xe, DAT_0079867c);
+    PopUpCloseIcon = InsertIcon(PopUpOkIcon->x + 0x24, PopUpOkIcon->y, 0xe, PopUpCloseSprite);
     PopUpCloseIcon->string_id = 4;
     PopUpCloseIcon->string = GetString(4);
     PopUpCloseIcon->flags |= 0x2000;
@@ -325,7 +325,7 @@ unsigned char FUN_0048f440(unsigned int param_1, unsigned int param_2) {
         MapStats.field_3a0 = 3;
         DAT_00668e38 = 0;
         RemoveIconGroup(7);
-        FUN_0046fb40(0xd2);
+        DestroyIconGroup(0xd2);
         KillTitleScreenSprites();
         EditMode.unk4 = 3;
         FUN_0048eb40();
@@ -352,7 +352,7 @@ unsigned char FUN_0048f4f0(unsigned int param_1, unsigned int param_2) {
         DAT_007cb320 = 0;
         CloseFontEndCheckBox();
         DAT_007cb310 = 1;
-        DAT_007cb328 = 0;
+        LoadMode = 0;
         DAT_007cb324 = 0;
         DAT_0080ff80.unk8 = 4;
     }
@@ -363,7 +363,7 @@ unsigned char FUN_0048f4f0(unsigned int param_1, unsigned int param_2) {
 unsigned char OptionsLoadIconHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_007cb328 = 1;
+        LoadMode = 1;
         DAT_007cb324 = 0;
         DAT_0080ff80.unk8 = 4;
     }
@@ -434,7 +434,7 @@ unsigned char OptionsUpIconHandler(struct IconNode *param_1, unsigned int param_
                     }
                     break;
                 }
-                FUN_0046d110();
+                UpdateSpeechPlayback();
                 RenderScreen();
                 SpeechStreamUpdate();
             }
@@ -494,7 +494,7 @@ unsigned char OptionsDownIconHandler(struct IconNode *param_1, unsigned int para
                     }
                     break;
                 }
-                FUN_0046d110();
+                UpdateSpeechPlayback();
                 RenderScreen();
                 SpeechStreamUpdate();
             }
@@ -547,7 +547,7 @@ unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *param_1, unsigned 
                 CurrentProfile.fx_volume = result;
                 break;
             }
-            FUN_0046d110();
+            UpdateSpeechPlayback();
             RenderScreen();
             SpeechStreamUpdate();
         }

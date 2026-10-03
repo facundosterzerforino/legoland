@@ -229,13 +229,13 @@ void FUN_00406b10(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 
     pos = GetScreenCoordsForObject((TileId *)tile, ride);
     RenderItems_New();
-    DAT_004c1208 = NULL;
+    GoldRushBlokeRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id && node->rider->pos.x <= (((unsigned char *)tile)[0] << 8) + 0x780 && node->rider->pos.y <= (((unsigned char *)tile)[1] << 8) - 0x280) {
-            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&GoldRushBlokeRenderList, (struct BlokeRenderSrc *)node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    RenderBlokeList((struct BlokeListHead *)&GoldRushBlokeRenderList);
     if (GoldMaskSprite != NULL) {
         struct Point off;
         frame = 0;
@@ -255,13 +255,13 @@ void FUN_00406b10(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         PrintSprite(GoldMaskSprite, pos.x + off.x, pos.y + off.y, clip, 0);
     }
     RenderItems_New();
-    DAT_004c1208 = NULL;
+    GoldRushBlokeRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id && node->rider->pos.x <= (((unsigned char *)tile)[0] << 8) + 0x780 && node->rider->pos.y >= (((unsigned char *)tile)[1] << 8) - 0x280) {
-            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&GoldRushBlokeRenderList, (struct BlokeRenderSrc *)node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    RenderBlokeList((struct BlokeListHead *)&GoldRushBlokeRenderList);
     if (GoldWashMatte2Sprite != NULL) {
         struct Point off;
         off = GetRenderOffsetForLayer(GoldRushLayer, 1);
@@ -269,13 +269,13 @@ void FUN_00406b10(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         PrintSprite(GoldWashMatte2Sprite, pos.x + off.x, pos.y + off.y, clip, 0);
     }
     RenderItems_New();
-    DAT_004c1208 = NULL;
+    GoldRushBlokeRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id && node->rider->pos.x > (((unsigned char *)tile)[0] << 8) + 0x780) {
-            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&GoldRushBlokeRenderList, (struct BlokeRenderSrc *)node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    RenderBlokeList((struct BlokeListHead *)&GoldRushBlokeRenderList);
     if (GoldWashMatte1Sprite != NULL) {
         struct Point off;
         off = GetRenderOffsetForLayer(GoldRushLayer, 1);
@@ -283,13 +283,13 @@ void FUN_00406b10(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         PrintSprite(GoldWashMatte1Sprite, pos.x + off.x, pos.y + off.y, clip, 0);
     }
     RenderItems_New();
-    DAT_004c1208 = NULL;
+    GoldRushBlokeRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id && (node->rider->pos.x >> 8) > ((unsigned char *)tile)[0] + 8) {
-            AddBlokeToRenderList(&DAT_004c1208, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&GoldRushBlokeRenderList, (struct BlokeRenderSrc *)node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct BlokeListHead *)&DAT_004c1208);
+    RenderBlokeList((struct BlokeListHead *)&GoldRushBlokeRenderList);
     if (GoldRushLayer != NULL) {
         struct Point off;
         off = GetRenderOffsetForLayer(GoldRushLayer, 3);

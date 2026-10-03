@@ -439,7 +439,7 @@ struct RideQueueEntry *FUN_004125a0(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004125f0
-void *FUN_004125f0(unsigned int a, unsigned int b) {
+void *FindQueueEntryAtTile(unsigned int a, unsigned int b) {
     struct RideQueueEntry *entry = DAT_004cbeac;
     int x = a;
     int y = b;

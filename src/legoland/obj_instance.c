@@ -59,7 +59,7 @@ done:
 void FUN_00489ee0(void) {
     struct ObjTableEntry *entry;
 
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (int)entry < (int)&DAT_007cb5e0; entry++) {
         entry->key = 0xffff;
     }
 }
@@ -70,9 +70,9 @@ int FUN_00489f00(const struct Point *pos) {
     struct ObjTableEntry *entry;
 
     index = 0;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == 0xffff) {
-            DAT_007cb3e0[index].key = (pos->x << 8) + pos->y;
+            ObjInstanceTable[index].key = (pos->x << 8) + pos->y;
             DAT_007cb3e2[index].key = 0;
             return 1;
         }
@@ -89,9 +89,9 @@ int FUN_00489f50(const struct Point *pos) {
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
-            DAT_007cb3e0[index].key = 0xffff;
+            ObjInstanceTable[index].key = 0xffff;
             return 1;
         }
         index++;
@@ -107,7 +107,7 @@ int FUN_00489f90(const struct Point *pos) {
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
             DAT_007cb3e2[index].key++;
             return 1;
@@ -125,7 +125,7 @@ unsigned short FUN_00489fd0(const struct Point *pos) {
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
             return DAT_007cb3e2[index].key;
         }

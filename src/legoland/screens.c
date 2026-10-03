@@ -273,7 +273,7 @@ void FUN_00458a50(void) {
         QueryClass = 0;
         CastlePlacedFlag = 0;
         PauseGameTimer();
-        FUN_00499410();
+        ResetGameTimer();
         MarkGameTimer();
         // STRING: LEGOLAND 0x004b9150
         sprintf(buf, "objlist%d.txt", lpConfig->level);
@@ -295,10 +295,10 @@ void FUN_00458a50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458b20
-void FUN_00458b20(void) {
+void UnloadMap(void) {
     if (MapLoaded != 0) {
         FUN_00481170();
-        FUN_0046fb40(0xd2);
+        DestroyIconGroup(0xd2);
         DelObjectList();
         FreeBlokeCounters();
         FreeAllObjectClassInstances();
@@ -367,7 +367,7 @@ int FUN_00458c00(void) {
         ResumeGameTimer();
     } else if (DAT_00667c64 != 0) {
         PauseGameTimer();
-        FUN_00499410();
+        ResetGameTimer();
         MarkGameTimer();
         DAT_006687bc = 0;
         DAT_006687c0 = 0;
@@ -434,21 +434,21 @@ int FUN_00458c00(void) {
                     ((struct ScreenConfig *)lpConfig)->slot += 1;
                 }
                 FUN_0048a750();
-                FUN_00458b20();
+                UnloadMap();
                 DAT_00668e38 = 1;
                 EditMode.unk4 = 2;
                 DAT_0080ff80.unk4 = 0xffffffff;
                 DAT_0080ff80.unk8 = 6;
-                FUN_0046d110();
+                UpdateSpeechPlayback();
                 return 1;
             }
             DAT_00668e38 = 0;
             EditMode.unk4 = 2;
             DAT_0080ff80.unk4 = 0xffffffff;
             DAT_0080ff80.unk8 = 1;
-            FUN_00458b20();
+            UnloadMap();
         }
-        FUN_0046d110();
+        UpdateSpeechPlayback();
     }
     return 1;
 }
@@ -698,7 +698,7 @@ void FUN_00459520(void) {
     MSG msg;
 
     // STRING: LEGOLAND 0x004b7138
-    DAT_0081cd08 = ElemID("HEDGE")->data;
+    HedgeObjectClass = ElemID("HEDGE")->data;
     InitDefaultProfile();
     InitSoundSystem();
     SetMusicGrooveLevel(1);

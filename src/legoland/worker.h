@@ -41,7 +41,7 @@ struct WorkOrder {
 typedef struct RepairOrder RepairOrder;
 
 /* A repair nobody works on (the class needs no worker): paid from the brick
-   supply while drawn. List head DAT_0079a8d4. */
+   supply while drawn. List head RepairOrderList. */
 struct RepairOrder {
     /* 0x00 */ RepairOrder *next;
     /* 0x04 */ Footprint footprint;

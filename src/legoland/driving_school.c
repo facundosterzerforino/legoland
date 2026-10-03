@@ -264,10 +264,10 @@ void FUN_00405460(void) {
         DAT_004cbeac = next;
     }
 
-    while (DAT_004c11bc != NULL) {
-        void *next = ((struct Node8 *)DAT_004c11bc)->next;
-        free(DAT_004c11bc);
-        DAT_004c11bc = next;
+    while (DrivingSchoolCountList != NULL) {
+        void *next = ((struct Node8 *)DrivingSchoolCountList)->next;
+        free(DrivingSchoolCountList);
+        DrivingSchoolCountList = next;
     }
 
     Kill_FXList(DRIVING_SCHOOL_SFX, 6);
@@ -312,8 +312,8 @@ void FUN_00405630(unsigned int param_1, int *coords) {
 
     node = (struct CountNode *)malloc(sizeof(struct CountNode));
     node->tile = tile;
-    node->next = (struct CountNode *)DAT_004c11bc;
-    DAT_004c11bc = node;
+    node->next = (struct CountNode *)DrivingSchoolCountList;
+    DrivingSchoolCountList = node;
     cursor = (struct Cursor *)EditCursor.field_1830;
     x = cursor->tile_x;
     y = cursor->tile_y;
@@ -406,7 +406,7 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x00405940
 void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
     struct RideQueueEntry *queue = DAT_004cbeac;
-    struct CountNode *count = (struct CountNode *)DAT_004c11bc;
+    struct CountNode *count = (struct CountNode *)DrivingSchoolCountList;
     struct DSBlokeNode *blokes = (struct DSBlokeNode *)DAT_004c10d4;
     struct RideQueueEntry *next;
     struct DSBlokeNode *nextBloke;
@@ -416,7 +416,7 @@ void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
     memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
 
     if (count->tile.id == tile.id) {
-        DAT_004c11bc = count->next;
+        DrivingSchoolCountList = count->next;
         free(count);
     } else {
         while (count->next != NULL) {
@@ -612,10 +612,10 @@ int DrivingSchool_Save(void) {
     int buf[52];
 
     count = 0;
-    for (countCur = (struct CountNode *)DAT_004c11bc; countCur != NULL; countCur = countCur->next) {
+    for (countCur = (struct CountNode *)DrivingSchoolCountList; countCur != NULL; countCur = countCur->next) {
         count++;
     }
-    countNode = (struct CountNode *)DAT_004c11bc;
+    countNode = (struct CountNode *)DrivingSchoolCountList;
     SaveGameWrite(&count, 4);
     while (count--) {
         SaveGameWrite(countNode, 0xc);
@@ -634,10 +634,10 @@ int DrivingSchool_Save(void) {
     }
 
     count = 0;
-    for (pumpCur = (struct PumpNode *)DAT_004cbea4; pumpCur != NULL; pumpCur = pumpCur->next) {
+    for (pumpCur = (struct PumpNode *)PumpList; pumpCur != NULL; pumpCur = pumpCur->next) {
         count++;
     }
-    pump = (struct PumpNode *)DAT_004cbea4;
+    pump = (struct PumpNode *)PumpList;
     SaveGameWrite(&count, 4);
     while (count--) {
         SaveGameWrite(pump, 0x10);
@@ -662,7 +662,7 @@ int DrivingSchool_Save(void) {
 
 // FUNCTION: LEGOLAND 0x00406020
 void FUN_00406020(unsigned short arg1, unsigned int arg2) {
-    struct CountNode *current = (struct CountNode *)DAT_004c11bc;
+    struct CountNode *current = (struct CountNode *)DrivingSchoolCountList;
     while (current != NULL) {
         if (current->tile.id == arg1) {
             if (current != NULL) {
@@ -676,7 +676,7 @@ void FUN_00406020(unsigned short arg1, unsigned int arg2) {
 
 // FUNCTION: LEGOLAND 0x00406050
 int FUN_00406050(void) {
-    struct CountNode *current = (struct CountNode *)DAT_004c11bc;
+    struct CountNode *current = (struct CountNode *)DrivingSchoolCountList;
     int max = 0;
 
     while (current != NULL) {
@@ -706,12 +706,12 @@ int DrivingSchool_Load(void) {
     pumpPrev = NULL;
     blokePrev = NULL;
 
-    DAT_004c11bc = NULL;
+    DrivingSchoolCountList = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (countPrev == NULL) {
-            DAT_004c11bc = (struct CountNode *)malloc(0xc);
-            countPrev = DAT_004c11bc;
+            DrivingSchoolCountList = (struct CountNode *)malloc(0xc);
+            countPrev = DrivingSchoolCountList;
         } else {
             countNode = (struct CountNode *)malloc(0xc);
             countPrev->next = countNode;
@@ -734,12 +734,12 @@ int DrivingSchool_Load(void) {
         SaveGameRead(queuePrev, 0x20);
     }
 
-    DAT_004cbea4 = NULL;
+    PumpList = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (pumpPrev == NULL) {
-            DAT_004cbea4 = (struct PumpNode *)malloc(0x10);
-            pumpPrev = DAT_004cbea4;
+            PumpList = (struct PumpNode *)malloc(0x10);
+            pumpPrev = PumpList;
         } else {
             pumpNode = (struct PumpNode *)malloc(0x10);
             pumpPrev->next = pumpNode;
@@ -763,7 +763,7 @@ int DrivingSchool_Load(void) {
         *(int *)((char *)blokePrev + 0xcc) = GetBlokePtr(*(int *)((char *)blokePrev + 0xcc));
     }
 
-    for (countNode = (struct CountNode *)DAT_004c11bc; countNode != NULL; countNode = countNode->next) {
+    for (countNode = (struct CountNode *)DrivingSchoolCountList; countNode != NULL; countNode = countNode->next) {
         FUN_00405310(countNode->tile);
     }
 

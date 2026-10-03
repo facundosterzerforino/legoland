@@ -403,8 +403,8 @@ void FUN_004161f0(struct SpiderNode *node) {
     }
     for (; r != NULL; r = r->next) {
         if (s->id == r->tile.id && r->rider->field_35 == 1) {
-            sprintf(DAT_004b4d94.name + 6, "%02d", r->rider->field_36);
-            SetBlokePositionFromBNV(SpiderRunBinV, r->rider, DAT_004b4d94.name, s->frame, -1617787.75f, -1618096.5f, 0);
+            sprintf(SpiderBnvInfo.name + 6, "%02d", r->rider->field_36);
+            SetBlokePositionFromBNV(SpiderRunBinV, r->rider, SpiderBnvInfo.name, s->frame, -1617787.75f, -1618096.5f, 0);
         }
     }
     *(short *)*ZSpiderSprite->lls = (short)s->frame;
@@ -467,8 +467,8 @@ void FUN_00416330(Element *obj) {
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
-                sprintf(DAT_004b4d94.name + 6, "%02d", FUN_00416830((struct SlotOwner *)elem, (struct SlotArray *)state, ((struct Ride *)DAT_004cbf20)->seats));
-                bloke->path = NewBNVPath(DAT_004cbf30[1], 1, DAT_004b4d94.name, -1617787.75f, -1618096.5f, coords);
+                sprintf(SpiderBnvInfo.name + 6, "%02d", FUN_00416830((struct SlotOwner *)elem, (struct SlotArray *)state, ((struct Ride *)DAT_004cbf20)->seats));
+                bloke->path = NewBNVPath(DAT_004cbf30[1], 1, SpiderBnvInfo.name, -1617787.75f, -1618096.5f, coords);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->field_58 = 0;
                 bloke->param_action++;
@@ -480,7 +480,7 @@ void FUN_00416330(Element *obj) {
                     free(bloke->path);
                     bloke->path = NULL;
                 }
-                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4d94.tab1[bloke->field_36]) {
+                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= SpiderBnvInfo.tab1[bloke->field_36]) {
                     bloke->field_35 = 1;
                     bloke->param_action = 5;
                     free(bloke->path);
@@ -512,8 +512,8 @@ void FUN_00416330(Element *obj) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->field_35 = 2;
-                sprintf(DAT_004b4d94.name + 6, "%02d", bloke->field_36);
-                bloke->path = NewBNVPath(DAT_004cbf38[0], 2, DAT_004b4d94.name, -1617787.75f, -1618096.5f, walk);
+                sprintf(SpiderBnvInfo.name + 6, "%02d", bloke->field_36);
+                bloke->path = NewBNVPath(DAT_004cbf38[0], 2, SpiderBnvInfo.name, -1617787.75f, -1618096.5f, walk);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
@@ -525,7 +525,7 @@ void FUN_00416330(Element *obj) {
                     free(bloke->path);
                     bloke->path = NULL;
                 }
-                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4d94.tab2[bloke->field_36]) {
+                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= SpiderBnvInfo.tab2[bloke->field_36]) {
                     bloke->field_35 = 2;
                     bloke->param_action = 0xd;
                     free(bloke->path);

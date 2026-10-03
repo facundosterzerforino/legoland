@@ -225,7 +225,7 @@ LEGO_EXPORT void UnLoad_Interface_ControlIcons(void) {
 
 // FUNCTION: LEGOLAND 0x00474590
 void FUN_00474590(void) {
-    DAT_00668eb0 = 0;
+    SelectedThemeIcon = 0;
     DAT_004bb0a0 = 1;
     DAT_004bb09c = 1;
     DAT_004bb098 = 1;
@@ -304,23 +304,23 @@ LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void) {
 void FUN_00474750(void) {
     if (DAT_004bb094 == 0) {
         DAT_004bb094 = 1;
-        SetIconSprite((struct IconNode *)DAT_00668eb0, LegolandThemeOffSprite);
+        SetIconSprite((struct IconNode *)SelectedThemeIcon, LegolandThemeOffSprite);
     } else if (DAT_004bb098 == 0) {
         DAT_004bb098 = 1;
-        SetIconSprite((struct IconNode *)DAT_00668eb0, CastleThemeOffSprite);
+        SetIconSprite((struct IconNode *)SelectedThemeIcon, CastleThemeOffSprite);
     } else if (DAT_004bb09c == 0) {
         DAT_004bb09c = 1;
-        SetIconSprite((struct IconNode *)DAT_00668eb0, WesternThemeOffSprite);
+        SetIconSprite((struct IconNode *)SelectedThemeIcon, WesternThemeOffSprite);
     } else if (DAT_004bb0a0 == 0) {
         DAT_004bb0a0 = 1;
-        SetIconSprite((struct IconNode *)DAT_00668eb0, AdventurersThemeOffSprite);
+        SetIconSprite((struct IconNode *)SelectedThemeIcon, AdventurersThemeOffSprite);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00474800
 LEGO_EXPORT void UnLoad_Interface_Icons(void) {
     UnLoad_Interface_ControlIcons();
-    FUN_0046fb40(0xd2);
+    DestroyIconGroup(0xd2);
     UnLoad_PopUpInfo();
 }
 
@@ -354,21 +354,21 @@ void FUN_00474880(void) {
 
 // FUNCTION: LEGOLAND 0x004748a0
 void FUN_004748a0(void *a) {
-    if (DAT_00668eb8 == 0) {
+    if (ScriptEndIcon == 0) {
         return;
     }
     if (FUN_0046b280() == 0) {
         if (a != NULL) {
-            ((struct InterfaceObj *)DAT_00668eb8)->flags |= 0x2002;
+            ((struct InterfaceObj *)ScriptEndIcon)->flags |= 0x2002;
         } else {
-            ((struct InterfaceObj *)DAT_00668eb8)->flags &= 0xffffdffd;
+            ((struct InterfaceObj *)ScriptEndIcon)->flags &= 0xffffdffd;
         }
         return;
     }
-    ((struct InterfaceObj *)DAT_00668eb8)->flags |= 0x2002;
-    ((struct InterfaceObj *)DAT_00668eb8)->event_handler = (void *)FUN_00474f80;
-    ((struct InterfaceObj *)DAT_00668eb8)->string_id = 0x8fc;
-    ((struct InterfaceObj *)DAT_00668eb8)->string = GetString(0x8fc);
+    ((struct InterfaceObj *)ScriptEndIcon)->flags |= 0x2002;
+    ((struct InterfaceObj *)ScriptEndIcon)->event_handler = (void *)FUN_00474f80;
+    ((struct InterfaceObj *)ScriptEndIcon)->string_id = 0x8fc;
+    ((struct InterfaceObj *)ScriptEndIcon)->string = GetString(0x8fc);
 }
 
 // FUNCTION: LEGOLAND 0x00474920
@@ -518,7 +518,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->event_handler = (void *)FUN_00474fa0;
         icon->flags |= 0x4008;
         icon->render_func = (void *)FUN_00443e30;
-        DAT_00668eb8 = (unsigned int)icon;
+        ScriptEndIcon = (unsigned int)icon;
         if (a != 0) {
             FUN_0046b240(0);
             if (CurrentProfile.field_45 == 2) {
@@ -551,7 +551,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
     DAT_007fdd84 = 1;
     DAT_007fdd88 = 0;
     DAT_004baff8 = 5;
-    FUN_0046fb40(0xd2);
+    DestroyIconGroup(0xd2);
     FUN_00476180();
     if (DAT_00810140 != 0) {
         FUN_00474990();
@@ -563,7 +563,7 @@ void FUN_00474ed0(void) {
     if (DAT_00668ebc != 0) {
         DAT_00668ebc = 0;
         RemoveIconGroup(0x93);
-        DAT_00668eb8 = 0;
+        ScriptEndIcon = 0;
         RemoveIconGroup(0x9a);
         DAT_00668e9c = NULL;
         FUN_0046d590(0xd2);
@@ -704,7 +704,7 @@ unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags) {
                 result = TestMenu(DAT_004bafa8);
                 if (result == 1) {
                     FUN_00474750();
-                    DAT_00668eb0 = (unsigned int)param_1;
+                    SelectedThemeIcon = (unsigned int)param_1;
                     SetIconSprite(param_1, LegolandThemeOnSprite);
                     DAT_004bb094 = 0;
                 } else {
@@ -742,7 +742,7 @@ unsigned char FUN_004752a0(struct IconNode *param_1, unsigned char flags) {
             result = TestMenu(&DAT_004bafa8[15]);
             if (result == 1) {
                 FUN_00474750();
-                DAT_00668eb0 = (unsigned int)param_1;
+                SelectedThemeIcon = (unsigned int)param_1;
                 SetIconSprite(param_1, AdventurersThemeOnSprite);
                 DAT_004bb0a0 = 0;
                 return 1;
@@ -779,7 +779,7 @@ unsigned char FUN_004753a0(struct IconNode *param_1, unsigned char flags) {
             result = TestMenu(&DAT_004bafa8[10]);
             if (result == 1) {
                 FUN_00474750();
-                DAT_00668eb0 = (unsigned int)param_1;
+                SelectedThemeIcon = (unsigned int)param_1;
                 SetIconSprite(param_1, CastleThemeOnSprite);
                 DAT_004bb098 = 0;
                 return 1;
@@ -820,7 +820,7 @@ unsigned char FUN_004754b0(struct IconNode *param_1, unsigned char flags) {
             result = TestMenu(&DAT_004bafa8[5]);
             if (result == 1) {
                 FUN_00474750();
-                DAT_00668eb0 = (unsigned int)param_1;
+                SelectedThemeIcon = (unsigned int)param_1;
                 SetIconSprite(param_1, WesternThemeOnSprite);
                 DAT_004bb09c = 0;
                 return 1;
@@ -1027,7 +1027,7 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     int y;
 
     node = DAT_00668e40;
-    FUN_0046fb40(param_1);
+    DestroyIconGroup(param_1);
     panel = (struct InterfacePanel *)malloc(sizeof(struct InterfacePanel));
     if (panel == NULL) {
         return 0;
@@ -1800,7 +1800,7 @@ int FUN_00476910(struct MovieHandle *handle) {
     acmStreamSize(AviAcmStream, AviSoundBytesPerFrame, &AviAcmStreamHeader[4], 1);
     AviAcmStreamHeader[3] = (unsigned int)malloc(AviAcmStreamHeader[4]);
     AviAcmStreamHeader[7] = (unsigned int)malloc(AviAcmStreamHeader[8] * 3);
-    DAT_00668f8c = (void *)AviAcmStreamHeader[7];
+    AviAcmDstBase = (void *)AviAcmStreamHeader[7];
     DAT_00668f54 = 0;
     if (AviAcmStreamHeader[3] != 0 && AviAcmStreamHeader[7] != 0) {
         return 1;
@@ -1824,7 +1824,7 @@ int StartMovieAudio(struct MovieHandle *handle) {
         start = AVIStreamStart(handle->audio_stream);
         len_start = AVIStreamLength(handle->audio_stream) + AVIStreamStart(handle->audio_stream);
         DAT_00668f58 = start;
-        DAT_00668f60 = start;
+        AviAudioSamplePos = start;
         DAT_00668f88 = len_start;
         DAT_00668f9c = 1;
         FUN_00476d20(0, 0);
@@ -1845,9 +1845,9 @@ int StopMovieAudio(void) {
                 free((void *)AviAcmStreamHeader[3]);
                 AviAcmStreamHeader[3] = 0;
             }
-            if (DAT_00668f8c != NULL) {
-                free(DAT_00668f8c);
-                DAT_00668f8c = NULL;
+            if (AviAcmDstBase != NULL) {
+                free(AviAcmDstBase);
+                AviAcmDstBase = NULL;
             }
             acmStreamClose(AviAcmStream, 0);
         }
@@ -1874,13 +1874,13 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
     do {
         if (param_1 == 0 && param_2 == 0) {
             loops = 0xb;
-            DAT_00668f60 = 0;
+            AviAudioSamplePos = 0;
             DAT_00668fa0 = 0;
         } else {
             loops = param_1 - param_2;
             if (loops >= DAT_00668f50) {
                 KLIBAUDIO_StopAVISoundBuffer(AviSoundBuffer);
-                DAT_00668f60 = DAT_00668f90 * param_1;
+                AviAudioSamplePos = DAT_00668f90 * param_1;
                 DAT_00668fa0 = param_1 % DAT_00668f50;
                 play = 1;
                 loops = 0xb;
@@ -1892,16 +1892,16 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
         count = loops;
         do {
             dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, AviSoundBytesPerFrame * DAT_00668fa0, AviSoundBytesPerFrame);
-            if (DAT_00668f60 < DAT_00668f88 && DAT_00668f60 >= 0) {
+            if (AviAudioSamplePos < DAT_00668f88 && AviAudioSamplePos >= 0) {
                 if (DAT_00668ee0 != 0) {
                     produced = 0;
                     if (DAT_00668fb4 != 0) {
                         if (DAT_00668fb4 < AviSoundBytesPerFrame) {
-                            memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668fb4);
+                            memcpy(dst, (char *)AviAcmDstBase + DAT_00668f54, DAT_00668fb4);
                             rem = AviSoundBytesPerFrame - DAT_00668fb4;
                             DAT_00668fb4 = 0;
                             DAT_00668f54 = 0;
-                            if (DAT_00668f60 >= DAT_00668f88) {
+                            if (AviAudioSamplePos >= DAT_00668f88) {
                                 if (DAT_00668f4c == 8) {
                                     memset(dst + (AviSoundBytesPerFrame - rem), 0x80, rem);
                                 } else {
@@ -1909,21 +1909,21 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                                 }
                             } else {
                                 while (DAT_00668fb4 < AviSoundBytesPerFrame) {
-                                    AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
-                                    AviAcmStreamHeader[7] = (unsigned int)DAT_00668f8c + produced;
+                                    AVIStreamRead(AviAudioStream, AviAudioSamplePos, 0x100, (void *)AviAcmStreamHeader[3], AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
+                                    AviAcmStreamHeader[7] = (unsigned int)AviAcmDstBase + produced;
                                     acmStreamPrepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
                                     acmStreamConvert(AviAcmStream, AviAcmStreamHeader, 0x10);
                                     acmStreamUnprepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
                                     produced += AviAcmStreamHeader[9];
                                     DAT_00668fb4 += AviAcmStreamHeader[9];
-                                    DAT_00668f60++;
+                                    AviAudioSamplePos++;
                                 }
-                                memcpy(dst + (AviSoundBytesPerFrame - rem), DAT_00668f8c, rem);
+                                memcpy(dst + (AviSoundBytesPerFrame - rem), AviAcmDstBase, rem);
                                 DAT_00668f54 += rem;
                                 DAT_00668fb4 -= rem;
                             }
                         } else {
-                            memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, AviSoundBytesPerFrame);
+                            memcpy(dst, (char *)AviAcmDstBase + DAT_00668f54, AviSoundBytesPerFrame);
                             DAT_00668fb4 -= AviSoundBytesPerFrame;
                             if (DAT_00668fb4 != 0) {
                                 DAT_00668f54 += AviSoundBytesPerFrame;
@@ -1933,21 +1933,21 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                         }
                     } else {
                         while (DAT_00668fb4 < AviSoundBytesPerFrame) {
-                            AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
-                            AviAcmStreamHeader[7] = (unsigned int)DAT_00668f8c + produced;
+                            AVIStreamRead(AviAudioStream, AviAudioSamplePos, 0x100, (void *)AviAcmStreamHeader[3], AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
+                            AviAcmStreamHeader[7] = (unsigned int)AviAcmDstBase + produced;
                             acmStreamPrepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
                             acmStreamConvert(AviAcmStream, AviAcmStreamHeader, 0x10);
                             acmStreamUnprepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
                             produced += AviAcmStreamHeader[9];
                             DAT_00668fb4 += AviAcmStreamHeader[9];
-                            DAT_00668f60++;
+                            AviAudioSamplePos++;
                         }
-                        memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, AviSoundBytesPerFrame);
+                        memcpy(dst, (char *)AviAcmDstBase + DAT_00668f54, AviSoundBytesPerFrame);
                         DAT_00668f54 += AviSoundBytesPerFrame;
                         DAT_00668fb4 -= AviSoundBytesPerFrame;
                     }
                 } else {
-                    AVIStreamRead(AviAudioStream, DAT_00668f60, DAT_00668f90, dst, AviSoundBytesPerFrame, &bytes_out, &param_2);
+                    AVIStreamRead(AviAudioStream, AviAudioSamplePos, DAT_00668f90, dst, AviSoundBytesPerFrame, &bytes_out, &param_2);
                 }
             } else {
                 if (DAT_00668f4c == 8) {
@@ -1956,12 +1956,12 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                     memset(dst, 0, AviSoundBytesPerFrame);
                 }
                 if (DAT_00668ee0 != 0) {
-                    DAT_00668f60++;
+                    AviAudioSamplePos++;
                 }
             }
             KLIBAUDIO_UnLockAVISoundBuffer(AviSoundBuffer);
             if (DAT_00668ee0 == 0) {
-                DAT_00668f60 += DAT_00668f90;
+                AviAudioSamplePos += DAT_00668f90;
             }
             DAT_00668fa0++;
             if (DAT_00668fa0 >= DAT_00668f50) {

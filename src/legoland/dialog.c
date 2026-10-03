@@ -75,7 +75,7 @@ int FUN_0043ea30(char **names, char *title, struct Sprite *bg, RECT *box, void (
     retry = 0;
     DAT_0062fea4 = 0;
     if (flag == 0) {
-        DAT_0062fea0 = 0;
+        DialogListScrollY = 0;
     }
     n = 0;
     while (names[n]) {
@@ -123,7 +123,7 @@ int FUN_0043ea30(char **names, char *title, struct Sprite *bg, RECT *box, void (
             break;
         }
         if (MousePos.x >= clip.left && MousePos.x <= clip.right && MousePos.y >= clip.top && MousePos.y <= clip.bottom) {
-            my = MousePos.y - clip.top + DAT_0062fea0;
+            my = MousePos.y - clip.top + DialogListScrollY;
             for (i = 0; i < n; i++) {
                 if (my >= items[i].top && my <= items[i].bottom) {
                     sel = i;
@@ -149,12 +149,12 @@ int FUN_0043ea30(char **names, char *title, struct Sprite *bg, RECT *box, void (
         RenderBlock(box->left + 2, box->top + 2, box->right - 4, 0x18, GetNearestColour(0, 0x3f, 0x7f));
         PrintLimitedText(box->left + 2, box->top + 2, box->right - 4, title, 0, 0xefefef, 0);
         if (retry) {
-            DAT_0062fea0 = FUN_0043e930(&bar, 0, over, DAT_0062fea0, 0x10);
+            DialogListScrollY = FUN_0043e930(&bar, 0, over, DialogListScrollY, 0x10);
         }
         GetClipping(&saved);
         SetClipping(&clip);
         for (j = 0; j < n; j++) {
-            if (items[j].bottom >= DAT_0062fea0) {
+            if (items[j].bottom >= DialogListScrollY) {
                 break;
             }
         }
@@ -162,17 +162,17 @@ int FUN_0043ea30(char **names, char *title, struct Sprite *bg, RECT *box, void (
             np = names + j;
             for (i = j; i < n; i++) {
                 ip = &items[i];
-                if (ip->top >= DAT_0062fea0 + viewH) {
+                if (ip->top >= DialogListScrollY + viewH) {
                     break;
                 }
                 t = ip->top;
                 l = ip->left;
                 if (sel == i) {
-                    RenderBlock(l + clip.left, t - DAT_0062fea0 + clip.top, ip->right - l + 1, ip->bottom - t + 1, GetNearestColour(0x7f, 0x7f, 0xef));
+                    RenderBlock(l + clip.left, t - DialogListScrollY + clip.top, ip->right - l + 1, ip->bottom - t + 1, GetNearestColour(0x7f, 0x7f, 0xef));
                 } else {
-                    RenderBox(l + clip.left, t - DAT_0062fea0 + clip.top, ip->right - l + 1, ip->bottom - t + 1, GetNearestColour(0xcf, 0xcf, 0xcf));
+                    RenderBox(l + clip.left, t - DialogListScrollY + clip.top, ip->right - l + 1, ip->bottom - t + 1, GetNearestColour(0xcf, 0xcf, 0xcf));
                 }
-                FUN_00455220(ip->left + clip.left, ip->top - DAT_0062fea0 + clip.top, *np, 2, itemW);
+                FUN_00455220(ip->left + clip.left, ip->top - DialogListScrollY + clip.top, *np, 2, itemW);
                 np++;
             }
         }

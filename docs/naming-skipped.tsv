@@ -177,3 +177,403 @@ FUN_00499d00	named	AssignGardenerWorkOrder
 FUN_00499fb0	named	UpdateGardeners	
 FUN_0049b270	named	EraseWorkOrdersAtTile	
 FUN_0049b690	named	AddRepairOrder	
+DAT_004ab3dc	skipped-no-evidence		
+DAT_004ab3e0	skipped-no-evidence		
+DAT_004ab3e4	skipped-no-evidence		
+DAT_004ab3e8	skipped-no-evidence		
+DAT_004ab3f0	skipped-no-evidence		
+DAT_004ab3f4	skipped-no-evidence		
+DAT_004b4734	skipped-no-evidence		
+DAT_004b4bf0	skipped-no-evidence		
+DAT_004b4d94	named	SpiderBnvInfo	
+DAT_004b5118	named	BoatingSchoolDirSteps	
+DAT_004b53c0	rejected-by-verifier	BoatingSchoolFootprintTemplate	mutated in place by building footprint and used for edit cursor, state and QueryClass; Template misleading
+DAT_004b6990	skipped-no-evidence		
+DAT_004b7148	skipped-no-evidence		
+DAT_004b7260	skipped-no-evidence		
+DAT_004b7278	named	JungleCruiseStartFootprint	
+DAT_004b7478	skipped-no-evidence		
+DAT_004b8bbc	named	PercentSFormat	
+DAT_004b9f8c	skipped-no-evidence		
+DAT_004bafa8	skipped-no-evidence		
+DAT_004bf670	skipped-no-evidence		
+DAT_004bf778	named	MusicState	
+DAT_004c10f0	skipped-no-evidence		
+DAT_004c11bc	named	DrivingSchoolCountList	
+DAT_004c11c8	rejected-by-verifier	DrivingSchoolQueueList	BFS next-frontier list in driving_school (pairs with 4c11c4); Queue name misleading, unsure
+DAT_004c1208	named	GoldRushBlokeRenderList	
+DAT_004c1214	named	JoustLayer	
+DAT_004c2b0c	skipped-no-evidence		
+DAT_004c2b60	skipped-no-evidence		
+DAT_004c2bc0	skipped-no-evidence		
+DAT_004c2be8	skipped-no-evidence		
+DAT_004c2bf0	skipped-no-evidence		
+DAT_004c2c08	skipped-no-evidence		
+DAT_004c2c10	skipped-no-evidence		
+DAT_004c445c	skipped-no-evidence		
+DAT_004c4468	skipped-no-evidence		
+DAT_004c74d4	skipped-no-evidence		
+DAT_004c74d8	skipped-no-evidence		
+DAT_004c74f8	named	LogFlumeCursor	
+DAT_004c8d6c	skipped-no-evidence		
+DAT_004c8d78	skipped-no-evidence		
+DAT_004cbe18	skipped-no-evidence		
+DAT_004cbe70	skipped-no-evidence		
+DAT_004cbea4	named	PumpList	
+DAT_004cbf0c	named	SafariNodeList	
+DAT_004cbf20	skipped-no-evidence		
+DAT_004cbf38	skipped-no-evidence		
+DAT_004cc008	named	WaterBlockRide	
+DAT_004cc02c	named	WaterNodeList	
+DAT_004cc034	named	ElephantFountainList	
+DAT_004cc048	skipped-no-evidence		
+DAT_004cc060	named	BoatingSchoolStartFootprint	
+DAT_004cc08c	named	BoatingSchoolAnimTick	
+DAT_004d2164	named	MermaidList	
+DAT_004d8244	skipped-no-evidence		
+DAT_004d8250	skipped-no-evidence		
+DAT_004d8bb0	skipped-no-evidence		
+DAT_004dcbd0	rejected-by-verifier	FloatArrayOpTable	table mixes copy/alloc/free/int-zero ops, not only float array ops; copied out as 11 entries
+DAT_00610a04	skipped-no-evidence		
+DAT_00610a08	skipped-no-evidence		
+DAT_00610a10	skipped-no-evidence		
+DAT_00611958	skipped-no-evidence		
+DAT_006122a0	skipped-no-evidence		
+DAT_00613878	skipped-no-evidence		
+DAT_00613908	skipped-no-evidence		
+DAT_00615fd4	skipped-no-evidence		
+DAT_006160bc	skipped-no-evidence		
+DAT_006160d0	named	EarthSlideRide	
+DAT_006160e8	named	EarthNodeHead	
+DAT_00616148	named	SaveBlockList	
+DAT_00629c2c	rejected-by-verifier	JungleObjList	two distinct JungleObj lists exist (DAT_00629c34 too); name would be ambiguous
+DAT_00629c30	named	JungleFishList	
+DAT_0062fd34	named	JungleBfsNextFrontier	
+DAT_0062fd3c	named	JailCellList	
+DAT_0062fd40	skipped-no-evidence		
+DAT_0062fe08	named	SpinningBarrelList	
+DAT_0062fe58	named	PlaneRide	
+DAT_0062fe7c	named	PlaneRideLayer	
+DAT_0062fea0	named	DialogListScrollY	
+DAT_00666098	named	AppraisalDeadline	
+DAT_006660a4	skipped-no-evidence		
+DAT_006660a8	dropped-collision	NextPageIcon	dup new name
+DAT_006660ac	dropped-collision	PreviousPageIcon	dup new name
+DAT_00667c00	named	MapWorldMinX	
+DAT_00667c04	skipped-no-evidence		
+DAT_00667c14	rejected-by-verifier	MapScaledTileHeight	also used as scratch for sprite heights at mapscreen.c:448,508,573,611; conflicting use
+DAT_00667c16	rejected-by-verifier	MapSpriteWidth	reused as scaled tile width (mapscreen:268) and as individual sprite widths; conflicting uses
+DAT_00667c18	named	MapWorldHeight	
+DAT_00667c1c	named	MapWorldWidth	
+DAT_00667c20	named	MapCenterOffsetY	
+DAT_00667c40	skipped-no-evidence		
+DAT_00667c48	skipped-no-evidence		
+DAT_00667ca0	named	LoadInProgress	
+DAT_00667cd8	skipped-no-evidence		
+DAT_00667ce0	skipped-no-evidence		
+DAT_00667ce4	skipped-no-evidence		
+DAT_00667ce8	skipped-no-evidence		
+DAT_00667cec	skipped-no-evidence		
+DAT_00667cf8	skipped-no-evidence		
+DAT_00667d3c	skipped-no-evidence		
+DAT_00667d50	named	MapDataLoaded	
+DAT_00668144	named	VideoSurfaceLocked	
+DAT_006681e4	named	RenderingStatusStackDepth	
+DAT_0066861c	skipped-no-evidence		
+DAT_00668720	named	ScriptStringCount	
+DAT_00668724	skipped-no-evidence		
+DAT_00668728	named	ObjectiveEventList	
+DAT_00668784	skipped-no-evidence		
+DAT_00668798	skipped-no-evidence		
+DAT_006687a0	named	ScriptLoadErrorCount	
+DAT_006687a4	skipped-no-evidence		
+DAT_006687a8	skipped-no-evidence		
+DAT_006688b8	skipped-no-evidence		
+DAT_006688bc	named	PowerDemandBarPos	
+DAT_006688c0	named	EnergyBarSupplyWidth	
+DAT_006688c4	skipped-no-evidence		
+DAT_006688d4	rejected-by-verifier	InactiveIndicators	list shared with DAT_006688d8; active/inactive semantics unclear
+DAT_006688d8	named	ActiveIndicators	
+DAT_00668e34	skipped-no-evidence		
+DAT_00668e9c	dropped-collision	BriefIcon	exists in src
+DAT_00668eb0	named	SelectedThemeIcon	
+DAT_00668eb8	named	ScriptEndIcon	
+DAT_00668f54	skipped-no-evidence		
+DAT_00668f60	named	AviAudioSamplePos	
+DAT_00668f8c	named	AviAcmDstBase	
+DAT_00668fb4	skipped-no-evidence		
+DAT_00668fc0	skipped-no-evidence		
+DAT_006691b4	named	SavedElementCount	
+DAT_00669244	named	ObjectLibraryHead	
+DAT_00669248	named	ClassRideList	
+DAT_00669250	skipped-no-evidence		
+DAT_00669254	skipped-no-evidence		
+DAT_0066b450	named	DirSearchNodeList	
+DAT_0066b458	skipped-no-evidence		
+DAT_0066b638	named	ColorLut	
+DAT_0066be50	rejected-by-verifier	ScreenSourceImage	image is a pixel-by-pixel z-threshold transition buffer (data=DAT_00701e68), not screen source
+DAT_00798660	skipped-no-evidence		
+DAT_0079867c	named	PopUpCloseSprite	
+DAT_00798680	named	PuCloseOnSprite	
+DAT_007986b8	rejected-by-verifier	RegPopUpSprite	different sprites loaded in profile (Reg_Delete_PopUp) vs savegame_ui (RegSaveDouble_PopUp); name too generic
+DAT_00798768	named	CertificatePrintResultTimer	
+DAT_00798884	skipped-no-evidence		
+DAT_00799230	named	MusicSegments	
+DAT_0079a6a0	named	MusicCommandEvent	
+DAT_0079a6a4	named	MusicCommand	
+DAT_0079a6a8	named	NextMusicTheme	
+DAT_0079a6ac	named	CurrentMusicTheme	
+DAT_0079a8d4	named	RepairOrderList	
+DAT_007cb1c0	named	RepHint1Icon	
+DAT_007cb2e0	dropped-collision	PreviousPageIcon	dup new name
+DAT_007cb2e4	dropped-collision	NextPageIcon	dup new name
+DAT_007cb328	named	LoadMode	
+DAT_007cb3e0	named	ObjInstanceTable	
+DAT_007cb5e0	skipped-no-evidence		
+DAT_007fd600	named	SortCursor	
+DAT_007fdd70	skipped-no-evidence		
+DAT_007fdd80	skipped-no-evidence		
+DAT_007fdd84	skipped-no-evidence		
+DAT_007fdecc	named	PopUpInfoX	
+DAT_007fded0	named	PopUpInfoY	
+DAT_007fdf80	skipped-no-evidence		
+DAT_007fdf9c	skipped-no-evidence		
+DAT_007fdfa0	skipped-no-evidence		
+DAT_007fdfac	named	PopupInfoLineCount	
+DAT_007fdfcc	skipped-no-evidence		
+DAT_007fdffc	named	WorkerOnMouseType	
+DAT_007fe120	named	ScriptStringTable	
+DAT_007fe930	named	ObjectiveCounters	
+DAT_007fe994	skipped-no-evidence		
+DAT_00801408	skipped-no-evidence		
+DAT_00801a6c	skipped-no-evidence		
+DAT_0080ff6c	skipped-no-evidence		
+DAT_008139c0	named	MapViewHeight	
+DAT_008139c8	named	MapViewX	
+DAT_008139cc	named	MapViewY	
+DAT_00813a50	skipped-no-evidence		
+DAT_00813a60	skipped-no-evidence		
+DAT_00813a64	named	MouseTileX	
+DAT_00813a68	named	MouseTileY	
+DAT_00813a6c	named	FootprintWidth	
+DAT_00813acc	skipped-no-evidence		
+DAT_00813ad4	skipped-no-evidence		
+DAT_00813adc	skipped-no-evidence		
+DAT_0081cb54	skipped-no-evidence		
+DAT_0081cb80	skipped-no-evidence		
+DAT_0081cd08	named	HedgeObjectClass	
+DAT_0081cd2c	named	EateryFxInner	
+DAT_008299a0	skipped-no-evidence		
+DAT_008299bc	skipped-no-evidence		
+DAT_00829a3c	skipped-no-evidence		
+DAT_00829ae4	skipped-no-evidence		
+DAT_00829ae8	skipped-no-evidence		
+DAT_00829b8c	skipped-no-evidence		
+DAT_00829b90	skipped-no-evidence		
+DAT_00829ba4	skipped-no-evidence		
+DAT_00829ba8	skipped-no-evidence		
+DAT_00829bf8	skipped-no-evidence		
+DAT_0082adb0	skipped-no-evidence		
+DAT_0082c684	skipped-no-evidence		
+DAT_0082c6e0	rejected-by-verifier	DrivingSchoolCursor	one of several chained driving school cursors (f760, df20); name ambiguous
+DAT_0082df20	skipped-no-evidence		
+FUN_00401000	named	RotateOffset	
+FUN_00401f30	skipped-no-evidence		
+FUN_00404630	skipped-no-evidence		
+FUN_00405310	skipped-no-evidence		
+FUN_00408ec0	named	FindFlumeEntryByTile	
+FUN_00408ef0	named	FindFlumeSubEntryByTile	
+FUN_00408f30	skipped-no-evidence		
+FUN_00409040	named	InsertNodeBefore	
+FUN_00409080	named	LinkNodeAfter	
+FUN_004090c0	named	InsertNodeBetween	
+FUN_00409110	named	ReverseNodeList	
+FUN_00409140	skipped-no-evidence		
+FUN_00409170	named	AppendListNode	
+FUN_004091f0	skipped-no-evidence		
+FUN_00409410	skipped-no-evidence		
+FUN_00409620	skipped-no-evidence		
+FUN_00409680	skipped-no-evidence		
+FUN_004096e0	skipped-no-evidence		
+FUN_00409740	skipped-no-evidence		
+FUN_00409a50	skipped-no-evidence		
+FUN_00409b70	named	JoinOppositeFlumeNodes	
+FUN_0040a010	skipped-no-evidence		
+FUN_0040ad50	skipped-no-evidence		
+FUN_0040b210	skipped-no-evidence		
+FUN_0040ba80	skipped-no-evidence		
+FUN_0040bab0	skipped-no-evidence		
+FUN_0040ca30	skipped-no-evidence		
+FUN_0040cca0	skipped-no-evidence		
+FUN_0040cd70	skipped-no-evidence		
+FUN_0040cdf0	skipped-no-evidence		
+FUN_0040d090	skipped-no-evidence		
+FUN_0040d2d0	skipped-no-evidence		
+FUN_0040d3b0	skipped-no-evidence		
+FUN_0040d6f0	skipped-no-evidence		
+FUN_0040d900	skipped-no-evidence		
+FUN_0040db00	skipped-no-evidence		
+FUN_0040e340	skipped-no-evidence		
+FUN_0040e3b0	skipped-no-evidence		
+FUN_0040e440	skipped-no-evidence		
+FUN_0040ed50	skipped-no-evidence		
+FUN_004107b0	skipped-no-evidence		
+FUN_00410b60	named	IndexToFlumeNode	
+FUN_004112c0	skipped-no-evidence		
+FUN_004119a0	skipped-no-evidence		
+FUN_00412100	skipped-no-evidence		
+FUN_004122a0	skipped-no-evidence		
+FUN_00412300	skipped-no-evidence		
+FUN_004125a0	skipped-no-evidence		
+FUN_004125f0	named	FindQueueEntryAtTile	
+FUN_00412650	skipped-no-evidence		
+FUN_004132a0	skipped-no-evidence		
+FUN_00413450	skipped-no-evidence		
+FUN_004134f0	skipped-no-evidence		
+FUN_004135d0	skipped-no-evidence		
+FUN_00417c90	skipped-no-evidence		
+FUN_0041bab0	skipped-no-evidence		
+FUN_0041c4c0	skipped-no-evidence		
+FUN_0041c690	skipped-no-evidence		
+FUN_0041c890	named	FindBoatPathAt	
+FUN_0041c940	skipped-no-evidence		
+FUN_0041cc50	named	GetOppositeDirection	
+FUN_0041cca0	named	DirMaskToIndex	
+FUN_0041ce10	named	ResetAnim	
+FUN_0041ce60	skipped-no-evidence		
+FUN_0041cff0	skipped-no-evidence		
+FUN_0041d3b0	skipped-no-evidence		
+FUN_0041d6d0	skipped-no-evidence		
+FUN_0041d7f0	skipped-no-evidence		
+FUN_0041e330	named	ForEachRingNode	
+FUN_0041e4a0	skipped-no-evidence		
+FUN_0041e500	skipped-no-evidence		
+FUN_0041e820	skipped-no-evidence		
+FUN_0041ec20	skipped-no-evidence		
+FUN_0041ed90	skipped-no-evidence		
+FUN_0041f2b0	skipped-no-evidence		
+FUN_0041f4e0	skipped-no-evidence		
+FUN_00420200	named	IntegrateSimpson	
+FUN_00420310	skipped-no-evidence		
+FUN_00420e90	skipped-no-evidence		
+FUN_00421540	skipped-no-evidence		
+FUN_00421980	skipped-no-evidence		
+FUN_00424ab0	skipped-no-evidence		
+FUN_00425cb0	skipped-no-evidence		
+FUN_00425d50	skipped-no-evidence		
+FUN_00427970	skipped-no-evidence		
+FUN_00427a00	skipped-no-evidence		
+FUN_00427c00	skipped-no-evidence		
+FUN_00429910	skipped-no-evidence		
+FUN_0042a150	skipped-no-evidence		
+FUN_0042aa60	skipped-no-evidence		
+FUN_0042ce20	skipped-no-evidence		
+FUN_0042e830	skipped-no-evidence		
+FUN_0042e8d0	named	EaterySetEditMode	
+FUN_0042f0f0	skipped-no-evidence		
+FUN_004312c0	named	EateryRemoveObject	
+FUN_00431c50	skipped-no-evidence		
+FUN_00432510	named	UpdateHedgeTileImage	
+FUN_00432cb0	skipped-no-evidence		
+FUN_00436130	skipped-no-evidence		
+FUN_004367b0	skipped-no-evidence		
+FUN_00436dc0	skipped-no-evidence		
+FUN_00436fb0	skipped-no-evidence		
+FUN_00437260	named	SearchJunglePathConnected	
+FUN_00437570	skipped-no-evidence		
+FUN_0043a390	named	GetShopSpriteInfo	
+FUN_0043a3d0	named	RemoveObjectAndBlokes	
+FUN_0043aee0	named	RenderSpaceTowerSeat	
+FUN_0043fa80	skipped-no-evidence		
+FUN_004401b0	skipped-no-evidence		
+FUN_00441890	skipped-no-evidence		
+FUN_00444020	skipped-no-evidence		
+FUN_0044ed00	named	LogBlokeAiMessage	
+FUN_0044f360	skipped-no-evidence		
+FUN_0044f4a0	skipped-no-evidence		
+FUN_00455d40	skipped-no-evidence		
+FUN_00455e50	skipped-no-evidence		
+FUN_00458a50	skipped-no-evidence		
+FUN_00458b20	named	UnloadMap	
+FUN_00459820	skipped-no-evidence		
+FUN_0045a060	skipped-no-evidence		
+FUN_0045a3e0	skipped-no-evidence		
+FUN_0045ce10	skipped-no-evidence		
+FUN_0045d260	skipped-no-evidence		
+FUN_0045d3d0	skipped-no-evidence		
+FUN_0045f460	skipped-no-evidence		
+FUN_0045f480	skipped-no-evidence		
+FUN_0045f4b0	skipped-no-evidence		
+FUN_0045f4d0	skipped-no-evidence		
+FUN_00460560	skipped-no-evidence		
+FUN_00468810	skipped-no-evidence		
+FUN_004689f0	skipped-no-evidence		
+FUN_00468b40	skipped-no-evidence		
+FUN_00468bb0	named	PostObjectiveMessage	
+FUN_00468c80	named	InsertObjectiveEventSorted	
+FUN_00468d10	skipped-no-evidence		
+FUN_00468d30	skipped-no-evidence		
+FUN_00468d80	skipped-no-evidence		
+FUN_00469310	skipped-no-evidence		
+FUN_00469900	skipped-no-evidence		
+FUN_0046a140	skipped-no-evidence		
+FUN_0046b240	skipped-no-evidence		
+FUN_0046b610	rejected-by-verifier	InsertTimedNodeAtHead	DAT_007fdca4 is an objective handle not a time; nodes are ObjectiveEvents; Timed unsupported
+FUN_0046b6b0	skipped-no-evidence		
+FUN_0046b760	skipped-no-evidence		
+FUN_0046c5c0	skipped-no-evidence		
+FUN_0046c620	named	SaveGameWriteString	
+FUN_0046c680	skipped-no-evidence		
+FUN_0046ce20	skipped-no-evidence		
+FUN_0046d110	named	UpdateSpeechPlayback	
+FUN_0046d230	skipped-no-evidence		
+FUN_0046d4e0	skipped-no-evidence		
+FUN_0046d850	skipped-no-evidence		
+FUN_0046fb40	named	DestroyIconGroup	
+FUN_00471610	named	SetPopUpIconSprites	
+FUN_00471d60	named	SetPopUpOkCloseIconSprites	
+FUN_004735e0	skipped-no-evidence		
+FUN_00474750	skipped-no-evidence		
+FUN_00474880	skipped-no-evidence		
+FUN_004748a0	skipped-no-evidence		
+FUN_004776c0	skipped-no-evidence		
+FUN_004776e0	named	InsertOpenListSorted	
+FUN_00477760	named	RemoveQueryNode	
+FUN_00477790	named	RemoveFromOpenList	
+FUN_004777f0	skipped-no-evidence		
+FUN_004779a0	skipped-no-evidence		
+FUN_004779d0	skipped-no-evidence		
+FUN_004785d0	skipped-no-evidence		
+FUN_00478610	skipped-no-evidence		
+FUN_004786c0	skipped-no-evidence		
+FUN_00478700	named	ParseRect	
+FUN_00478b20	skipped-no-evidence		
+FUN_00480840	named	MovePointInDirection	
+FUN_004808d0	named	StepPointByDirection	
+FUN_00481b10	named	MergeBestNode	
+FUN_00482210	named	FreeDirPathNodes	
+FUN_00482240	skipped-no-evidence		
+FUN_00482620	skipped-no-evidence		
+FUN_00482710	skipped-no-evidence		
+FUN_004828f0	skipped-no-evidence		
+FUN_00482b60	skipped-no-evidence		
+FUN_00483300	skipped-no-evidence		
+FUN_004837a0	skipped-no-evidence		
+FUN_00489ee0	skipped-no-evidence		
+FUN_00489f00	skipped-no-evidence		
+FUN_00489f50	skipped-no-evidence		
+FUN_0048a750	skipped-no-evidence		
+FUN_0048a840	skipped-no-evidence		
+FUN_0048b4a0	skipped-no-evidence		
+FUN_0048b770	skipped-no-evidence		
+FUN_0048bb60	skipped-no-evidence		
+FUN_0048d490	skipped-no-evidence		
+FUN_0048e420	named	ResetPopUpIconSprites	
+FUN_0048f0a0	skipped-no-evidence		
+FUN_0048fb80	skipped-no-evidence		
+FUN_004907a0	skipped-no-evidence		
+FUN_00492b20	named	FreeSample	
+FUN_00492ce0	named	SetInteractiveMusicTheme	
+FUN_004966a0	skipped-no-evidence		
+FUN_00499410	named	ResetGameTimer	
+FUN_00499500	skipped-no-evidence		
