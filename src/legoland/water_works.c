@@ -188,26 +188,20 @@ struct WaterNode *FindWaterNodeByKey(struct WaterNode *list, short *key) {
 // FUNCTION: LEGOLAND 0x00417bd0
 void FUN_00417bd0(struct WaterNode **head, struct WaterNode *node) {
     struct WaterNode *cur;
-    struct WaterNode *next;
 
     cur = *head;
     if (cur == node) {
         *head = node->next;
         return;
     }
-    next = cur->next;
-    while (1) {
-        if (next == node) {
-            if (cur != NULL) {
-                cur->next = node->next;
-            }
-            return;
+    while (cur->next != node) {
+        cur = cur->next;
+        if (cur == NULL) {
+            break;
         }
-        if (next == NULL) {
-            return;
-        }
-        cur = next;
-        next = cur->next;
+    }
+    if (cur != NULL) {
+        cur->next = node->next;
     }
 }
 
