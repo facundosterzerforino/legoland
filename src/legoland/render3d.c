@@ -398,10 +398,10 @@ LEGO_EXPORT unsigned short *LoadPalette(unsigned int path) {
                 RES_ReadFile(file, &path, 1);
                 RES_ReadFile(file, &g, 1);
                 RES_ReadFile(file, &b, 1);
-                if (DisplayPixelFormat != 2) {
-                    *out = (unsigned short)((((((unsigned char)path & 0xf8) << 5) | (g & 0xf8)) << 2) | (b >> 3));
+                if (DisplayPixelFormat == 2) {
+                    *out = (((path & 0xf8) << 5 | (g & 0xfc)) << 3) | (b >> 3);
                 } else {
-                    *out = (unsigned short)((((((unsigned char)path & 0xf8) << 5) | (g & 0xfc)) << 3) | (b >> 3));
+                    *out = (unsigned short)((((((unsigned char)path & 0xf8) << 5) | (g & 0xf8)) << 2) | (b >> 3));
                 }
                 out++;
             }
