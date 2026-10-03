@@ -1181,8 +1181,6 @@ LEGO_EXPORT char *GetFaceTextureNameOfBloke(struct BlokeSex0 *param_1) {
     case 1:
         ptr = AltWomanFileData;
         break;
-    default:
-        ptr = param_1;
     }
     name = (char *)FUN_004428f0((char *)ptr, 0, inner->field_80);
     // STRING: LEGOLAND 0x004b7d24
@@ -1203,8 +1201,6 @@ LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1) {
     case 1:
         ptr = AltWomanFileData;
         break;
-    default:
-        ptr = param_1;
     }
     name = (char *)FUN_004428f0((char *)ptr, 1, inner->field_80);
     _stricmp(name, "chest girly1");
@@ -1214,13 +1210,19 @@ LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1) {
 // FUNCTION: LEGOLAND 0x004431f0
 LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
     unsigned int idx = param_1->field_4->field_8c;
-    return (BlokeColours[idx * 3] << 16) | (BlokeColours[idx * 3 + 1] << 8) | BlokeColours[idx * 3 + 2];
+    unsigned int r = BlokeColours[idx * 3];
+    unsigned int b = BlokeColours[idx * 3 + 2];
+    unsigned int g = BlokeColours[idx * 3 + 1];
+    return (((r << 8) | g) << 8) | b;
 }
 
 // FUNCTION: LEGOLAND 0x00443220
 LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1) {
     unsigned int idx = param_1->field_4->field_90;
-    return (BlokeColours[idx * 3] << 16) | (BlokeColours[idx * 3 + 1] << 8) | BlokeColours[idx * 3 + 2];
+    unsigned int r = BlokeColours[idx * 3];
+    unsigned int b = BlokeColours[idx * 3 + 2];
+    unsigned int g = BlokeColours[idx * 3 + 1];
+    return (((r << 8) | g) << 8) | b;
 }
 
 // FUNCTION: LEGOLAND 0x00443250
