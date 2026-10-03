@@ -866,9 +866,9 @@ LEGO_EXPORT unsigned char Bit_To_Dir(unsigned char bit) {
 LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, char *param_3) {
     int x;
     int y;
-    int ym1;
     int yp1;
     int xp1;
+    int xm1;
     char local_15;
     char local_16;
     unsigned char local_17;
@@ -876,15 +876,15 @@ LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, 
 
     y = pos->y;
     x = pos->x;
-    ym1 = y + -1;
+    pos = (struct Point *)(y + -1);
     local_15 = '\0';
     local_16 = '\0';
     local_17 = 0;
-    if (x < 0 || x >= (int)lpConfig->width || ym1 < 0 || ym1 >= (int)lpConfig->height) {
+    if (x < 0 || x >= (int)lpConfig->width || (int)pos < 0 || (int)pos >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
         tile.flags_10 = 0;
     } else {
-        tile = *(struct MapTile *)((char *)GameMap[ym1] + x * 0x14);
+        tile = *(struct MapTile *)((char *)GameMap[(int)pos] + x * 0x14);
     }
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         local_16 = '\x01';
@@ -912,26 +912,26 @@ LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, 
         local_16 = local_16 + '\x01';
         local_17 = local_17 | 4;
     }
-    x = x + -1;
-    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+    xm1 = x + -1;
+    if (xm1 < 0 || xm1 >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
         tile.flags_10 = 0;
     } else {
-        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+        tile = *(struct MapTile *)((char *)GameMap[y] + xm1 * 0x14);
     }
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         local_16 = local_16 + '\x01';
         local_17 = local_17 | 0x40;
     }
-    if (xp1 < 0 || xp1 >= (int)lpConfig->width || ym1 < 0 || ym1 >= (int)lpConfig->height) {
+    if (xp1 < 0 || xp1 >= (int)lpConfig->width || (int)pos < 0 || (int)pos >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
         tile.flags_10 = 0;
     } else {
-        tile = *(struct MapTile *)((char *)GameMap[ym1] + xp1 * 0x14);
+        tile = *(struct MapTile *)((char *)GameMap[(int)pos] + xp1 * 0x14);
     }
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
-        local_17 = local_17 | 2;
         local_15 = '\x01';
+        local_17 = local_17 | 2;
     }
     if (xp1 < 0 || xp1 >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
@@ -943,21 +943,21 @@ LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, 
         local_15 = local_15 + '\x01';
         local_17 = local_17 | 8;
     }
-    if (x < 0 || x >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
+    if (xm1 < 0 || xm1 >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
         tile.flags_10 = 0;
     } else {
-        tile = *(struct MapTile *)((char *)GameMap[yp1] + x * 0x14);
+        tile = *(struct MapTile *)((char *)GameMap[yp1] + xm1 * 0x14);
     }
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         local_15 = local_15 + '\x01';
         local_17 = local_17 | 0x20;
     }
-    if (x < 0 || x >= (int)lpConfig->width || ym1 < 0 || ym1 >= (int)lpConfig->height) {
+    if (xm1 < 0 || xm1 >= (int)lpConfig->width || (int)pos < 0 || (int)pos >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
         tile.flags_10 = 0;
     } else {
-        tile = *(struct MapTile *)((char *)GameMap[ym1] + x * 0x14);
+        tile = *(struct MapTile *)((char *)GameMap[(int)pos] + xm1 * 0x14);
     }
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         local_15 = local_15 + '\x01';
@@ -1040,8 +1040,8 @@ unsigned char FUN_0045c440(int *param_1, char *param_2, char *param_3) {
         tile = *(struct MapTile *)((char *)GameMap[ym1] + xp1 * 0x14);
     }
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
-        local_17 = local_17 | 2;
         local_15 = '\x01';
+        local_17 = local_17 | 2;
     }
     if (xp1 < 0 || xp1 >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
         tile.flags_c = 0x40;
