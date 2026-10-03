@@ -5751,14 +5751,12 @@ void FUN_00425e20(void) {
 // FUNCTION: LEGOLAND 0x00426000
 void FUN_00426000(int flag) {
     struct FMat4 m;
-    struct FMat4 *src;
 
     if (flag) {
-        src = &DAT_004b5c1c[1];
+        DAT_008299bc = DAT_004b5c1c[1];
     } else {
-        src = &DAT_004b5c1c[0];
+        DAT_008299bc = DAT_004b5c1c[0];
     }
-    DAT_008299bc = *src;
     DAT_008299bc.m[0][3] = 0.0f;
     DAT_008299bc.m[1][3] = 0.0f;
     DAT_008299ac = lpConfig->view_x;
