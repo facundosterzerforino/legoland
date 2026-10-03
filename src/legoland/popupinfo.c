@@ -641,48 +641,41 @@ void AddNewObjectIcon(struct NewObjInfo *param_1) {
 
 // FUNCTION: LEGOLAND 0x00471ca0
 void RemoveNewObject(void *param) {
-    struct Sprite **puVar2;
-    int iVar3;
-    int iVar4;
-    int iVar5;
-    struct Sprite **puVar6;
-    int iVar7;
+    struct Sprite **q;
+    int j;
+    int k;
+    int n;
 
-    if (0 < (int)NewObjects.count) {
-        puVar6 = NewObjects.sprites;
-        iVar5 = NewObjects.count;
-        iVar7 = 1;
-        do {
-            if (param == ((void **)puVar6)[-0x14]) {
-                if (*puVar6 != NULL) {
-                    KillSprite(*puVar6);
-                    *puVar6 = NULL;
-                    iVar5 = NewObjects.count;
+    n = (int)NewObjects.count;
+    if (0 < n) {
+        for (j = 0; j < n; j++) {
+            if (param == NewObjects.objs[j]) {
+                if (NewObjects.sprites[j] != NULL) {
+                    KillSprite(NewObjects.sprites[j]);
+                    NewObjects.sprites[j] = NULL;
+                    n = (int)NewObjects.count;
                 }
-                puVar2 = puVar6;
-                iVar3 = iVar7;
-                iVar4 = iVar5;
-                if (iVar7 < iVar5) {
+                k = j + 1;
+                if (k < n) {
+                    q = &NewObjects.sprites[j];
                     do {
-                        iVar3 = iVar3 + 1;
-                        *puVar2 = puVar2[1];
-                        ((void **)puVar2)[-0x14] = ((void **)puVar2)[-0x13];
-                        puVar2 = puVar2 + 1;
-                        iVar4 = NewObjects.count;
-                    } while (iVar3 < NewObjects.count);
+                        k++;
+                        q[0] = q[1];
+                        ((void **)q)[-0x14] = ((void **)q)[-0x13];
+                        q++;
+                        n = (int)NewObjects.count;
+                    } while (k < n);
                 }
-                iVar5 = iVar4 + -1;
-                if (iVar5 <= NewObjects.current) {
-                    NewObjects.current = iVar4 + -2;
+                n--;
+                if (NewObjects.current >= n) {
+                    NewObjects.current = n - 1;
                 }
-                NewObjects.count = iVar5;
-                if ((iVar5 == 0) && (DAT_007fdfa0 == 2)) {
-                    DAT_007fdfa0 = 0;
+                NewObjects.count = n;
+                if ((n == 0) && (DAT_007fdfa0 == 2)) {
+                    DAT_007fdfa0 = n;
                 }
             }
-            puVar6 = puVar6 + 1;
-            iVar7 = iVar7 + 1;
-        } while (iVar7 + -1 < iVar5);
+        }
     }
 }
 
