@@ -974,22 +974,25 @@ LEGO_EXPORT void RenderItem_Link(struct RenderItemNode **head, struct RenderItem
         *head = node;
         return;
     }
-    while (key > cur->key) {
+    for (;;) {
+        if (key <= cur->key) {
+            node->next = cur;
+            node->prev = cur->prev;
+            if (cur->prev != NULL) {
+                cur->prev->next = node;
+            }
+            cur->prev = node;
+            if (cur == *head) {
+                *head = node;
+            }
+            return;
+        }
         if (cur->next == NULL) {
             cur->next = node;
             node->prev = cur;
             return;
         }
         cur = cur->next;
-    }
-    node->next = cur;
-    node->prev = cur->prev;
-    if (cur->prev != NULL) {
-        cur->prev->next = node;
-    }
-    cur->prev = node;
-    if (cur == *head) {
-        *head = node;
     }
 }
 
@@ -1109,22 +1112,25 @@ LEGO_EXPORT void RenderItem2_Link(struct RenderItemNode **head, struct RenderIte
         *head = node;
         return;
     }
-    while (key > cur->key) {
+    for (;;) {
+        if (key <= cur->key) {
+            node->next = cur;
+            node->prev = cur->prev;
+            if (cur->prev != NULL) {
+                cur->prev->next = node;
+            }
+            cur->prev = node;
+            if (cur == *head) {
+                *head = node;
+            }
+            return;
+        }
         if (cur->next == NULL) {
             cur->next = node;
             node->prev = cur;
             return;
         }
         cur = cur->next;
-    }
-    node->next = cur;
-    node->prev = cur->prev;
-    if (cur->prev != NULL) {
-        cur->prev->next = node;
-    }
-    cur->prev = node;
-    if (cur == *head) {
-        *head = node;
     }
 }
 
