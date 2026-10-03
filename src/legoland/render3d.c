@@ -730,7 +730,8 @@ unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
     } else {
         pcVar4 = (char *)param_3;
     }
-    if (param_2 == 1) {
+    switch (param_2) {
+    case 1:
         pcVar4 = param_1;
     }
     return GetNthStringInList((unsigned char *)pcVar4, param_3);
