@@ -602,7 +602,10 @@ unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned i
 
 // FUNCTION: LEGOLAND 0x0048e4f0
 unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4) {
-    if (DAT_004bef9c != 0 && (a2 & 2) != 0 && DAT_007cb328 == 0) {
+    if (DAT_004bef9c != 0) {
+        if ((a2 & 2) == 0 || DAT_007cb328 != 0) {
+            return 1;
+        }
         ResetTempProfile();
         CurrentProfile.save_slot = icon->field_1c;
         InitNewSaveGamePOPUP(icon);
