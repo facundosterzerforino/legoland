@@ -80,17 +80,19 @@ LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int 
 int FUN_0045aa50(struct FXSpriteList **out) {
     int count = 0;
     struct FXSpriteList *prev = NULL;
-    void **slot = TileSpriteArray;
-    struct TileSpriteEntry *info = TileSpriteInfo;
     struct FXSpriteList *src;
+    struct FXSpriteList **dst = out;
+    struct TileSpriteEntry *info = TileSpriteInfo;
+    void **slot = TileSpriteArray;
 
     do {
         if (*slot != (void *)-1) {
             src = info->src;
             if (src != NULL && src != prev) {
-                *out++ = src;
+                *dst = src;
                 count++;
                 prev = src;
+                dst++;
             }
         }
         slot++;
