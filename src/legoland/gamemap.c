@@ -743,8 +743,8 @@ LEGO_EXPORT MapElement *GetFirstRenderObject(void) {
     int y;
     MapElement *element;
 
-    x = (unsigned char)DAT_007febb8;
-    y = (unsigned char)(DAT_007febb8 >> 8);
+    x = ((unsigned char *)&DAT_007febb8)[0];
+    y = ((unsigned char *)&DAT_007febb8)[1];
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         return 0;
     }

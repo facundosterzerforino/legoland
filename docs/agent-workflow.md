@@ -59,7 +59,8 @@ Best remaining value: partials between 60% and 95% in files not yet worked (see 
 inline-asm stubs are out of scope (CLAUDE.md).
 
 ### Round 3 (single session, no subagents)
-Matched: FUN_004766f0, FUN_00441830, FUN_0042e560, FUN_00481170, FUN_0046da20, FindCarouselNode, FindWaterNodeByKey.
+Matched: FUN_004766f0, FUN_00441830, FUN_0042e560, FUN_00481170, FUN_0046da20, FindCarouselNode, FindWaterNodeByKey,
+GetFirstRenderObject.
 Improved: FUN_00407ad0 (95.0), FUN_00411fa0 (85.1), FUN_00469c80 (93.2), CreateSampleFromWAV (97.5).
 What worked (look for these shapes first, they are cheap):
 - `lea reg,[p+off]` immediately overwritten by `mov reg16,word ptr [p+off]` then `cmp reg16,[key]`: an inlined
@@ -74,6 +75,10 @@ What worked (look for these shapes first, they are cheap):
 - `return` inside a nested `if` of a branch shares epilogues differently from an `if/else` with one `return` after it (FUN_0046da20).
 - RIFF chunk scanners: `while (Read(&tag, 4) == 4) { if (tag == 'data') { ...; break; } skip chunk }` (CreateSampleFromWAV).
 - Unsigned char fields read into an `int`/`short` local: the original `xor reg,reg; mov regl,[..]` vs our `movsx` tells the type.
+- A `word` global split with `mov cl, dh` and no `and ecx,0xff` is two bytes: `((unsigned char *)&g)[0]` / `[1]`, not
+  `(unsigned char)(g >> 8)` (GetFirstRenderObject).
+- Untried lead: FUN_004428f0 (72.6%) has two separate `GetNthStringInList` returns and stores its second pointer into the
+  `param_1` stack slot only on one path, which suggests an uninitialized local reusing that slot plus `if (param_2 == 1) return ...;`.
 Dead ends found this round (tried 5-15 variants each, register allocation or block placement only):
 SetBlokePositionFromBNV (x87 stack order in the 3rd sqrt), SpeechParseWavHeader and SaveScripts and UnlinkGardenerOrder and
 InitDirectSound and OpenAviAnim (early `return 0` blocks merged/duplicated differently from the original), FUN_00476d20,
