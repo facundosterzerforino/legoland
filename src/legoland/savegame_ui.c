@@ -356,9 +356,9 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
     struct IconNode *node = DAT_006687c8;
     struct IconNode *selected;
     struct IconNode *btn;
-    RECT rc;
-    int draw;
     int by;
+    int draw;
+    RECT rc;
 
     if (DeleteIcon != NULL) {
         DeleteIcon->flags |= 0x400;
@@ -381,8 +381,8 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
                     if (DeletePopUpShown != 0) {
                         SetIconSprite(node, DAT_007986b8);
                         node->y = (short)(node->field_1cb * 0x26 + 0x54);
-                        rc.top = node->y + 0x22;
                         by = node->y + 0x1b;
+                        rc.top = node->y + 0x22;
                         LightUpthisDeleteIcon(node, 0);
                     } else if (DAT_00798700 != 0) {
                         SetIconSprite(node, DAT_007986b8);
@@ -433,29 +433,33 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
     }
 
     if (DAT_00798700 != 0) {
-        PrintSprite(RegCornerMaskSprite, selected->x, selected->y, 0, 0);
         rc.left = selected->x + 8;
         rc.top = selected->y + 7;
         rc.right = rc.left + 0xae;
         rc.bottom = rc.top + 0x13;
-        NewPrintCent(GetString(DAT_007986f0 != 0 ? 0xc44 : 0x8c), 2, rc, 1);
+        PrintSprite(RegCornerMaskSprite, selected->x, selected->y, 0, 0);
+        if (DAT_007986f0 != 0) {
+            NewPrintCent(GetString(0xc44), 2, rc, 1);
+        } else {
+            NewPrintCent(GetString(0x8c), 2, rc, 1);
+        }
         UpdateProfileCheckBoxIcons();
     } else if (DeletePopUpShown != 0) {
-        PrintSprite(RegCornerMaskSprite, selected->x, selected->y, 0, 0);
         rc.left = selected->x + 0x14;
         rc.top = selected->y + 7;
         rc.right = rc.left + 0x9b;
         rc.bottom = rc.top + 0x13;
+        PrintSprite(RegCornerMaskSprite, selected->x, selected->y, 0, 0);
         NewPrintCent(GetString(0x85), 2, rc, 1);
         UpdateProfileCheckBoxIcons();
     }
 
     btn = (struct IconNode *)AcceptIcon;
     if (btn != NULL) {
-        if (CurrentProfile.save_slot == 0) {
-            btn->flags |= 0x400;
-        } else {
+        if (CurrentProfile.save_slot != 0) {
             btn->flags &= ~0x400;
+        } else {
+            btn->flags |= 0x400;
         }
     }
 }
