@@ -35,7 +35,7 @@ struct RenderListNode {
 struct RenderListNode *FUN_00441830(void *param_1, short *param_2) {
     struct RenderListNode *node = (struct RenderListNode *)DAT_0081c8cc;
     while (node != NULL) {
-        if (*param_2 == node->id) {
+        if (memcmp(&node->id, param_2, sizeof(node->id)) == 0) {
             DAT_0081c8cc = node;
             return node;
         }
