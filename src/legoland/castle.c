@@ -3993,8 +3993,7 @@ struct EdgeMesh *FUN_004227c0(struct EdgeMesh *src) {
                         j++;
                     }
                 }
-                j = 0;
-                for (i = 0; i < nEdges; i++) {
+                for (i = 0, j = 0; i < nEdges; i++) {
                     if (edgeFlag[i] == 0) {
                         out->edges[j].v0 = src->edges[i].v0 - vertFlag[src->edges[i].v0];
                         out->edges[j].v1 = src->edges[i].v1 - vertFlag[src->edges[i].v1];
