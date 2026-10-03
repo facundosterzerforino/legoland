@@ -100,8 +100,12 @@ void FUN_004598d0(struct Point *coord, int *param_2, int *param_3) {
     struct MapCell *cell;
     short kind;
 
-    if (coord->x < 0 || coord->x >= (int)lpConfig->width || coord->y < 0 || coord->y >= (int)lpConfig->height ||
-        (cell = (struct MapCell *)((char *)GameMap[coord->y] + coord->x * 0x14)) == NULL) {
+    if (coord->x < 0 || coord->x >= (int)lpConfig->width || coord->y < 0 || coord->y >= (int)lpConfig->height) {
+        cell = NULL;
+    } else {
+        cell = (struct MapCell *)((char *)GameMap[coord->y] + coord->x * 0x14);
+    }
+    if (cell == NULL) {
         *param_2 = *param_2 + -1;
         return;
     }
