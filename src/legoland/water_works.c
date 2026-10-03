@@ -172,17 +172,16 @@ void InsertWaterNodeAtHead(struct WaterNode **head, struct WaterNode *node) {
 
 // FUNCTION: LEGOLAND 0x00417ba0
 struct WaterNode *FindWaterNodeByKey(struct WaterNode *list, short *key) {
-    if (list != NULL) {
-        if ((short)list->key == *key) {
-            return list;
-        }
-        while ((list = list->next) != NULL) {
-            if ((short)list->key == *key) {
-                return list;
-            }
+    if (list == NULL) {
+        return NULL;
+    }
+    while (memcmp(&list->key, key, sizeof(list->key)) != 0) {
+        list = list->next;
+        if (list == NULL) {
+            return NULL;
         }
     }
-    return NULL;
+    return list;
 }
 
 // FUNCTION: LEGOLAND 0x00417bd0
