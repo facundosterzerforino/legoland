@@ -181,8 +181,8 @@ void FUN_00411fa0(struct Queue *queue, int param_2, int param_3, struct QueueIte
 
     x = (step->dx + param_2) << 8;
     y = (step->dy + param_3) << 8;
-    inner->dest_x = x;
     inner->dest_y = y;
+    inner->dest_x = x;
     dir = CalcMoveLine(*(struct Point *)&inner->pos_x, *(struct Point *)&inner->dest_x, &inner->nav);
     inner->low_level_action = 7;
     inner->field_73 = dir + 0x10;
