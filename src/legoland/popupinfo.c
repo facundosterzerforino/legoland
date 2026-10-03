@@ -518,7 +518,6 @@ void FUN_004718c0(int param_1) {
 
 // FUNCTION: LEGOLAND 0x00471950
 LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsigned int param_5) {
-    short sVar1;
     int iVar2;
     int x;
     int y;
@@ -529,7 +528,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     uVar3 = t.data.value & 0xffff;
     x = uVar3 & 0xff;
     y = uVar3 >> 8;
-    if ((x < 0) || (lpConfig->width <= x) || (y < 0) || (lpConfig->height <= y)) {
+    if ((x < 0) || (x >= lpConfig->width) || (y < 0) || (y >= lpConfig->height)) {
         iVar4 = NULL;
     } else {
         iVar4 = (unsigned char *)GameMap[y] + x * 0x14;
@@ -543,73 +542,71 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     DAT_007fdec0.type = t.type;
     DAT_007fdec0.ptr = t.ptr;
     DAT_007fdec0.data.value = t.data.value;
-    if (t.type < 0x308) {
-        if (t.type == 0x307) {
-            if (*(short *)((char *)t.ptr + 0xc) != 5) {
-                PlayInstanceOfSample(DAT_004b92e4, 0, 1, 0);
-                PickUpWorker(0x307, t.ptr);
-                ResetInfoStruct();
-                return;
-            }
-        } else if (t.type == 0x103) {
-            if (t.ptr == NULL) {
-                DAT_007fdfa0 = 1;
-                DAT_007fdfa8 = 1;
-                return;
-            }
-            if (((unsigned int)t.ptr != PathControlHandle) && ((unsigned int)t.ptr != Entrance1Handle)) {
-                DAT_007fdf7c = *(unsigned int *)((char *)t.ptr + 0xc);
-                DAT_007fdf84 = iVar4;
-                if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == PottingShedHandle) {
-                    DAT_007fdfa0 = 0;
-                    DAT_007fdf9c = 10;
-                    param_4 = iVar4[4];
-                    param_5 = iVar4[5];
-                    if (BuyGardener() == 0) {
-                        return;
-                    }
-                    GenerateGardener(&param_4, 1);
+    switch (t.type) {
+    case 0x307:
+        if (*(short *)((char *)t.ptr + 0xc) != 5) {
+            PlayInstanceOfSample(DAT_004b92e4, 0, 1, 0);
+            PickUpWorker(0x307, t.ptr);
+        }
+        break;
+    case 0x103:
+        if (t.ptr == NULL) {
+            return;
+        }
+        if (((unsigned int)t.ptr != PathControlHandle) && ((unsigned int)t.ptr != Entrance1Handle)) {
+            DAT_007fdf7c = *(unsigned int *)((char *)t.ptr + 0xc);
+            DAT_007fdf84 = iVar4;
+            if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == PottingShedHandle) {
+                DAT_007fdfa0 = 0;
+                DAT_007fdf9c = 10;
+                param_4 = iVar4[4];
+                (&param_4)[1] = iVar4[5];
+                if (BuyGardener() == 0) {
                     return;
                 }
-                if (*(unsigned int *)(DAT_007fdf7c + 0xc4) != MechanicsHutHandle) {
-                    DAT_007fdf9c = 0x103;
-                    return;
-                }
+                GenerateGardener((int *)&param_4, 1);
+                return;
+            }
+            if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == MechanicsHutHandle) {
                 DAT_007fdfa0 = 0;
                 DAT_007fdf9c = 0x14;
                 param_4 = iVar4[4];
-                param_5 = iVar4[5];
+                (&param_4)[1] = iVar4[5];
                 if (BuyMechanic() == 0) {
                     return;
                 }
-                GenerateMechanic(&param_4, 1);
+                GenerateMechanic((int *)&param_4, 1);
                 return;
             }
-        } else if (t.type == 0x306) {
-            DAT_007fdf9c = t.type;
-            DAT_007fdf8c = t.ptr;
-            DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x1c);
-            DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x20);
+            DAT_007fdf9c = 0x103;
             return;
         }
-    } else if ((t.type == 0x308) && (sVar1 = *(short *)((char *)t.ptr + 0xc), sVar1 != 5)) {
-        if (((sVar1 == 0x13) && (0x6a < *(unsigned char *)((char *)t.ptr + 0x60))) ||
-            ((sVar1 == 0x16) && (0x6a < *(unsigned char *)((char *)t.ptr + 0x60)))) {
-            iVar4 = *(unsigned char **)((char *)t.ptr + 0x50);
-            iVar5 = *(int *)(iVar4 + 8);
-            if ((iVar5 < 0) ||
-                (((int)(unsigned int)lpConfig->width <= iVar5 ||
-                     (iVar2 = *(int *)(iVar4 + 0xc), iVar2 < 0)) ||
-                    ((int)(unsigned int)lpConfig->height <= iVar2))) {
-                iVar5 = 0;
-            } else {
-                iVar5 = (int)GameMap[iVar2] + iVar5 * 0x14;
+        break;
+    case 0x306:
+        DAT_007fdf9c = t.type;
+        DAT_007fdf8c = t.ptr;
+        DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x1c);
+        DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x20);
+        return;
+    case 0x308:
+        if (t.ptr->action != 5) {
+            if (((t.ptr->action == 0x13) && (t.ptr->param_action >= 0x6b)) ||
+                ((t.ptr->action == 0x16) && (t.ptr->param_action >= 0x6b))) {
+                iVar4 = (unsigned char *)t.ptr->order;
+                iVar5 = *(int *)(iVar4 + 8);
+                if ((iVar5 < 0) || (iVar5 >= (int)(unsigned int)lpConfig->width || (iVar2 = *(int *)(iVar4 + 0xc), iVar2 < 0)) ||
+                    (iVar2 >= (int)(unsigned int)lpConfig->height)) {
+                    iVar5 = 0;
+                } else {
+                    iVar5 = (int)GameMap[iVar2] + iVar5 * 0x14;
+                }
+                *(unsigned short *)(iVar5 + 0xc) = *(unsigned short *)(iVar5 + 0xc) & 0xbfff;
+                FreeMechanicWorkOrder((WorkOrder *)iVar4);
             }
-            *(unsigned short *)(iVar5 + 0xc) = *(unsigned short *)(iVar5 + 0xc) & 0xbfff;
-            FreeMechanicWorkOrder(iVar4);
+            PlayInstanceOfSample(DAT_004b9308, 0, 1, 0);
+            PickUpWorker(0x308, t.ptr);
         }
-        PlayInstanceOfSample(DAT_004b9308, 0, 1, 0);
-        PickUpWorker(0x308, t.ptr);
+        break;
     }
     ResetInfoStruct();
 }
