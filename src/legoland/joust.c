@@ -172,8 +172,8 @@ void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
 
     node = FindJoustNode(&coords);
     if (node != NULL) {
-        source.kind = 2;
         source.x = node->id.pos.x;
+        source.kind = 2;
         source.y = node->id.pos.y;
         UnSourceAndFadeAllSamplesFromSource(&source, -200);
         node->sample = 0;
