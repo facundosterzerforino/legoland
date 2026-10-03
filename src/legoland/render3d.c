@@ -851,7 +851,7 @@ unsigned int FUN_00442c70(void) {
 
 // FUNCTION: LEGOLAND 0x00442cc0
 LEGO_EXPORT struct Point GetScreenCoordsForObject(TileId *tile, struct Ride *ride) {
-    int bounds[2];
+    int bounds[4];
     struct Point ref;
     int iVar1;
     int iVar2;
@@ -868,12 +868,12 @@ LEGO_EXPORT struct Point GetScreenCoordsForObject(TileId *tile, struct Ride *rid
         iVar2 = iVar2 >> 1;
     }
     if (iVar1 < 0) {
-        r.y = bounds[1] - (-iVar1 >> 1);
         r.x = iVar2 + bounds[0];
+        r.y = bounds[1] - (-iVar1 >> 1);
         return r;
     }
-    r.y = bounds[1] + (iVar1 >> 1);
     r.x = iVar2 + bounds[0];
+    r.y = bounds[1] + (iVar1 >> 1);
     return r;
 }
 

@@ -2568,9 +2568,9 @@ void FUN_0040bf70(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0040c250
-int FUN_0040c250(struct FlumeEntry *param_1) {
-    struct FlumeEntry *entry = param_1;
+int FUN_0040c250(struct FlumeEntry *entry) {
     struct FlumeSlotSet *set = entry->slotset;
+    struct FlumeEntry *param_1 = entry;
     struct FlumeEntry *tmp;
     struct FlumeEntry *node;
     int i;

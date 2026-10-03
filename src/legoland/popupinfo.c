@@ -701,8 +701,7 @@ void FUN_00471d90(void) {
     int uVar4;
     int iVar5;
     int iVar6;
-    int iVar7;
-    int iVar8;
+    RECT rc;
     struct PrintCtx ctx;
     char local_14[20];
 
@@ -730,13 +729,19 @@ void FUN_00471d90(void) {
     CBCloseIcon->y = sVar2;
     str = GetString(0xa2);
     sprintf(local_14, (char *)PercentSFormat, str);
-    iVar7 = PopUpInfoX + 0xc;
-    iVar8 = iVar1 + 6;
-    FUN_00455e50(local_14, iVar7, iVar8, (PopUpInfoX + 0x86 + iVar5) - iVar7, (iVar1 + 0x21) - iVar8, 1, 5, 0xff0000, 0xffffff);
-    if ((CBCloseIcon->x + 0x24 < (int)MousePos.x) || ((int)MousePos.x < PopUpInfoOkIcon->x)) {
+    rc.left = PopUpInfoX + 0xc;
+    rc.top = iVar1 + 6;
+    rc.right = rc.left + 0x7a + iVar5;
+    rc.bottom = rc.top + 0x1b;
+    FUN_00455e50(local_14, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 1, 5, 0xff0000, 0xffffff);
+    rc.left = PopUpInfoOkIcon->x;
+    rc.top = iVar1;
+    rc.right = CBCloseIcon->x + 0x24;
+    rc.bottom = iVar1 + 0x1b;
+    if ((rc.right < (int)MousePos.x) || ((int)MousePos.x < rc.left)) {
         SetPopUpOkCloseIconSprites();
     }
-    if ((iVar1 + 0x1b < (int)MousePos.y) || ((int)MousePos.y < iVar1)) {
+    if ((rc.bottom < (int)MousePos.y) || ((int)MousePos.y < rc.top)) {
         SetPopUpOkCloseIconSprites();
     }
     FUN_00471470();
