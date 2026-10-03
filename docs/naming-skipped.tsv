@@ -1,0 +1,179 @@
+symbol	status	proposed_name	note
+DAT_004ab3fc	skipped-no-evidence		
+DAT_004b4728	named	LogFlumeFootprint	
+DAT_004b472c	skipped-no-evidence		
+DAT_004b4730	skipped-no-evidence		inner field of the DAT_004b4728 footprint
+DAT_004b5c1c	skipped-no-evidence		
+DAT_004baff8	skipped-no-evidence		
+DAT_004bb04c	skipped-no-evidence		
+DAT_004bb5b0	named	ScriptConditionActive	
+DAT_004beb80	named	ProgressScreenTables	
+DAT_004bef9c	skipped-no-evidence		
+DAT_004c10d4	skipped-no-evidence		
+DAT_004c2aa0	skipped-no-evidence		log_flume.c cursor source; ambiguous
+DAT_004c2af4	skipped-no-evidence		
+DAT_004cbe84	named	FlumeEntryList	
+DAT_004cbeac	rejected-by-verifier	RideQueueList	also used as RoadQueueEntry list in roads.c (conflicting types)
+DAT_004cbf28	named	SpiderRideLayer	
+DAT_004cc03c	named	BoatRideList	
+DAT_004cc074	named	BoatRideNodeList	
+DAT_004cc090	dropped-collision	BoatingSchoolCursors	collided: same name proposed for DAT_004d2168
+DAT_004d2168	dropped-collision	BoatingSchoolCursors	collided: same name proposed for DAT_004cc090
+DAT_004d823c	named	BoatPathList	
+DAT_004dd5e0	skipped-no-evidence		function-pointer table in castle.c; role unclear
+DAT_0060f914	skipped-no-evidence		
+DAT_006102f8	skipped-no-evidence		
+DAT_00616044	named	BalloonzLayer	
+DAT_00616068	named	CarouselLayer	
+DAT_006160ec	named	BlokeRenderList	
+DAT_00616118	named	EateryLayerOwner	
+DAT_00616164	named	JungleRideList	
+DAT_00616180	skipped-no-evidence		scratch Cursor struct shared by boating_school.c and jungle_cruise.c
+DAT_00622320	named	JungleCruiseCursors	
+DAT_00629c3c	named	JungleScoreList	
+DAT_00629c40	named	JungleCruiseFootprint	
+DAT_00629c54	named	JungleCruiseStep	
+DAT_00629c58	skipped-no-evidence		scratch Cursor struct shared by boating_school.c and jungle_cruise.c
+DAT_0062fd2c	named	JunglePathList	
+DAT_00665ff8	named	ReportFlags	
+DAT_006660a0	rejected-by-verifier	ChallengePageCount	page count semantics ambiguous (count-1 compares, 260 uses)
+DAT_00667ca4	skipped-no-evidence		
+DAT_00668078	named	OffscreenSurface	
+DAT_0066809c	named	CurrentSurfaceDesc	
+DAT_00668108	skipped-no-evidence		
+DAT_00668610	skipped-no-evidence		
+DAT_0066879c	rejected-by-verifier	ActiveObjectiveEventList	holds list/script object also used as SortNode/TimedList/Ctx; role unclear (created per id, 'Closed' state)
+DAT_006687b0	skipped-no-evidence		
+DAT_006687bc	rejected-by-verifier	ScreenEventHandler	handler also copied into OK icon event_handler; dual role, unclear
+DAT_006687c0	skipped-no-evidence		
+DAT_006687c8	named	IconListHead	
+DAT_00668954	rejected-by-verifier	HoldingWorker	set/cleared in varied drop-validity contexts; meaning unclear
+DAT_00668e38	skipped-no-evidence		
+DAT_00668f3c	named	AviSoundBytesPerFrame	
+DAT_00668fb8	skipped-no-evidence		
+DAT_00669050	named	CurrentObjectiveEventFlags	
+DAT_00669054	skipped-no-evidence		
+DAT_00669200	named	SavedElementTable	
+DAT_0066a45c	skipped-no-evidence		
+DAT_0066b44c	skipped-no-evidence		shared by pathfind and objclass lists
+DAT_007cad60	named	TempProfile	
+DAT_007fda60	named	BlokeSaveBuffer	
+DAT_007fdea8	named	PopUpInfoOkIcon	
+DAT_007fdf84	skipped-no-evidence		
+DAT_007fe000	named	CBCloseIcon	
+DAT_007fe9a8	skipped-no-evidence		
+DAT_007fe9c0	named	PointerSprites	
+DAT_007fea4c	named	SpriteClipOrigin	
+DAT_007febac	named	DrawClipExtent	
+DAT_00801a80	skipped-no-evidence		
+DAT_0080ff80	skipped-no-evidence		
+DAT_008139c4	named	MapViewWidth	
+DAT_00813a44	named	MousePos	
+DAT_00813a70	named	FootprintHeight	
+DAT_00813ac4	rejected-by-verifier	MouseButtonState	one of ~8 identical button-state words; which button unconfirmed
+DAT_0081cb60	named	JungleCruiseRide	
+DAT_0081cb74	named	MFish2Ride	
+DAT_0081ce00	skipped-no-evidence		
+DAT_00829ae0	skipped-no-evidence		
+DAT_0082ad20	named	CastleDispatchTable	
+DAT_0082ae20	skipped-no-evidence		scratch Cursor struct shared by boating_school.c and jungle_cruise.c
+DAT_0082c6a0	named	RideSpriteInfoBuffer	
+DAT_0082f760	skipped-no-evidence		
+FUN_00402390	skipped-no-evidence		
+FUN_00408c00	named	JoustFreeResources	
+FUN_00409010	skipped-no-evidence		
+FUN_0040c8d0	skipped-no-evidence		
+FUN_0040cfd0	skipped-no-evidence		
+FUN_004123c0	named	SaveQueue	
+FUN_00414a00	named	RemoveSafariNode	
+FUN_00417280	named	RemoveSlideObject	
+FUN_0041abd0	named	RenderBoatingSchool	
+FUN_0041b0d0	rejected-by-verifier	AdjustBoatOwnerCount	BoatRideNode.value meaning unclear; 'owner' unconfirmed
+FUN_0041b830	skipped-no-evidence		
+FUN_0041b880	named	BoatingSchoolSetEditMode	
+FUN_0041cee0	skipped-no-evidence		
+FUN_0041cf70	skipped-no-evidence		
+FUN_0041d0b0	skipped-no-evidence		
+FUN_0041d700	skipped-no-evidence		
+FUN_0041da10	skipped-no-evidence		
+FUN_0041e720	skipped-no-evidence		
+FUN_0041eaf0	skipped-no-evidence		
+FUN_0041edb0	skipped-no-evidence		
+FUN_0041f720	skipped-no-evidence		
+FUN_0041f880	skipped-no-evidence		
+FUN_00420810	skipped-no-evidence		
+FUN_004213a0	named	BlendFloatArrays	
+FUN_00421400	named	ZeroIntBuffer	
+FUN_00421ab0	skipped-no-evidence		
+FUN_00422340	named	FindLineStart	
+FUN_004237f0	named	DrawDottedLine	
+FUN_004238a0	named	PlotClippedPoints	
+FUN_00424dc0	skipped-no-evidence		
+FUN_00426650	skipped-no-evidence		
+FUN_004266e0	named	UnlinkListLink	
+FUN_00426d80	skipped-no-evidence		
+FUN_00427100	skipped-no-evidence		
+FUN_00427940	skipped-no-evidence		
+FUN_00429750	skipped-no-evidence		
+FUN_0042cdc0	named	RemoveEarthNode	
+FUN_0042d070	named	RenderEarthSlide	
+FUN_0042d1f0	named	UnloadEarthSlideResources	
+FUN_0042f9d0	named	FindSaveBlock	
+FUN_0042fa00	named	RemoveSaveBlock	
+FUN_004324d0	skipped-no-evidence		
+FUN_004371b0	named	FindJunglePathAt	
+FUN_004371e0	named	AreJunglePathsConnected	
+FUN_004373c0	skipped-no-evidence		
+FUN_0043ce10	named	PickBarrelSeat	
+FUN_0043d210	skipped-no-evidence		
+FUN_00442f50	named	AllocRenderItem	
+FUN_00443d90	skipped-no-evidence		
+FUN_00444410	skipped-no-evidence		
+FUN_004444b0	skipped-no-evidence		
+FUN_00444870	skipped-no-evidence		
+FUN_00444930	skipped-no-evidence		
+FUN_00444ef0	skipped-no-evidence		
+FUN_0044dc70	skipped-no-evidence		
+FUN_0044eb10	skipped-no-evidence		
+FUN_00450a40	skipped-no-evidence		
+FUN_00450b10	named	LoadBuildObjArray	
+FUN_004511e0	skipped-no-evidence		
+FUN_00451390	skipped-no-evidence		
+FUN_00451550	named	UnlockLogicalVolume	
+FUN_004594f0	named	InitDefaultProfile	
+FUN_004598d0	skipped-no-evidence		
+FUN_0045e850	skipped-no-evidence		
+FUN_00461080	skipped-no-evidence		
+FUN_00469a80	skipped-no-evidence		
+FUN_0046a120	skipped-no-evidence		
+FUN_0046a190	named	GenerateWorkers	
+FUN_0046a460	skipped-no-evidence		
+FUN_0046a4f0	skipped-no-evidence		
+FUN_0046aa70	skipped-no-evidence		
+FUN_0046aec0	named	AdjustGardenerCount	
+FUN_0046b790	skipped-no-evidence		
+FUN_0046bb80	skipped-no-evidence		
+FUN_0046bda0	skipped-no-evidence		
+FUN_0046c090	skipped-no-evidence		
+FUN_0046c0f0	skipped-no-evidence		
+FUN_0046c450	skipped-no-evidence		
+FUN_0046c510	skipped-no-evidence		
+FUN_0046c540	named	AppendObjectiveEventList	
+FUN_004730f0	named	ClosePopUpEventHandler	
+FUN_00473130	named	TryClosePopUp	
+FUN_00473680	skipped-no-evidence		
+FUN_00474820	skipped-no-evidence		
+FUN_00476000	skipped-no-evidence		
+FUN_004760a0	named	DrawFlashingButtons	
+FUN_00478770	named	ParseIntPair	
+FUN_00478870	skipped-no-evidence		
+FUN_0047ad40	skipped-no-evidence		
+FUN_004821e0	named	FreeDirNodeList	
+FUN_00482a90	named	InitEntrance1Point	
+FUN_00482df0	named	ApplyMoodDelta	
+FUN_004848e0	skipped-no-evidence		
+FUN_004969d0	named	UpdateSound	
+FUN_00499d00	named	AssignGardenerWorkOrder	
+FUN_00499fb0	named	UpdateGardeners	
+FUN_0049b270	named	EraseWorkOrdersAtTile	
+FUN_0049b690	named	AddRepairOrder	
