@@ -1664,63 +1664,60 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
     DAT_004bb4e0.biHeight = handle->height;
     DAT_004bb4e0.biSizeImage = DAT_004bb4e0.biHeight * DAT_004bb4e0.biWidth * 2;
     handle->frame = AVIStreamGetFrameOpen(handle->video_stream, &DAT_004bb4e0);
-    if ((int)handle->frame_count > 0) {
-        do {
-            if (param_3 != 0) {
-                if (ProcessSystemEvents() == 0) {
-                    break;
-                }
-                ReadGameButtons();
-                if ((DAT_00813ac4 & 1) != 0) {
-                    break;
-                }
-                if ((DAT_00813ad4 & 7) != 0) {
-                    DAT_00668fb0 = 1;
-                    break;
-                }
-                if ((KeyboardState[0x39] & 0x80) != 0) {
-                    break;
-                }
-            } else {
-                ProcessSystemEvents();
-                if (((KeyboardState[0x1d] | KeyboardState[0x9d]) & 0x80) != 0 && (KeyboardState[0x10] & 0x80) != 0) {
-                    break;
-                }
+    while ((int)target < (int)handle->frame_count) {
+        if (param_3 != 0) {
+            if (ProcessSystemEvents() == 0) {
+                break;
             }
-            if (frame_index == -1) {
-                frame = AVIStreamGetFrame(handle->frame, target);
+            ReadGameButtons();
+            if ((DAT_00813ac4 & 1) != 0) {
+                break;
             }
-            if (frame == NULL) {
-                handle->frame = NULL;
-                return 0;
+            if ((DAT_00813ad4 & 7) != 0) {
+                DAT_00668fb0 = 1;
+                break;
             }
-            PushRenderingStatusAndLockVideoSurface();
-            FUN_00465850(frame);
-            PopRenderingStatus();
-            if (started == 0) {
-                if (audio != 0) {
-                    StartMovieAudio(handle);
-                }
-                started = GetPerformanceTime();
+            if ((KeyboardState[0x39] & 0x80) != 0) {
+                break;
             }
-            RenderingComplete();
-            frame_index = GetPerformanceTime();
-            if ((unsigned int)((frame_index - started) * handle->frame_rate) / 1000 == target) {
-                frame_index = target + 1;
-                if (frame_index < (int)handle->frame_count) {
-                    frame = AVIStreamGetFrame(handle->frame, frame_index);
-                }
-            } else {
-                frame_index = -1;
+        } else {
+            ProcessSystemEvents();
+            if (((KeyboardState[0x1d] | KeyboardState[0x9d]) & 0x80) != 0 && (KeyboardState[0x10] & 0x80) != 0) {
+                break;
             }
-            while (target == prev) {
-                target = (unsigned int)((GetPerformanceTime() - started) * handle->frame_rate) / 1000;
-            }
+        }
+        if (frame_index == -1) {
+            frame = AVIStreamGetFrame(handle->frame, target);
+        }
+        if (frame == NULL) {
+            handle->frame = NULL;
+            return 0;
+        }
+        PushRenderingStatusAndLockVideoSurface();
+        FUN_00465850(frame);
+        PopRenderingStatus();
+        if (started == 0) {
             if (audio != 0) {
-                FUN_00476d20(target, prev);
+                StartMovieAudio(handle);
             }
-            prev = target;
-        } while ((int)target < (int)handle->frame_count);
+            started = GetPerformanceTime();
+        }
+        RenderingComplete();
+        if ((unsigned int)((GetPerformanceTime() - started) * handle->frame_rate) / 1000 == target) {
+            frame_index = target + 1;
+            if (frame_index < (int)handle->frame_count) {
+                frame = AVIStreamGetFrame(handle->frame, frame_index);
+            }
+        } else {
+            frame_index = -1;
+        }
+        while (target == prev) {
+            target = (unsigned int)((GetPerformanceTime() - started) * handle->frame_rate) / 1000;
+        }
+        if (audio != 0) {
+            FUN_00476d20(target, prev);
+        }
+        prev = target;
     }
     StopMovieAudio();
     do {
