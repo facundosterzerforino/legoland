@@ -527,42 +527,25 @@ LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
 
 // FUNCTION: LEGOLAND 0x00481170
 void FUN_00481170(void) {
-    struct LegoConfig *config;
     struct MapElement *cell;
     void *next;
     int x;
     int y;
-    int offset;
-    int width;
 
     while (ClassRideList != 0) {
         next = *(void **)ClassRideList;
         free(ClassRideList);
         ClassRideList = next;
     }
-    config = lpConfig;
-    y = 0;
-    if (y < config->height) {
-        do {
-            x = 0;
-            width = config->width;
-            if (width > 0) {
-                offset = 0;
-                do {
-                    if (offset < 0 || x >= (int)width || y < 0 || y >= (int)lpConfig->height) {
-                        cell = 0;
-                    } else {
-                        cell = (struct MapElement *)((char *)GameMap[y] + offset);
-                    }
-                    cell->flags &= 0xfbff;
-                    x++;
-                    width = lpConfig->width;
-                    offset += 0x14;
-                } while (x < (int)width);
+    for (y = 0; y < lpConfig->height; y++) {
+        for (x = 0; x < lpConfig->width; x++) {
+            if (x < 0 || x >= lpConfig->width || y < 0 || y >= lpConfig->height) {
+                cell = 0;
+            } else {
+                cell = &GameMap[y][x];
             }
-            config = lpConfig;
-            y++;
-        } while (y < (int)config->height);
+            cell->flags &= 0xfbff;
+        }
     }
 }
 
