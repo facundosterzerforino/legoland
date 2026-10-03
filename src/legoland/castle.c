@@ -3507,8 +3507,8 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
     float m;
     float best = 1.17549435e-38f;
     struct Struct1e40 *o = DAT_004dd648;
-    int i;
-    float *r;
+    float *r = roots;
+    int i = 2;
 
     m = (y1 - y0) / (x1 - x0);
     b = y0 - m * x0;
@@ -3521,11 +3521,12 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
         roots[0] = (sq - b2) / (a + a);
         roots[1] = (-b2 - sq) / (a + a);
     }
-    for (r = roots, i = 0; i < 2; i++, r++) {
+    for (; i > 0; i--, r++) {
         float y;
         float d;
         if (*r >= x0 && *r <= x1) {
-            y = o->coef_t3 * *r + o->coef_t2;
+            y = o->coef_t3;
+            y = y * *r + o->coef_t2;
             y = y * *r + o->coef_t1;
             y = y * *r + o->coef_t0;
             d = (float)fabs(y - m * *r - b);
