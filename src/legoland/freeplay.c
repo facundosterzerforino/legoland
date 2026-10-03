@@ -163,7 +163,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
 void FUN_0048ab60(void) {
     struct GameListNode *node;
 
-    node = (struct GameListNode *)DAT_006687c8;
+    node = (struct GameListNode *)IconListHead;
     if (node == 0) {
         return;
     }
@@ -369,7 +369,7 @@ unsigned char FUN_0048b000(struct IconNode *icon, unsigned int param_2) {
                 }
             } else {
                 elem = ElemID((const char *)icon->field_1c);
-                for (node = DAT_006687c8; node != 0; node = node->next) {
+                for (node = IconListHead; node != 0; node = node->next) {
                     if (node->field_20p != 0 && node->field_18 == 1 && (struct Element *)node->field_20p == elem) {
                         FUN_0048afa0((unsigned int)node->field_1c);
                         node->field_18 = 0;
@@ -643,8 +643,8 @@ void FUN_0048b700(void) {
     int i;
 
     for (i = 0; i < 10; i++) {
-        DAT_004beb80.levels[i].sprite0 = LoadSprite(DAT_004beb80.levels[i].name0, 4);
-        DAT_004beb80.levels[i].sprite1 = LoadSprite(DAT_004beb80.levels[i].name1, 4);
+        ProgressScreenTables.levels[i].sprite0 = LoadSprite(ProgressScreenTables.levels[i].name0, 4);
+        ProgressScreenTables.levels[i].sprite1 = LoadSprite(ProgressScreenTables.levels[i].name1, 4);
     }
 }
 
@@ -652,12 +652,12 @@ void FUN_0048b700(void) {
 void FUN_0048b740(void) {
     int *esi;
 
-    esi = (int *)&DAT_004beb80.levels[0].sprite1;
+    esi = (int *)&ProgressScreenTables.levels[0].sprite1;
     do {
         ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
-    } while ((long)esi < (long)&DAT_004beb80.levels[10].sprite1);
+    } while ((long)esi < (long)&ProgressScreenTables.levels[10].sprite1);
 }
 
 // FUNCTION: LEGOLAND 0x0048b770
@@ -666,8 +666,8 @@ void FUN_0048b770(void) {
 
     RemoveIconGroup(0x1c);
     RemoveIconGroup(0x23);
-    slot = (struct FreePlaySpriteSlot *)&DAT_004beb80.levels[0].sprite0;
-    while ((int)slot < (int)&DAT_004beb80.levels[10].sprite0) {
+    slot = (struct FreePlaySpriteSlot *)&ProgressScreenTables.levels[0].sprite0;
+    while ((int)slot < (int)&ProgressScreenTables.levels[10].sprite0) {
         while (KillSprite(slot->sprite0) == 0) {
         }
         while (KillSprite(slot->sprite1) == 0) {

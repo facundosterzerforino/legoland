@@ -28,5 +28,5 @@ int FUN_00478690(unsigned int param_1, unsigned int param_2, unsigned int param_
 int FUN_004786a0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
 void FUN_00478700(int *param_1, char **param_2, int param_3);
 unsigned int FUN_004786c0(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
-void FUN_00478770(int *param_1, char **param_2, int param_3);
+void ParseIntPair(int *param_1, char **param_2, int param_3);
 unsigned int FUN_004787a0(unsigned int param_1, unsigned int param_2);

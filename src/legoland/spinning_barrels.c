@@ -547,7 +547,7 @@ void FUN_0043c950(struct Element *elem) {
                 bloke->person->depth = GetUnitDepth(-1617922.25f, -1618065.75f);
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
-                sprintf(BoxBlokeBnvName + 8, "%02d", FUN_0043ce10(rn, node, (char)SpinningBarrelsRide->seats));
+                sprintf(BoxBlokeBnvName + 8, "%02d", PickBarrelSeat(rn, node, (char)SpinningBarrelsRide->seats));
                 bloke->path = NewBNVPath(DAT_0062fdf0[0], 0, BoxBlokeBnvName, -1617922.25f, -1618065.75f, coords);
                 bloke->param_action++;
                 break;
@@ -627,7 +627,7 @@ void FUN_0043c950(struct Element *elem) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ce10
-unsigned int FUN_0043ce10(struct RideNode *rn, struct BarrelNode *node, signed char n) {
+unsigned int PickBarrelSeat(struct RideNode *rn, struct BarrelNode *node, signed char n) {
     int count = n;
     int eax = rand();
     int index = eax % count;

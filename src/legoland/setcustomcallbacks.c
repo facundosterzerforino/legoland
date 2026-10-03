@@ -174,10 +174,10 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     // STRING: LEGOLAND 0x004b8970
     else if (_stricmp("EARTH SLIDE RIDE", head->name) == 0) {
         iface->cb_a4 = FUN_0042d100;
-        iface->cb_ac = FUN_0042d1f0;
+        iface->cb_ac = UnloadEarthSlideResources;
         iface->cb_8c = FUN_0042d230;
         iface->cb_a8 = FUN_0042d610;
-        iface->cb_b0 = FUN_0042d070;
+        iface->cb_b0 = RenderEarthSlide;
         iface->cb_9c = FUN_0042d270;
         iface->cb_98 = FUN_0042d2c0;
         iface->cb_bc = EarthSlideRide_Save;
@@ -282,7 +282,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_ac = UnloadBrollyImages;
     } else if (_stricmp("BOATING SCHOOL WATER", head->name) == 0) {
         iface->cb_a4 = FUN_0041b830;
-        iface->cb_8c = FUN_0041b880;
+        iface->cb_8c = BoatingSchoolSetEditMode;
         iface->cb_90 = FUN_0041bd40;
         iface->cb_94 = FUN_0041bfb0;
         iface->cb_98 = FUN_0041b8e0;
@@ -296,7 +296,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_98 = FUN_0041a040;
         iface->cb_9c = FUN_0041a530;
         iface->cb_a8 = FUN_0041a720;
-        iface->cb_b0 = FUN_0041abd0;
+        iface->cb_b0 = RenderBoatingSchool;
         iface->cb_bc = BoatingSchool_Save;
         iface->cb_b8 = BoatingSchool_Load;
         iface->cb_c0 = FUN_0041b100;

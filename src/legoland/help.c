@@ -118,8 +118,8 @@ void FUN_0046cff0(void) {
 
     icon = (struct IconNode *)FocussedIconPtr;
     if (icon != NULL && (icon->flags & 0x2000) != 0 && DAT_00668954 == 0) {
-        int y = DAT_00813a44.y;
-        int x = DAT_00813a44.x;
+        int y = MousePos.y;
+        int x = MousePos.x;
         rect.left = x;
         rect.top = y - 10;
         rect.right = x;
@@ -142,8 +142,8 @@ LEGO_EXPORT void ProcessFrontEndHelp(void) {
     RenderHelpIcons();
     icon = (struct IconNode *)FocussedIconPtr;
     if (icon != NULL) {
-        int y = DAT_00813a44.y;
-        int x = DAT_00813a44.x;
+        int y = MousePos.y;
+        int x = MousePos.x;
         rect.left = x;
         rect.top = y - 10;
         rect.right = x;

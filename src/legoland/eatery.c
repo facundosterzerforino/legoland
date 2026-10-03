@@ -251,11 +251,11 @@ void FUN_0042e500(int param_1, unsigned char *param_2) {
 struct RideSpriteInfo *FUN_0042e560(int param_1, unsigned int param_2) {
     unsigned char *b = (unsigned char *)&param_2;
     int idx = ((unsigned short)Get_UserFlags((unsigned int)b[0] << 8, (unsigned int)b[1] << 8) & 0xff) * 4;
-    DAT_0082c6a0.sprite = *(int *)((char *)BrollyImagesData->table_8 + idx);
-    DAT_0082c6a0.x = *(int *)((char *)BrollyImagesData->table_c + idx) >> 1;
-    DAT_0082c6a0.y = *(int *)((char *)BrollyImagesData->table_10 + idx) >> 1;
-    DAT_0082c6a0.field_10 = 0;
-    return &DAT_0082c6a0;
+    RideSpriteInfoBuffer.sprite = *(int *)((char *)BrollyImagesData->table_8 + idx);
+    RideSpriteInfoBuffer.x = *(int *)((char *)BrollyImagesData->table_c + idx) >> 1;
+    RideSpriteInfoBuffer.y = *(int *)((char *)BrollyImagesData->table_10 + idx) >> 1;
+    RideSpriteInfoBuffer.field_10 = 0;
+    return &RideSpriteInfoBuffer;
 }
 
 // FUNCTION: LEGOLAND 0x0042e5d0
@@ -991,8 +991,8 @@ void FUN_0042f770(struct EateryObj *obj) {
     LoadMoneySFX();
     DAT_0081cd30 = (unsigned int)obj->fx_c;
     ((struct EateryFX *)DAT_0081cd30)->flags_1c |= 0x420;
-    DAT_00616118 = (unsigned int)((struct EateryFX *)DAT_0081cd30)->inner_64;
-    ((struct EateryInner *)DAT_00616118)->flags_10 |= 0x2000;
+    EateryLayerOwner = (unsigned int)((struct EateryFX *)DAT_0081cd30)->inner_64;
+    ((struct EateryInner *)EateryLayerOwner)->flags_10 |= 0x2000;
     // STRING: LEGOLAND 0x004b6f70
     R2FdoormSprite = LoadSprite("R2Fdoor_m.lls", 1);
     // STRING: LEGOLAND 0x004b6f60
@@ -1001,22 +1001,22 @@ void FUN_0042f770(struct EateryObj *obj) {
     R2BdoormSprite = LoadSprite("R2Bdoor_m.lls", 1);
     // STRING: LEGOLAND 0x004b6f40
     R2TowermSprite = LoadSprite("R2Tower_m.lls", 1);
-    HideLayer((struct LayerOwner *)DAT_00616118, 0);
-    StopLayerPlaying(DAT_00616118, 0);
-    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 0), 0);
-    HideLayer((struct LayerOwner *)DAT_00616118, 6);
-    StopLayerPlaying(DAT_00616118, 6);
-    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 6), 0);
-    HideLayer((struct LayerOwner *)DAT_00616118, 2);
-    StopLayerPlaying(DAT_00616118, 2);
-    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 2), 0);
-    HideLayer((struct LayerOwner *)DAT_00616118, 5);
-    HideLayer((struct LayerOwner *)DAT_00616118, 1);
-    StopLayerPlaying(DAT_00616118, 1);
-    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), 0);
-    HideLayer((struct LayerOwner *)DAT_00616118, 3);
-    StopLayerPlaying(DAT_00616118, 3);
-    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), 0);
+    HideLayer((struct LayerOwner *)EateryLayerOwner, 0);
+    StopLayerPlaying(EateryLayerOwner, 0);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 0), 0);
+    HideLayer((struct LayerOwner *)EateryLayerOwner, 6);
+    StopLayerPlaying(EateryLayerOwner, 6);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 6), 0);
+    HideLayer((struct LayerOwner *)EateryLayerOwner, 2);
+    StopLayerPlaying(EateryLayerOwner, 2);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 2), 0);
+    HideLayer((struct LayerOwner *)EateryLayerOwner, 5);
+    HideLayer((struct LayerOwner *)EateryLayerOwner, 1);
+    StopLayerPlaying(EateryLayerOwner, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), 0);
+    HideLayer((struct LayerOwner *)EateryLayerOwner, 3);
+    StopLayerPlaying(EateryLayerOwner, 3);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), 0);
 }
 
 // FUNCTION: LEGOLAND 0x0042f920
@@ -1063,7 +1063,7 @@ void FUN_0042f9a0(unsigned int param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0042f9d0
-struct SaveBlock *FUN_0042f9d0(unsigned short *param) {
+struct SaveBlock *FindSaveBlock(unsigned short *param) {
     struct SaveBlock *node = DAT_00616148;
     if (node == NULL) {
         return NULL;
@@ -1078,7 +1078,7 @@ struct SaveBlock *FUN_0042f9d0(unsigned short *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0042fa00
-void FUN_0042fa00(struct SaveBlock *param) {
+void RemoveSaveBlock(struct SaveBlock *param) {
     struct SaveBlock *node;
     struct SaveBlock *prev;
 
@@ -1103,9 +1103,9 @@ void FUN_0042fa00(struct SaveBlock *param) {
 
 // FUNCTION: LEGOLAND 0x0042fa40
 void FUN_0042fa40(unsigned int arg1, TileId tile, unsigned int arg3, unsigned int arg4, unsigned int arg5) {
-    struct SaveBlock *result = FUN_0042f9d0(&tile.id);
+    struct SaveBlock *result = FindSaveBlock(&tile.id);
     if (result != NULL) {
-        FUN_0042fa00(result);
+        RemoveSaveBlock(result);
     }
     StandardRemoveObject(arg1, tile, arg3);
     RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)arg1)->fx_c, tile);
@@ -1176,7 +1176,7 @@ void FUN_0042fbb0(int param_1) {
         next = (unsigned int *)*node;
         bloke = node[2];
         pos = (unsigned char *)(node + 3);
-        st = FUN_0042f9d0((unsigned short *)pos);
+        st = FindSaveBlock((unsigned short *)pos);
         if (st == NULL) {
             return;
         }
@@ -1561,7 +1561,7 @@ void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
     cfg.field_8 = *param_1;
     cfg.field_4 = *(int *)(param_2 + 0xc4);
     cfg.field_0 = 0x103;
-    state = FUN_0042f9d0(param_1);
+    state = FindSaveBlock(param_1);
     if (state == NULL) {
         return;
     }
@@ -1574,73 +1574,73 @@ void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
     c7 = state->field_7;
     switch (state->field_18) {
     case 0:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), c7);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), c9);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 3);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         if (state->field_c == 0) {
             return;
         }
         goto set_l6;
     case 1:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), c7);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), c9);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 3);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
     set_l6:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 6), c8);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 6), c8);
         return;
     case 2:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), c7);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         return;
     case 4:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), c7);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 2), c6);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 2), c6);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 2);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 2), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 0), c6);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 2), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 0), c6);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 0);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 0), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 0), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         return;
     case 5:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), c7);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 2), c6);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 2), c6);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 2);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 2), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 0), c6);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 2), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 0), c6);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 0);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 0), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 0), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         return;
     case 3:
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 1), c7);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), c9);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 3);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         return;
     }
 }
@@ -1677,7 +1677,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
     }
     cfg.field_0 = 0x103;
     count = 0;
-    state = FUN_0042f9d0(param_4);
+    state = FindSaveBlock(param_4);
     if (state == NULL) {
         return;
     }
@@ -1706,18 +1706,18 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
     sx = coords.x;
     sy = coords.y;
     if (s18 == 0 || s18 == 1) {
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 5);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 5);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 5), off.x + sx, off.y + sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 5), off.x + sx, off.y + sy, param_6, (int *)&cfg);
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 5) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 6) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 6);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 6);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 6), off.x + sx, off.y + sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 6), off.x + sx, off.y + sy, param_6, (int *)&cfg);
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 4) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
@@ -1733,13 +1733,13 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 6) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 6);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 6);
         AdjustOffsetForViewMode(&off);
         PrintSprite(R2FdoormSprite, off.x + sx, f38 / 2 + sy, param_6, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), c9);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 3);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
     } else if (s18 == 5 || s18 == 4) {
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 7) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
@@ -1750,7 +1750,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 9) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 0);
         AdjustOffsetForViewMode(&off);
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 0xd) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
@@ -1763,13 +1763,13 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         }
         PrintSprite(R2BdoormSprite, sx, off.y + sy, param_6, (int *)&cfg);
         PrintSprite(R2TowermSprite, sx, sy, param_6, (int *)&cfg);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 2);
         AdjustOffsetForViewMode(&off);
         PrintSprite(R2FdoormSprite, off.x + sx, off.y + sy, param_6, (int *)&cfg);
-        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), c9);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)EateryLayerOwner, 3);
         AdjustOffsetForViewMode(&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)EateryLayerOwner, 3), off.x + sx, off.y + sy, param_6, (int *)&cfg);
     }
     for (i = 0; i < count; i = i + 1) {
         if (*(char *)(blokes[i] + 0x60) == 0) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);

@@ -87,7 +87,7 @@ int FUN_00457970(int dx, int dy) {
 
     dx += ride->footprint.x0;
     dy += ride->footprint.y0;
-    for (y = dy; y < dy + (int)DAT_00813a70; y++) {
+    for (y = dy; y < dy + (int)FootprintHeight; y++) {
         for (x = dx; x < dx + (int)DAT_00813a6c; x++) {
             if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 elem = &GameMap[y][x];
@@ -311,7 +311,7 @@ void FUN_00457a70(void) {
             GamePad &= ~0x800;
         }
         if (!(GamePad & 0x400) && EditMode.unk8 != NULL) {
-            ((struct ObjClass *)EditMode.unk8)->method_90((unsigned int)EditMode.unk8->element, &DAT_00813a44, 0x8f8);
+            ((struct ObjClass *)EditMode.unk8)->method_90((unsigned int)EditMode.unk8->element, &MousePos, 0x8f8);
         }
         BuildCursorPtr(&EditCursor, 0x8f8, FUN_0045ead0((struct ObjState *)EditMode.unk8));
         if (DAT_00813ac4 & 0x11) {
@@ -320,7 +320,7 @@ void FUN_00457a70(void) {
                     DAT_00667cd8 = 1;
                     DAT_00667cdc = 0;
                     if (EditMode.unk8 == PathControlObject) {
-                        for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a70) {
+                        for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += FootprintHeight) {
                             for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
                                 pt.x = x - EditMode.unk8->footprint.x0;
                                 pt.y = y - EditMode.unk8->footprint.y0;
@@ -335,7 +335,7 @@ void FUN_00457a70(void) {
                             }
                         }
                     }
-                    for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += DAT_00813a70) {
+                    for (y = DAT_00813a88; y <= (int)DAT_00813a90; y += FootprintHeight) {
                         for (x = DAT_00813a84; x <= (int)DAT_00813a8c; x += DAT_00813a6c) {
                             pt.x = x - EditMode.unk8->footprint.x0;
                             pt.y = y - EditMode.unk8->footprint.y0;
@@ -398,7 +398,7 @@ void FUN_00457a70(void) {
         break;
     }
     if ((DAT_00813a50 & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
-        PopUpInfoSetUp(Hover, DAT_00813a44.x, DAT_00813a44.y);
+        PopUpInfoSetUp(Hover, MousePos.x, MousePos.y);
         DAT_00667c48 = 1;
     }
 }

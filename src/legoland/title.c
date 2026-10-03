@@ -684,28 +684,28 @@ void FUN_00490c70(void) {
 
 // FUNCTION: LEGOLAND 0x00490ea0
 void FUN_00490ea0(void) {
-    unsigned int _x = DAT_00813a44.x;
-    unsigned int _y = DAT_00813a44.y;
+    unsigned int _x = MousePos.x;
+    unsigned int _y = MousePos.y;
     if ((int)_x < DAT_007cb2e4->x ||
-        (int)DAT_00813a44.x > DAT_007cb2e4->width + DAT_007cb2e4->x ||
-        (int)DAT_00813a44.y < DAT_007cb2e4->y ||
-        (int)DAT_00813a44.y > DAT_007cb2e4->height + DAT_007cb2e4->y) {
+        (int)MousePos.x > DAT_007cb2e4->width + DAT_007cb2e4->x ||
+        (int)MousePos.y < DAT_007cb2e4->y ||
+        (int)MousePos.y > DAT_007cb2e4->height + DAT_007cb2e4->y) {
         if (GetBlink() != 0) {
             SetIconSprite(DAT_007cb2e4, NextPageSprite);
         } else {
             SetIconSprite(DAT_007cb2e4, NextPageLitSprite);
         }
     }
-    if ((int)DAT_00813a44.x < DAT_007cb2e0->x ||
-        (int)DAT_00813a44.x > DAT_007cb2e0->width + DAT_007cb2e0->x ||
-        (int)DAT_00813a44.y < DAT_007cb2e0->y ||
-        (int)DAT_00813a44.y > DAT_007cb2e0->height + DAT_007cb2e0->y) {
+    if ((int)MousePos.x < DAT_007cb2e0->x ||
+        (int)MousePos.x > DAT_007cb2e0->width + DAT_007cb2e0->x ||
+        (int)MousePos.y < DAT_007cb2e0->y ||
+        (int)MousePos.y > DAT_007cb2e0->height + DAT_007cb2e0->y) {
         SetIconSprite(DAT_007cb2e0, PreviousPageSprite);
     }
-    if ((int)DAT_00813a44.x < DAT_007cb1c0->x ||
-        (int)DAT_00813a44.x > DAT_007cb1c0->width + DAT_007cb1c0->x ||
-        (int)DAT_00813a44.y < DAT_007cb1c0->y ||
-        (int)DAT_00813a44.y > DAT_007cb1c0->height + DAT_007cb1c0->y) {
+    if ((int)MousePos.x < DAT_007cb1c0->x ||
+        (int)MousePos.x > DAT_007cb1c0->width + DAT_007cb1c0->x ||
+        (int)MousePos.y < DAT_007cb1c0->y ||
+        (int)MousePos.y > DAT_007cb1c0->height + DAT_007cb1c0->y) {
         SetIconSprite(DAT_007cb1c0, RepHint1Sprite);
     }
 }

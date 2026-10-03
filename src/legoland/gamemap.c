@@ -235,7 +235,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileI
     int y;
     struct RemBlock blk;
 
-    FUN_0049b270(obj, tile);
+    EraseWorkOrdersAtTile(obj, tile);
     if (classid == CastleObjElem) {
         CastlePlacedFlag = 0;
     }

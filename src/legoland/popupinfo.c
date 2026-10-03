@@ -180,7 +180,7 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     ClosePopUpIcon->flags |= 0x2000;
     ClosePopUpIcon->flags |= 0x4002;
     ClosePopUpIcon->flags |= 0x400;
-    ClosePopUpIcon->event_handler = (void *)FUN_004730f0;
+    ClosePopUpIcon->event_handler = (void *)ClosePopUpEventHandler;
     NextPopUpIcon = InsertIcon(0, 0, 0x2c3, NextIconSprite);
     NextPopUpIcon->string_id = 0x88e;
     NextPopUpIcon->string = GetString(0x88e);
@@ -350,7 +350,7 @@ void FUN_00471470(void) {
 // FUNCTION: LEGOLAND 0x004714a0
 void FUN_004714a0(void) {
     DeleteObjectIcon->event_handler = (void *)FUN_004731a0;
-    ClosePopUpIcon->event_handler = (void *)FUN_004730f0;
+    ClosePopUpIcon->event_handler = (void *)ClosePopUpEventHandler;
     AddGardenerIcon->event_handler = (void *)FUN_004733f0;
     AddMechanicsIcon->event_handler = (void *)FUN_00473460;
     DAT_007fdfcc->event_handler = (void *)FUN_004734d0;
@@ -398,8 +398,8 @@ LEGO_EXPORT void DisableInfoPopUPIcons(void) {
     DeleteObjectIcon->flags |= 0x400;
     ClosePopUpIcon->flags |= 0x400;
     PuCornerMaskIcon->flags |= 0x400;
-    DAT_007fdea8->flags |= 0x400;
-    DAT_007fe000->flags |= 0x400;
+    PopUpInfoOkIcon->flags |= 0x400;
+    CBCloseIcon->flags |= 0x400;
     AddGardenerIcon->flags |= 0x400;
     AddMechanicsIcon->flags |= 0x400;
     DAT_007fdfcc->flags |= 0x400;
@@ -689,8 +689,8 @@ void FUN_00471d40(void) {
 
 // FUNCTION: LEGOLAND 0x00471d60
 void FUN_00471d60(void) {
-    SetIconSprite((struct IconNode *)DAT_007fdea8, PUOKSprite);
-    SetIconSprite((struct IconNode *)DAT_007fe000, CBCloseSprite);
+    SetIconSprite((struct IconNode *)PopUpInfoOkIcon, PUOKSprite);
+    SetIconSprite((struct IconNode *)CBCloseIcon, CBCloseSprite);
 }
 
 // FUNCTION: LEGOLAND 0x00471d90
@@ -720,23 +720,23 @@ void FUN_00471d90(void) {
         iVar6 = iVar6 + 0x20;
     }
     PrintSprite(CBBGRightSprite, iVar6, iVar1, 0, (int *)&ctx);
-    DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
+    PopUpInfoOkIcon->flags = PopUpInfoOkIcon->flags & 0xfffffbff;
     iVar6 = iVar6 + 0x4e;
-    DAT_007fdea8->x = (short)iVar6 - 0x4b;
+    PopUpInfoOkIcon->x = (short)iVar6 - 0x4b;
     sVar2 = (short)iVar1 + 3;
-    DAT_007fdea8->y = sVar2;
-    DAT_007fe000->flags = DAT_007fe000->flags & 0xfffffbff;
-    DAT_007fe000->x = (short)iVar6 - 0x27;
-    DAT_007fe000->y = sVar2;
+    PopUpInfoOkIcon->y = sVar2;
+    CBCloseIcon->flags = CBCloseIcon->flags & 0xfffffbff;
+    CBCloseIcon->x = (short)iVar6 - 0x27;
+    CBCloseIcon->y = sVar2;
     str = GetString(0xa2);
     sprintf(local_14, (char *)DAT_004b8bbc, str);
     iVar7 = DAT_007fdecc + 0xc;
     iVar8 = iVar1 + 6;
     FUN_00455e50(local_14, iVar7, iVar8, (DAT_007fdecc + 0x86 + iVar5) - iVar7, (iVar1 + 0x21) - iVar8, 1, 5, 0xff0000, 0xffffff);
-    if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44.x) || ((int)DAT_00813a44.x < DAT_007fdea8->x)) {
+    if ((CBCloseIcon->x + 0x24 < (int)MousePos.x) || ((int)MousePos.x < PopUpInfoOkIcon->x)) {
         FUN_00471d60();
     }
-    if ((iVar1 + 0x1b < (int)DAT_00813a44.y) || ((int)DAT_00813a44.y < iVar1)) {
+    if ((iVar1 + 0x1b < (int)MousePos.y) || ((int)MousePos.y < iVar1)) {
         FUN_00471d60();
     }
     FUN_00471470();
@@ -832,16 +832,16 @@ void DrawNewObjectPopup(void) {
     FUN_00455e50(local_80, 0xf0, 0xd1, 0x43, 0x12, 2, 1, 0xff0000, 0xffffff);
     PopRenderingStatus();
     PrintSprite(NewObjects.sprites[NewObjects.current], 0xc4, 100, 0, 0);
-    if (((unsigned int)(int)ClosePopUpIcon->width <= (unsigned int)(DAT_00813a44.x - ClosePopUpIcon->x)) ||
-        ((unsigned int)(int)ClosePopUpIcon->height <= (unsigned int)(DAT_00813a44.y - ClosePopUpIcon->y))) {
+    if (((unsigned int)(int)ClosePopUpIcon->width <= (unsigned int)(MousePos.x - ClosePopUpIcon->x)) ||
+        ((unsigned int)(int)ClosePopUpIcon->height <= (unsigned int)(MousePos.y - ClosePopUpIcon->y))) {
         SetIconSprite((struct IconNode *)ClosePopUpIcon, PuClosePopUpSprite);
     }
-    if (((unsigned int)(int)NextPopUpIcon->width <= (unsigned int)(DAT_00813a44.x - NextPopUpIcon->x)) ||
-        ((unsigned int)(int)NextPopUpIcon->height <= (unsigned int)(DAT_00813a44.y - NextPopUpIcon->y))) {
+    if (((unsigned int)(int)NextPopUpIcon->width <= (unsigned int)(MousePos.x - NextPopUpIcon->x)) ||
+        ((unsigned int)(int)NextPopUpIcon->height <= (unsigned int)(MousePos.y - NextPopUpIcon->y))) {
         SetIconSprite((struct IconNode *)NextPopUpIcon, NextIconSprite);
     }
-    if (((unsigned int)(int)PrevPopUpIcon->width <= (unsigned int)(DAT_00813a44.x - PrevPopUpIcon->x)) ||
-        ((unsigned int)(int)PrevPopUpIcon->height <= (unsigned int)(DAT_00813a44.y - PrevPopUpIcon->y))) {
+    if (((unsigned int)(int)PrevPopUpIcon->width <= (unsigned int)(MousePos.x - PrevPopUpIcon->x)) ||
+        ((unsigned int)(int)PrevPopUpIcon->height <= (unsigned int)(MousePos.y - PrevPopUpIcon->y))) {
         SetIconSprite((struct IconNode *)PrevPopUpIcon, PrevIconSprite);
     }
     if (NewObjects.current == 0) {
@@ -1181,10 +1181,10 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     } else {
         left_bound = PuCornerMaskIcon->x;
     }
-    if (ClosePopUpIcon->x + 0x24 < DAT_00813a44.x || DAT_00813a44.x < left_bound) {
+    if (ClosePopUpIcon->x + 0x24 < MousePos.x || MousePos.x < left_bound) {
         FUN_00471610();
     }
-    if (icon_y + 0x1b < DAT_00813a44.y || DAT_00813a44.y < icon_y) {
+    if (icon_y + 0x1b < MousePos.y || MousePos.y < icon_y) {
         FUN_00471610();
     }
     if (DAT_007fdfa4 != 0) {
@@ -1194,7 +1194,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004730f0
-unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int param3, unsigned int param4) {
+unsigned char ClosePopUpEventHandler(void *param1, unsigned char param2, unsigned int param3, unsigned int param4) {
     FUN_00471610();
 
     if (param1) {
@@ -1210,9 +1210,9 @@ unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int para
 }
 
 // FUNCTION: LEGOLAND 0x00473130
-unsigned int FUN_00473130(void) {
+unsigned int TryClosePopUp(void) {
     if (DAT_007fdfa0 != 0) {
-        FUN_004730f0(NULL, 0x2, 0, 0);
+        ClosePopUpEventHandler(NULL, 0x2, 0, 0);
         return 1;
     } else {
         return 0;
@@ -1290,8 +1290,8 @@ unsigned char FUN_00473310(void *param1, unsigned char param2) {
     SetIconSprite(param1, CBCloseOnSprite);
 
     if (param2 & 0x2) {
-        DAT_007fdea8->flags |= 0x400;
-        DAT_007fe000->flags |= 0x400;
+        PopUpInfoOkIcon->flags |= 0x400;
+        CBCloseIcon->flags |= 0x400;
         FUN_004714a0();
         DAT_007fdfa4 = 0;
     }
@@ -1464,20 +1464,20 @@ void FUN_004736f0(void) {
         }
         PrintSprite(CBBGRightSprite, iVar3, iVar1, 0, (int *)&ctx);
         iVar3 = iVar3 + 0x4e;
-        DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
-        DAT_007fdea8->x = (short)(iVar3 - 0x4b);
-        DAT_007fdea8->y = (short)DAT_007fe014 + 3;
-        DAT_007fe000->flags = DAT_007fe000->flags & 0xfffffbff;
-        DAT_007fe000->x = (short)(iVar3 - 0x27);
-        DAT_007fe000->y = (short)DAT_007fe014 + 3;
+        PopUpInfoOkIcon->flags = PopUpInfoOkIcon->flags & 0xfffffbff;
+        PopUpInfoOkIcon->x = (short)(iVar3 - 0x4b);
+        PopUpInfoOkIcon->y = (short)DAT_007fe014 + 3;
+        CBCloseIcon->flags = CBCloseIcon->flags & 0xfffffbff;
+        CBCloseIcon->x = (short)(iVar3 - 0x27);
+        CBCloseIcon->y = (short)DAT_007fe014 + 3;
         iVar2 = DAT_007fe010 + 0xc;
         iVar4 = DAT_007fe014 + 6;
         FUN_00455e50(DAT_00668968, iVar2, iVar4, (iVar2 + DAT_00668964 * 0x14 + 0x7a) - iVar2,
             (iVar4 + 0x1b) - iVar4, 1, 5, 0xff0000, 0xffffff);
-        if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44.x) || ((int)DAT_00813a44.x < DAT_007fdea8->x)) {
+        if ((CBCloseIcon->x + 0x24 < (int)MousePos.x) || ((int)MousePos.x < PopUpInfoOkIcon->x)) {
             FUN_00471d60();
         }
-        if ((iVar1 + 0x1b < (int)DAT_00813a44.y) || ((int)DAT_00813a44.y < iVar1)) {
+        if ((iVar1 + 0x1b < (int)MousePos.y) || ((int)MousePos.y < iVar1)) {
             FUN_00471d60();
         }
     }

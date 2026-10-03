@@ -62,7 +62,7 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
 LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry);
 void FUN_00476000(void);
 void ClearButtonFlashStates(void);
-void FUN_004760a0(void);
+void DrawFlashingButtons(void);
 void FUN_00476070(int mask, unsigned int value);
 void FUN_00476140(int index, int value);
 void FUN_00476180(void);

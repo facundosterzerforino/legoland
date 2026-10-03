@@ -649,7 +649,7 @@ extern unsigned int DAT_004b4470[5];
 // 0x004b4688
 extern unsigned char JOUST_SFX[12];
 // 0x004b4728
-extern unsigned int DAT_004b4728;
+extern unsigned int LogFlumeFootprint;
 // 0x004b472c
 extern unsigned int DAT_004b472c;
 // 0x004b4730
@@ -1131,7 +1131,7 @@ extern int DAT_004bb5a4;
 // 0x004bb5ac
 extern unsigned int DAT_004bb5ac;
 // 0x004bb5b0
-extern unsigned int DAT_004bb5b0;
+extern unsigned int ScriptConditionActive;
 // 0x004bb5b4
 extern unsigned int DAT_004bb5b4;
 // 0x004bb5c4
@@ -1171,7 +1171,7 @@ extern struct HoverInfo Hover;
 // 0x004bdea0
 extern LEGO_EXPORT RECT SPRITE_ClipRect;
 // 0x004beb80
-extern struct ProgressTables DAT_004beb80;
+extern struct ProgressTables ProgressScreenTables;
 // 0x004bed40
 extern unsigned int DAT_004bed40;
 // 0x004bed44
@@ -1449,7 +1449,7 @@ extern struct SpriteSet *LogFlumeTrackEndyList;
 // 0x004cbe58
 extern struct RideSpriteInfo DAT_004cbe58;
 // 0x004cbe84
-extern struct FlumeEntry *DAT_004cbe84;
+extern struct FlumeEntry *FlumeEntryList;
 // 0x004cbe88
 extern struct Sprite *LogFlumeEnta1Matte2Sprite;
 // 0x004cbe8c
@@ -1513,9 +1513,9 @@ extern int DAT_007fea14;
 // 0x007fea1c
 extern int DAT_007fea1c;
 // 0x007fea4c
-extern struct DrawClipOrigin DAT_007fea4c;
+extern struct DrawClipOrigin SpriteClipOrigin;
 // 0x007febac
-extern struct DrawClipSize DAT_007febac;
+extern struct DrawClipSize DrawClipExtent;
 // 0x0082c66c
 extern struct Sprite *ZSafariSprite;
 // 0x0082c670
@@ -1545,7 +1545,7 @@ extern unsigned int DAT_004cbf20;
 // 0x004cbf24
 extern void *SpiderOnBinV;
 // 0x004cbf28
-extern struct Sprite *DAT_004cbf28;
+extern struct Sprite *SpiderRideLayer;
 // 0x0082c660
 extern Point DAT_0082c660;
 // 0x004cbf30
@@ -1647,7 +1647,7 @@ extern struct WaterNode *DAT_004cc030;
 // 0x004cc034
 extern struct WaterNode *DAT_004cc034;
 // 0x004cc03c
-extern struct BoatRide *DAT_004cc03c;
+extern struct BoatRide *BoatRideList;
 // 0x004cc048
 extern struct Footprint DAT_004cc048;
 // 0x004cc060
@@ -1655,7 +1655,7 @@ extern struct Footprint DAT_004cc060;
 // 0x004cc070
 extern int *DAT_004cc070;
 // 0x004cc074
-extern struct BoatRideNode *DAT_004cc074;
+extern struct BoatRideNode *BoatRideNodeList;
 // 0x004cc078
 extern struct Footprint BoatingSchoolFootprint;
 // 0x004cc088
@@ -1669,7 +1669,7 @@ extern struct MermaidNode *DAT_004d2164;
 // 0x004d2168
 extern struct Cursor DAT_004d2168[4];
 // 0x004d823c
-extern struct PathNode *DAT_004d823c;
+extern struct PathNode *BoatPathList;
 // 0x004d8240
 extern struct PathNode *DAT_004d8240;
 // 0x004d8244
@@ -1791,7 +1791,7 @@ extern struct CastleFloatEnt DAT_00614858[8];
 // 0x00616180
 extern struct Cursor DAT_00616180[8];
 // 0x00622320
-extern struct Cursor DAT_00622320[4];
+extern struct Cursor JungleCruiseCursors[4];
 // 0x006159c8
 extern int DAT_006159c8[90][4];
 // 0x00615f6c
@@ -1835,7 +1835,7 @@ extern struct Sprite *DAT_0061603c[1];
 // 0x00616040
 extern struct Sprite *DAT_00616040;
 // 0x00616044
-extern struct Sprite *DAT_00616044;
+extern struct Sprite *BalloonzLayer;
 // 0x00616048
 extern struct Sprite *BallBaseM1Sprite;
 // 0x0061604c
@@ -1851,7 +1851,7 @@ extern struct Sprite *BZBlueCarM1Sprite;
 // 0x00616060
 extern struct BalloonNode *BalloonNodeList;
 // 0x00616068
-extern void *DAT_00616068;
+extern void *CarouselLayer;
 // 0x0061606c
 extern struct Sprite *CarouselEntranceMatteSprite;
 // 0x00616070
@@ -1897,7 +1897,7 @@ extern unsigned int DAT_006160cc;
 // 0x006160e8
 extern struct EarthNode *DAT_006160e8;
 // 0x006160ec
-extern struct RenderItemNode *DAT_006160ec;
+extern struct RenderItemNode *BlokeRenderList;
 // 0x006160f4
 extern struct Ride *DAT_006160f4;
 // 0x006160f0
@@ -1915,7 +1915,7 @@ extern struct Sprite *EntranceMatte4Sprite;
 // 0x0061610c
 extern struct Sprite *Booth1Sprite;
 // 0x00616118
-extern unsigned int DAT_00616118;
+extern unsigned int EateryLayerOwner;
 // 0x00616120
 extern unsigned int DAT_00616120;
 // 0x00616124
@@ -1941,7 +1941,7 @@ extern unsigned int FlowerImagesData;
 // 0x0061615c
 extern unsigned int HedgeImagesHandle;
 // 0x00616164
-extern struct JungleRide *DAT_00616164;
+extern struct JungleRide *JungleRideList;
 // 0x00629c2c
 extern struct JungleObj *DAT_00629c2c;
 // 0x00629c30
@@ -1949,17 +1949,17 @@ extern struct JungleFish *DAT_00629c30;
 // 0x00629c34
 extern struct JungleObj *DAT_00629c34;
 // 0x00629c3c
-extern struct JungleScore *DAT_00629c3c;
+extern struct JungleScore *JungleScoreList;
 // 0x00629c40
-extern struct Footprint DAT_00629c40;
+extern struct Footprint JungleCruiseFootprint;
 // 0x00629c50
 extern struct Footprint *DAT_00629c50;
 // 0x00629c54
-extern int DAT_00629c54;
+extern int JungleCruiseStep;
 // 0x00629c58
 extern struct Cursor DAT_00629c58[4];
 // 0x0062fd2c
-extern struct JunglePath *DAT_0062fd2c;
+extern struct JunglePath *JunglePathList;
 // 0x0062fd30
 extern struct JunglePath *DAT_0062fd30;
 // 0x0062fd34
@@ -2117,7 +2117,7 @@ extern unsigned int DAT_00665fe8;
 // 0x00665fec
 extern unsigned int DAT_00665fec;
 // 0x00665ff8
-extern unsigned int DAT_00665ff8;
+extern unsigned int ReportFlags;
 // 0x00665ffc
 extern unsigned int DAT_00665ffc;
 // 0x00666000
@@ -2411,7 +2411,7 @@ extern LPDIRECTDRAWSURFACE PrimarySurface;
 // 0x00668074
 extern LPDIRECTDRAWSURFACE DAT_00668074;
 // 0x00668078
-extern LPDIRECTDRAWSURFACE DAT_00668078;
+extern LPDIRECTDRAWSURFACE OffscreenSurface;
 // 0x0066807c
 extern LPDIRECTDRAWSURFACE renderEngine;
 // 0x00668080
@@ -2429,7 +2429,7 @@ extern HFONT LegoFont18SemiBold;
 // 0x00668098
 extern HFONT LegoFont28Normal;
 // 0x0066809c
-extern DDSURFACEDESC DAT_0066809c;
+extern DDSURFACEDESC CurrentSurfaceDesc;
 // 0x00668108
 extern RECT DAT_00668108;
 // 0x00668118
@@ -2519,7 +2519,7 @@ extern unsigned int DAT_006687bc;
 // 0x006687c0
 extern unsigned int DAT_006687c0;
 // 0x006687c8
-extern struct IconNode *DAT_006687c8;
+extern struct IconNode *IconListHead;
 // 0x006687cc
 extern struct IconNode *DAT_006687cc;
 // 0x006687d0
@@ -2712,7 +2712,7 @@ extern int DAT_00668ee0;
 // 0x00668ee8
 extern unsigned int AviAcmStreamHeader[0x15];
 // 0x00668f3c
-extern unsigned int DAT_00668f3c;
+extern unsigned int AviSoundBytesPerFrame;
 // 0x00668f44
 extern int AcmStreamOpenResult;
 // 0x00668f48
@@ -2765,7 +2765,7 @@ extern int DAT_00668fcc;
 // 0x00668fd0
 extern char DAT_00668fd0[128];
 // 0x00669050
-extern unsigned char DAT_00669050;
+extern unsigned char CurrentObjectiveEventFlags;
 // 0x00669054
 extern unsigned int DAT_00669054;
 // 0x00669058
@@ -2791,7 +2791,7 @@ extern int MeasuredBlockStarts[16];
 // 0x006691fc
 extern int MeasuredBlockDepth;
 // 0x00669200
-extern struct Element **DAT_00669200;
+extern struct Element **SavedElementTable;
 // 0x00669204
 extern unsigned int GameTimerMark;
 // 0x00669208
@@ -3226,7 +3226,7 @@ extern unsigned int MusicThreadId;
 // 0x007cad4c
 extern void *DMusicSoundBuffer;
 // 0x007cad60
-extern struct ProfileData DAT_007cad60;
+extern struct ProfileData TempProfile;
 // 0x007cae80
 extern char DAT_007cae80[0x100];
 // 0x007caf80
@@ -3334,7 +3334,7 @@ extern struct ResVolume *ResourceVolumes[4];
 // 0x007fd660
 extern unsigned int DAT_007fd660[256];
 // 0x007fda60
-extern struct BlokeSave DAT_007fda60;
+extern struct BlokeSave BlokeSaveBuffer;
 // 0x007fdb84
 extern int DAT_007fdb84;
 // 0x007fdb88
@@ -3401,7 +3401,7 @@ extern unsigned char KeyboardState[256];
 // 0x007fdea4
 extern struct IconNode *AddMechanicsIcon;
 // 0x007fdea8
-extern struct IconNode *DAT_007fdea8;
+extern struct IconNode *PopUpInfoOkIcon;
 // 0x007fdeac
 extern struct Sprite *IFullSprite;
 // 0x007fdeb0
@@ -3475,7 +3475,7 @@ extern int WorkerOldY;
 // 0x007fdffc
 extern unsigned int DAT_007fdffc;
 // 0x007fe000
-extern struct IconNode *DAT_007fe000;
+extern struct IconNode *CBCloseIcon;
 // 0x007fe004
 extern struct Sprite *ObjectRepairOkSprite;
 // 0x007fe008
@@ -3519,7 +3519,7 @@ extern unsigned int DAT_007fe994;
 // 0x007fe9a8
 extern unsigned int DAT_007fe9a8;
 // 0x007fe9c0
-extern struct Sprite *DAT_007fe9c0[9];
+extern struct Sprite *PointerSprites[9];
 // 0x007fea30
 extern RECT WatchRect;
 // 0x007fea44
@@ -3635,7 +3635,7 @@ extern struct MapMarker DAT_008138c0[32];
 // 0x008139c0
 extern int DAT_008139c0;
 // 0x008139c4
-extern int DAT_008139c4;
+extern int MapViewWidth;
 // 0x008139c8
 extern int DAT_008139c8;
 // 0x008139cc
@@ -3679,7 +3679,7 @@ extern unsigned int DAT_00813a3c;
 // 0x00813a40
 extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44
-extern struct Point DAT_00813a44;
+extern struct Point MousePos;
 // 0x00813a4c
 extern unsigned int DAT_00813a4c;
 // 0x00813a50
@@ -3697,7 +3697,7 @@ extern unsigned int DAT_00813a68;
 // 0x00813a6c
 extern unsigned int DAT_00813a6c;
 // 0x00813a70
-extern unsigned int DAT_00813a70;
+extern unsigned int FootprintHeight;
 // 0x00813a74
 extern unsigned int DAT_00813a74;
 // 0x00813a78
@@ -3893,7 +3893,7 @@ extern struct TileMap *BoatingSchoolTileMap;
 // 0x0081cb5c
 extern struct Sprite *JungMaskSprite;
 // 0x0081cb60
-extern struct Ride *DAT_0081cb60;
+extern struct Ride *JungleCruiseRide;
 // 0x0081cb64
 extern struct Ride *DAT_0081cb64;
 // 0x0081cb68
@@ -3903,7 +3903,7 @@ extern struct Sprite *MFish2Sprite;
 // 0x0081cb70
 extern struct Ride *DAT_0081cb70;
 // 0x0081cb74
-extern struct Ride *DAT_0081cb74;
+extern struct Ride *MFish2Ride;
 // 0x0081cb80
 extern struct Point DAT_0081cb80[3][16];
 // 0x0081cd00
@@ -4108,7 +4108,7 @@ extern void *DAT_00829c60[1024];
 // 0x0082ac60
 extern void *DAT_0082ac60[1];
 // 0x0082ad20
-extern unsigned char DAT_0082ad20[0x90];
+extern unsigned char CastleDispatchTable[0x90];
 // 0x0082adb0
 extern unsigned int DAT_0082adb0[6];
 // 0x0082add0
@@ -4194,7 +4194,7 @@ extern LEGO_EXPORT struct MapStats MapStats;
 // 0x00832bf0
 extern LEGO_EXPORT void *PathSprite;
 // 0x0082c6a0
-extern struct RideSpriteInfo DAT_0082c6a0;
+extern struct RideSpriteInfo RideSpriteInfoBuffer;
 // 0x00616028
 extern struct RideSpriteInfo DAT_00616028;
 // 0x006160a0

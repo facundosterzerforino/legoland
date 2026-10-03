@@ -381,7 +381,7 @@ LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
     SetIconSprite(DeleteIcon, RegDeleteSprite);
     bx = DeleteIcon->x;
     by = DeleteIcon->y;
-    if (DAT_00813a44.x < bx + 0x24 && bx < DAT_00813a44.x && DAT_00813a44.y < by + 0x1b && by < DAT_00813a44.y) {
+    if (MousePos.x < bx + 0x24 && bx < MousePos.x && MousePos.y < by + 0x1b && by < MousePos.y) {
         SetIconSprite(DeleteIcon, RegDeleteOnSprite);
     }
 }
@@ -405,14 +405,14 @@ LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
     if (a) {
         x = a->x;
         y = a->y;
-        if (DAT_00813a44.x < x + 0x24 && x < DAT_00813a44.x && DAT_00813a44.y < y + 0x1b && y < DAT_00813a44.y) {
+        if (MousePos.x < x + 0x24 && x < MousePos.x && MousePos.y < y + 0x1b && y < MousePos.y) {
             SetIconSprite(a, PuOkOnSprite);
         }
     }
     b = PopUpCloseIcon;
     x = b->x;
     y = b->y;
-    if (DAT_00813a44.x < x + 0x24 && x < DAT_00813a44.x && DAT_00813a44.y < y + 0x1b && y < DAT_00813a44.y) {
+    if (MousePos.x < x + 0x24 && x < MousePos.x && MousePos.y < y + 0x1b && y < MousePos.y) {
         if (NewProfilePopUpShown) {
             SetIconSprite(b, ClosePopUpOnSprite);
             return;
@@ -433,14 +433,14 @@ LEGO_EXPORT void PrintProfileDetails(void) {
 
     y = 0x72;
     DeleteIcon->flags |= 0x400;
-    icon = DAT_006687c8;
+    icon = IconListHead;
     FUN_00455e50(DAT_007cb340, 0x8d, y, 0xf0, 0x2e, 3, 0x25, 0xffffff, 0);
     while (icon != NULL) {
         sel = 1;
         show = 1;
         if ((icon->flags & 0x400) == 0 && (icon->field_20b & 1)) {
-            if (DAT_00813a44.x >= icon->x - 0x18 && DAT_00813a44.x < icon->x && DAT_00813a44.y >= icon->slot * 0x26 + 0x86 &&
-                DAT_00813a44.y < icon->width + icon->y) {
+            if (MousePos.x >= icon->x - 0x18 && MousePos.x < icon->x && MousePos.y >= icon->slot * 0x26 + 0x86 &&
+                MousePos.y < icon->width + icon->y) {
                 Hover.type = 2;
                 Hover.ptr = (struct Bloke *)icon;
             }

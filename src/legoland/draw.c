@@ -83,7 +83,7 @@ LEGO_EXPORT void KillHostSystemGPU(void) {
 LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
     unsigned int old = DAT_0066814c;
     DAT_0066814c = param_1;
-    DAT_00668148 = DAT_007fe9c0[param_1];
+    DAT_00668148 = PointerSprites[param_1];
     return old;
 }
 
@@ -182,10 +182,10 @@ LEGO_EXPORT int InitScreen(void) {
         desc.ddsCaps.dwCaps = 0x800;
         desc.dwWidth = lpConfig->screen_width;
         desc.dwHeight = lpConfig->screen_height;
-        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668078, NULL) != 0) {
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &OffscreenSurface, NULL) != 0) {
             return 0;
         }
-        renderEngine = DAT_00668078;
+        renderEngine = OffscreenSurface;
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x4000;
@@ -240,12 +240,12 @@ LEGO_EXPORT int InitScreen(void) {
         desc.ddsCaps.dwCaps = 0x40;
         desc.dwWidth = lpConfig->screen_width;
         desc.dwHeight = lpConfig->screen_height;
-        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668078, NULL) != 0) {
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &OffscreenSurface, NULL) != 0) {
             IDirectDrawSurface_Release(PrimarySurface);
             DestroyWindow(WNDENV_Gethwnd());
             return 0;
         }
-        renderEngine = DAT_00668078;
+        renderEngine = OffscreenSurface;
         desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x40;
@@ -300,12 +300,12 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
         local.top = value;
         local.right = lpConfig->screen_width - 1;
         local.bottom = lpConfig->screen_height - 1;
-        DAT_0066809c.dwSize = 0x6c;
+        CurrentSurfaceDesc.dwSize = 0x6c;
         IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
         surface = renderEngine;
-        if (IDirectDrawSurface_Lock(surface, NULL, &DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+        if (IDirectDrawSurface_Lock(surface, NULL, &CurrentSurfaceDesc, 0x21, NULL) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
-            IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
+            IDirectDrawSurface_Lock(renderEngine, NULL, &CurrentSurfaceDesc, 0x21, NULL);
         }
         StoredTransparentColour = GetTransparentColour();
     }
@@ -320,9 +320,9 @@ LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) {
     DAT_006681e4 = DAT_006681e4 + 1;
     if (DAT_00668144 != 0) {
         surface = renderEngine;
-        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+        if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
-            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
+            IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
     }
     DAT_00668144 = 0;
@@ -343,17 +343,17 @@ void FUN_004640f0(void) {
     DAT_006681e4 = DAT_006681e4 + 1;
     if (wasLocked != 0) {
         surface = renderEngine;
-        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+        if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
-            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
+            IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
     }
-    DAT_0066809c.dwSize = 0x6c;
+    CurrentSurfaceDesc.dwSize = 0x6c;
     IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
     surface = renderEngine;
-    if (IDirectDrawSurface_Lock(surface, NULL, &DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+    if (IDirectDrawSurface_Lock(surface, NULL, &CurrentSurfaceDesc, 0x21, NULL) == 0x887601c2) {
         IDirectDrawSurface_Restore(renderEngine);
-        IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
+        IDirectDrawSurface_Lock(renderEngine, NULL, &CurrentSurfaceDesc, 0x21, NULL);
     }
     StoredTransparentColour = GetTransparentColour();
     DAT_00668144 = 1;
@@ -371,12 +371,12 @@ LEGO_EXPORT void PopRenderingStatus(void) {
             local.top = 0;
             local.right = lpConfig->screen_width - 1;
             local.bottom = lpConfig->screen_height - 1;
-            DAT_0066809c.dwSize = 0x6c;
+            CurrentSurfaceDesc.dwSize = 0x6c;
             IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
             surface = renderEngine;
-            if (IDirectDrawSurface_Lock(surface, NULL, &DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+            if (IDirectDrawSurface_Lock(surface, NULL, &CurrentSurfaceDesc, 0x21, NULL) == 0x887601c2) {
                 IDirectDrawSurface_Restore(renderEngine);
-                IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
+                IDirectDrawSurface_Lock(renderEngine, NULL, &CurrentSurfaceDesc, 0x21, NULL);
             }
             StoredTransparentColour = GetTransparentColour();
             DAT_00668144 = 1;
@@ -385,9 +385,9 @@ LEGO_EXPORT void PopRenderingStatus(void) {
     }
     if (DAT_00668144 != 0) {
         surface = renderEngine;
-        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+        if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
-            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
+            IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
         DAT_00668144 = 0;
     }
@@ -398,10 +398,10 @@ LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
     if (DAT_00668144 == 0) {
         return 0;
     }
-    arg->pitch = DAT_0066809c.lPitch;
+    arg->pitch = CurrentSurfaceDesc.lPitch;
     arg->width = lpConfig->screen_width;
     arg->height = lpConfig->screen_height;
-    arg->bits = DAT_0066809c.lpSurface;
+    arg->bits = CurrentSurfaceDesc.lpSurface;
     arg->field_14 = 2;
     return 1;
 }
@@ -472,15 +472,15 @@ LEGO_EXPORT void SoftPrint_Clear(void) {
     int y;
     int x;
 
-    DAT_007fea14 = DAT_0066809c.dwHeight;
-    DAT_007fea1c = DAT_0066809c.dwWidth;
+    DAT_007fea14 = CurrentSurfaceDesc.dwHeight;
+    DAT_007fea1c = CurrentSurfaceDesc.dwWidth;
     DAT_007fe9a4 = DAT_007fea1c;
-    row = DAT_0066809c.lpSurface;
+    row = CurrentSurfaceDesc.lpSurface;
     for (y = DAT_007fea14; y != 0; y--) {
         for (x = 0; x < DAT_007fe9a4; x++) {
             row[x] = colour;
         }
-        row = (unsigned short *)((char *)row + DAT_0066809c.lPitch);
+        row = (unsigned short *)((char *)row + CurrentSurfaceDesc.lPitch);
     }
 }
 
@@ -504,7 +504,7 @@ void FUN_00465850(struct AviFrame *frame) {
     int y;
     int x;
 
-    dst = DAT_0066809c.lpSurface;
+    dst = CurrentSurfaceDesc.lpSurface;
     DAT_006681ec = (DAT_006681ec != dst) ? dst : 0;
     height = frame->height;
     width = frame->width;
@@ -514,10 +514,10 @@ void FUN_00465850(struct AviFrame *frame) {
     row = frame->pixels + (height - 1) * width;
     for (y = half; y > 0; y--) {
         memset(dst, 0, 0x500);
-        dst += DAT_0066809c.lPitch;
+        dst += CurrentSurfaceDesc.lPitch;
     }
     for (y = height; y != 0; y--) {
-        next = dst + DAT_0066809c.lPitch;
+        next = dst + CurrentSurfaceDesc.lPitch;
         s = row;
         p0 = (unsigned short *)dst;
         p1 = (unsigned short *)next;
@@ -535,12 +535,12 @@ void FUN_00465850(struct AviFrame *frame) {
             p1 += 2;
         }
         row -= width;
-        dst += DAT_0066809c.lPitch * 2;
+        dst += CurrentSurfaceDesc.lPitch * 2;
     }
-    dst = next + DAT_0066809c.lPitch;
+    dst = next + CurrentSurfaceDesc.lPitch;
     for (y = rest; y > 0; y--) {
         memset(dst, 0, 0x500);
-        dst += DAT_0066809c.lPitch;
+        dst += CurrentSurfaceDesc.lPitch;
     }
 }
 
@@ -559,7 +559,7 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
 
     height = param_1->height;
     width = param_1->width;
-    dst = (unsigned short *)((char *)DAT_0066809c.lpSurface + DAT_0066809c.lPitch * param_3 + param_2 * 2);
+    dst = (unsigned short *)((char *)CurrentSurfaceDesc.lpSurface + CurrentSurfaceDesc.lPitch * param_3 + param_2 * 2);
     last = height - 1;
     src = param_1->pixels + last * width;
     if (height != 0) {
@@ -579,7 +579,7 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
                     j--;
                 } while (j != 0);
             }
-            dst = (unsigned short *)((char *)dst + DAT_0066809c.lPitch);
+            dst = (unsigned short *)((char *)dst + CurrentSurfaceDesc.lPitch);
             src -= width;
             i--;
         } while (i != 0);
@@ -601,11 +601,11 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     int i;
     int off;
 
-    DAT_007fe9a4 = DAT_0066809c.lPitch;
-    DAT_007fea4c.left = clip->left;
-    DAT_007febac.width = clip->right - clip->left;
-    DAT_007fea4c.top = clip->top;
-    DAT_007febac.height = clip->bottom - clip->top;
+    DAT_007fe9a4 = CurrentSurfaceDesc.lPitch;
+    SpriteClipOrigin.left = clip->left;
+    DrawClipExtent.width = clip->right - clip->left;
+    SpriteClipOrigin.top = clip->top;
+    DrawClipExtent.height = clip->bottom - clip->top;
     if ((int)OverrideFrame < 0) {
         frame_index = lls->frame;
     } else {
@@ -614,14 +614,14 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     if (frame_index >= lls->frame_count) {
         frame_index = lls->frame_count - 1;
     }
-    DAT_007fe9a8 = (unsigned int)((unsigned char *)DAT_0066809c.lpSurface + DAT_00813a44.y * DAT_0066809c.lPitch + DAT_00813a44.x * 2);
-    dst = (unsigned short *)((unsigned char *)DAT_0066809c.lpSurface + pos->y * DAT_0066809c.lPitch + (pos->x - DAT_007fea4c.left) * 2);
+    DAT_007fe9a8 = (unsigned int)((unsigned char *)CurrentSurfaceDesc.lpSurface + MousePos.y * CurrentSurfaceDesc.lPitch + MousePos.x * 2);
+    dst = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + pos->y * CurrentSurfaceDesc.lPitch + (pos->x - SpriteClipOrigin.left) * 2);
     if (lls->flags & 1) {
         pixels = frame->pixels;
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
         i = lls->frame + 1;
         while (i-- != 0) {
             frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
@@ -630,7 +630,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
     } else {
         i = frame_index;
         while (i-- != 0) {
@@ -640,7 +640,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
     }
 }
 
@@ -655,7 +655,7 @@ int FlipFrame(void) {
     LLSAuto();
     if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        PrintSprite(DAT_00668148, DAT_00813a44.x, DAT_00813a44.y, 0, 0);
+        PrintSprite(DAT_00668148, MousePos.x, MousePos.y, 0, 0);
         PopRenderingStatus();
     }
     tick = GetTickCount();
@@ -668,7 +668,7 @@ int FlipFrame(void) {
     while (result != 0) {
         if (result == 0x887601c2) {
             IDirectDrawSurface_Restore(PrimarySurface);
-            IDirectDrawSurface_Restore(DAT_00668078);
+            IDirectDrawSurface_Restore(OffscreenSurface);
             return 0;
         }
         if (result != 0x887601ae && result != 0x8876021c) {
@@ -677,10 +677,10 @@ int FlipFrame(void) {
         primary = PrimarySurface;
         result = IDirectDrawSurface_Flip(primary, NULL, 1);
     }
-    back = DAT_00668078;
+    back = OffscreenSurface;
     result = IDirectDrawSurface_GetFlipStatus(back, 2);
     while (result != 0) {
-        back = DAT_00668078;
+        back = OffscreenSurface;
         result = IDirectDrawSurface_GetFlipStatus(back, 2);
     }
     tick = GetTickCount();
@@ -712,7 +712,7 @@ int BlitFrameToWindow(void) {
     LLSAuto();
     if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        PrintSprite(DAT_00668148, DAT_00813a44.x, DAT_00813a44.y, 0, 0);
+        PrintSprite(DAT_00668148, MousePos.x, MousePos.y, 0, 0);
         PopRenderingStatus();
     }
     tick = GetTickCount();
@@ -724,10 +724,10 @@ int BlitFrameToWindow(void) {
     ClientToScreen(WNDENV_Gethwnd(), &client.pt[0]);
     OffsetRect(&dst, client.rect.left, client.rect.top);
     surface = PrimarySurface;
-    result = IDirectDrawSurface_Blt(surface, &dst, DAT_00668078, NULL, 0x1000000, NULL);
+    result = IDirectDrawSurface_Blt(surface, &dst, OffscreenSurface, NULL, 0x1000000, NULL);
     if (result == 0x887601c2) {
         IDirectDrawSurface_Restore(PrimarySurface);
-        result = IDirectDrawSurface_Blt(PrimarySurface, &dst, DAT_00668078, NULL, 0x1000000, NULL);
+        result = IDirectDrawSurface_Blt(PrimarySurface, &dst, OffscreenSurface, NULL, 0x1000000, NULL);
     }
     if (result != 0) {
         return 0;
@@ -796,9 +796,9 @@ void DrawWatchSprite(void) {
             ClientToScreen(WNDENV_Gethwnd(), &cursor.pt[0]);
             ClientToScreen(WNDENV_Gethwnd(), &cursor.pt[1]);
             surface = PrimarySurface;
-            if (IDirectDrawSurface_Blt(surface, &cursor.rect, DAT_00668078, &WatchRect, 0x1000000, NULL) == 0x887601c2) {
+            if (IDirectDrawSurface_Blt(surface, &cursor.rect, OffscreenSurface, &WatchRect, 0x1000000, NULL) == 0x887601c2) {
                 IDirectDrawSurface_Restore(PrimarySurface);
-                IDirectDrawSurface_Blt(PrimarySurface, &cursor, DAT_00668078, NULL, 0x1000000, NULL);
+                IDirectDrawSurface_Blt(PrimarySurface, &cursor, OffscreenSurface, NULL, 0x1000000, NULL);
             }
         }
     }
@@ -854,9 +854,9 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     DAT_006681e4 = DAT_006681e4 + 1;
     if (locked != 0) {
         surface = renderEngine;
-        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+        if (IDirectDrawSurface_Unlock(surface, CurrentSurfaceDesc.lpSurface) == 0x887601c2) {
             IDirectDrawSurface_Restore(renderEngine);
-            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
+            IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
     }
     DAT_00668144 = 0;
@@ -937,11 +937,11 @@ void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     int hit;
     int i;
 
-    DAT_007fe9a4 = DAT_0066809c.lPitch;
-    DAT_007fea4c.left = clip->left;
-    DAT_007febac.width = clip->right - clip->left;
-    DAT_007fea4c.top = clip->top;
-    DAT_007febac.height = clip->bottom - clip->top;
+    DAT_007fe9a4 = CurrentSurfaceDesc.lPitch;
+    SpriteClipOrigin.left = clip->left;
+    DrawClipExtent.width = clip->right - clip->left;
+    SpriteClipOrigin.top = clip->top;
+    DrawClipExtent.height = clip->bottom - clip->top;
     frame_index = (int)OverrideFrame;
     if (frame_index < 0) {
         frame_index = lls->frame;
@@ -950,38 +950,38 @@ void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         frame_index = lls->frame_count - 1;
     }
     hit = 0;
-    DAT_007fe9a8 = (unsigned int)((unsigned char *)DAT_0066809c.lpSurface + DAT_00813a44.y * DAT_0066809c.lPitch + DAT_00813a44.x * 2);
-    if (DAT_00813a44.x >= pos->x && DAT_00813a44.x <= pos->x + lls->width && DAT_00813a44.y >= pos->y && DAT_00813a44.y <= pos->y + lls->height) {
+    DAT_007fe9a8 = (unsigned int)((unsigned char *)CurrentSurfaceDesc.lpSurface + MousePos.y * CurrentSurfaceDesc.lPitch + MousePos.x * 2);
+    if (MousePos.x >= pos->x && MousePos.x <= pos->x + lls->width && MousePos.y >= pos->y && MousePos.y <= pos->y + lls->height) {
         hit = 1;
     }
-    dst = (unsigned short *)((unsigned char *)DAT_0066809c.lpSurface + pos->y * DAT_0066809c.lPitch + (pos->x - DAT_007fea4c.left) * 2);
+    dst = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + pos->y * CurrentSurfaceDesc.lPitch + (pos->x - SpriteClipOrigin.left) * 2);
     if (lls->flags & 1) {
         pixels = frame->pixels;
         runs = (unsigned char *)frame + frame->pixel_count * 2 + 0x10;
         mask = (unsigned int *)(runs + frame->run_bytes);
         if (hit) {
-            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
-                FUN_00467640(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
-            } else if (DAT_007fea4c.left != 0) {
-                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
-                    FUN_00466d80(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
+                FUN_00467640(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
+            } else if (SpriteClipOrigin.left != 0) {
+                if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
+                    FUN_00466d80(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 } else {
-                    FUN_00467180(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                    FUN_00467180(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 }
             } else {
-                FUN_004673f0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                FUN_004673f0(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
             }
         } else {
-            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
-                FUN_00467f00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top);
-            } else if (DAT_007fea4c.left != 0) {
-                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
-                    FUN_004677b0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
+                FUN_00467f00(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top);
+            } else if (SpriteClipOrigin.left != 0) {
+                if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
+                    FUN_004677b0(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 } else {
-                    FUN_00467b00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                    FUN_00467b00(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 }
             } else {
-                FUN_00467d10(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                FUN_00467d10(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
             }
         }
         i = lls->frame + 1;
@@ -992,28 +992,28 @@ void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         runs = (unsigned char *)frame + frame->pixel_count * 2 + 0x10;
         mask = (unsigned int *)(runs + frame->run_bytes);
         if (hit) {
-            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
-                FUN_00467640(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
-            } else if (DAT_007fea4c.left != 0) {
-                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
-                    FUN_00466d80(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
+                FUN_00467640(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
+            } else if (SpriteClipOrigin.left != 0) {
+                if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
+                    FUN_00466d80(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 } else {
-                    FUN_00467180(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                    FUN_00467180(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 }
             } else {
-                FUN_004673f0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                FUN_004673f0(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
             }
         } else {
-            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
-                FUN_00467f00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top);
-            } else if (DAT_007fea4c.left != 0) {
-                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
-                    FUN_004677b0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
+                FUN_00467f00(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top);
+            } else if (SpriteClipOrigin.left != 0) {
+                if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
+                    FUN_004677b0(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 } else {
-                    FUN_00467b00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                    FUN_00467b00(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 }
             } else {
-                FUN_00467d10(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                FUN_00467d10(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
             }
         }
     } else {
@@ -1025,28 +1025,28 @@ void FUN_00466770(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         runs = (unsigned char *)frame + frame->pixel_count * 2 + 0x10;
         mask = (unsigned int *)(runs + frame->run_bytes);
         if (hit) {
-            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
-                FUN_00467640(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
-            } else if (DAT_007fea4c.left != 0) {
-                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
-                    FUN_00466d80(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
+                FUN_00467640(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
+            } else if (SpriteClipOrigin.left != 0) {
+                if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
+                    FUN_00466d80(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 } else {
-                    FUN_00467180(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                    FUN_00467180(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 }
             } else {
-                FUN_004673f0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                FUN_004673f0(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
             }
         } else {
-            if (lls->width <= DAT_007febac.width - DAT_007fea4c.left) {
-                FUN_00467f00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top);
-            } else if (DAT_007fea4c.left != 0) {
-                if (lls->width - DAT_007fea4c.left > DAT_007febac.width) {
-                    FUN_004677b0(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+            if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
+                FUN_00467f00(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top);
+            } else if (SpriteClipOrigin.left != 0) {
+                if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
+                    FUN_004677b0(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 } else {
-                    FUN_00467b00(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                    FUN_00467b00(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
                 }
             } else {
-                FUN_00467d10(dst, pixels, runs, mask, DAT_007febac.height, DAT_0066809c.lPitch, DAT_007fea4c.top, DAT_007fea4c.left, DAT_007febac.width, 0, (unsigned short *)DAT_007fe9a8);
+                FUN_00467d10(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, (unsigned short *)DAT_007fe9a8);
             }
         }
     }

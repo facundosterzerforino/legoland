@@ -711,7 +711,7 @@ void AutoKillFinishedSamples(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004969d0
-void FUN_004969d0(void) {
+void UpdateSound(void) {
     UpdateSfxCallbacks();
     FUN_00496760();
     UpdateSampleFades();

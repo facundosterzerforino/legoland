@@ -78,7 +78,7 @@ One tick of the main loop. Returns 0 to quit. Each tick it:
   | 1 | (transition) | `FUN_00459360` (STUB) |
   | **2** | **front-end screens** | `InitScreens(DAT_0080ff88 & 0xff)` |
   | 3 | in-game | `FUN_00458ee0` (STUB) |
-- then runs input + audio for the frame: `FUN_004969d0` (sound, MATCHED) →
+- then runs input + audio for the frame: `UpdateSound` (sound, MATCHED) →
   **`ReadGameButtons`** (controller poll, STUB) → frame counter → handles a couple of
   `DAT_00832ba0` mode-change transitions → `FUN_0046d110`.
 

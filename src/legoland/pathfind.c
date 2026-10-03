@@ -296,7 +296,7 @@ void FUN_004821c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004821e0
-void FUN_004821e0(void) {
+void FreeDirNodeList(void) {
     struct DirNode *node;
     struct DirNode *next;
 
@@ -466,7 +466,7 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
     goal_x = goal->x >> 8;
     goal_y = goal->y >> 8;
 
-    FUN_004821e0();
+    FreeDirNodeList();
     FUN_00482210();
     FUN_004821c0();
 
@@ -484,13 +484,13 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
                 if (FUN_00482430()) {
                     out->x = goal->x;
                     out->y = goal->y;
-                    FUN_004821e0();
+                    FreeDirNodeList();
                     FUN_00482210();
                     return 2;
                 }
                 out->x = (DAT_0066b458->x << 8) + 0x80;
                 out->y = (DAT_0066b458->y << 8) + 0x80;
-                FUN_004821e0();
+                FreeDirNodeList();
                 FUN_00482210();
                 return 1;
             }
@@ -502,7 +502,7 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
         }
     }
 
-    FUN_004821e0();
+    FreeDirNodeList();
     FUN_00482210();
     return 0;
 }
@@ -556,7 +556,7 @@ int FUN_00482710(int *a, int *b, int *out) {
     goal_x = b[0] >> 8;
     goal_y = b[1] >> 8;
 
-    FUN_004821e0();
+    FreeDirNodeList();
     FUN_00482210();
     FUN_004821c0();
 
@@ -574,13 +574,13 @@ int FUN_00482710(int *a, int *b, int *out) {
                 if (FUN_00482430()) {
                     out[0] = b[0];
                     out[1] = b[1];
-                    FUN_004821e0();
+                    FreeDirNodeList();
                     FUN_00482210();
                     return 2;
                 }
                 out[0] = (DAT_0066b458->x << 8) + 0x80;
                 out[1] = (DAT_0066b458->y << 8) + 0x80;
-                FUN_004821e0();
+                FreeDirNodeList();
                 FUN_00482210();
                 return 1;
             }
@@ -592,7 +592,7 @@ int FUN_00482710(int *a, int *b, int *out) {
         }
     }
 
-    FUN_004821e0();
+    FreeDirNodeList();
     FUN_00482210();
     return 0;
 }
@@ -723,7 +723,7 @@ void FUN_00482a80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482a90
-void FUN_00482a90(void) {
+void InitEntrance1Point(void) {
     struct MatchResult *match;
     struct ObjData *obj;
 

@@ -354,7 +354,7 @@ unsigned int FUN_004123a0(struct QueueNode *start, struct QueueNode *stop) {
 }
 
 // FUNCTION: LEGOLAND 0x004123c0
-void FUN_004123c0(struct QueueNode *start, struct Queue *queue) {
+void SaveQueue(struct QueueNode *start, struct Queue *queue) {
     struct QueueNode *node;
     int n;
 

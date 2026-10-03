@@ -9,7 +9,7 @@ struct EditArg;
 struct UserFlagsArg;
 
 struct SaveBlock;
-struct SaveBlock *FUN_0042f9d0(unsigned short *param);
+struct SaveBlock *FindSaveBlock(unsigned short *param);
 
 void FUN_0042e220(struct EateryObj *obj);
 void FUN_0042e250();

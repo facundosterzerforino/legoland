@@ -156,10 +156,10 @@ struct RideSpriteInfo *GetHedgeSpriteInfo(int unused, TileId tile) {
 
     i = Get_UserFlags(tile.pos.x << 8, tile.pos.y << 8) & 0xffff;
     t = (struct GardenTable *)HedgeImagesData;
-    DAT_0082c6a0.sprite = (void *)t->a[(unsigned char)i];
-    DAT_0082c6a0.x = t->b[(unsigned char)i] >> 1;
-    DAT_0082c6a0.y = t->c[(unsigned char)i] >> 1;
-    return &DAT_0082c6a0;
+    RideSpriteInfoBuffer.sprite = (void *)t->a[(unsigned char)i];
+    RideSpriteInfoBuffer.x = t->b[(unsigned char)i] >> 1;
+    RideSpriteInfoBuffer.y = t->c[(unsigned char)i] >> 1;
+    return &RideSpriteInfoBuffer;
 }
 
 // FUNCTION: LEGOLAND 0x00432870
@@ -207,10 +207,10 @@ struct RideSpriteInfo *GetFlowerSpriteInfo(int unused, TileId tile) {
 
     i = Get_UserFlags(tile.pos.x << 8, tile.pos.y << 8) & 0xffff;
     t = (struct GardenTable *)FlowerImagesData;
-    DAT_0082c6a0.sprite = (void *)t->a[(unsigned char)i];
-    DAT_0082c6a0.x = t->b[(unsigned char)i] >> 1;
-    DAT_0082c6a0.y = t->c[(unsigned char)i] >> 1;
-    return &DAT_0082c6a0;
+    RideSpriteInfoBuffer.sprite = (void *)t->a[(unsigned char)i];
+    RideSpriteInfoBuffer.x = t->b[(unsigned char)i] >> 1;
+    RideSpriteInfoBuffer.y = t->c[(unsigned char)i] >> 1;
+    return &RideSpriteInfoBuffer;
 }
 
 // FUNCTION: LEGOLAND 0x004329c0

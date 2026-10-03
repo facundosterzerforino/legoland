@@ -10,7 +10,7 @@ struct Queue {
 };
 
 unsigned int FUN_004123a0(struct QueueNode *start, struct QueueNode *stop);
-void FUN_004123c0(struct QueueNode *start, struct Queue *queue);
+void SaveQueue(struct QueueNode *start, struct Queue *queue);
 struct QueueNode *GetNthNextQueueNode(struct QueueNode *node, int n);
 void FUN_00412490(struct QueueNode *start, struct Queue *queue);
 

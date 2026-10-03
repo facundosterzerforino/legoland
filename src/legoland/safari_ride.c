@@ -80,7 +80,7 @@ void FUN_004149c0(struct SafariNode *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00414a00
-void FUN_00414a00(struct SafariNode *node) {
+void RemoveSafariNode(struct SafariNode *node) {
     struct SafariNode *prev;
     struct SafariNode *cur;
 
@@ -106,7 +106,7 @@ void FUN_00414a00(struct SafariNode *node) {
 // FUNCTION: LEGOLAND 0x00414a60
 void FUN_00414a60(void) {
     while (DAT_004cbf0c != NULL) {
-        FUN_00414a00(DAT_004cbf0c);
+        RemoveSafariNode(DAT_004cbf0c);
     }
 }
 
@@ -278,7 +278,7 @@ void FUN_00414f40(struct SafariEditObj *obj, TileId key, unsigned int coords, un
     if (node == 0) {
         return;
     }
-    FUN_00414a00((struct SafariNode *)node);
+    RemoveSafariNode((struct SafariNode *)node);
     StandardRemoveObject((Element *)obj, key, (struct Cursor *)coords);
     RemoveAllBlokesFromRide((struct Ride *)obj->ride, key);
 

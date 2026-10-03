@@ -1143,7 +1143,7 @@ int FUN_00469c80(struct MapRectArg *arg) {
     for (phase = 0; phase < 3; phase++) {
         current = (struct SweepInstance *)GetFirstRenderObject();
         while (current != NULL) {
-            FUN_004969d0();
+            UpdateSound();
             switch (phase) {
             case 0:
                 next = current;

@@ -419,7 +419,7 @@ int FUN_00458c00(void) {
     if (DAT_00667c64 == 0) {
         // STRING: LEGOLAND 0x004b9160
         DAT_00667c40 = "SFX";
-        FUN_004969d0();
+        UpdateSound();
         ReadGameButtons();
         FrameCounter = FrameCounter + 1;
         if (MapStats.field_3a0 != 0 && EditMode.unk4 == 3) {
@@ -509,10 +509,10 @@ void FUN_00458ee0(void) {
     }
     input = Hover.type;
     if ((input & 0x100) != 0 && (EditMode.unk0 == 0 || EditMode.unk0 == 2)) {
-        frame.help_rect.left = DAT_00813a44.x;
-        frame.help_rect.top = DAT_00813a44.y - 0xa;
-        frame.help_rect.right = DAT_00813a44.x;
-        frame.help_rect.bottom = DAT_00813a44.y;
+        frame.help_rect.left = MousePos.x;
+        frame.help_rect.top = MousePos.y - 0xa;
+        frame.help_rect.right = MousePos.x;
+        frame.help_rect.bottom = MousePos.y;
         if (EditMode.unk0 == 0) {
             if (input == 0x7e4) {
                 value = GetString(0x7e4);
@@ -648,18 +648,18 @@ void FUN_00459360(void) {
         RenderMouseBounds();
         SetClipping(&clipping);
         if ((DAT_00813ac4 & var_4) != 0) {
-            MapScreenSetScrollPos(&DAT_00813a44);
+            MapScreenSetScrollPos(&MousePos);
         }
         if ((DAT_00813ac4 & 2) != 0) {
             ticks = GetTicks();
-            if (ticks - DAT_00667c68 < 0x1f4 && abs(DAT_00813a44.x - DAT_00667c70) < 5 &&
-                abs(DAT_00813a44.y - DAT_00667c74) < 5) {
+            if (ticks - DAT_00667c68 < 0x1f4 && abs(MousePos.x - DAT_00667c70) < 5 &&
+                abs(MousePos.y - DAT_00667c74) < 5) {
                 DAT_0080ff70 = var_4;
                 EditMode.unk4 = DAT_00667c60;
                 DAT_00667c60 = var_4;
             }
-            DAT_00667c70 = DAT_00813a44.x;
-            DAT_00667c74 = DAT_00813a44.y;
+            DAT_00667c70 = MousePos.x;
+            DAT_00667c74 = MousePos.y;
             DAT_00667c68 = ticks;
         }
     }
@@ -680,7 +680,7 @@ void FUN_004594e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004594f0
-void FUN_004594f0(void) {
+void InitDefaultProfile(void) {
     int i;
 
     for (i = 0; i < 68; i = i + 1) {
@@ -699,7 +699,7 @@ void FUN_00459520(void) {
 
     // STRING: LEGOLAND 0x004b7138
     DAT_0081cd08 = ElemID("HEDGE")->data;
-    FUN_004594f0();
+    InitDefaultProfile();
     InitSoundSystem();
     SetMusicGrooveLevel(1);
     SuspendMusicThread();

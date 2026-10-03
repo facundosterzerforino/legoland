@@ -44,7 +44,7 @@ struct EarthRideObj {
 };
 
 void FUN_0042cd70(unsigned short *a1);
-void FUN_0042cdc0(struct EarthNode *node);
+void RemoveEarthNode(struct EarthNode *node);
 struct EarthNode *FUN_0042ce20(volatile unsigned short *param_1);
 void FUN_0042ce50(struct EarthNode *node, struct EarthBlokeElem *elem);
 void EarthNodeAppendQueueEntry(struct EarthNode *p, struct EarthQueue *value);
@@ -56,9 +56,9 @@ unsigned int CountEarthBlokeElemsUntil(struct EarthBlokeElem *param_1, struct Ea
 struct EarthBlokeElem *GetNthNextEarthBlokeElem(struct EarthBlokeElem *param_1, unsigned int param_2);
 void FUN_0042d5f0(void);
 
-void FUN_0042d070(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6);
+void RenderEarthSlide(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_0042d100(struct EarthRideObj *param_1);
-void FUN_0042d1f0(struct EarthRideObj *arg1);
+void UnloadEarthSlideResources(struct EarthRideObj *arg1);
 void FUN_0042d230();
 void FUN_0042d270(struct EarthRideObj *param_1, TileId tile, unsigned int param_3);
 void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2);

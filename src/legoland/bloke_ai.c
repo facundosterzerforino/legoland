@@ -809,7 +809,7 @@ void FUN_0044f610(Bloke *bloke) {
                 sprintf(msg, "I can't go on this ride. It is full");
                 FUN_0044ed00(msg);
                 ride = bloke->target->data;
-                FUN_00482df0(bloke, 0, ride->field_3a);
+                ApplyMoodDelta(bloke, 0, ride->field_3a);
                 if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
                     IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
                 }
@@ -821,7 +821,7 @@ void FUN_0044f610(Bloke *bloke) {
                 sprintf(msg, "I can't go on this ride. It's not working");
                 FUN_0044ed00(msg);
                 ride = bloke->target->data;
-                FUN_00482df0(bloke, 1, ride->field_3a);
+                ApplyMoodDelta(bloke, 1, ride->field_3a);
                 if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
                     IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
                 }
@@ -877,7 +877,7 @@ void FUN_0044f610(Bloke *bloke) {
             sprintf(msg, "I can't get on the ride.");
             FUN_0044ed00(msg);
             ride = bloke->target->data;
-            FUN_00482df0(bloke, 0, ride->field_3a);
+            ApplyMoodDelta(bloke, 0, ride->field_3a);
             if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
                 IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             }
@@ -1301,14 +1301,14 @@ void FUN_00450530(Bloke *bloke) {
             }
         }
     }
-    FUN_00482df0(bloke, 2, blocked);
-    FUN_00482df0(bloke, 3, rides);
-    FUN_00482df0(bloke, 4, shops);
-    FUN_00482df0(bloke, 5, food_score);
-    FUN_00482df0(bloke, 6, toilets);
+    ApplyMoodDelta(bloke, 2, blocked);
+    ApplyMoodDelta(bloke, 3, rides);
+    ApplyMoodDelta(bloke, 4, shops);
+    ApplyMoodDelta(bloke, 5, food_score);
+    ApplyMoodDelta(bloke, 6, toilets);
     rate = FUN_0044eb10(bloke);
     if (rate >= 3) {
-        FUN_00482df0(bloke, 7, rate - 2);
+        ApplyMoodDelta(bloke, 7, rate - 2);
     }
 }
 
@@ -1333,7 +1333,7 @@ LEGO_EXPORT void ControlPeople(void) {
         } else {
             FUN_0044eae0(bloke);
             if ((++bloke->field_5c & 0xf) == 0) {
-                FUN_00482df0(bloke, 8, 1);
+                ApplyMoodDelta(bloke, 8, 1);
                 FUN_00450530(bloke);
             }
             if (bloke->low_level_action == 0) {
@@ -1388,7 +1388,7 @@ void FUN_00450a80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00450b10
-void FUN_00450b10(void) {
+void LoadBuildObjArray(void) {
     int count;
     int i;
 

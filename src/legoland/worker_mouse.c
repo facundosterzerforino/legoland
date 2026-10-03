@@ -84,14 +84,14 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
     worker->var_e = 13;
     worker = WorkerOnMouse;
     inner = worker->inner;
-    inner->pos.x = DAT_00813a44.x;
+    inner->pos.x = MousePos.x;
     worker = WorkerOnMouse;
     inner = worker->inner;
-    inner->pos.y = DAT_00813a44.y;
+    inner->pos.y = MousePos.y;
     worker = WorkerOnMouse;
     inner = worker->inner;
     AdjustBlokePosition(&inner->pos);
-    ScreenToMapRef((unsigned int)&DAT_00813a44, pt, 0);
+    ScreenToMapRef((unsigned int)&MousePos, pt, 0);
     worker = WorkerOnMouse;
     worker->var_68 = pt[0] << 8;
     worker = WorkerOnMouse;
@@ -250,10 +250,10 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                         isOrder = 1;
                     }
                 } else {
-                    if (Hover.type == 0x10a || Hover.type == 2 || DAT_00813a44.y < 0x20 || DAT_00813a44.y >= 0x174 || DAT_00813a44.x < lpConfig->view_x + 9) {
+                    if (Hover.type == 0x10a || Hover.type == 2 || MousePos.y < 0x20 || MousePos.y >= 0x174 || MousePos.x < lpConfig->view_x + 9) {
                         break;
                     }
-                    ScreenToMapRef(&DAT_00813a44.x, pt, 0);
+                    ScreenToMapRef(&MousePos.x, pt, 0);
                     x = pt[0];
                     if (x < 0 || x >= lpConfig->width || pt[1] < 0) {
                         break;
@@ -377,25 +377,25 @@ void FUN_00470950(void *a, void *b) {
         CBBGRightSprite = LoadSprite("CB_BGRight.lls", 4);
     }
 
-    DAT_007fdea8 = InsertIcon(0, 0, 0x2c3, PUOKSprite);
-    DAT_007fdea8->string_id = 0x74;
-    DAT_007fdea8->string = GetString(0x74);
-    DAT_007fdea8->flags |= 0x2000;
-    DAT_007fdea8->flags |= 0x4002;
-    temp_val = DAT_007fdea8->flags;
+    PopUpInfoOkIcon = InsertIcon(0, 0, 0x2c3, PUOKSprite);
+    PopUpInfoOkIcon->string_id = 0x74;
+    PopUpInfoOkIcon->string = GetString(0x74);
+    PopUpInfoOkIcon->flags |= 0x2000;
+    PopUpInfoOkIcon->flags |= 0x4002;
+    temp_val = PopUpInfoOkIcon->flags;
     temp_val2 = temp_val | 0x400;
-    DAT_007fdea8->flags = temp_val2;
-    DAT_007fdea8->event_handler = a;
+    PopUpInfoOkIcon->flags = temp_val2;
+    PopUpInfoOkIcon->event_handler = a;
 
-    DAT_007fe000 = InsertIcon(0, 0, 0x2c3, CBCloseSprite);
-    DAT_007fe000->string_id = 0x75;
-    DAT_007fe000->string = GetString(0x75);
-    DAT_007fe000->flags |= 0x2000;
-    DAT_007fe000->flags |= 0x4002;
-    temp_val = DAT_007fe000->flags;
+    CBCloseIcon = InsertIcon(0, 0, 0x2c3, CBCloseSprite);
+    CBCloseIcon->string_id = 0x75;
+    CBCloseIcon->string = GetString(0x75);
+    CBCloseIcon->flags |= 0x2000;
+    CBCloseIcon->flags |= 0x4002;
+    temp_val = CBCloseIcon->flags;
     temp_val2 = temp_val | 0x400;
-    DAT_007fe000->flags = temp_val2;
-    DAT_007fe000->event_handler = b;
+    CBCloseIcon->flags = temp_val2;
+    CBCloseIcon->event_handler = b;
 }
 
 // FUNCTION: LEGOLAND 0x00470b00

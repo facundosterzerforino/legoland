@@ -236,7 +236,7 @@ void FUN_00417240(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417280
-void FUN_00417280(struct SlideObject *obj, TileId tile, struct Cursor *cursor) {
+void RemoveSlideObject(struct SlideObject *obj, TileId tile, struct Cursor *cursor) {
     struct SlideNode *node = FindSlideNode(&tile);
     if (node != NULL) {
         RemoveSlideNode(node);
@@ -571,7 +571,7 @@ LEGO_EXPORT void TempleSlide_GetInterfaces(struct ClassNode *ctx, struct Callbac
         interfaces->cb_8c = FUN_00417240;
         interfaces->cb_a8 = FUN_00417430;
         interfaces->cb_b0 = FUN_00416fa0;
-        interfaces->cb_9c = FUN_00417280;
+        interfaces->cb_9c = RemoveSlideObject;
         interfaces->cb_98 = FUN_004172d0;
         interfaces->cb_a0 = FUN_00417300;
         interfaces->cb_bc = SaveTempleSlide;

@@ -335,7 +335,7 @@ unsigned char FUN_00474820(unsigned int dummy, unsigned char flags) {
 // FUNCTION: LEGOLAND 0x00474830
 unsigned char FUN_00474830(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
     if ((flags & 2) != 0) {
-        if (FUN_00473130() == 0) {
+        if (TryClosePopUp() == 0) {
             if (DAT_00668954 != 0) {
                 CheckWorkerOnMouseStatus(1);
             } else {
@@ -1213,7 +1213,7 @@ LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
 LEGO_EXPORT void DisableSidePanelIcons(void) {
     struct IconNode *node;
 
-    node = (struct IconNode *)DAT_006687c8;
+    node = (struct IconNode *)IconListHead;
     while (node != NULL) {
         if (node->id == 0xd2 || node->id == 0xd5 || node->id == 0xd6 || node->id == 0xd7) {
             node->flags |= 0x400;
@@ -1226,7 +1226,7 @@ LEGO_EXPORT void DisableSidePanelIcons(void) {
 LEGO_EXPORT void EnableSidePanelIcons(void) {
     struct IconNode *node;
 
-    node = (struct IconNode *)DAT_006687c8;
+    node = (struct IconNode *)IconListHead;
     while (node != NULL) {
         if (node->id == 0xd2 || node->id == 0xd5 || node->id == 0xd6 || node->id == 0xd7) {
             node->flags &= 0xfffffbff;
@@ -1335,7 +1335,7 @@ void FUN_00476070(int mask, unsigned int value) {
 }
 
 // FUNCTION: LEGOLAND 0x004760a0
-void FUN_004760a0(void) {
+void DrawFlashingButtons(void) {
     int *coords;
     int played;
     int i;
@@ -1764,11 +1764,11 @@ int FUN_00476910(struct MovieHandle *handle) {
         DAT_00668ee0 = 0;
         DAT_00668f9c = 0;
         DAT_00668f50 = DAT_00668fa4;
-        DAT_00668f3c = fmt->nAvgBytesPerSec / handle->frame_rate;
+        AviSoundBytesPerFrame = fmt->nAvgBytesPerSec / handle->frame_rate;
         DAT_00668f90 = fmt->nSamplesPerSec / handle->frame_rate;
         DAT_00668f4c = fmt->wBitsPerSample;
         AviAudioStream = handle->audio_stream;
-        AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(fmt, DAT_00668f3c * DAT_00668fa4);
+        AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(fmt, AviSoundBytesPerFrame * DAT_00668fa4);
         return 1;
     }
     DAT_00668ee0 = 1;
@@ -1785,19 +1785,19 @@ int FUN_00476910(struct MovieHandle *handle) {
     }
     DAT_00668f9c = 0;
     DAT_00668f50 = DAT_00668fa4;
-    DAT_00668f3c = AviPcmFormat.nAvgBytesPerSec / handle->frame_rate;
+    AviSoundBytesPerFrame = AviPcmFormat.nAvgBytesPerSec / handle->frame_rate;
     DAT_00668f90 = AviPcmFormat.nSamplesPerSec / handle->frame_rate;
     DAT_00668f4c = AviPcmFormat.wBitsPerSample;
     AviAudioStream = handle->audio_stream;
-    AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(&AviPcmFormat, DAT_00668f3c * DAT_00668fa4);
+    AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(&AviPcmFormat, AviSoundBytesPerFrame * DAT_00668fa4);
     p = AviAcmStreamHeader;
     for (i = 0x15; i != 0; i--) {
         *p = 0;
         p++;
     }
-    AviAcmStreamHeader[8] = DAT_00668f3c;
+    AviAcmStreamHeader[8] = AviSoundBytesPerFrame;
     AviAcmStreamHeader[0] = 0x54;
-    acmStreamSize(AviAcmStream, DAT_00668f3c, &AviAcmStreamHeader[4], 1);
+    acmStreamSize(AviAcmStream, AviSoundBytesPerFrame, &AviAcmStreamHeader[4], 1);
     AviAcmStreamHeader[3] = (unsigned int)malloc(AviAcmStreamHeader[4]);
     AviAcmStreamHeader[7] = (unsigned int)malloc(AviAcmStreamHeader[8] * 3);
     DAT_00668f8c = (void *)AviAcmStreamHeader[7];
@@ -1891,25 +1891,25 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
         }
         count = loops;
         do {
-            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, DAT_00668f3c * DAT_00668fa0, DAT_00668f3c);
+            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, AviSoundBytesPerFrame * DAT_00668fa0, AviSoundBytesPerFrame);
             if (DAT_00668f60 < DAT_00668f88 && DAT_00668f60 >= 0) {
                 if (DAT_00668ee0 != 0) {
                     produced = 0;
                     if (DAT_00668fb4 != 0) {
-                        if (DAT_00668fb4 < DAT_00668f3c) {
+                        if (DAT_00668fb4 < AviSoundBytesPerFrame) {
                             memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668fb4);
-                            rem = DAT_00668f3c - DAT_00668fb4;
+                            rem = AviSoundBytesPerFrame - DAT_00668fb4;
                             DAT_00668fb4 = 0;
                             DAT_00668f54 = 0;
                             if (DAT_00668f60 >= DAT_00668f88) {
                                 if (DAT_00668f4c == 8) {
-                                    memset(dst + (DAT_00668f3c - rem), 0x80, rem);
+                                    memset(dst + (AviSoundBytesPerFrame - rem), 0x80, rem);
                                 } else {
-                                    memset(dst + (DAT_00668f3c - rem), 0, rem);
+                                    memset(dst + (AviSoundBytesPerFrame - rem), 0, rem);
                                 }
                             } else {
-                                while (DAT_00668fb4 < DAT_00668f3c) {
-                                    AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
+                                while (DAT_00668fb4 < AviSoundBytesPerFrame) {
+                                    AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
                                     AviAcmStreamHeader[7] = (unsigned int)DAT_00668f8c + produced;
                                     acmStreamPrepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
                                     acmStreamConvert(AviAcmStream, AviAcmStreamHeader, 0x10);
@@ -1918,22 +1918,22 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                                     DAT_00668fb4 += AviAcmStreamHeader[9];
                                     DAT_00668f60++;
                                 }
-                                memcpy(dst + (DAT_00668f3c - rem), DAT_00668f8c, rem);
+                                memcpy(dst + (AviSoundBytesPerFrame - rem), DAT_00668f8c, rem);
                                 DAT_00668f54 += rem;
                                 DAT_00668fb4 -= rem;
                             }
                         } else {
-                            memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
-                            DAT_00668fb4 -= DAT_00668f3c;
+                            memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, AviSoundBytesPerFrame);
+                            DAT_00668fb4 -= AviSoundBytesPerFrame;
                             if (DAT_00668fb4 != 0) {
-                                DAT_00668f54 += DAT_00668f3c;
+                                DAT_00668f54 += AviSoundBytesPerFrame;
                             } else {
                                 DAT_00668f54 = 0;
                             }
                         }
                     } else {
-                        while (DAT_00668fb4 < DAT_00668f3c) {
-                            AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], DAT_00668f3c >> 2, &bytes_out, &param_2);
+                        while (DAT_00668fb4 < AviSoundBytesPerFrame) {
+                            AVIStreamRead(AviAudioStream, DAT_00668f60, 0x100, (void *)AviAcmStreamHeader[3], AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
                             AviAcmStreamHeader[7] = (unsigned int)DAT_00668f8c + produced;
                             acmStreamPrepareHeader(AviAcmStream, AviAcmStreamHeader, 0);
                             acmStreamConvert(AviAcmStream, AviAcmStreamHeader, 0x10);
@@ -1942,18 +1942,18 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
                             DAT_00668fb4 += AviAcmStreamHeader[9];
                             DAT_00668f60++;
                         }
-                        memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, DAT_00668f3c);
-                        DAT_00668f54 += DAT_00668f3c;
-                        DAT_00668fb4 -= DAT_00668f3c;
+                        memcpy(dst, (char *)DAT_00668f8c + DAT_00668f54, AviSoundBytesPerFrame);
+                        DAT_00668f54 += AviSoundBytesPerFrame;
+                        DAT_00668fb4 -= AviSoundBytesPerFrame;
                     }
                 } else {
-                    AVIStreamRead(AviAudioStream, DAT_00668f60, DAT_00668f90, dst, DAT_00668f3c, &bytes_out, &param_2);
+                    AVIStreamRead(AviAudioStream, DAT_00668f60, DAT_00668f90, dst, AviSoundBytesPerFrame, &bytes_out, &param_2);
                 }
             } else {
                 if (DAT_00668f4c == 8) {
-                    memset(dst, 0x80, DAT_00668f3c);
+                    memset(dst, 0x80, AviSoundBytesPerFrame);
                 } else {
-                    memset(dst, 0, DAT_00668f3c);
+                    memset(dst, 0, AviSoundBytesPerFrame);
                 }
                 if (DAT_00668ee0 != 0) {
                     DAT_00668f60++;

@@ -81,11 +81,11 @@ LEGO_EXPORT void KillMapScreen(void) {
 
 // FUNCTION: LEGOLAND 0x004563b0
 void FUN_004563b0(void) {
-    int x = ((ScrollX >> 8) - DAT_00667c00) * DAT_008139c4 / DAT_00667c1c;
-    int y = ((ScrollY >> 8) - DAT_00667c04) * DAT_008139c4 / DAT_00667c18 / 2 +
+    int x = ((ScrollX >> 8) - DAT_00667c00) * MapViewWidth / DAT_00667c1c;
+    int y = ((ScrollY >> 8) - DAT_00667c04) * MapViewWidth / DAT_00667c18 / 2 +
         DAT_00667c20;
-    int w = DAT_008139c4 * DAT_008139c4 / DAT_00667c1c;
-    int h = DAT_008139c0 * DAT_008139c4 / DAT_00667c18 / 2;
+    int w = MapViewWidth * MapViewWidth / DAT_00667c1c;
+    int h = DAT_008139c0 * MapViewWidth / DAT_00667c18 / 2;
 
     RenderThickBox(DAT_008139c8 + x, DAT_008139cc + y, w, h, 2,
         GetNearestColour(255, 255, 255));
@@ -100,20 +100,20 @@ LEGO_EXPORT void RenderMouseBounds(void) {
     int w;
     int h;
 
-    in[0] = (DAT_00813a44.x - DAT_008139c8) * DAT_00667c1c / DAT_008139c4 +
+    in[0] = (MousePos.x - DAT_008139c8) * DAT_00667c1c / MapViewWidth +
         DAT_00667c00;
-    in[1] = (DAT_00813a44.y - DAT_008139cc - DAT_00667c20 + 1) * DAT_00667c18 *
-            2 / DAT_008139c4 +
+    in[1] = (MousePos.y - DAT_008139cc - DAT_00667c20 + 1) * DAT_00667c18 *
+            2 / MapViewWidth +
         DAT_00667c04;
     PointToIsoPlane(in, out);
-    if (out[0] >= 0 && out[1] >= 0 && out[0] < DAT_008139c4 &&
+    if (out[0] >= 0 && out[1] >= 0 && out[0] < MapViewWidth &&
         out[1] < DAT_008139c0) {
-        x = DAT_00813a44.x - DAT_008139c4 / 2 * DAT_008139c4 / DAT_00667c1c -
+        x = MousePos.x - MapViewWidth / 2 * MapViewWidth / DAT_00667c1c -
             DAT_008139c8;
-        y = DAT_00813a44.y - DAT_008139c0 / 2 * DAT_008139c4 / DAT_00667c18 / 2 -
+        y = MousePos.y - DAT_008139c0 / 2 * MapViewWidth / DAT_00667c18 / 2 -
             DAT_008139cc;
-        w = DAT_008139c4 * DAT_008139c4 / DAT_00667c1c;
-        h = DAT_008139c0 * DAT_008139c4 / (DAT_00667c18 * 2);
+        w = MapViewWidth * MapViewWidth / DAT_00667c1c;
+        h = DAT_008139c0 * MapViewWidth / (DAT_00667c18 * 2);
         RenderBox(DAT_008139c8 + x, DAT_008139cc + y, w, h,
             GetNearestColour(0, 255, 0));
     }
@@ -124,19 +124,19 @@ LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point) {
     int in[2];
     int out[2];
 
-    in[0] = (DAT_00813a44.x - DAT_008139c8) * DAT_00667c1c / DAT_008139c4 +
+    in[0] = (MousePos.x - DAT_008139c8) * DAT_00667c1c / MapViewWidth +
         DAT_00667c00;
-    in[1] = (DAT_00813a44.y - DAT_008139cc - DAT_00667c20 + 1) * DAT_00667c18 *
-            2 / DAT_008139c4 +
+    in[1] = (MousePos.y - DAT_008139cc - DAT_00667c20 + 1) * DAT_00667c18 *
+            2 / MapViewWidth +
         DAT_00667c04;
     PointToIsoPlane(in, out);
-    if (out[0] >= 0 && out[1] >= 0 && out[0] < DAT_008139c4 &&
+    if (out[0] >= 0 && out[1] >= 0 && out[0] < MapViewWidth &&
         out[1] < DAT_008139c0) {
-        ScrollX = ((point->x - DAT_008139c8 + 1) * DAT_00667c1c / DAT_008139c4 -
-                      DAT_008139c4 / 2 + DAT_00667c00)
+        ScrollX = ((point->x - DAT_008139c8 + 1) * DAT_00667c1c / MapViewWidth -
+                      MapViewWidth / 2 + DAT_00667c00)
             << 8;
         ScrollY = ((point->y - DAT_008139cc - DAT_00667c20 + 1) * DAT_00667c18 * 2 /
-                          DAT_008139c4 -
+                          MapViewWidth -
                       DAT_008139c0 / 2 + DAT_00667c04)
             << 8;
         FUN_00461290(lpConfig->view_width << 8, lpConfig->view_height << 8, 0, 0);
@@ -246,12 +246,12 @@ LEGO_EXPORT void RenderFullMap(void) {
         memset(DAT_008119c0, 0, 0x2000);
         DAT_008139c8 = 0;
         DAT_008139cc = 0x20;
-        DAT_008139c4 = 0x280;
+        MapViewWidth = 0x280;
         DAT_008139c0 = 0x154;
         StoreClipping();
         {
             tile_scratch.clip.left = 0;
-            tile_scratch.clip.right = DAT_008139c4;
+            tile_scratch.clip.right = MapViewWidth;
             tile_scratch.clip.top = 0;
             tile_scratch.clip.bottom = DAT_008139c0;
             SetClipping(&tile_scratch.clip);
@@ -263,14 +263,14 @@ LEGO_EXPORT void RenderFullMap(void) {
         DAT_00667c0c = (lpConfig->width + lpConfig->height) * tile_size.y / 2;
         DAT_00667c1c = DAT_00667c08 - DAT_00667c00 + 1;
         DAT_00667c18 = DAT_00667c0c + 1;
-        map_scale.x = (DAT_008139c4 << 16) / DAT_00667c1c;
+        map_scale.x = (MapViewWidth << 16) / DAT_00667c1c;
         map_scale.y = (DAT_008139c0 << 16) / DAT_00667c18;
         DAT_00667c16 =
-            (short)((float)DAT_008139c4 * tile_size.x / DAT_00667c1c + 1.0f);
+            (short)((float)MapViewWidth * tile_size.x / DAT_00667c1c + 1.0f);
         DAT_00667c14 =
             (short)((float)DAT_008139c0 * tile_size.y / DAT_00667c18 + 1.0f);
         half = (tile_size.y + 1) >> 1;
-        RenderBlock(0, 0, DAT_008139c4, DAT_008139c0, GetNearestColour(0, 0, 0));
+        RenderBlock(0, 0, MapViewWidth, DAT_008139c0, GetNearestColour(0, 0, 0));
         saved_scroll.x = lpConfig->view_x;
         saved_scroll.y = lpConfig->view_y;
         lpConfig->view_x = 0;
@@ -279,7 +279,7 @@ LEGO_EXPORT void RenderFullMap(void) {
         DAT_00667c20 =
             (DAT_008139c0 -
                 ((lpConfig->width + lpConfig->height - 2) * half - DAT_00667c04) *
-                    DAT_008139c4 / DAT_00667c18 / 2) >>
+                    MapViewWidth / DAT_00667c18 / 2) >>
             1;
 
         for (tile_pos.y = 0; tile_pos.y < (int)lpConfig->height; tile_pos.y++) {
@@ -349,7 +349,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                     struct Point pt;
                     float sxf;
 
-                    sxf = (float)DAT_008139c4 / DAT_00667c1c;
+                    sxf = (float)MapViewWidth / DAT_00667c1c;
                     height_value.syf = (float)DAT_008139c0 / DAT_00667c18;
                     ride = tile_scratch.tile.field_0->ride;
                     pt.x = tile_pos.x;
@@ -374,7 +374,7 @@ LEGO_EXPORT void RenderFullMap(void) {
 
         {
             tile_scratch.clip.left = 0;
-            tile_scratch.clip.right = DAT_008139c4;
+            tile_scratch.clip.right = MapViewWidth;
             tile_scratch.clip.top = 0;
             tile_scratch.clip.bottom = DAT_008139c0;
             SetClipping(&tile_scratch.clip);

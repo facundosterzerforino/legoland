@@ -73,23 +73,23 @@ int GameMain(void) {
         return 1;
     }
 
-    DAT_007fe9c0[0] = 0;
+    PointerSprites[0] = 0;
     // STRING: LEGOLAND 0x004bcd08
-    DAT_007fe9c0[1] = LoadSprite("erase it.lls", 0);
+    PointerSprites[1] = LoadSprite("erase it.lls", 0);
     // STRING: LEGOLAND 0x004bccf8
-    DAT_007fe9c0[2] = LoadSprite("erase it2.lls", 0);
+    PointerSprites[2] = LoadSprite("erase it2.lls", 0);
     // STRING: LEGOLAND 0x004bcce8
-    DAT_007fe9c0[3] = LoadSprite("no build.lls", 0);
+    PointerSprites[3] = LoadSprite("no build.lls", 0);
     // STRING: LEGOLAND 0x004bccd8
-    DAT_007fe9c0[4] = LoadSprite("yes build.lls", 0);
+    PointerSprites[4] = LoadSprite("yes build.lls", 0);
     // STRING: LEGOLAND 0x004bccc4
-    DAT_007fe9c0[5] = LoadSprite("rab over icon.lls", 0);
+    PointerSprites[5] = LoadSprite("rab over icon.lls", 0);
     // STRING: LEGOLAND 0x004bccb0
-    DAT_007fe9c0[6] = LoadSprite("rab over icon2.lls", 0);
+    PointerSprites[6] = LoadSprite("rab over icon2.lls", 0);
     // STRING: LEGOLAND 0x004bcca0
-    DAT_007fe9c0[7] = LoadSprite("question it.lls", 0);
+    PointerSprites[7] = LoadSprite("question it.lls", 0);
     // STRING: LEGOLAND 0x004bcc8c
-    DAT_007fe9c0[8] = LoadSprite("question it2.lls", 0);
+    PointerSprites[8] = LoadSprite("question it2.lls", 0);
 
     LLIDB_LoadICM();
 
@@ -120,37 +120,37 @@ int GameMain(void) {
     DeleteStrings();
     LLIDB_CloseICM();
 
-    if (DAT_007fe9c0[3] != 0) {
-        KillSprite(DAT_007fe9c0[3]);
-        DAT_007fe9c0[3] = 0;
+    if (PointerSprites[3] != 0) {
+        KillSprite(PointerSprites[3]);
+        PointerSprites[3] = 0;
     }
-    if (DAT_007fe9c0[4] != 0) {
-        KillSprite(DAT_007fe9c0[4]);
-        DAT_007fe9c0[4] = 0;
+    if (PointerSprites[4] != 0) {
+        KillSprite(PointerSprites[4]);
+        PointerSprites[4] = 0;
     }
-    if (DAT_007fe9c0[7] != 0) {
-        KillSprite(DAT_007fe9c0[7]);
-        DAT_007fe9c0[7] = 0;
+    if (PointerSprites[7] != 0) {
+        KillSprite(PointerSprites[7]);
+        PointerSprites[7] = 0;
     }
-    if (DAT_007fe9c0[8] != 0) {
-        KillSprite(DAT_007fe9c0[8]);
-        DAT_007fe9c0[8] = 0;
+    if (PointerSprites[8] != 0) {
+        KillSprite(PointerSprites[8]);
+        PointerSprites[8] = 0;
     }
-    if (DAT_007fe9c0[1] != 0) {
-        KillSprite(DAT_007fe9c0[1]);
-        DAT_007fe9c0[1] = 0;
+    if (PointerSprites[1] != 0) {
+        KillSprite(PointerSprites[1]);
+        PointerSprites[1] = 0;
     }
-    if (DAT_007fe9c0[2] != 0) {
-        KillSprite(DAT_007fe9c0[2]);
-        DAT_007fe9c0[2] = 0;
+    if (PointerSprites[2] != 0) {
+        KillSprite(PointerSprites[2]);
+        PointerSprites[2] = 0;
     }
-    if (DAT_007fe9c0[5] != 0) {
-        KillSprite(DAT_007fe9c0[5]);
-        DAT_007fe9c0[5] = 0;
+    if (PointerSprites[5] != 0) {
+        KillSprite(PointerSprites[5]);
+        PointerSprites[5] = 0;
     }
-    if (DAT_007fe9c0[6] != 0) {
-        KillSprite(DAT_007fe9c0[6]);
-        DAT_007fe9c0[6] = 0;
+    if (PointerSprites[6] != 0) {
+        KillSprite(PointerSprites[6]);
+        PointerSprites[6] = 0;
     }
 
     return 0;

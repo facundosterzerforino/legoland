@@ -26,14 +26,14 @@ int FUN_0043e930(RECT *rc, int min, int max, int value, int step) {
     pos = (rc->bottom - rc->top) * value / (max - min);
     RenderThickBox(rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top, 2, 0);
     RenderBlock(rc->left, rc->top + pos - 1, rc->right - rc->left, 3, GetNearestColour(0xff, 0, 0));
-    if ((DAT_00813ac4 & 4) && DAT_00813a44.x >= rc->left && DAT_00813a44.x <= rc->right &&
-        DAT_00813a44.y >= rc->top && DAT_00813a44.y <= rc->bottom) {
+    if ((DAT_00813ac4 & 4) && MousePos.x >= rc->left && MousePos.x <= rc->right &&
+        MousePos.y >= rc->top && MousePos.y <= rc->bottom) {
         DAT_0062fea4 = 1;
     } else if (!DAT_0062fea4) {
         return value;
     }
     if (DAT_00813ac4 & 4) {
-        pos = DAT_00813a44.y;
+        pos = MousePos.y;
         if (pos < rc->top) {
             pos = rc->top;
         } else if (pos > rc->bottom) {
@@ -122,8 +122,8 @@ int FUN_0043ea30(char **names, char *title, struct Sprite *bg, RECT *box, void (
         if ((DAT_00813ad4 & 1) || (DAT_00813acc & 1)) {
             break;
         }
-        if (DAT_00813a44.x >= clip.left && DAT_00813a44.x <= clip.right && DAT_00813a44.y >= clip.top && DAT_00813a44.y <= clip.bottom) {
-            my = DAT_00813a44.y - clip.top + DAT_0062fea0;
+        if (MousePos.x >= clip.left && MousePos.x <= clip.right && MousePos.y >= clip.top && MousePos.y <= clip.bottom) {
+            my = MousePos.y - clip.top + DAT_0062fea0;
             for (i = 0; i < n; i++) {
                 if (my >= items[i].top && my <= items[i].bottom) {
                     sel = i;

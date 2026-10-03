@@ -1636,7 +1636,7 @@ void FUN_0041e950(struct ObjAtC8 *obj) {
 
 // FUNCTION: LEGOLAND 0x0041e970
 void FUN_0041e970(int param_1) {
-    FUN_004266e0((struct ListLink *)(param_1 + 0xc8));
+    UnlinkListLink((struct ListLink *)(param_1 + 0xc8));
 }
 
 struct RectI {
@@ -1744,7 +1744,7 @@ struct DispatchTarget {
 // FUNCTION: LEGOLAND 0x0041ebd0
 unsigned int FUN_0041ebd0(unsigned int arg) {
     unsigned int index = 0;
-    struct DispatchRow *row = (struct DispatchRow *)DAT_0082ad20;
+    struct DispatchRow *row = (struct DispatchRow *)CastleDispatchTable;
     while ((int)row < (int)&DAT_0082adb0) {
         struct DispatchTarget *target = (struct DispatchTarget *)row->field_0;
         if (target != NULL && arg == target->field_c) {
@@ -1758,14 +1758,14 @@ unsigned int FUN_0041ebd0(unsigned int arg) {
 
 // FUNCTION: LEGOLAND 0x0041ec00
 unsigned int FUN_0041ec00(unsigned int param) {
-    struct DispatchTarget *target = (struct DispatchTarget *)((struct DispatchRow *)DAT_0082ad20)[param].field_0;
+    struct DispatchTarget *target = (struct DispatchTarget *)((struct DispatchRow *)CastleDispatchTable)[param].field_0;
     return target->field_c;
 }
 
 // FUNCTION: LEGOLAND 0x0041ec20
 unsigned int FUN_0041ec20(unsigned int param) {
     unsigned int index = 0;
-    struct DispatchRow *row = (struct DispatchRow *)DAT_0082ad20;
+    struct DispatchRow *row = (struct DispatchRow *)CastleDispatchTable;
     while ((int)row < (int)&DAT_0082adb0) {
         if (param == row->field_0) {
             return index;
@@ -1778,17 +1778,17 @@ unsigned int FUN_0041ec20(unsigned int param) {
 
 // FUNCTION: LEGOLAND 0x0041ec40
 unsigned int FUN_0041ec40(unsigned int param) {
-    return ((struct DispatchRow *)DAT_0082ad20)[param].field_0;
+    return ((struct DispatchRow *)CastleDispatchTable)[param].field_0;
 }
 
 // FUNCTION: LEGOLAND 0x0041ec50
 void FUN_0041ec50(unsigned int obj) {
-    ((struct DispatchRow *)DAT_0082ad20)[FUN_0041ec20(obj)].fn_4(obj);
+    ((struct DispatchRow *)CastleDispatchTable)[FUN_0041ec20(obj)].fn_4(obj);
 }
 
 // FUNCTION: LEGOLAND 0x0041ec70
 void FUN_0041ec70(unsigned int obj, unsigned int a, unsigned int b) {
-    ((struct DispatchRow *)DAT_0082ad20)[FUN_0041ec20(obj)].fn_8(obj, a, b);
+    ((struct DispatchRow *)CastleDispatchTable)[FUN_0041ec20(obj)].fn_8(obj, a, b);
 }
 
 // FUNCTION: LEGOLAND 0x0041eca0
@@ -1797,22 +1797,22 @@ void FUN_0041eca0(unsigned int idx, short *p) {
 
     v[0] = p[0];
     v[1] = p[1];
-    ((struct DispatchRow *)DAT_0082ad20)[idx].fn_c(((struct DispatchRow *)DAT_0082ad20)[idx].field_0, (unsigned int)v);
+    ((struct DispatchRow *)CastleDispatchTable)[idx].fn_c(((struct DispatchRow *)CastleDispatchTable)[idx].field_0, (unsigned int)v);
 }
 
 // FUNCTION: LEGOLAND 0x0041ece0
 void FUN_0041ece0(unsigned int obj, unsigned int a) {
-    ((void (*)(unsigned int, unsigned int)) * (unsigned int *)(DAT_0082ad20 + FUN_0041ec20(obj) * 24 + 0xc))(obj, a);
+    ((void (*)(unsigned int, unsigned int)) * (unsigned int *)(CastleDispatchTable + FUN_0041ec20(obj) * 24 + 0xc))(obj, a);
 }
 
 // FUNCTION: LEGOLAND 0x0041ed00
 void FUN_0041ed00(unsigned int obj, unsigned int a) {
-    ((void (*)(unsigned int, unsigned int)) * (unsigned int *)(DAT_0082ad20 + FUN_0041ec20(obj) * 24 + 0x10))(obj, a);
+    ((void (*)(unsigned int, unsigned int)) * (unsigned int *)(CastleDispatchTable + FUN_0041ec20(obj) * 24 + 0x10))(obj, a);
 }
 
 // FUNCTION: LEGOLAND 0x0041ed50
 void FUN_0041ed50(unsigned int obj, unsigned int a, unsigned int b) {
-    ((void (*)(unsigned int, unsigned int, unsigned int)) * (unsigned int *)(DAT_0082ad20 + FUN_0041ec20(obj) * 24 + 0x14))(obj, a, b);
+    ((void (*)(unsigned int, unsigned int, unsigned int)) * (unsigned int *)(CastleDispatchTable + FUN_0041ec20(obj) * 24 + 0x14))(obj, a, b);
 }
 
 // FUNCTION: LEGOLAND 0x0041ed80
@@ -2872,7 +2872,7 @@ float FloatArrayMaxAbs(struct FloatArray *arr) {
 }
 
 // FUNCTION: LEGOLAND 0x004213a0
-void FUN_004213a0(int *a, float s, int *b, float t, int *out) {
+void BlendFloatArrays(int *a, float s, int *b, float t, int *out) {
     int i;
 
     *out = *a;
@@ -2888,7 +2888,7 @@ struct IntBuffer {
 };
 
 // FUNCTION: LEGOLAND 0x00421400
-void FUN_00421400(struct IntBuffer *buf, int size) {
+void ZeroIntBuffer(struct IntBuffer *buf, int size) {
     int i;
     if (size > 0) {
         for (i = 0; i < size; i++) {
@@ -2917,8 +2917,8 @@ void FUN_00421470(void) {
     DAT_004dcbd0[2] = FUN_00421320;
     DAT_004dcbd0[3] = FloatArrayScale;
     DAT_004dcbd0[4] = FloatArrayMaxAbs;
-    DAT_004dcbd0[5] = FUN_004213a0;
-    DAT_004dcbd0[6] = FUN_00421400;
+    DAT_004dcbd0[5] = BlendFloatArrays;
+    DAT_004dcbd0[6] = ZeroIntBuffer;
     DAT_004dcbd0[7] = FUN_00421430;
     DAT_004dcbd0[8] = FUN_004214f0;
     DAT_004dcbd0[9] = FUN_00421510;
@@ -3679,7 +3679,7 @@ unsigned char *FUN_00422300(unsigned char *src, unsigned char *dst) {
 }
 
 // FUNCTION: LEGOLAND 0x00422340
-unsigned char *FUN_00422340(unsigned int *range, int count) {
+unsigned char *FindLineStart(unsigned int *range, int count) {
     int n = 0;
     unsigned char *p = (unsigned char *)range[0];
     unsigned char *end = p + range[1];
@@ -3703,7 +3703,7 @@ unsigned char *FUN_00422340(unsigned int *range, int count) {
 
 // FUNCTION: LEGOLAND 0x00422390
 unsigned int FUN_00422390(unsigned int a1, unsigned int a2, unsigned int a3) {
-    unsigned char *result1 = FUN_00422340((unsigned int *)a1, a3);
+    unsigned char *result1 = FindLineStart((unsigned int *)a1, a3);
     if (result1 == 0)
         return 0;
     {
@@ -4271,12 +4271,12 @@ void FUN_004237a0(struct EdgeSet *set) {
     int i;
 
     for (i = 0; i < set->count; i++) {
-        FUN_004237f0(&set->base[set->pairs[i].a], &set->base[set->pairs[i].b], -1);
+        DrawDottedLine(&set->base[set->pairs[i].a], &set->base[set->pairs[i].b], -1);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004237f0
-void FUN_004237f0(void *a, void *b, short c) {
+void DrawDottedLine(void *a, void *b, short c) {
     int *pa = (int *)a;
     int *pb = (int *)b;
     int pts[30][4];
@@ -4293,11 +4293,11 @@ void FUN_004237f0(void *a, void *b, short c) {
         x += dx;
         y += dy;
     }
-    FUN_004238a0(&pts[0][0], 30, c);
+    PlotClippedPoints(&pts[0][0], 30, c);
 }
 
 // FUNCTION: LEGOLAND 0x004238a0
-void FUN_004238a0(int *points, int count, short c) {
+void PlotClippedPoints(int *points, int count, short c) {
     struct {
         int pitch;
         unsigned int f4;
@@ -5423,12 +5423,12 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_bc = CastleObj_Save;
         obj->cb_b8 = FUN_00426c20;
         obj->cb_c0 = FUN_004246e0;
-        ((struct DispatchRow *)DAT_0082ad20)[0].field_0 = (unsigned int)head;
-        ((struct DispatchRow *)DAT_0082ad20)[0].fn_4 = FUN_00424240;
-        ((struct DispatchRow *)DAT_0082ad20)[0].fn_8 = FUN_00424280;
-        ((struct DispatchRow *)DAT_0082ad20)[0].fn_10 = FUN_00424440;
-        ((struct DispatchRow *)DAT_0082ad20)[0].fn_c = FUN_00424320;
-        ((struct DispatchRow *)DAT_0082ad20)[0].fn_14 = FUN_004244b0;
+        ((struct DispatchRow *)CastleDispatchTable)[0].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)CastleDispatchTable)[0].fn_4 = FUN_00424240;
+        ((struct DispatchRow *)CastleDispatchTable)[0].fn_8 = FUN_00424280;
+        ((struct DispatchRow *)CastleDispatchTable)[0].fn_10 = FUN_00424440;
+        ((struct DispatchRow *)CastleDispatchTable)[0].fn_c = FUN_00424320;
+        ((struct DispatchRow *)CastleDispatchTable)[0].fn_14 = FUN_004244b0;
         DAT_0082adb0[2] = (unsigned int)head;
     }
     // STRING: LEGOLAND 0x004b5b7c
@@ -5440,8 +5440,8 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_9c = FUN_0041ed50;
         obj->cb_a4 = FUN_00424830;
         obj->cb_b0 = FUN_00424700;
-        ((struct DispatchRow *)DAT_0082ad20)[1].fn_10 = FUN_00424820;
-        ((struct DispatchRow *)DAT_0082ad20)[1].fn_14 = FUN_00424800;
+        ((struct DispatchRow *)CastleDispatchTable)[1].fn_10 = FUN_00424820;
+        ((struct DispatchRow *)CastleDispatchTable)[1].fn_14 = FUN_00424800;
         DAT_0082adb0[3] = (unsigned int)head;
     }
     // STRING: LEGOLAND 0x004b5bfc
@@ -5455,12 +5455,12 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_ac = CastleUnloadBasicTiles;
         obj->cb_b0 = FUN_00427a00;
         obj->cb_90 = FUN_004275d0;
-        ((struct DispatchRow *)DAT_0082ad20)[2].field_0 = (unsigned int)head;
-        ((struct DispatchRow *)DAT_0082ad20)[2].fn_4 = FUN_00427940;
-        ((struct DispatchRow *)DAT_0082ad20)[2].fn_8 = FUN_00427b20;
-        ((struct DispatchRow *)DAT_0082ad20)[2].fn_10 = FUN_00427970;
-        ((struct DispatchRow *)DAT_0082ad20)[2].fn_c = FUN_00427bc0;
-        ((struct DispatchRow *)DAT_0082ad20)[2].fn_14 = FUN_004279f0;
+        ((struct DispatchRow *)CastleDispatchTable)[2].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)CastleDispatchTable)[2].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)CastleDispatchTable)[2].fn_8 = FUN_00427b20;
+        ((struct DispatchRow *)CastleDispatchTable)[2].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)CastleDispatchTable)[2].fn_c = FUN_00427bc0;
+        ((struct DispatchRow *)CastleDispatchTable)[2].fn_14 = FUN_004279f0;
         DAT_0082adb0[0] = (unsigned int)head;
     }
     // STRING: LEGOLAND 0x004b5be8
@@ -5472,12 +5472,12 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_9c = FUN_0041ed50;
         obj->cb_a4 = FUN_00427ef0;
         obj->cb_b0 = FUN_00427a00;
-        ((struct DispatchRow *)DAT_0082ad20)[3].field_0 = (unsigned int)head;
-        ((struct DispatchRow *)DAT_0082ad20)[3].fn_4 = FUN_00427940;
-        ((struct DispatchRow *)DAT_0082ad20)[3].fn_8 = FUN_00427c90;
-        ((struct DispatchRow *)DAT_0082ad20)[3].fn_10 = FUN_00427970;
-        ((struct DispatchRow *)DAT_0082ad20)[3].fn_c = FUN_00427ea0;
-        ((struct DispatchRow *)DAT_0082ad20)[3].fn_14 = FUN_004279f0;
+        ((struct DispatchRow *)CastleDispatchTable)[3].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)CastleDispatchTable)[3].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)CastleDispatchTable)[3].fn_8 = FUN_00427c90;
+        ((struct DispatchRow *)CastleDispatchTable)[3].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)CastleDispatchTable)[3].fn_c = FUN_00427ea0;
+        ((struct DispatchRow *)CastleDispatchTable)[3].fn_14 = FUN_004279f0;
         DAT_0082adb0[5] = (unsigned int)head;
     }
     // STRING: LEGOLAND 0x004b5bd0
@@ -5489,12 +5489,12 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_9c = FUN_0041ed50;
         obj->cb_a4 = FUN_00427f30;
         obj->cb_b0 = FUN_00427a00;
-        ((struct DispatchRow *)DAT_0082ad20)[4].field_0 = (unsigned int)head;
-        ((struct DispatchRow *)DAT_0082ad20)[4].fn_4 = FUN_00427940;
-        ((struct DispatchRow *)DAT_0082ad20)[4].fn_8 = FUN_00427c90;
-        ((struct DispatchRow *)DAT_0082ad20)[4].fn_10 = FUN_00427970;
-        ((struct DispatchRow *)DAT_0082ad20)[4].fn_c = FUN_00427ea0;
-        ((struct DispatchRow *)DAT_0082ad20)[4].fn_14 = FUN_004279f0;
+        ((struct DispatchRow *)CastleDispatchTable)[4].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)CastleDispatchTable)[4].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)CastleDispatchTable)[4].fn_8 = FUN_00427c90;
+        ((struct DispatchRow *)CastleDispatchTable)[4].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)CastleDispatchTable)[4].fn_c = FUN_00427ea0;
+        ((struct DispatchRow *)CastleDispatchTable)[4].fn_14 = FUN_004279f0;
         DAT_0082adb0[4] = (unsigned int)head;
     }
     // STRING: LEGOLAND 0x004b5bb4
@@ -5506,12 +5506,12 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_9c = FUN_0041ed50;
         obj->cb_a4 = FUN_00428070;
         obj->cb_b0 = FUN_00427a00;
-        ((struct DispatchRow *)DAT_0082ad20)[5].field_0 = (unsigned int)head;
-        ((struct DispatchRow *)DAT_0082ad20)[5].fn_4 = FUN_00427940;
-        ((struct DispatchRow *)DAT_0082ad20)[5].fn_8 = FUN_004280b0;
-        ((struct DispatchRow *)DAT_0082ad20)[5].fn_10 = FUN_00427970;
-        ((struct DispatchRow *)DAT_0082ad20)[5].fn_c = FUN_00428300;
-        ((struct DispatchRow *)DAT_0082ad20)[5].fn_14 = FUN_004279f0;
+        ((struct DispatchRow *)CastleDispatchTable)[5].field_0 = (unsigned int)head;
+        ((struct DispatchRow *)CastleDispatchTable)[5].fn_4 = FUN_00427940;
+        ((struct DispatchRow *)CastleDispatchTable)[5].fn_8 = FUN_004280b0;
+        ((struct DispatchRow *)CastleDispatchTable)[5].fn_10 = FUN_00427970;
+        ((struct DispatchRow *)CastleDispatchTable)[5].fn_c = FUN_00428300;
+        ((struct DispatchRow *)CastleDispatchTable)[5].fn_14 = FUN_004279f0;
         DAT_0082adb0[1] = (unsigned int)head;
     }
     // STRING: LEGOLAND 0x004b5ba0
@@ -5970,7 +5970,7 @@ void FUN_004266b0(struct ListLink *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004266e0
-void FUN_004266e0(struct ListLink *param_1) {
+void UnlinkListLink(struct ListLink *param_1) {
     struct ListLink *temp_ptr_1;
     struct ListLink *temp_ptr_2;
 
@@ -6016,7 +6016,7 @@ void FUN_004267b0(unsigned int *t, unsigned int *m3, struct EdgeObj *obj) {
     FUN_004261c0(&obj->pts[0][0], &pts[0][0], (float (*)[4])m, obj->npts);
     FUN_00426230(pts, xf, obj->npts);
     for (i = 0; i < obj->nedges; i++) {
-        FUN_004237f0(xf[obj->edges[i].a], xf[obj->edges[i].b], obj->color);
+        DrawDottedLine(xf[obj->edges[i].a], xf[obj->edges[i].b], obj->color);
     }
 }
 
@@ -7659,7 +7659,7 @@ void FUN_00428b80(struct Curve *curve, float *off) {
         t = t + step;
     }
     FUN_00426230(DAT_006122a0, DAT_006159c8, 0x5a);
-    FUN_004238a0(&DAT_006159c8[0][0], 0x5a, -1);
+    PlotClippedPoints(&DAT_006159c8[0][0], 0x5a, -1);
 }
 
 // Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().

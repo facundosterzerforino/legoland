@@ -708,7 +708,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         out.x = out.x + coords[0];
         out.y = out.y + coords[1];
         if (obj->flags & 0x400000) {
-            FUN_00482a90();
+            InitEntrance1Point();
             UpdatePathLinks(1);
             effect = GetEntrance1Point();
             FUN_00477bd0(out.x, out.y, effect->x, effect->y);
@@ -726,7 +726,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         out.y = out.y + coords[1];
         PutObjOnMap((struct ObjClass *)obj, (unsigned int)editObj, (struct Point *)coords);
         if (obj->flags & 0x400000) {
-            FUN_00482a90();
+            InitEntrance1Point();
             UpdatePathLinks(1);
             effect = GetEntrance1Point();
             FUN_00477bd0(out.x, out.y, effect->x, effect->y);
@@ -820,7 +820,7 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
         EditCursor.field_140c = saved_140c;
         EditCursor.field_1410 = saved_1410;
     } else if (EditMode.unk8 != 0) {
-        ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->element, &DAT_00813a44, 0x8f8);
+        ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->element, &MousePos, 0x8f8);
     }
 }
 
@@ -2073,7 +2073,7 @@ LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
 LEGO_EXPORT void MouseScrollMap(void) {
     struct Point mouse;
 
-    mouse = DAT_00813a44;
+    mouse = MousePos;
     if (mouse.x < lpConfig->scroll_border_x) {
         if (ScrollSpeedX > -(int)lpConfig->scroll_max_x) {
             ScrollSpeedX -= lpConfig->scroll_accel_x;

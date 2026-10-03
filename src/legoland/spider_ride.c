@@ -199,11 +199,11 @@ void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
                     IP_RenderBlokeIn3DNow(blokes[i]);
                 }
             }
-            LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->frame);
-            off = GetRenderOffsetForLayer(DAT_004cbf28, 1);
+            LLSSetFrame(GetLLSForLayer(SpiderRideLayer, 1), state->frame);
+            off = GetRenderOffsetForLayer(SpiderRideLayer, 1);
             AdjustOffsetForViewMode(&off);
-            PrintSprite(GetSpriteForLayer(DAT_004cbf28, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
-            off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
+            PrintSprite(GetSpriteForLayer(SpiderRideLayer, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+            off = GetRenderOffsetForLayer(SpiderRideLayer, 2);
             AdjustOffsetForViewMode(&off);
             PrintSprite(SpiderHutMask2Sprite, screen.x + off.x, screen.y + off.y, param_6, 0);
             *(short *)*ZSpiderSprite->lls = state->frame;
@@ -232,20 +232,20 @@ void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
                     IP_RenderBlokeIn3DNow(elem->rider);
                 }
             }
-            off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
+            off = GetRenderOffsetForLayer(SpiderRideLayer, 2);
             AdjustOffsetForViewMode(&off);
             PrintSprite(SpiderHutMask1Sprite, screen.x + off.x, screen.y + off.y, param_6, 0);
             return;
         }
     }
     {
-        LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), state->frame);
-        off = GetRenderOffsetForLayer(DAT_004cbf28, 1);
+        LLSSetFrame(GetLLSForLayer(SpiderRideLayer, 1), state->frame);
+        off = GetRenderOffsetForLayer(SpiderRideLayer, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_004cbf28, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
-        off = GetRenderOffsetForLayer(DAT_004cbf28, 2);
+        PrintSprite(GetSpriteForLayer(SpiderRideLayer, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+        off = GetRenderOffsetForLayer(SpiderRideLayer, 2);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_004cbf28, 2), screen.x + off.x, screen.y + off.y, param_6, 0);
+        PrintSprite(GetSpriteForLayer(SpiderRideLayer, 2), screen.x + off.x, screen.y + off.y, param_6, 0);
     }
 }
 
@@ -253,8 +253,8 @@ void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
 void FUN_00415e80(struct CarNode *param_1) {
     DAT_004cbf20 = ((unsigned int *)param_1)[3];
     ((unsigned int *)DAT_004cbf20)[7] |= 0x420;
-    DAT_004cbf28 = (struct Sprite *)((unsigned int *)DAT_004cbf20)[25];
-    DAT_004cbf28->flags |= 0x2000;
+    SpiderRideLayer = (struct Sprite *)((unsigned int *)DAT_004cbf20)[25];
+    SpiderRideLayer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b4ea0
     SpiderRunBinV = LoadBinV("Zbuffers\\spiderrun.bnv");
     // STRING: LEGOLAND 0x004b4e88
@@ -273,12 +273,12 @@ void FUN_00415e80(struct CarNode *param_1) {
     DAT_004cbf38[1] = ZSpiderSprite;
     DAT_004cbf30[1] = SpiderOnBinV;
     DAT_004cbf38[0] = SpiderOffBinV;
-    HideLayer(DAT_004cbf28, 2);
-    StopLayerPlaying(DAT_004cbf28, 2);
-    LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 2), 0);
-    HideLayer(DAT_004cbf28, 1);
-    StopLayerPlaying(DAT_004cbf28, 1);
-    LLSSetFrame(GetLLSForLayer(DAT_004cbf28, 1), 0);
+    HideLayer(SpiderRideLayer, 2);
+    StopLayerPlaying(SpiderRideLayer, 2);
+    LLSSetFrame(GetLLSForLayer(SpiderRideLayer, 2), 0);
+    HideLayer(SpiderRideLayer, 1);
+    StopLayerPlaying(SpiderRideLayer, 1);
+    LLSSetFrame(GetLLSForLayer(SpiderRideLayer, 1), 0);
     Load_FXList(SpiderRide_SFX, 1);
 }
 

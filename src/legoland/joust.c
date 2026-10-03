@@ -746,7 +746,7 @@ void JoustSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00408c00
-void FUN_00408c00(void) {
+void JoustFreeResources(void) {
     Kill_FXList(JOUST_SFX, 1);
     KillSprite(JoustFMaskSprite);
     KillSprite(JoustSpecRMSprite);
@@ -861,7 +861,7 @@ LEGO_EXPORT void Joust_GetInterfaces(struct ClassNode *head, struct CallbackTabl
     // STRING: LEGOLAND 0x004b4718
     if (_stricmp("JOUST", head->name) == 0) {
         iface->cb_a4 = FUN_00407b50;
-        iface->cb_ac = FUN_00408c00;
+        iface->cb_ac = JoustFreeResources;
         iface->cb_8c = JoustSetEditMode;
         iface->cb_a8 = FUN_00407c30;
         iface->cb_b0 = FUN_00408580;

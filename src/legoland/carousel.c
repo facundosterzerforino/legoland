@@ -128,8 +128,8 @@ void FUN_0042c280(struct CarouselRideObj *param_1) {
     DAT_006160bc = param_1->ride;
     Load_FXList(CAROUSSEL_SFX, 2);
     DAT_006160bc->flags |= 0x420;
-    DAT_00616068 = DAT_006160bc->layer;
-    *(unsigned int *)((char *)DAT_00616068 + 0x10) |= 0x2000;
+    CarouselLayer = DAT_006160bc->layer;
+    *(unsigned int *)((char *)CarouselLayer + 0x10) |= 0x2000;
     GetLayer((struct LayerOwner *)DAT_006160bc->layer, &layer, 0);
     DAT_00616078 = layer.x + -0x58;
     DAT_0061607c = layer.y + -0xcd;
@@ -149,13 +149,13 @@ void FUN_0042c280(struct CarouselRideObj *param_1) {
     CarouselEntranceMatteSprite = LoadSprite("Carousel Entrance Matte.lls", 1);
     // STRING: LEGOLAND 0x004b651c
     CarouselEntranceMatte2Sprite = LoadSprite("Carousel Entrance Matte2.lls", 1);
-    HideLayer(DAT_00616068, 2);
-    StopLayerPlaying((unsigned int)DAT_00616068, 2);
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616068, 2), 0);
-    HideLayer(DAT_00616068, 0);
-    StopLayerPlaying((unsigned int)DAT_00616068, 0);
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616068, 0), 0);
-    HideLayer(DAT_00616068, 1);
+    HideLayer(CarouselLayer, 2);
+    StopLayerPlaying((unsigned int)CarouselLayer, 2);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)CarouselLayer, 2), 0);
+    HideLayer(CarouselLayer, 0);
+    StopLayerPlaying((unsigned int)CarouselLayer, 0);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)CarouselLayer, 0), 0);
+    HideLayer(CarouselLayer, 1);
 }
 
 // FUNCTION: LEGOLAND 0x0042c3f0
@@ -546,20 +546,20 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                 elem = elem->next;
             } while (elem != NULL);
             if (cVar5 != '\0') {
-                uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 0);
+                uVar7 = GetLLSForLayer((unsigned int)CarouselLayer, 0);
                 LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
-                local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 0);
+                local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 0);
                 AdjustOffsetForViewMode(&local_5c);
-                uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 0);
+                uVar7 = GetSpriteForLayer((struct LayerContainer *)CarouselLayer, 0);
                 PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
-                local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
+                local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 1);
                 AdjustOffsetForViewMode(&local_54);
                 PrintSprite(CarouselEntranceMatte2Sprite, local_54.x + iVar6, local_54.y + iVar10, param_6, (int *)&local_4c);
-                uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 2);
+                uVar7 = GetLLSForLayer((unsigned int)CarouselLayer, 2);
                 LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
-                local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 2);
+                local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 2);
                 AdjustOffsetForViewMode(&local_5c);
-                uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 2);
+                uVar7 = GetSpriteForLayer((struct LayerContainer *)CarouselLayer, 2);
                 PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
                 if ('\0' < cVar5) {
                     int *p;
@@ -631,27 +631,27 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                         iVar4 = DAT_0061607c;
                     }
                 }
-                local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
+                local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 1);
                 AdjustOffsetForViewMode(&local_54);
                 PrintSprite(CarouselEntranceMatteSprite, local_54.x + iVar6, local_54.y + iVar10, param_6, 0);
                 return;
             }
         }
-        uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 0);
+        uVar7 = GetLLSForLayer((unsigned int)CarouselLayer, 0);
         LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
-        local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 0);
+        local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 0);
         AdjustOffsetForViewMode(&local_5c);
-        uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 0);
+        uVar7 = GetSpriteForLayer((struct LayerContainer *)CarouselLayer, 0);
         PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
-        local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
+        local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 1);
         AdjustOffsetForViewMode(&local_5c);
-        uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 1);
+        uVar7 = GetSpriteForLayer((struct LayerContainer *)CarouselLayer, 1);
         PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
-        uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 2);
+        uVar7 = GetLLSForLayer((unsigned int)CarouselLayer, 2);
         LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
-        local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 2);
+        local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)CarouselLayer, 2);
         AdjustOffsetForViewMode(&local_5c);
-        uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 2);
+        uVar7 = GetSpriteForLayer((struct LayerContainer *)CarouselLayer, 2);
         PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
     }
 }

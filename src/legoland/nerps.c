@@ -162,7 +162,7 @@ unsigned int FUN_0046a170(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a190
-unsigned int FUN_0046a190(struct NerpsArg *arg) {
+unsigned int GenerateWorkers(struct NerpsArg *arg) {
     int i;
 
     SetBricksLimited(0);
@@ -887,7 +887,7 @@ unsigned int FUN_0046ae70(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046aec0
-unsigned int FUN_0046aec0(struct NerpsArg *arg) {
+unsigned int AdjustGardenerCount(struct NerpsArg *arg) {
     int current;
     int target;
 
@@ -1150,7 +1150,7 @@ EventHandler DAT_004b9d44[68] = {
     (EventHandler)FUN_00469fc0,
     (EventHandler)FUN_0046a030,
     (EventHandler)FUN_0046a120,
-    (EventHandler)FUN_0046a190,
+    (EventHandler)GenerateWorkers,
     (EventHandler)FUN_0046a1f0,
     (EventHandler)FUN_0046a230,
     (EventHandler)FUN_0046a300,
@@ -1192,7 +1192,7 @@ EventHandler DAT_004b9d44[68] = {
     (EventHandler)FUN_0046ae30,
     (EventHandler)FUN_0046ae40,
     (EventHandler)FUN_0046ae70,
-    (EventHandler)FUN_0046aec0,
+    (EventHandler)AdjustGardenerCount,
     (EventHandler)FUN_0046af10,
     (EventHandler)FUN_0046af60,
     (EventHandler)FUN_0046afe0,
@@ -1298,7 +1298,7 @@ void FUN_0046b2d0(void) {
             DAT_0066879c = (unsigned int)DAT_00668798;
             if (DAT_00668798 != NULL) {
                 DAT_00668790 = 1;
-                FUN_0046c540((struct AppendArgC *)DAT_00668798);
+                AppendObjectiveEventList((struct AppendArgC *)DAT_00668798);
                 FUN_00468d00();
             }
         }
@@ -2200,7 +2200,7 @@ struct AppendArgC {
 };
 
 // FUNCTION: LEGOLAND 0x0046c540
-void FUN_0046c540(struct AppendArgC *arg) {
+void AppendObjectiveEventList(struct AppendArgC *arg) {
     struct ObjectiveEvent *cur;
 
     cur = DAT_00668784;

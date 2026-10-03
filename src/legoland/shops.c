@@ -838,12 +838,12 @@ void FUN_0043a1e0(struct Element *obj) {
 // FUNCTION: LEGOLAND 0x0043a390
 unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
     struct RideBuilding *building = obj->building;
-    DAT_0082c6a0.sprite = building->layer;
-    DAT_0082c6a0.x = building->field_14;
-    DAT_0082c6a0.y = building->field_18;
-    DAT_0082c6a0.id = param_2;
+    RideSpriteInfoBuffer.sprite = building->layer;
+    RideSpriteInfoBuffer.x = building->field_14;
+    RideSpriteInfoBuffer.y = building->field_18;
+    RideSpriteInfoBuffer.id = param_2;
     building->layer->field_10 |= 0x2000;
-    return &DAT_0082c6a0;
+    return &RideSpriteInfoBuffer;
 }
 
 // FUNCTION: LEGOLAND 0x0043a3d0

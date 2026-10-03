@@ -229,23 +229,23 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
         if (IsFavouriteFood(bloke, ride->element)) {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 9, code);
+            ApplyMoodDelta(bloke, 9, code);
             bloke->field_7c = 0;
         } else {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 10, code);
+            ApplyMoodDelta(bloke, 10, code);
             bloke->field_7c = 0;
         }
     } else {
         if (IsFavouriteAttraction(bloke, ride->element)) {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 0xb, code);
+            ApplyMoodDelta(bloke, 0xb, code);
         } else {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 0xc, code);
+            ApplyMoodDelta(bloke, 0xc, code);
         }
     }
     counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));

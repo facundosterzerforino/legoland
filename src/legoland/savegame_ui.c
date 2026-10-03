@@ -199,7 +199,7 @@ LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
     // STRING: LEGOLAND 0x004bf2b8
     file = fopen(buffer, "r");
     if (file != 0) {
-        fread(&DAT_007cad60, sizeof(struct ProfileData), 1, file);
+        fread(&TempProfile, sizeof(struct ProfileData), 1, file);
         fclose(file);
         ReturnFrom_ProfileDir();
         return 1;
@@ -215,11 +215,11 @@ unsigned char FUN_0048d970(unsigned int a1, unsigned char flags) {
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         if (LoadDateIntoTempProfile(CurrentProfile.profile_slot, CurrentProfile.save_slot & 0xff) != 0) {
-            CurrentProfile.field_45 = DAT_007cad60.field_24;
-            CurrentProfile.field_20 = DAT_007cad60.field_20;
-            CurrentProfile.speech_volume = DAT_007cad60.speech_volume;
-            CurrentProfile.music_volume = DAT_007cad60.music_volume;
-            CurrentProfile.fx_volume = DAT_007cad60.fx_volume;
+            CurrentProfile.field_45 = TempProfile.field_24;
+            CurrentProfile.field_20 = TempProfile.field_20;
+            CurrentProfile.speech_volume = TempProfile.speech_volume;
+            CurrentProfile.music_volume = TempProfile.music_volume;
+            CurrentProfile.fx_volume = TempProfile.fx_volume;
             DAT_00667c64 = 1;
             DAT_00667c80 = 1;
         }
@@ -353,7 +353,7 @@ LEGO_EXPORT void KillSaveScreenSprites(void) {
 
 // FUNCTION: LEGOLAND 0x0048dd00
 LEGO_EXPORT void PrintSavedGameDetails(void) {
-    struct IconNode *node = DAT_006687c8;
+    struct IconNode *node = IconListHead;
     struct IconNode *selected;
     struct IconNode *btn;
     int by;
@@ -559,8 +559,8 @@ LEGO_EXPORT void InitNewSaveGamePOPUP(struct IconNode *icon) {
 
 // FUNCTION: LEGOLAND 0x0048e3d0
 void FUN_0048e3d0(const char *name) {
-    strcpy(DAT_007cad60.name, name);
-    DAT_007cad60.name_len = (unsigned char)strlen(name);
+    strcpy(TempProfile.name, name);
+    TempProfile.name_len = (unsigned char)strlen(name);
     DAT_007986f0 = 1;
 }
 
@@ -641,25 +641,25 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
     int fy;
 
     *(short *)cursor_str = *(short *)"|";
-    count = DAT_007cad60.name_len;
+    count = TempProfile.name_len;
     input = GetInputChar();
     if (input != zero) {
         if (input == -1 && count != zero) {
             count--;
-            DAT_007cad60.name[count] = zero;
+            TempProfile.name[count] = zero;
         }
         if (count < 0x1f && DAT_00798738 < 0xcb) {
             if (input > '\0') {
                 int index = count;
                 count++;
-                DAT_007cad60.name[index] = input;
-                DAT_007cad60.name[count] = zero;
+                TempProfile.name[index] = input;
+                TempProfile.name[count] = zero;
             } else if (input == ' ') {
                 if (count != zero) {
                     int index = count;
                     count++;
-                    DAT_007cad60.name[index] = ' ';
-                    DAT_007cad60.name[count] = zero;
+                    TempProfile.name[index] = ' ';
+                    TempProfile.name[count] = zero;
                 }
             }
         }
@@ -674,7 +674,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
         rc.top = top;
         rc.right = right;
         rc.bottom = bottom;
-        center_x = FUN_00491e40(DAT_007cad60.name, 2, rc, 1);
+        center_x = FUN_00491e40(TempProfile.name, 2, rc, 1);
     } else {
         center_x = (right + left) >> 1;
     }
@@ -693,14 +693,14 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
         rc.bottom = bottom;
         FUN_00490fa0(cursor_str, 2, rc, 1);
     }
-    DAT_007cad60.name_len = count;
+    TempProfile.name_len = count;
     focus = (struct EditSprite *)PopUpOkIcon;
     fx = focus->field_c;
     fy = focus->field_e;
-    if (fx + 0x48 < (int)DAT_00813a44.x || (int)DAT_00813a44.x < fx) {
+    if (fx + 0x48 < (int)MousePos.x || (int)MousePos.x < fx) {
         FUN_0048e420();
     }
-    if (fy + 0x1b < (int)DAT_00813a44.y || (int)DAT_00813a44.y < fy) {
+    if (fy + 0x1b < (int)MousePos.y || (int)MousePos.y < fy) {
         FUN_0048e420();
     }
 }
@@ -714,11 +714,11 @@ unsigned char FUN_0048e720(struct IconNode *icon, unsigned int a2, unsigned int 
     FUN_0048e420();
     SetIconSprite(icon, PuOkOnSprite);
     if (a2 & 2) {
-        if (DAT_007cad60.name[0] == 0) {
+        if (TempProfile.name[0] == 0) {
             // STRING: LEGOLAND 0x004bf2e8
             sprintf(buf, "%s%d", GetString(0x87), *(unsigned int *)&CurrentProfile.save_slot & 0xff);
-            strcpy(DAT_007cad60.name, buf);
-            DAT_007cad60.name_len = (unsigned char)strlen(buf);
+            strcpy(TempProfile.name, buf);
+            TempProfile.name_len = (unsigned char)strlen(buf);
             FUN_0048d490();
             return 1;
         }
@@ -770,11 +770,11 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     }
     UnloadWatchSprite();
 
-    DAT_007cad60.field_24 = CurrentProfile.field_45;
-    DAT_007cad60.field_20 = CurrentProfile.field_20;
-    DAT_007cad60.speech_volume = CurrentProfile.speech_volume;
-    DAT_007cad60.music_volume = CurrentProfile.music_volume;
-    DAT_007cad60.fx_volume = CurrentProfile.fx_volume;
+    TempProfile.field_24 = CurrentProfile.field_45;
+    TempProfile.field_20 = CurrentProfile.field_20;
+    TempProfile.speech_volume = CurrentProfile.speech_volume;
+    TempProfile.music_volume = CurrentProfile.music_volume;
+    TempProfile.fx_volume = CurrentProfile.fx_volume;
 
     sprintf(header_path, "profiles\\%dsave%d.sh", CurrentProfile.profile_slot, *(unsigned int *)&CurrentProfile.save_slot & 0xff);
     if (!Goto_ProfileDir()) {
@@ -789,7 +789,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
         // STRING: LEGOLAND 0x004bf320
         LogPrintf("\ncannot open output file %s", header_path);
     } else {
-        if (fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, file) == 0) {
+        if (fwrite(&TempProfile, sizeof(struct ProfileData), 1, file) == 0) {
             // STRING: LEGOLAND 0x004bf2fc
             LogPrintf("Failed to write to save header %s", header_path);
         }

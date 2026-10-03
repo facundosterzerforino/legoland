@@ -21,7 +21,7 @@
 void FUN_0042a7b0(Element *obj) {
     DAT_0081cde4 = obj->ride;
     DAT_0081cde4->flags |= 0x420;
-    DAT_00616044 = DAT_0081cde4->layer;
+    BalloonzLayer = DAT_0081cde4->layer;
     DAT_0081cde4->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b64ac
     BallBaseM1Sprite = LoadSprite("Ballbasem1.lls", 1);
@@ -41,12 +41,12 @@ void FUN_0042a7b0(Element *obj) {
     // STRING: LEGOLAND 0x004b6430
     BalloonzBinV = LoadBinV("Zbuffers\\balloonz.bnv");
     DAT_00616018[0] = BalloonzBinV;
-    HideLayer(DAT_00616044, 2);
-    StopLayerPlaying(DAT_00616044, 2);
-    LLSSetFrame(GetLLSForLayer(DAT_00616044, 2), 0);
-    HideLayer(DAT_00616044, 1);
-    StopLayerPlaying(DAT_00616044, 1);
-    LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), 0);
+    HideLayer(BalloonzLayer, 2);
+    StopLayerPlaying(BalloonzLayer, 2);
+    LLSSetFrame(GetLLSForLayer(BalloonzLayer, 2), 0);
+    HideLayer(BalloonzLayer, 1);
+    StopLayerPlaying(BalloonzLayer, 1);
+    LLSSetFrame(GetLLSForLayer(BalloonzLayer, 1), 0);
 }
 
 // FUNCTION: LEGOLAND 0x0042a8f0
@@ -499,7 +499,7 @@ void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
     }
     if (count != 0) {
         riders = ride->riders;
-        off = GetRenderOffsetForLayer(DAT_00616044, 0);
+        off = GetRenderOffsetForLayer(BalloonzLayer, 0);
         AdjustOffsetForViewMode(&off);
         for (i = 0; i < count; i++) {
             if (blokes[i]->param_action == 6) {
@@ -554,13 +554,13 @@ void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
                 IP_RenderBlokeIn3DNow(blokes[i]);
             }
         }
-        LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), frame);
-        off = GetRenderOffsetForLayer(DAT_00616044, 1);
+        LLSSetFrame(GetLLSForLayer(BalloonzLayer, 1), frame);
+        off = GetRenderOffsetForLayer(BalloonzLayer, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_00616044, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+        PrintSprite(GetSpriteForLayer(BalloonzLayer, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
         if (frame % 8 == 0 || frame == 0) {
-            LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), frame);
-            off = GetRenderOffsetForLayer(DAT_00616044, 1);
+            LLSSetFrame(GetLLSForLayer(BalloonzLayer, 1), frame);
+            off = GetRenderOffsetForLayer(BalloonzLayer, 1);
             AdjustOffsetForViewMode(&off);
             for (i = 0; i < count; i++) {
                 if (blokes[i]->param_action == 8) {
@@ -623,20 +623,20 @@ void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsi
             }
         }
     } else {
-        LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), frame);
-        off = GetRenderOffsetForLayer(DAT_00616044, 1);
+        LLSSetFrame(GetLLSForLayer(BalloonzLayer, 1), frame);
+        off = GetRenderOffsetForLayer(BalloonzLayer, 1);
         AdjustOffsetForViewMode(&off);
-        PrintSprite(GetSpriteForLayer(DAT_00616044, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+        PrintSprite(GetSpriteForLayer(BalloonzLayer, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
     }
     anim++;
     if (anim > 48) {
         anim = 0;
     }
     state->anim = anim;
-    LLSSetFrame(GetLLSForLayer(DAT_00616044, 2), anim);
-    off = GetRenderOffsetForLayer(DAT_00616044, 2);
+    LLSSetFrame(GetLLSForLayer(BalloonzLayer, 2), anim);
+    off = GetRenderOffsetForLayer(BalloonzLayer, 2);
     AdjustOffsetForViewMode(&off);
-    PrintSprite(GetSpriteForLayer(DAT_00616044, 2), screen.x + off.x, screen.y + off.y, param_6, 0);
+    PrintSprite(GetSpriteForLayer(BalloonzLayer, 2), screen.x + off.x, screen.y + off.y, param_6, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0042b9d0
