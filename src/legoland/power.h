@@ -13,4 +13,4 @@ void KillPowerStationSFX();
 void SmallPowerStationAddObject(unsigned int param_1, int *param_2);
 void CrystalPowerStationAddObject(unsigned int param_1, int *param_2);
 void KillDinoSFX();
-void FUN_00452bc0(unsigned int param_1, int *param_2);
+void DinoAddObject(unsigned int param_1, int *param_2);

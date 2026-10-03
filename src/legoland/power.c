@@ -106,7 +106,7 @@ void KillDinoSFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00452bc0
-void FUN_00452bc0(unsigned int param_1, int *param_2) {
+void DinoAddObject(unsigned int param_1, int *param_2) {
     struct SampleParams params;
     unsigned int r;
     AddBasicObject(param_1, (unsigned int)param_2);

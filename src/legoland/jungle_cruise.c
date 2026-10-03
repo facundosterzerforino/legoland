@@ -621,9 +621,9 @@ void FUN_00433840(struct JungleRide *ride, int from, int to) {
 }
 
 // FUNCTION: LEGOLAND 0x00433ca0
-void FUN_00433ca0(Element *obj) {
+void LoadBrijMaskSprite(Element *obj) {
     struct Ride *ride = obj->ride;
-    DAT_0081cb70 = ride;
+    MonkeyTreeRide = ride;
     ride->flags |= 0x400;
     // STRING: LEGOLAND 0x004b720c
     BrijMaskSprite = LoadSprite("brijmask.lls", 1);
@@ -635,16 +635,16 @@ void KillBrijMaskSprite(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00433ce0
-void FUN_00433ce0(void) {
+void MonkeyTreeSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb70;
+    EditMode.unk8 = MonkeyTreeRide;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
-    SetEditCursorFootPrint(&DAT_0081cb70->footprint);
+    SetEditCursorFootPrint(&MonkeyTreeRide->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00433d20
-void FUN_00433d20(unsigned int param_1, int *param_2) {
+void MonkeyTreeAddObject(unsigned int param_1, int *param_2) {
     struct JungleObj *obj;
     unsigned char temp[2];
     unsigned short coord;
@@ -747,7 +747,7 @@ unsigned int FUN_00433fa0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00433fc0
-void FUN_00433fc0(void *param_1, TileId tile, struct Cursor *param_3) {
+void MonkeyTreeRemoveObject(void *param_1, TileId tile, struct Cursor *param_3) {
     struct JungleObj *node = DAT_00629c2c;
     struct JungleObj *prev = NULL;
 
@@ -772,7 +772,7 @@ void FUN_00433fc0(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00434040
-struct RideSpriteInfo *FUN_00434040(Element *obj, unsigned short param_2) {
+struct RideSpriteInfo *GetMonkeyTreeSpriteInfo(Element *obj, unsigned short param_2) {
     struct Ride *ride = obj->ride;
     RideSpriteInfoBuffer.sprite = ride->layer;
     RideSpriteInfoBuffer.x = ride->field_14;
@@ -782,7 +782,7 @@ struct RideSpriteInfo *FUN_00434040(Element *obj, unsigned short param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00434080
-void FUN_00434080(Element *obj) {
+void LoadMFish2Sprite(Element *obj) {
     struct Ride *ride = obj->ride;
     MFish2Ride = ride;
     ride->flags |= 0x400;
@@ -796,7 +796,7 @@ void KillMFish2Sprite(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004340c0
-void FUN_004340c0(void) {
+void MonkeyFishSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = MFish2Ride;
     DefaultCursor(&EditCursor);
@@ -805,7 +805,7 @@ void FUN_004340c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00434100
-void FUN_00434100(struct EditObject *obj, int *coords) {
+void MonkeyFishAddObject(struct EditObject *obj, int *coords) {
     TileId tile;
     struct JungleFish *fish;
     unsigned short owner;
@@ -934,7 +934,7 @@ unsigned int FUN_00434650(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00434670
-void FUN_00434670(void *param_1, TileId tile, struct Cursor *param_3) {
+void MonkeyFishRemoveObject(void *param_1, TileId tile, struct Cursor *param_3) {
     struct JungleFish *node = JungleFishList;
     struct JungleFish *prev = NULL;
     int x;
@@ -966,7 +966,7 @@ void FUN_00434670(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00434740
-struct RideSpriteInfo *FUN_00434740(Element *obj, short param_2) {
+struct RideSpriteInfo *GetMonkeyFishSpriteInfo(Element *obj, short param_2) {
     struct Ride *ride = obj->ride;
     struct JungleFish *node = JungleFishList;
     short *lls;
@@ -1052,7 +1052,7 @@ void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00434cb0
-void FUN_00434cb0(Element *obj) {
+void LoadJungleCruiseResources(Element *obj) {
     unsigned int handle;
     int i;
     struct Sprite *sprite;
@@ -1087,7 +1087,7 @@ void FUN_00434cb0(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00434e50
-void FUN_00434e50(Element *obj) {
+void UnloadJungleCruiseResources(Element *obj) {
     unsigned int handle;
     int i;
     struct Sprite *sprite;
@@ -1123,7 +1123,7 @@ void FUN_00434e50(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00434f50
-void FUN_00434f50(void) {
+void JungleCruiseSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = JungleCruiseRide;
     DefaultCursor(&EditCursor);
@@ -1133,7 +1133,7 @@ void FUN_00434f50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00434f90
-void FUN_00434f90(struct EditObject *obj, int *coords) {
+void JungleCruiseAddObject(struct EditObject *obj, int *coords) {
     TileId tile;
     struct JungleScore *score;
     int x;
@@ -1265,7 +1265,7 @@ void FUN_00435230(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00435470
-void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor) {
+void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
     struct JungleRide *ride = JungleRideList;
     struct JungleScore *prev = NULL;
     struct JungleScore *score = JungleScoreList;
@@ -1307,7 +1307,7 @@ void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor) {
                 path = path->next;
             }
         }
-        fake.ride = DAT_0081cb70;
+        fake.ride = MonkeyTreeRide;
         thing = DAT_00629c2c;
         while (thing != NULL) {
             if (thing->owner == tile.id) {
@@ -1315,7 +1315,7 @@ void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor) {
                 savedY = cursor->tile_y;
                 cursor->tile_x = thing->tile.pos.x;
                 cursor->tile_y = thing->tile.pos.y;
-                FUN_00433fc0(&fake, thing->tile, cursor);
+                MonkeyTreeRemoveObject(&fake, thing->tile, cursor);
                 cursor->tile_x = savedX;
                 cursor->tile_y = savedY;
                 thing = DAT_00629c2c;
@@ -1331,7 +1331,7 @@ void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor) {
                 savedY = cursor->tile_y;
                 cursor->tile_x = fish->tile.pos.x;
                 cursor->tile_y = fish->tile.pos.y;
-                FUN_00434670(&fake, fish->tile, cursor);
+                MonkeyFishRemoveObject(&fake, fish->tile, cursor);
                 cursor->tile_x = savedX;
                 cursor->tile_y = savedY;
                 fish = JungleFishList;
@@ -1520,7 +1520,7 @@ void FUN_00435750(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00435bd0
-void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
+void RenderJungleCruise(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
     int ride = *(int *)(param_1 + 0xc);
     unsigned int *node = *(unsigned int **)(ride + 0xcc);
     short *lls1;
@@ -1738,12 +1738,12 @@ int FUN_00436160(Element *obj, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00436190
-void FUN_00436190(Element *obj) {
+void InitJungleCruiseWater(Element *obj) {
     DAT_0081cb54 = obj->ride;
 }
 
 // FUNCTION: LEGOLAND 0x004361a0
-void FUN_004361a0(void) {
+void JungleCruiseWaterSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = DAT_0081cb54;
     DAT_0081cb54->footprint = DAT_004b7478;
@@ -2005,7 +2005,7 @@ void FUN_00436a40(Element *obj, TileId tile, struct Cursor *cursor) {
     }
     if (elem->field_0 != DAT_0081cb54->element) {
         fake.ride = JungleCruiseRide;
-        FUN_00435470(&fake, tile, cursor);
+        JungleCruiseRemoveObject(&fake, tile, cursor);
         return;
     }
     mask = FUN_00436fb0(cursor->tile_x, cursor->tile_y, &owner);

@@ -161,7 +161,7 @@ void FreeJoustNodeList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00407ad0
-void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
+void JoustRemoveObject(Element *editObj, TileId coords, struct Cursor *cursor) {
     struct JoustNode *node;
     struct {
         unsigned int kind;
@@ -184,7 +184,7 @@ void FUN_00407ad0(Element *editObj, TileId coords, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x00407b50
-void FUN_00407b50(struct JoustRoot *root) {
+void JoustLoadResources(struct JoustRoot *root) {
     Load_FXList(JOUST_SFX, 1);
     JoustRide = (unsigned int)root->field_c;
     ((struct JoustBlock *)JoustRide)->flags_1c |= 0x420;
@@ -556,7 +556,7 @@ void FUN_00407c30(struct Element *elem) {
 }
 
 // FUNCTION: LEGOLAND 0x00408580
-void FUN_00408580(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderJoust(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
     struct Ride *ride;
     struct RideNode *r;
     struct JoustNode *node;
@@ -860,12 +860,12 @@ LEGO_EXPORT int LoadJoust(struct JoustLoadArg *arg) {
 LEGO_EXPORT void Joust_GetInterfaces(struct ClassNode *head, struct CallbackTable *iface) {
     // STRING: LEGOLAND 0x004b4718
     if (_stricmp("JOUST", head->name) == 0) {
-        iface->cb_a4 = FUN_00407b50;
+        iface->cb_a4 = JoustLoadResources;
         iface->cb_ac = JoustFreeResources;
         iface->cb_8c = JoustSetEditMode;
         iface->cb_a8 = FUN_00407c30;
-        iface->cb_b0 = FUN_00408580;
-        iface->cb_9c = FUN_00407ad0;
+        iface->cb_b0 = RenderJoust;
+        iface->cb_9c = JoustRemoveObject;
         iface->cb_98 = JoustAddObject;
         iface->cb_a0 = FUN_00408c50;
         iface->cb_bc = SaveJoust;

@@ -91,7 +91,7 @@ void UpdateHedgeTileImage(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004325e0
-void FUN_004325e0(Element *obj, int *param_2) {
+void HedgeAddObject(Element *obj, int *param_2) {
     TileId packed;
     int pos[2];
     packed.pos.x = param_2[0];
@@ -121,7 +121,7 @@ void FUN_004325e0(Element *obj, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00432700
-void FUN_00432700(Element *obj, TileId tile, struct Cursor *cursor) {
+void HedgeRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
     int pos[2];
     int x = tile.pos.x;
     int y = tile.pos.y;
@@ -180,7 +180,7 @@ void UnloadFlowerImages(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004328c0
-void FUN_004328c0(void) {
+void FlowersSetEditMode(void) {
     void *var = DAT_0081cd04;
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
@@ -189,7 +189,7 @@ void FUN_004328c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432900
-void FUN_00432900(int param_1, int *param_2) {
+void FlowersAddObject(int param_1, int *param_2) {
     TileId packed;
     packed.pos.x = param_2[0];
     packed.pos.y = param_2[1];
@@ -214,13 +214,13 @@ struct RideSpriteInfo *GetFlowerSpriteInfo(int unused, TileId tile) {
 }
 
 // FUNCTION: LEGOLAND 0x004329c0
-void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
+void GardenGetInterfaces(struct ClassNode *head, struct CallbackTable *iface) {
     // STRING: LEGOLAND 0x004b7138
     if (strcmp(head->name, "HEDGE") == 0) {
         iface->cb_a4 = LoadHedgeImages;
         iface->cb_8c = FUN_004324d0;
-        iface->cb_98 = FUN_004325e0;
-        iface->cb_9c = FUN_00432700;
+        iface->cb_98 = HedgeAddObject;
+        iface->cb_9c = HedgeRemoveObject;
         iface->cb_a0 = GetHedgeSpriteInfo;
         iface->cb_ac = UnloadHedgeImages;
         return;
@@ -228,8 +228,8 @@ void FUN_004329c0(struct ClassNode *head, struct CallbackTable *iface) {
     // STRING: LEGOLAND 0x004b7130
     if (strcmp(head->name, "FLOWERS") == 0) {
         iface->cb_a4 = LoadFlowerImages;
-        iface->cb_8c = FUN_004328c0;
-        iface->cb_98 = FUN_00432900;
+        iface->cb_8c = FlowersSetEditMode;
+        iface->cb_98 = FlowersAddObject;
         iface->cb_a0 = GetFlowerSpriteInfo;
         iface->cb_ac = UnloadFlowerImages;
     }

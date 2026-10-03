@@ -201,7 +201,7 @@ void RenderEarthSlide(struct EarthRideObj *param_1, unsigned int param_2, unsign
 }
 
 // FUNCTION: LEGOLAND 0x0042d100
-void FUN_0042d100(struct EarthRideObj *param_1) {
+void LoadEarthSlideResources(struct EarthRideObj *param_1) {
     int layer;
 
     EarthSlideRide = (unsigned int)param_1->ride;
@@ -244,7 +244,7 @@ void UnloadEarthSlideResources(struct EarthRideObj *arg1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d230
-void FUN_0042d230(void) {
+void EarthSlideSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)EarthSlideRide;
     DefaultCursor(&EditCursor);
@@ -252,7 +252,7 @@ void FUN_0042d230(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d270
-void FUN_0042d270(struct EarthRideObj *param_1, TileId tile, unsigned int param_3) {
+void EarthSlideRemoveObject(struct EarthRideObj *param_1, TileId tile, unsigned int param_3) {
     struct EarthNode *node = FUN_0042ce20(&tile.id);
     if (node != NULL) {
         RemoveEarthNode(node);
@@ -262,7 +262,7 @@ void FUN_0042d270(struct EarthRideObj *param_1, TileId tile, unsigned int param_
 }
 
 // FUNCTION: LEGOLAND 0x0042d2c0
-void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2) {
+void EarthSlideAddObject(unsigned int param_1, unsigned char *param_2) {
     unsigned char buffer[2];
 
     buffer[0] = param_2[0];

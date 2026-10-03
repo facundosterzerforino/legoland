@@ -577,3 +577,278 @@ FUN_00492ce0	named	SetInteractiveMusicTheme
 FUN_004966a0	skipped-no-evidence		
 FUN_00499410	named	ResetGameTimer	
 FUN_00499500	skipped-no-evidence		
+FUN_00405370	named	LoadDrivingSchoolResources	DRIVING SCHOOL cb_a4 (setcustomcallbacks.c:91); loads DSCHOOL MAPPING/BLUE CAR, DSchool Matte.lls, palettes
+FUN_00405460	named	UnloadDrivingSchoolResources	DRIVING SCHOOL cb_ac (setcustomcallbacks.c:102); unloads DSCHOOL data, kills its sprites, frees palettes
+FUN_00411a10	named	InitDrivingSchoolPumps	DRIVING SCHOOL PUMPS cb_a4 (setcustomcallbacks.c:85); stores the ride pointer
+FUN_00413a10	named	LoadDrivingSchoolRoadsResources	DRIVING SCHOOL ROADS cb_a4 (setcustomcallbacks.c:107); loads DSCHOOL LIGHTS, TILES FOR DSCHOOL callbacks
+FUN_00413a80	named	UnloadDrivingSchoolRoadsResources	DRIVING SCHOOL ROADS cb_ac (setcustomcallbacks.c:108); unloads DSCHOOL LIGHTS, frees queue entries
+FUN_00414940	named	InitZebraCrossing	ZEBRA CROSSING cb_a4 (setcustomcallbacks.c:117); stores the ride pointer
+FUN_0042de50	named	LoadEntranceResources	ENTRANCE 1 cb_a4 (setcustomcallbacks.c:124); loads entrance_matte1-4.lls, booth1.lls, ENTRANCE_SFX
+FUN_0042def0	named	UnloadEntranceResources	ENTRANCE 1 cb_ac (setcustomcallbacks.c:125); kills the entrance sprites and SFX
+FUN_0043ce60	named	LoadGShedMatteSprite	POTTING SHED cb_a4 (setcustomcallbacks.c:130); loads gshedmatte.lls; pairs with KillGShedMatteSprite
+FUN_0043d250	named	LoadMechHutMaskSprite	MECHANICS HUT cb_a4 (setcustomcallbacks.c:139); loads MechHutMask.lls; pairs with KillMechHutMaskSprite
+FUN_0042c280	named	LoadCarouselResources	CAROUSEL cb_a4 (setcustomcallbacks.c:150); loads z_Carousel.lls, Carousel*.bnv, entrance mattes
+FUN_0042c3f0	named	UnloadCarouselResources	CAROUSEL cb_ac (setcustomcallbacks.c:151); kills carousel sprites, frees nodes and BinVs
+FUN_0042a7b0	named	LoadBalloonzResources	BALLOONZ cb_a4 (setcustomcallbacks.c:163); loads Ballbasem*.lls, BZ*CarM1.lls, balloonz.bnv
+FUN_0042b9d0	named	UnloadBalloonzResources	BALLOONZ cb_ac (setcustomcallbacks.c:169); kills the balloonz sprites and BinV
+FUN_0042d100	named	LoadEarthSlideResources	EARTH SLIDE RIDE cb_a4 (setcustomcallbacks.c:176); loads earth.pos/earthslide.rin/mattes; pairs with UnloadEarthSlideResources
+FUN_0042e870	named	LoadCastleBBQResources	CASTLE BBQ cb_a4 (setcustomcallbacks.c:188); stores ride/layer, loads RESTAURANT_SFX and money SFX
+FUN_0042e8b0	named	UnloadCastleBBQResources	CASTLE BBQ cb_ac (setcustomcallbacks.c:189); kills RESTAURANT_SFX and money SFX
+FUN_0042e770	named	LoadFoodcartDrinkResources	FOODCART DRINK cb_a4 (setcustomcallbacks.c:198)
+FUN_0042e7a0	named	UnloadFoodcartDrinkResources	FOODCART DRINK cb_ac (setcustomcallbacks.c:199)
+FUN_0042e7f0	named	LoadFoodcartFoodResources	FOODCART FOOD cb_a4 (setcustomcallbacks.c:207)
+FUN_0042e820	named	UnloadFoodcartFoodResources	FOODCART FOOD cb_ac (setcustomcallbacks.c:208)
+FUN_0042e7b0	named	LoadFoodcartIcecreamResources	FOODCART ICECREAM cb_a4 (setcustomcallbacks.c:216)
+FUN_0042e7e0	named	UnloadFoodcartIcecreamResources	FOODCART ICECREAM cb_ac (setcustomcallbacks.c:217)
+FUN_0042e220	named	LoadChuckWagonResources	CHUCK WAGON cb_a4 (setcustomcallbacks.c:260)
+FUN_0042e250	named	UnloadChuckWagonResources	CHUCK WAGON cb_ac (setcustomcallbacks.c:265)
+FUN_0042e5d0	named	LoadSharkCafeResources	SHARK CAFE cb_a4 (setcustomcallbacks.c:269)
+FUN_0042e600	named	UnloadSharkCafeResources	SHARK CAFE cb_ac (setcustomcallbacks.c:270)
+FUN_00431300	named	LoadOctopusCafeResources	OCTOPUS CAFE cb_a4 (setcustomcallbacks.c:225); loads OctTent*/OctTab*/OctoKiosk sprites
+FUN_00431520	named	UnloadOctopusCafeResources	OCTOPUS CAFE cb_ac (setcustomcallbacks.c:231); kills the Oct* sprites
+FUN_0042f030	named	LoadRestaurant1Resources	RESTAURANT 1 cb_a4 (setcustomcallbacks.c:235); loads RestMask*.lls; pairs with KillRestMaskSpritesAndMoneySFX
+FUN_0042f770	named	LoadRestaurant2Resources	RESTAURANT 2 cb_a4 (setcustomcallbacks.c:247); loads R2*door/tower mattes
+FUN_00431120	named	UnloadRestaurant2Resources	RESTAURANT 2 cb_ac (setcustomcallbacks.c:253); kills R2* sprites
+FUN_00419d10	named	LoadBoatingSchoolResources	BOATING SCHOOL cb_a4 (setcustomcallbacks.c:291); loads tile mapping, boats, bs_hullmask/bs_railm
+FUN_00419ef0	named	UnloadBoatingSchoolResources	BOATING SCHOOL cb_ac (setcustomcallbacks.c:292); unloads data, frees boat lists, kills sprites
+FUN_0041b250	named	InitBoatingSchoolMermaid	BOATING SCHOOL MERMAID cb_a4 (setcustomcallbacks.c:306); stores the ride pointer
+FUN_00436190	named	InitJungleCruiseWater	JUNGLE CRUISE WATER cb_a4 (setcustomcallbacks.c:315); stores the ride pointer
+FUN_00434cb0	named	LoadJungleCruiseResources	JUNGLE CRUISE cb_a4 (setcustomcallbacks.c:322); loads boats, jungmask.lls
+FUN_00434e50	named	UnloadJungleCruiseResources	JUNGLE CRUISE cb_ac (setcustomcallbacks.c:323); unloads data, frees lists, kills jungmask
+FUN_00433ca0	named	LoadBrijMaskSprite	JUNGLE CRUISE MONKEY TREE cb_a4 (setcustomcallbacks.c:337); loads brijmask.lls; pairs with KillBrijMaskSprite
+FUN_00434080	named	LoadMFish2Sprite	JUNGLE CRUISE MONKEY FISH cb_a4 (setcustomcallbacks.c:348); loads mfish2.lls; pairs with KillMFish2Sprite
+DAT_0082c694	named	DrivingSchoolRide	set from the DRIVING SCHOOL element in LoadDrivingSchoolResources, cleared in Unload, used as EditMode.unk8
+DAT_004cbe9c	named	DrivingSchoolPumpsRide	set in InitDrivingSchoolPumps; used as the pumps Ride in pumps.c
+DAT_0082c678	named	ZebraCrossingRide	set in InitZebraCrossing; used as EditMode.unk8 and for its cost in roads.c
+DAT_006160f4	named	EntranceRide	ENTRANCE 1 ride set in Load/UnloadEntranceResources
+DAT_006160f0	named	EntranceLayer	EntranceRide->layer, set in LoadEntranceResources
+DAT_0081cde4	named	BalloonzRide	BALLOONZ ride set in LoadBalloonzResources (BalloonzLayer = its layer)
+DAT_0081cd0c	named	CastleBBQRide	CASTLE BBQ ride set in LoadCastleBBQResources, cleared in Unload
+DAT_0081cd10	named	CastleBBQLayer	CastleBBQRide->inner_64 layer, rendered in the CASTLE BBQ render callback
+DAT_0081cd14	named	FoodcartDrinkRide	set in LoadFoodcartDrinkResources
+DAT_0081cd3c	named	FoodcartFoodRide	set in LoadFoodcartFoodResources
+DAT_0081cde0	named	FoodcartIcecreamRide	set in LoadFoodcartIcecreamResources
+DAT_0081cd44	named	ChuckWagonRide	set in LoadChuckWagonResources
+DAT_0081cd18	named	SharkCafeRide	set in LoadSharkCafeResources
+DAT_0081cd1c	named	OctopusCafeRide	set in LoadOctopusCafeResources
+DAT_0081cd40	named	Restaurant1Ride	set in LoadRestaurant1Resources
+DAT_0081cd30	named	Restaurant2Ride	set in LoadRestaurant2Resources
+DAT_0082adf0	named	BoatingSchoolWaterRide	set in InitBoatingSchoolWater; its element marks water tiles
+DAT_0082adf8	named	BoatingSchoolMermaidRide	set in InitBoatingSchoolMermaid; EditMode.unk8 in the mermaid edit mode
+DAT_0081cb70	named	MonkeyTreeRide	JUNGLE CRUISE MONKEY TREE ride set in LoadBrijMaskSprite (MFish2Ride is the monkey fish one)
+FUN_00402d00	named	RenderCastleLevel	CASTLE LEVEL 1 cb_b0 callback (body verified)
+FUN_00403270	named	RenderCatapult	CATAPULT cb_b0 callback (body verified)
+FUN_004039a0	named	CatapultRemoveObject	CATAPULT cb_9c callback (body verified)
+FUN_00405570	named	DrivingSchoolSetEditMode	DRIVING SCHOOL cb_8c callback (body verified)
+FUN_00405630	named	DrivingSchoolAddObject	DRIVING SCHOOL cb_98 callback (body verified)
+FUN_00405940	named	DrivingSchoolRemoveObject	DRIVING SCHOOL cb_9c callback (body verified)
+FUN_00405ad0	named	GetDrivingSchoolSpriteInfo	DRIVING SCHOOL cb_a0 callback (body verified)
+FUN_00405b10	named	RenderDrivingSchool	DRIVING SCHOOL cb_b0 callback (body verified)
+FUN_004062c0	named	RenderFort	FORT cb_b0 callback (body verified)
+FUN_00406820	named	FortSetEditMode	FORT cb_8c callback (body verified)
+FUN_00406860	named	FortAddObject	FORT cb_98 callback (body verified)
+FUN_00406880	named	FortRemoveObject	FORT cb_9c callback (body verified)
+FUN_00406b10	named	RenderGoldRush	GOLD RUSH cb_b0 callback (body verified)
+FUN_004075f0	named	GoldRushAddObject	GOLD RUSH cb_98 callback (body verified)
+FUN_004076e0	named	GoldRushRemoveObject	GOLD RUSH cb_9c callback (body verified)
+FUN_00407ad0	named	JoustRemoveObject	JOUST cb_9c callback (body verified)
+FUN_00408580	named	RenderJoust	JOUST cb_b0 callback (body verified)
+FUN_0040a600	named	LogFlumeEntranceAddObject	LOG FLUME ENTRANCE cb_98 callback (body verified)
+FUN_0040abf0	named	LogFlumeEntranceRemoveObject	LOG FLUME ENTRANCE cb_9c callback (body verified)
+FUN_0040b420	named	RenderLogFlumeEntrance	LOG FLUME ENTRANCE cb_b0 callback (body verified)
+FUN_0040c780	named	LogFlumeTrackAddObject	LOG FLUME TRACK cb_98 callback (body verified)
+FUN_0040c970	named	GetLogFlumeTrackSpriteInfo	LOG FLUME TRACK cb_a0 callback (body verified)
+FUN_0040ee60	named	RenderLogFlumeSpecialCorner2	LOG FLUME SPECIAL CORNER 2 cb_b0 callback (body verified)
+FUN_0040efb0	named	RenderLogFlumeSpecialCorner4	LOG FLUME SPECIAL CORNER 4 cb_b0 callback (body verified)
+FUN_0040f450	named	RenderLogFlumeTunnel	LOG FLUME TUNNEL cb_b0 callback (body verified)
+FUN_0040f920	named	RenderLogFlumeCsaw	LOG FLUME CSAW cb_b0 callback (body verified)
+FUN_0040ffd0	named	RenderLogFlumeHoldUp	LOG FLUME HOLD UP cb_b0 callback (body verified)
+FUN_004104b0	named	RenderLogFlumeDrop	LOG FLUME DROP cb_b0 callback (body verified)
+FUN_00411a20	named	DrivingSchoolPumpsSetEditMode	DRIVING SCHOOL PUMPS cb_8c callback (body verified)
+FUN_00411bf0	named	DrivingSchoolPumpsAddObject	DRIVING SCHOOL PUMPS cb_98 callback (body verified)
+FUN_00411c70	named	DrivingSchoolPumpsRemoveObject	DRIVING SCHOOL PUMPS cb_9c callback (body verified)
+FUN_00413ad0	named	DrivingSchoolRoadsSetEditMode	DRIVING SCHOOL ROADS cb_8c callback (body verified)
+FUN_00414830	named	ZebraCrossingSetEditMode	ZEBRA CROSSING cb_8c callback (body verified)
+FUN_00414b80	named	RenderSafari	SAFARI RIDE cb_b0 callback (body verified)
+FUN_00414f40	named	SafariRemoveObject	SAFARI RIDE cb_9c callback (body verified)
+FUN_00415ae0	named	RenderSpider	SPIDER RIDE cb_b0 callback (body verified)
+FUN_00416060	named	SpiderSetEditMode	SPIDER RIDE cb_8c callback (body verified)
+FUN_004160a0	named	SpiderRemoveObject	SPIDER RIDE cb_9c callback (body verified)
+FUN_004160f0	named	SpiderAddObject	SPIDER RIDE cb_98 callback (body verified)
+FUN_00416a60	named	RenderTemple	TEMPLE cb_b0 callback (body verified)
+FUN_00416dc0	named	TempleSetEditMode	TEMPLE cb_8c callback (body verified)
+FUN_00416e00	named	TempleAddObject	TEMPLE cb_98 callback (body verified)
+FUN_00416e20	named	TempleRemoveObject	TEMPLE cb_9c callback (body verified)
+FUN_00416fa0	named	RenderTempleSlide	TEMPLE SLIDE cb_b0 callback (body verified)
+FUN_00417240	named	TempleSlideSetEditMode	TEMPLE SLIDE cb_8c callback (body verified)
+FUN_004172d0	named	TempleSlideAddObject	TEMPLE SLIDE cb_98 callback (body verified)
+FUN_004181a0	named	RenderWaterBlock	WATER WORKS WATER BLOCK cb_b0 callback (body verified)
+FUN_004181e0	named	WaterBlockAddObject	WATER WORKS WATER BLOCK cb_98 callback (body verified)
+FUN_00418450	named	RenderShower	WATER WORKS SHOWER cb_b0 callback (body verified)
+FUN_00418910	named	ElephantFountainRemoveObject	WATER WORKS ELEPHANT FOUNTAIN cb_9c callback (body verified)
+FUN_0041a040	named	BoatingSchoolAddObject	BOATING SCHOOL cb_98 callback (body verified)
+FUN_0041a530	named	BoatingSchoolRemoveObject	BOATING SCHOOL cb_9c callback (body verified)
+FUN_0041b260	named	BoatingSchoolMermaidSetEditMode	BOATING SCHOOL MERMAID cb_8c callback (body verified)
+FUN_0041b2a0	named	BoatingSchoolMermaidAddObject	BOATING SCHOOL MERMAID cb_98 callback (body verified)
+FUN_0041b6f0	named	BoatingSchoolMermaidRemoveObject	BOATING SCHOOL MERMAID cb_9c callback (body verified)
+FUN_00425050	named	RenderCastleObj	CASTLE OBJ cb_b0 callback (body verified)
+FUN_0042a950	named	BalloonzAddObject	BALLOONZ cb_98 callback (body verified)
+FUN_0042aa10	named	BalloonzRemoveObject	BALLOONZ cb_9c callback (body verified)
+FUN_0042b2a0	named	GetBalloonzSpriteInfo	BALLOONZ cb_a0 callback (body verified)
+FUN_0042b2e0	named	RenderBalloonz	BALLOONZ cb_b0 callback (body verified)
+FUN_0042ba40	named	BalloonzSetEditMode	BALLOONZ cb_8c callback (body verified)
+FUN_0042bcf0	named	RenderCarousel	CAROUSEL cb_b0 callback (body verified)
+FUN_0042c460	named	CarouselSetEditMode	CAROUSEL cb_8c callback (body verified)
+FUN_0042c4a0	named	CarouselRemoveObject	CAROUSEL cb_9c callback (body verified)
+FUN_0042c520	named	CarouselAddObject	CAROUSEL cb_98 callback (body verified)
+FUN_0042c550	named	GetCarouselSpriteInfo	CAROUSEL cb_a0 callback (body verified)
+FUN_0042d230	named	EarthSlideSetEditMode	EARTH SLIDE RIDE cb_8c callback (body verified)
+FUN_0042d270	named	EarthSlideRemoveObject	EARTH SLIDE RIDE cb_9c callback (body verified)
+FUN_0042d2c0	named	EarthSlideAddObject	EARTH SLIDE RIDE cb_98 callback (body verified)
+FUN_0042d9c0	named	RenderEntrance	ENTRANCE 1 cb_b0 callback (body verified)
+FUN_0042df70	named	EntranceRemoveObject	ENTRANCE 1 cb_9c callback (body verified)
+FUN_0042e260	named	RenderChuckWagon	CHUCK WAGON cb_b0 callback (body verified)
+FUN_0042e4c0	named	BrollySetEditMode	SHARK CAFE BROLLY cb_8c callback (body verified)
+FUN_0042e500	named	BrollyAddObject	SHARK CAFE BROLLY cb_98 callback (body verified)
+FUN_0042e560	named	GetBrollySpriteInfo	SHARK CAFE BROLLY cb_a0 callback (body verified)
+FUN_0042e910	named	RenderCastleBBQ	CASTLE BBQ cb_b0 callback (body verified)
+FUN_0042e9c0	named	CastleBBQAddObject	CASTLE BBQ cb_98 callback (body verified)
+FUN_0042ea10	named	CastleBBQRemoveObject	CASTLE BBQ cb_9c callback (body verified)
+FUN_0042ef10	named	Restaurant1AddObject	RESTAURANT 1 cb_98 callback (body verified)
+FUN_0042efb0	named	Restaurant1RemoveObject	RESTAURANT 1 cb_9c callback (body verified)
+FUN_0042f4c0	named	RenderRestaurant1	RESTAURANT 1 cb_b0 callback (body verified)
+FUN_0042f9a0	named	Restaurant2AddObject	RESTAURANT 2 cb_98 callback (body verified)
+FUN_0042fa40	named	Restaurant2RemoveObject	RESTAURANT 2 cb_9c callback (body verified)
+FUN_00430b10	named	RenderRestaurant2	RESTAURANT 2 cb_b0 callback (body verified)
+FUN_004314f0	named	OctopusCafeAddObject	OCTOPUS CAFE cb_98 callback (body verified)
+FUN_00431d00	named	RenderOctopusCafe	OCTOPUS CAFE cb_b0 callback (body verified)
+FUN_004325e0	named	HedgeAddObject	HEDGE cb_98 callback (body verified)
+FUN_00432700	named	HedgeRemoveObject	HEDGE cb_9c callback (body verified)
+FUN_004328c0	named	FlowersSetEditMode	FLOWERS cb_8c callback (body verified)
+FUN_00432900	named	FlowersAddObject	FLOWERS cb_98 callback (body verified)
+FUN_00433ce0	named	MonkeyTreeSetEditMode	JUNGLE CRUISE MONKEY TREE cb_8c callback (body verified)
+FUN_00433d20	named	MonkeyTreeAddObject	JUNGLE CRUISE MONKEY TREE cb_98 callback (body verified)
+FUN_00433fc0	named	MonkeyTreeRemoveObject	JUNGLE CRUISE MONKEY TREE cb_9c callback (body verified)
+FUN_00434040	named	GetMonkeyTreeSpriteInfo	JUNGLE CRUISE MONKEY TREE cb_a0 callback (body verified)
+FUN_004340c0	named	MonkeyFishSetEditMode	JUNGLE CRUISE MONKEY FISH cb_8c callback (body verified)
+FUN_00434100	named	MonkeyFishAddObject	JUNGLE CRUISE MONKEY FISH cb_98 callback (body verified)
+FUN_00434670	named	MonkeyFishRemoveObject	JUNGLE CRUISE MONKEY FISH cb_9c callback (body verified)
+FUN_00434740	named	GetMonkeyFishSpriteInfo	JUNGLE CRUISE MONKEY FISH cb_a0 callback (body verified)
+FUN_00434f50	named	JungleCruiseSetEditMode	JUNGLE CRUISE cb_8c callback (body verified)
+FUN_00434f90	named	JungleCruiseAddObject	JUNGLE CRUISE cb_98 callback (body verified)
+FUN_00435470	named	JungleCruiseRemoveObject	JUNGLE CRUISE cb_9c callback (body verified)
+FUN_00435bd0	named	RenderJungleCruise	JUNGLE CRUISE cb_b0 callback (body verified)
+FUN_004361a0	named	JungleCruiseWaterSetEditMode	JUNGLE CRUISE WATER cb_8c callback (body verified)
+FUN_00437630	named	GeneralStoreSetEditMode	GENERAL STORE cb_8c callback (body verified)
+FUN_00437670	named	RenderGeneralStore	GENERAL STORE cb_b0 callback (body verified)
+FUN_00437bf0	named	SheriffSetEditMode	SHERIFF cb_8c callback (body verified)
+FUN_00437c30	named	RenderSheriff	SHERIFF cb_b0 callback (body verified)
+FUN_00437f60	named	JailCellAddObject	JAIL CELL cb_98 callback (body verified)
+FUN_00438020	named	JailCellRemoveObject	JAIL CELL cb_9c callback (body verified)
+FUN_00438110	named	JailCellSetEditMode	JAIL CELL cb_8c callback (body verified)
+FUN_00438150	named	RenderJailCell	JAIL CELL cb_b0 callback (body verified)
+FUN_004388c0	named	BankSetEditMode	BANK cb_8c callback (body verified)
+FUN_00438900	named	RenderBank	BANK cb_b0 callback (body verified)
+FUN_00438cc0	named	SaloonSetEditMode	SALOON cb_8c callback (body verified)
+FUN_00438d00	named	RenderSaloon	SALOON cb_b0 callback (body verified)
+FUN_00439320	named	LegoShop1AddObject	LEGO SHOP 1 cb_98 callback (body verified)
+FUN_00439350	named	LegoShop1RemoveObject	LEGO SHOP 1 cb_9c callback (body verified)
+FUN_004393a0	named	LegoShop1SetEditMode	LEGO SHOP 1 cb_8c callback (body verified)
+FUN_00439400	named	RenderLegoShop1	LEGO SHOP 1 cb_b0 callback (body verified)
+FUN_00439720	named	LegoShop2SetEditMode	LEGO SHOP 2 cb_8c callback (body verified)
+FUN_00439760	named	RenderLegoShop2	LEGO SHOP 2 cb_b0 callback (body verified)
+FUN_00439c60	named	LegoMediaShopAddObject	LEGO MEDIA SHOP cb_98 callback (body verified)
+FUN_00439c90	named	LegoMediaShopRemoveObject	LEGO MEDIA SHOP cb_9c callback (body verified)
+FUN_00439d00	named	LegoMediaShopSetEditMode	LEGO MEDIA SHOP cb_8c callback (body verified)
+FUN_00439d40	named	RenderLegoMediaShop	LEGO MEDIA SHOP cb_b0 callback (body verified)
+FUN_0043a140	named	ExplorersInstituteSetEditMode	EXPLORERS INSTITUTE cb_8c callback (body verified)
+FUN_0043a180	named	RenderExplorersInstitute	EXPLORERS INSTITUTE cb_b0 callback (body verified)
+FUN_0043af50	named	RenderSpaceTower	SPACE TOWER RIDE cb_b0 callback (body verified)
+FUN_0043b460	named	SpaceTowerRemoveObject	SPACE TOWER RIDE cb_9c callback (body verified)
+FUN_0043be70	named	RenderSpinningBarrels	SPINNING BARRELS RIDE cb_b0 callback (body verified)
+FUN_0043d0b0	named	RenderPottingShed	POTTING SHED cb_b0 callback (body verified)
+FUN_0043d2a0	named	MechanicsHutAddObject	MECHANICS HUT cb_98 callback (body verified)
+FUN_0043d2c0	named	MechanicsHutRemoveObject	MECHANICS HUT cb_9c callback (body verified)
+FUN_0043d580	named	RenderMechanicsHut	MECHANICS HUT cb_b0 callback (body verified)
+FUN_0043d740	named	MechanicsHutSetEditMode	MECHANICS HUT cb_8c callback (body verified)
+FUN_0043d780	named	GetMechanicsHutSpriteInfo	MECHANICS HUT cb_a0 callback (body verified)
+FUN_0043da60	named	RenderPlaneRide	PLANE RIDE cb_b0 callback (body verified)
+FUN_0043df50	named	PlaneRideSetEditMode	PLANE RIDE cb_8c callback (body verified)
+FUN_0043df90	named	PlaneRideRemoveObject	PLANE RIDE cb_9c callback (body verified)
+FUN_0043dfe0	named	PlaneRideAddObject	PLANE RIDE cb_98 callback (body verified)
+FUN_00452bc0	named	DinoAddObject	Dino Mini cb_98 callback (body verified)
+FUN_0040dbb0	named	LogFlumeTrackSetEditMode	LOG FLUME TRACK cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e630	named	LogFlumeSpecialCorner1SetEditMode	LOG FLUME SPECIAL CORNER 1 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e660	named	LogFlumeSpecialCorner2SetEditMode	LOG FLUME SPECIAL CORNER 2 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e690	named	LogFlumeSpecialCorner3SetEditMode	LOG FLUME SPECIAL CORNER 3 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e6c0	named	LogFlumeSpecialCorner4SetEditMode	LOG FLUME SPECIAL CORNER 4 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040ead0	named	LogFlumeSpecialCorner1AddObject	LOG FLUME SPECIAL CORNER 1 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040eb40	named	LogFlumeSpecialCorner2AddObject	LOG FLUME SPECIAL CORNER 2 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040ebb0	named	LogFlumeSpecialCorner3AddObject	LOG FLUME SPECIAL CORNER 3 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040ec20	named	LogFlumeSpecialCorner4AddObject	LOG FLUME SPECIAL CORNER 4 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040ec90	named	LogFlumeSpecialCorner1RemoveObject	LOG FLUME SPECIAL CORNER 1 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040ecc0	named	LogFlumeSpecialCorner2RemoveObject	LOG FLUME SPECIAL CORNER 2 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040ecf0	named	LogFlumeSpecialCorner3RemoveObject	LOG FLUME SPECIAL CORNER 3 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040ed20	named	LogFlumeSpecialCorner4RemoveObject	LOG FLUME SPECIAL CORNER 4 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040f4f0	named	LogFlumeTunnelSetEditMode	LOG FLUME TUNNEL cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040f540	named	LogFlumeTunnelAddObject	LOG FLUME TUNNEL cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040f580	named	LogFlumeTunnelRemoveObject	LOG FLUME TUNNEL cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040fa00	named	LogFlumeCsawSetEditMode	LOG FLUME CSAW cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040fa60	named	LogFlumeCsawAddObject	LOG FLUME CSAW cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040fab0	named	LogFlumeCsawRemoveObject	LOG FLUME CSAW cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_004100b0	named	LogFlumeHoldUpSetEditMode	LOG FLUME HOLD UP cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_00410110	named	LogFlumeHoldUpAddObject	LOG FLUME HOLD UP cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_00410160	named	LogFlumeHoldUpRemoveObject	LOG FLUME HOLD UP cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_004106e0	named	LogFlumeDropSetEditMode	LOG FLUME DROP cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_00410740	named	LogFlumeDropAddObject	LOG FLUME DROP cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_00410790	named	LogFlumeDropRemoveObject	LOG FLUME DROP cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040cc50	named	RenderLogFlumeTrack	LOG FLUME TRACK cb_b0 render callback
+FUN_0040edb0	named	RenderLogFlumeSpecialCorner1	LOG FLUME SPECIAL CORNER 1 cb_b0; syncs fc1 matte frames and draws the piece
+FUN_0040ef00	named	RenderLogFlumeSpecialCorner3	LOG FLUME SPECIAL CORNER 3 cb_b0; syncs fc3 matte frames and draws the piece
+FUN_00402ca0	named	LoadCastleLevelMatteSprite	CASTLE LEVEL 1 cb_a4: loads Castle Matte.lls; pairs with KillCastleLevelMatteSprite
+FUN_004031e0	named	LoadCatapultResources	CATAPULT cb_a4: stores ride/layer, loads Catapult_SFX; pairs with CatapultFreeNodesAndKillSfx
+FUN_00403d90	named	CoptersLoad	COPTERS cb_a4: loads copter sprites/pos/queues; mirrors CoptersUnload
+FUN_00406240	named	LoadFortMaskSprite	FORT cb_a4: loads fortmask.lls; pairs with KillFortMaskSprite
+FUN_00407b50	named	JoustLoadResources	JOUST cb_a4: loads Joust sprites/BinV/SFX; mirrors JoustFreeResources
+FUN_0040e8b0	named	LogFlumeSpecialCorner1LoadSprites	loads fc1_m1/fc1_m2.lls; mirrors LogFlumeSpecialCorner1UnloadSprites
+FUN_0040e920	named	LogFlumeSpecialCorner2LoadSprites	loads fc2_m1.lls; mirrors LogFlumeSpecialCorner2UnloadSprites
+FUN_0040e970	named	LogFlumeSpecialCorner3LoadSprites	loads fc3_m1/fc3_m2.lls; mirrors LogFlumeSpecialCorner3UnloadSprites
+FUN_0040e9e0	named	LogFlumeSpecialCorner4LoadSprites	loads fc4_m.lls; mirrors LogFlumeSpecialCorner4UnloadSprites
+FUN_0040f3e0	named	LogFlumeTunnelLoadSprites	loads tunel_m.lls; mirrors LogFlumeTunnelUnloadSprites
+FUN_0040ff30	named	LogFlumeHoldUpLoadSprites	loads hup1_m1/hup1_m2.lls; mirrors LogFlumeHoldUpUnloadSprites
+FUN_004375d0	named	LoadGStoreMatteSpritesAndMoneySFX	loads G_Store Matte(2).LLS + money SFX; mirrors KillGStoreMatteSpritesAndMoneySFX
+FUN_00437ba0	named	LoadSherifshutMatteSpriteAndMoneySFX	loads Sherifshut Matte.LLS + money SFX; mirrors KillSherifshutMatteSpriteAndMoneySFX
+FUN_00438870	named	LoadBankMatteSpriteAndMoneySFX	loads Bank Matte.lls + money SFX; mirrors KillBankMatteSpriteAndMoneySFX
+FUN_00438c60	named	LoadSaloonMatteSpritesAndMoneySFX	loads SaloonMatte1/2.LLS + money SFX; mirrors KillSaloonMatteSpritesAndMoneySFX
+FUN_0043a0f0	named	LoadExplorersInstituteMatteSpriteAndMoneySFX	loads Explorers Institute Matte.LLS + money SFX; mirrors the Unload
+FUN_00439200	named	LoadLegoShop1MatteSpriteAndMoneySFX	loads Lego Shop 1 Matte.LLS + money SFX; mirrors the Unload
+FUN_004396d0	named	LoadLegoShop2MatteSpriteAndMoneySFX	loads Lego Shop 2 Matte.LLS + money SFX; mirrors the Unload
+FUN_00439c20	named	LoadLegMediaShopMaskSpritesAndMoneySFX	loads LegMediaShopMask1/2.LLS + money SFX; mirrors the Unload
+FUN_004169c0	named	LoadTempleMatteSprites	loads temple_matte1/2.lls; pairs with KillTempleMatteSprites
+FUN_00417d30	named	WaterBlockLoad	WATER WORKS WATER BLOCK cb_a4: loads image list + topwater.lls; mirrors WaterBlockUnload
+FUN_004182e0	named	ShowerLoad	WATER WORKS SHOWER cb_a4: loads shower.lls; mirrors ShowerUnload
+FUN_004186b0	named	ElephantFountainLoad	WATER WORKS ELEPHANT FOUNTAIN cb_a4: loads ww_elsquirt.lls; mirrors ElephantFountainUnload
+FUN_00427aa0	named	CastleLoadBasicTiles	loads BASIC TILES 1; mirrors CastleUnloadBasicTiles
+FUN_004329c0	named	GardenGetInterfaces	sets the HEDGE/FLOWERS callback tables; called from SetCustomCallbacks like the other *GetInterfaces
+FUN_004254d0	named	CastleGetInterfaces	sets the CASTLE OBJ/CASTLE_DUMMY/SQUARE_TRACK callback tables; called from SetCustomCallbacks
+DAT_004cbfdc	named	ElephantFountainRide	WATER WORKS ELEPHANT FOUNTAIN ride, set in ElephantFountainLoad (water_works.c:696), used for its footprint/screen coords
+DAT_004cbfec	named	ElephantFountainLayer	ElephantFountainRide->field_64 layer, set in ElephantFountainLoad (water_works.c:698)
+DAT_004cbf5c	named	TempleBuildingRide	TEMPLE ride, set in LoadTempleMatteSprites (temple.c:21), EditMode target in temple.c:188
+DAT_004cbf64	named	TempleLayer	TempleRide->layer, set in LoadTempleMatteSprites (temple.c:26), rendered in RenderTemple
+DAT_004cc024	named	ShowerRide	WATER WORKS SHOWER ride, set in ShowerLoad (water_works.c:521)
+DAT_004cbfe0	named	ShowerLayer	ShowerRide->field_64 layer, set in ShowerLoad (water_works.c:523)
+DAT_004c10f4	named	ActiveCatapultRide	CATAPULT ride, set in LoadCatapultResources (catapult.c:175), EditMode.unk8 (catapult.c:464); cf. ActiveCopterRide
+DAT_0081cb30	named	GeneralStoreBuilding	GENERAL STORE building, set in LoadGStoreMatteSpritesAndMoneySFX
+DAT_0081cb14	named	SheriffBuilding	SHERIFF building, set in LoadSherifshutMatteSpriteAndMoneySFX
+DAT_0081cb2c	named	BankBuilding	BANK building, set in LoadBankMatteSpriteAndMoneySFX
+DAT_0081cb1c	named	SaloonBuilding	SALOON building, set in LoadSaloonMatteSpritesAndMoneySFX
+DAT_0081cb44	named	ExplorersInstituteBuilding	EXPLORERS INSTITUTE building, set in LoadExplorersInstituteMatteSpriteAndMoneySFX
+DAT_0081cb3c	named	LegoShop1Building	LEGO SHOP 1 building, set in LoadLegoShop1MatteSpriteAndMoneySFX
+DAT_0081cb4c	named	LegoShop2Building	LEGO SHOP 2 building, set in LoadLegoShop2MatteSpriteAndMoneySFX
+DAT_0081cb40	named	LegoMediaShopBuilding	LEGO MEDIA SHOP building, set in LoadLegMediaShopMaskSpritesAndMoneySFX
+FUN_0041a000	dropped-collision	BoatingSchoolSetEditMode	BOATING SCHOOL cb_8c, but BoatingSchoolSetEditMode already names the water element's edit-mode callback
+FUN_00414220	skipped-no-evidence		roads cb_9c shared by two road elements (setcustomcallbacks.c:113,122); no single owner name
+FUN_0041ec50	skipped-no-evidence		castle cb_8c shared by 7+ castle elements; generic shared helper, specific name unclear
+FUN_0041ece0	skipped-no-evidence		castle cb_98 shared by 7+ castle elements; generic shared helper, specific name unclear
+FUN_0041ed50	skipped-no-evidence		castle cb_9c shared by 7+ castle elements; generic shared helper, specific name unclear
+FUN_00426c20	skipped-no-evidence		used as both castle cb_b8 and cb_8c (castle.c:5424,5524); likely a shared no-op, role ambiguous

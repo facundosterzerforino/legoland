@@ -211,7 +211,7 @@ unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
 unsigned int FUN_00429940(struct PathSeg *n, struct PathSeg **out);
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
 
-void FUN_004254d0(struct ClassNode *head, struct CallbackTable *iface);
+void CastleGetInterfaces(struct ClassNode *head, struct CallbackTable *iface);
 struct Element;
 struct Struct427940;
 struct Struct427970Src;
@@ -225,7 +225,7 @@ void FUN_00427940(struct Struct427940 *param_1);
 void FUN_00427970(struct Element *obj, const struct Struct427970Src *src);
 void FUN_004279f0(void);
 void FUN_00427a00(unsigned int unused0, unsigned int unused1, unsigned int unused2, const unsigned char *src);
-void FUN_00427aa0(struct Element *obj);
+void CastleLoadBasicTiles(struct Element *obj);
 void CastleUnloadBasicTiles(void);
 void FUN_00427b20(struct Element *obj, int x, unsigned int y);
 void FUN_00427bc0(unsigned int unused, const struct Struct427bc0Src *src);

@@ -90,7 +90,7 @@ struct BarrelNode *FUN_0043be40(unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x0043be70
-void FUN_0043be70(Element *obj, void *param_2, void *param_3, TileId *tile) {
+void RenderSpinningBarrels(Element *obj, void *param_2, void *param_3, TileId *tile) {
     Ride *ride = obj->ride;
     RideNode *elem = ride->riders;
     RideNode *riders;
@@ -417,7 +417,7 @@ void SpinningBarrelsGetInterfaces(struct ClassNode *str, struct CallbackTable *r
         ride->cb_a4 = FUN_0043c340;
         ride->cb_8c = SpinningBarrelsSetEditMode;
         ride->cb_a8 = FUN_0043c950;
-        ride->cb_b0 = FUN_0043be70;
+        ride->cb_b0 = RenderSpinningBarrels;
         ride->cb_9c = SpinningBarrelsRemoveObject;
         ride->cb_98 = SpinningBarrelsAddObject;
         ride->cb_ac = FUN_0043c5b0;

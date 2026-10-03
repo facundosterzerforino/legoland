@@ -1572,7 +1572,7 @@ void FUN_0040a5d0(struct ParticleEmitter *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0040a600
-void FUN_0040a600(Element *elem, int *pt) {
+void LogFlumeEntranceAddObject(Element *elem, int *pt) {
     TileId t;
     struct FlumeEntry *entry;
     struct FlumeEntry *mid;
@@ -1759,7 +1759,7 @@ void FUN_0040aac0(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040abf0
-void FUN_0040abf0(Element *obj, TileId tile, struct Cursor *cursor_arg) {
+void LogFlumeEntranceRemoveObject(Element *obj, TileId tile, struct Cursor *cursor_arg) {
     struct Cursor cursor;
     struct FlumeEntry *entry;
     struct FlumeEntry *cur;
@@ -2045,7 +2045,7 @@ int FUN_0040b390(struct FlumeEntry *entry) {
 }
 
 // FUNCTION: LEGOLAND 0x0040b420
-void FUN_0040b420(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = elem->ride;
     struct Point base;
     struct FlumeEntry *entry;
@@ -2796,7 +2796,7 @@ void FUN_0040c6c0(int unused, struct Point *pt) {
 }
 
 // FUNCTION: LEGOLAND 0x0040c780
-void FUN_0040c780(int unused, struct Point *pt) {
+void LogFlumeTrackAddObject(int unused, struct Point *pt) {
     TileId t;
     int coords[2];
     struct FlumeEntry *entry;
@@ -2869,7 +2869,7 @@ void FUN_0040c8d0(Element *elem, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x0040c970
-struct RideSpriteInfo *FUN_0040c970(int unused, TileId tile) {
+struct RideSpriteInfo *GetLogFlumeTrackSpriteInfo(int unused, TileId tile) {
     struct FlumeEntry *entry;
     struct Sprite *spr;
     unsigned int lls;
@@ -3006,7 +3006,7 @@ void FUN_0040cc00(struct FlumeEntry *entry, int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0040cc50
-int FUN_0040cc50(int a, int b, int c, TileId *tile, int e, int arg) {
+int RenderLogFlumeTrack(int a, int b, int c, TileId *tile, int e, int arg) {
     struct FlumeEntry *entry = FindFlumeSubEntryByTile(tile);
     if (entry != NULL) {
         if (entry->mode == 2 && (entry->submode == 0 || entry->submode == 2)) {
@@ -3611,7 +3611,7 @@ void FUN_0040db00(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0040dbb0
-void FUN_0040dbb0(void) {
+void LogFlumeTrackSetEditMode(void) {
     unsigned int local[5];
     unsigned int v = DAT_004b4730;
 
@@ -4050,14 +4050,14 @@ void FUN_0040e440(struct FlumeXY p, unsigned int *result) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e630
-void FUN_0040e630(void) {
+void LogFlumeSpecialCorner1SetEditMode(void) {
     unsigned int local[5];
     memcpy(local, DAT_004c445c->var_3c, 20);
     FUN_0040d3b0(DAT_004c445c, local);
 }
 
 // FUNCTION: LEGOLAND 0x0040e660
-void FUN_0040e660(void) {
+void LogFlumeSpecialCorner2SetEditMode(void) {
     struct CursorSource *src = DAT_004c2aa0;
     unsigned int local[5];
     memcpy(local, src->var_3c, sizeof(local));
@@ -4065,7 +4065,7 @@ void FUN_0040e660(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e690
-void FUN_0040e690(void) {
+void LogFlumeSpecialCorner3SetEditMode(void) {
     struct CursorSource *src = DAT_004c2b0c;
     unsigned int local[5];
     memcpy(local, src->var_3c, sizeof(local));
@@ -4073,7 +4073,7 @@ void FUN_0040e690(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e6c0
-void FUN_0040e6c0(void) {
+void LogFlumeSpecialCorner4SetEditMode(void) {
     struct CursorSource *src = DAT_004c74d4;
     unsigned int local[5];
     memcpy(local, src->var_3c, sizeof(local));
@@ -4141,7 +4141,7 @@ void FUN_0040e890(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e8b0
-void FUN_0040e8b0(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner1LoadSprites(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -4169,7 +4169,7 @@ void FUN_0040e8b0(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e920
-void FUN_0040e920(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner2LoadSprites(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -4191,7 +4191,7 @@ void FUN_0040e920(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e970
-void FUN_0040e970(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner3LoadSprites(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -4219,7 +4219,7 @@ void FUN_0040e970(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e9e0
-void FUN_0040e9e0(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner4LoadSprites(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -4275,7 +4275,7 @@ void LogFlumeSpecialCorner4UnloadSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ead0
-void FUN_0040ead0(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner1AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4286,7 +4286,7 @@ void FUN_0040ead0(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040eb40
-void FUN_0040eb40(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner2AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4297,7 +4297,7 @@ void FUN_0040eb40(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ebb0
-void FUN_0040ebb0(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner3AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4308,7 +4308,7 @@ void FUN_0040ebb0(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ec20
-void FUN_0040ec20(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner4AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4319,25 +4319,25 @@ void FUN_0040ec20(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ec90
-void FUN_0040ec90(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeSpecialCorner1RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     DAT_004c2af4 = 0;
     FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
 
 // FUNCTION: LEGOLAND 0x0040ecc0
-unsigned int FUN_0040ecc0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+unsigned int LogFlumeSpecialCorner2RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     DAT_004c2af4 = 1;
     return FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
 
 // FUNCTION: LEGOLAND 0x0040ecf0
-unsigned int FUN_0040ecf0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+unsigned int LogFlumeSpecialCorner3RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     DAT_004c2af4 = 2;
     return FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
 
 // FUNCTION: LEGOLAND 0x0040ed20
-void FUN_0040ed20(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeSpecialCorner4RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     DAT_004c2af4 = 3;
     FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
@@ -4358,7 +4358,7 @@ struct RideSpriteInfo *FUN_0040ed50(struct FlumeRideArg *arg1, TileId arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040edb0
-void FUN_0040edb0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
+void RenderLogFlumeSpecialCorner1(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4388,7 +4388,7 @@ void FUN_0040edb0(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x0040ee60
-void FUN_0040ee60(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderLogFlumeSpecialCorner2(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4416,7 +4416,7 @@ void FUN_0040ee60(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x0040ef00
-void FUN_0040ef00(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
+void RenderLogFlumeSpecialCorner3(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4447,7 +4447,7 @@ void FUN_0040ef00(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x0040efb0
-void FUN_0040efb0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderLogFlumeSpecialCorner4(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4566,7 +4566,7 @@ void FUN_0040f360(struct FlumeXY p, unsigned int *result) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f3e0
-void FUN_0040f3e0(struct Obj *obj_ptr) {
+void LogFlumeTunnelLoadSprites(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -4595,7 +4595,7 @@ void LogFlumeTunnelUnloadSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f450
-void FUN_0040f450(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderLogFlumeTunnel(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4621,7 +4621,7 @@ void FUN_0040f450(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x0040f4f0
-void FUN_0040f4f0(void) {
+void LogFlumeTunnelSetEditMode(void) {
     FUN_0040d3b0(DAT_004cbe18, DAT_004cbe18->var_3c);
 }
 
@@ -4631,7 +4631,7 @@ void FUN_0040f510(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0040f540
-void FUN_0040f540(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeTunnelAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -4639,7 +4639,7 @@ void FUN_0040f540(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f580
-void FUN_0040f580(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeTunnelRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     FUN_0040db00(param_1, param_2, param_3, FUN_0040f360);
 }
 
@@ -4752,7 +4752,7 @@ void LogFlumeCsawUnloadSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f920
-void FUN_0040f920(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderLogFlumeCsaw(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4783,7 +4783,7 @@ void FUN_0040f920(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x0040fa00
-void FUN_0040fa00(void) {
+void LogFlumeCsawSetEditMode(void) {
     FUN_0040d3b0(DAT_004c2bf0, DAT_004c2bf0->var_3c);
 }
 
@@ -4799,7 +4799,7 @@ void FUN_0040fa50(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040fa60
-void FUN_0040fa60(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeCsawAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -4808,7 +4808,7 @@ void FUN_0040fa60(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040fab0
-unsigned int FUN_0040fab0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+unsigned int LogFlumeCsawRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     return FUN_0040db00(param_1, param_2, param_3, FUN_0040f830);
 }
 
@@ -4922,7 +4922,7 @@ void FUN_0040feb0(TileId pos, struct FlumeOut *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ff30
-void FUN_0040ff30(struct Obj *obj_ptr) {
+void LogFlumeHoldUpLoadSprites(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -4958,7 +4958,7 @@ void LogFlumeHoldUpUnloadSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ffd0
-void FUN_0040ffd0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
+void RenderLogFlumeHoldUp(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct LLS *lls;
@@ -4997,7 +4997,7 @@ void FUN_0040ffd0(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x004100b0
-void FUN_004100b0(void) {
+void LogFlumeHoldUpSetEditMode(void) {
     FUN_0040d3b0(DAT_004c2b60, DAT_004c2b60->var_3c);
 }
 
@@ -5013,7 +5013,7 @@ void FUN_00410100(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410110
-void FUN_00410110(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeHoldUpAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -5022,7 +5022,7 @@ void FUN_00410110(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410160
-unsigned int FUN_00410160(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+unsigned int LogFlumeHoldUpRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     return FUN_0040db00(param_1, param_2, param_3, FUN_0040feb0);
 }
 
@@ -5144,7 +5144,7 @@ void LogFlumeDropUnloadSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004104b0
-void FUN_004104b0(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderLogFlumeDrop(Element *elem, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = elem->ride;
     struct FlumeEntry *entry;
     struct Sprite *sprite;
@@ -5212,7 +5212,7 @@ void FUN_004104b0(Element *elem, unsigned int param_2, unsigned int param_3, Til
 }
 
 // FUNCTION: LEGOLAND 0x004106e0
-unsigned int FUN_004106e0(void) {
+unsigned int LogFlumeDropSetEditMode(void) {
     return FUN_0040d3b0(DAT_004c8d6c, DAT_004c8d6c->var_3c);
 }
 
@@ -5228,7 +5228,7 @@ void FUN_00410730(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410740
-void FUN_00410740(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeDropAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -5237,7 +5237,7 @@ void FUN_00410740(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410790
-unsigned int FUN_00410790(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+unsigned int LogFlumeDropRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     return FUN_0040db00(param_1, param_2, param_3, FUN_00410360);
 }
 
@@ -5473,10 +5473,10 @@ void LogFlume_GetInterfaces(struct ClassNode *flume, struct CallbackTable *vtbl)
         vtbl->cb_8c = LogFlumeEntranceSetEditMode;
         vtbl->cb_90 = FUN_0040a930;
         vtbl->cb_94 = FUN_0040aac0;
-        vtbl->cb_98 = FUN_0040a600;
-        vtbl->cb_9c = FUN_0040abf0;
+        vtbl->cb_98 = LogFlumeEntranceAddObject;
+        vtbl->cb_9c = LogFlumeEntranceRemoveObject;
         vtbl->cb_a8 = FUN_0040bf70;
-        vtbl->cb_b0 = FUN_0040b420;
+        vtbl->cb_b0 = RenderLogFlumeEntrance;
         vtbl->cb_ac = FUN_0040a410;
         vtbl->cb_bc = LogFlumeEntrance_Save;
         vtbl->cb_b8 = LogFlumeEntrance_Load;
@@ -5487,117 +5487,117 @@ void LogFlume_GetInterfaces(struct ClassNode *flume, struct CallbackTable *vtbl)
     if (_stricmp("LOG FLUME TRACK", flume->name) == 0) {
         DAT_0082c688 = flume->iface;
         vtbl->cb_a4 = FUN_0040c350;
-        vtbl->cb_8c = FUN_0040dbb0;
-        vtbl->cb_a0 = FUN_0040c970;
-        vtbl->cb_b0 = FUN_0040cc50;
+        vtbl->cb_8c = LogFlumeTrackSetEditMode;
+        vtbl->cb_a0 = GetLogFlumeTrackSpriteInfo;
+        vtbl->cb_b0 = RenderLogFlumeTrack;
         vtbl->cb_90 = FUN_0040c4a0;
         vtbl->cb_94 = FUN_0040c6c0;
-        vtbl->cb_98 = FUN_0040c780;
+        vtbl->cb_98 = LogFlumeTrackAddObject;
         vtbl->cb_9c = FUN_0040c8d0;
         vtbl->cb_ac = FUN_0040c430;
         return;
     }
     // STRING: LEGOLAND 0x004b4b88
     if (_stricmp("LOG FLUME SPECIAL CORNER 1", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040e8b0;
-        vtbl->cb_8c = FUN_0040e630;
+        vtbl->cb_a4 = LogFlumeSpecialCorner1LoadSprites;
+        vtbl->cb_8c = LogFlumeSpecialCorner1SetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040edb0;
+        vtbl->cb_b0 = RenderLogFlumeSpecialCorner1;
         vtbl->cb_90 = FUN_0040e6f0;
         vtbl->cb_94 = FUN_0040e830;
-        vtbl->cb_98 = FUN_0040ead0;
-        vtbl->cb_9c = FUN_0040ec90;
+        vtbl->cb_98 = LogFlumeSpecialCorner1AddObject;
+        vtbl->cb_9c = LogFlumeSpecialCorner1RemoveObject;
         vtbl->cb_ac = LogFlumeSpecialCorner1UnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4b6c
     if (_stricmp("LOG FLUME SPECIAL CORNER 2", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040e920;
-        vtbl->cb_8c = FUN_0040e660;
+        vtbl->cb_a4 = LogFlumeSpecialCorner2LoadSprites;
+        vtbl->cb_8c = LogFlumeSpecialCorner2SetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040ee60;
+        vtbl->cb_b0 = RenderLogFlumeSpecialCorner2;
         vtbl->cb_90 = FUN_0040e740;
         vtbl->cb_94 = FUN_0040e850;
-        vtbl->cb_98 = FUN_0040eb40;
-        vtbl->cb_9c = FUN_0040ecc0;
+        vtbl->cb_98 = LogFlumeSpecialCorner2AddObject;
+        vtbl->cb_9c = LogFlumeSpecialCorner2RemoveObject;
         vtbl->cb_ac = LogFlumeSpecialCorner2UnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4b50
     if (_stricmp("LOG FLUME SPECIAL CORNER 3", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040e970;
-        vtbl->cb_8c = FUN_0040e690;
+        vtbl->cb_a4 = LogFlumeSpecialCorner3LoadSprites;
+        vtbl->cb_8c = LogFlumeSpecialCorner3SetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040ef00;
+        vtbl->cb_b0 = RenderLogFlumeSpecialCorner3;
         vtbl->cb_90 = FUN_0040e790;
         vtbl->cb_94 = FUN_0040e870;
-        vtbl->cb_98 = FUN_0040ebb0;
-        vtbl->cb_9c = FUN_0040ecf0;
+        vtbl->cb_98 = LogFlumeSpecialCorner3AddObject;
+        vtbl->cb_9c = LogFlumeSpecialCorner3RemoveObject;
         vtbl->cb_ac = LogFlumeSpecialCorner3UnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4b34
     if (_stricmp("LOG FLUME SPECIAL CORNER 4", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040e9e0;
-        vtbl->cb_8c = FUN_0040e6c0;
+        vtbl->cb_a4 = LogFlumeSpecialCorner4LoadSprites;
+        vtbl->cb_8c = LogFlumeSpecialCorner4SetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040efb0;
+        vtbl->cb_b0 = RenderLogFlumeSpecialCorner4;
         vtbl->cb_90 = FUN_0040e7e0;
         vtbl->cb_94 = FUN_0040e890;
-        vtbl->cb_98 = FUN_0040ec20;
-        vtbl->cb_9c = FUN_0040ed20;
+        vtbl->cb_98 = LogFlumeSpecialCorner4AddObject;
+        vtbl->cb_9c = LogFlumeSpecialCorner4RemoveObject;
         vtbl->cb_ac = LogFlumeSpecialCorner4UnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4b24
     if (_stricmp("LOG FLUME CSAW", flume->name) == 0) {
         vtbl->cb_a4 = (RideCallback)FUN_0040f8b0;
-        vtbl->cb_8c = FUN_0040fa00;
+        vtbl->cb_8c = LogFlumeCsawSetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040f920;
+        vtbl->cb_b0 = RenderLogFlumeCsaw;
         vtbl->cb_90 = FUN_0040fa20;
         vtbl->cb_94 = FUN_0040fa50;
-        vtbl->cb_98 = FUN_0040fa60;
-        vtbl->cb_9c = FUN_0040fab0;
+        vtbl->cb_98 = LogFlumeCsawAddObject;
+        vtbl->cb_9c = LogFlumeCsawRemoveObject;
         vtbl->cb_ac = LogFlumeCsawUnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4b10
     if (_stricmp("LOG FLUME TUNNEL", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040f3e0;
-        vtbl->cb_8c = FUN_0040f4f0;
+        vtbl->cb_a4 = LogFlumeTunnelLoadSprites;
+        vtbl->cb_8c = LogFlumeTunnelSetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040f450;
+        vtbl->cb_b0 = RenderLogFlumeTunnel;
         vtbl->cb_90 = FUN_0040f510;
         vtbl->cb_94 = FUN_0040f5a0;
-        vtbl->cb_98 = FUN_0040f540;
-        vtbl->cb_9c = FUN_0040f580;
+        vtbl->cb_98 = LogFlumeTunnelAddObject;
+        vtbl->cb_9c = LogFlumeTunnelRemoveObject;
         vtbl->cb_ac = LogFlumeTunnelUnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4b00
     if (_stricmp("LOG FLUME DROP", flume->name) == 0) {
         vtbl->cb_a4 = (RideCallback)FUN_004103e0;
-        vtbl->cb_8c = FUN_004106e0;
+        vtbl->cb_8c = LogFlumeDropSetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_004104b0;
+        vtbl->cb_b0 = RenderLogFlumeDrop;
         vtbl->cb_90 = FUN_00410700;
         vtbl->cb_94 = FUN_00410730;
-        vtbl->cb_98 = FUN_00410740;
-        vtbl->cb_9c = FUN_00410790;
+        vtbl->cb_98 = LogFlumeDropAddObject;
+        vtbl->cb_9c = LogFlumeDropRemoveObject;
         vtbl->cb_ac = LogFlumeDropUnloadSprites;
         return;
     }
     // STRING: LEGOLAND 0x004b4aec
     if (_stricmp("LOG FLUME HOLD UP", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040ff30;
-        vtbl->cb_8c = FUN_004100b0;
+        vtbl->cb_a4 = LogFlumeHoldUpLoadSprites;
+        vtbl->cb_8c = LogFlumeHoldUpSetEditMode;
         vtbl->cb_a0 = FUN_0040ed50;
-        vtbl->cb_b0 = FUN_0040ffd0;
+        vtbl->cb_b0 = RenderLogFlumeHoldUp;
         vtbl->cb_90 = FUN_004100d0;
         vtbl->cb_94 = FUN_00410100;
-        vtbl->cb_98 = FUN_00410110;
-        vtbl->cb_9c = FUN_00410160;
+        vtbl->cb_98 = LogFlumeHoldUpAddObject;
+        vtbl->cb_9c = LogFlumeHoldUpRemoveObject;
         vtbl->cb_ac = LogFlumeHoldUpUnloadSprites;
     }
 }

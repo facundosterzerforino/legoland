@@ -208,17 +208,17 @@ void FUN_00405310(TileId tile) {
 }
 
 // FUNCTION: LEGOLAND 0x00405370
-void FUN_00405370(struct DSHead *param_1) {
+void LoadDrivingSchoolResources(struct DSHead *param_1) {
     unsigned int lls;
 
-    DAT_0082c694 = param_1->ride;
+    DrivingSchoolRide = param_1->ride;
     if (LLIDB_FindElement("DSCHOOL MAPPING", (unsigned int *)&param_1, 0) == 0) {
         DSchoolMappingData = LLIDB_LoadData(param_1);
     }
     if (LLIDB_FindElement("DSCHOOL BLUE CAR", (unsigned int *)&param_1, 0) == 0) {
         DSchoolBlueCarData = LLIDB_LoadData(param_1);
     }
-    DAT_0082c694->flags |= 0x420;
+    DrivingSchoolRide->flags |= 0x420;
     Load_FXList(DRIVING_SCHOOL_SFX, 6);
     // STRING: LEGOLAND 0x004b4524
     DSchoolMatteSprite = LoadSprite("DSchool Matte.lls", 1);
@@ -239,7 +239,7 @@ void FUN_00405370(struct DSHead *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00405460
-void FUN_00405460(void) {
+void UnloadDrivingSchoolResources(void) {
     unsigned int local;
 
     // STRING: LEGOLAND 0x004b454c
@@ -276,13 +276,13 @@ void FUN_00405460(void) {
     free(DSchoolYellowPalette);
     free(DSchoolRedPalette);
     KillSprite(DSCarSprite);
-    DAT_0082c694 = NULL;
+    DrivingSchoolRide = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00405570
-void FUN_00405570(void) {
+void DrivingSchoolSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0082c694;
+    EditMode.unk8 = DrivingSchoolRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
     DefaultCursor(&DAT_0082f760);
@@ -298,7 +298,7 @@ void FUN_00405570(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00405630
-void FUN_00405630(unsigned int param_1, int *coords) {
+void DrivingSchoolAddObject(unsigned int param_1, int *coords) {
     TileId tile;
     struct CountNode *node;
     struct Cursor *cursor;
@@ -350,7 +350,7 @@ void FUN_00405740(struct DSHead *param_1, unsigned int param_2, unsigned int par
     EditCursor.field_1828 = 0x4408;
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
 
-    c694 = DAT_0082c694;
+    c694 = DrivingSchoolRide;
     mapx = EditCursor.tile_x;
     memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
     DAT_0082f760.field_1830 = 0;
@@ -404,7 +404,7 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405940
-void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
+void DrivingSchoolRemoveObject(Element *obj, TileId tile, unsigned int param_3) {
     struct RideQueueEntry *queue = DAT_004cbeac;
     struct CountNode *count = (struct CountNode *)DrivingSchoolCountList;
     struct DSBlokeNode *blokes = (struct DSBlokeNode *)DAT_004c10d4;
@@ -437,7 +437,7 @@ void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
             if (queue->field_14 & 0x10) {
                 queue->field_14 &= 0xef;
                 FUN_00413650(queue->id, queue->x, queue->y);
-                AddBricks(((struct DSObjClass *)DAT_0082c678)->cost);
+                AddBricks(((struct DSObjClass *)ZebraCrossingRide)->cost);
             }
             DAT_0082f760.tile_x = queue->x;
             DAT_0082f760.tile_y = queue->y;
@@ -461,7 +461,7 @@ void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00405ad0
-struct RideSpriteInfo *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
+struct RideSpriteInfo *GetDrivingSchoolSpriteInfo(struct DSCarLayer *arg1, unsigned short arg2) {
     struct DSCarSub *sub = arg1->field_c;
     struct DSCarInner *inner = sub->layer;
 
@@ -477,7 +477,7 @@ struct RideSpriteInfo *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2
 }
 
 // FUNCTION: LEGOLAND 0x00405b10
-void FUN_00405b10(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+void RenderDrivingSchool(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point ref;

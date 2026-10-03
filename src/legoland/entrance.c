@@ -31,7 +31,7 @@ void FUN_0042d970(TileId *tile, unsigned int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d9c0
-void FUN_0042d9c0(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderEntrance(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point pos;
@@ -130,13 +130,13 @@ void FUN_0042d9c0(Element *obj, unsigned int param_2, unsigned int param_3, Tile
 }
 
 // FUNCTION: LEGOLAND 0x0042de50
-void FUN_0042de50(Element *param) {
+void LoadEntranceResources(Element *param) {
     Load_FXList(ENTRANCE_SFX, 1);
     LoadMoneySFX();
-    DAT_006160f4 = param->ride;
-    DAT_006160f4->flags |= 0x20;
-    DAT_006160f0 = DAT_006160f4->layer;
-    DAT_006160f0->flags |= 0x2000;
+    EntranceRide = param->ride;
+    EntranceRide->flags |= 0x20;
+    EntranceLayer = EntranceRide->layer;
+    EntranceLayer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b66cc
     EntranceMatte1Sprite = LoadSprite("entrance_matte1.lls", 1);
     // STRING: LEGOLAND 0x004b66b8
@@ -150,10 +150,10 @@ void FUN_0042de50(Element *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0042def0
-void FUN_0042def0(Element *param) {
+void UnloadEntranceResources(Element *param) {
     Kill_FXList(ENTRANCE_SFX, 1);
     KillMoneySFX();
-    DAT_006160f4 = param->ride;
+    EntranceRide = param->ride;
     if (Booth1Sprite != 0) {
         KillSprite(Booth1Sprite);
     }
@@ -172,7 +172,7 @@ void FUN_0042def0(Element *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0042df70
-void FUN_0042df70(Element *obj, TileId tile, struct Cursor *cursor) {
+void EntranceRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
     StandardRemoveObject(obj, tile, cursor);
     RemoveAllBlokesFromRide(obj->ride, tile);
 }

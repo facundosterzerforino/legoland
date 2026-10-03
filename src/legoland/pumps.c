@@ -18,15 +18,15 @@ struct PumpSource {
 };
 
 // FUNCTION: LEGOLAND 0x00411a10
-void FUN_00411a10(struct PumpSource *param_1) {
-    DAT_004cbe9c = param_1->var_c;
+void InitDrivingSchoolPumps(struct PumpSource *param_1) {
+    DrivingSchoolPumpsRide = param_1->var_c;
 }
 
 // FUNCTION: LEGOLAND 0x00411a20
-void FUN_00411a20(void) {
+void DrivingSchoolPumpsSetEditMode(void) {
     unsigned int eax_temp;
 
-    eax_temp = DAT_004cbe9c;
+    eax_temp = DrivingSchoolPumpsRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)eax_temp;
     DefaultCursor(&EditCursor);
@@ -82,7 +82,7 @@ void FUN_00411b20(struct PumpNode *node) {
     TileId tile;
     struct Ride *ride;
 
-    ride = (struct Ride *)DAT_004cbe9c;
+    ride = (struct Ride *)DrivingSchoolPumpsRide;
     cursor.footprint = ride->footprint;
     tile.pos.x = (unsigned char)node->var_4;
     tile.pos.y = (unsigned char)node->var_8;
@@ -126,7 +126,7 @@ void FUN_00411bd0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00411bf0
-void FUN_00411bf0(Element *obj, int *coords) {
+void DrivingSchoolPumpsAddObject(Element *obj, int *coords) {
     struct PumpTile *info;
     struct PumpNode *node;
     TileId tile;
@@ -147,13 +147,13 @@ void FUN_00411bf0(Element *obj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00411c70
-void FUN_00411c70(void *param_1, TileId tile, struct Cursor *cursor) {
+void DrivingSchoolPumpsRemoveObject(void *param_1, TileId tile, struct Cursor *cursor) {
     struct PumpNode *node;
 
     BGFullUpdate = 1;
     node = FUN_00411aa0(tile.pos.x, tile.pos.y);
     if (node) {
-        StandardRemoveObject(((struct Ride *)DAT_004cbe9c)->element, tile, cursor);
+        StandardRemoveObject(((struct Ride *)DrivingSchoolPumpsRide)->element, tile, cursor);
         FUN_00411ad0(node);
     }
 }
@@ -198,7 +198,7 @@ struct PumpTile *FUN_00411dc0(struct Cursor *cursor) {
     y = 0;
     if (tile != NULL) {
         cursor->tile_x = tile->var_c - 1;
-        y = tile->var_10 - ((struct Ride *)DAT_004cbe9c)->footprint.y0;
+        y = tile->var_10 - ((struct Ride *)DrivingSchoolPumpsRide)->footprint.y0;
         cursor->tile_y = y;
         y = (int)tile;
     }

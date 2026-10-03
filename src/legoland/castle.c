@@ -5278,7 +5278,7 @@ void FUN_00424e80(void) {
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00425050
-void FUN_00425050(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
+void RenderCastleObj(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *r;
     struct RideNode *walk;
     struct Bloke *rider;
@@ -5408,7 +5408,7 @@ void FUN_004251c0(Element *obj) {
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004254d0
-void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
+void CastleGetInterfaces(struct ClassNode *head, struct CallbackTable *obj) {
     // STRING: LEGOLAND 0x004b5c0c
     if (_stricmp("CASTLE OBJ", head->name) == 0) {
         obj->cb_8c = FUN_0041ec50;
@@ -5419,7 +5419,7 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_a4 = FUN_00424150;
         obj->cb_ac = FUN_004241e0;
         obj->cb_a8 = FUN_004251c0;
-        obj->cb_b0 = FUN_00425050;
+        obj->cb_b0 = RenderCastleObj;
         obj->cb_bc = CastleObj_Save;
         obj->cb_b8 = FUN_00426c20;
         obj->cb_c0 = FUN_004246e0;
@@ -5451,7 +5451,7 @@ void FUN_004254d0(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_94 = FUN_0041ed00;
         obj->cb_98 = FUN_0041ece0;
         obj->cb_9c = FUN_0041ed50;
-        obj->cb_a4 = FUN_00427aa0;
+        obj->cb_a4 = CastleLoadBasicTiles;
         obj->cb_ac = CastleUnloadBasicTiles;
         obj->cb_b0 = FUN_00427a00;
         obj->cb_90 = FUN_004275d0;
@@ -7051,7 +7051,7 @@ void FUN_00427a80(struct Struct427a80 *param_1, float param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00427aa0
-void FUN_00427aa0(Element *obj) {
+void CastleLoadBasicTiles(Element *obj) {
     unsigned int handle;
 
     DAT_00829c08 = (unsigned int)obj->ride;

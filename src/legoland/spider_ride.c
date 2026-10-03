@@ -169,7 +169,7 @@ int FUN_00415a90(struct SpiderNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00415ae0
-void FUN_00415ae0(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderSpider(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
     Ride *ride = obj->ride;
     RideNode *elem = ride->riders;
     char count = 0;
@@ -305,7 +305,7 @@ void FUN_00415fd0(struct CarNode *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00416060
-void FUN_00416060(void) {
+void SpiderSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)DAT_004cbf20;
     DefaultCursor(&EditCursor);
@@ -313,7 +313,7 @@ void FUN_00416060(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004160a0
-void FUN_004160a0(Element *obj, TileId tile, struct Cursor *cursor) {
+void SpiderRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
     struct SpiderNode *node = FindSpiderNode(&tile);
 
     if (node != NULL) {
@@ -325,7 +325,7 @@ void FUN_004160a0(Element *obj, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x004160f0
-void FUN_004160f0(Element *editObj, int *coords) {
+void SpiderAddObject(Element *editObj, int *coords) {
     TileId key;
 
     key.pos.x = coords[0];
@@ -352,11 +352,11 @@ void SpiderRide(struct ClassNode *name_ptr, struct CallbackTable *obj) {
     if (_stricmp("SPIDER RIDE", name_ptr->name) == 0) {
         obj->cb_a4 = FUN_00415e80;
         obj->cb_ac = FUN_00415fd0;
-        obj->cb_8c = FUN_00416060;
+        obj->cb_8c = SpiderSetEditMode;
         obj->cb_a8 = FUN_00416330;
-        obj->cb_b0 = FUN_00415ae0;
-        obj->cb_9c = FUN_004160a0;
-        obj->cb_98 = FUN_004160f0;
+        obj->cb_b0 = RenderSpider;
+        obj->cb_9c = SpiderRemoveObject;
+        obj->cb_98 = SpiderAddObject;
         obj->cb_a0 = FUN_00416120;
         obj->cb_bc = SaveSpider;
         obj->cb_b8 = LoadSpider;

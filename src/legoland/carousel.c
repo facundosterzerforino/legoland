@@ -118,7 +118,7 @@ void FUN_0042c210(struct CarouselNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c280
-void FUN_0042c280(struct CarouselRideObj *param_1) {
+void LoadCarouselResources(struct CarouselRideObj *param_1) {
     struct LayerResult layer;
 
     DAT_006160bc = param_1->ride;
@@ -155,7 +155,7 @@ void FUN_0042c280(struct CarouselRideObj *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c3f0
-void FUN_0042c3f0(struct CarouselRideObj *input) {
+void UnloadCarouselResources(struct CarouselRideObj *input) {
     DAT_006160bc = input->ride;
     KillSprite(CarouselEntranceMatteSprite);
     KillSprite(CarouselEntranceMatte2Sprite);
@@ -168,7 +168,7 @@ void FUN_0042c3f0(struct CarouselRideObj *input) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c460
-void FUN_0042c460(void) {
+void CarouselSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = DAT_006160bc;
     DefaultCursor(&EditCursor);
@@ -176,7 +176,7 @@ void FUN_0042c460(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c4a0
-void FUN_0042c4a0(struct CarouselRideObj *param_1, TileId tile, unsigned int param_3) {
+void CarouselRemoveObject(struct CarouselRideObj *param_1, TileId tile, unsigned int param_3) {
     struct CarouselNode *node;
     struct SampleParams params;
 
@@ -193,7 +193,7 @@ void FUN_0042c4a0(struct CarouselRideObj *param_1, TileId tile, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x0042c520
-void FUN_0042c520(unsigned int param_1, unsigned char *param_2) {
+void CarouselAddObject(unsigned int param_1, unsigned char *param_2) {
     unsigned char pair[2];
 
     pair[0] = param_2[0];
@@ -203,7 +203,7 @@ void FUN_0042c520(unsigned int param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c550
-struct RideSpriteInfo *FUN_0042c550(struct CarouselRideObj *param1, unsigned short param2) {
+struct RideSpriteInfo *GetCarouselSpriteInfo(struct CarouselRideObj *param1, unsigned short param2) {
     struct CarouselRide *ride = param1->ride;
 
     DAT_006160a0.sprite = ride->layer;
@@ -496,7 +496,7 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042bcf0
-void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+void RenderCarousel(struct CarouselRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
     struct CarouselRide *ride = param_1->ride;
     struct CarouselListElem *elem;
     int bloke;

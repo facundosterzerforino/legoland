@@ -219,7 +219,7 @@ void FUN_00406ab0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406b10
-void FUN_00406b10(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+void RenderGoldRush(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point pos;
@@ -547,7 +547,7 @@ void GoldRushSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004075f0
-void FUN_004075f0(struct GoldEditObject *editObj, struct Point *pos) {
+void GoldRushAddObject(struct GoldEditObject *editObj, struct Point *pos) {
     TileId id;
     struct Point p;
     struct GoldRide *ride;
@@ -576,7 +576,7 @@ void FUN_004075f0(struct GoldEditObject *editObj, struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x004076e0
-void FUN_004076e0(struct GoldEditObject *editObj, TileId coords, struct Cursor *cursor) {
+void GoldRushRemoveObject(struct GoldEditObject *editObj, TileId coords, struct Cursor *cursor) {
     int p[2];
     struct GoldRide *ride = editObj->ride;
     void *found = FindGoldWashNode(&coords);
@@ -662,9 +662,9 @@ void GoldRush_GetInterfaces(struct ClassNode *str, struct CallbackTable *module)
         module->cb_ac = FUN_00406ab0;
         module->cb_8c = GoldRushSetEditMode;
         module->cb_a8 = FUN_004072b0;
-        module->cb_b0 = FUN_00406b10;
-        module->cb_98 = FUN_004075f0;
-        module->cb_9c = FUN_004076e0;
+        module->cb_b0 = RenderGoldRush;
+        module->cb_98 = GoldRushAddObject;
+        module->cb_9c = GoldRushRemoveObject;
         module->cb_b8 = LoadGoldWash;
         module->cb_bc = SaveGoldWash;
     }

@@ -1158,7 +1158,7 @@ struct RenderItemNode *DAT_004c10e8;
 void *DAT_004c10f0;
 
 // GLOBAL: LEGOLAND 0x004c10f4
-void *DAT_004c10f4;
+void *ActiveCatapultRide;
 
 // GLOBAL: LEGOLAND 0x004c1100
 void *DAT_004c1100;
@@ -1551,7 +1551,7 @@ struct Sprite *LogFlumeEntrance3Sprite;
 struct Sprite *LogFlumeEntrance1Sprite;
 
 // GLOBAL: LEGOLAND 0x004cbe9c
-unsigned int DAT_004cbe9c;
+unsigned int DrivingSchoolPumpsRide;
 
 // GLOBAL: LEGOLAND 0x004cbea4
 void *PumpList;
@@ -1704,10 +1704,10 @@ unsigned short DAT_004cbf4c;
 struct SpiderNode *SpiderNodeList;
 
 // GLOBAL: LEGOLAND 0x004cbf5c
-struct Ride *DAT_004cbf5c;
+struct Ride *TempleBuildingRide;
 
 // GLOBAL: LEGOLAND 0x004cbf64
-void *DAT_004cbf64;
+void *TempleLayer;
 
 // GLOBAL: LEGOLAND 0x004cbf68
 struct Sprite *TempleMatte1Sprite;
@@ -1770,10 +1770,10 @@ struct SlideNode *SlideNodeList;
 struct Sprite *TopwaterSprite;
 
 // GLOBAL: LEGOLAND 0x004cbfdc
-struct WaterContext *DAT_004cbfdc;
+struct WaterContext *ElephantFountainRide;
 
 // GLOBAL: LEGOLAND 0x004cbfe0
-struct WaterSub *DAT_004cbfe0;
+struct WaterSub *ShowerLayer;
 
 // GLOBAL: LEGOLAND 0x004cbfe4
 unsigned int DAT_004cbfe4;
@@ -1782,7 +1782,7 @@ unsigned int DAT_004cbfe4;
 unsigned int WaterWorksImageListHandle;
 
 // GLOBAL: LEGOLAND 0x004cbfec
-unsigned int DAT_004cbfec;
+unsigned int ElephantFountainLayer;
 
 // GLOBAL: LEGOLAND 0x004cbff0
 unsigned int DAT_004cbff0;
@@ -1815,7 +1815,7 @@ unsigned int DAT_004cc01c;
 struct Sprite *WwElsquirtSprite;
 
 // GLOBAL: LEGOLAND 0x004cc024
-struct WaterContext *DAT_004cc024;
+struct WaterContext *ShowerRide;
 
 // GLOBAL: LEGOLAND 0x004cc028
 unsigned int WaterWorksSfxRefCount;
@@ -2229,10 +2229,10 @@ struct EarthNode *EarthNodeHead;
 struct RenderItemNode *BlokeRenderList;
 
 // GLOBAL: LEGOLAND 0x006160f4
-struct Ride *DAT_006160f4;
+struct Ride *EntranceRide;
 
 // GLOBAL: LEGOLAND 0x006160f0
-struct Sprite *DAT_006160f0;
+struct Sprite *EntranceLayer;
 
 // GLOBAL: LEGOLAND 0x00616110
 int DAT_00616110;
@@ -5124,13 +5124,13 @@ struct Sprite *JailCellMaskSprite;
 struct Building *DAT_0081cb10;
 
 // GLOBAL: LEGOLAND 0x0081cb14
-struct Building *DAT_0081cb14;
+struct Building *SheriffBuilding;
 
 // GLOBAL: LEGOLAND 0x0081cb18
 struct Sprite *LegoShop1MatteSprite;
 
 // GLOBAL: LEGOLAND 0x0081cb1c
-struct Building *DAT_0081cb1c;
+struct Building *SaloonBuilding;
 
 // GLOBAL: LEGOLAND 0x0081cb20
 struct Sprite *LegoShop2MatteSprite;
@@ -5142,10 +5142,10 @@ struct Sprite *GStoreMatte2Sprite;
 struct Sprite *ExplorersInstituteMatteSprite;
 
 // GLOBAL: LEGOLAND 0x0081cb2c
-struct Building *DAT_0081cb2c;
+struct Building *BankBuilding;
 
 // GLOBAL: LEGOLAND 0x0081cb30
-struct Building *DAT_0081cb30;
+struct Building *GeneralStoreBuilding;
 
 // GLOBAL: LEGOLAND 0x0081cb34
 struct Sprite *BankMatteSprite;
@@ -5154,19 +5154,19 @@ struct Sprite *BankMatteSprite;
 struct Sprite *SherifshutMatteSprite;
 
 // GLOBAL: LEGOLAND 0x0081cb3c
-struct Building *DAT_0081cb3c;
+struct Building *LegoShop1Building;
 
 // GLOBAL: LEGOLAND 0x0081cb40
-struct Building *DAT_0081cb40;
+struct Building *LegoMediaShopBuilding;
 
 // GLOBAL: LEGOLAND 0x0081cb44
-struct Building *DAT_0081cb44;
+struct Building *ExplorersInstituteBuilding;
 
 // GLOBAL: LEGOLAND 0x0081cb48
 struct Sprite *LegMediaShopMask1Sprite;
 
 // GLOBAL: LEGOLAND 0x0081cb4c
-struct Building *DAT_0081cb4c;
+struct Building *LegoShop2Building;
 
 // GLOBAL: LEGOLAND 0x0081cb50
 struct Sprite *LegMediaShopMask2Sprite;
@@ -5193,7 +5193,7 @@ struct Sprite *BrijMaskSprite;
 struct Sprite *MFish2Sprite;
 
 // GLOBAL: LEGOLAND 0x0081cb70
-struct Ride *DAT_0081cb70;
+struct Ride *MonkeyTreeRide;
 
 // GLOBAL: LEGOLAND 0x0081cb74
 struct Ride *MFish2Ride;
@@ -5211,19 +5211,19 @@ void *DAT_0081cd04;
 void *HedgeObjectClass;
 
 // GLOBAL: LEGOLAND 0x0081cd0c
-unsigned int DAT_0081cd0c;
+unsigned int CastleBBQRide;
 
 // GLOBAL: LEGOLAND 0x0081cd10
-unsigned int DAT_0081cd10;
+unsigned int CastleBBQLayer;
 
 // GLOBAL: LEGOLAND 0x0081cd14
-unsigned int DAT_0081cd14;
+unsigned int FoodcartDrinkRide;
 
 // GLOBAL: LEGOLAND 0x0081cd18
-struct EateryFX *DAT_0081cd18;
+struct EateryFX *SharkCafeRide;
 
 // GLOBAL: LEGOLAND 0x0081cd1c
-struct EateryFX *DAT_0081cd1c;
+struct EateryFX *OctopusCafeRide;
 
 // GLOBAL: LEGOLAND 0x0081cd20
 struct Sprite *R2TowermSprite;
@@ -5235,7 +5235,7 @@ struct Sprite *RestMaskMainSprite;
 unsigned int EateryFxInner;
 
 // GLOBAL: LEGOLAND 0x0081cd30
-unsigned int DAT_0081cd30;
+unsigned int Restaurant2Ride;
 
 // GLOBAL: LEGOLAND 0x0081cd34
 struct Sprite *R2FdoormSprite;
@@ -5244,13 +5244,13 @@ struct Sprite *R2FdoormSprite;
 struct EateryFX *DAT_0081cd38;
 
 // GLOBAL: LEGOLAND 0x0081cd3c
-unsigned int DAT_0081cd3c;
+unsigned int FoodcartFoodRide;
 
 // GLOBAL: LEGOLAND 0x0081cd40
-unsigned int DAT_0081cd40;
+unsigned int Restaurant1Ride;
 
 // GLOBAL: LEGOLAND 0x0081cd44
-struct EateryFX *DAT_0081cd44;
+struct EateryFX *ChuckWagonRide;
 
 // GLOBAL: LEGOLAND 0x0081cd48
 struct Sprite *R2Fdoorm1Sprite;
@@ -5346,10 +5346,10 @@ struct Sprite *OctTabHASprite;
 struct Sprite *OctTabHBSprite;
 
 // GLOBAL: LEGOLAND 0x0081cde0
-struct EateryFX *DAT_0081cde0;
+struct EateryFX *FoodcartIcecreamRide;
 
 // GLOBAL: LEGOLAND 0x0081cde4
-struct Ride *DAT_0081cde4;
+struct Ride *BalloonzRide;
 
 // GLOBAL: LEGOLAND 0x0081cde8
 struct Sprite *ZBalloon2Sprite;
@@ -5525,13 +5525,13 @@ unsigned int CoasterTrainTailCarLfm;
 unsigned int DAT_0082adec;
 
 // GLOBAL: LEGOLAND 0x0082adf0
-struct Ride *DAT_0082adf0;
+struct Ride *BoatingSchoolWaterRide;
 
 // GLOBAL: LEGOLAND 0x0082adf4
 struct TileMap *BoatingSchoolTileMapping;
 
 // GLOBAL: LEGOLAND 0x0082adf8
-struct Ride *DAT_0082adf8;
+struct Ride *BoatingSchoolMermaidRide;
 
 // GLOBAL: LEGOLAND 0x0082adfc
 struct Sprite *BoatingSchoolHullMaskSprite;
@@ -5555,7 +5555,7 @@ struct SpriteSet *BoatingSchoolBoats;
 struct Sprite *ZSpiderSprite;
 
 // GLOBAL: LEGOLAND 0x0082c678
-void *DAT_0082c678;
+void *ZebraCrossingRide;
 
 // GLOBAL: LEGOLAND 0x0082c67c
 struct DSMapEntry *DSchoolMappingData;
@@ -5573,7 +5573,7 @@ void *DAT_0082c688;
 unsigned short *DSchoolRedPalette;
 
 // GLOBAL: LEGOLAND 0x0082c694
-struct DSCursorSource *DAT_0082c694;
+struct DSCursorSource *DrivingSchoolRide;
 
 // GLOBAL: LEGOLAND 0x0082c6b8
 unsigned short *DSchoolYellowPalette;

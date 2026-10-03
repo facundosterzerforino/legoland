@@ -160,7 +160,7 @@ void FUN_0043d9f0(struct PlaneRideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043da60
-void FUN_0043da60(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderPlaneRide(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
     struct Ride *ride;
     struct RideNode *r;
     struct Point coords;
@@ -288,7 +288,7 @@ void FUN_0043dee0(struct PlaneRideObject *input) {
 }
 
 // FUNCTION: LEGOLAND 0x0043df50
-void FUN_0043df50(void) {
+void PlaneRideSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)PlaneRide;
     DefaultCursor(&EditCursor);
@@ -296,7 +296,7 @@ void FUN_0043df50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043df90
-void FUN_0043df90(struct PlaneRideObject *a1, TileId a2, struct PlaneRideObject *a3) {
+void PlaneRideRemoveObject(struct PlaneRideObject *a1, TileId a2, struct PlaneRideObject *a3) {
     unsigned int temp = FindPlaneRideNode(&a2);
     if (temp != 0) {
         RemovePlaneRideNode((void *)temp);
@@ -306,7 +306,7 @@ void FUN_0043df90(struct PlaneRideObject *a1, TileId a2, struct PlaneRideObject 
 }
 
 // FUNCTION: LEGOLAND 0x0043dfe0
-void FUN_0043dfe0(Element *a, int *p) {
+void PlaneRideAddObject(Element *a, int *p) {
     unsigned char c[2];
 
     c[0] = *(unsigned char *)p;
@@ -471,11 +471,11 @@ void PlaneRide_GetInterfaces(struct ClassNode *name, struct CallbackTable *iface
     if (_stricmp("PLANE RIDE", name->name) == 0) {
         iface->cb_a4 = FUN_0043dda0;
         iface->cb_ac = FUN_0043dee0;
-        iface->cb_8c = FUN_0043df50;
+        iface->cb_8c = PlaneRideSetEditMode;
         iface->cb_a8 = FUN_0043e410;
-        iface->cb_b0 = FUN_0043da60;
-        iface->cb_9c = FUN_0043df90;
-        iface->cb_98 = FUN_0043dfe0;
+        iface->cb_b0 = RenderPlaneRide;
+        iface->cb_9c = PlaneRideRemoveObject;
+        iface->cb_98 = PlaneRideAddObject;
         iface->cb_a0 = FUN_0043e010;
         iface->cb_b8 = LoadZoomer;
         iface->cb_bc = SaveZoomer;

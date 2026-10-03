@@ -486,7 +486,7 @@ void RenderSpaceTowerSeat(struct SpaceTowerCar *param_1, int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x0043af50
-void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+void RenderSpaceTower(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
     struct SpaceTowerRide *ride;
     struct SpaceTowerRideNode *node;
     struct SpaceTowerCar *car;
@@ -591,7 +591,7 @@ void SpaceTowerSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b460
-void FUN_0043b460(struct EditObject *param_1, TileId tile, struct Cursor *param_3) {
+void SpaceTowerRemoveObject(struct EditObject *param_1, TileId tile, struct Cursor *param_3) {
     struct SpaceTowerCar *node;
 
     node = FindSpaceTowerCar(&tile.id);
@@ -746,8 +746,8 @@ void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
         obj->cb_8c = SpaceTowerSetEditMode;
         obj->cb_a8 = FUN_0043bac0;
         obj->cb_a0 = FUN_0043b4e0;
-        obj->cb_b0 = FUN_0043af50;
-        obj->cb_9c = FUN_0043b460;
+        obj->cb_b0 = RenderSpaceTower;
+        obj->cb_9c = SpaceTowerRemoveObject;
         obj->cb_98 = SpaceTowerAddObject;
         obj->cb_ac = FUN_0043b570;
         obj->cb_bc = SpaceTower_Save;

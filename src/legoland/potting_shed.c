@@ -40,7 +40,7 @@ struct EditTarget {
 #include "worker.h"
 
 // FUNCTION: LEGOLAND 0x0043ce60
-void FUN_0043ce60(Element *obj) {
+void LoadGShedMatteSprite(Element *obj) {
     PottingShedRide = obj->ride;
     PottingShedRide->flags |= 0x420;
     PottingShedLayer = PottingShedRide->layer;
@@ -109,7 +109,7 @@ void FUN_0043cf00(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d0b0
-void FUN_0043d0b0(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
+void RenderPottingShed(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
     struct Ride *shed = obj->ride;
     struct RideNode *node = shed->riders;
     struct Bloke *blokes[30] = {0};

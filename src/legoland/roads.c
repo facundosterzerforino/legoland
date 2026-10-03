@@ -396,7 +396,7 @@ void FUN_00413650(unsigned short param_1, int param_2, int param_3) {
         break;
     }
     if (flag != 0) {
-        AddBricks(GetObjCost(DAT_0082c678));
+        AddBricks(GetObjCost(ZebraCrossingRide));
     }
 }
 
@@ -443,7 +443,7 @@ void FUN_004139e0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00413a10
-void FUN_00413a10(struct LLIDB_Head *head) {
+void LoadDrivingSchoolRoadsResources(struct LLIDB_Head *head) {
     struct LLIDB_Head **handle = &head;
 
     DAT_0082c684 = head->callbacks;
@@ -461,7 +461,7 @@ void FUN_00413a10(struct LLIDB_Head *head) {
 }
 
 // FUNCTION: LEGOLAND 0x00413a80
-void FUN_00413a80(void) {
+void UnloadDrivingSchoolRoadsResources(void) {
     struct RoadQueueEntry *entry = (struct RoadQueueEntry *)DAT_004cbeac;
     unsigned int handle;
     struct RoadQueueEntry *next;
@@ -478,7 +478,7 @@ void FUN_00413a80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00413ad0
-void FUN_00413ad0(void) {
+void DrivingSchoolRoadsSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = DAT_0082c684;
     DefaultCursor(&EditCursor);
@@ -692,10 +692,10 @@ void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor) {
     tile.id = entry->field_8;
     if (entry->field_14 & 0x10) {
         IncrementObjectCount((struct ObjectCount *)edit->data);
-        DecrementObjectCount((struct ObjectCount *)DAT_0082c678);
+        DecrementObjectCount((struct ObjectCount *)ZebraCrossingRide);
         entry->field_14 &= 0xef;
         FUN_00413650(tile.id, x, y);
-        AddBricks(GetObjCost((struct Ride *)DAT_0082c678));
+        AddBricks(GetObjCost((struct Ride *)ZebraCrossingRide));
         return;
     }
     FUN_00406020(tile.id, -1);
@@ -821,9 +821,9 @@ void FUN_00414440(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00414830
-void FUN_00414830(void) {
+void ZebraCrossingSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0082c678;
+    EditMode.unk8 = ZebraCrossingRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&DAT_004b4bf0);
     EditCursor.field_1828 |= 8;
@@ -864,8 +864,8 @@ void FUN_00414880(struct RoadEditArg *param_1, unsigned int param_2, unsigned in
 }
 
 // FUNCTION: LEGOLAND 0x00414940
-void FUN_00414940(struct RoadEditArg *param_1) {
-    DAT_0082c678 = param_1->ride;
+void InitZebraCrossing(struct RoadEditArg *param_1) {
+    ZebraCrossingRide = param_1->ride;
 }
 
 // FUNCTION: LEGOLAND 0x00414950
