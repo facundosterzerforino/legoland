@@ -792,57 +792,56 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
     if (sprite == NULL) {
         return 0xffffffff;
     }
-    size = sprite->size;
-    w = (int)size;
-    twice = size * 2;
-    hy = w + 1 >> 1;
-    half = twice + 1 >> 1;
-    sx = ((ScrollX >> 8) - lpConfig->view_x) + *param_1 + half;
-    sy = ((ScrollY >> 8) - lpConfig->view_y) + param_1[1];
-    qx = sx / twice;
-    rx = sx % twice;
-    qy = sy / w;
-    ry = sy % w;
-    *out = qx + qy;
-    out[1] = qy - qx;
-    if (rx < 0) {
-        rx = rx + -2 + twice;
-        out[1] = (qy - qx) + 1;
-        *out = (qx + qy) + -1;
-    }
-    if (ry < 0) {
-        out[1] = out[1] + -1;
-        *out = *out + -1;
-        ry = ry + -1 + w;
-    }
-    sel = (rx >= half) + 1;
-    if (ry > hy) {
-        sel += 2;
-    }
-    switch (sel) {
-    case 1:
-        if (rx < half + ry * -2) {
-            *out = *out + -1;
-            return 1;
+    do {
+        size = sprite->size;
+        w = (int)size;
+        twice = size * 2;
+        hy = w + 1 >> 1;
+        half = twice + 1 >> 1;
+        sx = ((ScrollX >> 8) - lpConfig->view_x) + *param_1 + half;
+        sy = ((ScrollY >> 8) - lpConfig->view_y) + param_1[1];
+        qx = sx / twice;
+        rx = sx % twice;
+        qy = sy / w;
+        ry = sy % w;
+        *out = qx + qy;
+        out[1] = qy - qx;
+        if (rx < 0) {
+            rx = rx + -2 + twice;
+            out[1] = (qy - qx) + 1;
+            *out = (qx + qy) + -1;
         }
-        break;
-    case 2:
-        if (rx >= half + ry * 2) {
+        if (ry < 0) {
             out[1] = out[1] + -1;
-            return 1;
+            *out = *out + -1;
+            ry = ry + -1 + w;
         }
-        break;
-    case 3:
-        if (rx < half + (ry - w) * 2) {
-            out[1] = out[1] + 1;
-            return 1;
+        sel = (rx >= half) + 1;
+        if (ry > hy) {
+            sel += 2;
         }
-        break;
-    case 4:
-        if (rx >= half + (w - ry) * 2) {
-            *out = *out + 1;
+        switch (sel) {
+        case 1:
+            if (rx < half + ry * -2) {
+                *out = *out + -1;
+            }
+            break;
+        case 2:
+            if (rx >= half + ry * 2) {
+                out[1] = out[1] + -1;
+            }
+            break;
+        case 3:
+            if (rx < half + (ry - w) * 2) {
+                out[1] = out[1] + 1;
+            }
+            break;
+        case 4:
+            if (rx >= half + (w - ry) * 2) {
+                *out = *out + 1;
+            }
         }
-    }
+    } while (0);
     return 1;
 }
 
