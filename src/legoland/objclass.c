@@ -691,10 +691,11 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
         fatigue = 0;
     }
     if (counter != 0) {
-        counter = ((4 - (1 << counter)) * 0x19 + item->value) - fatigue;
+        rating = ((4 - (1 << counter)) * 0x19 + item->value) - fatigue;
     } else {
-        counter = (item->value - fatigue) + 100;
+        rating = (item->value - fatigue) + 100;
     }
+    counter = rating;
     switch (category) {
     case 0:
         if (item->type == 5) {

@@ -28,6 +28,9 @@ uv run tools/progress.py                         # progress table (expect ~2941 
   identical (pure register/scheduling difference), and diffs on layout-dependent operands reccmp cannot normalize (skip those).
 
 ## Rules that worked
+- **Triage partials before touching code.** Run `difftype.py` and `deadends.py` over the candidate list and work only
+  functions with a small diff that is neither register-only nor layout-dependent. That rules out most dead ends before any attempt.
+- **Cap each function at about 3 attempts** (one variant batch each), then record it in the dead-end list and move on.
 - **Push to main** (`git push origin HEAD:main`, plain fast-forward) after each verified stage, and keep the working branch in sync.
 - **Do not run clang-format.** The container's version differs from the repo's and rewrites untouched code (it also breaks `progress.py` by wrapping signatures).
 - Max ~20 concurrent subagents. Sonnet agents with isolation=worktree: tell them to `git reset --hard` to the branch tip first
@@ -77,8 +80,6 @@ What worked (look for these shapes first, they are cheap):
 - Unsigned char fields read into an `int`/`short` local: the original `xor reg,reg; mov regl,[..]` vs our `movsx` tells the type.
 - A `word` global split with `mov cl, dh` and no `and ecx,0xff` is two bytes: `((unsigned char *)&g)[0]` / `[1]`, not
   `(unsigned char)(g >> 8)` (GetFirstRenderObject).
-- Untried lead: FUN_004428f0 (72.6%) has two separate `GetNthStringInList` returns and stores its second pointer into the
-  `param_1` stack slot only on one path, which suggests an uninitialized local reusing that slot plus `if (param_2 == 1) return ...;`.
 Dead ends found this round (tried 5-15 variants each, register allocation or block placement only):
 SetBlokePositionFromBNV (x87 stack order in the 3rd sqrt), SpeechParseWavHeader and SaveScripts and UnlinkGardenerOrder and
 InitDirectSound and OpenAviAnim (early `return 0` blocks merged/duplicated differently from the original), FUN_00476d20,
@@ -90,3 +91,16 @@ FUN_0043aac0, FUN_00413450, FUN_004019c0, FUN_0042f0f0, FUN_004401b0, FUN_004070
 FUN_004966a0 (ours tail-duplicates the final call into each switch case), FUN_004779d0, PutObjOnMap.
 Layout dead ends (flagged by `deadends.py`): LoadObjectClassAliasElements and FUN_004860f0 (loop-end pointer lands on a float
 symbol), FUN_0041ed50, FUN_0041ece0, FUN_0041ed00, DoLowLevelAI (indexed table calls), FUN_00444970 (EditCursor+5184).
+
+### Round 4 (triage first, 3 attempts per function)
+Triage: 81 untried partials between 60% and 95% -> 17 layout-dependent, 0 register-only, 45 with large diffs -> 19 worked.
+Improved: FUN_004428f0 (75.2), OpenAviMovie (89.1), RenderUsingRin (72.8), Calc_Item_Attractiveness (73.1), FUN_00488c80 (89.0).
+Patterns that helped:
+- Early-return blocks: `if (handle == NULL) { cleanup; return NULL; }` placed the failure block where the original has it (OpenAviMovie).
+- Success block placed inline after the last check, with `goto ok` from the first test, matched the original block order (FUN_00488c80).
+- Reusing an earlier local for the result (`rating = ...; counter = rating;`) kept it in eax like the original (Calc_Item_Attractiveness).
+Dead ends (3 attempts each, scheduling/register allocation or tail merging): LLIDB_LoadTSFData, ValidateCursor,
+UpdateControllerFromMouseData (the original reloads a field our compiler caches; only a `volatile` cast helps), PrintSavedGameDetails,
+LoadPalette, FUN_00429f30 (a float argument goes through the FPU in the original), FUN_0046d850 and FUN_00402dc0 and FUN_00439ef0
+(the original shares the tails of different switch cases/branches), FreePlayObjectList, FUN_0040f050, FUN_00465ee0,
+FUN_00425e20 (our compiler reads the source of a struct copy instead of the copied global), EnterSaveGameDetails (larger stack frame).

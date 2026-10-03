@@ -518,31 +518,26 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
     }
     IDirectDrawSurface_SetClipper(renderEngine, DDrawClipper);
     hr = IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x1008000, NULL);
-    for (;;) {
-        if (hr != 0) {
-            if (hr != 0x887601c2) {
-                break;
-            }
-            if (IDirectDrawSurface_Restore(DAT_0079861c) != 0) {
+    if (hr == 0) {
+        goto ok;
+    }
+    if (hr == 0x887601c2) {
+        if (IDirectDrawSurface_Restore(DAT_0079861c) != 0) {
+            IDirectDrawSurface_SetClipper(renderEngine, NULL);
+            CurrentSurfaceDesc = DAT_00798598;
+            DAT_00668108 = DAT_00798608;
+            return 0;
+        }
+        MakeSprite(sprite);
+        if (IDirectDrawSurface_IsLost(PrimarySurface) != 0x887601c2 || IDirectDrawSurface_Restore(PrimarySurface) == 0) {
+            if (IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x8000, NULL) == 0) {
+            ok:
                 IDirectDrawSurface_SetClipper(renderEngine, NULL);
                 CurrentSurfaceDesc = DAT_00798598;
                 DAT_00668108 = DAT_00798608;
-                return 0;
-            }
-            MakeSprite(sprite);
-            if (IDirectDrawSurface_IsLost(PrimarySurface) == 0x887601c2) {
-                if (IDirectDrawSurface_Restore(PrimarySurface) != 0) {
-                    break;
-                }
-            }
-            if (IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x8000, NULL) != 0) {
-                break;
+                return 1;
             }
         }
-        IDirectDrawSurface_SetClipper(renderEngine, NULL);
-        CurrentSurfaceDesc = DAT_00798598;
-        DAT_00668108 = DAT_00798608;
-        return 1;
     }
     IDirectDrawSurface_SetClipper(renderEngine, NULL);
     CurrentSurfaceDesc = DAT_00798598;
