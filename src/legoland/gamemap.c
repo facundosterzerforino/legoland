@@ -581,94 +581,72 @@ void FUN_0045a430(short param_1, int *param_2) {
 
 // FUNCTION: LEGOLAND 0x0045a4a0
 LEGO_EXPORT void CalculateMapRenderOrder(void) {
-    struct LegoConfig *cfg;
     unsigned short *out_coords;
-    unsigned int width;
     struct MapCell *cell;
     struct MapCell *src;
     struct MapCellObjKind *tile;
-    unsigned int sx;
-    unsigned char sy;
-    int idx;
-    unsigned int *clear;
-    int n;
+    struct MapRenderOrderEntry *entry;
+    int sx;
+    int sy;
     struct Point pt;
 
-    cfg = lpConfig;
     pt.x = 0;
     pt.y = 0;
     DAT_00801408 = 0;
-    clear = (unsigned int *)MapRenderOrderList;
-    for (n = 0x2000; n != 0; n = n + -1) {
-        *clear = 0;
-        clear = clear + 1;
-    }
-    width = cfg->width;
     out_coords = &DAT_007febb8;
-    if (width != 0) {
-        do {
-            idx = DAT_00801408;
-            if (pt.x < 0 || (int)width <= pt.x || pt.y < 0 || (int)cfg->height <= pt.y) {
-                cell = NULL;
+    memset(MapRenderOrderList, 0, sizeof(MapRenderOrderList));
+    while (pt.x < lpConfig->width) {
+        if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+            cell = (struct MapCell *)&GameMap[pt.y][pt.x];
+        } else {
+            cell = NULL;
+        }
+        if ((cell->flags.bytes[0] & 0xa0) == 0) {
+            pt.y++;
+        } else {
+            sx = cell->src.b.byte_4;
+            sy = cell->src.b.byte_5;
+            if (sx >= 0 && sx < lpConfig->width && sy >= 0 && sy < lpConfig->height) {
+                src = (struct MapCell *)&GameMap[sy][sx];
             } else {
-                cell = (struct MapCell *)((char *)GameMap[pt.y] + pt.x * 0x14);
+                src = NULL;
             }
-            if ((cell->flags.bytes[0] & 0xa0) == 0) {
-                pt.y = pt.y + 1;
+            tile = src->obj->ride;
+            entry = &MapRenderOrderList[DAT_00801408];
+            DAT_00801408++;
+            if (DAT_00801408 == 0x1000) {
+                DAT_00801408 = 0;
+            }
+            entry->coords = cell->src.coords;
+            entry->x = (unsigned char)pt.x;
+            entry->flag = 1;
+            entry->height = tile->footprint_y1 + sy + 1;
+            if (pt.x == tile->footprint_x1 + sx || pt.x == lpConfig->width - 1) {
+                *out_coords = src->src.coords;
+                FUN_0045a430(cell->src.coords, &pt.x);
+                out_coords = &src->field_6;
             } else {
-                sx = cell->src.b.byte_4;
-                sy = cell->src.b.byte_5;
-                if (sx < width && sy < cfg->height) {
-                    src = (struct MapCell *)((char *)GameMap[sy] + sx * 0x14);
-                } else {
-                    src = NULL;
-                }
-                tile = src->obj->ride;
-                DAT_00801408 = DAT_00801408 + 1;
-                if (DAT_00801408 == 0x1000) {
-                    DAT_00801408 = 0;
-                }
-                MapRenderOrderList[idx].coords = cell->src.coords;
-                MapRenderOrderList[idx].x = (unsigned char)pt.x;
-                MapRenderOrderList[idx].flag = 1;
-                MapRenderOrderList[idx].height = tile->footprint_y1 + sy + 1;
-                if (pt.x == tile->footprint_x1 + sx || pt.x == cfg->width - 1) {
-                    *out_coords = src->src.coords;
-                    FUN_0045a430(cell->src.coords, &pt.x);
-                    cfg = lpConfig;
-                    out_coords = &src->field_6;
-                } else {
-                    pt.x = pt.x + 1;
-                    FUN_0045a3e0(&pt.x);
-                    cfg = lpConfig;
-                }
+                pt.x++;
+                FUN_0045a3e0(&pt.x);
             }
-            if ((int)cfg->height <= pt.y) {
-                do {
-                    pt.x = pt.x + 1;
-                    FUN_0045a3e0(&pt.x);
-                    cfg = lpConfig;
-                } while ((int)cfg->height <= pt.y);
-            }
-            width = cfg->width;
-        } while (pt.x < (int)width);
+        }
+        while (pt.y >= lpConfig->height) {
+            pt.x++;
+            FUN_0045a3e0(&pt.x);
+        }
     }
     *out_coords = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0045a660
 void FUN_0045a660(void) {
-    struct LegoConfig *cfg;
     unsigned short *out_coords;
-    unsigned int width;
     struct MapCell *cell;
     struct MapCell *src;
     struct MapCellObjKind *tile;
-    unsigned int sx;
-    unsigned char sy;
-    int idx;
-    unsigned int *clear;
-    int n;
+    struct MapRenderOrderEntry *entry;
+    int sx;
+    int sy;
     unsigned int roads;
     struct Point pt;
 
@@ -676,65 +654,49 @@ void FUN_0045a660(void) {
     pt.x = 0;
     pt.y = 0;
     roads = ElemID("DRIVING SCHOOL ROADS");
-    cfg = lpConfig;
     DAT_00801408 = 0;
-    clear = (unsigned int *)MapRenderOrderList;
-    for (n = 0x2000; n != 0; n = n + -1) {
-        *clear = 0;
-        clear = clear + 1;
-    }
-    width = cfg->width;
-    if (pt.x < (int)width) {
-        do {
-            idx = DAT_00801408;
-            if (pt.x < 0 || (int)width <= pt.x || pt.y < 0 || (int)cfg->height <= pt.y) {
-                cell = NULL;
+    memset(MapRenderOrderList, 0, sizeof(MapRenderOrderList));
+    while (pt.x < lpConfig->width) {
+        if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+            cell = (struct MapCell *)&GameMap[pt.y][pt.x];
+        } else {
+            cell = NULL;
+        }
+        if ((cell->flags.word & 0xa0) == 0 && ((cell->flags.word & 8) == 0 || cell->obj != (struct MapCellObj *)roads)) {
+            pt.y++;
+        } else {
+            sx = cell->src.b.byte_4;
+            sy = cell->src.b.byte_5;
+            if (sx >= 0 && sx < lpConfig->width && sy >= 0 && sy < lpConfig->height) {
+                src = (struct MapCell *)&GameMap[sy][sx];
             } else {
-                cell = (struct MapCell *)((char *)GameMap[pt.y] + pt.x * 0x14);
+                src = NULL;
             }
-            if ((cell->flags.word & 0xa0) == 0 && ((cell->flags.word & 8) == 0 || cell->obj != (struct MapCellObj *)roads)) {
-                pt.y = pt.y + 1;
+            tile = src->obj->ride;
+            entry = &MapRenderOrderList[DAT_00801408];
+            DAT_00801408++;
+            if (DAT_00801408 == 0x1000) {
+                DAT_00801408 = 0;
+            }
+            entry->coords = cell->src.coords;
+            entry->x = (unsigned char)pt.x;
+            entry->flag = 1;
+            entry->height = tile->footprint_y1 + sy + 1;
+            if (pt.x == tile->footprint_x1 + sx || pt.x == lpConfig->width - 1) {
+                *out_coords = src->src.coords;
+                FUN_0045a430(cell->src.coords, &pt.x);
+                out_coords = &src->field_6;
             } else {
-                sx = cell->src.b.byte_4;
-                sy = cell->src.b.byte_5;
-                if (sx < width && sy < cfg->height) {
-                    src = (struct MapCell *)((char *)GameMap[sy] + sx * 0x14);
-                } else {
-                    src = NULL;
-                }
-                tile = src->obj->ride;
-                DAT_00801408 = DAT_00801408 + 1;
-                if (DAT_00801408 == 0x1000) {
-                    DAT_00801408 = 0;
-                }
-                MapRenderOrderList[idx].coords = cell->src.coords;
-                MapRenderOrderList[idx].x = (unsigned char)pt.x;
-                MapRenderOrderList[idx].flag = 1;
-                MapRenderOrderList[idx].height = tile->footprint_y1 + sy + 1;
-                if (pt.x == tile->footprint_x1 + sx || pt.x == cfg->width - 1) {
-                    *out_coords = src->src.coords;
-                    FUN_0045a430(cell->src.coords, &pt.x);
-                    cfg = lpConfig;
-                    out_coords = &src->field_6;
-                } else {
-                    pt.x = pt.x + 1;
-                    FUN_0045a3e0(&pt.x);
-                    cfg = lpConfig;
-                }
+                pt.x++;
+                FUN_0045a3e0(&pt.x);
             }
-            if ((int)cfg->height <= pt.y) {
-                do {
-                    pt.x = pt.x + 1;
-                    FUN_0045a3e0(&pt.x);
-                    cfg = lpConfig;
-                } while ((int)cfg->height <= pt.y);
-            }
-            width = cfg->width;
-        } while (pt.x < (int)width);
-        *out_coords = 0;
-        return;
+        }
+        while (pt.y >= lpConfig->height) {
+            pt.x++;
+            FUN_0045a3e0(&pt.x);
+        }
     }
-    DAT_007febb8 = 0;
+    *out_coords = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0045a850

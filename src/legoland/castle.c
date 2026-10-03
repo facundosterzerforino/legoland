@@ -1163,20 +1163,18 @@ float FUN_0041e000(unsigned char *obj, float total) {
 
     s.p = 0.0f;
     dt = total / n;
-    if (n > 0) {
-        for (i = 0; i < n; i++) {
-            state = (struct AnimOut *)(obj + 0x20);
-            s.q = state->kind;
-            f4 = state->f4;
-            f8 = state->f8;
-            FUN_00420310((struct VecOps *)(obj + 0x2c), &s, dt);
-            if (*(float *)(obj + 0x24) > *(float *)(*(unsigned char **)(obj + 0x10) + 0x48)) {
-                FUN_0041da10(obj, f4, obj + 0xc);
-                FUN_0041dad0((struct FloatHolder *)obj, f8);
-                return FUN_0041df00(obj, dt) + acc;
-            }
-            acc += dt;
+    for (i = 0; i < n; i++) {
+        state = (struct AnimOut *)(obj + 0x20);
+        s.q = state->kind;
+        f4 = state->f4;
+        f8 = state->f8;
+        FUN_00420310((struct VecOps *)(obj + 0x2c), &s, dt);
+        if (*(float *)(obj + 0x24) > *(float *)(*(unsigned char **)(obj + 0x10) + 0x48)) {
+            FUN_0041da10(obj, f4, obj + 0xc);
+            FUN_0041dad0((struct FloatHolder *)obj, f8);
+            return FUN_0041df00(obj, dt) + acc;
         }
+        acc += dt;
     }
     return total;
 }

@@ -325,27 +325,16 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     FUN_00464ee0(param_2, &local.rect, local.off);
     FUN_00485fe0(param_2, param_4, param_5);
     transp = GetTransparentColour();
-    yy = 0;
-    if (0 < h) {
-        row = 0;
-        do {
-            int xx = 0;
-            int col = row;
-            if (0 < w) {
-                do {
-                    unsigned int z = FUN_00488820(xx, yy);
-                    unsigned short px = transp;
-                    if ((int)(z & 0xff) <= param_3) {
-                        px = *(unsigned short *)((char *)DAT_0066be54 + col);
-                    }
-                    *(unsigned short *)((char *)DAT_00701e68 + col) = px;
-                    xx = xx + 1;
-                    col = col + 2;
-                } while (xx < w);
+    for (yy = 0; yy < h; yy++) {
+        for (row = 0; row < w; row++) {
+            unsigned short px;
+            if ((int)(FUN_00488820(row, yy) & 0xff) <= param_3) {
+                px = ((unsigned short *)DAT_0066be54)[yy * w + row];
+            } else {
+                px = transp;
             }
-            yy = yy + 1;
-            row = row + w * 2;
-        } while (yy < h);
+            ((unsigned short *)DAT_00701e68)[yy * w + row] = px;
+        }
     }
     DAT_0066be50->width = (short)w;
     DAT_0066be50->height = (short)h;

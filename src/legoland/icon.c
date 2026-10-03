@@ -1604,7 +1604,6 @@ int FUN_0046f9a0(int param_1, int param_2, int param_3, int param_4, unsigned in
     int total;
     struct MenuGroup *group;
     struct IconNode *icon;
-    int row;
     struct ListElement *elem;
 
     group = (struct MenuGroup *)malloc(sizeof(struct MenuGroup));
@@ -1613,19 +1612,18 @@ int FUN_0046f9a0(int param_1, int param_2, int param_3, int param_4, unsigned in
     }
     icon = AddGBarIcons((unsigned int)group, param_3, param_4, param_5, param_6, param_1);
     group->icon = icon;
-    row = icon->x;
-    group->field_1c = row;
-    group->field_c = row;
+    param_1 = icon->x;
+    group->field_1c = param_1;
+    group->field_c = param_1;
     param_6 = icon->y;
     group->field_20 = param_6;
     group->field_10 = param_6;
     group->field_24 = icon->width + icon->x;
     group->field_28 = icon->height + icon->y;
     group->field_4 = param_5;
-    group->field_0 = (short)param_1;
+    group->field_0 = (short)saved;
     SetNewGroup_Callbacks(0, 0, (void *)FUN_00470000);
     total = LLIDB_GetCount();
-    param_1 = row;
     if (total > 0) {
         do {
             LLIDB_GetElement(i, (int *)&elem);
