@@ -2694,7 +2694,7 @@ unsigned int MoneySFXLoadCount;
 char LogBuffer[512];
 
 // GLOBAL: LEGOLAND 0x0066752c
-unsigned int ProductVersionString;
+char ProductVersionString[0x88];
 
 // GLOBAL: LEGOLAND 0x006675b4
 unsigned int BubbleHelpGFXLoaded;
