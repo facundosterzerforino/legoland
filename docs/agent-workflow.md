@@ -104,3 +104,62 @@ UpdateControllerFromMouseData (the original reloads a field our compiler caches;
 LoadPalette, FUN_00429f30 (a float argument goes through the FPU in the original), FUN_0046d850 and FUN_00402dc0 and FUN_00439ef0
 (the original shares the tails of different switch cases/branches), FreePlayObjectList, FUN_0040f050, FUN_00465ee0,
 FUN_00425e20 (our compiler reads the source of a struct copy instead of the copied global), EnterSaveGameDetails (larger stack frame).
+
+### Round 5 (all remaining partials, 3 attempts per function)
+Triage of the 163 partials not covered above: 37 layout-dependent, 8 register-only, 4 with inline `__asm`, the rest ranked by
+how much decompiler residue the source still has (`* 0x14` offsets, `param_N` reuse, `do {} while` around `if`). That ranking was
+the best predictor of a win. About 70 were worked; the remaining ones are listed at the end of this section.
+Matched: CoptersFindNode, GetNthNextQueueNode, RenderThickBox, PrintSprite, FUN_0046ac00, FUN_0045cb20, FUN_0045d3d0,
+FUN_0046a690 (register-only difference left).
+Improved: CalculateMapRenderOrder (60.1), FUN_0045a660 (51.6), FUN_0046a5b0 (74.3), FUN_0046a960 (72.8), FUN_0046a3b0 (63.4),
+GetScreenCoordsForObject (71.6), FUN_00471d90 (96.7), FUN_00455fc0 (77.6), HTBubbleHelp (74.0), FUN_00451280 (75.6),
+GenerateNewImageFromZBuffer (71.2), FUN_0045d5d0 (42.3), FUN_00423200 (64.5), FUN_0045c900 (63.5), FUN_0041e000 (60.1),
+FUN_0040c250 (42.9), FUN_00408f90 (41.0), FUN_0046f9a0 (41.5), FUN_0045ade0 (43.4), PrintSpriteEx (96.6).
+Patterns that helped:
+- Map scanners: replace the decompiler's `xoff = x * 0x14` byte offsets with natural `for (y...) for (x...)` loops and
+  `tile = (x, y in bounds) ? &GameMap[y][x] : NULL`; writes go straight to `GameMap[y][x].field` (FUN_0045d3d0, FUN_0045cb20).
+- A `(cond ? 1 : 2) & 0xff` added to a word: the `& 0xff` gives `and edx,0xff` instead of byte arithmetic (FUN_0045cb20).
+- `cmp word ptr [x], 0; sete; test 0x10` is the precedence bug `!tile->flags & 0x10`; keep it and comment it (FUN_0046a690).
+- Walk a copy of a pointer parameter instead of the parameter itself (GetNthNextQueueNode); compute a sub-expression at each call
+  instead of in a temp (RenderThickBox).
+- Branch order follows the source: when the original tests `mode != 0` first and calls the renderer on both VRAM paths, write it
+  that way; `Hover = *(struct HoverInfo *)p` gives the interleaved register copy (PrintSprite).
+- An original frame 16 bytes larger than ours usually means a RECT local: the text boxes draw their border from a `frame` RECT and
+  pass `right - left` (FUN_00455fc0, HTBubbleHelp, FUN_00471d90).
+- Decompiled `for (n = 0x2000; n; n--) *p++ = 0;` is `memset(..., 0, sizeof(array))` (intrinsic `rep stosd`, CalculateMapRenderOrder).
+- `result = 0; break;` inside a loop instead of `return 0;` let the compiler save ebx after the early returns (FUN_00451280).
+- Out-of-bounds bug found: GetTileBounds writes four ints, so callers need `int bounds[4]` (GetScreenCoordsForObject).
+- Screen for hand-written asm first (`push ebp; mov ebp, esp`, `pushal`, `shrd`, `xchg` at the original start): SoftPrint_Clear and
+  FUN_00488730 are asm; FUN_00485fe0, ApplyObjectOrientationToPerson, FUN_004251c0 and RenderTransSprite were flagged by that
+  scan but not checked by hand. HASM_lego_sqrtf, HASM_lego_invsqrtf, Render3DPerson and LLSPlay contain `__asm`.
+Dead ends (3 attempts or fewer, reason in brackets):
+- Register allocation only: FUN_00461290, FUN_0042d560, GetTileBounds, RemoveNewObject, UpdateProfileCheckBoxIcons (an inline
+  helper changes nothing), FUN_00465850, FUN_0040adb0, FUN_00467640 and FUN_00467f00 (same structure, every register rotated),
+  FUN_004304e0, LoadBmpIntoImage, FUN_0041df00, FUN_00410180 (separate byte locals: +0.5 only), FUN_0043a7a0 (the original loads
+  both struct fields into registers where ours uses a memory operand), Mechanic_Build (the only real diff is a 1-byte
+  `mov eax,[GameMap]` vs `mov edx,[GameMap]` encoding).
+- Stack slot order (declaration order has no effect): RenderTempleSlide, BuildObject, FUN_00412100, RenderPlaneRide (byte locals
+  sit in dead parameter slots in the original), FUN_0041db90 (extra local where ours reuses a parameter slot, as FUN_00444a70).
+- Tail merging: FUN_0041ef60 (the original keeps each switch case's call and epilogue separate, ours merges them), FUN_00413650
+  (the original jumps into the middle of another case's `push` sequence), FUN_0042d610 (same ride-AI switch shape, skipped).
+- GameMap row pointer: ours hoists `GameMap[y]` out of the inner loop where the original reloads it: FUN_0045c9c0, and the
+  remaining diff in FUN_0045c900, FUN_0046a5b0 and FUN_0046a960; GetObjectUID shows the same diff (not attempted).
+- Constants: CheckWorkerOnMouseStatus (the original keeps the constant 1 in ebp; `goto fail` and `for (;;)` compile the same),
+  FUN_00459360 (the original keeps `var_4 = 1` in ebx and on the stack, ours folds it), FUN_00421e90 (using FLOAT_004ab43c instead
+  of `3.0f` reorders the fmul), FUN_004284d0 (FLOAT_004ab45c plus array bases that differ by one element: layout).
+- Scheduling: FUN_0040feb0 (globals loaded early, subtracted late), FUN_0041e660 (narrowed movsx, as FUN_0041e4a0).
+- BubbleHelp: frame 8 bytes larger and a different setup order; needs a full rewrite, skipped.
+Layout-dependent (from `deadends.py`, not attempted): FUN_0040a930, FUN_0040bab0, FUN_0040d6f0, FUN_00413b50, FUN_00416330,
+FUN_00418fe0, lego_sqrtf_init, lego_invsqrtf_init, FUN_004280b0, FUN_00428f00, FUN_004294b0, RenderCarousel, FUN_0042c820,
+FUN_00432d00, FUN_00435750, FUN_00438f10, FUN_00442980, FUN_004453a0, __BMPLoader, LoadColourTable, FUN_00452030, stackdump,
+FUN_00458ee0, RemObjFromMap, RenderView, PointToIsoPlane, FUN_0045ca90, FUN_0045d770, FUN_0045eaf0, BuildCursorPtr, FUN_00471f10,
+DrawPopUpInfo, FUN_004736f0, SaveGame, LoadGame, FUN_00484790, MusicThreadProc.
+Register-only (from `difftype.py`, not attempted): GetLegColourOfBloke, GetArmColourOfBloke, LogFlumeEntranceRemoveObject,
+RestoreBaseMap, RenderRestaurant2, LoadObjectiveEventList, RenderSpider, RenderSpinningBarrels.
+Not attempted yet (mostly large AI/render functions; the first diff lines of the ones in brackets were checked and look like
+register allocation or stack slots): FUN_004025d0, LoadPos, FUN_00477bd0, ParseScriptResFile, FUN_0043f0b0, FUN_0043c950,
+CoptersUpdate, PrintCertificate, FUN_00407c30, FUN_00417430, FUN_00415220, LogFlumeEntranceAddObject, FUN_004608c0,
+PrintProfileDetails, FUN_0043e410, FUN_00401f30, FUN_004316f0, LoadBaseMap, FUN_0040ae90, FUN_00466770, FUN_0042fbb0,
+FUN_00442040, RenderFullMap, FUN_004227c0, FUN_00423a10, FUN_004064d0, RES_OpenFile, FUN_00433840, SearchJunglePathConnected,
+FUN_004198a0, FUN_00411680, FUN_0043ea30, FUN_00402780 [RES_OpenFileFromVolume, FUN_00402150, FUN_00405bd0, RenderBuildObjectIcon,
+FUN_0040bf70, FUN_00406660, DrawNewObjectPopup, FUN_00439950, RenderCursor, FUN_0043a1e0, FUN_0041c940, FUN_0040ca60, FUN_0043bac0].
