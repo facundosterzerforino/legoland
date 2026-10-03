@@ -21,6 +21,11 @@ uv run tools/progress.py                         # progress table (expect ~2941 
   Save the baseline first: `uv run tools/agent/status.py > /tmp/baseline.txt`.
   Empty output means no change; make sure the build actually succeeded first (a failed build looks the same).
 - `wt-setup.sh` prepares an agent worktree. `*-prompt.md` are the agent prompts used (paths point at /tmp/names).
+- `score.py ADDR...` prints the match % of single functions (a few seconds; `EFFECTIVE` marks register/order-only matches that
+  status.py counts as 100%). Much faster than a full `regress.sh` while iterating.
+- `sbs.py ADDR...` prints the whole function side by side (original | ours), `~`/`-`/`+` on differing lines. `verify -v` only shows hunks.
+- `diffsum.py`, `difftype.py` and `deadends.py` triage a list of addresses: size of the diff, whether the instruction multiset is
+  identical (pure register/scheduling difference), and diffs on layout-dependent operands reccmp cannot normalize (skip those).
 
 ## Rules that worked
 - **Push to main** (`git push origin HEAD:main`, plain fast-forward) after each verified stage, and keep the working branch in sync.
@@ -52,3 +57,31 @@ Patterns that did match something: wrap a body in `do { ... } while (0)` to move
 a spill slot (ugly, "effective" match); replacing a temp pointer with an explicit if/else.
 Best remaining value: partials between 60% and 95% in files not yet worked (see `tools/agent/partials.py`), then the
 inline-asm stubs are out of scope (CLAUDE.md).
+
+### Round 3 (single session, no subagents)
+Matched: FUN_004766f0, FUN_00441830, FUN_0042e560, FUN_00481170, FUN_0046da20, FindCarouselNode, FindWaterNodeByKey.
+Improved: FUN_00407ad0 (95.0), FUN_00411fa0 (85.1), FUN_00469c80 (93.2), CreateSampleFromWAV (97.5).
+What worked (look for these shapes first, they are cheap):
+- `lea reg,[p+off]` immediately overwritten by `mov reg16,word ptr [p+off]` then `cmp reg16,[key]`: an inlined
+  `memcmp(&node->id, key, 2)` (needs `<string.h>`). Node finders are `if (!node) return NULL;
+  while (memcmp(&node->id, key, sizeof(node->id)) != 0) { node = node->next; if (!node) return NULL; } return node;`.
+- A `break`/flag block placed after the function's `ret` (out of line) means the loop is a plain `while (cond)`, not
+  `if (cond) do { } while (cond)` (FUN_004766f0).
+- `and eax,0xffff; and eax,0xff` after a `unsigned short` call: `int i = Call() & 0xffff;` then index with `(unsigned char)i`
+  (same shape as GetHedgeSpriteInfo).
+- Decompiler-style strength-reduced loops (`offset += 0x14`, `x >= width` re-checks) match when rewritten as the natural
+  `for (y...) for (x...) { tile = in-bounds ? &GameMap[y][x] : NULL; ... }` (FUN_00481170).
+- `return` inside a nested `if` of a branch shares epilogues differently from an `if/else` with one `return` after it (FUN_0046da20).
+- RIFF chunk scanners: `while (Read(&tag, 4) == 4) { if (tag == 'data') { ...; break; } skip chunk }` (CreateSampleFromWAV).
+- Unsigned char fields read into an `int`/`short` local: the original `xor reg,reg; mov regl,[..]` vs our `movsx` tells the type.
+Dead ends found this round (tried 5-15 variants each, register allocation or block placement only):
+SetBlokePositionFromBNV (x87 stack order in the 3rd sqrt), SpeechParseWavHeader and SaveScripts and UnlinkGardenerOrder and
+InitDirectSound and OpenAviAnim (early `return 0` blocks merged/duplicated differently from the original), FUN_00476d20,
+ConvertWaveToPcm16, RES_OpenVolume, FUN_0046f2e0 (our compiler emits setcc), FUN_0041e4a0/FUN_0041e4b0 (movsx byte load is
+narrowed away in C; probably C++ in the original), FUN_00462c60, PushSetTarget, FUN_00451390, FUN_00444a70 and FUN_00457970
+(original has an extra `push ecx` local where ours reuses a dead parameter slot), FUN_0041ee40, FUN_004829c0, InsertChildIntoList,
+LightUpthisDeleteIcon, FUN_00402490, FUN_00424700, FUN_0043ad90, FUN_004610f0, FUN_00418710, SetupControllers, FUN_0040e440,
+FUN_0043aac0, FUN_00413450, FUN_004019c0, FUN_0042f0f0, FUN_004401b0, FUN_004070b0, FUN_00463460, RemoveObjectFromMap,
+FUN_004966a0 (ours tail-duplicates the final call into each switch case), FUN_004779d0, PutObjOnMap.
+Layout dead ends (flagged by `deadends.py`): LoadObjectClassAliasElements and FUN_004860f0 (loop-end pointer lands on a float
+symbol), FUN_0041ed50, FUN_0041ece0, FUN_0041ed00, DoLowLevelAI (indexed table calls), FUN_00444970 (EditCursor+5184).
