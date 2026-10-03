@@ -1575,6 +1575,10 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
                     AVIStreamRelease(audio_stream);
                 }
                 AVIFileRelease(file);
+                if (AviOpenCount == 0) {
+                    AVIFileExit();
+                }
+                return NULL;
             } else {
                 handle->frame_count = length;
                 handle->frame_rate = rate;

@@ -291,7 +291,6 @@ LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct V
     struct Point coords;
     int idx;
     void *base;
-    int *entry;
     int i;
     struct Point offset;
 
@@ -301,36 +300,29 @@ LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct V
         idx = param_2 % param_1->modulo;
     }
     base = param_1->frame_array[idx];
-    i = param_1->loop_count - 1;
-    if (i >= 0) {
-        entry = (int *)((char *)base + i * 4);
-        i = i + 1;
-        do {
-            int sprite_id = *entry;
-            struct BlokeRideNode *node;
-            int *frame;
-            if (param_1->data_table == NULL) {
-                node = (struct BlokeRideNode *)FUN_004418c0(sprite_id, param_3, (short *)param_4);
-            } else {
-                node = (struct BlokeRideNode *)FUN_004418c0(param_1->data_table[param_1->remap_table[sprite_id]], param_3, (short *)param_4);
-            }
-            if (node != NULL && (node->inner->flags & 0x80) != 0) {
-                IP_RenderBlokeIn3DNow((struct Bloke *)node->inner);
-            }
-            frame = (int *)param_1->index_array[sprite_id];
-            if (frame != NULL) {
-                LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)frame), param_2);
-            }
-            offset.x = param_1->x;
-            offset.y = param_1->y;
-            AdjustOffsetForViewMode(&offset);
-            frame = (int *)param_1->index_array[sprite_id];
-            if (frame != NULL) {
-                PrintSprite((struct Sprite *)frame, coords.x + offset.x, coords.y + offset.y, 0, 0);
-            }
-            entry = entry - 1;
-            i = i - 1;
-        } while (i != 0);
+    for (i = param_1->loop_count - 1; i >= 0; i--) {
+        int sprite_id = ((int *)base)[i];
+        struct BlokeRideNode *node;
+        int *frame;
+        if (param_1->data_table == NULL) {
+            node = (struct BlokeRideNode *)FUN_004418c0(sprite_id, param_3, (short *)param_4);
+        } else {
+            node = (struct BlokeRideNode *)FUN_004418c0(param_1->data_table[param_1->remap_table[sprite_id]], param_3, (short *)param_4);
+        }
+        if (node != NULL && (node->inner->flags & 0x80) != 0) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)node->inner);
+        }
+        frame = (int *)param_1->index_array[sprite_id];
+        if (frame != NULL) {
+            LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)frame), param_2);
+        }
+        offset.x = param_1->x;
+        offset.y = param_1->y;
+        AdjustOffsetForViewMode(&offset);
+        frame = (int *)param_1->index_array[sprite_id];
+        if (frame != NULL) {
+            PrintSprite((struct Sprite *)frame, coords.x + offset.x, coords.y + offset.y, 0, 0);
+        }
     }
 }
 
@@ -710,31 +702,32 @@ unsigned char *GetNthStringInList(unsigned char *str, int count) {
 
 // FUNCTION: LEGOLAND 0x004428f0
 unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
-    char *pcVar4;
-    char *pcVar5;
+    char *names;
+    char *values;
+    char *p;
     int flag;
 
     if (param_1 != NULL) {
-        param_1 = param_1 + strlen(param_1) + 1;
-        flag = *(int *)param_1;
-        param_1 = param_1 + 4;
-        pcVar4 = param_1;
+        p = param_1 + strlen(param_1) + 1;
+        flag = *(int *)p;
+        p = p + 4;
+        names = p;
         if (flag != 0) {
-            pcVar5 = param_1;
             do {
-                pcVar5 = pcVar5 + strlen(pcVar5) + 1;
-            } while (strlen(pcVar5) != 0);
-            pcVar5++;
-            param_1 = pcVar5 + strlen(pcVar5) + 1 + 4;
+                p = p + strlen(p) + 1;
+            } while (strlen(p) != 0);
+            p++;
+            /* only set here; in the original it shares param_1's stack slot */
+            values = p + strlen(p) + 1 + 4;
         }
     } else {
-        pcVar4 = (char *)param_3;
+        names = (char *)param_3;
     }
     switch (param_2) {
     case 1:
-        pcVar4 = param_1;
+        return GetNthStringInList((unsigned char *)values, param_3);
     }
-    return GetNthStringInList((unsigned char *)pcVar4, param_3);
+    return GetNthStringInList((unsigned char *)names, param_3);
 }
 
 // FUNCTION: LEGOLAND 0x00442980
