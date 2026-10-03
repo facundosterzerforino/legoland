@@ -488,9 +488,9 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
             LastScrollIconTick = GetTickCount();
             if ((region->field_4 & 1) != 0) {
                 FUN_0046d850(region, 0, -6);
-                return 2;
+            } else {
+                FUN_0046d850(region, -0x20, 0);
             }
-            FUN_0046d850(region, -0x20, 0);
         }
         return 2;
     }
