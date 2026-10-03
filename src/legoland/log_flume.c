@@ -2855,8 +2855,8 @@ void FUN_0040c8d0(Element *elem, TileId tile, struct Cursor *cursor) {
     struct FlumeEntry *entry;
 
     memcpy(&LogFlumeTrackRide->footprint, &DAT_004b4728, sizeof(struct Footprint));
-    LogFlumeTrackRide->footprint.x1--;
-    LogFlumeTrackRide->footprint.y1--;
+    --LogFlumeTrackRide->footprint.x1;
+    --LogFlumeTrackRide->footprint.y1;
     StandardRemoveObject(elem, tile, cursor);
     entry = FUN_00408ef0(&tile);
     FUN_004119a0((struct ParticleEmitter *)entry->parent, -1);
@@ -3479,8 +3479,8 @@ unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, un
     if (FUN_0045f4b0(&EditCursor)) {
         int cx = EditCursor.tile_x;
         int cy = EditCursor.tile_y;
-        rect.x0 = cx + EditCursor.footprint.x0;
-        rect.y0 = cy + EditCursor.footprint.y0;
+        rect.x0 = EditCursor.footprint.x0 + cx;
+        rect.y0 = EditCursor.footprint.y0 + cy;
         rect.x1 = EditCursor.footprint.x1 + cx;
         rect.y1 = EditCursor.footprint.y1 + cy;
         r = CheckForPeople(&rect);
@@ -4812,6 +4812,21 @@ unsigned int FUN_0040fab0(unsigned int param_1, unsigned int param_2, unsigned i
     return FUN_0040db00(param_1, param_2, param_3, FUN_0040f830);
 }
 
+#define NEW_FLUME_NODE(node, parent, mode_, submode_, y_, x_) \
+    do { \
+        (node) = FUN_00409010(); \
+        if ((node) != NULL) { \
+            (node)->mode = (mode_); \
+            (node)->submode = (submode_); \
+            (node)->owner = (parent)->owner; \
+            (node)->entry = (parent); \
+            (node)->ride = (struct Ride *)LogFlumeTrackRide; \
+            (node)->flags |= 4; \
+            (node)->tile.pos.x = (x_); \
+            (node)->tile.pos.y = (y_); \
+        } \
+    } while (0)
+
 // FUNCTION: LEGOLAND 0x0040fad0
 void FUN_0040fad0(struct FlumeNode *parent) {
     struct FlumeNode *node;
@@ -4823,49 +4838,49 @@ void FUN_0040fad0(struct FlumeNode *parent) {
 
     pos.pos.x = ((struct Ride *)DAT_004c2b60)->footprint.x0 + parent->tile.pos.x;
     pos.pos.y = ((struct Ride *)DAT_004c2b60)->footprint.y0 + parent->tile.pos.y + 9;
-    node = NewFlumeNode(parent, 3, 3, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 3, 3, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     parent->field_30 = (unsigned int)node;
     prev = node;
     pos.pos.x += w;
-    node = NewFlumeNode(parent, 1, 1, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 1, 1, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     prev = node;
     pos.pos.x += w;
-    node = NewFlumeNode(parent, 2, 3, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 2, 3, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     prev = node;
     pos.pos.y -= h;
-    node = NewFlumeNode(parent, 1, 0, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 1, 0, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     prev = node;
     pos.pos.y -= h;
-    node = NewFlumeNode(parent, 2, 1, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 2, 1, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     prev = node;
     for (i = 2; i != 0; i--) {
         pos.pos.x += w;
-        node = NewFlumeNode(parent, 1, 1, pos.pos.y, pos.pos.x);
+        NEW_FLUME_NODE(node, parent, 1, 1, pos.pos.y, pos.pos.x);
         FUN_00409170((struct Node *)parent, (struct ListNode *)node);
         FUN_00409080((struct Node *)prev, (struct Node *)node);
         prev = node;
     }
     pos.pos.x += w;
-    node = NewFlumeNode(parent, 2, 2, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 2, 2, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     prev = node;
     pos.pos.y += h;
-    node = NewFlumeNode(parent, 2, 0, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 2, 0, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     prev = node;
     pos.pos.x += w;
-    node = NewFlumeNode(parent, 3, 1, pos.pos.y, pos.pos.x);
+    NEW_FLUME_NODE(node, parent, 3, 1, pos.pos.y, pos.pos.x);
     FUN_00409170((struct Node *)parent, (struct ListNode *)node);
     FUN_00409080((struct Node *)prev, (struct Node *)node);
     parent->field_34 = (unsigned int)node;
