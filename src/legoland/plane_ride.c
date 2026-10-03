@@ -161,16 +161,16 @@ void FUN_0043d9f0(struct PlaneRideNode *node) {
 
 // FUNCTION: LEGOLAND 0x0043da60
 void FUN_0043da60(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
-    char n = 0;
     struct Ride *ride;
     struct RideNode *r;
+    struct Point coords;
+    char i;
+    struct Point off;
     struct PlaneRideNode *node;
     struct Bloke *riders[4] = {0};
+    char n = 0;
     struct Bloke *bloke;
     struct Person *person;
-    struct Point coords;
-    struct Point off;
-    char i;
 
     ride = element->ride;
     r = ride->riders;
@@ -203,17 +203,18 @@ void FUN_0043da60(struct Element *element, unsigned int param_2, unsigned int pa
             *(short *)*ZoomerSprite->lls = node->b4;
             for (r = ride->riders; r != NULL; r = r->next) {
                 if (tile->id == r->tile.id) {
+                    struct Point off2;
                     bloke = r->rider;
                     if (bloke->flags & 0x80) {
                         person = bloke->person;
-                        off.x = DAT_0081cae8;
-                        off.y = DAT_0081caec;
+                        off2.x = DAT_0081cae8;
+                        off2.y = DAT_0081caec;
                         person->offset.x = bloke->screen_x;
                         person->offset.y = bloke->screen_y;
                         AdjustBlokePosition(&person->offset);
-                        AdjustOffsetForViewMode(&off);
-                        person->screen.x = bloke->screen_x + coords.x + off.x;
-                        person->screen.y = bloke->screen_y + coords.y + off.y;
+                        AdjustOffsetForViewMode(&off2);
+                        person->screen.x = bloke->screen_x + coords.x + off2.x;
+                        person->screen.y = bloke->screen_y + coords.y + off2.y;
                         AdjustBlokePosition(&person->screen);
                         IP_RenderBlokeIn3DNow(r->rider);
                     }
