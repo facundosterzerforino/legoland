@@ -2442,8 +2442,8 @@ unsigned int SaveScripts(void) {
             return 0;
         }
     }
-    scratch = 0xffffffff;
-    if (SaveGameWrite(&scratch, 4) == 0) {
+    i = 0xffffffff;
+    if (SaveGameWrite(&i, 4) == 0) {
         return 0;
     }
     if (DAT_0066879c != 0) {
