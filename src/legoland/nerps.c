@@ -297,8 +297,10 @@ unsigned int FUN_0046a3b0(struct NerpsArg *arg) {
     v24 = arg->field_24;
     v20 = arg->field_20;
     GetTileDimensions(&dimX, &dimY);
-    ScrollX = (((v20 - v24) * dimX >> 9) - (lpConfig->view_width >> 1)) * 0x100;
-    ScrollY = (((v20 + v24) * dimY >> 9) - (lpConfig->view_height >> 1)) * 0x100;
+    dimX = (v20 - v24) * dimX;
+    dimY = (v20 + v24) * dimY;
+    ScrollX = ((dimX >> 9) - (lpConfig->view_width >> 1)) * 0x100;
+    ScrollY = ((dimY >> 9) - (lpConfig->view_height >> 1)) * 0x100;
     return 1;
 }
 
@@ -385,68 +387,51 @@ unsigned int FUN_0046a540(struct NerpsArg *arg) {
 unsigned int FUN_0046a5b0(struct NerpsArg *arg) {
     struct MapElement *tile;
     int count;
-    int total;
-    unsigned int x;
-    unsigned int y;
-    int xb;
-    struct MapElement **map;
+    int x;
+    int y;
 
-    y = arg->field_2c;
     count = 0;
-    total = 0;
-    map = GameMap;
-    if ((int)y <= arg->field_34) {
-        do {
-            x = arg->field_28;
-            if ((int)x <= arg->field_30) {
-                xb = x * 0x14;
-                do {
-                    if (xb < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 ||
-                        (int)(unsigned int)lpConfig->height <= (int)y) {
-                        tile = NULL;
-                    } else {
-                        tile = (struct MapElement *)((char *)map[y] + xb);
-                    }
-                    if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->field_4 &&
-                        tile->field_4 == x && tile->field_5 == y) {
-                        count++;
-                    }
-                    x++;
-                    xb += 0x14;
-                } while ((int)x <= arg->field_30);
+    for (y = arg->field_2c; y <= arg->field_34; y++) {
+        for (x = arg->field_28; x <= arg->field_30; x++) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                tile = &GameMap[y][x];
+            } else {
+                tile = NULL;
             }
-            y++;
-            total = count;
-        } while ((int)y <= arg->field_34);
+            if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->field_4 && tile->field_4 == x && tile->field_5 == y) {
+                count++;
+            }
+        }
     }
-    if (total < (int)arg->field_1c) {
-        FUN_00468d80(arg, arg->field_4, arg->field_1c - total);
-        return 0;
+    if (count >= (int)arg->field_1c) {
+        return 1;
     }
-    return 1;
+    FUN_00468d80(arg, arg->field_4, arg->field_1c - count);
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046a690
 unsigned int FUN_0046a690(struct NerpsArg *arg) {
     struct TileGroup *group;
     struct TileNode *node;
+    struct MapElement *tile;
     int x;
     int y;
 
     group = ((struct TileGroupHolder *)arg->field_4)->group;
-    node = group->list;
-    if (node != NULL) {
-        do {
-            x = node->x + group->x;
-            y = node->y + group->y;
-            if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
-                y >= (int)(unsigned int)lpConfig->height ||
-                (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
-                FUN_00468dc0(arg, arg->field_4);
-                return 0;
-            }
-            node = node->next;
-        } while (node != NULL);
+    for (node = group->list; node != NULL; node = node->next) {
+        x = node->x + group->x;
+        y = node->y + group->y;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            tile = &GameMap[y][x];
+        } else {
+            tile = NULL;
+        }
+        /* `!tile->flags & 0x10` is always false: operator precedence bug in the original */
+        if (tile == NULL || !tile->flags & 0x10) {
+            FUN_00468dc0(arg, arg->field_4);
+            return 0;
+        }
     }
     return 1;
 }
@@ -570,48 +555,27 @@ unsigned int FUN_0046a900(struct NerpsArg *arg) {
 unsigned int FUN_0046a960(struct NerpsArg *arg) {
     struct MapElement *tile;
     int count;
-    int total;
-    unsigned int x;
-    unsigned int y;
-    int xb;
-    int xstart;
-    int yend;
-    struct LegoConfig *cfg;
+    int x;
+    int y;
 
-    total = 0;
-    y = arg->field_2c;
     count = 0;
-    yend = arg->field_34;
-    cfg = lpConfig;
-    if ((int)y <= yend) {
-        xstart = arg->field_28;
-        do {
-            x = xstart;
-            if ((int)x <= arg->field_30) {
-                xb = x * 0x14;
-                do {
-                    if (xb < 0 || (int)(unsigned int)cfg->width <= (int)x || (int)y < 0 ||
-                        (int)(unsigned int)cfg->height <= (int)y) {
-                        tile = NULL;
-                    } else {
-                        tile = (struct MapElement *)((char *)GameMap[y] + xb);
-                    }
-                    if ((tile->flags & 0x80) != 0 && tile->field_4 == x && tile->field_5 == y) {
-                        count++;
-                    }
-                    x++;
-                    xb += 0x14;
-                } while ((int)x <= arg->field_30);
-                total = count;
+    for (y = arg->field_2c; y <= arg->field_34; y++) {
+        for (x = arg->field_28; x <= arg->field_30; x++) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                tile = &GameMap[y][x];
+            } else {
+                tile = NULL;
             }
-            y++;
-        } while ((int)y <= yend);
+            if ((tile->flags & 0x80) != 0 && tile->field_4 == x && tile->field_5 == y) {
+                count++;
+            }
+        }
     }
-    if (total <= (int)arg->field_14) {
-        return 1;
+    if (count > (int)arg->field_14) {
+        FUN_00468f00(arg, count - arg->field_14);
+        return 0;
     }
-    FUN_00468f00(arg, total - arg->field_14);
-    return 0;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046aa30
@@ -742,14 +706,12 @@ unsigned int FUN_0046ac00(struct NerpsArg *arg) {
 
     count = 0;
     node = ((struct BuildingHolder *)arg->field_4)->building->list;
-    if (node != NULL) {
-        do {
-            count++;
-            if ((int)arg->field_1c <= count) {
-                return 1;
-            }
-            node = node->next;
-        } while (node != NULL);
+    while (node != NULL) {
+        count++;
+        if (count >= (int)arg->field_1c) {
+            return 1;
+        }
+        node = node->next;
     }
     FUN_00469220(arg, arg->field_4, arg->field_1c - count);
     return 0;

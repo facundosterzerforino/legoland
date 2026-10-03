@@ -4171,7 +4171,7 @@ void FUN_00423200(int n, int x, struct RecIdx *idx, struct RecSrc *src) {
         i = 0;
         if (n > 0) {
             p = (short *)saved + 5;
-            for (i = 0; i < n; i++) {
+            for (; i < n; i++) {
                 struct RecSrc *s = &src[idx->k];
                 p[-1] = s->fx >> 16;
                 *(int *)(p + 1) = s->d;

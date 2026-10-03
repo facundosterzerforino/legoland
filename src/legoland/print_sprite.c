@@ -212,10 +212,10 @@ LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y) {
     }
     mask = arg->mask;
     group = (struct SpriteGroup *)sprite->image;
-    i = 0;
     if (group->count <= 0) {
         return result;
     }
+    i = 0;
     do {
         if ((mask & 1) != 0) {
             xoff = group->xoffs[i];

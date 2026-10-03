@@ -560,17 +560,15 @@ struct FlumeEntry *FUN_00408f90(int x, int y) {
     int w = DAT_004b4730 - LogFlumeFootprint;
 
     outer = FlumeEntryList;
-    if (outer != NULL) {
-        do {
-            for (cur = outer->sub; cur != NULL; cur = cur->next) {
-                int tx = cur->tile.pos.x;
-                int ty = cur->tile.pos.y;
-                if (x >= tx && x <= tx + w && y >= ty && y <= ty + h) {
-                    return cur;
-                }
+    while (outer != NULL) {
+        cur = outer->sub;
+        while (cur != NULL) {
+            if (x >= cur->tile.pos.x && x <= cur->tile.pos.x + w && y >= cur->tile.pos.y && y <= cur->tile.pos.y + h) {
+                return cur;
             }
-            outer = outer->next;
-        } while (outer != NULL);
+            cur = cur->next;
+        }
+        outer = outer->next;
     }
     return NULL;
 }

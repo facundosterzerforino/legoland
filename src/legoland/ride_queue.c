@@ -375,11 +375,11 @@ void SaveQueue(struct QueueNode *start, struct Queue *queue) {
 
 // FUNCTION: LEGOLAND 0x00412470
 struct QueueNode *GetNthNextQueueNode(struct QueueNode *node, int n) {
-    int i = n;
-    while (i-- != 0) {
-        node = node->next;
+    struct QueueNode *p = node;
+    while (n-- != 0) {
+        p = p->next;
     }
-    return node;
+    return p;
 }
 
 // FUNCTION: LEGOLAND 0x00412490

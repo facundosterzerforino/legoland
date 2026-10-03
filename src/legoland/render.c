@@ -697,11 +697,9 @@ LEGO_EXPORT int RenderTransSprite(struct Sprite *sprite, int x, int y) {
 
 // FUNCTION: LEGOLAND 0x00489390
 LEGO_EXPORT void RenderThickBox(int x, int y, int w, int h, int thickness, unsigned int color) {
-    int inner;
     RenderBlock(x, y, w, thickness, color);
-    inner = h + thickness * -2;
-    RenderBlock(x, y + thickness, thickness, inner, color);
-    RenderBlock((x - thickness) + w, y + thickness, thickness, inner, color);
+    RenderBlock(x, y + thickness, thickness, h - thickness * 2, color);
+    RenderBlock((x - thickness) + w, y + thickness, thickness, h - thickness * 2, color);
     RenderBlock(x, (y - thickness) + h, w, thickness, color);
 }
 

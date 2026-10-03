@@ -182,12 +182,17 @@ void CoptersRemoveAllNodes(void) {
 struct CopterNode *CoptersFindNode(struct CopterSource *src) {
     struct CopterNode *node;
 
-    for (node = CopterNodeList; node != NULL; node = node->next) {
-        if (src->field_0 == node->field_0) {
-            return node;
+    node = CopterNodeList;
+    if (node == NULL) {
+        return NULL;
+    }
+    while (memcmp(&node->field_0, &src->field_0, sizeof(node->field_0)) != 0) {
+        node = node->next;
+        if (node == NULL) {
+            return NULL;
         }
     }
-    return NULL;
+    return node;
 }
 
 // FUNCTION: LEGOLAND 0x00403d30

@@ -1140,24 +1140,16 @@ LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
 // FUNCTION: LEGOLAND 0x0045c900
 int FUN_0045c900(struct MapRect *param_1) {
     int x;
-    int x1;
-    int y0;
-    int y1;
-    int xoff;
     int y;
     struct MapTile tile;
 
-    x1 = param_1->x1;
-    for (x = param_1->x0; x <= x1; x++) {
-        y0 = param_1->y0;
-        y1 = param_1->y1;
-        xoff = x * 0x14;
-        for (y = y0; y <= y1; y++) {
-            if (xoff < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+    for (x = param_1->x0; x <= param_1->x1; x++) {
+        for (y = param_1->y0; y <= param_1->y1; y++) {
+            if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
+                tile = *(struct MapTile *)&GameMap[y][x];
+            } else {
                 tile.flags_c = 0x40;
                 tile.flags_10 = 0;
-            } else {
-                tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
             }
             if ((tile.flags_c & 0x10) == 0 || (tile.flags_10 & 2) != 0) {
                 return 0;
