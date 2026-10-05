@@ -2909,8 +2909,12 @@ void FUN_0040ca30(void *a1, int a2) {
     }
 }
 
+/* A corner of the log flume (track sprites fc1-fc4; this draws corners 0 and 2, which have the extra matte
+ * fc1_m3/fc3_m3): the boats on the corner go behind or in front of the matte by their weight along the track,
+ * then the corner track sprite. arg (the caller's clip) is used only for corner 0 when the next piece is in
+ * another column. */
 // FUNCTION: LEGOLAND 0x0040ca60
-int FUN_0040ca60(struct FlumeEntry *entry, int arg) {
+int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
     struct FlumeEntry *par = entry->parent;
     int count = 0;
     int i;
@@ -2918,12 +2922,15 @@ int FUN_0040ca60(struct FlumeEntry *entry, int arg) {
     double w;
     struct Sprite *spr;
     struct Point pos;
+    unsigned char px;
+    unsigned char ex;
     int idx;
 
     RenderItems2_New();
     DAT_004c8d74 = NULL;
     DAT_004ca5ac = NULL;
-    for (i = 0, slot = par->slots; i < par->count; i++, slot++) {
+    for (i = 0; i < entry->parent->count; i++) {
+        slot = &par->slots[i];
         if (FUN_0040b210((struct FlumeWeighted *)slot, (struct FlumeWeighted *)entry)) {
             w = slot->weight;
             if ((struct FlumeEntry *)slot->owner != entry) {
@@ -2934,10 +2941,10 @@ int FUN_0040ca60(struct FlumeEntry *entry, int arg) {
                     w = slot->weight + 1.0;
                 }
             }
-            if (w > DOUBLE_004ab398) {
-                RenderItem2_AddItem(&DAT_004ca5ac, (unsigned int)slot, 0);
-            } else {
+            if (w <= DOUBLE_004ab398) {
                 RenderItem2_AddItem(&DAT_004c8d74, (unsigned int)slot, 0);
+            } else {
+                RenderItem2_AddItem(&DAT_004ca5ac, (unsigned int)slot, 0);
             }
             count++;
         }
@@ -2949,36 +2956,31 @@ int FUN_0040ca60(struct FlumeEntry *entry, int arg) {
         if (entry->submode != 0) {
             spr = LogFlumeFc3M3Sprite;
         }
+        px = par->tile.pos.x;
+        ex = entry->tile.pos.x;
         if (entry->submode == 0) {
-            if (par->tile.pos.x != entry->tile.pos.x) {
+            if (px != ex) {
                 FUN_0040ca30(&DAT_004c8d74, (int)entry);
                 if (spr != NULL) {
-                    /* arg, from the parameter slot next to the one par reuses (0x40cb5c) */
                     PrintSprite(spr, pos.x, pos.y, arg, 0);
                 }
                 FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-            } else {
-                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-                if (spr != NULL) {
-                    PrintSprite(spr, pos.x, pos.y, 0, 0);
-                }
-                FUN_0040ca30(&DAT_004c8d74, (int)entry);
+                goto track;
             }
-        } else {
-            if (par->tile.pos.x == entry->tile.pos.x) {
-                FUN_0040ca30(&DAT_004c8d74, (int)entry);
-                if (spr != NULL) {
-                    PrintSprite(spr, pos.x, pos.y, 0, 0); /* 0x40cba3 */
-                }
-                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-            } else {
-                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-                if (spr != NULL) {
-                    PrintSprite(spr, pos.x, pos.y, 0, 0);
-                }
-                FUN_0040ca30(&DAT_004c8d74, (int)entry);
+        } else if (px == ex) {
+            FUN_0040ca30(&DAT_004c8d74, (int)entry);
+            if (spr != NULL) {
+                PrintSprite(spr, pos.x, pos.y, 0, 0);
             }
+            FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+            goto track;
         }
+        FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+        if (spr != NULL) {
+            PrintSprite(spr, pos.x, pos.y, 0, 0);
+        }
+        FUN_0040ca30(&DAT_004c8d74, (int)entry);
+    track:
         idx = FUN_0040ad50((struct StateNode *)entry);
         pos = FUN_0040cfd0(entry);
         spr = LogFlumeTrackSprites[idx];
@@ -3009,7 +3011,7 @@ int RenderLogFlumeTrack(int a, int b, int c, TileId *tile, int e, int arg) {
     struct FlumeEntry *entry = FindFlumeSubEntryByTile(tile);
     if (entry != NULL) {
         if (entry->mode == 2 && (entry->submode == 0 || entry->submode == 2)) {
-            return FUN_0040ca60(entry, arg);
+            return RenderLogFlumeCorner(entry, arg);
         }
         FUN_0040cc00(entry, arg);
     }
