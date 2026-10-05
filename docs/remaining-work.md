@@ -13,11 +13,11 @@ by all 3634 functions reccmp counts, which include CRT and import entries. Count
 
 Recount with `uv run tools/agent/status.py` (per function) and `uv run tools/agent/partials.py` (pure-C partials).
 
-## Inline-asm functions: out of scope
+## Inline-asm functions: match with `__asm`
 
-**All 44 functions still at 0% are hand-written assembly in the original.** They are not untried work: MSVC6 never emits
-these instructions, so pure C cannot match them (see "Functions With an ebp Frame" in `decomp-tips.md`). They stay `STUB()`,
-each with a comment that names the fingerprint. The port replaces them with plain-C equivalents tagged `// [library:asm]`.
+**All 44 functions still at 0% are hand-written assembly in the original.** MSVC6 never emits these instructions, so pure C
+cannot match them (see "Functions With an ebp Frame" in `decomp-tips.md`); they need inline `__asm`, allowed since
+2026-10-05. Each still at `STUB()` has a comment that names the fingerprint. The port replaces them with plain-C equivalents tagged `// [library:asm]`.
 `find_inline_asm` in `tools/progress.py` detects them, and `partials.py` leaves them out.
 
 | TU | Count | Functions (fingerprint) |
@@ -29,7 +29,7 @@ each with a comment that names the fingerprint. The port replaces them with plai
 | render3d | 2 | FUN_00441980 (fistp); TransformVectorsL (shrd) |
 | copters | 1 | FUN_00404630 (fistp) |
 
-Inline asm, partly written in C (also out of scope): Render3DPerson 51.6%, RenderTransSprite 18.8%, SoftPrint_Clear 18.9%,
+Inline asm, partly written in C (finish with `__asm`): Render3DPerson 51.6%, RenderTransSprite 18.8%, SoftPrint_Clear 18.9%,
 FUN_00488730 17.5%, ApplyObjectOrientationToPerson 7.0%; HASM_lego_sqrtf and HASM_lego_invsqrtf 95.2% (`__declspec(naked)`),
 LLSPlay 16.2% (`int 3`). Inline asm already at 100%: _ftol, RenderingComplete, ReadBigEndianU32, ReadBigEndianU16.
 
