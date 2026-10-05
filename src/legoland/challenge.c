@@ -1443,11 +1443,6 @@ unsigned int RunAppraisal(void) {
     int out64;
     int out68;
     int out6c;
-    int out70;
-    int out74;
-    int out78;
-    int out7c;
-    int out80;
     int rep[0x777];
     char wavbuf[0x80];
     char fmtbuf[0x1fc];
@@ -1535,7 +1530,7 @@ LAB_00445422:
         LAB_00445794:
             if ((ReportFlags & 0x8000) != 0) {
                 total = total + 1;
-                passflag = (int)DAT_00666028 <= out58;
+                passflag = (int)DAT_00666028 <= out5c;
                 if (passflag == 0) {
                     flags = flags | 0x20;
                 } else {
@@ -1552,12 +1547,12 @@ LAB_00445422:
                 rep[iVar12 * 0x13 + 10] = iVar13;
                 rep[iVar12 * 0x13 + 11] = passflag;
                 rep[iVar12 * 0x13 + 12] = rand() % 5;
-                uVar5 = GetString(0x132);
+                uVar5 = GetString(0x133);
                 iVar12 = iVar12 + 1;
                 rep[(iVar12 - 1) * 0x13 + 13] = (int)uVar5;
                 rep[(iVar12 - 1) * 0x13 + 14] = 0;
                 rep[(iVar12 - 1) * 0x13 + 15] = 1;
-                rep[(iVar12 - 1) * 0x13 + 16] = out58;
+                rep[(iVar12 - 1) * 0x13 + 16] = out5c;
                 rep[(iVar12 - 1) * 0x13 + 17] = DAT_00666028;
                 rep[(iVar12 - 1) * 0x13 + 18] = DAT_0066602c;
                 rep[(iVar12 - 1) * 0x13 + 19] = 0;
@@ -1583,7 +1578,7 @@ LAB_00445422:
                 rep[iVar12 * 0x13 + 10] = iVar13;
                 rep[iVar12 * 0x13 + 11] = passflag;
                 rep[iVar12 * 0x13 + 12] = rand() % 5;
-                uVar5 = GetString(0x133);
+                uVar5 = GetString(0x134);
                 iVar12 = iVar12 + 1;
                 rep[(iVar12 - 1) * 0x13 + 13] = (int)uVar5;
                 rep[(iVar12 - 1) * 0x13 + 14] = 0;
@@ -1926,7 +1921,7 @@ LAB_00445422:
             goto LAB_0044672e;
         }
         total = 1;
-        flatp = (int *)((int)DAT_00666020 <= out7c);
+        flatp = (int *)((int)DAT_00666020 <= out58);
         if (flatp == (int *)0x0) {
             flags = flags | 0x10;
         }
@@ -1937,13 +1932,13 @@ LAB_00445422:
             rep[iVar12 * 0x13 + 10] = iVar13;
             rep[iVar12 * 0x13 + 11] = (int)flatp;
             rep[iVar12 * 0x13 + 12] = rand() % 5;
-            uVar5 = GetString(0x134);
+            uVar5 = GetString(0x132);
             iVar7 = iVar12;
             iVar12 = iVar14 + 2;
             rep[iVar7 * 0x13 + 13] = (int)uVar5;
             rep[iVar7 * 0x13 + 14] = 0;
             rep[iVar7 * 0x13 + 15] = 1;
-            rep[iVar7 * 0x13 + 16] = out7c;
+            rep[iVar7 * 0x13 + 16] = out58;
             rep[iVar7 * 0x13 + 17] = DAT_00666020;
             rep[iVar7 * 0x13 + 18] = DAT_00666024;
             rep[iVar7 * 0x13 + 19] = 0;
@@ -2010,7 +2005,7 @@ LAB_00446751:
                     rep[iVar13 * 0x13 + 10] = xbase + 0x30;
                     rep[iVar13 * 0x13 + 11] = (int)flatp;
                     rep[iVar13 * 0x13 + 12] = rand() % 5;
-                    uVar5 = GetString(0x132);
+                    uVar5 = GetString(0x133);
                     iVar13 = iVar13 + 1;
                     rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar13 - 1) * 0x13 + 14] = 0;
@@ -2030,7 +2025,7 @@ LAB_00446751:
                 break;
             }
             total = 1;
-            flatp = (int *)((int)DAT_00666070 <= out70);
+            flatp = (int *)((int)DAT_00666070 <= out68);
             if (flatp == (int *)0x0) {
                 flags = flags | 0x1000;
             }
@@ -2041,12 +2036,12 @@ LAB_00446751:
                 rep[(iVar12 + 1) * 0x13 + 10] = xbase + 0x30;
                 rep[(iVar12 + 1) * 0x13 + 11] = (int)flatp;
                 rep[(iVar12 + 1) * 0x13 + 12] = rand() % 5;
-                uVar5 = GetString(0x133);
+                uVar5 = GetString(0x132);
                 iVar13 = iVar12 + 2;
                 rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                 rep[(iVar12 + 1) * 0x13 + 14] = 0;
                 rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                rep[(iVar12 + 1) * 0x13 + 16] = out70;
+                rep[(iVar12 + 1) * 0x13 + 16] = out68;
                 rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666070;
                 rep[(iVar12 + 1) * 0x13 + 18] = DAT_00666074;
                 rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2100,7 +2095,7 @@ LAB_00446b71:
                 LAB_00446deb:
                     if ((ReportFlags & 0x80000000) != 0) {
                         total = total + 1;
-                        flatp = (int *)((int)DAT_00666090 <= out68);
+                        flatp = (int *)((int)DAT_00666090 <= out6c);
                         if (flatp == (int *)0x0) {
                             flags = flags | 0x10000;
                         } else {
@@ -2117,12 +2112,12 @@ LAB_00446b71:
                         rep[iVar13 * 0x13 + 10] = xbase + 0x30;
                         rep[iVar13 * 0x13 + 11] = (int)flatp;
                         rep[iVar13 * 0x13 + 12] = rand() % 5;
-                        uVar5 = GetString(0x132);
+                        uVar5 = GetString(0x133);
                         iVar13 = iVar13 + 1;
                         rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                         rep[(iVar13 - 1) * 0x13 + 14] = 0;
                         rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                        rep[(iVar13 - 1) * 0x13 + 16] = out68;
+                        rep[(iVar13 - 1) * 0x13 + 16] = out6c;
                         rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666090;
                         rep[(iVar13 - 1) * 0x13 + 18] = DAT_00666094;
                         rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2137,7 +2132,7 @@ LAB_00446b71:
                     break;
                 }
                 total = 1;
-                flatp = (int *)((int)DAT_00666088 <= out74);
+                flatp = (int *)((int)DAT_00666088 <= out68);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x8000;
                 }
@@ -2148,12 +2143,12 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 10] = xbase + 0x30;
                     rep[(iVar12 + 1) * 0x13 + 11] = (int)flatp;
                     rep[(iVar12 + 1) * 0x13 + 12] = rand() % 5;
-                    uVar5 = GetString(0x133);
+                    uVar5 = GetString(0x132);
                     iVar13 = iVar12 + 2;
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = out74;
+                    rep[(iVar12 + 1) * 0x13 + 16] = out68;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666088;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_0066608c;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2207,7 +2202,7 @@ LAB_00446b71:
                 LAB_00447222:
                     if ((ReportFlags & 0x20000) != 0) {
                         total = total + 1;
-                        flatp = (int *)((int)DAT_00666048 <= out60);
+                        flatp = (int *)((int)DAT_00666048 <= out6c);
                         if (flatp == (int *)0x0) {
                             flags = flags | 0x40000;
                         } else {
@@ -2224,12 +2219,12 @@ LAB_00446b71:
                         rep[iVar13 * 0x13 + 10] = xbase + 0x30;
                         rep[iVar13 * 0x13 + 11] = (int)flatp;
                         rep[iVar13 * 0x13 + 12] = rand() % 5;
-                        uVar5 = GetString(0x132);
+                        uVar5 = GetString(0x133);
                         iVar13 = iVar13 + 1;
                         rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                         rep[(iVar13 - 1) * 0x13 + 14] = 0;
                         rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                        rep[(iVar13 - 1) * 0x13 + 16] = out60;
+                        rep[(iVar13 - 1) * 0x13 + 16] = out6c;
                         rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666048;
                         rep[(iVar13 - 1) * 0x13 + 18] = DAT_0066604c;
                         rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2244,7 +2239,7 @@ LAB_00446b71:
                     break;
                 }
                 total = 1;
-                flatp = (int *)((int)DAT_00666040 <= out78);
+                flatp = (int *)((int)DAT_00666040 <= out60);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x20000;
                 }
@@ -2255,12 +2250,12 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 10] = xbase + 0x30;
                     rep[(iVar12 + 1) * 0x13 + 11] = (int)flatp;
                     rep[(iVar12 + 1) * 0x13 + 12] = rand() % 5;
-                    uVar5 = GetString(0x133);
+                    uVar5 = GetString(0x132);
                     iVar13 = iVar12 + 2;
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = out78;
+                    rep[(iVar12 + 1) * 0x13 + 16] = out60;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666040;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_00666044;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2312,7 +2307,7 @@ LAB_00446b71:
                 FUN_00444d70((unsigned int *)&out58, (unsigned int *)&out5c, &out64);
                 if ((ReportFlags & 0x80000) != 0) {
                     total = 1;
-                    flatp = (int *)((int)DAT_00666038 <= out80);
+                    flatp = (int *)((int)DAT_00666038 <= out58);
                     if (flatp == (int *)0x0) {
                         flags = flags | 0x80000;
                     }
@@ -2323,7 +2318,7 @@ LAB_00446b71:
                 LAB_004476a1:
                     if ((ReportFlags & 0x4000000) != 0) {
                         total = total + 1;
-                        flatp = (int *)((int)DAT_00666050 <= out5c);
+                        flatp = (int *)((int)DAT_00666050 <= out64);
                         if (flatp == (int *)0x0) {
                             flags = flags | 0x200000;
                         } else {
@@ -2345,7 +2340,7 @@ LAB_00446b71:
                         rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                         rep[(iVar13 - 1) * 0x13 + 14] = 0;
                         rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                        rep[(iVar13 - 1) * 0x13 + 16] = out5c;
+                        rep[(iVar13 - 1) * 0x13 + 16] = out64;
                         rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666050;
                         rep[(iVar13 - 1) * 0x13 + 18] = DAT_00666054;
                         rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2360,7 +2355,7 @@ LAB_00446b71:
                     break;
                 }
                 total = total + 1;
-                flatp = (int *)((int)DAT_00666050 <= out64);
+                flatp = (int *)((int)DAT_00666050 <= out5c);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x100000;
                 } else {
@@ -2377,7 +2372,7 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = out64;
+                    rep[(iVar12 + 1) * 0x13 + 16] = out5c;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666050;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_00666054;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2434,8 +2429,12 @@ LAB_00446b71:
                         tmp8 = 0;
                         piVar10 = (int *)GetFirstRenderObject();
                         while (piVar10 != (int *)0x0) {
-                            coord = *(short *)(*(int *)(*piVar10 + 0xc) + 0x20);
-                            if (((coord != 0) && (coord != 2)) && (iVar4 = FUN_0044f360(*(int *)(*piVar10 + 0xc), &coord), iVar4 != 0)) {
+                            /* the object's map position (+4) is what FUN_0044f360 checks; the class type
+                             * (+0x20) only filters (0x447b42) */
+                            coord = *(short *)((char *)piVar10 + 4);
+                            if (((*(short *)(*(int *)(*piVar10 + 0xc) + 0x20) != 0) &&
+                                    (*(short *)(*(int *)(*piVar10 + 0xc) + 0x20) != 2)) &&
+                                (iVar4 = FUN_0044f360(*(int *)(*piVar10 + 0xc), &coord), iVar4 != 0)) {
                                 tmp8 = tmp8 + 1;
                             }
                             piVar10 = (int *)GetNextRenderObject((MapElement *)piVar10);
