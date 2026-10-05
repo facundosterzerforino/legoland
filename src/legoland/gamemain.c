@@ -647,7 +647,7 @@ void FUN_004784c0(void) {
     DAT_00669054 = 0;
     DAT_004bb5ac = 1;
     CurrentObjectiveEventFlags = 0;
-    DAT_0066879c = 0;
+    CurrentScriptSection = 0;
     DAT_00669098 = 0;
 
     lpConfig->field_30 = 0;
@@ -663,7 +663,7 @@ void FUN_004784c0(void) {
 
     FUN_004441f0();
     FUN_0044db20();
-    FUN_0044db80();
+    StopAppraisalTimer();
     FUN_00468840();
     FUN_004688e0();
     FUN_0044dc70(0, 0);
@@ -678,11 +678,11 @@ void FUN_004784c0(void) {
     FUN_00459960();
 
     MapStats.brick_meter_max = 1000;
-    MapStats.field_194 = 0;
-    MapStats.field_180 = 0;
+    MapStats.show_capacity = 0;
+    MapStats.ride_wear = 0;
     MapStats.field_3a8 = 1;
 
-    FUN_0046b240(0);
+    SetScriptStopped(0);
 }
 
 // FUNCTION: LEGOLAND 0x004785d0
@@ -692,7 +692,7 @@ void FUN_004785d0(char *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00478610
-void FUN_00478610(unsigned int param_1) {
+void SetScriptObjectiveKind(unsigned int param_1) {
     DAT_004bb5ac = param_1;
     switch (param_1) {
     case 1:

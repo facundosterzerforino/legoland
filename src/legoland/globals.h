@@ -475,19 +475,19 @@ struct MapStats {
     /* 0x170 */ int entrance_fee;
     /* 0x174 */ unsigned int brick_meter_max;
     /* 0x178 */ unsigned int timer_minutes;
-    /* 0x17c */ int field_17c;
-    /* 0x180 */ unsigned int field_180;
+    /* 0x17c */ int appraisal_fail_limit;
+    /* 0x180 */ unsigned int ride_wear;
     /* 0x184 */ unsigned int field_184;
     /* 0x188 */ unsigned int field_188;
     /* 0x18c */ unsigned int field_18c;
     /* 0x190 */ unsigned int field_190;
-    /* 0x194 */ unsigned int field_194;
+    /* 0x194 */ unsigned int show_capacity;
     /* 0x198 */ char field_198[256];
     /* 0x298 */ char field_298[256];
     unsigned char pad_398[0x4];
-    /* 0x39c */ int field_39c;
-    /* 0x3a0 */ unsigned int field_3a0;
-    /* 0x3a4 */ unsigned int field_3a4;
+    /* 0x39c */ int appraisal_streak;
+    /* 0x3a0 */ unsigned int level_end;
+    /* 0x3a4 */ unsigned int script_stopped;
     /* 0x3a8 */ unsigned int field_3a8;
     /* 0x3ac */ unsigned int field_3ac;
     /* 0x3b0 */ char leave_ratings[0x19];
@@ -1073,7 +1073,7 @@ extern int (*BlitFrameFunc)(void);
 // 0x004b9ca8
 extern unsigned int OverrideFrame;
 // 0x004b9e5c
-extern unsigned int DAT_004b9e5c[71];
+extern unsigned int ScriptEventCategories[71];
 // 0x004b9f78
 extern int DAT_004b9f78[4];
 // 0x004b9f88
@@ -1097,7 +1097,7 @@ struct KeyMapping {
     /* 0x01 */ signed char code;
 };
 // 0x004bad58
-extern struct KeyMapping DAT_004bad58[0x3c];
+extern struct KeyMapping CheatKeyMap[0x3c];
 // 0x004bafa8
 extern unsigned int DAT_004bafa8[20];
 // 0x004baff8
@@ -2200,17 +2200,17 @@ extern unsigned int AppraisalDeadline;
 // 0x0066609c
 extern int DAT_0066609c;
 // 0x006660a0
-extern int DAT_006660a0;
+extern int AppraisalPageCount;
 // 0x006660a4
-extern int DAT_006660a4;
+extern int AppraisalPage;
 // 0x006660a8
-extern struct IconNode *DAT_006660a8;
+extern struct IconNode *AppraisalNextIcon;
 // 0x006660ac
-extern struct IconNode *DAT_006660ac;
+extern struct IconNode *AppraisalPrevIcon;
 // 0x006660b0
 extern char DAT_006660b0[256];
 // 0x006661bc
-extern int DAT_006661bc;
+extern int ParkVisitorCount;
 // 0x006661c0
 extern struct Element *SharkCafeBrollyElem;
 // 0x006661c4
@@ -2466,7 +2466,7 @@ extern struct Sprite *WatchSprite;
 // 0x0066820c
 extern char DAT_0066820c[0x404];
 // 0x00668610
-extern unsigned int DAT_00668610;
+extern unsigned int ScriptDirtyCategories;
 // 0x00668614
 extern unsigned int DAT_00668614;
 // 0x00668618
@@ -2488,19 +2488,19 @@ extern unsigned int DAT_0066872c[0x15];
 // 0x00668780
 extern unsigned int DAT_00668780;
 // 0x00668784
-extern void *DAT_00668784;
+extern void *ScriptEventList;
 // 0x00668788
-extern unsigned int DAT_00668788;
+extern unsigned int ScriptPurgePending;
 // 0x0066878c
 extern int DAT_0066878c;
 // 0x00668790
-extern unsigned int DAT_00668790;
+extern unsigned int ScriptSectionStarted;
 // 0x00668794
-extern unsigned int DAT_00668794;
+extern unsigned int ScriptEvalTime;
 // 0x00668798
-extern void *DAT_00668798;
+extern void *ScriptSectionList;
 // 0x0066879c
-extern unsigned int DAT_0066879c;
+extern unsigned int CurrentScriptSection;
 // 0x006687a0
 extern unsigned int ScriptLoadErrorCount;
 // 0x006687a4
@@ -2648,7 +2648,7 @@ extern char CheatKeyBuffer[0x14];
 // 0x00668da8
 extern unsigned char DAT_00668da8[0x3b];
 // 0x00668de4
-extern unsigned char DAT_00668de4[0x3b];
+extern unsigned char CheatKeyState[0x3b];
 // 0x00668e20
 extern unsigned int DAT_00668e20[4];
 // 0x00668e34
@@ -3782,15 +3782,15 @@ extern struct Sprite *AppBarMarkerSprite;
 // 0x0081c034
 extern struct Sprite *NextPageLitSprite;
 // 0x0081c038
-extern unsigned int DAT_0081c038;
+extern unsigned int AppraisalScreenActive;
 // 0x0081c040
-extern struct Sprite *DAT_0081c040[5];
+extern struct Sprite *AppTickSprites[5];
 // 0x0081c054
-extern struct Sprite *DAT_0081c054[5];
+extern struct Sprite *AppCrossSprites[5];
 // 0x0081c068
-extern struct Sprite *DAT_0081c068[5];
+extern struct Sprite *AppBulletSprites[5];
 // 0x0081c07c
-extern unsigned int DAT_0081c07c;
+extern unsigned int AppraisalPageChanged;
 // 0x0081c080
 extern struct Sprite *PreviousPageSprite;
 // 0x0081c084

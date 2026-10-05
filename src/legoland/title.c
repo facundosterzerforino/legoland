@@ -119,7 +119,7 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
         KillTitleScreenSprites();
         EditMode.unk4 = 2;
         DAT_0080ff80.unk8 = 6;
-        MapStats.field_3a0 = 0;
+        MapStats.level_end = 0;
     }
     return 1;
 }
@@ -530,7 +530,7 @@ unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2, unsigned
         DAT_006687b0 = 4;
         ResumeGameTimer();
         ResumeAllSamples();
-        FUN_0046ce20();
+        ClearAdvisorHelp();
         FUN_0046b760();
     }
     return 1;
