@@ -11,7 +11,7 @@ struct LinkList;
 void FUN_004113d0(void);
 struct FlumeSlot;
 int FUN_00411650(struct FlumeSlot *slot);
-int FUN_00411680(struct FlumeSlot *slot);
+int AdvanceFlumeMover(struct FlumeSlot *slot);
 void FUN_00411810(struct FlumeSlot *slot);
 void FUN_0040d090(struct FlumeEntry *entry, unsigned int *fp, void *unused);
 

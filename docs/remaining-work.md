@@ -1,4 +1,4 @@
-# Remaining work (as of 2026-10-05, `be61569`)
+# Remaining work (as of 2026-10-05, after round 6)
 
 `./tools/verify` reported `Progress: 94.72%` for this build. That figure is the sum of every function's match score divided
 by all 3634 functions reccmp counts, which include CRT and import entries. Counted per game function (`// FUNCTION:`):
@@ -33,65 +33,67 @@ Inline asm, partly written in C (finish with `__asm`): Render3DPerson 51.6%, Ren
 FUN_00488730 17.5%, ApplyObjectOrientationToPerson 7.0%; HASM_lego_sqrtf and HASM_lego_invsqrtf 95.2% (`__declspec(naked)`),
 LLSPlay 16.2% (`int 3`). Inline asm already at 100%: _ftol, RenderingComplete, ReadBigEndianU32, ReadBigEndianU16.
 
-## Pure-C partials that have not been worked on
+## The untried partials: round 6 (2026-10-05)
 
-Every other partial has had at least one matching attempt (`agent-workflow.md` lists the rounds and the dead ends). These were
-written once and never iterated on, highest score first:
+All 47 functions on the round-5 "not attempted yet" list (plus FUN_0042a020 and FUN_00485fe0) got one pass of up to three
+variants each. `./tools/verify` went from 94.72% to 94.76%; 2961 game functions now match.
 
-| % | Function | TU |
+Matched (100%): CoptersUpdate (dropped the two `volatile` locals, own local for the queue index), RES_OpenFile and
+RES_OpenFileFromVolume (pointers set before the first call, `while` loop for leading `.\\`, refcount through
+`file->volume`).
+
+Improved: LegoShop2Update 46.9 -> 71.6 (y computed before x), RenderBuildObjectIcon 81.7 -> 83.7, PrintCertificate
+79.4 -> 81.2, DrawNewObjectPopup 62.2 -> 63.7 (inlined icon-placement helper), FindPathPosAtRangeAhead 73.0 -> 74.5,
+PlaneRideUpdate 78.9 -> 79.1, LogFlumeEntranceAddObject 61.7 -> 62.1.
+
+FUN_00485fe0 is inline asm (ebp frame + `rep stosd` clear block) that `find_inline_asm` misses: match it with `__asm`.
+
+Named (28, all scores unchanged by the rename): the per-frame ride callbacks (`cb_a8`) PlaneRideUpdate, LogFlumeEntranceUpdate,
+DrivingSchoolUpdate, TempleSlideUpdate, SafariRideUpdate, ExplorersInstituteUpdate, LegoShop2Update, SpaceTowerUpdate,
+SpinningBarrelsUpdate, OctopusCafeUpdate, Restaurant2Update, JoustUpdate, FortUpdate; FortWanderUpdate, AdvanceFlumeMover,
+EdgeMeshRemoveBackfaces, JungleCruiseBuildStepPath, BoatingSchoolBuildStepPath, GetQueueTurn, PickQueueTurn,
+FindPathPosAtRangeAhead/Behind, FindMapPathAStar, FileSelectDialog, ListBoxDialog, SetPersonYawFromDir16,
+SearchBoatPathConnected, RemapTexCoordsToCell.
+
+Still partial, with what blocks them (no further attempts unless there is a new idea):
+
+| % | Function | What differs |
 |---|---|---|
-| 95.48 | RenderCursor | map_object |
-| 95.06 | FUN_004227c0 | castle |
-| 83.61 | FUN_00433840 | jungle_cruise |
-| 81.95 | LoadBaseMap | map_object |
-| 81.68 | RenderBuildObjectIcon | icon |
-| 81.60 | RenderFullMap | mapscreen |
-| 81.26 | FUN_004198a0 | boating_school |
-| 79.72 | FUN_00402150 | ride_bloke |
-| 79.43 | PrintCertificate | certificate |
-| 78.85 | FUN_0043e410 | plane_ride |
-| 78.63 | FUN_0040bf70 | log_flume |
-| 77.47 | FUN_004064d0 | fort |
-| 76.96 | FUN_00405bd0 | driving_school |
-| 76.47 | FUN_00406660 | fort |
-| 76.36 | CoptersUpdate | copters |
-| 75.35 | FUN_00417430 | temple_slide |
-| 75.09 | FUN_00415220 | safari_ride |
-| 74.30 | FUN_0043c950 | spinning_barrels |
-| 73.85 | RES_OpenFileFromVolume | resource |
-| 72.99 | FUN_0042a020 | castle |
-| 72.33 | FUN_0043a1e0 | shops |
-| 70.04 | FUN_00477bd0 | gamemain |
-| 69.93 | ParseScriptResFile | gamemain |
-| 69.44 | FUN_0043ea30 | dialog |
-| 69.04 | FUN_00407c30 | joust |
-| 69.03 | FUN_00402780 | ride_bloke |
-| 67.67 | FUN_00423a10 | castle |
-| 67.51 | FUN_0043bac0 | space_tower |
-| 63.32 | FUN_004025d0 | ride_bloke |
-| 62.16 | DrawNewObjectPopup | popupinfo |
-| 61.81 | FUN_00401f30 | ride_bloke |
-| 61.66 | LogFlumeEntranceAddObject | log_flume |
-| 61.50 | FUN_00466770 | draw |
-| 61.48 | LoadPos | man3d |
-| 60.85 | FUN_004316f0 | eatery |
-| 60.26 | PrintProfileDetails | profile |
-| 57.56 | RES_OpenFile | resource |
-| 56.52 | FUN_004608c0 | map_object |
-| 56.52 | FUN_0041c940 | boating_school |
-| 54.66 | FUN_0043f0b0 | dialog |
-| 46.91 | FUN_00439950 | shops |
-| 45.11 | FUN_0040ae90 | log_flume |
-| 41.89 | FUN_0042fbb0 | eatery |
-| 41.17 | FUN_00442040 | render3d |
-| 40.52 | FUN_00411680 | log_flume |
-| 38.41 | SearchJunglePathConnected | jungle_cruise |
-| 33.54 | FUN_00485fe0 | print_sprite |
+| 95.48 | RenderCursor | two values in different registers only |
+| 95.06 | EdgeMeshRemoveBackfaces | x87 operand order (orig keeps dx1/dy1 on the FPU stack) |
+| 83.61 | JungleCruiseBuildStepPath | straight case placed first via a ternary; rewrites scored lower |
+| 81.26 | BoatingSchoolBuildStepPath | same as the jungle version |
+| 79.72 | GetQueueTurn | orig keeps three separate fallback calls; merging the tests makes ours tail-merge |
+| 78.63 | LogFlumeEntranceUpdate | ride in ebx/stack instead of esi |
+| 77.47 | FortWanderUpdate | node kept in edi for the whole function, param slots reused |
+| 76.96 | DrivingSchoolUpdate | constant 7 kept in ebx |
+| 76.47 | FortUpdate | tile x kept as an int in ebp |
+| 75.35 | TempleSlideUpdate | node kept on the stack |
+| 75.09 | SafariRideUpdate | register allocation |
+| 74.30 | SpinningBarrelsUpdate | frame 12 bytes larger, ebx/ebp swapped |
+| 72.33 | ExplorersInstituteUpdate | ours merges case 0 into the identical case 3 |
+| 70.04 | FindMapPathAStar | point/result kept in dead parameter slots (would need `(&a)[1]`, UB in the port) |
+| 69.93 | ParseScriptResFile | `cmd` in ebp, reloaded from the parameter at the loop end |
+| 69.44 | ListBoxDialog | ebx/edi swapped, -1 kept in esi |
+| 69.03 | FUN_00402780 | scheduling around the inlined MapToPlayfield |
+| 67.67 | FUN_00423a10 | two zero registers, different local slots |
+| 67.51 | SpaceTowerUpdate | ride re-read from the stack |
+| 63.32 | SetPersonYawFromDir16 | `&field_40` in esi and 0 in edx across the switch |
+| 61.81 | PickQueueTurn | `rand() & 3` in ebx, t1..t3 on the stack |
+| 61.48 | LoadPos | frame pointer strength-reduced to `&f->mat` |
+| 60.26 | PrintProfileDetails | 0x400 kept in ebp |
+| 56.52 | SearchBoatPathConnected | tx/ty in registers, `found` reloaded |
+| 54.66 | FileSelectDialog | dir/fname/ext buffers in another stack order (declaration order and names have no effect) |
+| 41.17 | RemapTexCoordsToCell | FPU-heavy, not attempted |
+| 40.52 | AdvanceFlumeMover | our build turns the `if (sub == N)` chain into jumps to the end |
+| 38.41 | SearchJunglePathConnected | same as SearchBoatPathConnected |
 
-This is the round-5 "not attempted yet" list from `agent-workflow.md` (minus RenderLogFlumeCorner, worked on since), plus
-FUN_0042a020 and FUN_00485fe0, which no list covered. Some got score gains while they were first being written (RenderCursor
-43% -> 95.5%, FUN_004227c0, CoptersUpdate), but none went through a round's triage-and-3-attempts pass. FUN_00477bd0 and
-ParseScriptResFile only got behaviour fixes since.
+Not attempted this round (large): LoadBaseMap 82.0, RenderFullMap 81.6, JoustUpdate 69.0, FUN_00466770 61.5,
+OctopusCafeUpdate 60.9, FUN_004608c0 56.5, FUN_0040ae90 45.1, Restaurant2Update 41.9.
+
+Patterns that worked this round: statement order matters around calls (initialise pointers where the original does, before
+the first call); remove `volatile` workarounds left from earlier rounds and re-score; when the original's registers for two
+values are swapped, try computing them in the other order.
 
 Also not attempted, but triaged as unlikely to match from C (`agent-workflow.md`, round 5): 37 layout-dependent and
-8 register-only partials. Try them after the table above.
+8 register-only partials.
