@@ -700,10 +700,14 @@ unsigned char *GetNthStringInList(unsigned char *str, int count) {
     return result;
 }
 
+/* A 3D data list (Load3DDataFile, e.g. visitor\altman.txt) is sections of "Name\0" + int count + strings
+ * ending with an empty one. param_2 picks the section (0 faces, 1 chests), param_3 the string in it.
+ * volatile: the original reloads param_3 from the stack at each use. values is only set when section 0 has
+ * strings; the original keeps it in param_1's stack slot, and the game's files always have them. */
 // FUNCTION: LEGOLAND 0x004428f0
-unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
-    char *names;
+unsigned char *Get3DDataListString(char *param_1, int param_2, volatile int param_3) {
     char *values;
+    char *names;
     char *p;
     int flag;
 
@@ -717,7 +721,6 @@ unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
                 p = p + strlen(p) + 1;
             } while (strlen(p) != 0);
             p++;
-            /* only set here; in the original it shares param_1's stack slot */
             values = p + strlen(p) + 1 + 4;
         }
     } else {
@@ -1182,7 +1185,7 @@ LEGO_EXPORT char *GetFaceTextureNameOfBloke(struct BlokeSex0 *param_1) {
         ptr = AltWomanFileData;
         break;
     }
-    name = (char *)FUN_004428f0((char *)ptr, 0, inner->field_80);
+    name = (char *)Get3DDataListString((char *)ptr, 0, inner->field_80);
     // STRING: LEGOLAND 0x004b7d24
     _stricmp(name, "chest girly1");
     // STRING: LEGOLAND 0x004b7d14
@@ -1202,7 +1205,7 @@ LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1) {
         ptr = AltWomanFileData;
         break;
     }
-    name = (char *)FUN_004428f0((char *)ptr, 1, inner->field_80);
+    name = (char *)Get3DDataListString((char *)ptr, 1, inner->field_80);
     _stricmp(name, "chest girly1");
     return "chest girly2";
 }
