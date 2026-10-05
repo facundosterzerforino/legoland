@@ -320,22 +320,17 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
         }
     }
 
-    if (last_bs == 0) {
-        last_bs = path_copy;
-    } else {
+    if (last_bs != 0) {
         prefix_len = (int)(last_bs - path_copy) + 1;
-        if (path_copy[0] == '.') {
-            while (src[1] == '\\') {
-                src += 2;
-                prefix_len -= 2;
-                if (src[0] != '.') {
-                    break;
-                }
-            }
+        while (*src == '.' && src[1] == '\\') {
+            src += 2;
+            prefix_len -= 2;
         }
         memcpy(prefix, src, prefix_len);
         prefix[prefix_len] = '\0';
         last_bs++;
+    } else {
+        last_bs = path_copy;
     }
 
     dir = FUN_00489550(vol_name, prefix, &entry);
