@@ -851,9 +851,9 @@ extern unsigned char DAT_004b5f60[1];
 extern struct CastleFloatEnt DAT_004b61e0[8];
 
 // 0x004b62f0
-extern unsigned int DAT_004b62f0;
+extern unsigned int DAT_004b62f0[4];
 // 0x004b6300
-extern unsigned int DAT_004b6300;
+extern unsigned int DAT_004b6300[12];
 // 0x004b6398
 extern float DAT_004b6398[4][3];
 // 0x004b63c8
@@ -1284,9 +1284,7 @@ extern unsigned int DAT_004c1230;
 // 0x004c1234
 extern unsigned short DAT_004c1234;
 // 0x004c123c
-extern void *DAT_004c123c[1];
-// 0x004c1240
-extern struct Sprite *DAT_004c1240;
+extern void *DAT_004c123c[2];
 // 0x004c1244
 extern struct Sprite *JoustFMaskSprite;
 // 0x004c1248
@@ -1813,9 +1811,7 @@ extern struct BinVFile *BalloonzBinV;
 // 0x00616018
 extern struct BinVFile *DAT_00616018[4];
 // 0x0061603c
-extern struct Sprite *DAT_0061603c[1];
-// 0x00616040
-extern struct Sprite *DAT_00616040;
+extern struct Sprite *DAT_0061603c[2];
 // 0x00616044
 extern struct Sprite *BalloonzLayer;
 // 0x00616048
@@ -1849,11 +1845,7 @@ extern void *CarouselOffBinV;
 // 0x0061608c
 extern void *CarouselBinV;
 // 0x00616090
-extern void *DAT_00616090;
-// 0x00616094
-extern void *DAT_00616094;
-// 0x00616098
-extern void *DAT_00616098;
+extern void *DAT_00616090[3];
 // 0x006160b8
 extern struct Sprite *ZCarouselSprite;
 // 0x006160bc
@@ -1998,9 +1990,7 @@ extern void *DAT_0062fdf0[3];
 // 0x0062fdfc
 extern void *BoxBlokesOn1BNV;
 // 0x0062fe00
-extern void *DAT_0062fe00[1];
-// 0x0062fe04
-extern struct Sprite *ZSpinningBarrelsSprite;
+extern void *DAT_0062fe00[2];
 // 0x0062fe08
 extern struct BarrelNode *SpinningBarrelList;
 // 0x0062fe48
@@ -4093,17 +4083,9 @@ extern unsigned char CastleDispatchTable[0x90];
 // 0x0082adb0
 extern unsigned int DAT_0082adb0[6];
 // 0x0082add0
-extern unsigned int CoasterTrainHeadCarLms;
-// 0x0082add4
-extern unsigned int CoasterTrainMidCarLms;
-// 0x0082add8
-extern unsigned int CoasterTrainTailCarLms;
+extern unsigned int CoasterTrainCarLms[3];
 // 0x0082ade0
-extern unsigned int CoasterTrainHeadCarLfm;
-// 0x0082ade4
-extern unsigned int CoasterTrainMidCarLfm;
-// 0x0082ade8
-extern unsigned int CoasterTrainTailCarLfm;
+extern unsigned int CoasterTrainCarLfm[3];
 // 0x0082adec
 extern unsigned int DAT_0082adec;
 // 0x0082adf0
