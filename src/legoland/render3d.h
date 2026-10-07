@@ -31,6 +31,8 @@ struct BlokeSex0;
 LEGO_EXPORT unsigned int GetSexOfBloke(struct BlokeSex0 *param_1);
 LEGO_EXPORT char *GetFaceTextureNameOfBloke(struct BlokeSex0 *param_1);
 LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1);
+struct Vec3;
+LEGO_EXPORT void NormaliseVector(struct Vec3 *v);
 LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1);
 LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1);
 LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4);

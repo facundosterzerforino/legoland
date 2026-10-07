@@ -211,8 +211,7 @@ void *LoadLocFile(const char *param_1, const char *param_2) {
     unsigned int size;
     void *buffer;
 
-    // STRING: LEGOLAND 0x004b7b10
-    sprintf(path, ".\\3ddata\\new\\%s\\%s", param_2, param_1);
+    sprintf(path, Path3DFormat, param_2, param_1);
     file = RES_OpenFile(path);
     if (file != 0) {
         size = RES_GetFileSize(file);
@@ -251,9 +250,344 @@ void FUN_0043fa10(float *param_1, int param_2) {
     }
 }
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0043fa80
-void *FUN_0043fa80(const char *name, const char *dir, unsigned int ctx) { STUB(); }
+__declspec(naked) void *FUN_0043fa80(const char *name, const char *dir, unsigned int ctx) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x11c
+        mov eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        push ebx
+        push esi
+        push edi
+        push eax
+        push ecx
+        lea edx, [ebp - 0x11c]
+        push offset Path3DFormat
+        push edx
+        mov dword ptr [ebp - 0x10], 0x47800000
+        xor esi, esi
+        call sprintf
+        lea eax, [ebp - 0x11c]
+        push eax
+        call RES_OpenFile
+        mov ebx, eax
+        add esp, 0x14
+        test ebx, ebx
+        je L43fdd3
+        push 0x24
+        call malloc
+        mov esi, eax
+        mov ecx, 9
+        xor eax, eax
+        mov edi, esi
+        rep stosd
+        push 0xc
+        call malloc
+        xor ecx, ecx
+        mov dword ptr [ebp - 0x14], eax
+        mov dword ptr [eax], ecx
+        lea edx, [ebp + 8]
+        push 4
+        push edx
+        mov dword ptr [eax + 4], ecx
+        push ebx
+        mov dword ptr [eax + 8], ecx
+        call RES_ReadFile
+        mov eax, dword ptr [ebp + 8]
+        mov dword ptr [esi], eax
+        mov eax, dword ptr [ebp + 8]
+        lea ecx, [eax*8]
+        sub ecx, eax
+        shl ecx, 3
+        push ecx
+        call malloc
+        mov edi, eax
+        add esp, 0x18
+        mov dword ptr [esi + 4], edi
+        mov eax, dword ptr [ebp + 8]
+        lea ecx, [eax*8]
+        sub ecx, eax
+        xor eax, eax
+        shl ecx, 3
+        mov edx, ecx
+        shr ecx, 2
+        rep stosd
+        mov ecx, edx
+        and ecx, 3
+        rep stosb
+        mov eax, dword ptr [ebp + 8]
+        xor edi, edi
+        cmp eax, edi
+        mov dword ptr [ebp - 0x18], edi
+        jle L43fcf6
+L43fb4c:
+        lea eax, [ebp - 4]
+        push 4
+        push eax
+        push ebx
+        call RES_ReadFile
+        mov ecx, dword ptr [esi + 4]
+        mov edx, dword ptr [ebp - 4]
+        mov dword ptr [ecx + edi + 0x18], edx
+        mov eax, dword ptr [ebp - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 2
+        push eax
+        call malloc
+        mov ecx, dword ptr [esi + 4]
+        mov dword ptr [ecx + edi + 0x1c], eax
+        mov ecx, dword ptr [ebp - 4]
+        mov edx, dword ptr [esi + 4]
+        lea ecx, [ecx + ecx*2]
+        mov eax, dword ptr [edx + edi + 0x1c]
+        shl ecx, 2
+        push ecx
+        push eax
+        push ebx
+        mov dword ptr [ebp - 8], eax
+        call RES_ReadFile
+        mov eax, dword ptr [ebp - 4]
+        add esp, 0x1c
+        xor ecx, ecx
+        test eax, eax
+        jle L43fbbf
+        xor edx, edx
+L43fba1:
+        mov eax, dword ptr [esi + 4]
+        inc ecx
+        mov eax, dword ptr [eax + edi + 0x1c]
+        fld dword ptr [eax + edx + 4]
+        lea eax, [eax + edx + 4]
+        add edx, 0xc
+        fchs
+        fstp dword ptr [eax]
+        mov eax, dword ptr [ebp - 4]
+        cmp ecx, eax
+        jl L43fba1
+L43fbbf:
+        lea edx, [eax + eax*2]
+        xor ecx, ecx
+        shl edx, 2
+        test edx, edx
+        mov dword ptr [ebp - 0xc], ecx
+        jle L43fbee
+L43fbce:
+        mov eax, dword ptr [ebp - 8]
+        add eax, dword ptr [ebp - 0xc]
+        fld dword ptr [eax]
+        fmul dword ptr [ebp - 0x10]
+        fistp dword ptr [eax]
+        mov eax, dword ptr [ebp - 4]
+        add ecx, 4
+        mov dword ptr [ebp - 0xc], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 2
+        cmp ecx, eax
+        jl L43fbce
+L43fbee:
+        lea ecx, [ebp + 0xc]
+        push 4
+        push ecx
+        push ebx
+        call RES_ReadFile
+        mov edx, dword ptr [esi + 4]
+        mov eax, dword ptr [ebp + 0xc]
+        mov dword ptr [edx + edi + 0x24], eax
+        mov eax, dword ptr [ebp + 0xc]
+        lea ecx, [eax + eax*2]
+        shl ecx, 2
+        push ecx
+        call malloc
+        mov edx, dword ptr [esi + 4]
+        mov dword ptr [edx + edi + 0x28], eax
+        mov ecx, dword ptr [ebp + 0xc]
+        mov eax, dword ptr [esi + 4]
+        lea ecx, [ecx + ecx*2]
+        mov eax, dword ptr [eax + edi + 0x28]
+        shl ecx, 2
+        push ecx
+        push eax
+        push ebx
+        mov dword ptr [ebp - 0x1c], eax
+        call RES_ReadFile
+        mov eax, dword ptr [ebp + 0xc]
+        xor ecx, ecx
+        add esp, 0x1c
+        cmp eax, ecx
+        mov dword ptr [ebp - 8], ecx
+        jle L43fc73
+        mov dword ptr [ebp - 0xc], ecx
+L43fc47:
+        mov edx, dword ptr [esi + 4]
+        mov eax, dword ptr [edx + edi + 0x28]
+        mov edx, dword ptr [ebp - 0xc]
+        add eax, edx
+        push eax
+        call NormaliseVector
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp - 8]
+        add eax, 0xc
+        add esp, 4
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp + 0xc]
+        inc ecx
+        cmp ecx, eax
+        mov dword ptr [ebp - 8], ecx
+        jl L43fc47
+L43fc73:
+        xor ecx, ecx
+        test eax, eax
+        jle L43fc99
+        xor edx, edx
+L43fc7b:
+        mov eax, dword ptr [esi + 4]
+        inc ecx
+        mov eax, dword ptr [eax + edi + 0x28]
+        fld dword ptr [eax + edx + 4]
+        lea eax, [eax + edx + 4]
+        add edx, 0xc
+        fchs
+        fstp dword ptr [eax]
+        mov eax, dword ptr [ebp + 0xc]
+        cmp ecx, eax
+        jl L43fc7b
+L43fc99:
+        lea edx, [eax + eax*2]
+        xor ecx, ecx
+        shl edx, 2
+        test edx, edx
+        mov dword ptr [ebp - 8], ecx
+        jle L43fcc8
+L43fca8:
+        mov eax, dword ptr [ebp - 0x1c]
+        add eax, dword ptr [ebp - 8]
+        fld dword ptr [eax]
+        fmul dword ptr [ebp - 0x10]
+        fistp dword ptr [eax]
+        mov eax, dword ptr [ebp + 0xc]
+        add ecx, 4
+        mov dword ptr [ebp - 8], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 2
+        cmp ecx, eax
+        jl L43fca8
+L43fcc8:
+        mov ecx, dword ptr [esi + 4]
+        mov edx, dword ptr [ebp - 0x14]
+        mov dword ptr [ecx + edi + 0x20], edx
+        mov eax, dword ptr [esi + 4]
+        add eax, edi
+        push eax
+        push eax
+        call FUN_00440980
+        mov eax, dword ptr [ebp - 0x18]
+        mov ecx, dword ptr [ebp + 8]
+        add esp, 8
+        inc eax
+        add edi, 0x38
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x18], eax
+        jl L43fb4c
+L43fcf6:
+        lea ecx, [ebp + 8]
+        push 4
+        push ecx
+        push ebx
+        call RES_ReadFile
+        mov edi, dword ptr [ebp - 0x14]
+        push 4
+        lea edx, [edi + 4]
+        push edx
+        push ebx
+        call RES_ReadFile
+        mov eax, dword ptr [ebp + 8]
+        mov dword ptr [edi], eax
+        mov eax, dword ptr [ebp + 8]
+        lea ecx, [eax + eax*2]
+        shl ecx, 2
+        push ecx
+        call malloc
+        mov dword ptr [edi + 8], eax
+        mov ecx, dword ptr [ebp + 8]
+        lea edx, [ecx + ecx*2]
+        shl edx, 2
+        push edx
+        push eax
+        push ebx
+        call RES_ReadFile
+        mov eax, dword ptr [ebp + 8]
+        lea eax, [eax + eax*8]
+        shl eax, 2
+        push eax
+        call malloc
+        mov dword ptr [esi + 8], eax
+        mov ecx, dword ptr [ebp + 8]
+        lea ecx, [ecx + ecx*8]
+        shl ecx, 2
+        push ecx
+        push eax
+        push ebx
+        call RES_ReadFile
+        push ebx
+        call RES_CloseFile
+        add esp, 0x3c
+        test esi, esi
+        je L43fdd3
+        mov eax, dword ptr [ebp + 8]
+        xor ebx, ebx
+        test eax, eax
+        jle L43fdd3
+        xor edi, edi
+L43fd74:
+        mov edx, dword ptr [esi + 8]
+        mov ecx, dword ptr [edi + edx]
+        lea eax, [edi + edx]
+        test ch, 0x20
+        je L43fdab
+        mov cl, byte ptr [eax + 6]
+        mov byte ptr [ebp + 0xe], cl
+        mov dl, byte ptr [eax + 5]
+        lea ecx, [ebp + 0xc]
+        mov byte ptr [ebp + 0xd], dl
+        mov al, byte ptr [eax + 4]
+        push ecx
+        push 0x40
+        mov byte ptr [ebp + 0xc], al
+        call FUN_00486280
+        mov edx, dword ptr [esi + 8]
+        add esp, 8
+        mov dword ptr [edi + edx + 8], eax
+        jmp L43fdb6
+L43fdab:
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [eax + 8]
+        add edx, ecx
+        mov dword ptr [eax + 8], edx
+L43fdb6:
+        mov edx, dword ptr [esi + 8]
+        push 3
+        lea eax, [edi + edx + 0xc]
+        push eax
+        call FUN_0043fa10
+        mov eax, dword ptr [ebp + 8]
+        add esp, 8
+        inc ebx
+        add edi, 0x24
+        cmp ebx, eax
+        jl L43fd74
+L43fdd3:
+        mov eax, esi
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043fde0
 void FreeMesh(struct Mesh *mesh) {

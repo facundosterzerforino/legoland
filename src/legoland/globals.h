@@ -944,6 +944,16 @@ extern unsigned char DAT_004b79d0[0x18];
 extern unsigned short DAT_004b7abc;
 // 0x004b7ac0
 extern unsigned char BlokeColours[0x18];
+// 0x004b7ae0
+extern int DAT_004b7ae0[3];
+// 0x004b7aec
+extern int DAT_004b7aec[3];
+// 0x004b7af8
+extern int DAT_004b7af8[3];
+// 0x004b7b04
+extern int DAT_004b7b04[3];
+// 0x004b7b10
+extern const char Path3DFormat[];
 // 0x004b7d70
 extern unsigned int DAT_004b7d70;
 // 0x004b7d74
@@ -1491,8 +1501,12 @@ extern int DAT_0079a6b0;
 extern int DAT_007fe9a4;
 // 0x007fea14
 extern int DAT_007fea14;
+// 0x007fea18
+extern unsigned char DAT_007fea18;
 // 0x007fea1c
 extern int DAT_007fea1c;
+// 0x007fea20
+extern unsigned int DAT_007fea20;
 // 0x007fea4c
 extern struct DrawClipOrigin SpriteClipOrigin;
 // 0x007febac
@@ -2419,6 +2433,8 @@ extern int VideoSurfaceLocked;
 extern struct Sprite *DAT_00668148;
 // 0x0066814c
 extern unsigned int DAT_0066814c;
+// 0x00668160
+extern unsigned int DAT_00668160;
 // 0x00668164
 extern int DAT_00668164[32];
 // 0x006681e4
@@ -3499,6 +3515,8 @@ extern unsigned short DAT_007fe998;
 extern unsigned int DAT_007fe9a8;
 // 0x007fe9c0
 extern struct Sprite *PointerSprites[9];
+// 0x007fea10
+extern unsigned int DAT_007fea10;
 // 0x007fea30
 extern RECT WatchRect;
 // 0x007fea44
@@ -3507,6 +3525,8 @@ extern unsigned int StoredTransparentColour;
 extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
 extern unsigned int DAT_007feb14;
+// 0x007feb18
+extern unsigned int DAT_007feb18;
 // 0x007febb8
 extern unsigned short DAT_007febb8;
 // 0x007febc0

@@ -450,13 +450,886 @@ LEGO_EXPORT void ClearSpriteOverrides(void) {
     OverridePalette = 0;
 }
 
-// Hand-written assembly in the original (ebp frame + xchg, rep movsw/stosw): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00464480
-void FUN_00464480(void) { STUB(); }
+__declspec(naked) void FUN_00464480(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x14
+        mov eax, dword ptr [CurrentSurfaceDesc + 0x10]
+        mov ecx, dword ptr [ebp + 8]
+        mov dword ptr [DAT_007fe9a4], eax
+        mov eax, dword ptr [OverrideFrame]
+        push ebx
+        mov edx, 1
+        push esi
+        push edi
+        test eax, eax
+        mov dword ptr [ebp - 8], edx
+        jl L4644ae
+        mov esi, eax
+        mov dword ptr [ebp + 8], esi
+        jmp L4644b6
+L4644ae:
+        movsx eax, word ptr [ecx]
+        mov dword ptr [ebp + 8], eax
+        mov esi, eax
+L4644b6:
+        movsx eax, word ptr [ecx + 0x10]
+        cmp esi, eax
+        jl L4644c4
+        dec eax
+        mov dword ptr [ebp + 8], eax
+        mov esi, eax
+L4644c4:
+        test byte ptr [ecx + 0x14], dl
+        je L4644d0
+        mov dword ptr [ebp - 8], 2
+L4644d0:
+        mov eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x10], 0
+        test eax, eax
+        jle L464a7c
+        add ecx, 0x18
+        mov dword ptr [ebp - 0x14], ecx
+        jmp L4644f2
+L4644ea:
+        mov esi, dword ptr [ebp + 8]
+        mov edx, 1
+L4644f2:
+        mov ecx, dword ptr [ebp - 8]
+        mov eax, dword ptr [ebp - 0x14]
+        cmp ecx, edx
+        jne L464547
+        mov edx, dword ptr [OverridePalette]
+        mov ecx, dword ptr [eax + 4]
+        test edx, edx
+        je L464511
+        mov dword ptr [DAT_007fea20], edx
+        jmp L46451b
+L464511:
+        lea ecx, [ecx + eax + 8]
+        mov dword ptr [DAT_007fea20], ecx
+L46451b:
+        test esi, esi
+        je L464528
+        lea ecx, [esi]
+L464521:
+        mov edi, dword ptr [eax]
+        add eax, edi
+        dec ecx
+        jne L464521
+L464528:
+        mov ecx, dword ptr [eax + 4]
+        lea edx, [eax + 8]
+        test esi, esi
+        mov dword ptr [ebp - 0xc], edx
+        jne L46453e
+        lea eax, [ecx + eax + 0x208]
+        jmp L464593
+L46453e:
+        lea ecx, [ecx + eax + 8]
+        mov dword ptr [ebp - 4], ecx
+        jmp L464596
+L464547:
+        mov ecx, dword ptr [ebp - 0x10]
+        test ecx, ecx
+        jne L464574
+        mov ecx, dword ptr [eax + 4]
+        lea edx, [eax + 8]
+        mov dword ptr [ebp - 0xc], edx
+        mov edx, dword ptr [OverridePalette]
+        test edx, edx
+        jne L464565
+        lea edx, [ecx + eax + 8]
+L464565:
+        mov dword ptr [DAT_007fea20], edx
+        lea eax, [ecx + eax + 0x208]
+        jmp L464593
+L464574:
+        lea ecx, [esi + 1]
+        mov edx, ecx
+        dec ecx
+        test edx, edx
+        je L464586
+        inc ecx
+L46457f:
+        mov esi, dword ptr [eax]
+        add eax, esi
+        dec ecx
+        jne L46457f
+L464586:
+        mov edx, dword ptr [eax + 4]
+        lea ecx, [eax + 8]
+        mov dword ptr [ebp - 0xc], ecx
+        lea eax, [edx + eax + 8]
+L464593:
+        mov dword ptr [ebp - 4], eax
+L464596:
+        push esi
+        push edi
+        push ebx
+        push ecx
+        push edx
+        push ebp
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        add edi, dword ptr [eax]
+        add edi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add edi, ecx
+        mov dword ptr [DAT_007feb18], edi
+        mov eax, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [eax]
+        mov dword ptr [SpriteClipOrigin + 0x4], ecx
+        mov ebx, dword ptr [eax + 8]
+        sub ebx, ecx
+        mov dword ptr [DrawClipExtent + 0x4], ebx
+        mov ecx, dword ptr [eax + 4]
+        mov dword ptr [SpriteClipOrigin], ecx
+        mov edx, ecx
+        mov ebx, dword ptr [eax + 0xc]
+        sub ebx, ecx
+        mov dword ptr [DrawClipExtent], ebx
+        mov esi, dword ptr [ebp - 0xc]
+        mov ebp, dword ptr [ebp - 4]
+        xor eax, eax
+        mov dword ptr [DAT_00668160], eax
+        and edx, edx
+        je L464693
+L4645fc:
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L464612
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L464612:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L46467e
+        test ebx, 1
+        je L4645fc
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        sub eax, 4
+        movzx ecx, bl
+        jns L464645
+        mov eax, 0xc
+        mov ebx, dword ptr [ebp]
+        movzx ecx, bl
+        add ebp, 4
+L464645:
+        mov dword ptr [DAT_00668160], eax
+        shr ebx, 6
+        test ecx, ecx
+        je L46468c
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L464667
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L464667:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L464676
+        jmp L4645fc
+L464676:
+        test ebx, 1
+        je L464684
+L46467e:
+        inc esi
+        jmp L4645fc
+L464684:
+        lea esi, [esi + ecx]
+        jmp L4645fc
+L46468c:
+        dec edx
+        jne L4645fc
+L464693:
+        mov edx, dword ptr [DrawClipExtent]
+        and edx, edx
+        je L464a64
+L4646a1:
+        mov dword ptr [DAT_007fea10], edx
+        mov edx, dword ptr [SpriteClipOrigin + 0x4]
+        and edx, edx
+        je L4647dc
+L4646b5:
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L4646cb
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L4646cb:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L464796
+        test ebx, 1
+        je L464797
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        sub eax, 4
+        movzx ecx, bl
+        jns L464706
+        mov eax, 0xc
+        mov ebx, dword ptr [ebp]
+        movzx ecx, bl
+        add ebp, 4
+L464706:
+        mov dword ptr [DAT_00668160], eax
+        shr ebx, 6
+        test ecx, ecx
+        je L464a45
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L46472c
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L46472c:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L46475b
+        sub edx, ecx
+        jns L4646b5
+        neg edx
+        lea edi, [edi + edx*2]
+        mov ecx, dword ptr [DrawClipExtent + 0x4]
+        sub ecx, edx
+        js L4649b5
+        mov edx, ecx
+        jmp L4647e2
+L46475b:
+        test ebx, 1
+        je L4647a6
+        inc esi
+        sub edx, ecx
+        jns L4646b5
+        neg edx
+        mov ecx, edx
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        and edx, edx
+        je L4649b5
+        cmp edi, dword ptr [DAT_007fe9a8]
+        setbe al
+        mov byte ptr [DAT_007fea18], al
+        and ecx, ecx
+        jne L464884
+        jmp L4647e2
+L464796:
+        inc esi
+L464797:
+        dec edx
+        jne L4646b5
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        jmp L4647e2
+L4647a6:
+        add esi, ecx
+        sub edx, ecx
+        jns L4646b5
+        neg edx
+        mov ecx, edx
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        and edx, edx
+        je L4649b5
+        sub esi, ecx
+        cmp edi, dword ptr [DAT_007fe9a8]
+        setbe al
+        mov byte ptr [DAT_007fea18], al
+        and ecx, ecx
+        jne L46492c
+        jmp L4647e2
+L4647dc:
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+L4647e2:
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L4647f8
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L4647f8:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L464919
+        test ebx, 1
+        je L4649aa
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        sub eax, 4
+        movzx ecx, bl
+        jns L464833
+        mov eax, 0xc
+        mov ebx, dword ptr [ebp]
+        movzx ecx, bl
+        add ebp, 4
+L464833:
+        mov dword ptr [DAT_00668160], eax
+        shr ebx, 6
+        test ecx, ecx
+        je L464a45
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L464859
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L464859:
+        mov dword ptr [DAT_00668160], eax
+        cmp edi, dword ptr [DAT_007fe9a8]
+        setbe al
+        mov byte ptr [DAT_007fea18], al
+        test ebx, 2
+        je L464887
+        sub edx, ecx
+        js L4649b5
+        lea edi, [edi + ecx*2]
+        jmp L4647e2
+L464884:
+        sub esi, 1
+L464887:
+        test ebx, 1
+        je L46492c
+        movzx eax, byte ptr [esi]
+        cmp edx, ecx
+        ja L4648e3
+        add eax, eax
+        inc esi
+        add eax, dword ptr [DAT_007fea20]
+        mov ecx, edx
+        movzx eax, word ptr [eax]
+        push eax
+        shl eax, 0x10
+        add eax, dword ptr [esp]
+        add esp, 4
+        shr ecx, 1
+        mov word ptr [edi], ax
+        jae L4648bc
+        add edi, 2
+L4648bc:
+        rep stosd
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx eax, byte ptr [DAT_007fea18]
+        sbb ecx, -1
+        and eax, ecx
+        movzx ecx, byte ptr [DAT_007feb14]
+        or eax, ecx
+        mov byte ptr [DAT_007feb14], al
+        jmp L4649b5
+L4648e3:
+        add eax, eax
+        inc esi
+        add eax, dword ptr [DAT_007fea20]
+        sub edx, ecx
+        movzx eax, word ptr [eax]
+        rep stosw
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx eax, byte ptr [DAT_007fea18]
+        sbb ecx, -1
+        and eax, ecx
+        movzx ecx, byte ptr [DAT_007feb14]
+        or eax, ecx
+        mov byte ptr [DAT_007feb14], al
+        jmp L4647e2
+L464919:
+        mov ecx, 1
+        cmp edi, dword ptr [DAT_007fe9a8]
+        sete al
+        mov byte ptr [DAT_007fea18], al
+L46492c:
+        cmp edx, ecx
+        ja L464970
+        xchg ecx, edx
+        sub edx, ecx
+L464934:
+        and ecx, ecx
+        je L46496b
+        movzx eax, byte ptr [esi]
+        add eax, eax
+        add eax, dword ptr [DAT_007fea20]
+        movzx eax, word ptr [eax]
+        inc esi
+        stosw
+        loop L464934
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx eax, byte ptr [DAT_007fea18]
+        sbb ecx, -1
+        and eax, ecx
+        movzx ecx, byte ptr [DAT_007feb14]
+        or eax, ecx
+        mov byte ptr [DAT_007feb14], al
+L46496b:
+        lea esi, [esi + edx]
+        jmp L4649b5
+L464970:
+        sub edx, ecx
+L464972:
+        movzx eax, byte ptr [esi]
+        add eax, eax
+        add eax, dword ptr [DAT_007fea20]
+        movzx eax, word ptr [eax]
+        inc esi
+        stosw
+        loop L464972
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx eax, byte ptr [DAT_007fea18]
+        sbb ecx, -1
+        and eax, ecx
+        movzx ecx, byte ptr [DAT_007feb14]
+        or eax, ecx
+        mov byte ptr [DAT_007feb14], al
+        jmp L4647e2
+L4649aa:
+        dec edx
+        add edi, 2
+        je L4649b5
+        jmp L4647e2
+L4649b5:
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L4649cb
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L4649cb:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L464a37
+        test ebx, 1
+        je L4649b5
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        sub eax, 4
+        movzx ecx, bl
+        jns L4649fe
+        mov eax, 0xc
+        mov ebx, dword ptr [ebp]
+        movzx ecx, bl
+        add ebp, 4
+L4649fe:
+        mov dword ptr [DAT_00668160], eax
+        shr ebx, 6
+        test ecx, ecx
+        je L464a45
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L464a20
+        mov eax, 0xf
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L464a20:
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L464a2f
+        jmp L4649b5
+L464a2f:
+        test ebx, 1
+        je L464a3d
+L464a37:
+        inc esi
+        jmp L4649b5
+L464a3d:
+        lea esi, [esi + ecx]
+        jmp L4649b5
+L464a45:
+        mov edi, dword ptr [DAT_007feb18]
+        mov edx, dword ptr [DAT_007fea10]
+        add edi, dword ptr [DAT_007fe9a4]
+        dec edx
+        mov dword ptr [DAT_007feb18], edi
+        jne L4646a1
+L464a64:
+        pop ebp
+        pop edx
+        pop ecx
+        pop ebx
+        pop edi
+        pop esi
+        mov eax, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp - 8]
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x10], eax
+        jl L4644ea
+L464a7c:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + pusha/popa, shrd, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00464a90
-LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4) { STUB(); }
+__declspec(naked) LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        push ecx
+        mov ecx, dword ptr [OverrideFrame]
+        mov edx, dword ptr [ebp + 8]
+        push ebx
+        push esi
+        test ecx, ecx
+        push edi
+        mov dword ptr [DAT_007fe9a4], 0x200
+        jge L464ab1
+        movsx ecx, word ptr [edx]
+L464ab1:
+        movsx eax, word ptr [edx + 0x10]
+        cmp ecx, eax
+        jl L464abc
+        lea ecx, [eax - 1]
+L464abc:
+        test ecx, ecx
+        lea eax, [edx + 0x18]
+        je L464acc
+        lea edx, [ecx]
+L464ac5:
+        mov edi, dword ptr [eax]
+        add eax, edi
+        dec edx
+        jne L464ac5
+L464acc:
+        mov edx, dword ptr [eax + 4]
+        lea esi, [eax + 8]
+        test ecx, ecx
+        mov dword ptr [ebp - 4], esi
+        jne L464ae5
+        lea eax, [edx + eax + 0x208]
+        mov dword ptr [ebp + 8], eax
+        jmp L464aec
+L464ae5:
+        lea ecx, [edx + eax + 8]
+        mov dword ptr [ebp + 8], ecx
+L464aec:
+        pushad
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [ebp + 0x14]
+        mov ecx, dword ptr [eax]
+        shl ecx, 2
+        add edi, ecx
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, ecx, 0x200
+        add edi, ecx
+        mov dword ptr [DAT_007feb18], edi
+        mov eax, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [eax]
+        mov dword ptr [SpriteClipOrigin + 0x4], ecx
+        mov ebx, dword ptr [eax + 8]
+        sub ebx, ecx
+        mov dword ptr [DrawClipExtent + 0x4], ebx
+        mov ecx, dword ptr [eax + 4]
+        mov dword ptr [SpriteClipOrigin], ecx
+        mov edx, ecx
+        mov ebx, dword ptr [eax + 0xc]
+        sub ebx, ecx
+        mov dword ptr [DrawClipExtent], ebx
+        mov esi, dword ptr [ebp - 4]
+        mov ebp, dword ptr [ebp + 8]
+        xor eax, eax
+        mov dword ptr [DAT_00668160], eax
+        and edx, edx
+        je L464bf9
+L464b4c:
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L464b68
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464b68:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L464be4
+        test ebx, 1
+        je L464b4c
+        shr ebx, 2
+        cmp dword ptr [DAT_00668160], 4
+        jae L464b9a
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464b9a:
+        shrd ecx, ebx, 8
+        shr ebx, 6
+        sub dword ptr [DAT_00668160], 4
+        shr ecx, 0x18
+        je L464bf2
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L464bc9
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464bc9:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L464bdc
+        jmp L464b4c
+L464bdc:
+        test ebx, 1
+        je L464bea
+L464be4:
+        inc esi
+        jmp L464b4c
+L464bea:
+        lea esi, [esi + ecx]
+        jmp L464b4c
+L464bf2:
+        dec edx
+        jne L464b4c
+L464bf9:
+        mov edx, dword ptr [DrawClipExtent]
+        and edx, edx
+        je L464ed3
+L464c07:
+        mov dword ptr [DAT_007fea10], edx
+        mov edx, dword ptr [SpriteClipOrigin + 0x4]
+        and edx, edx
+        je L464d2f
+L464c1b:
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L464c37
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464c37:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L464cfa
+        test ebx, 1
+        je L464cfb
+        shr ebx, 2
+        cmp dword ptr [DAT_00668160], 4
+        jae L464c71
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464c71:
+        shrd ecx, ebx, 8
+        shr ebx, 6
+        sub dword ptr [DAT_00668160], 4
+        shr ecx, 0x18
+        je L464eb4
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L464ca4
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464ca4:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L464cd1
+        sub edx, ecx
+        jns L464c1b
+        neg edx
+        lea edi, [edi + edx*2]
+        mov ecx, dword ptr [DrawClipExtent + 0x4]
+        sub ecx, edx
+        js L464e0e
+        mov edx, ecx
+        jmp L464d35
+L464cd1:
+        test ebx, 1
+        je L464d0a
+        inc esi
+        sub edx, ecx
+        jns L464c1b
+        neg edx
+        dec esi
+        mov ecx, edx
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        and edx, edx
+        je L464e0e
+        jmp L464db0
+L464cfa:
+        inc esi
+L464cfb:
+        dec edx
+        jne L464c1b
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        jmp L464d35
+L464d0a:
+        lea esi, [esi + ecx]
+        sub edx, ecx
+        jns L464c1b
+        lea esi, [esi + edx]
+        neg edx
+        mov ecx, edx
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        and edx, edx
+        je L464e0e
+        jmp L464dd7
+L464d2f:
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+L464d35:
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L464d46
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L464d46:
+        and eax, 0xf
+        test ebx, 2
+        mov dword ptr [DAT_00668160], eax
+        je L464dd2
+        test ebx, 1
+        je L464e03
+        shr ebx, 2
+        sub eax, 4
+        jns L464d75
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov eax, 0xc
+L464d75:
+        movzx ecx, bl
+        shr ebx, 6
+        and eax, 0xf
+        test ecx, ecx
+        mov dword ptr [DAT_00668160], eax
+        je L464eb4
+        shr ebx, 2
+        dec eax
+        jns L464d97
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L464d97:
+        and eax, 0xf
+        mov dword ptr [DAT_00668160], eax
+        test ebx, 2
+        je L464db0
+        sub edx, ecx
+        js L464e0e
+        lea edi, [edi + ecx*4]
+        jmp L464d35
+L464db0:
+        test ebx, 1
+        je L464dd7
+        movzx eax, byte ptr [esi]
+        shl eax, 0x18
+        inc esi
+        cmp edx, ecx
+        ja L464dc9
+        mov ecx, edx
+        rep stosd
+        jmp L464e0e
+L464dc9:
+        sub edx, ecx
+        rep stosd
+        jmp L464d35
+L464dd2:
+        mov ecx, 1
+L464dd7:
+        cmp edx, ecx
+        ja L464df2
+        xchg ecx, edx
+        sub edx, ecx
+L464ddf:
+        and ecx, ecx
+        je L464ded
+        movzx eax, byte ptr [esi]
+        shl eax, 0x18
+        inc esi
+        stosd
+        loop L464ddf
+L464ded:
+        lea esi, [esi + edx]
+        jmp L464e0e
+L464df2:
+        sub edx, ecx
+L464df4:
+        movzx eax, byte ptr [esi]
+        shl eax, 0x18
+        inc esi
+        stosd
+        loop L464df4
+        jmp L464d35
+L464e03:
+        dec edx
+        je L464e0e
+        add edi, 4
+        jmp L464d35
+L464e0e:
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L464e2a
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464e2a:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L464ea6
+        test ebx, 1
+        je L464e0e
+        shr ebx, 2
+        cmp dword ptr [DAT_00668160], 4
+        jae L464e5c
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464e5c:
+        shrd ecx, ebx, 8
+        shr ebx, 6
+        sub dword ptr [DAT_00668160], 4
+        shr ecx, 0x18
+        je L464eb4
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L464e8b
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L464e8b:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L464e9e
+        jmp L464e0e
+L464e9e:
+        test ebx, 1
+        je L464eac
+L464ea6:
+        inc esi
+        jmp L464e0e
+L464eac:
+        lea esi, [esi + ecx]
+        jmp L464e0e
+L464eb4:
+        mov edi, dword ptr [DAT_007feb18]
+        mov edx, dword ptr [DAT_007fea10]
+        add edi, dword ptr [DAT_007fe9a4]
+        dec edx
+        mov dword ptr [DAT_007feb18], edi
+        jne L464c07
+L464ed3:
+        popad
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // Hand-written assembly in the original (ebp frame + pusha/popa): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00464ee0
@@ -484,9 +1357,487 @@ LEGO_EXPORT void SoftPrint_Clear(void) {
     }
 }
 
-// Hand-written assembly in the original (ebp frame + pusha/popa, shrd, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00465240
-void FUN_00465240(void) { STUB(); }
+__declspec(naked) void FUN_00465240(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x18
+        mov ecx, dword ptr [OverrideFrame]
+        mov eax, dword ptr [CurrentSurfaceDesc + 0x10]
+        push ebx
+        mov ebx, 1
+        push esi
+        push edi
+        test ecx, ecx
+        mov dword ptr [ebp - 0xc], ebx
+        mov dword ptr [DAT_007fe9a4], eax
+        jl L46526d
+        mov edx, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 4], ecx
+        jmp L465276
+L46526d:
+        mov edx, dword ptr [ebp + 8]
+        movsx ecx, word ptr [edx]
+        mov dword ptr [ebp - 4], ecx
+L465276:
+        movsx eax, word ptr [edx + 0x10]
+        cmp ecx, eax
+        jl L465284
+        dec eax
+        mov dword ptr [ebp - 4], eax
+        mov ecx, eax
+L465284:
+        test byte ptr [edx + 0x14], bl
+        je L465290
+        mov dword ptr [ebp - 0xc], 2
+L465290:
+        mov eax, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp - 0x14], 0
+        test eax, eax
+        jle L465841
+        lea eax, [edx + 0x18]
+        mov dword ptr [ebp - 0x18], eax
+        jmp L4652b5
+L4652aa:
+        mov edx, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp - 4]
+        mov ebx, 1
+L4652b5:
+        mov esi, dword ptr [ebp - 0xc]
+        mov eax, dword ptr [ebp - 0x18]
+        cmp esi, ebx
+        jne L4652ef
+        mov esi, dword ptr [eax + 4]
+        test ecx, ecx
+        lea esi, [esi + eax + 8]
+        mov dword ptr [DAT_007fea20], esi
+        je L4652d7
+L4652d0:
+        mov edi, dword ptr [eax]
+        add eax, edi
+        dec ecx
+        jne L4652d0
+L4652d7:
+        cmp word ptr [edx], 0
+        mov ecx, dword ptr [eax + 4]
+        lea esi, [eax + 8]
+        mov dword ptr [ebp - 0x10], esi
+        je L4652ff
+        lea ecx, [ecx + eax + 8]
+        mov dword ptr [ebp - 8], ecx
+        jmp L465335
+L4652ef:
+        mov ecx, dword ptr [ebp - 0x14]
+        test ecx, ecx
+        jne L465312
+        mov ecx, dword ptr [eax + 4]
+        lea edx, [eax + 8]
+        mov dword ptr [ebp - 0x10], edx
+L4652ff:
+        lea edx, [ecx + eax + 8]
+        lea eax, [ecx + eax + 0x208]
+        mov dword ptr [DAT_007fea20], edx
+        jmp L465332
+L465312:
+        movsx ecx, word ptr [edx]
+        inc ecx
+        mov edx, ecx
+        dec ecx
+        test edx, edx
+        je L465325
+        inc ecx
+L46531e:
+        mov esi, dword ptr [eax]
+        add eax, esi
+        dec ecx
+        jne L46531e
+L465325:
+        mov edx, dword ptr [eax + 4]
+        lea ecx, [eax + 8]
+        mov dword ptr [ebp - 0x10], ecx
+        lea eax, [edx + eax + 8]
+L465332:
+        mov dword ptr [ebp - 8], eax
+L465335:
+        pushad
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        add edi, dword ptr [eax]
+        add edi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add edi, ecx
+        mov dword ptr [DAT_007feb18], edi
+        mov eax, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [eax]
+        mov dword ptr [SpriteClipOrigin + 0x4], ecx
+        mov ebx, dword ptr [eax + 8]
+        sub ebx, ecx
+        mov dword ptr [DrawClipExtent + 0x4], ebx
+        mov ecx, dword ptr [eax + 4]
+        mov dword ptr [SpriteClipOrigin], ecx
+        mov edx, ecx
+        mov ebx, dword ptr [eax + 0xc]
+        sub ebx, ecx
+        mov dword ptr [DrawClipExtent], ebx
+        mov esi, dword ptr [ebp - 0x10]
+        mov ebp, dword ptr [ebp - 8]
+        xor eax, eax
+        mov dword ptr [DAT_00668160], eax
+        and edx, edx
+        je L465443
+L465396:
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L4653b2
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L4653b2:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L46542e
+        test ebx, 1
+        je L465396
+        shr ebx, 2
+        cmp dword ptr [DAT_00668160], 4
+        jae L4653e4
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L4653e4:
+        shrd ecx, ebx, 8
+        shr ebx, 6
+        sub dword ptr [DAT_00668160], 4
+        shr ecx, 0x18
+        je L46543c
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L465413
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L465413:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L465426
+        jmp L465396
+L465426:
+        test ebx, 1
+        je L465434
+L46542e:
+        inc esi
+        jmp L465396
+L465434:
+        lea esi, [esi + ecx]
+        jmp L465396
+L46543c:
+        dec edx
+        jne L465396
+L465443:
+        mov edx, dword ptr [DrawClipExtent]
+        and edx, edx
+        je L46582e
+L465451:
+        mov dword ptr [DAT_007fea10], edx
+        mov edx, dword ptr [SpriteClipOrigin + 0x4]
+        and edx, edx
+        je L4655a1
+L465465:
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L465481
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L465481:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L465559
+        test ebx, 1
+        je L46555a
+        shr ebx, 2
+        cmp dword ptr [DAT_00668160], 4
+        jae L4654bb
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L4654bb:
+        shrd ecx, ebx, 8
+        shr ebx, 6
+        sub dword ptr [DAT_00668160], 4
+        shr ecx, 0x18
+        je L46580f
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L4654ee
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L4654ee:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L46551e
+        sub edx, ecx
+        ja L465465
+        neg edx
+        lea edi, [edi + edx*2]
+        mov ecx, dword ptr [DrawClipExtent + 0x4]
+        sub ecx, edx
+        jbe L465769
+        mov edx, ecx
+        jmp L4655a7
+L46551e:
+        test ebx, 1
+        je L465569
+        inc esi
+        sub edx, ecx
+        ja L465465
+        neg edx
+        mov ecx, edx
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        and edx, edx
+        je L465769
+        cmp edi, dword ptr [DAT_007fe9a8]
+        setbe al
+        mov byte ptr [DAT_007fea18], al
+        and ecx, ecx
+        jne L46563b
+        jmp L4655a7
+L465559:
+        inc esi
+L46555a:
+        dec edx
+        jne L465465
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        jmp L4655a7
+L465569:
+        lea esi, [esi + ecx]
+        sub edx, ecx
+        ja L465465
+        lea esi, [esi + edx]
+        neg edx
+        mov ecx, edx
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        and edx, edx
+        je L465769
+        cmp edi, dword ptr [DAT_007fe9a8]
+        setbe al
+        mov byte ptr [DAT_007fea18], al
+        and ecx, ecx
+        jne L4656da
+        jmp L4655a7
+L4655a1:
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+L4655a7:
+        mov eax, dword ptr [DAT_00668160]
+        shr ebx, 2
+        dec eax
+        jns L4655b8
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L4655b8:
+        and eax, 0xf
+        test ebx, 2
+        mov dword ptr [DAT_00668160], eax
+        je L4656c7
+        test ebx, 1
+        je L46575e
+        shr ebx, 2
+        sub eax, 4
+        jns L4655eb
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov eax, 0xc
+L4655eb:
+        movzx ecx, bl
+        shr ebx, 6
+        and eax, 0xf
+        test ecx, ecx
+        mov dword ptr [DAT_00668160], eax
+        je L46580f
+        shr ebx, 2
+        dec eax
+        jns L46560d
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+L46560d:
+        and eax, 0xf
+        mov dword ptr [DAT_00668160], eax
+        cmp edi, dword ptr [DAT_007fe9a8]
+        setbe al
+        mov byte ptr [DAT_007fea18], al
+        test ebx, 2
+        je L46563c
+        sub edx, ecx
+        js L465769
+        lea edi, [edi + ecx*2]
+        jmp L4655a7
+L46563b:
+        dec esi
+L46563c:
+        test ebx, 1
+        je L4656da
+        movzx eax, byte ptr [esi]
+        add eax, eax
+        add eax, dword ptr [DAT_007fea20]
+        movzx eax, word ptr [eax]
+        inc esi
+        cmp edx, ecx
+        ja L465691
+        mov ecx, edx
+        or ecx, ecx
+        je L465769
+        and ax, word ptr [DAT_007fe998]
+L46566c:
+        mov word ptr [edi], ax
+        add edi, 2
+        loop L46566c
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx ecx, byte ptr [DAT_007fea18]
+        seta al
+        and eax, ecx
+        or dword ptr [DAT_007feb14], eax
+        jmp L465769
+L465691:
+        sub edx, ecx
+        or ecx, ecx
+        je L4655a7
+        and ax, word ptr [DAT_007fe998]
+L4656a2:
+        mov word ptr [edi], ax
+        add edi, 2
+        loop L4656a2
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx ecx, byte ptr [DAT_007fea18]
+        seta al
+        and eax, ecx
+        or dword ptr [DAT_007feb14], eax
+        jmp L4655a7
+L4656c7:
+        mov ecx, 1
+        cmp edi, dword ptr [DAT_007fe9a8]
+        sete al
+        mov byte ptr [DAT_007fea18], al
+L4656da:
+        cmp edx, ecx
+        ja L465721
+        xchg ecx, edx
+        sub edx, ecx
+L4656e2:
+        and ecx, ecx
+        je L46571c
+        movzx eax, byte ptr [esi]
+        add eax, eax
+        add eax, dword ptr [DAT_007fea20]
+        movzx eax, word ptr [eax]
+        inc esi
+        and ax, word ptr [DAT_007fe998]
+        mov word ptr [edi], ax
+        add edi, 2
+        loop L4656e2
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx ecx, byte ptr [DAT_007fea18]
+        seta al
+        and eax, ecx
+        or dword ptr [DAT_007feb14], eax
+L46571c:
+        lea esi, [esi + edx]
+        jmp L465769
+L465721:
+        sub edx, ecx
+L465723:
+        movzx eax, byte ptr [esi]
+        add eax, eax
+        add eax, dword ptr [DAT_007fea20]
+        movzx eax, word ptr [eax]
+        inc esi
+        and ax, word ptr [DAT_007fe998]
+        mov word ptr [edi], ax
+        add edi, 2
+        loop L465723
+        cmp edi, dword ptr [DAT_007fe9a8]
+        movzx ecx, byte ptr [DAT_007fea18]
+        seta al
+        and eax, ecx
+        or dword ptr [DAT_007feb14], eax
+        jmp L4655a7
+L46575e:
+        dec edx
+        je L465769
+        add edi, 2
+        jmp L4655a7
+L465769:
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L465785
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L465785:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L465801
+        test ebx, 1
+        je L465769
+        shr ebx, 2
+        cmp dword ptr [DAT_00668160], 4
+        jae L4657b7
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L4657b7:
+        shrd ecx, ebx, 8
+        shr ebx, 6
+        sub dword ptr [DAT_00668160], 4
+        shr ecx, 0x18
+        je L46580f
+        shr ebx, 2
+        and dword ptr [DAT_00668160], 0xf
+        jne L4657e6
+        mov ebx, dword ptr [ebp]
+        add ebp, 4
+        mov dword ptr [DAT_00668160], 0x10
+L4657e6:
+        dec dword ptr [DAT_00668160]
+        test ebx, 2
+        je L4657f9
+        jmp L465769
+L4657f9:
+        test ebx, 1
+        je L465807
+L465801:
+        inc esi
+        jmp L465769
+L465807:
+        lea esi, [esi + ecx]
+        jmp L465769
+L46580f:
+        mov edi, dword ptr [DAT_007feb18]
+        mov edx, dword ptr [DAT_007fea10]
+        add edi, dword ptr [DAT_007fe9a4]
+        dec edx
+        mov dword ptr [DAT_007feb18], edi
+        jne L465451
+L46582e:
+        popad
+        mov eax, dword ptr [ebp - 0x14]
+        mov ecx, dword ptr [ebp - 0xc]
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x14], eax
+        jl L4652aa
+L465841:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00465850
 void FUN_00465850(struct AviFrame *frame) {

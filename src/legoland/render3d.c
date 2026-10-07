@@ -96,9 +96,97 @@ void FUN_00441910(int *param_1, float *param_2, int *param_3) {
     param_3[1] += param_1[8];
 }
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00441980
-void FUN_00441980(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) { STUB(); }
+__declspec(naked) void FUN_00441980(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x10
+        mov eax, dword ptr [ebp + 0x10]
+        test eax, eax
+        jge L44198f
+        xor eax, eax
+L44198f:
+        mov ecx, dword ptr [ebp + 8]
+        mov edx, dword ptr [ecx]
+        cmp eax, edx
+        jl L44199b
+        lea eax, [edx - 1]
+L44199b:
+        mov edx, dword ptr [ecx + 0x24]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0xc]
+        lea eax, [eax + eax*2]
+        push edi
+        mov edi, dword ptr [edx + esi*4]
+        lea edx, [ebp - 8]
+        shl eax, 4
+        add edi, eax
+        push edx
+        push edi
+        push ecx
+        call FUN_00441910
+        mov eax, dword ptr [ebp + 0x18]
+        mov ecx, dword ptr [ebp - 8]
+        mov edx, dword ptr [ebp + 0x1c]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 4]
+        add esp, 0xc
+        mov dword ptr [ebp - 0x10], ecx
+        mov ecx, dword ptr [ebp + 0x14]
+        add eax, edx
+        mov dword ptr [ebp + 0x1c], 0x47800000
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, offset DAT_004b7ae0
+        lea edx, [ecx + 0x58]
+        mov dword ptr [ebp + 8], eax
+        mov dword ptr [ebp + 0xc], edx
+L4419eb:
+        mov esi, dword ptr [eax]
+        xor ecx, ecx
+        lea ebx, [esi + esi*2 + 3]
+L4419f3:
+        mov eax, dword ptr [ecx + DAT_004b7aec]
+        add eax, ebx
+        fld dword ptr [edi + eax*4]
+        fstp dword ptr [ebp + 0x10]
+        fld dword ptr [ebp + 0x10]
+        fmul dword ptr [ebp + 0x1c]
+        fistp dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ecx + DAT_004b7af8]
+        add ecx, 4
+        imul eax, dword ptr [esi*4 + DAT_004b7b04]
+        imul eax, dword ptr [ebp + 0x10]
+        mov dword ptr [edx], eax
+        add edx, 0xc
+        cmp ecx, 0xc
+        jl L4419f3
+        mov eax, dword ptr [ebp + 8]
+        mov edx, dword ptr [ebp + 0xc]
+        add eax, 4
+        add edx, 4
+        cmp eax, offset DAT_004b7aec
+        mov dword ptr [ebp + 8], eax
+        mov dword ptr [ebp + 0xc], edx
+        jl L4419eb
+        mov ecx, dword ptr [ebp - 0xc]
+        mov edx, dword ptr [ebp - 0x10]
+        mov eax, dword ptr [ebp + 0x14]
+        push ecx
+        push edx
+        push eax
+        call SetPersonPosition
+        add esp, 0xc
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 struct BlokeRideInner {
     unsigned char pad_0[0x62];

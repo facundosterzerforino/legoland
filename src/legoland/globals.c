@@ -675,6 +675,21 @@ unsigned short DAT_004b7abc;
 // GLOBAL: LEGOLAND 0x004b7ac0
 unsigned char BlokeColours[0x18];
 
+// GLOBAL: LEGOLAND 0x004b7ae0
+int DAT_004b7ae0[3] = {0, 1, 2};
+
+// GLOBAL: LEGOLAND 0x004b7aec
+int DAT_004b7aec[3] = {0, 2, 1};
+
+// GLOBAL: LEGOLAND 0x004b7af8
+int DAT_004b7af8[3] = {1, -1, -1};
+
+// GLOBAL: LEGOLAND 0x004b7b04
+int DAT_004b7b04[3] = {-1, 1, 1};
+
+// GLOBAL: LEGOLAND 0x004b7b10
+const char Path3DFormat[] = ".\\3ddata\\new\\%s\\%s";
+
 // GLOBAL: LEGOLAND 0x004b7d70
 unsigned int DAT_004b7d70;
 
@@ -1538,8 +1553,14 @@ int DAT_007fe9a4;
 // GLOBAL: LEGOLAND 0x007fea14
 int DAT_007fea14;
 
+// GLOBAL: LEGOLAND 0x007fea18
+unsigned char DAT_007fea18;
+
 // GLOBAL: LEGOLAND 0x007fea1c
 int DAT_007fea1c;
+
+// GLOBAL: LEGOLAND 0x007fea20
+unsigned int DAT_007fea20;
 
 // GLOBAL: LEGOLAND 0x007fea4c
 struct DrawClipOrigin SpriteClipOrigin;
@@ -2917,6 +2938,9 @@ struct Sprite *DAT_00668148;
 
 // GLOBAL: LEGOLAND 0x0066814c
 unsigned int DAT_0066814c;
+
+// GLOBAL: LEGOLAND 0x00668160
+unsigned int DAT_00668160;
 
 // GLOBAL: LEGOLAND 0x00668164
 int DAT_00668164[32];
@@ -4514,6 +4538,9 @@ unsigned int DAT_007fe9a8;
 // GLOBAL: LEGOLAND 0x007fe9c0
 struct Sprite *PointerSprites[9];
 
+// GLOBAL: LEGOLAND 0x007fea10
+unsigned int DAT_007fea10;
+
 // GLOBAL: LEGOLAND 0x007fea30
 RECT WatchRect;
 
@@ -4525,6 +4552,9 @@ LEGO_EXPORT unsigned int FramesPerSecond;
 
 // GLOBAL: LEGOLAND 0x007feb14
 unsigned int DAT_007feb14;
+
+// GLOBAL: LEGOLAND 0x007feb18
+unsigned int DAT_007feb18;
 
 // GLOBAL: LEGOLAND 0x007febb8
 unsigned short DAT_007febb8;
