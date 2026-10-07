@@ -84,7 +84,7 @@ struct RenderListNode *FUN_004418c0(int param_1, struct ViewportEntry *param_2, 
 }
 
 // FUNCTION: LEGOLAND 0x00441910
-void FUN_00441910(int *param_1, float *param_2, int *param_3) {
+void RidePointToScreen(int *param_1, float *param_2, int *param_3) {
     float v[3];
     v[0] = param_2[0];
     v[1] = param_2[1];
@@ -98,7 +98,7 @@ void FUN_00441910(int *param_1, float *param_2, int *param_3) {
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00441980
-__declspec(naked) void FUN_00441980(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+__declspec(naked) void Put3DBlokeOnRide(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
     __asm {
         push ebp
         mov ebp, esp
@@ -127,7 +127,7 @@ L44199b:
         push edx
         push edi
         push ecx
-        call FUN_00441910
+        call RidePointToScreen
         mov eax, dword ptr [ebp + 0x18]
         mov ecx, dword ptr [ebp - 8]
         mov edx, dword ptr [ebp + 0x1c]
@@ -211,7 +211,7 @@ LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char 
         do {
             struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_004418c0(i, param_1, (short *)param_2);
             if (node != NULL && (node->inner->flags & 0x80) != 0) {
-                FUN_00441980(param_4, i, param_3, node->field_10, coords.x, coords.y);
+                Put3DBlokeOnRide(param_4, i, param_3, node->field_10, coords.x, coords.y);
             }
             i = i + 1;
         } while (i < param_4[1]);

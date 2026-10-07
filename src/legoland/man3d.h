@@ -146,7 +146,7 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke);
 void AddPersonToList(struct Person *person);
 void FUN_00440a30(struct Person *person);
 struct IntVec3;
-void FUN_00440980(struct MeshElem *elem, struct IntVec3 *out);
+void ComputeMeshElemBounds(struct MeshElem *elem, struct IntVec3 *out);
 LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);
 LEGO_EXPORT void InitMan(void);
 LEGO_EXPORT void UnInitMan(void);

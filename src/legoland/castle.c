@@ -6169,7 +6169,7 @@ L4236ad:
 }
 
 // FUNCTION: LEGOLAND 0x004236f0
-unsigned short FUN_004236f0(void) {
+unsigned short FPUSetSinglePrecision(void) {
     unsigned int control_word;
     unsigned short replacement;
     unsigned char exception_masks;
@@ -6192,7 +6192,7 @@ unsigned short FUN_004236f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00423730
-void FUN_00423730(unsigned short control_word) {
+void FPURestoreControlWord(unsigned short control_word) {
     __asm {
         fldcw control_word
     }
@@ -10284,20 +10284,20 @@ struct Struct428e70 {
 
 // FUNCTION: LEGOLAND 0x00428e70
 void FUN_00428e70(struct Struct428e70 *p, unsigned int a, unsigned int b) {
-    unsigned short handle = FUN_004236f0();
+    unsigned short handle = FPUSetSinglePrecision();
     unsigned int result = p->vtable[6](p, DAT_00612178);
     DAT_00615f6c = result;
     FUN_00428cb0(p, a, b, result, DAT_00612178);
     FUN_004234e0(DAT_004b5f60);
-    FUN_00423730(handle);
+    FPURestoreControlWord(handle);
 }
 
 // FUNCTION: LEGOLAND 0x00428ec0
 void FUN_00428ec0(void *p, unsigned int a, unsigned int b) {
-    unsigned short handle = FUN_004236f0();
+    unsigned short handle = FPUSetSinglePrecision();
     FUN_00428cb0(p, a, b, DAT_00615f6c, DAT_00612178);
     FUN_004234e0(DAT_004b5f60);
-    FUN_00423730(handle);
+    FPURestoreControlWord(handle);
 }
 
 // FUNCTION: LEGOLAND 0x00428f00
