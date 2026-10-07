@@ -556,6 +556,8 @@ extern float DAT_004ab3f8;
 extern float DAT_004ab3fc;
 // 0x004ab478
 extern double DOUBLE_004ab478;
+// 0x004ab488
+extern double DOUBLE_004ab488;
 // 0x004ab4a0
 extern float DAT_004ab4a0;
 // 0x004ab4a8
@@ -570,6 +572,12 @@ extern float DAT_004ab430;
 extern float FLOAT_004ab43c;
 // 0x004ab418
 extern double DAT_004ab418;
+// 0x004ab424
+extern float FLOAT_004ab424;
+// 0x004ab428
+extern float FLOAT_004ab428;
+// 0x004ab42c
+extern float FLOAT_004ab42c;
 // 0x004ab444
 extern float FLOAT_004ab444;
 // 0x004ab550
@@ -848,7 +856,7 @@ extern unsigned int DAT_004b5ef4[4][2];
 // 0x004b5f14
 extern unsigned int DAT_004b5f14[4][2];
 // 0x004b5f60
-extern unsigned char DAT_004b5f60[1];
+extern unsigned char DAT_004b5f60[0x20];
 // 0x004b61e0
 extern struct CastleFloatEnt DAT_004b61e0[8];
 
@@ -866,6 +874,8 @@ extern int DAT_004b6408[3];
 extern float FLOAT_004ab490;
 // 0x004ab494
 extern float FLOAT_004ab494;
+// 0x004ab49c
+extern float FLOAT_004ab49c;
 // 0x004b64d4
 extern char DAT_004b64d4[4];
 // 0x004b64d8
@@ -1692,6 +1702,8 @@ extern unsigned int DAT_004d83c0;
 extern unsigned char DAT_004d88f4[0x80];
 // 0x004d8974
 extern unsigned char DAT_004d8974[0x40];
+// 0x004d89b4
+extern unsigned int DAT_004d89b4[4];
 // 0x004d89c4
 extern void *DAT_004d89c4;
 // 0x004d89c8
@@ -1706,6 +1718,8 @@ extern unsigned int LfmFileSizes[30];
 extern unsigned int RollercoasterLpt;
 // 0x004d8bb0
 extern char DAT_004d8bb0[0x100];
+// 0x004dcbb8
+extern float DAT_004dcbb8[3];
 // 0x004dcbd0
 extern void *DAT_004dcbd0[10];
 // 0x004dcbf8
@@ -1732,6 +1746,8 @@ extern struct CoasterTextFile CoasterObjFile;
 extern unsigned int DAT_004dd868;
 // 0x004dd86c
 extern unsigned int DAT_004dd86c;
+// 0x004dd870
+extern unsigned char DAT_004dd870[0x6000];
 // 0x0060f908
 extern int DAT_0060f908;
 // 0x0060f90c
@@ -1785,6 +1801,12 @@ extern unsigned char DAT_00611780[0x40];
 extern Vector3 DAT_006117c0[34];
 // 0x00611958
 extern unsigned int DAT_00611958;
+// 0x0061195c
+extern unsigned int DAT_0061195c;
+// 0x00611960
+extern unsigned char DAT_00611960[0x800];
+// 0x00612160
+extern unsigned int DAT_00612160[6];
 // 0x00612178
 extern char DAT_00612178[1];
 // 0x006122a0
@@ -1800,6 +1822,8 @@ extern struct Cursor JungleCruiseCursors[4];
 extern int DAT_006159c8[90][4];
 // 0x00615f6c
 extern unsigned int DAT_00615f6c;
+// 0x00615f70
+extern unsigned int DAT_00615f70[4];
 // 0x00615f84
 extern void *DAT_00615f84;
 extern int DAT_00615fc4;
@@ -1819,6 +1843,8 @@ extern void *DAT_00615f80;
 extern int DAT_00615ff0;
 extern float DAT_00615ff4;
 extern struct CastleFloatEnt DAT_004b5f80[3][4];
+// 0x004b6150
+extern unsigned int DAT_004b6150[36];
 extern struct CastleFloatEnt DAT_00612210[3][4];
 // 0x00615f90
 extern int DAT_00615f90;
@@ -4370,6 +4396,8 @@ extern unsigned int DAT_00612708[31][36];
 extern unsigned int DAT_00613878[36];
 // 0x00613908
 extern int DAT_00613908[24][2];
+// 0x006139c8
+extern unsigned char DAT_006139c8[0xe90];
 // 0x006148b8
 extern int DAT_006148b8[546][2];
 

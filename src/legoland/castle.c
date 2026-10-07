@@ -1216,9 +1216,124 @@ void FUN_0041e100(struct Hooked *self, unsigned int arg) {
     self->field_34 = saved;
 }
 
-// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041e130
-void FUN_0041e130(void) { STUB(); }
+__declspec(naked) void FUN_0041e130(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x14
+        push ebx
+        push esi
+        push edi
+        call GetGameTimer
+        mov esi, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0xc], eax
+        fild dword ptr [ebp - 0xc]
+        mov eax, dword ptr [esi + 0x6c]
+        mov dword ptr [ebp + 8], 0
+        mov dword ptr [ebp - 0x14], eax
+        fisub dword ptr [esi + 4]
+        fmul dword ptr [FLOAT_004ab42c]
+        fst dword ptr [ebp - 4]
+        fcomp dword ptr [FLOAT_004ab428]
+        fnstsw ax
+        test ah, 0x41
+        jne L41e174
+        mov dword ptr [ebp - 4], 0x3f4ccccd
+L41e174:
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        fld dword ptr [ebp - 4]
+        fsub dword ptr [FLOAT_004ab424]
+        lea ebx, [esi + 0xc]
+        fstp dword ptr [ebp - 0x10]
+L41e18c:
+        mov eax, dword ptr [esi]
+        mov edi, dword ptr [ebx]
+        test al, 8
+        je L41e1a6
+        fld dword ptr [ebp - 4]
+        fsub dword ptr [ebp + 8]
+        push ecx
+        fstp dword ptr [esp]
+        push esi
+        call FUN_0041e0e0
+        jmp L41e1c1
+L41e1a6:
+        fld dword ptr [ebp - 4]
+        fsub dword ptr [ebp + 8]
+        push ecx
+        test al, 0x10
+        fstp dword ptr [esp]
+        push esi
+        je L41e1bc
+        call FUN_0041e100
+        jmp L41e1c1
+L41e1bc:
+        call FUN_0041e000
+L41e1c1:
+        fadd dword ptr [ebp + 8]
+        add esp, 8
+        fstp dword ptr [ebp + 8]
+        fld dword ptr [ebp + 8]
+        fcomp dword ptr [ebp - 0x10]
+        fnstsw ax
+        test ah, 1
+        je L41e216
+        push ebx
+        call FUN_0041f850
+        mov ecx, dword ptr [esi + 0x10]
+        add esp, 4
+        mov edx, dword ptr [ecx + 0x44]
+        mov ecx, dword ptr [ebx]
+        cmp edi, ecx
+        mov dword ptr [esi + 0x24], edx
+        je L41e18c
+        mov eax, dword ptr [esi]
+        test al, 8
+        je L41e1fd
+        and al, 0xf7
+        or al, 4
+        mov dword ptr [esi], eax
+        jmp L41e18c
+L41e1fd:
+        test al, 4
+        je L41e18c
+        mov edx, dword ptr [ebp - 0x14]
+        add edx, 4
+        cmp ecx, edx
+        jne L41e18c
+        and al, 0xfb
+        or al, 0x10
+        mov dword ptr [esi], eax
+        jmp L41e18c
+L41e216:
+        mov eax, dword ptr [ebp - 0xc]
+        mov dword ptr [esi + 4], eax
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        mov ecx, dword ptr [ebp - 8]
+        mov eax, dword ptr [DAT_004d83bc]
+        add eax, ecx
+        pop edi
+        pop esi
+        mov dword ptr [DAT_004d83bc], eax
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 struct Timed {
     int field_0;
@@ -2324,17 +2439,427 @@ void FUN_0041f880(struct Walker *walker) {
     } while (walker->field_4->field_50 != NULL);
 }
 
-// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041f8d0
-void FUN_0041f8d0(void) { STUB(); }
+__declspec(naked) void FUN_0041f8d0(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x60
+        mov edx, dword ptr [ebp + 0x10]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0x14]
+        mov ecx, dword ptr [ebp + 0x18]
+        mov ebx, dword ptr [ebp + 8]
+        mov eax, dword ptr [esi]
+        push edi
+        mov dword ptr [ebp + 0x14], eax
+        mov eax, dword ptr [esi + edx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + ecx + 2]
+        mov ebx, dword ptr [ebx*4 + DAT_00829c60]
+        lea eax, [eax + ecx + 2]
+        mov edi, dword ptr [DAT_004b5b20]
+        mov eax, dword ptr [esi + edx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + ecx + 2]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [DAT_004b5b24]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [DAT_004b5b28]
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_0060f900]
+        inc eax
+        mov dword ptr [DAT_0060f900], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov eax, dword ptr [eax]
+        mov ax, word ptr [ebx + eax*2]
+        mov ebx, dword ptr [ebp + 0x14]
+        mov dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [esi + edx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + ecx + 2]
+        mov dword ptr [esi + edx*8], eax
+        mov edx, dword ptr [ebp - 8]
+        imul edx, ebx
+        lea eax, [edi + edx*2]
+        mov dword ptr [ebp - 0x10], eax
+L41f964:
+        mov eax, dword ptr [esi + 4]
+        add esi, 8
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, ecx
+        mov edx, dword ptr [eax + 4]
+        test edx, edx
+        mov edx, dword ptr [eax + 8]
+        mov eax, dword ptr [eax + 0x1c]
+        je L41f989
+        sub edx, eax
+        mov dword ptr [ebp - 0x24], eax
+        mov dword ptr [ebp - 0x38], edx
+        jmp L41f991
+L41f989:
+        sub edx, eax
+        mov dword ptr [ebp - 0x4c], eax
+        mov dword ptr [ebp - 0x60], edx
+L41f991:
+        cmp ebx, dword ptr [esi]
+        jge L41f9ee
+L41f995:
+        inc dword ptr [ebp + 0x14]
+        mov eax, dword ptr [ebp - 0x60]
+        mov ebx, dword ptr [ebp - 0x38]
+        add eax, dword ptr [ebp - 0x4c]
+        add ebx, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0x60], eax
+        mov dword ptr [ebp - 0x38], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L41f9b8
+        jmp L41f9d4
+L41f9b8:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0x10]
+        xchg eax, ebx
+        mov dx, word ptr [ebp + 0x10]
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+L41f9cb:
+        mov word ptr [edi + ebx*2], dx
+        add ebx, 1
+        jle L41f9cb
+L41f9d4:
+        mov ecx, dword ptr [ebp - 8]
+        mov edx, dword ptr [ebp + 0x14]
+        lea eax, [ecx + ecx]
+        mov ecx, dword ptr [ebp - 0x10]
+        add ecx, eax
+        mov eax, dword ptr [esi]
+        cmp edx, eax
+        mov dword ptr [ebp - 0x10], ecx
+        jl L41f995
+        mov ecx, dword ptr [ebp + 0x18]
+L41f9ee:
+        mov ebx, dword ptr [ebp + 0x14]
+        mov eax, dword ptr [ebp - 4]
+        cmp ebx, eax
+        jl L41f964
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041fa10
-void FUN_0041fa10(void) { STUB(); }
+__declspec(naked) void FUN_0041fa10(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x64
+        mov ecx, dword ptr [ebp + 0x14]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ecx]
+        mov edx, dword ptr [ebp + 0x18]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        push edi
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + edx + 2]
+        mov edi, dword ptr [DAT_004b5b24]
+        lea eax, [eax + edx + 2]
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        mov esi, dword ptr [DAT_004b5b20]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_004b5b28]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov ebx, dword ptr [eax + 4]
+        mov dword ptr [ebp + 0xc], ebx
+        mov ebx, dword ptr [DAT_0060f900]
+        inc ebx
+        mov dword ptr [DAT_0060f900], ebx
+        mov ebx, dword ptr [ebp + 8]
+        mov eax, dword ptr [eax]
+        mov ebx, dword ptr [ebx*4 + DAT_00829c60]
+        mov ax, word ptr [ebx + eax*2]
+        mov ebx, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ecx + ebx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ecx + ebx*8], eax
+        mov eax, dword ptr [ebp - 0xc]
+        imul eax, dword ptr [ebp - 4]
+        shl eax, 1
+        add esi, eax
+        add edi, eax
+        mov dword ptr [ebp - 0x14], esi
+        mov dword ptr [ebp - 0x10], edi
+L41fab1:
+        mov eax, dword ptr [ecx + 4]
+        add ecx, 8
+        mov dword ptr [ebp + 0x14], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, edx
+        mov esi, dword ptr [eax + 4]
+        test esi, esi
+        mov esi, dword ptr [eax + 8]
+        je L41fad9
+        mov eax, dword ptr [eax + 0x1c]
+        sub esi, eax
+        mov dword ptr [ebp - 0x28], eax
+        mov dword ptr [ebp - 0x3c], esi
+        jmp L41faf2
+L41fad9:
+        mov edi, dword ptr [eax + 0x1c]
+        mov ebx, dword ptr [eax + 0xc]
+        mov eax, dword ptr [eax + 0x20]
+        sub esi, edi
+        sub ebx, eax
+        mov dword ptr [ebp - 0x50], edi
+        mov dword ptr [ebp - 0x48], eax
+        mov dword ptr [ebp - 0x64], esi
+        mov dword ptr [ebp - 0x5c], ebx
+L41faf2:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ecx]
+        cmp eax, esi
+        jge L41fb84
+        mov ecx, dword ptr [ebp - 0xc]
+        lea edx, [ecx + ecx]
+        mov dword ptr [ebp + 0x10], edx
+L41fb08:
+        inc dword ptr [ebp - 4]
+        mov eax, dword ptr [ebp - 0x64]
+        mov edx, dword ptr [ebp - 0x5c]
+        mov ebx, dword ptr [ebp - 0x3c]
+        add eax, dword ptr [ebp - 0x50]
+        add edx, dword ptr [ebp - 0x48]
+        add ebx, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp - 0x64], eax
+        mov dword ptr [ebp - 0x5c], edx
+        mov dword ptr [ebp - 0x3c], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L41fb34
+        jmp L41fb62
+L41fb34:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0x14]
+        mov esi, dword ptr [ebp - 0x10]
+        xchg eax, ebx
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+        lea esi, [esi + eax*2]
+        mov ax, word ptr [ebp + 8]
+L41fb4d:
+        mov ecx, edx
+        mov word ptr [edi + ebx*2], ax
+        add edx, dword ptr [ebp + 0xc]
+        sar ecx, 0x10
+        mov word ptr [esi + ebx*2], cx
+        add ebx, 1
+        jle L41fb4d
+L41fb62:
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [ebp - 0x14]
+        mov esi, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp + 0x14]
+        add edi, eax
+        add esi, eax
+        mov eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [ecx]
+        cmp eax, edx
+        mov dword ptr [ebp - 0x14], edi
+        mov dword ptr [ebp - 0x10], esi
+        jl L41fb08
+        mov edx, dword ptr [ebp + 0x18]
+L41fb84:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ebp - 8]
+        cmp eax, esi
+        jl L41fab1
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041fba0
-void FUN_0041fba0(void) { STUB(); }
+__declspec(naked) void FUN_0041fba0(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x64
+        mov ecx, dword ptr [ebp + 0x14]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ecx]
+        mov edx, dword ptr [ebp + 0x18]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        push edi
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + edx + 2]
+        mov edi, dword ptr [DAT_004b5b24]
+        lea eax, [eax + edx + 2]
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        mov esi, dword ptr [DAT_004b5b20]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_004b5b28]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov ebx, dword ptr [eax + 4]
+        mov dword ptr [ebp + 0xc], ebx
+        mov ebx, dword ptr [DAT_0060f900]
+        inc ebx
+        mov dword ptr [DAT_0060f900], ebx
+        mov ebx, dword ptr [ebp + 8]
+        mov eax, dword ptr [eax]
+        mov ebx, dword ptr [ebx*4 + DAT_00829c60]
+        mov ax, word ptr [ebx + eax*2]
+        mov ebx, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ecx + ebx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ecx + ebx*8], eax
+        mov eax, dword ptr [ebp - 0xc]
+        imul eax, dword ptr [ebp - 4]
+        shl eax, 1
+        add esi, eax
+        add edi, eax
+        mov dword ptr [ebp - 0x14], esi
+        mov dword ptr [ebp - 0x10], edi
+L41fc41:
+        mov eax, dword ptr [ecx + 4]
+        add ecx, 8
+        mov dword ptr [ebp + 0x14], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, edx
+        mov esi, dword ptr [eax + 4]
+        test esi, esi
+        mov esi, dword ptr [eax + 8]
+        je L41fc69
+        mov eax, dword ptr [eax + 0x1c]
+        sub esi, eax
+        mov dword ptr [ebp - 0x28], eax
+        mov dword ptr [ebp - 0x3c], esi
+        jmp L41fc82
+L41fc69:
+        mov edi, dword ptr [eax + 0x1c]
+        mov ebx, dword ptr [eax + 0xc]
+        mov eax, dword ptr [eax + 0x20]
+        sub esi, edi
+        sub ebx, eax
+        mov dword ptr [ebp - 0x50], edi
+        mov dword ptr [ebp - 0x48], eax
+        mov dword ptr [ebp - 0x64], esi
+        mov dword ptr [ebp - 0x5c], ebx
+L41fc82:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ecx]
+        cmp eax, esi
+        jge L41fd1a
+        mov ecx, dword ptr [ebp - 0xc]
+        lea edx, [ecx + ecx]
+        mov dword ptr [ebp + 0x10], edx
+L41fc98:
+        inc dword ptr [ebp - 4]
+        mov eax, dword ptr [ebp - 0x64]
+        mov edx, dword ptr [ebp - 0x5c]
+        mov ebx, dword ptr [ebp - 0x3c]
+        add eax, dword ptr [ebp - 0x50]
+        add edx, dword ptr [ebp - 0x48]
+        add ebx, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp - 0x64], eax
+        mov dword ptr [ebp - 0x5c], edx
+        mov dword ptr [ebp - 0x3c], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L41fcc4
+        jmp L41fcf8
+L41fcc4:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0x14]
+        mov esi, dword ptr [ebp - 0x10]
+        xchg eax, ebx
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+        lea esi, [esi + eax*2]
+        mov ax, word ptr [ebp + 8]
+L41fcdd:
+        mov ecx, edx
+        sar ecx, 0x10
+        cmp cx, word ptr [esi + ebx*2]
+        jb L41fcf0
+        mov word ptr [edi + ebx*2], ax
+        mov word ptr [esi + ebx*2], cx
+L41fcf0:
+        add edx, dword ptr [ebp + 0xc]
+        add ebx, 1
+        jle L41fcdd
+L41fcf8:
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [ebp - 0x14]
+        mov esi, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp + 0x14]
+        add edi, eax
+        add esi, eax
+        mov eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [ecx]
+        cmp eax, edx
+        mov dword ptr [ebp - 0x14], edi
+        mov dword ptr [ebp - 0x10], esi
+        jl L41fc98
+        mov edx, dword ptr [ebp + 0x18]
+L41fd1a:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ebp - 8]
+        cmp eax, esi
+        jl L41fc41
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0041fd30
 void FUN_0041fd30(void) {
@@ -2351,13 +2876,407 @@ void FUN_0041fd30(void) {
     }
 }
 
-// Hand-written assembly in the original (ebp frame + ror, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041fd80
-void FUN_0041fd80(void) { STUB(); }
+__declspec(naked) void FUN_0041fd80(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x64
+        mov ecx, dword ptr [ebp + 0x14]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [ebp + 0x18]
+        mov ebx, dword ptr [ecx]
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        push edi
+        mov dword ptr [ebp - 4], ebx
+        mov dword ptr [ebp + 0x10], 0
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + edx + 2]
+        mov edi, dword ptr [DAT_004b5b20]
+        lea eax, [eax + edx + 2]
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_004b5b24]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [DAT_004b5b28]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp + 8]
+        mov eax, dword ptr [eax*4 + DAT_00829c60]
+        mov dword ptr [DAT_004d89b4 + 0xc], eax
+        mov eax, dword ptr [DAT_0060f900]
+        inc eax
+        mov dword ptr [DAT_0060f900], eax
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ecx + esi*8], eax
+        mov esi, dword ptr [ebp + 0xc]
+        mov eax, dword ptr [esi + 4]
+        test eax, eax
+        jge L41fe1b
+        neg eax
+        mov dword ptr [esi + 4], eax
+        mov dword ptr [ebp + 0x10], 1
+L41fe1b:
+        mov eax, dword ptr [esi + 4]
+        sar eax, 0x10
+        mov dword ptr [DAT_004d89b4], eax
+        mov eax, dword ptr [esi + 4]
+        shl eax, 0x10
+        mov dword ptr [DAT_004d89b4 + 0x8], eax
+        mov eax, dword ptr [ebp - 0xc]
+        imul eax, ebx
+        lea eax, [edi + eax*2]
+        mov dword ptr [ebp - 0x14], eax
+L41fe3d:
+        mov eax, dword ptr [ecx + 4]
+        add ecx, 8
+        mov dword ptr [ebp + 0x14], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, edx
+        mov esi, dword ptr [eax + 4]
+        mov edi, dword ptr [eax + 0x1c]
+        test esi, esi
+        mov esi, dword ptr [eax + 8]
+        je L41fe73
+        mov ebx, dword ptr [eax + 0xc]
+        mov eax, dword ptr [eax + 0x20]
+        sub esi, edi
+        sub ebx, eax
+        mov dword ptr [ebp - 0x28], edi
+        mov dword ptr [ebp - 0x24], eax
+        mov dword ptr [ebp - 0x3c], esi
+        mov dword ptr [ebp - 0x38], ebx
+        jmp L41fe89
+L41fe73:
+        mov ebx, dword ptr [eax + 0xc]
+        mov eax, dword ptr [eax + 0x20]
+        sub esi, edi
+        sub ebx, eax
+        mov dword ptr [ebp - 0x50], edi
+        mov dword ptr [ebp - 0x4c], eax
+        mov dword ptr [ebp - 0x64], esi
+        mov dword ptr [ebp - 0x60], ebx
+L41fe89:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ecx]
+        cmp eax, esi
+        jge L41ff64
+        mov ecx, dword ptr [ebp - 0xc]
+        lea edx, [ecx + ecx]
+        mov dword ptr [ebp + 8], edx
+L41fe9f:
+        inc dword ptr [ebp - 4]
+        mov eax, dword ptr [ebp - 0x64]
+        mov ebx, dword ptr [ebp - 0x3c]
+        add eax, dword ptr [ebp - 0x50]
+        add ebx, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp - 0x64], eax
+        mov dword ptr [ebp - 0x3c], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L41fecb
+        mov ecx, dword ptr [ebp - 0x60]
+        add ecx, dword ptr [ebp - 0x4c]
+        mov dword ptr [ebp - 0x60], ecx
+        jmp L41ff46
+L41fecb:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0x14]
+        xchg eax, ebx
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+        mov ecx, dword ptr [ebp - 0x60]
+        xor edx, edx
+        add ecx, dword ptr [ebp - 0x4c]
+        mov esi, dword ptr [DAT_004d89b4 + 0xc]
+        mov dword ptr [ebp - 0x60], ecx
+        ror ecx, 0x10
+        mov eax, ecx
+        and ecx, 0xffff
+        and eax, 0xffff0000
+        add ecx, dword ptr [DAT_004d89c4]
+        cmp edx, dword ptr [ebp + 0x10]
+        jne L41ff27
+        xor edx, edx
+L41ff08:
+        mov dl, byte ptr [ecx]
+        mov dx, word ptr [esi + edx*2]
+        add eax, dword ptr [DAT_004d89b4 + 0x8]
+        mov word ptr [edi + ebx*2], dx
+        adc ecx, dword ptr [DAT_004d89b4]
+        xor edx, edx
+        add ebx, 1
+        jle L41ff08
+        jmp L41ff46
+L41ff27:
+        xor edx, edx
+L41ff29:
+        mov dl, byte ptr [ecx]
+        mov dx, word ptr [esi + edx*2]
+        add eax, dword ptr [DAT_004d89b4 + 0x8]
+        mov word ptr [edi + ebx*2], dx
+        sbb ecx, dword ptr [DAT_004d89b4]
+        xor edx, edx
+        add ebx, 1
+        jle L41ff29
+L41ff46:
+        mov eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp - 0x14]
+        mov edx, dword ptr [ebp + 0x14]
+        add ecx, eax
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp - 4]
+        cmp ecx, dword ptr [edx]
+        jl L41fe9f
+        mov ecx, edx
+        mov edx, dword ptr [ebp + 0x18]
+L41ff64:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ebp - 8]
+        cmp eax, esi
+        jl L41fe3d
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041ff80
-void FUN_0041ff80(void) { STUB(); }
+__declspec(naked) void FUN_0041ff80(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x64
+        mov ecx, dword ptr [ebp + 0x14]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ecx]
+        mov edx, dword ptr [ebp + 0x18]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        push edi
+        mov dword ptr [ebp + 0x10], 0
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + edx + 2]
+        mov edi, dword ptr [DAT_004b5b20]
+        lea eax, [eax + edx + 2]
+        mov ebx, dword ptr [DAT_004b5b24]
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_004b5b28]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp + 8]
+        mov eax, dword ptr [eax*4 + DAT_00829c60]
+        mov dword ptr [DAT_004d89b4 + 0xc], eax
+        mov eax, dword ptr [DAT_0060f900]
+        inc eax
+        mov dword ptr [DAT_0060f900], eax
+        mov eax, dword ptr [ecx + esi*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + edx + 2]
+        mov dword ptr [ecx + esi*8], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov esi, dword ptr [eax + 4]
+        test esi, esi
+        jge L420019
+        neg esi
+        mov dword ptr [eax + 4], esi
+        mov dword ptr [ebp + 0x10], 1
+L420019:
+        mov esi, dword ptr [eax + 4]
+        sar esi, 0x10
+        mov dword ptr [DAT_004d89b4], esi
+        mov esi, dword ptr [eax + 4]
+        and esi, 0xffffff00
+        shl esi, 0x10
+        mov dword ptr [DAT_004d89b4 + 0x8], esi
+        mov eax, dword ptr [eax + 8]
+        sar eax, 8
+        and eax, 0xffffff
+        or esi, eax
+        mov eax, dword ptr [ebp - 0xc]
+        imul eax, dword ptr [ebp - 4]
+        shl eax, 1
+        add edi, eax
+        add ebx, eax
+        mov dword ptr [DAT_004d89b4 + 0x8], esi
+        mov dword ptr [ebp - 0x14], edi
+        mov dword ptr [ebp - 0x10], ebx
+L42005d:
+        mov eax, dword ptr [ecx + 4]
+        add ecx, 8
+        mov dword ptr [ebp + 0x14], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, edx
+        mov esi, dword ptr [eax + 4]
+        mov edi, dword ptr [eax + 0x1c]
+        test esi, esi
+        mov esi, dword ptr [eax + 8]
+        je L420093
+        mov ebx, dword ptr [eax + 0xc]
+        mov eax, dword ptr [eax + 0x20]
+        sub esi, edi
+        sub ebx, eax
+        mov dword ptr [ebp - 0x28], edi
+        mov dword ptr [ebp - 0x24], eax
+        mov dword ptr [ebp - 0x3c], esi
+        mov dword ptr [ebp - 0x38], ebx
+        jmp L4200c0
+L420093:
+        mov ebx, dword ptr [eax + 0xc]
+        sub esi, edi
+        mov dword ptr [ebp - 0x60], ebx
+        mov ebx, dword ptr [eax + 0x20]
+        mov dword ptr [ebp - 0x50], edi
+        mov edi, dword ptr [ebp - 0x60]
+        mov dword ptr [ebp - 0x4c], ebx
+        mov ebx, dword ptr [eax + 0x10]
+        mov eax, dword ptr [eax + 0x24]
+        mov dword ptr [ebp - 0x64], esi
+        mov esi, dword ptr [ebp - 0x4c]
+        mov dword ptr [ebp - 0x48], eax
+        sub edi, esi
+        sub ebx, eax
+        mov dword ptr [ebp - 0x60], edi
+        mov dword ptr [ebp - 0x5c], ebx
+L4200c0:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ecx]
+        cmp eax, esi
+        jge L4201e4
+        mov ecx, dword ptr [ebp - 0xc]
+        lea edx, [ecx + ecx]
+        mov dword ptr [ebp + 8], edx
+L4200d6:
+        inc dword ptr [ebp - 4]
+        mov eax, dword ptr [ebp - 0x64]
+        mov edx, dword ptr [ebp - 0x5c]
+        mov ebx, dword ptr [ebp - 0x3c]
+        add eax, dword ptr [ebp - 0x50]
+        add edx, dword ptr [ebp - 0x48]
+        add ebx, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp - 0x64], eax
+        mov dword ptr [ebp - 0x5c], edx
+        mov dword ptr [ebp - 0x3c], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L42010e
+        mov ecx, dword ptr [ebp - 0x60]
+        add ecx, dword ptr [ebp - 0x4c]
+        mov dword ptr [ebp - 0x60], ecx
+        jmp L4201be
+L42010e:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0x14]
+        mov esi, dword ptr [ebp - 0x10]
+        xchg eax, ebx
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+        lea esi, [esi + eax*2]
+        mov ecx, dword ptr [ebp - 0x60]
+        mov eax, edx
+        add ecx, dword ptr [ebp - 0x4c]
+        sar eax, 8
+        mov dword ptr [ebp - 0x60], ecx
+        and eax, 0xffffff
+        xor edx, edx
+        sar ecx, 0x10
+        add ecx, dword ptr [DAT_004d89c4]
+        cmp edx, dword ptr [ebp + 0x10]
+        jne L420184
+        push ebp
+        mov ebp, dword ptr [DAT_004d89b4 + 0xc]
+        xor edx, edx
+L42014f:
+        mov edx, eax
+        sar edx, 8
+        cmp dx, word ptr [esi + ebx*2]
+        jb L42016b
+        mov word ptr [esi + ebx*2], dx
+        xor edx, edx
+        mov dl, byte ptr [ecx]
+        mov dx, word ptr [ebp + edx*2]
+        mov word ptr [edi + ebx*2], dx
+L42016b:
+        add eax, dword ptr [DAT_004d89b4 + 0x8]
+        adc ecx, dword ptr [DAT_004d89b4]
+        and eax, 0xfeffffff
+        add ebx, 1
+        jle L42014f
+        pop ebp
+        jmp L4201be
+L420184:
+        push ebp
+        mov ebp, dword ptr [DAT_004d89b4 + 0xc]
+L42018b:
+        mov edx, eax
+        sar edx, 8
+        cmp dx, word ptr [esi + ebx*2]
+        jb L4201a7
+        mov word ptr [esi + ebx*2], dx
+        xor edx, edx
+        mov dl, byte ptr [ecx]
+        mov dx, word ptr [ebp + edx*2]
+        mov word ptr [edi + ebx*2], dx
+L4201a7:
+        add eax, dword ptr [DAT_004d89b4 + 0x8]
+        sbb ecx, dword ptr [DAT_004d89b4]
+        and eax, 0xfeffffff
+        add ebx, 1
+        jle L42018b
+        pop ebp
+L4201be:
+        mov eax, dword ptr [ebp + 8]
+        mov edi, dword ptr [ebp - 0x14]
+        mov esi, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp + 0x14]
+        add edi, eax
+        add esi, eax
+        mov eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [ecx]
+        cmp eax, edx
+        mov dword ptr [ebp - 0x14], edi
+        mov dword ptr [ebp - 0x10], esi
+        jl L4200d6
+        mov edx, dword ptr [ebp + 0x18]
+L4201e4:
+        mov eax, dword ptr [ebp - 4]
+        mov esi, dword ptr [ebp - 8]
+        cmp eax, esi
+        jl L42005d
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x00420200
@@ -2671,26 +3590,666 @@ int FUN_004207d0(unsigned int key) {
     return -1;
 }
 
-// Hand-written assembly in the original (ebp frame + fistp, rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420810
-void FUN_00420810(void) { STUB(); }
+__declspec(naked) void FUN_00420810(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xcc
+        push ebx
+        push esi
+        push edi
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [ebp + 8]
+        xor ecx, ecx
+        xor eax, eax
+        cmp edx, ecx
+        lea edx, [ebp - 0xcc]
+        setne al
+        mov dword ptr [ebp - 0x4c], eax
+        lea eax, [ebp - 0xb0]
+        mov dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [edi + 0x1c]
+        mov dword ptr [ebp - 0x24], edx
+        lea edx, [ebp - 0x94]
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x1c], edx
+        mov dword ptr [ebp - 0x14], offset DAT_004b5648
+        mov dword ptr [ebp + 0x10], ecx
+        jle L4209f1
+        mov dword ptr [ebp - 0xc], ecx
+L42086a:
+        add ecx, dword ptr [edi + 0x18]
+        movsx edx, word ptr [ecx + 6]
+        movsx eax, word ptr [ecx + 4]
+        mov dword ptr [ebp - 0x58], edx
+        mov dword ptr [ebp - 0x5c], eax
+        mov dword ptr [ebp - 0x50], eax
+        shl edx, 4
+        movsx esi, word ptr [ecx + 8]
+        shl eax, 4
+        mov edi, edx
+        mov edx, eax
+        mov dword ptr [ebp - 0x54], esi
+        mov eax, dword ptr [edx + DAT_004d8bb0 + 0x8]
+        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0x8]
+        sub ebx, eax
+        mov eax, dword ptr [edx + DAT_004d8bb0 + 0xc]
+        mov dword ptr [ebp - 4], ebx
+        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0xc]
+        fild dword ptr [ebp - 4]
+        sub ebx, eax
+        shl esi, 4
+        fstp dword ptr [ebp - 0x38]
+        mov dword ptr [ebp - 4], ebx
+        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0x8]
+        fild dword ptr [ebp - 4]
+        sub ebx, dword ptr [edx + DAT_004d8bb0 + 0x8]
+        fstp dword ptr [ebp - 0x30]
+        mov dword ptr [ebp - 4], ebx
+        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0xc]
+        fild dword ptr [ebp - 4]
+        sub ebx, eax
+        mov dword ptr [ebp - 4], ebx
+        fstp dword ptr [ebp - 0x34]
+        fild dword ptr [ebp - 4]
+        fst dword ptr [ebp - 0x2c]
+        fmul dword ptr [ebp - 0x38]
+        fld dword ptr [ebp - 0x34]
+        fmul dword ptr [ebp - 0x30]
+        fsubp st(1), st
+        fst dword ptr [ebp - 0x28]
+        fcomp dword ptr [FLOAT_004ab390]
+        fnstsw ax
+        test ah, 0x41
+        jne L4209d3
+        mov eax, dword ptr [edx + DAT_004d8bb0 + 0x14]
+        mov edi, dword ptr [edi + DAT_004d8bb0 + 0x14]
+        mov esi, dword ptr [esi + DAT_004d8bb0 + 0x14]
+        mov edx, eax
+        or eax, edi
+        and edx, 0xff
+        or eax, esi
+        and edx, edi
+        mov dword ptr [ebp - 0x40], eax
+        and eax, 0xf
+        and edx, esi
+        cmp al, 0xf
+        mov dword ptr [ebp - 0x44], edx
+        jne L4209d3
+        movsx eax, word ptr [ecx + 2]
+        fld dword ptr [DAT_004dcbb8 + 0x8]
+        mov edi, dword ptr [ebp + 8]
+        lea eax, [eax + eax*2]
+        mov edx, dword ptr [edi + 0x10]
+        fmul dword ptr [edx + eax*4 + 8]
+        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fmul dword ptr [edx + eax*4 + 4]
+        lea eax, [edx + eax*4]
+        faddp st(1), st
+        fld dword ptr [DAT_004dcbb8]
+        fmul dword ptr [eax]
+        faddp st(1), st
+        fadd dword ptr [DAT_00829a60]
+        fstp dword ptr [ebp - 4]
+        fld dword ptr [ebp - 4]
+        fistp dword ptr [ebp - 0x10]
+        mov eax, dword ptr [ebp - 0x10]
+        mov edx, dword ptr [ebp + 0xc]
+        mov dword ptr [ebp - 0x3c], eax
+        mov esi, 3
+        movsx eax, word ptr [ecx]
+        lea ecx, [eax + eax*2]
+        mov eax, dword ptr [edx + ecx*4]
+        lea edx, [ebp - 0x5c]
+        mov dword ptr [ebp - 0x48], eax
+        lea ecx, [ebp - 0xc4]
+L42099a:
+        mov eax, dword ptr [edx]
+        add edx, 4
+        shl eax, 4
+        add ecx, 0x1c
+        dec esi
+        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0xc]
+        mov dword ptr [ecx - 0x20], ebx
+        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0x8]
+        mov eax, dword ptr [eax + DAT_004d8bb0 + 0x10]
+        mov dword ptr [ecx - 0x1c], ebx
+        mov dword ptr [ecx - 0x18], eax
+        jne L42099a
+        lea ecx, [ebp - 0x4c]
+        push ecx
+        push 2
+        call FUN_0042a2f0
+        add esp, 8
+        jmp L4209d6
+L4209d3:
+        mov edi, dword ptr [ebp + 8]
+L4209d6:
+        mov eax, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ebp - 0xc]
+        mov edx, dword ptr [edi + 0x1c]
+        inc eax
+        add ecx, 0x10
+        cmp eax, edx
+        mov dword ptr [ebp + 0x10], eax
+        mov dword ptr [ebp - 0xc], ecx
+        jl L42086a
+L4209f1:
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp - 8]
+        mov eax, dword ptr [DAT_004dcbc8]
+        add eax, edx
+        pop edi
+        pop esi
+        mov dword ptr [DAT_004dcbc8], eax
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + fistp, rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420a20
-void FUN_00420a20(void) { STUB(); }
+__declspec(naked) void FUN_00420a20(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xd0
+        push ebx
+        push esi
+        push edi
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov esi, dword ptr [ebp + 0x10]
+        xor edx, edx
+        xor eax, eax
+        cmp esi, edx
+        setne al
+        mov dword ptr [ebp - 0x50], eax
+        lea ecx, [ebp - 0xd0]
+        lea eax, [ebp - 0xb4]
+        mov dword ptr [ebp - 0x28], ecx
+        mov dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp + 8]
+        lea ecx, [ebp - 0x98]
+        mov dword ptr [ebp - 0x18], offset DAT_004b5658
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [eax + 0x24]
+        cmp ecx, edx
+        mov dword ptr [ebp - 8], edx
+        jle L420c10
+        mov dword ptr [ebp - 0xc], edx
+L420a7a:
+        mov ebx, dword ptr [eax + 0x20]
+        movsx eax, word ptr [edx + ebx + 4]
+        movsx ecx, word ptr [edx + ebx + 6]
+        add edx, ebx
+        mov dword ptr [ebp - 0x5c], ecx
+        mov dword ptr [ebp - 0x60], eax
+        mov dword ptr [ebp - 0x54], eax
+        shl ecx, 4
+        movsx esi, word ptr [edx + 8]
+        shl eax, 4
+        mov edi, ecx
+        mov ecx, eax
+        mov dword ptr [ebp - 0x58], esi
+        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0x8]
+        sub ebx, eax
+        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0xc]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0xc]
+        fild dword ptr [ebp + 0x10]
+        sub ebx, eax
+        shl esi, 4
+        fstp dword ptr [ebp - 0x3c]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0x8]
+        fild dword ptr [ebp + 0x10]
+        sub ebx, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        fstp dword ptr [ebp - 0x34]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0xc]
+        fild dword ptr [ebp + 0x10]
+        sub ebx, eax
+        mov dword ptr [ebp + 0x10], ebx
+        fstp dword ptr [ebp - 0x38]
+        fild dword ptr [ebp + 0x10]
+        fst dword ptr [ebp - 0x30]
+        fmul dword ptr [ebp - 0x3c]
+        fld dword ptr [ebp - 0x38]
+        fmul dword ptr [ebp - 0x34]
+        fsubp st(1), st
+        fst dword ptr [ebp - 0x2c]
+        fcomp dword ptr [FLOAT_004ab390]
+        fnstsw ax
+        test ah, 0x41
+        jne L420bf2
+        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x14]
+        mov edi, dword ptr [edi + DAT_004d8bb0 + 0x14]
+        mov esi, dword ptr [esi + DAT_004d8bb0 + 0x14]
+        mov ecx, eax
+        or eax, edi
+        and ecx, 0xff
+        or eax, esi
+        and ecx, edi
+        mov dword ptr [ebp - 0x44], eax
+        and eax, 0xf
+        and ecx, esi
+        cmp al, 0xf
+        mov dword ptr [ebp - 0x48], ecx
+        jne L420bf2
+        lea edi, [ebp - 0x60]
+        lea ecx, [ebp - 0xc8]
+        lea esi, [edx + 0xa]
+        mov dword ptr [ebp + 0x10], 3
+L420b5f:
+        movsx eax, word ptr [esi]
+        fld dword ptr [DAT_004dcbb8 + 0x8]
+        mov ebx, dword ptr [ebp + 8]
+        lea eax, [eax + eax*2]
+        mov ebx, dword ptr [ebx + 0x14]
+        fmul dword ptr [ebx + eax*4 + 8]
+        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fmul dword ptr [ebx + eax*4 + 4]
+        lea eax, [ebx + eax*4]
+        faddp st(1), st
+        fld dword ptr [DAT_004dcbb8]
+        fmul dword ptr [eax]
+        faddp st(1), st
+        fadd dword ptr [DAT_00829a60]
+        fstp dword ptr [ebp - 0x10]
+        fld dword ptr [ebp - 0x10]
+        fistp dword ptr [ebp - 0x14]
+        mov eax, dword ptr [edi]
+        add esi, 2
+        shl eax, 4
+        add edi, 4
+        add ecx, 0x1c
+        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0xc]
+        mov dword ptr [ecx - 0x20], ebx
+        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0x8]
+        mov eax, dword ptr [eax + DAT_004d8bb0 + 0x10]
+        mov dword ptr [ecx - 0x1c], ebx
+        mov ebx, dword ptr [ebp - 0x14]
+        mov dword ptr [ecx - 0x18], ebx
+        mov dword ptr [ecx - 0x14], eax
+        mov eax, dword ptr [ebp + 0x10]
+        dec eax
+        mov dword ptr [ebp + 0x10], eax
+        jne L420b5f
+        movsx eax, word ptr [edx]
+        mov edx, dword ptr [ebp + 0xc]
+        lea ecx, [eax + eax*2]
+        mov eax, dword ptr [edx + ecx*4]
+        lea ecx, [ebp - 0x50]
+        push ecx
+        push 3
+        mov dword ptr [ebp - 0x4c], eax
+        call FUN_0042a2f0
+        add esp, 8
+L420bf2:
+        mov eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp - 8]
+        mov edx, dword ptr [ebp - 0xc]
+        inc ecx
+        mov esi, dword ptr [eax + 0x24]
+        add edx, 0x10
+        cmp ecx, esi
+        mov dword ptr [ebp - 8], ecx
+        mov dword ptr [ebp - 0xc], edx
+        jl L420a7a
+L420c10:
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp - 4]
+        mov eax, dword ptr [DAT_004dcbc8]
+        add eax, edx
+        pop edi
+        pop esi
+        mov dword ptr [DAT_004dcbc8], eax
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + fistp, rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420c40
-void FUN_00420c40(void) { STUB(); }
+__declspec(naked) void FUN_00420c40(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xd0
+        push ebx
+        push esi
+        push edi
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp + 0x10]
+        xor esi, esi
+        xor eax, eax
+        cmp edx, esi
+        setne al
+        mov dword ptr [ebp - 0x50], eax
+        lea eax, [ebp - 0x98]
+        mov dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [ebp + 8]
+        lea ecx, [ebp - 0xd0]
+        lea edx, [ebp - 0xb4]
+        mov dword ptr [ebp - 0x28], ecx
+        mov ecx, dword ptr [eax + 0x2c]
+        cmp ecx, esi
+        mov dword ptr [ebp - 0x24], edx
+        mov dword ptr [ebp - 0x18], offset DAT_004b5f50
+        mov dword ptr [ebp - 0x10], esi
+        jle L420e5f
+        mov dword ptr [ebp - 0xc], esi
+L420c9a:
+        mov ebx, dword ptr [eax + 0x28]
+        movsx eax, word ptr [esi + ebx + 4]
+        movsx ecx, word ptr [esi + ebx + 6]
+        add esi, ebx
+        mov dword ptr [ebp - 0x5c], ecx
+        mov dword ptr [ebp - 0x60], eax
+        mov dword ptr [ebp - 0x54], eax
+        shl ecx, 4
+        movsx edx, word ptr [esi + 8]
+        shl eax, 4
+        mov edi, ecx
+        mov ecx, eax
+        mov dword ptr [ebp - 0x58], edx
+        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0x8]
+        sub ebx, eax
+        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0xc]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0xc]
+        fild dword ptr [ebp + 0x10]
+        sub ebx, eax
+        shl edx, 4
+        fstp dword ptr [ebp - 0x3c]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [edx + DAT_004d8bb0 + 0x8]
+        fild dword ptr [ebp + 0x10]
+        sub ebx, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        fstp dword ptr [ebp - 0x34]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [edx + DAT_004d8bb0 + 0xc]
+        fild dword ptr [ebp + 0x10]
+        sub ebx, eax
+        mov dword ptr [ebp + 0x10], ebx
+        fstp dword ptr [ebp - 0x38]
+        fild dword ptr [ebp + 0x10]
+        fst dword ptr [ebp - 0x30]
+        fmul dword ptr [ebp - 0x3c]
+        fld dword ptr [ebp - 0x38]
+        fmul dword ptr [ebp - 0x34]
+        fsubp st(1), st
+        fst dword ptr [ebp - 0x2c]
+        fcomp dword ptr [FLOAT_004ab390]
+        fnstsw ax
+        test ah, 0x41
+        jne L420e41
+        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x14]
+        mov edi, dword ptr [edi + DAT_004d8bb0 + 0x14]
+        mov edx, dword ptr [edx + DAT_004d8bb0 + 0x14]
+        mov ecx, eax
+        or eax, edi
+        and ecx, 0xff
+        or eax, edx
+        and ecx, edi
+        mov dword ptr [ebp - 0x44], eax
+        and eax, 0xf
+        and ecx, edx
+        cmp al, 0xf
+        mov dword ptr [ebp - 0x48], ecx
+        jne L420e41
+        movsx eax, word ptr [esi + 2]
+        fld dword ptr [DAT_004dcbb8 + 0x8]
+        mov edx, dword ptr [ebp + 8]
+        lea ecx, [eax + eax*2]
+        mov eax, dword ptr [edx + 0x10]
+        fmul dword ptr [eax + ecx*4 + 8]
+        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fmul dword ptr [eax + ecx*4 + 4]
+        lea eax, [eax + ecx*4]
+        faddp st(1), st
+        fld dword ptr [DAT_004dcbb8]
+        fmul dword ptr [eax]
+        faddp st(1), st
+        fadd dword ptr [DAT_00829a60]
+        fstp dword ptr [ebp + 0x10]
+        fld dword ptr [ebp + 0x10]
+        fistp dword ptr [ebp - 0x14]
+        mov ecx, dword ptr [ebp - 0x14]
+        mov ebx, dword ptr [ebp + 0xc]
+        mov dword ptr [ebp - 0x40], ecx
+        xor edi, edi
+        movsx eax, word ptr [esi]
+        lea ecx, [ebp - 0x60]
+        mov dword ptr [ebp + 0x10], edi
+        lea edx, [eax + eax*2]
+        mov dword ptr [ebp - 4], ecx
+        mov eax, dword ptr [ebx + edx*4]
+        mov dword ptr [ebp - 0x4c], eax
+        lea eax, [ebp - 0xc8]
+L420dd1:
+        mov edx, dword ptr [ebp - 4]
+        add eax, 0x1c
+        mov ecx, dword ptr [edx]
+        shl ecx, 4
+        mov edx, dword ptr [ecx + DAT_004d8bb0 + 0xc]
+        mov dword ptr [eax - 0x20], edx
+        mov edx, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        mov dword ptr [eax - 0x1c], edx
+        mov ecx, dword ptr [ecx + DAT_004d8bb0 + 0x10]
+        movsx edx, word ptr [esi]
+        lea edx, [edx + edx*2]
+        lea edi, [edi + edx*2]
+        xor edx, edx
+        mov dl, byte ptr [ebx + edi*2 + 4]
+        mov edi, dword ptr [ebp + 0x10]
+        mov dword ptr [eax - 0x18], edx
+        movsx edx, word ptr [esi]
+        lea edx, [edx + edx*2]
+        lea edi, [edi + edx*2]
+        xor edx, edx
+        mov dl, byte ptr [ebx + edi*2 + 5]
+        mov edi, dword ptr [ebp + 0x10]
+        mov dword ptr [eax - 0x14], edx
+        mov dword ptr [eax - 0x10], ecx
+        mov ecx, dword ptr [ebp - 4]
+        inc edi
+        add ecx, 4
+        cmp edi, 2
+        mov dword ptr [ebp + 0x10], edi
+        mov dword ptr [ebp - 4], ecx
+        jle L420dd1
+        lea edx, [ebp - 0x50]
+        push edx
+        push 4
+        call FUN_0042a2f0
+        add esp, 8
+L420e41:
+        mov eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp - 0x10]
+        mov esi, dword ptr [ebp - 0xc]
+        inc ecx
+        mov edx, dword ptr [eax + 0x2c]
+        add esi, 0x10
+        cmp ecx, edx
+        mov dword ptr [ebp - 0x10], ecx
+        mov dword ptr [ebp - 0xc], esi
+        jl L420c9a
+L420e5f:
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [DAT_004dcbc8]
+        add ecx, eax
+        pop edi
+        pop esi
+        mov dword ptr [DAT_004dcbc8], ecx
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420e90
-unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsigned int e) { STUB(); }
+__declspec(naked) unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsigned int e) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x9c
+        push ebx
+        push esi
+        push edi
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov esi, dword ptr [ebp + 8]
+        test esi, esi
+        je L420fa7
+        mov edi, dword ptr [ebp + 0xc]
+        test edi, edi
+        je L420fa7
+        mov ebx, dword ptr [ebp + 0x14]
+        lea eax, [ebp - 0x5c]
+        push eax
+        push ebx
+        call FUN_00426510
+        lea ecx, [ebp - 0x5c]
+        push 1
+        push ecx
+        push offset DAT_004dcbb8
+        push offset DAT_004b5ca0
+        call FUN_004261c0
+        fld dword ptr [DAT_004dcbb8]
+        fmul dword ptr [DAT_0082999c]
+        mov eax, dword ptr [ebp + 0x10]
+        lea edx, [ebp - 0x5c]
+        push edx
+        push ebx
+        push eax
+        fstp dword ptr [DAT_004dcbb8]
+        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fmul dword ptr [DAT_0082999c]
+        fstp dword ptr [DAT_004dcbb8 + 0x4]
+        fld dword ptr [DAT_004dcbb8 + 0x8]
+        fmul dword ptr [DAT_0082999c]
+        fstp dword ptr [DAT_004dcbb8 + 0x8]
+        call FUN_004264e0
+        lea ecx, [ebp - 0x9c]
+        lea edx, [ebp - 0x5c]
+        push ecx
+        push edx
+        push offset DAT_008299fc
+        call Mat4Multiply
+        mov eax, dword ptr [esi]
+        mov edx, dword ptr [esi + 0xc]
+        push eax
+        lea ecx, [ebp - 0x9c]
+        push 0x10
+        push ecx
+        push offset DAT_004d8bb0 + 0x8
+        push edx
+        call FUN_00426250
+        add esp, 0x44
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [DAT_004dcbc8]
+        add ecx, eax
+        mov dword ptr [DAT_004dcbc8], ecx
+        lea ecx, [ebp - 0x1c]
+        push ecx
+        call FUN_00423760
+        add esp, 4
+        test eax, eax
+        je L420fa7
+        mov ebx, dword ptr [ebp + 0x18]
+        push ebx
+        push edi
+        push esi
+        call FUN_00420810
+        push ebx
+        push edi
+        push esi
+        call FUN_00420a20
+        push ebx
+        push edi
+        push esi
+        call FUN_00420c40
+        lea edx, [ebp - 0x1c]
+        push edx
+        call FUN_00423790
+        add esp, 0x28
+L420fa7:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00420fb0
 unsigned int FUN_00420fb0(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     return FUN_00426750(param_1 + 0x30, param_2, param_3, param_4);
 }
+
+// GLOBAL: LEGOLAND 0x004b5648
+void *DAT_004b5648[2] = {FUN_0041f8d0, FUN_0041fba0};
+
+// GLOBAL: LEGOLAND 0x004b5658
+void *DAT_004b5658[2] = {FUN_0041fd80, FUN_0041ff80};
 
 // GLOBAL: LEGOLAND 0x004b5700
 float DAT_004b5700[6][3] = {
@@ -2736,6 +4295,9 @@ BoxFace DAT_004b5808[12] = {
 
 // GLOBAL: LEGOLAND 0x004b58c8
 struct BoxSolid DAT_004b58c8 = {8, 0, 12, NULL, DAT_004b5700, NULL, DAT_004b5748, 12};
+
+// GLOBAL: LEGOLAND 0x004b5f50
+void *DAT_004b5f50[2] = {FUN_00428860, FUN_00428860};
 
 // FUNCTION: LEGOLAND 0x00420fd0
 void FUN_00420fd0(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d) {
@@ -4148,9 +5710,79 @@ struct RecSrc {
     int f2c;
 };
 
-// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00423140
-void FUN_00423140(int param_1) { STUB(); }
+__declspec(naked) void FUN_00423140(int param_1) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        push ecx
+        push esi
+        push edi
+        mov edi, offset DAT_004dd870
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov eax, dword ptr [DAT_0060f90c]
+        test eax, eax
+        je L423177
+        mov ecx, 0x25800
+        xor eax, eax
+        mov edi, offset DAT_004e3870
+        mov dword ptr [DAT_0060f914], 0xa
+        rep stosd
+        jmp L4231c6
+L423177:
+        mov esi, dword ptr [DAT_00829a3c + 0x18]
+        cmp esi, offset DAT_00829a3c
+        je L4231a0
+L423185:
+        mov eax, dword ptr [esi + 0x10]
+        test eax, eax
+        je L423195
+        push esi
+        call FUN_00423480
+        add esp, 4
+L423195:
+        mov esi, dword ptr [esi + 0x18]
+        cmp esi, offset DAT_00829a3c
+        jne L423185
+L4231a0:
+        cmp dword ptr [DAT_004b5b3c], offset DAT_004dd870
+        je L4231c6
+L4231ac:
+        mov ecx, dword ptr [edi]
+        mov eax, edi
+        push eax
+        lea edi, [edi + ecx*8 + 8]
+        call FUN_004232b0
+        mov eax, dword ptr [DAT_004b5b3c]
+        add esp, 4
+        cmp edi, eax
+        jne L4231ac
+L4231c6:
+        mov dword ptr [DAT_004b5b3c], offset DAT_004dd870
+        mov dword ptr [DAT_0060f90c], 0
+        mov dword ptr [DAT_0060f908], 0
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp - 4]
+        pop edi
+        mov dword ptr [DAT_0060f910], edx
+        pop esi
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00423200
 void FUN_00423200(int n, int x, struct RecIdx *idx, struct RecSrc *src) {
@@ -4211,9 +5843,121 @@ void FUN_004232b0(struct RecBuf *rb) {
     FUN_00423350(n, idx, src);
 }
 
-// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00423350
-void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *src) { STUB(); }
+__declspec(naked) void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *src) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x60
+        mov edx, dword ptr [ebp + 8]
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [ebp + 0x10]
+        push edi
+        mov eax, dword ptr [esi]
+        mov dword ptr [ebp - 4], 0
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [esi + edx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + ecx + 2]
+        mov edi, dword ptr [DAT_004b5b24]
+        lea eax, [eax + ecx + 2]
+        mov ebx, dword ptr [DAT_004b5b28]
+        mov eax, dword ptr [esi + edx*8 - 4]
+        mov dword ptr [ebp - 8], ebx
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + ecx + 2]
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [DAT_004b5b20]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [DAT_0060f900]
+        inc eax
+        mov dword ptr [DAT_0060f900], eax
+        mov eax, dword ptr [esi + edx*8 - 4]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        movsx eax, word ptr [eax + ecx + 2]
+        mov dword ptr [esi + edx*8], eax
+        mov edx, ebx
+        mov ebx, dword ptr [ebp + 0xc]
+        imul edx, ebx
+        lea eax, [edi + edx*2]
+        mov dword ptr [ebp - 0xc], eax
+L4233d5:
+        mov eax, dword ptr [esi + 4]
+        add esi, 8
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, ecx
+        mov edx, dword ptr [eax + 4]
+        test edx, edx
+        mov edx, dword ptr [eax + 8]
+        mov eax, dword ptr [eax + 0x1c]
+        je L4233fa
+        sub edx, eax
+        mov dword ptr [ebp - 0x24], eax
+        mov dword ptr [ebp - 0x38], edx
+        jmp L423402
+L4233fa:
+        sub edx, eax
+        mov dword ptr [ebp - 0x4c], eax
+        mov dword ptr [ebp - 0x60], edx
+L423402:
+        cmp ebx, dword ptr [esi]
+        jge L42345f
+L423406:
+        inc dword ptr [ebp + 0xc]
+        mov eax, dword ptr [ebp - 0x60]
+        mov ebx, dword ptr [ebp - 0x38]
+        add eax, dword ptr [ebp - 0x4c]
+        add ebx, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0x60], eax
+        mov dword ptr [ebp - 0x38], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L423429
+        jmp L423445
+L423429:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0xc]
+        xchg eax, ebx
+        mov dx, word ptr [ebp - 4]
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+L42343c:
+        mov word ptr [edi + ebx*2], dx
+        add ebx, 1
+        jle L42343c
+L423445:
+        mov ecx, dword ptr [ebp - 8]
+        mov edx, dword ptr [ebp + 0xc]
+        lea eax, [ecx + ecx]
+        mov ecx, dword ptr [ebp - 0xc]
+        add ecx, eax
+        mov eax, dword ptr [esi]
+        cmp edx, eax
+        mov dword ptr [ebp - 0xc], ecx
+        jl L423406
+        mov ecx, dword ptr [ebp + 0x10]
+L42345f:
+        mov ebx, dword ptr [ebp + 0xc]
+        mov eax, dword ptr [ebp + 8]
+        cmp ebx, eax
+        jl L4233d5
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00423480
 void FUN_00423480(struct ClearRect *r) {
@@ -4231,9 +5975,193 @@ void FUN_00423480(struct ClearRect *r) {
     }
 }
 
-// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004234e0
-void FUN_004234e0(void *param1) { STUB(); }
+__declspec(naked) void FUN_004234e0(void *param1) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xe4
+        push ebx
+        push esi
+        lea eax, [ebp - 0x74]
+        push edi
+        push eax
+        call FUN_00423760
+        add esp, 4
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        lea edx, [ebp - 0xc8]
+        lea ecx, [ebp - 0xe4]
+        mov dword ptr [ebp - 0x20], edx
+        mov edx, dword ptr [ebp + 8]
+        lea eax, [ebp - 0xac]
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [edx + 0xc]
+        mov dword ptr [ebp - 0x1c], eax
+        xor eax, eax
+        mov dword ptr [ebp - 0x4c], 1
+        cmp ecx, eax
+        mov dword ptr [ebp - 0x14], offset DAT_004b5658
+        mov dword ptr [ebp - 0x10], eax
+        jle L4236ad
+        mov dword ptr [ebp - 0xc], eax
+L423540:
+        mov ecx, dword ptr [ebp - 0xc]
+        mov esi, dword ptr [edx + 0x18]
+        add ecx, esi
+        lea esi, [ebp - 0x5c]
+        sub esi, ecx
+        mov edi, 3
+L423552:
+        mov eax, dword ptr [ecx]
+        test eax, 0x80000000
+        je L423569
+        mov ebx, dword ptr [edx + 0x14]
+        and eax, 0x7fffffff
+        mov eax, dword ptr [ebx + eax*8 + 4]
+        jmp L423574
+L423569:
+        mov ebx, dword ptr [edx + 0x14]
+        and eax, 0x7fffffff
+        mov eax, dword ptr [ebx + eax*8]
+L423574:
+        mov dword ptr [esi + ecx], eax
+        add ecx, 4
+        dec edi
+        jne L423552
+        mov ecx, dword ptr [ebp - 0x58]
+        mov eax, dword ptr [ebp - 0x5c]
+        mov esi, dword ptr [edx + 0x10]
+        mov dword ptr [ebp - 0x50], eax
+        lea ecx, [ecx + ecx*4]
+        lea eax, [eax + eax*4]
+        mov ebx, dword ptr [esi + eax*4]
+        lea edi, [esi + ecx*4]
+        lea ecx, [esi + eax*4]
+        mov eax, dword ptr [edi]
+        sub eax, ebx
+        mov dword ptr [ebp - 4], eax
+        fild dword ptr [ebp - 4]
+        fstp dword ptr [ebp - 0x38]
+        mov eax, dword ptr [edi + 4]
+        mov ebx, dword ptr [ecx + 4]
+        sub eax, ebx
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x54]
+        fild dword ptr [ebp - 4]
+        lea eax, [eax + eax*4]
+        fstp dword ptr [ebp - 0x30]
+        lea ebx, [esi + eax*4]
+        mov eax, dword ptr [esi + eax*4]
+        sub eax, dword ptr [ecx]
+        mov dword ptr [ebp - 4], eax
+        fild dword ptr [ebp - 4]
+        fstp dword ptr [ebp - 0x34]
+        mov eax, dword ptr [ebx + 4]
+        sub eax, dword ptr [ecx + 4]
+        mov dword ptr [ebp - 4], eax
+        fild dword ptr [ebp - 4]
+        fst dword ptr [ebp - 0x2c]
+        fmul dword ptr [ebp - 0x38]
+        fld dword ptr [ebp - 0x34]
+        fmul dword ptr [ebp - 0x30]
+        fsubp st(1), st
+        fst dword ptr [ebp - 0x28]
+        fcomp dword ptr [FLOAT_004ab390]
+        fnstsw ax
+        test ah, 0x41
+        jne L423692
+        mov dword ptr [ebp - 0x44], 0xff
+        mov dword ptr [ebp - 0x40], 0
+        mov edx, dword ptr [ecx + 0xc]
+        mov dword ptr [ebp - 0x40], edx
+        mov eax, dword ptr [ecx + 0xc]
+        and eax, 0xff
+        mov dword ptr [ebp - 0x44], eax
+        mov ecx, dword ptr [edi + 0xc]
+        or edx, ecx
+        mov dword ptr [ebp - 0x40], edx
+        mov ecx, dword ptr [edi + 0xc]
+        and eax, ecx
+        mov dword ptr [ebp - 0x44], eax
+        mov ecx, dword ptr [ebx + 0xc]
+        or edx, ecx
+        mov dword ptr [ebp - 0x40], edx
+        mov edi, dword ptr [ebx + 0xc]
+        and edx, 0xf
+        and eax, edi
+        cmp dl, 0xf
+        mov dword ptr [ebp - 0x44], eax
+        jne L42368f
+        lea edx, [ebp - 0x5c]
+        lea eax, [ebp - 0xdc]
+        mov edi, 3
+L423650:
+        mov ecx, dword ptr [edx]
+        add edx, 4
+        add eax, 0x1c
+        dec edi
+        lea ecx, [ecx + ecx*4]
+        mov ebx, dword ptr [esi + ecx*4 + 4]
+        lea ecx, [esi + ecx*4]
+        mov dword ptr [eax - 0x20], ebx
+        mov ebx, dword ptr [ecx]
+        mov dword ptr [eax - 0x1c], ebx
+        mov ebx, dword ptr [ecx + 0x10]
+        mov dword ptr [eax - 0x18], ebx
+        mov ecx, dword ptr [ecx + 8]
+        mov dword ptr [eax - 0x14], ecx
+        jne L423650
+        mov edx, dword ptr [ebp + 8]
+        lea ecx, [ebp - 0x4c]
+        push ecx
+        push 3
+        mov eax, dword ptr [edx]
+        mov dword ptr [ebp - 0x48], eax
+        call FUN_0042a2f0
+        add esp, 8
+L42368f:
+        mov edx, dword ptr [ebp + 8]
+L423692:
+        mov eax, dword ptr [ebp - 0x10]
+        mov esi, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [edx + 0xc]
+        inc eax
+        add esi, 0xc
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x10], eax
+        mov dword ptr [ebp - 0xc], esi
+        jl L423540
+L4236ad:
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 8], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp - 8]
+        mov esi, dword ptr [DAT_0060f8fc]
+        lea eax, [ebp - 0x74]
+        add esi, edx
+        push eax
+        mov dword ptr [DAT_0060f8fc], esi
+        call FUN_00423790
+        add esp, 4
+        mov eax, 1
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004236f0
 unsigned short FUN_004236f0(void) {
@@ -5868,13 +7796,244 @@ unsigned int FUN_00426230(float in[][3], int out[][4], int n) {
     return FUN_00426250(in, out, &DAT_008299fc.m[0][0], 0x10, n);
 }
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00426250
-unsigned int FUN_00426250(float in[][3], int out[][4], float *m, unsigned int stride, int n) { STUB(); }
+__declspec(naked) unsigned int FUN_00426250(float in[][3], int out[][4], float *m, unsigned int stride, int n) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 8
+        mov eax, dword ptr [ebp + 0x18]
+        mov ecx, eax
+        dec eax
+        test ecx, ecx
+        jle L42639c
+        push ebx
+        mov ebx, dword ptr [ebp + 0xc]
+        inc eax
+        push esi
+        push edi
+        mov dword ptr [ebp - 8], eax
+L42626e:
+        mov edx, dword ptr [DAT_00829a3c + 0x18]
+        mov edi, ebx
+        mov dword ptr [ebp + 0xc], edx
+        mov edx, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp - 4], 3
+L426283:
+        fld dword ptr [FLOAT_004ab390]
+        mov ecx, dword ptr [ebp + 8]
+        mov eax, edx
+        mov esi, 3
+L426293:
+        fld dword ptr [ecx]
+        fmul dword ptr [eax]
+        add eax, 4
+        add ecx, 4
+        dec esi
+        faddp st(1), st
+        jne L426293
+        fadd dword ptr [edx + 0xc]
+        fstp dword ptr [ebp + 0x18]
+        fld dword ptr [ebp + 0x18]
+        fistp dword ptr [ebp + 0x18]
+        mov eax, dword ptr [ebp + 0x18]
+        add edx, 0x10
+        mov dword ptr [edi], eax
+        mov eax, dword ptr [ebp - 4]
+        add edi, 4
+        dec eax
+        mov dword ptr [ebp - 4], eax
+        jne L426283
+        mov ecx, dword ptr [ebx]
+        mov dword ptr [ebx + 0xc], 0
+        cmp ecx, dword ptr [DAT_008299ac]
+        jge L4262da
+        mov eax, dword ptr [ebx + 0xc]
+        or al, 2
+        jmp L4262ee
+L4262da:
+        mov edx, dword ptr [ebx]
+        mov eax, dword ptr [DAT_008299ac + 0x8]
+        cmp edx, eax
+        mov eax, dword ptr [ebx + 0xc]
+        jg L4262ec
+        or al, 3
+        jmp L4262ee
+L4262ec:
+        or al, 1
+L4262ee:
+        mov dword ptr [ebx + 0xc], eax
+        mov eax, dword ptr [ebx + 4]
+        cmp eax, dword ptr [DAT_008299ac + 0x4]
+        jge L426303
+        mov eax, dword ptr [ebx + 0xc]
+        or al, 8
+        jmp L426316
+L426303:
+        mov ecx, dword ptr [DAT_008299ac + 0xc]
+        cmp eax, ecx
+        mov eax, dword ptr [ebx + 0xc]
+        jg L426314
+        or al, 0xc
+        jmp L426316
+L426314:
+        or al, 4
+L426316:
+        mov ecx, dword ptr [ebp + 0xc]
+        mov dword ptr [ebx + 0xc], eax
+        cmp ecx, offset DAT_00829a3c
+        je L42637e
+        mov esi, dword ptr [ebx]
+        mov edi, dword ptr [ebx + 4]
+        jmp L42632e
+L42632b:
+        mov ecx, dword ptr [ebp + 0xc]
+L42632e:
+        cmp esi, dword ptr [ecx]
+        jge L426339
+        mov eax, 2
+        jmp L426348
+L426339:
+        mov edx, dword ptr [ecx + 8]
+        xor eax, eax
+        cmp esi, edx
+        setg al
+        dec eax
+        and eax, 2
+        inc eax
+L426348:
+        cmp edi, dword ptr [ecx + 4]
+        jge L426351
+        or al, 8
+        jmp L42635c
+L426351:
+        cmp edi, dword ptr [ecx + 0xc]
+        jg L42635a
+        or al, 0xc
+        jmp L42635c
+L42635a:
+        or al, 4
+L42635c:
+        mov edx, dword ptr [ecx + 0x10]
+        and edx, eax
+        cmp edx, 0xf
+        je L426376
+        mov ecx, dword ptr [ecx + 0x18]
+        cmp ecx, offset DAT_00829a3c
+        mov dword ptr [ebp + 0xc], ecx
+        jne L42632b
+        jmp L42637e
+L426376:
+        mov eax, dword ptr [ebx + 0xc]
+        or al, 0xf0
+        mov dword ptr [ebx + 0xc], eax
+L42637e:
+        mov edx, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0x14]
+        mov eax, dword ptr [ebp - 8]
+        add edx, 0xc
+        add ebx, ecx
+        dec eax
+        mov dword ptr [ebp + 8], edx
+        mov dword ptr [ebp - 8], eax
+        jne L42626e
+        pop edi
+        pop esi
+        pop ebx
+L42639c:
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004263a0
-void FUN_004263a0(void *pts, unsigned int m[4][4], int n, unsigned int out) { STUB(); }
+__declspec(naked) void FUN_004263a0(void *pts, unsigned int m[4][4], int n, unsigned int out) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x14
+        mov ecx, dword ptr [ebp + 0x14]
+        mov eax, 0x80000000
+        mov dword ptr [ecx + 8], eax
+        mov dword ptr [ecx + 0xc], eax
+        mov eax, dword ptr [ebp + 0x10]
+        mov dword ptr [ecx], 0x7fffffff
+        mov dword ptr [ecx + 4], 0x7fffffff
+        mov ecx, eax
+        dec eax
+        test ecx, ecx
+        jle L426458
+        push ebx
+        inc eax
+        push esi
+        push edi
+        mov dword ptr [ebp - 4], eax
+L4263d6:
+        mov edx, dword ptr [ebp + 0xc]
+        lea edi, [ebp - 0x14]
+        mov ebx, 2
+L4263e1:
+        fld dword ptr [FLOAT_004ab390]
+        mov ecx, dword ptr [ebp + 8]
+        mov eax, edx
+        mov esi, 3
+L4263f1:
+        fld dword ptr [ecx]
+        fmul dword ptr [eax]
+        add eax, 4
+        add ecx, 4
+        dec esi
+        faddp st(1), st
+        jne L4263f1
+        fadd dword ptr [edx + 0xc]
+        fstp dword ptr [ebp + 0x10]
+        fld dword ptr [ebp + 0x10]
+        fistp dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ebp + 0x10]
+        add edx, 0x10
+        mov dword ptr [edi], eax
+        add edi, 4
+        dec ebx
+        jne L4263e1
+        mov ecx, dword ptr [ebp + 0x14]
+        mov eax, dword ptr [ebp - 0x14]
+        cmp eax, dword ptr [ecx + 8]
+        jle L426428
+        mov dword ptr [ecx + 8], eax
+L426428:
+        cmp eax, dword ptr [ecx]
+        jge L42642e
+        mov dword ptr [ecx], eax
+L42642e:
+        mov eax, dword ptr [ebp - 0x10]
+        mov edx, dword ptr [ecx + 0xc]
+        cmp eax, edx
+        jle L42643b
+        mov dword ptr [ecx + 0xc], eax
+L42643b:
+        cmp eax, dword ptr [ecx + 4]
+        jge L426443
+        mov dword ptr [ecx + 4], eax
+L426443:
+        mov ecx, dword ptr [ebp + 8]
+        mov eax, dword ptr [ebp - 4]
+        add ecx, 0xc
+        dec eax
+        mov dword ptr [ebp + 8], ecx
+        mov dword ptr [ebp - 4], eax
+        jne L4263d6
+        pop edi
+        pop esi
+        pop ebx
+L426458:
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00426460
 void FUN_00426460(unsigned int *dst, void *src) {
@@ -7642,9 +9801,278 @@ unsigned int FUN_00428840(unsigned int param_1) {
     return result;
 }
 
-// Hand-written assembly in the original (ebp frame + xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00428860
-void FUN_00428860(void) { STUB(); }
+__declspec(naked) void FUN_00428860(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x70
+        mov eax, dword ptr [ebp + 0x14]
+        mov edx, dword ptr [ebp + 0x10]
+        push ebx
+        push esi
+        mov ecx, dword ptr [eax]
+        push edi
+        mov dword ptr [ebp - 4], ecx
+        lea ecx, [eax + edx*8 - 4]
+        mov edx, dword ptr [ebp + 0x18]
+        mov dword ptr [ebp - 8], ecx
+        mov eax, dword ptr [ecx]
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        inc word ptr [eax + edx + 2]
+        lea eax, [eax + edx + 2]
+        mov eax, dword ptr [ecx]
+        lea ecx, [eax + eax*2]
+        mov eax, dword ptr [DAT_004b5b20]
+        shl ecx, 4
+        mov dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [ebp + 8]
+        movsx edx, word ptr [ecx + edx + 2]
+        mov ecx, dword ptr [DAT_004b5b24]
+        mov dword ptr [ebp - 0x14], edx
+        mov edx, dword ptr [DAT_004b5b28]
+        push eax
+        mov dword ptr [ebp - 0x1c], ecx
+        mov dword ptr [ebp - 0x18], edx
+        call GetLtxFileTableEntry
+        mov esi, eax
+        add esp, 4
+        test esi, esi
+        je L428b5c
+        mov ecx, dword ptr [esi]
+        push ecx
+        call FUN_00428840
+        mov edx, dword ptr [esi + 4]
+        mov edi, eax
+        push edx
+        call FUN_00428840
+        add esi, 8
+        mov ecx, 8
+        mov dword ptr [ebp + 8], esi
+        sub ecx, edi
+        mov esi, 0xff000000
+        mov edx, ecx
+        sar esi, cl
+        sub edx, eax
+        mov dword ptr [ebp - 0xc], ecx
+        add edx, 8
+        add esp, 8
+        mov dword ptr [ebp - 0x10], edx
+        mov dword ptr [DAT_0061195c], esi
+        mov esi, dword ptr [ebp + 0xc]
+        mov ebx, dword ptr [esi + 4]
+        sar ebx, cl
+        mov ecx, edx
+        mov edx, 1
+        mov dword ptr [DAT_00612160], ebx
+        mov ebx, dword ptr [esi + 8]
+        shl ebx, 8
+        sar ebx, cl
+        mov dword ptr [DAT_00612160 + 0x4], ebx
+        mov ecx, dword ptr [esi + 0xc]
+        mov dword ptr [DAT_00612160 + 0xc], ecx
+        lea ecx, [eax + edi]
+        mov eax, dword ptr [DAT_0060f900]
+        shl edx, cl
+        dec edx
+        inc eax
+        mov dword ptr [DAT_0060f900], eax
+        mov eax, dword ptr [ebp - 8]
+        mov dword ptr [DAT_00612160 + 0x14], edx
+        mov edx, dword ptr [ebp + 0x18]
+        mov eax, dword ptr [eax]
+        lea ecx, [eax + eax*2]
+        shl ecx, 4
+        movsx eax, word ptr [ecx + edx + 2]
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [ebp + 0x14]
+        mov dword ptr [edx + ecx*8], eax
+        mov eax, dword ptr [ebp - 0x18]
+        imul eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp - 0x1c]
+        shl eax, 1
+        add edx, eax
+        add ecx, eax
+        mov dword ptr [ebp - 0x20], edx
+        mov edx, dword ptr [DAT_0060f904]
+        test edx, edx
+        mov dword ptr [ebp - 0x1c], ecx
+        jle L4289ad
+        mov ecx, offset DAT_00611960
+        mov eax, offset DAT_00829c60
+L428998:
+        mov edi, dword ptr [esi]
+        mov ebx, dword ptr [eax]
+        add eax, 4
+        add ecx, 2
+        mov di, word ptr [ebx + edi*2]
+        dec edx
+        mov word ptr [ecx - 2], di
+        jne L428998
+L4289ad:
+        mov dword ptr [ebp + 0x10], offset DAT_00611960
+L4289b4:
+        mov ecx, dword ptr [ebp + 0x14]
+        mov esi, dword ptr [ebp + 0x18]
+        mov eax, dword ptr [ecx + 4]
+        add ecx, 8
+        mov dword ptr [ebp + 0x14], ecx
+        lea eax, [eax + eax*2]
+        shl eax, 4
+        add eax, esi
+        mov ecx, dword ptr [eax + 4]
+        test ecx, ecx
+        mov ecx, dword ptr [eax + 8]
+        je L4289e2
+        mov eax, dword ptr [eax + 0x1c]
+        sub ecx, eax
+        mov dword ptr [ebp - 0x34], eax
+        mov dword ptr [ebp - 0x48], ecx
+        jmp L428a20
+L4289e2:
+        mov ebx, dword ptr [eax + 0x10]
+        mov edx, dword ptr [eax + 0x1c]
+        mov esi, dword ptr [eax + 0xc]
+        mov edi, dword ptr [eax + 0x20]
+        mov dword ptr [ebp - 0x60], ebx
+        mov ebx, dword ptr [eax + 0x24]
+        sub ecx, edx
+        mov dword ptr [ebp - 0x5c], edx
+        mov edx, dword ptr [ebp - 0x60]
+        mov dword ptr [ebp - 0x4c], ebx
+        mov ebx, dword ptr [eax + 0x14]
+        mov eax, dword ptr [eax + 0x28]
+        mov dword ptr [ebp - 0x70], ecx
+        mov ecx, dword ptr [ebp - 0x4c]
+        sub esi, edi
+        sub edx, ecx
+        sub ebx, eax
+        mov dword ptr [ebp - 0x50], edi
+        mov dword ptr [ebp - 0x54], eax
+        mov dword ptr [ebp - 0x64], esi
+        mov dword ptr [ebp - 0x60], edx
+        mov dword ptr [ebp - 0x68], ebx
+L428a20:
+        mov eax, dword ptr [ebp + 0x14]
+        mov edx, dword ptr [ebp - 4]
+        cmp edx, dword ptr [eax]
+        jge L428b4e
+        mov ecx, dword ptr [ebp - 0x18]
+        lea edx, [ecx + ecx]
+        mov dword ptr [ebp + 0xc], edx
+L428a37:
+        inc dword ptr [ebp - 4]
+        mov eax, dword ptr [ebp - 0x70]
+        mov ebx, dword ptr [ebp - 0x48]
+        add eax, dword ptr [ebp - 0x5c]
+        add ebx, dword ptr [ebp - 0x34]
+        mov dword ptr [ebp - 0x70], eax
+        mov dword ptr [ebp - 0x48], ebx
+        mov ecx, ebx
+        sub ecx, eax
+        cmp ecx, 0x8000
+        jns L428a78
+        mov eax, dword ptr [ebp - 0x64]
+        mov ebx, dword ptr [ebp - 0x60]
+        mov ecx, dword ptr [ebp - 0x68]
+        add eax, dword ptr [ebp - 0x50]
+        add ebx, dword ptr [ebp - 0x4c]
+        add ecx, dword ptr [ebp - 0x54]
+        mov dword ptr [ebp - 0x64], eax
+        mov dword ptr [ebp - 0x60], ebx
+        mov dword ptr [ebp - 0x68], ecx
+        jmp L428b2b
+L428a78:
+        sar eax, 0x10
+        sar ebx, 0x10
+        mov edi, dword ptr [ebp - 0x20]
+        mov esi, dword ptr [ebp - 0x1c]
+        xchg eax, ebx
+        sub ebx, eax
+        lea edi, [edi + eax*2]
+        lea esi, [esi + eax*2]
+        push ebx
+        mov eax, dword ptr [ebp - 0x64]
+        mov edx, dword ptr [ebp - 0x60]
+        mov ebx, dword ptr [ebp - 0x68]
+        add eax, dword ptr [ebp - 0x50]
+        add edx, dword ptr [ebp - 0x4c]
+        add ebx, dword ptr [ebp - 0x54]
+        mov dword ptr [ebp - 0x64], eax
+        mov dword ptr [ebp - 0x60], edx
+        mov dword ptr [ebp - 0x68], ebx
+        mov ecx, dword ptr [ebp - 0x10]
+        shl edx, 8
+        shr edx, cl
+        mov ecx, dword ptr [ebp - 0xc]
+        sar eax, cl
+        push ebp
+        sub esp, 8
+        mov ecx, esi
+        sub ecx, dword ptr [ebp + 8]
+        mov dword ptr [esp + 4], ecx
+        mov ecx, esi
+        sub ecx, dword ptr [ebp + 0x10]
+        sar ecx, 1
+        mov dword ptr [esp], ecx
+        mov ebp, ebx
+        mov ebx, dword ptr [esp + 0xc]
+L428ad3:
+        mov ecx, ebp
+        sar ecx, 0x10
+        cmp cx, word ptr [esi + ebx*2]
+        jb L428b0d
+        mov word ptr [esi + ebx*2], cx
+        mov ecx, dword ptr [DAT_0061195c]
+        and ecx, edx
+        or ecx, eax
+        shr ecx, 0x10
+        and ecx, dword ptr [DAT_00612160 + 0x14]
+        sub ecx, dword ptr [esp + 4]
+        mov cl, byte ptr [esi + ecx]
+        and ecx, 0xff
+        sub ecx, dword ptr [esp]
+        mov cx, word ptr [esi + ecx*2]
+        mov word ptr [edi + ebx*2], cx
+L428b0d:
+        add eax, dword ptr [DAT_00612160]
+        add edx, dword ptr [DAT_00612160 + 0x4]
+        add ebp, dword ptr [DAT_00612160 + 0xc]
+        add ebx, 1
+        jle L428ad3
+        add esp, 8
+        pop ebp
+        add esp, 4
+L428b2b:
+        mov eax, dword ptr [ebp + 0xc]
+        mov edi, dword ptr [ebp - 0x20]
+        mov esi, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp + 0x14]
+        add edi, eax
+        add esi, eax
+        mov eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [ecx]
+        cmp eax, edx
+        mov dword ptr [ebp - 0x20], edi
+        mov dword ptr [ebp - 0x1c], esi
+        jl L428a37
+L428b4e:
+        mov edx, dword ptr [ebp - 4]
+        mov eax, dword ptr [ebp - 0x14]
+        cmp edx, eax
+        jl L4289b4
+L428b5c:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00428b70
 void FUN_00428b70(void) {
@@ -7682,9 +10110,167 @@ void FUN_00428b80(struct Curve *curve, float *off) {
     PlotClippedPoints(&DAT_006159c8[0][0], 0x5a, -1);
 }
 
-// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00428cb0
-void FUN_00428cb0(void *p, unsigned int a, unsigned int b, unsigned int c, const char *name) { STUB(); }
+__declspec(naked) void FUN_00428cb0(void *p, unsigned int a, unsigned int b, unsigned int c, const char *name) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xc8
+        mov eax, dword ptr [ebp + 0x14]
+        push ebx
+        push esi
+        push edi
+        lea ecx, [eax - 1]
+        mov dword ptr [ebp - 0x18], ecx
+        push eax
+        push edx
+        rdtsc
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        test ecx, ecx
+        jl L428e2a
+        mov edx, dword ptr [ebp + 0x18]
+        mov edi, dword ptr [ebp + 8]
+        mov ebx, offset DAT_006139c8
+        inc ecx
+        mov dword ptr [ebp + 8], edx
+        mov dword ptr [ebp + 0x14], ebx
+        mov dword ptr [ebp + 0x18], ecx
+        jmp L428cf0
+L428ced:
+        mov ebx, dword ptr [ebp + 0x14]
+L428cf0:
+        mov eax, dword ptr [ebp + 8]
+        mov edx, dword ptr [edi + 0x4c]
+        mov ecx, dword ptr [eax]
+        lea eax, [ebp - 0x48]
+        mov esi, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp + 0x10]
+        push eax
+        push esi
+        push edi
+        call dword ptr [edx + ecx*8 + 4]
+        lea edx, [ebp - 0x3c]
+        lea eax, [ebp - 0x48]
+        push edx
+        push eax
+        call FUN_00426560
+        mov ecx, dword ptr [edi + 0x4c]
+        mov eax, dword ptr [ebp + 0x10]
+        lea edx, [ebp - 0x10]
+        push edx
+        push esi
+        push edi
+        call dword ptr [ecx + eax*8]
+        mov eax, dword ptr [ebp + 0xc]
+        lea ecx, [ebp - 0x88]
+        fld dword ptr [ebp - 0x10]
+        fadd dword ptr [eax]
+        lea edx, [ebp - 0x3c]
+        push ecx
+        push edx
+        fstp dword ptr [ebp - 0x10]
+        fld dword ptr [ebp - 0xc]
+        fadd dword ptr [eax + 4]
+        fstp dword ptr [ebp - 0xc]
+        fld dword ptr [ebp - 8]
+        fadd dword ptr [eax + 8]
+        lea eax, [ebp - 0x10]
+        push eax
+        fstp dword ptr [ebp - 8]
+        call FUN_004264e0
+        lea ecx, [ebp - 0xc8]
+        lea edx, [ebp - 0x88]
+        push ecx
+        push edx
+        push offset DAT_008299fc
+        call Mat4Multiply
+        push 6
+        lea eax, [ebp - 0xc8]
+        push 0x14
+        push eax
+        push ebx
+        push offset DAT_006121c8
+        call FUN_00426250
+        fld dword ptr [DAT_004b5ca8]
+        fmul dword ptr [ebp - 0x28]
+        fld dword ptr [DAT_004b5ca4]
+        fmul dword ptr [ebp - 0x2c]
+        add esp, 0x4c
+        mov esi, offset DAT_006126d8
+        add ebx, 0x10
+        faddp st(1), st
+        fld dword ptr [DAT_004b5ca0]
+        fmul dword ptr [ebp - 0x30]
+        faddp st(1), st
+        fmul dword ptr [DAT_0082999c]
+        fld dword ptr [DAT_004b5ca8]
+        fmul dword ptr [ebp - 0x1c]
+        fld dword ptr [DAT_004b5ca4]
+        fmul dword ptr [ebp - 0x20]
+        faddp st(1), st
+        fld dword ptr [DAT_004b5ca0]
+        fmul dword ptr [ebp - 0x24]
+        faddp st(1), st
+        fmul dword ptr [DAT_0082999c]
+        fld dword ptr [DAT_00829a60]
+L428de0:
+        fld st(1)
+        fmul dword ptr [esi + 4]
+        fld st(3)
+        fmul dword ptr [esi]
+        faddp st(1), st
+        fadd st, st(1)
+        call _ftol
+        mov dword ptr [ebx], eax
+        add esi, 8
+        add ebx, 0x14
+        cmp esi, offset DAT_00612708
+        jl L428de0
+        mov edx, dword ptr [ebp + 0x14]
+        mov ecx, dword ptr [ebp + 8]
+        mov eax, dword ptr [ebp + 0x18]
+        add edx, 0x78
+        fstp st(0)
+        add ecx, 4
+        dec eax
+        fstp st(0)
+        fstp st(0)
+        mov dword ptr [ebp + 0x14], edx
+        mov dword ptr [ebp + 8], ecx
+        mov dword ptr [ebp + 0x18], eax
+        jne L428ced
+        mov ecx, dword ptr [ebp - 0x18]
+L428e2a:
+        lea edx, [ecx + ecx*8]
+        lea ecx, [ecx + ecx*2]
+        shl ecx, 2
+        lea eax, [edx + edx + 6]
+        mov dword ptr [DAT_004b5f60 + 0xc], ecx
+        mov dword ptr [DAT_004b5f60 + 0x8], eax
+        push eax
+        push edx
+        rdtsc
+        sub eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 4], eax
+        pop edx
+        pop eax
+        mov edx, dword ptr [ebp - 4]
+        mov eax, dword ptr [DAT_00615f68]
+        add eax, edx
+        pop edi
+        mov dword ptr [DAT_00615f68], eax
+        pop esi
+        mov eax, offset DAT_004b5f60
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 struct Struct428e70 {
     unsigned char pad_0[0x4c];
@@ -7856,9 +10442,72 @@ void FUN_00429270(void) {
     }
 }
 
-// Hand-written assembly in the original (ebp frame + rdtsc): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004292f0
-void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis) { STUB(); }
+void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis) {
+    float ident[9];
+    float zero[3];
+    struct FVec3 *n;
+    struct FVec3 *src;
+    struct FVec3 *dst;
+    float fx;
+    float fy;
+    float d;
+    int t;
+    int i;
+
+    n = basis + 2;
+    __asm {
+        push eax
+        push edx
+        rdtsc
+        mov t, eax
+        pop edx
+        pop eax
+    }
+    src = (struct FVec3 *)DAT_00612210;
+    dst = (struct FVec3 *)DAT_00612708[30];
+    fx = (float)((int)pos->x * DOUBLE_004ab488) * 5.0f;
+    fy = (float)((int)pos->y * DOUBLE_004ab488) * 5.0f;
+    for (i = 0; i <= 3; i++) {
+        dst[i].x = fx + src[i].x;
+        dst[i].y = fy + src[i].y;
+        *(int *)&dst[i].z = *(int *)&src[i].z;
+    }
+    for (i = 4; i <= 7; i++) {
+        dst[i].x = src[i].x + pos->x;
+        dst[i].y = src[i].y + pos->y;
+        dst[i].z = 0.0f;
+    }
+    d = Vec3Dot(pos, n);
+    for (i = 8; i <= 11; i++) {
+        dst[i].x = src[i].x + pos->x;
+        dst[i].y = src[i].y + pos->y;
+        dst[i].z = (d - n->x * dst[i].x - dst[i].y * n->y) / n->z;
+    }
+    __asm {
+        push eax
+        push edx
+        rdtsc
+        sub eax, t
+        mov t, eax
+        pop edx
+        pop eax
+    }
+    DAT_00615f68 += t;
+    zero[0] = 0.0f;
+    zero[1] = 0.0f;
+    zero[2] = 0.0f;
+    ident[0] = 1.0f;
+    ident[1] = 0.0f;
+    ident[2] = 0.0f;
+    ident[3] = 0.0f;
+    ident[4] = 1.0f;
+    ident[5] = 0.0f;
+    ident[6] = 0.0f;
+    ident[7] = 0.0f;
+    ident[8] = 1.0f;
+    FUN_00420e90((unsigned int)DAT_004b6150, (unsigned int)DAT_00615f70, zero, ident, 1);
+}
 
 // FUNCTION: LEGOLAND 0x00429490
 void FUN_00429490(unsigned int param_1, unsigned int param_2) {
@@ -8477,9 +11126,283 @@ void FUN_0042a2e0(void) {
     FUN_00421540(&DAT_00615f98, 3);
 }
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0042a2f0
-void FUN_0042a2f0(void) { STUB(); }
+__declspec(naked) void FUN_0042a2f0(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x200
+        push ebx
+        push esi
+        push edi
+        mov edi, dword ptr [ebp + 0xc]
+        mov ecx, 3
+        mov dword ptr [ebp - 0x14], 0
+        mov edx, dword ptr [edi + 0xc]
+        lea esi, [edi + 0x28]
+        and edx, 0xf0
+        mov eax, esi
+        cmp dl, 0xf0
+        mov dword ptr [ebp - 4], ecx
+        mov dword ptr [ebp - 0x40], 0x47800000
+        lea ebx, [ebp - 0x80]
+        mov dword ptr [ebp - 0x18], eax
+        je L42a33e
+        mov edx, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0x20], 0
+        dec edx
+        mov dword ptr [ebp + 8], edx
+        jmp L42a345
+L42a33e:
+        mov dword ptr [ebp - 0x20], 1
+L42a345:
+        mov edx, dword ptr [edi + 8]
+        and edx, 0xf
+        cmp edx, 0xf
+        je L42a377
+        mov ecx, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 4], 0
+        push ecx
+        push edx
+        lea edx, [ebp - 4]
+        push edx
+        push eax
+        call FUN_0041ef60
+        mov ecx, dword ptr [ebp - 4]
+        add esp, 0x10
+        test ecx, ecx
+        mov dword ptr [ebp - 0x18], eax
+        je L42a5d0
+L42a377:
+        mov edx, dword ptr [eax]
+        mov dword ptr [eax + ecx*4], edx
+        mov edx, dword ptr [ebp + 8]
+        mov ecx, dword ptr [edi + 0x10]
+        cmp edx, 1
+        mov dword ptr [ebp - 0x34], ecx
+        jle L42a409
+        fld dword ptr [FLOAT_004ab49c]
+        fdiv dword ptr [edi + 0x24]
+        mov ecx, 0xc
+        lea eax, [ebp - 0x30]
+        sub eax, ecx
+        dec edx
+        mov dword ptr [ebp - 0xc], eax
+        mov dword ptr [ebp - 8], edx
+        fstp dword ptr [ebp - 0x1c]
+L42a3a7:
+        mov edx, dword ptr [esi]
+        mov eax, dword ptr [esi + 4]
+        mov edx, dword ptr [edx + ecx]
+        mov eax, dword ptr [ecx + eax]
+        sub eax, edx
+        mov dword ptr [ebp - 0x3c], eax
+        mov eax, dword ptr [esi + 8]
+        fild dword ptr [ebp - 0x3c]
+        mov eax, dword ptr [ecx + eax]
+        sub eax, edx
+        fmul dword ptr [edi + 0x20]
+        mov dword ptr [ebp - 0x38], eax
+        fild dword ptr [ebp - 0x38]
+        fmul dword ptr [edi + 0x1c]
+        fsubp st(1), st
+        fmul dword ptr [ebp - 0x1c]
+        fstp dword ptr [ebp - 0x24]
+        fld dword ptr [ebp - 0x24]
+        fistp dword ptr [ebp - 0x10]
+        mov eax, dword ptr [ebp - 0x10]
+        mov edx, dword ptr [ebp - 0xc]
+        cmp eax, 0xffe00000
+        mov dword ptr [edx + ecx], eax
+        jl L42a3f3
+        cmp eax, 0x200000
+        jle L42a3fa
+L42a3f3:
+        mov dword ptr [ebp - 0x10], 0
+L42a3fa:
+        mov eax, dword ptr [ebp - 8]
+        add ecx, 4
+        dec eax
+        mov dword ptr [ebp - 8], eax
+        jne L42a3a7
+        mov eax, dword ptr [ebp - 0x18]
+L42a409:
+        mov ecx, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 0x1c], 0
+        test ecx, ecx
+        jle L42a5d0
+        lea edx, [ebp - 0x200]
+        mov dword ptr [ebp - 0x10], eax
+        jmp L42a429
+L42a426:
+        mov eax, dword ptr [ebp - 0x10]
+L42a429:
+        mov esi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        mov edi, dword ptr [ecx + 4]
+        mov eax, dword ptr [esi + 4]
+        sub edi, eax
+        mov dword ptr [ebp - 0xc], edi
+        je L42a518
+        fild dword ptr [ebp - 0xc]
+        mov eax, edx
+        fstp dword ptr [ebp - 0xc]
+        fld dword ptr [ebp - 0x40]
+        fdiv dword ptr [ebp - 0xc]
+        test edi, edi
+        mov edi, dword ptr [ebp - 0x14]
+        mov dword ptr [ebx + 4], edi
+        jge L42a4cf
+        inc edi
+        add edx, 0x30
+        mov dword ptr [ebp - 0x14], edi
+        mov edi, dword ptr [ecx + 4]
+        mov dword ptr [ebx], edi
+        mov dword ptr [eax + 4], 0
+        mov di, word ptr [ecx + 4]
+        mov dword ptr [ebp - 0xc], edx
+        mov word ptr [eax], di
+        mov di, word ptr [esi + 4]
+        add ebx, 8
+        mov word ptr [eax + 2], di
+        fstp dword ptr [ebp - 0x24]
+        mov edi, dword ptr [ebp + 8]
+        test edi, edi
+        jle L42a518
+        lea edi, [eax + 0x1c]
+        sub eax, ecx
+        lea edx, [ecx + 8]
+        sub esi, ecx
+        mov ecx, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0x18], ecx
+L42a49d:
+        mov ecx, dword ptr [edx]
+        shl ecx, 0x10
+        mov dword ptr [eax + edx], ecx
+        mov ecx, dword ptr [edx]
+        sub ecx, dword ptr [esi + edx]
+        mov dword ptr [ebp - 8], ecx
+        fild dword ptr [ebp - 8]
+        fmul dword ptr [ebp - 0x24]
+        fistp dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 8]
+        add edx, 4
+        mov dword ptr [edi], ecx
+        mov ecx, dword ptr [ebp - 0x18]
+        add edi, 4
+        dec ecx
+        mov dword ptr [ebp - 0x18], ecx
+        jne L42a49d
+        mov edx, dword ptr [ebp - 0xc]
+        jmp L42a518
+L42a4cf:
+        inc edi
+        add edx, 0x30
+        mov dword ptr [ebp - 0x14], edi
+        mov edi, dword ptr [esi + 4]
+        mov dword ptr [ebx], edi
+        mov dword ptr [eax + 4], 1
+        mov di, word ptr [esi + 4]
+        add ebx, 8
+        mov word ptr [eax], di
+        mov di, word ptr [ecx + 4]
+        mov word ptr [eax + 2], di
+        fstp dword ptr [ebp - 0x38]
+        mov edi, dword ptr [esi + 8]
+        shl edi, 0x10
+        mov dword ptr [eax + 8], edi
+        mov ecx, dword ptr [ecx + 8]
+        sub ecx, dword ptr [esi + 8]
+        mov dword ptr [ebp - 8], ecx
+        fild dword ptr [ebp - 8]
+        fmul dword ptr [ebp - 0x38]
+        fistp dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 8]
+        mov dword ptr [eax + 0x1c], ecx
+L42a518:
+        mov eax, dword ptr [ebp - 0x1c]
+        mov esi, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp - 4]
+        inc eax
+        add esi, 4
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x1c], eax
+        mov dword ptr [ebp - 0x10], esi
+        jl L42a426
+        mov ebx, dword ptr [ebp - 0x14]
+        test ebx, ebx
+        je L42a5d0
+        lea edi, [ebx - 1]
+        test edi, edi
+        jl L42a578
+L42a545:
+        test edi, edi
+        jle L42a575
+        lea eax, [ebp - 0x78]
+        mov esi, edi
+L42a54e:
+        mov edx, dword ptr [eax - 8]
+        mov ecx, dword ptr [eax]
+        cmp edx, ecx
+        jle L42a56c
+        mov ebx, dword ptr [eax]
+        mov ecx, edx
+        mov edx, dword ptr [eax - 4]
+        mov dword ptr [eax - 8], ebx
+        mov ebx, dword ptr [eax + 4]
+        mov dword ptr [eax - 4], ebx
+        mov dword ptr [eax], ecx
+        mov dword ptr [eax + 4], edx
+L42a56c:
+        add eax, 8
+        dec esi
+        jne L42a54e
+        mov ebx, dword ptr [ebp - 0x14]
+L42a575:
+        dec edi
+        jns L42a545
+L42a578:
+        mov esi, dword ptr [ebp + 0xc]
+        test byte ptr [esi], 1
+        je L42a5b0
+        cmp dword ptr [ebp - 0x20], 1
+        jne L42a5b0
+        lea eax, [ebp - 0x200]
+        lea ecx, [ebp - 0x80]
+        push eax
+        mov eax, dword ptr [ebp + ebx*8 - 0x84]
+        push ecx
+        lea edx, [eax + eax*2]
+        shl edx, 4
+        movsx eax, word ptr [ebp + edx - 0x1fe]
+        push eax
+        push ebx
+        call FUN_00423200
+        add esp, 0x10
+L42a5b0:
+        mov ecx, dword ptr [esi + 0x38]
+        lea edx, [ebp - 0x200]
+        lea eax, [ebp - 0x80]
+        push edx
+        push eax
+        mov eax, dword ptr [esi + 4]
+        lea edx, [ebp - 0x34]
+        push ebx
+        push edx
+        mov edx, dword ptr [ebp - 0x20]
+        push eax
+        call dword ptr [ecx + edx*4]
+        add esp, 0x14
+L42a5d0:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 struct Struct42a5e0Data {
     unsigned int v[5];
