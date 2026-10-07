@@ -1268,9 +1268,76 @@ LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out) {
     out[7] = 0.0f;
 }
 
-// Hand-written assembly in the original (ebp frame + shrd): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004433b0
-LEGO_EXPORT void TransformVectorsL(void) { STUB(); }
+__declspec(naked) LEGO_EXPORT void TransformVectorsL(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        push ebx
+        push esi
+        push edi
+        push esi
+        push edi
+        mov ebx, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [ebp + 0x14]
+L4433be:
+        mov esi, dword ptr [ebp + 8]
+        mov eax, dword ptr [ebx]
+        imul dword ptr [esi]
+        shrd eax, edx, 0x10
+        mov ecx, eax
+        mov eax, dword ptr [ebx + 4]
+        imul dword ptr [esi + 4]
+        shrd eax, edx, 0x10
+        add ecx, eax
+        mov eax, dword ptr [ebx + 8]
+        imul dword ptr [esi + 8]
+        shrd eax, edx, 0x10
+        add ecx, eax
+        push ecx
+        mov eax, dword ptr [ebx + 0xc]
+        imul dword ptr [esi]
+        shrd eax, edx, 0x10
+        mov ecx, eax
+        mov eax, dword ptr [ebx + 0x10]
+        imul dword ptr [esi + 4]
+        shrd eax, edx, 0x10
+        add ecx, eax
+        mov eax, dword ptr [ebx + 0x14]
+        imul dword ptr [esi + 8]
+        shrd eax, edx, 0x10
+        add ecx, eax
+        push ecx
+        mov eax, dword ptr [ebx + 0x18]
+        imul dword ptr [esi]
+        shrd eax, edx, 0x10
+        mov ecx, eax
+        mov eax, dword ptr [ebx + 0x1c]
+        imul dword ptr [esi + 4]
+        shrd eax, edx, 0x10
+        add ecx, eax
+        mov eax, dword ptr [ebx + 0x20]
+        imul dword ptr [esi + 8]
+        shrd eax, edx, 0x10
+        add ecx, eax
+        mov esi, dword ptr [ebp + 0xc]
+        mov dword ptr [esi + 8], ecx
+        pop dword ptr [esi + 4]
+        pop dword ptr [esi]
+        add dword ptr [ebp + 8], 0xc
+        add dword ptr [ebp + 0xc], 0xc
+        dec edi
+        jne L4433be
+        pop edi
+        pop esi
+        pop edi
+        pop esi
+        pop ebx
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00443450
 LEGO_EXPORT void NormaliseVector(struct Vec3 *v) {

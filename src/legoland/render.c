@@ -209,21 +209,2876 @@ int FUN_00486540(void) {
     return 0;
 }
 
-// Hand-written assembly in the original (ebp frame + shrd, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00486590
-void FUN_00486590(void) { STUB(); }
+__declspec(naked) void FUN_00486590(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x6c
+        mov edx, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        push ebx
+        push esi
+        mov eax, dword ptr [edx + 4]
+        mov esi, dword ptr [ecx + 4]
+        cmp eax, esi
+        push edi
+        jle L4865b8
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov ecx, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp + 8]
+L4865b8:
+        mov ebx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ecx + 4]
+        cmp eax, dword ptr [ebx + 4]
+        jle L4865d2
+        mov eax, dword ptr [ebp + 0xc]
+        xchg dword ptr [ebp + 0x10], eax
+        mov dword ptr [ebp + 0xc], eax
+        mov ebx, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ebp + 0xc]
+L4865d2:
+        mov eax, dword ptr [edx + 4]
+        mov esi, dword ptr [ecx + 4]
+        cmp eax, esi
+        jle L4865eb
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov ecx, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp + 8]
+L4865eb:
+        mov edi, dword ptr [ebx + 4]
+        mov eax, dword ptr [edx + 4]
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x28], edi
+        mov edi, dword ptr [DAT_00701e58]
+        sar eax, 0x10
+        imul edi, eax
+        add edi, dword ptr [DAT_00797e68]
+        mov esi, dword ptr [ecx + 4]
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x18], edi
+        mov edi, dword ptr [edx]
+        mov dword ptr [ebp + 8], edi
+        mov edi, dword ptr [ecx]
+        mov dword ptr [ebp - 0x64], edi
+        mov edi, dword ptr [ebx]
+        mov dword ptr [ebp - 0x5c], edi
+        mov edi, dword ptr [edx + 8]
+        mov edx, dword ptr [edx + 0x14]
+        mov dword ptr [ebp - 0x24], edi
+        mov edi, dword ptr [ecx + 8]
+        mov ecx, dword ptr [ecx + 0x14]
+        mov dword ptr [ebp - 0x68], edi
+        mov edi, dword ptr [ebx + 8]
+        mov dword ptr [ebp - 0x14], edx
+        mov edx, dword ptr [ebx + 0x14]
+        mov dword ptr [ebp - 0x54], eax
+        mov dword ptr [ebp - 0x40], esi
+        mov dword ptr [ebp - 0x60], edi
+        mov dword ptr [ebp - 0x30], ecx
+        mov dword ptr [ebp - 0x2c], edx
+        shl dword ptr [ebp - 0x14], 6
+        shl dword ptr [ebp - 0x30], 6
+        shl dword ptr [ebp - 0x2c], 6
+        mov edi, eax
+        cmp eax, esi
+        mov dword ptr [ebp + 0x10], edi
+        je L48697f
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x40]
+        sub ecx, dword ptr [ebp - 0x54]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x58], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x28]
+        sub ecx, dword ptr [ebp - 0x54]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x64]
+        sub eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp - 0x58]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x30]
+        sub eax, dword ptr [ebp - 0x14]
+        mov ecx, dword ptr [ebp - 0x58]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        sub eax, dword ptr [ebp - 0x14]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x54], eax
+        mov eax, dword ptr [ebp - 0x68]
+        sub eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp - 0x58]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x3c], eax
+        mov eax, dword ptr [ebp - 0x60]
+        sub eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x58], eax
+        mov eax, dword ptr [ebp + 8]
+        mov dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x14]
+        mov dword ptr [ebp - 4], eax
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0xc], eax
+        mov dword ptr [ebp - 0x10], eax
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [ebp - 0x40]
+        sub ebx, ecx
+        jle L486768
+        sub edx, ecx
+        jle L486768
+        cmp ebx, edx
+        mov ecx, edx
+        jns L48672b
+        mov ecx, ebx
+L48672b:
+        add dword ptr [ebp + 0x10], ecx
+        mov eax, dword ptr [ebp - 0x34]
+        mul ecx
+        add dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x50]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x38]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x54]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        mul ecx
+        add dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x58]
+        mul ecx
+        add dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0x18], eax
+L486768:
+        cmp dword ptr [ebp + 0x10], esi
+        jge L48692f
+L486771:
+        mov eax, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ViewportBottom]
+        cmp eax, ecx
+        jg L48692f
+        mov eax, dword ptr [ebp - 0x18]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 0xc]
+        mov edi, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0x6c], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0x18], eax
+        jle L4867ef
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0xc]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x14], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp - 0x10]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x44], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x4c], edi
+        mov dword ptr [ebp - 0x1c], esi
+        jmp L48683f
+L4867ef:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0xc]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x14], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp - 0xc]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x44], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x4c], esi
+        mov dword ptr [ebp - 0x1c], edi
+L48683f:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x4c]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L486864
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x48]
+        mul ecx
+        add dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x44]
+        mul ecx
+        add dword ptr [ebp - 0x20], eax
+L486864:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0x6c]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0x6c]
+        cmp eax, dword ptr [ebp - 0x1c]
+        jge L4868d9
+        cmp esi, edi
+        jg L4868d9
+L486881:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp + 0x10]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x20]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L4868be
+        mov dword ptr [ebx + ecx], edx
+        mov ebx, dword ptr [DAT_0066b61c]
+        mov ebx, dword ptr [ebx + 4]
+        cmp esi, dword ptr [DAT_007fe9a8]
+        movzx edx, word ptr [ebp - 0x22]
+        sete cl
+        movzx edx, word ptr [ebx + edx*2]
+        or byte ptr [DAT_007feb14], cl
+        mov word ptr [esi], dx
+L4868be:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x48]
+        add dword ptr [ebp - 0x24], ebx
+        mov ebx, dword ptr [ebp - 0x44]
+        add dword ptr [ebp - 0x20], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0x1c]
+        jge L4868d9
+        cmp esi, edi
+        jg L4868d9
+        jmp L486881
+L4868d9:
+        pop edi
+        pop esi
+        mov ecx, dword ptr [ebp - 0x34]
+        mov edi, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp - 0x50]
+        mov esi, dword ptr [ebp + 8]
+        mov eax, dword ptr [ebp - 0x38]
+        mov ebx, dword ptr [ebp - 8]
+        add edi, ecx
+        mov ecx, dword ptr [ebp - 4]
+        add esi, edx
+        mov edx, dword ptr [ebp - 0x3c]
+        mov dword ptr [ebp + 8], esi
+        mov esi, dword ptr [ebp - 0x10]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 0x58]
+        mov dword ptr [ebp + 0xc], edi
+        mov edi, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp - 4], ecx
+        mov ecx, dword ptr [ebp - 0x54]
+        add esi, eax
+        mov eax, dword ptr [ebp + 0x10]
+        add ebx, ecx
+        mov ecx, dword ptr [ebp - 0x40]
+        add edi, edx
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 8], ebx
+        mov dword ptr [ebp - 0xc], edi
+        mov dword ptr [ebp - 0x10], esi
+        mov dword ptr [ebp + 0x10], eax
+        jl L486771
+L48692f:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x28]
+        sub ecx, dword ptr [ebp - 0x40]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp - 0x64]
+        mov ecx, dword ptr [ebp - 0x1c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        sub eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp - 0x1c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov eax, dword ptr [ebp - 0x60]
+        sub eax, dword ptr [ebp - 0x68]
+        mov ecx, dword ptr [ebp - 0x1c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x3c], eax
+        mov edi, dword ptr [ebp + 0x10]
+        jmp L486a33
+L48697f:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x28]
+        sub ecx, dword ptr [ebp - 0x54]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x28]
+        sub ecx, dword ptr [ebp - 0x40]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp - 0x64]
+        mov ecx, dword ptr [ebp - 0x1c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        sub eax, dword ptr [ebp - 0x14]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        sub eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp - 0x1c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x54], eax
+        mov eax, dword ptr [ebp - 0x60]
+        sub eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x3c], eax
+        mov eax, dword ptr [ebp - 0x60]
+        sub eax, dword ptr [ebp - 0x68]
+        mov ecx, dword ptr [ebp - 0x1c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x58], eax
+        mov ecx, dword ptr [ebp + 8]
+        mov edx, dword ptr [ebp - 0x64]
+        mov eax, dword ptr [ebp - 0x14]
+        mov dword ptr [ebp + 0xc], ecx
+        mov ecx, dword ptr [ebp - 0x30]
+        mov dword ptr [ebp + 8], edx
+        mov edx, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x68]
+        mov dword ptr [ebp - 8], ecx
+        mov dword ptr [ebp - 0xc], edx
+        mov dword ptr [ebp - 0x10], eax
+L486a33:
+        cmp edi, dword ptr [ViewportBottom]
+        jg L486c69
+        mov esi, dword ptr [ebp - 0x28]
+        cmp edi, esi
+        jge L486c69
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [ebp - 0x28]
+        sub ebx, ecx
+        jle L486aa3
+        sub edx, ecx
+        jle L486aa3
+        cmp ebx, edx
+        mov ecx, edx
+        jns L486a66
+        mov ecx, ebx
+L486a66:
+        add dword ptr [ebp + 0x10], ecx
+        mov eax, dword ptr [ebp - 0x34]
+        mul ecx
+        add dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x50]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x38]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x54]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        mul ecx
+        add dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x58]
+        mul ecx
+        add dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0x18], eax
+L486aa3:
+        cmp dword ptr [ebp + 0x10], esi
+        jge L486c69
+L486aac:
+        mov ecx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ViewportBottom]
+        cmp ecx, eax
+        jg L486c69
+        mov eax, dword ptr [ebp - 0x18]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 0xc]
+        mov edi, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0x6c], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0x18], eax
+        jle L486b29
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0xc]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x14], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp - 0x10]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x44], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x4c], edi
+        mov dword ptr [ebp - 0x1c], esi
+        jmp L486b79
+L486b29:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0xc]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x14], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ebp - 0xc]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0x14]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x44], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x4c], esi
+        mov dword ptr [ebp - 0x1c], edi
+L486b79:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x4c]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L486b9e
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x48]
+        mul ecx
+        add dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x44]
+        mul ecx
+        add dword ptr [ebp - 0x20], eax
+L486b9e:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0x6c]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0x6c]
+        cmp eax, dword ptr [ebp - 0x1c]
+        jge L486c13
+        cmp esi, edi
+        jg L486c13
+L486bbb:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp + 0x10]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x20]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L486bf8
+        mov dword ptr [ebx + ecx], edx
+        mov ebx, dword ptr [DAT_0066b61c]
+        mov ebx, dword ptr [ebx + 4]
+        cmp esi, dword ptr [DAT_007fe9a8]
+        movzx edx, word ptr [ebp - 0x22]
+        sete cl
+        movzx edx, word ptr [ebx + edx*2]
+        or byte ptr [DAT_007feb14], cl
+        mov word ptr [esi], dx
+L486bf8:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x48]
+        add dword ptr [ebp - 0x24], ebx
+        mov ebx, dword ptr [ebp - 0x44]
+        add dword ptr [ebp - 0x20], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0x1c]
+        jge L486c13
+        cmp esi, edi
+        jg L486c13
+        jmp L486bbb
+L486c13:
+        pop edi
+        pop esi
+        mov eax, dword ptr [ebp - 0x50]
+        mov ecx, dword ptr [ebp + 8]
+        mov edx, dword ptr [ebp - 0x34]
+        mov esi, dword ptr [ebp + 0xc]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 4]
+        mov edi, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp + 8], ecx
+        mov ecx, dword ptr [ebp - 0x38]
+        mov ebx, dword ptr [ebp - 8]
+        add eax, ecx
+        mov ecx, dword ptr [ebp - 0x58]
+        add esi, edx
+        mov edx, dword ptr [ebp - 0x54]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        mov dword ptr [ebp + 0xc], esi
+        mov esi, dword ptr [ebp - 0x10]
+        add edi, eax
+        mov eax, dword ptr [ebp + 0x10]
+        add ebx, edx
+        add esi, ecx
+        mov ecx, dword ptr [ebp - 0x28]
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 8], ebx
+        mov dword ptr [ebp - 0xc], edi
+        mov dword ptr [ebp - 0x10], esi
+        mov dword ptr [ebp + 0x10], eax
+        jl L486aac
+L486c69:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + fistp, shrd, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00486c70
-void FUN_00486c70(void) { STUB(); }
+__declspec(naked) void FUN_00486c70(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xac
+        mov edx, dword ptr [ebp + 8]
+        mov eax, dword ptr [ebp + 0xc]
+        push ebx
+        push esi
+        mov ecx, dword ptr [edx + 4]
+        mov esi, dword ptr [eax + 4]
+        cmp ecx, esi
+        push edi
+        mov dword ptr [ebp - 0x18], 0x47800000
+        jle L486ca2
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp + 8]
+L486ca2:
+        mov ebx, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [eax + 4]
+        cmp ecx, dword ptr [ebx + 4]
+        jle L486cbc
+        mov eax, dword ptr [ebp + 0xc]
+        xchg dword ptr [ebp + 0x10], eax
+        mov dword ptr [ebp + 0xc], eax
+        mov ebx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ebp + 0xc]
+L486cbc:
+        mov ecx, dword ptr [edx + 4]
+        mov esi, dword ptr [eax + 4]
+        cmp ecx, esi
+        jle L486cd5
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp + 8]
+L486cd5:
+        mov ecx, dword ptr [ebx + 4]
+        mov esi, dword ptr [edx + 4]
+        sar ecx, 0x10
+        mov dword ptr [ebp - 0x40], ecx
+        mov ecx, dword ptr [DAT_00701e58]
+        sar esi, 0x10
+        imul ecx, esi
+        add ecx, dword ptr [DAT_00797e68]
+        mov edi, dword ptr [eax + 4]
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x3c], ecx
+        mov ecx, dword ptr [edx]
+        mov dword ptr [ebp - 0x2c], ecx
+        mov ecx, dword ptr [eax]
+        mov dword ptr [ebp - 0xa0], ecx
+        mov ecx, dword ptr [ebx]
+        mov dword ptr [ebp - 0x9c], ecx
+        mov ecx, dword ptr [edx + 8]
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [eax + 8]
+        mov dword ptr [ebp - 0xa4], ecx
+        mov ecx, dword ptr [ebx + 8]
+        mov dword ptr [ebp - 0x38], esi
+        mov dword ptr [ebp - 0x80], edi
+        mov dword ptr [ebp - 0xa8], ecx
+        mov ecx, dword ptr [ebp + 8]
+        fld dword ptr [ecx + 0xc]
+        fmul dword ptr [ebp - 0x18]
+        fistp dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 0xc]
+        fld dword ptr [ecx + 0xc]
+        fmul dword ptr [ebp - 0x18]
+        fistp dword ptr [ebp - 0x54]
+        mov ecx, dword ptr [ebp + 0x10]
+        fld dword ptr [ecx + 0xc]
+        fmul dword ptr [ebp - 0x18]
+        fistp dword ptr [ebp - 0x5c]
+        mov ecx, dword ptr [ebp + 8]
+        fld dword ptr [ecx + 0x10]
+        fmul dword ptr [ebp - 0x18]
+        fistp dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp + 0xc]
+        fld dword ptr [ecx + 0x10]
+        fmul dword ptr [ebp - 0x18]
+        fistp dword ptr [ebp - 0x64]
+        mov ecx, dword ptr [ebp + 0x10]
+        fld dword ptr [ecx + 0x10]
+        fmul dword ptr [ebp - 0x18]
+        fistp dword ptr [ebp - 0x6c]
+        mov edx, dword ptr [edx + 0x14]
+        mov eax, dword ptr [eax + 0x14]
+        mov ecx, dword ptr [ebx + 0x14]
+        mov dword ptr [ebp - 8], edx
+        mov dword ptr [ebp - 0x48], eax
+        mov dword ptr [ebp - 0x70], ecx
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        mov edx, dword ptr [ebp - 4]
+        and edx, 0xffff
+        shl edx, cl
+        mov dword ptr [ebp - 4], edx
+        mov ecx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp - 0xc]
+        and eax, 0xffff
+        shl eax, cl
+        mov dword ptr [ebp - 0xc], eax
+        shl dword ptr [ebp - 8], 6
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        mov edx, dword ptr [ebp - 0x54]
+        and edx, 0xffff
+        shl edx, cl
+        mov dword ptr [ebp - 0x54], edx
+        mov ecx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp - 0x64]
+        and eax, 0xffff
+        shl eax, cl
+        mov dword ptr [ebp - 0x64], eax
+        shl dword ptr [ebp - 0x48], 6
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        mov edx, dword ptr [ebp - 0x5c]
+        and edx, 0xffff
+        shl edx, cl
+        mov dword ptr [ebp - 0x5c], edx
+        mov ecx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp - 0x6c]
+        and eax, 0xffff
+        shl eax, cl
+        mov dword ptr [ebp - 0x6c], eax
+        shl dword ptr [ebp - 0x70], 6
+        cmp esi, edi
+        mov dword ptr [ebp - 0x14], esi
+        je L487300
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x80]
+        sub ecx, dword ptr [ebp - 0x38]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 8], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x40]
+        sub ecx, dword ptr [ebp - 0x38]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0xa0]
+        sub eax, dword ptr [ebp - 0x2c]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x4c], eax
+        mov eax, dword ptr [ebp - 0x9c]
+        sub eax, dword ptr [ebp - 0x2c]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x98], eax
+        mov eax, dword ptr [ebp - 0x54]
+        sub eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x94], eax
+        mov eax, dword ptr [ebp - 0x64]
+        sub eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x58], eax
+        mov eax, dword ptr [ebp - 0x6c]
+        sub eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x78], eax
+        mov eax, dword ptr [ebp - 0x48]
+        sub eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        mov eax, dword ptr [ebp - 0x70]
+        sub eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x7c], eax
+        mov eax, dword ptr [ebp - 0xa4]
+        sub eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x68], eax
+        mov eax, dword ptr [ebp - 0xa8]
+        sub eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        mov dword ptr [ebp + 8], eax
+        mov dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 0x28], eax
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp - 0x30], eax
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x20], eax
+        mov dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0xc], eax
+        mov dword ptr [ebp - 4], eax
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp - 0x14]
+        mov edx, dword ptr [ebp - 0x80]
+        sub ebx, ecx
+        jle L486fa8
+        sub edx, ecx
+        jle L486fa8
+        cmp ebx, edx
+        mov ecx, edx
+        jns L486f45
+        mov ecx, ebx
+L486f45:
+        add dword ptr [ebp - 0x14], ecx
+        mov eax, dword ptr [ebp - 0x4c]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x98]
+        mul ecx
+        add dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [ebp - 0x60]
+        mul ecx
+        add dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [ebp - 0x7c]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x50]
+        mul ecx
+        add dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x94]
+        mul ecx
+        add dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x58]
+        mul ecx
+        add dword ptr [ebp - 0x30], eax
+        mov eax, dword ptr [ebp - 0x78]
+        mul ecx
+        add dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x68]
+        mul ecx
+        add dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x38]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0x3c], eax
+L486fa8:
+        cmp dword ptr [ebp - 0x14], edi
+        jge L487280
+L486fb1:
+        mov edx, dword ptr [ebp - 0x14]
+        mov eax, dword ptr [ViewportBottom]
+        cmp edx, eax
+        jg L487280
+        mov eax, dword ptr [ebp - 0x3c]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 8]
+        mov edi, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp - 0xac], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0x3c], eax
+        jle L487072
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0x10]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x28]
+        mov ecx, dword ptr [ebp - 0x1c]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x2c], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x74], eax
+        mov eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp - 0x34]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x8c], eax
+        mov eax, dword ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x18], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x90], eax
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x44], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x84], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x88], edi
+        mov dword ptr [ebp - 0x10], esi
+        jmp L4870fc
+L487072:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0x10]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp - 0x28]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x2c], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x74], eax
+        mov eax, dword ptr [ebp - 0x34]
+        mov ecx, dword ptr [ebp - 0x30]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x8c], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 0x20]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x18], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x90], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 0xc]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x44], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x84], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x88], esi
+        mov dword ptr [ebp - 0x10], edi
+L4870fc:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x88]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L48713d
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x90]
+        mul ecx
+        add dword ptr [ebp - 0x18], eax
+        mov eax, dword ptr [ebp - 0x74]
+        mul ecx
+        add dword ptr [ebp - 0x2c], eax
+        mov eax, dword ptr [ebp - 0x8c]
+        mul ecx
+        add dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x84]
+        mul ecx
+        add dword ptr [ebp - 0x44], eax
+L48713d:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0xac]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0xac]
+        cmp eax, dword ptr [ebp - 0x10]
+        jge L4871f8
+        cmp esi, edi
+        jg L4871f8
+L487168:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp - 0x14]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x44]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L4871c5
+        mov dword ptr [ebx + ecx], edx
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        movzx edx, word ptr [ebp - 0x22]
+        and edx, dword ptr [ebx + 0x10]
+        shl edx, cl
+        add edx, dword ptr [ebx + 8]
+        movzx ecx, word ptr [ebp - 0x2a]
+        and ecx, dword ptr [ebx + 0x14]
+        mov ebx, dword ptr [ebx + 0xc]
+        add edx, ecx
+        movzx edx, byte ptr [edx]
+        mov ebx, dword ptr [ebx + edx*4]
+        mov ebx, dword ptr [ebx + 4]
+        cmp esi, dword ptr [DAT_007fe9a8]
+        movzx edx, word ptr [ebp - 0x16]
+        sete cl
+        movzx edx, word ptr [ebx + edx*2]
+        or byte ptr [DAT_007feb14], cl
+        mov word ptr [esi], dx
+L4871c5:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x90]
+        add dword ptr [ebp - 0x18], ebx
+        mov ebx, dword ptr [ebp - 0x74]
+        add dword ptr [ebp - 0x2c], ebx
+        mov ebx, dword ptr [ebp - 0x8c]
+        add dword ptr [ebp - 0x24], ebx
+        mov ebx, dword ptr [ebp - 0x84]
+        add dword ptr [ebp - 0x44], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0x10]
+        jge L4871f8
+        cmp esi, edi
+        jg L4871f8
+        jmp L487168
+L4871f8:
+        pop edi
+        pop esi
+        mov ecx, dword ptr [ebp - 0x98]
+        mov edx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ebp - 0x4c]
+        mov esi, dword ptr [ebp + 8]
+        add edx, ecx
+        mov ebx, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp - 0x58]
+        mov edi, dword ptr [ebp - 0x30]
+        add esi, eax
+        mov eax, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp + 0x10], edx
+        mov edx, dword ptr [ebp - 0x50]
+        add eax, edx
+        mov edx, dword ptr [ebp - 0x78]
+        mov dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x94]
+        mov dword ptr [ebp + 8], esi
+        mov esi, dword ptr [ebp - 0x34]
+        add ebx, eax
+        mov eax, dword ptr [ebp - 0x60]
+        add edi, ecx
+        mov ecx, dword ptr [ebp - 0x20]
+        add esi, edx
+        mov edx, dword ptr [ebp - 0x68]
+        mov dword ptr [ebp - 0x34], esi
+        mov esi, dword ptr [ebp - 4]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 0x38]
+        mov dword ptr [ebp - 0x1c], ebx
+        mov ebx, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x30], edi
+        mov edi, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0x7c]
+        add esi, eax
+        mov eax, dword ptr [ebp - 0x14]
+        add ebx, ecx
+        mov ecx, dword ptr [ebp - 0x80]
+        add edi, edx
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 8], ebx
+        mov dword ptr [ebp - 0xc], edi
+        mov dword ptr [ebp - 4], esi
+        mov dword ptr [ebp - 0x14], eax
+        jl L486fb1
+L487280:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x40]
+        sub ecx, dword ptr [ebp - 0x80]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [ebp - 0x9c]
+        sub eax, dword ptr [ebp - 0xa0]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x4c], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp - 0x54]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x6c]
+        sub eax, dword ptr [ebp - 0x64]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x58], eax
+        mov eax, dword ptr [ebp - 0x70]
+        sub eax, dword ptr [ebp - 0x48]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        mov eax, dword ptr [ebp - 0xa8]
+        sub eax, dword ptr [ebp - 0xa4]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x68], eax
+        mov esi, dword ptr [ebp - 0x14]
+        jmp L487432
+L487300:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x40]
+        sub ecx, dword ptr [ebp - 0x38]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x40]
+        sub ecx, dword ptr [ebp - 0x80]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [ebp - 0x9c]
+        sub eax, dword ptr [ebp - 0x2c]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x4c], eax
+        mov eax, dword ptr [ebp - 0x9c]
+        sub eax, dword ptr [ebp - 0xa0]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x98], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x5c]
+        sub eax, dword ptr [ebp - 0x54]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x94], eax
+        mov eax, dword ptr [ebp - 0x6c]
+        sub eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x58], eax
+        mov eax, dword ptr [ebp - 0x6c]
+        sub eax, dword ptr [ebp - 0x64]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x78], eax
+        mov eax, dword ptr [ebp - 0x70]
+        sub eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        mov eax, dword ptr [ebp - 0x70]
+        sub eax, dword ptr [ebp - 0x48]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x7c], eax
+        mov eax, dword ptr [ebp - 0xa8]
+        sub eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x68], eax
+        mov eax, dword ptr [ebp - 0xa8]
+        sub eax, dword ptr [ebp - 0xa4]
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov ecx, dword ptr [ebp - 0x2c]
+        mov edx, dword ptr [ebp - 0xa0]
+        mov eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp + 8], ecx
+        mov ecx, dword ptr [ebp - 0x54]
+        mov dword ptr [ebp + 0x10], edx
+        mov edx, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x64]
+        mov dword ptr [ebp - 0x1c], ecx
+        mov ecx, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x30], edx
+        mov edx, dword ptr [ebp - 0x48]
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0xa4]
+        mov dword ptr [ebp - 8], edx
+        mov dword ptr [ebp - 0xc], eax
+        mov dword ptr [ebp - 4], ecx
+L487432:
+        cmp esi, dword ptr [ViewportBottom]
+        jg L4877a0
+        mov edi, dword ptr [ebp - 0x40]
+        cmp esi, edi
+        jge L4877a0
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp - 0x14]
+        mov edx, dword ptr [ebp - 0x40]
+        sub ebx, ecx
+        jle L4874c8
+        sub edx, ecx
+        jle L4874c8
+        cmp ebx, edx
+        mov ecx, edx
+        jns L487465
+        mov ecx, ebx
+L487465:
+        add dword ptr [ebp - 0x14], ecx
+        mov eax, dword ptr [ebp - 0x4c]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x98]
+        mul ecx
+        add dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [ebp - 0x60]
+        mul ecx
+        add dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [ebp - 0x7c]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x50]
+        mul ecx
+        add dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x94]
+        mul ecx
+        add dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x58]
+        mul ecx
+        add dword ptr [ebp - 0x30], eax
+        mov eax, dword ptr [ebp - 0x78]
+        mul ecx
+        add dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x68]
+        mul ecx
+        add dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x38]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0x3c], eax
+L4874c8:
+        cmp dword ptr [ebp - 0x14], edi
+        jge L4877a0
+L4874d1:
+        mov edx, dword ptr [ebp - 0x14]
+        mov eax, dword ptr [ViewportBottom]
+        cmp edx, eax
+        jg L4877a0
+        mov eax, dword ptr [ebp - 0x3c]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 8]
+        mov edi, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp - 0xac], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0x3c], eax
+        jle L487592
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0x10]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x28]
+        mov ecx, dword ptr [ebp - 0x1c]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x2c], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x74], eax
+        mov eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp - 0x34]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x8c], eax
+        mov eax, dword ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x18], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x90], eax
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x44], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x84], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x88], edi
+        mov dword ptr [ebp - 0x10], esi
+        jmp L48761c
+L487592:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0x10]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp - 0x28]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x2c], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x74], eax
+        mov eax, dword ptr [ebp - 0x34]
+        mov ecx, dword ptr [ebp - 0x30]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x24], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x8c], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 0x20]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x18], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x90], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 0xc]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x44], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x84], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x88], esi
+        mov dword ptr [ebp - 0x10], edi
+L48761c:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x88]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L48765d
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x90]
+        mul ecx
+        add dword ptr [ebp - 0x18], eax
+        mov eax, dword ptr [ebp - 0x74]
+        mul ecx
+        add dword ptr [ebp - 0x2c], eax
+        mov eax, dword ptr [ebp - 0x8c]
+        mul ecx
+        add dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x84]
+        mul ecx
+        add dword ptr [ebp - 0x44], eax
+L48765d:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0xac]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0xac]
+        cmp eax, dword ptr [ebp - 0x10]
+        jge L487718
+        cmp esi, edi
+        jg L487718
+L487688:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp - 0x14]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x44]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L4876e5
+        mov dword ptr [ebx + ecx], edx
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        movzx edx, word ptr [ebp - 0x22]
+        and edx, dword ptr [ebx + 0x10]
+        shl edx, cl
+        add edx, dword ptr [ebx + 8]
+        movzx ecx, word ptr [ebp - 0x2a]
+        and ecx, dword ptr [ebx + 0x14]
+        mov ebx, dword ptr [ebx + 0xc]
+        add edx, ecx
+        movzx edx, byte ptr [edx]
+        mov ebx, dword ptr [ebx + edx*4]
+        mov ebx, dword ptr [ebx + 4]
+        cmp esi, dword ptr [DAT_007fe9a8]
+        movzx edx, word ptr [ebp - 0x16]
+        sete cl
+        movzx edx, word ptr [ebx + edx*2]
+        or byte ptr [DAT_007feb14], cl
+        mov word ptr [esi], dx
+L4876e5:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x90]
+        add dword ptr [ebp - 0x18], ebx
+        mov ebx, dword ptr [ebp - 0x74]
+        add dword ptr [ebp - 0x2c], ebx
+        mov ebx, dword ptr [ebp - 0x8c]
+        add dword ptr [ebp - 0x24], ebx
+        mov ebx, dword ptr [ebp - 0x84]
+        add dword ptr [ebp - 0x44], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0x10]
+        jge L487718
+        cmp esi, edi
+        jg L487718
+        jmp L487688
+L487718:
+        pop edi
+        pop esi
+        mov ecx, dword ptr [ebp - 0x98]
+        mov edx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ebp - 0x4c]
+        mov esi, dword ptr [ebp + 8]
+        add edx, ecx
+        mov ebx, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp - 0x58]
+        mov edi, dword ptr [ebp - 0x30]
+        add esi, eax
+        mov eax, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp + 0x10], edx
+        mov edx, dword ptr [ebp - 0x50]
+        add eax, edx
+        mov edx, dword ptr [ebp - 0x78]
+        mov dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x94]
+        mov dword ptr [ebp + 8], esi
+        mov esi, dword ptr [ebp - 0x34]
+        add ebx, eax
+        mov eax, dword ptr [ebp - 0x60]
+        add edi, ecx
+        mov ecx, dword ptr [ebp - 0x20]
+        add esi, edx
+        mov edx, dword ptr [ebp - 0x68]
+        mov dword ptr [ebp - 0x34], esi
+        mov esi, dword ptr [ebp - 4]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 0x38]
+        mov dword ptr [ebp - 0x1c], ebx
+        mov ebx, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x30], edi
+        mov edi, dword ptr [ebp - 0xc]
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp - 0x7c]
+        add esi, eax
+        mov eax, dword ptr [ebp - 0x14]
+        add ebx, ecx
+        mov ecx, dword ptr [ebp - 0x40]
+        add edi, edx
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 8], ebx
+        mov dword ptr [ebp - 0xc], edi
+        mov dword ptr [ebp - 4], esi
+        mov dword ptr [ebp - 0x14], eax
+        jl L4874d1
+L4877a0:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + shrd, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004877b0
-void FUN_004877b0(void) { STUB(); }
+__declspec(naked) void FUN_004877b0(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x50
+        push ebx
+        push esi
+        push edi
+        mov ebx, dword ptr [DAT_0066b61c]
+        mov ebx, dword ptr [ebx + 4]
+        mov edx, dword ptr [ebp + 8]
+        shl dword ptr [edx + 0x14], 6
+        movzx edx, word ptr [edx + 0x16]
+        movzx edx, word ptr [ebx + edx*2]
+        mov dword ptr [ebp - 0x50], edx
+        mov edx, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        mov eax, dword ptr [edx + 4]
+        mov esi, dword ptr [ecx + 4]
+        cmp eax, esi
+        jle L4877f3
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov ecx, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp + 8]
+L4877f3:
+        mov ebx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ecx + 4]
+        cmp eax, dword ptr [ebx + 4]
+        jle L48780d
+        mov eax, dword ptr [ebp + 0xc]
+        xchg dword ptr [ebp + 0x10], eax
+        mov dword ptr [ebp + 0xc], eax
+        mov ebx, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ebp + 0xc]
+L48780d:
+        mov eax, dword ptr [edx + 4]
+        mov esi, dword ptr [ecx + 4]
+        cmp eax, esi
+        jle L487826
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov ecx, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [ebp + 8]
+L487826:
+        mov edi, dword ptr [ebx + 4]
+        mov eax, dword ptr [edx + 4]
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x18], edi
+        mov edi, dword ptr [DAT_00701e58]
+        sar eax, 0x10
+        imul edi, eax
+        add edi, dword ptr [DAT_00797e68]
+        mov esi, dword ptr [ecx + 4]
+        sar esi, 0x10
+        mov dword ptr [ebp - 0xc], edi
+        mov edi, dword ptr [edx]
+        mov dword ptr [ebp + 8], edi
+        mov edi, dword ptr [ecx]
+        mov ecx, dword ptr [ecx + 8]
+        mov dword ptr [ebp - 0x44], edi
+        mov edi, dword ptr [ebx]
+        cmp eax, esi
+        mov dword ptr [ebp - 0x3c], edi
+        mov edi, dword ptr [edx + 8]
+        mov edx, dword ptr [ebx + 8]
+        mov dword ptr [ebp - 0x38], eax
+        mov dword ptr [ebp - 0x24], esi
+        mov dword ptr [ebp - 0x30], edi
+        mov dword ptr [ebp - 0x48], ecx
+        mov dword ptr [ebp - 0x40], edx
+        mov dword ptr [ebp + 0x10], eax
+        je L487ae5
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x24]
+        sub ecx, dword ptr [ebp - 0x38]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x4c], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x18]
+        sub ecx, dword ptr [ebp - 0x38]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x44]
+        sub eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp - 0x4c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        sub eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x48]
+        sub eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp - 0x4c]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [ebp - 0x40]
+        sub eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov eax, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 4], edi
+        mov dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov dword ptr [ebp - 8], edi
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [ebp - 0x24]
+        sub ebx, ecx
+        jle L487943
+        sub edx, ecx
+        jle L487943
+        cmp ebx, edx
+        mov ecx, edx
+        jns L487916
+        mov ecx, ebx
+L487916:
+        add dword ptr [ebp + 0x10], ecx
+        mov eax, dword ptr [ebp - 0x1c]
+        mul ecx
+        add dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x34]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x20]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x38]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0xc], eax
+L487943:
+        cmp dword ptr [ebp + 0x10], esi
+        jge L487aaa
+L48794c:
+        mov eax, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ViewportBottom]
+        cmp eax, ecx
+        jg L487aaa
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 0xc]
+        mov edi, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0x4c], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0xc], eax
+        jle L4879b3
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0xc]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x2c], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x30], edi
+        mov dword ptr [ebp - 0x28], esi
+        jmp L4879ec
+L4879b3:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0xc]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x2c], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x30], esi
+        mov dword ptr [ebp - 0x28], edi
+L4879ec:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x30]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L487a09
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x2c]
+        mul ecx
+        add dword ptr [ebp - 0x14], eax
+L487a09:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0x4c]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0x4c]
+        cmp eax, dword ptr [ebp - 0x28]
+        jge L487a6a
+        cmp esi, edi
+        jg L487a6a
+L487a26:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp + 0x10]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x14]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L487a55
+        cmp esi, dword ptr [DAT_007fe9a8]
+        mov dword ptr [ebx + ecx], edx
+        mov edx, dword ptr [ebp - 0x50]
+        sete cl
+        mov word ptr [esi], dx
+        or byte ptr [DAT_007feb14], cl
+L487a55:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x2c]
+        add dword ptr [ebp - 0x14], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0x28]
+        jge L487a6a
+        cmp esi, edi
+        jg L487a6a
+        jmp L487a26
+L487a6a:
+        pop edi
+        pop esi
+        mov ecx, dword ptr [ebp - 0x1c]
+        mov eax, dword ptr [ebp + 0xc]
+        mov edi, dword ptr [ebp - 4]
+        mov edx, dword ptr [ebp - 0x34]
+        mov ebx, dword ptr [ebp + 8]
+        mov esi, dword ptr [ebp - 8]
+        add eax, ecx
+        mov ecx, dword ptr [ebp - 0x38]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x20]
+        add edi, eax
+        mov eax, dword ptr [ebp + 0x10]
+        add ebx, edx
+        add esi, ecx
+        mov ecx, dword ptr [ebp - 0x24]
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp + 8], ebx
+        mov dword ptr [ebp - 4], edi
+        mov dword ptr [ebp - 8], esi
+        mov dword ptr [ebp + 0x10], eax
+        jl L48794c
+L487aaa:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x18]
+        sub ecx, dword ptr [ebp - 0x24]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        sub eax, dword ptr [ebp - 0x44]
+        mov ecx, dword ptr [ebp - 0x28]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x40]
+        sub eax, dword ptr [ebp - 0x48]
+        mov ecx, dword ptr [ebp - 0x28]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x20], eax
+        jmp L487b66
+L487ae5:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x18]
+        sub ecx, dword ptr [ebp - 0x38]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x18]
+        sub ecx, dword ptr [ebp - 0x24]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        sub eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x3c]
+        sub eax, dword ptr [ebp - 0x44]
+        mov ecx, dword ptr [ebp - 0x28]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x34], eax
+        mov eax, dword ptr [ebp - 0x40]
+        sub eax, dword ptr [ebp - 0x30]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x20], eax
+        mov eax, dword ptr [ebp - 0x40]
+        sub eax, dword ptr [ebp - 0x48]
+        mov ecx, dword ptr [ebp - 0x28]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x38], eax
+        mov edx, dword ptr [ebp + 8]
+        mov eax, dword ptr [ebp - 0x44]
+        mov ecx, dword ptr [ebp - 0x48]
+        mov dword ptr [ebp + 0xc], edx
+        mov dword ptr [ebp + 8], eax
+        mov dword ptr [ebp - 4], edi
+        mov dword ptr [ebp - 8], ecx
+L487b66:
+        mov eax, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ViewportBottom]
+        cmp eax, ecx
+        jg L487d31
+        mov esi, dword ptr [ebp - 0x18]
+        cmp eax, esi
+        jge L487d31
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [ebp - 0x18]
+        sub ebx, ecx
+        jle L487bcb
+        sub edx, ecx
+        jle L487bcb
+        cmp ebx, edx
+        mov ecx, edx
+        jns L487b9e
+        mov ecx, ebx
+L487b9e:
+        add dword ptr [ebp + 0x10], ecx
+        mov eax, dword ptr [ebp - 0x1c]
+        mul ecx
+        add dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x34]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x20]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [ebp - 0x38]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0xc], eax
+L487bcb:
+        cmp dword ptr [ebp + 0x10], esi
+        jge L487d31
+L487bd4:
+        mov edx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ViewportBottom]
+        cmp edx, eax
+        jg L487d31
+        mov eax, dword ptr [ebp - 0xc]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 0xc]
+        mov edi, dword ptr [ebp + 8]
+        mov dword ptr [ebp - 0x4c], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0xc], eax
+        jle L487c3a
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0xc]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x2c], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x30], edi
+        mov dword ptr [ebp - 0x28], esi
+        jmp L487c73
+L487c3a:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0xc]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0x10], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp - 0x10]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x2c], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x30], esi
+        mov dword ptr [ebp - 0x28], edi
+L487c73:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x30]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L487c90
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x2c]
+        mul ecx
+        add dword ptr [ebp - 0x14], eax
+L487c90:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0x4c]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0x4c]
+        cmp eax, dword ptr [ebp - 0x28]
+        jge L487cf1
+        cmp esi, edi
+        jg L487cf1
+L487cad:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp + 0x10]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x14]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L487cdc
+        cmp esi, dword ptr [DAT_007fe9a8]
+        mov dword ptr [ebx + ecx], edx
+        mov edx, dword ptr [ebp - 0x50]
+        sete cl
+        mov word ptr [esi], dx
+        or byte ptr [DAT_007feb14], cl
+L487cdc:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x2c]
+        add dword ptr [ebp - 0x14], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0x28]
+        jge L487cf1
+        cmp esi, edi
+        jg L487cf1
+        jmp L487cad
+L487cf1:
+        pop edi
+        pop esi
+        mov eax, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp + 0xc]
+        mov esi, dword ptr [ebp - 8]
+        mov ebx, dword ptr [ebp + 8]
+        mov edx, dword ptr [ebp - 0x20]
+        mov edi, dword ptr [ebp - 4]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 0x38]
+        mov dword ptr [ebp + 0xc], ecx
+        mov ecx, dword ptr [ebp - 0x34]
+        add esi, eax
+        mov eax, dword ptr [ebp + 0x10]
+        add ebx, ecx
+        mov ecx, dword ptr [ebp - 0x18]
+        add edi, edx
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp + 8], ebx
+        mov dword ptr [ebp - 4], edi
+        mov dword ptr [ebp - 8], esi
+        mov dword ptr [ebp + 0x10], eax
+        jl L487bd4
+L487d31:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
-// Hand-written assembly in the original (ebp frame + fistp, shrd, xchg): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00487d40
-void FUN_00487d40(void) { STUB(); }
+__declspec(naked) void FUN_00487d40(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x90
+        mov ecx, dword ptr [ebp + 8]
+        push ebx
+        push esi
+        push edi
+        mov eax, dword ptr [ecx + 0x14]
+        mov edx, dword ptr [ecx + 4]
+        shl eax, 6
+        mov dword ptr [ebp - 0x90], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov dword ptr [ebp - 0x14], 0x47800000
+        cmp edx, dword ptr [eax + 4]
+        jle L487d7c
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [ebp + 8]
+L487d7c:
+        mov ebx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [eax + 4]
+        cmp edx, dword ptr [ebx + 4]
+        jle L487d96
+        mov eax, dword ptr [ebp + 0xc]
+        xchg dword ptr [ebp + 0x10], eax
+        mov dword ptr [ebp + 0xc], eax
+        mov ebx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ebp + 0xc]
+L487d96:
+        mov edx, dword ptr [ecx + 4]
+        mov esi, dword ptr [eax + 4]
+        cmp edx, esi
+        jle L487daf
+        mov eax, dword ptr [ebp + 8]
+        xchg dword ptr [ebp + 0xc], eax
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [ebp + 8]
+L487daf:
+        mov edx, dword ptr [ebx + 4]
+        mov esi, dword ptr [ecx + 4]
+        sar edx, 0x10
+        mov dword ptr [ebp - 0x38], edx
+        mov edx, dword ptr [DAT_00701e58]
+        sar esi, 0x10
+        imul edx, esi
+        add edx, dword ptr [DAT_00797e68]
+        mov edi, dword ptr [eax + 4]
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x34], edx
+        mov edx, dword ptr [ecx]
+        mov dword ptr [ebp - 0x28], edx
+        mov edx, dword ptr [eax]
+        mov ecx, dword ptr [ecx + 8]
+        mov dword ptr [ebp - 0x88], edx
+        mov edx, dword ptr [ebx]
+        mov dword ptr [ebp - 0x30], esi
+        mov dword ptr [ebp - 0x7c], edx
+        mov edx, dword ptr [eax + 8]
+        mov eax, dword ptr [ebx + 8]
+        mov dword ptr [ebp - 0x6c], edi
+        mov dword ptr [ebp - 0x20], ecx
+        mov dword ptr [ebp - 0x80], edx
+        mov dword ptr [ebp - 0x84], eax
+        mov ecx, dword ptr [ebp + 8]
+        fld dword ptr [ecx + 0xc]
+        fmul dword ptr [ebp - 0x14]
+        fistp dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 0xc]
+        fld dword ptr [ecx + 0xc]
+        fmul dword ptr [ebp - 0x14]
+        fistp dword ptr [ebp - 0x58]
+        mov ecx, dword ptr [ebp + 0x10]
+        fld dword ptr [ecx + 0xc]
+        fmul dword ptr [ebp - 0x14]
+        fistp dword ptr [ebp - 0x4c]
+        mov ecx, dword ptr [ebp + 8]
+        fld dword ptr [ecx + 0x10]
+        fmul dword ptr [ebp - 0x14]
+        fistp dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        fld dword ptr [ecx + 0x10]
+        fmul dword ptr [ebp - 0x14]
+        fistp dword ptr [ebp - 0x54]
+        mov ecx, dword ptr [ebp + 0x10]
+        fld dword ptr [ecx + 0x10]
+        fmul dword ptr [ebp - 0x14]
+        fistp dword ptr [ebp - 0x44]
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        mov edx, dword ptr [ebp - 4]
+        and edx, 0xffff
+        shl edx, cl
+        mov dword ptr [ebp - 4], edx
+        mov ecx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp - 8]
+        and eax, 0xffff
+        shl eax, cl
+        mov dword ptr [ebp - 8], eax
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        mov edx, dword ptr [ebp - 0x58]
+        and edx, 0xffff
+        shl edx, cl
+        mov dword ptr [ebp - 0x58], edx
+        mov ecx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp - 0x54]
+        and eax, 0xffff
+        shl eax, cl
+        mov dword ptr [ebp - 0x54], eax
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        mov edx, dword ptr [ebp - 0x4c]
+        and edx, 0xffff
+        shl edx, cl
+        mov dword ptr [ebp - 0x4c], edx
+        mov ecx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp - 0x44]
+        and eax, 0xffff
+        shl eax, cl
+        mov dword ptr [ebp - 0x44], eax
+        cmp esi, edi
+        mov dword ptr [ebp - 0x10], esi
+        je L4882b5
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x6c]
+        sub ecx, dword ptr [ebp - 0x30]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 8], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x38]
+        sub ecx, dword ptr [ebp - 0x30]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x88]
+        sub eax, dword ptr [ebp - 0x28]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x3c], eax
+        mov eax, dword ptr [ebp - 0x7c]
+        sub eax, dword ptr [ebp - 0x28]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x74], eax
+        mov eax, dword ptr [ebp - 0x58]
+        sub eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x40], eax
+        mov eax, dword ptr [ebp - 0x4c]
+        sub eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x68], eax
+        mov eax, dword ptr [ebp - 0x54]
+        sub eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0x44]
+        sub eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x70], eax
+        mov eax, dword ptr [ebp - 0x80]
+        sub eax, dword ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp + 8]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x84]
+        sub eax, dword ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x30], eax
+        mov eax, dword ptr [ebp - 0x28]
+        mov dword ptr [ebp + 8], eax
+        mov dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp - 0x18], eax
+        mov dword ptr [ebp - 0x2c], eax
+        mov eax, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x1c], eax
+        mov dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x20]
+        mov dword ptr [ebp - 8], eax
+        mov dword ptr [ebp - 4], eax
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp - 0x10]
+        mov edx, dword ptr [ebp - 0x6c]
+        sub ebx, ecx
+        jle L48800f
+        sub edx, ecx
+        jle L48800f
+        cmp ebx, edx
+        mov ecx, edx
+        jns L487fc2
+        mov ecx, ebx
+L487fc2:
+        add dword ptr [ebp - 0x10], ecx
+        mov eax, dword ptr [ebp - 0x3c]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x74]
+        mul ecx
+        add dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [ebp - 0x40]
+        mul ecx
+        add dword ptr [ebp - 0x18], eax
+        mov eax, dword ptr [ebp - 0x68]
+        mul ecx
+        add dword ptr [ebp - 0x2c], eax
+        mov eax, dword ptr [ebp - 0x48]
+        mul ecx
+        add dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x70]
+        mul ecx
+        add dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x50]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x30]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0x34], eax
+L48800f:
+        cmp dword ptr [ebp - 0x10], edi
+        jge L48824d
+L488018:
+        mov ecx, dword ptr [ebp - 0x10]
+        mov eax, dword ptr [ViewportBottom]
+        cmp ecx, eax
+        jg L48824d
+        mov eax, dword ptr [ebp - 0x34]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 8]
+        mov edi, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp - 0x8c], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0x34], eax
+        jle L4880af
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0x10]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x18]
+        mov ecx, dword ptr [ebp - 0x2c]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x78], eax
+        mov eax, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp - 0x24]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x28], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x64], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x5c], edi
+        mov dword ptr [ebp - 0xc], esi
+        jmp L488116
+L4880af:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0x10]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        mov ecx, dword ptr [ebp - 0x18]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x78], eax
+        mov eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp - 0x1c]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x28], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x64], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x5c], esi
+        mov dword ptr [ebp - 0xc], edi
+L488116:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x5c]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L488143
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x78]
+        mul ecx
+        add dword ptr [ebp - 0x14], eax
+        mov eax, dword ptr [ebp - 0x64]
+        mul ecx
+        add dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x60]
+        mul ecx
+        add dword ptr [ebp - 0x20], eax
+L488143:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0x8c]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0x8c]
+        cmp eax, dword ptr [ebp - 0xc]
+        jge L4881e1
+        cmp esi, edi
+        jg L4881e1
+L488166:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp - 0x10]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x20]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L4881c0
+        mov dword ptr [ebx + ecx], edx
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        movzx edx, word ptr [ebp - 0x26]
+        shl edx, cl
+        add edx, dword ptr [ebx + 8]
+        mov ebx, dword ptr [ebx + 0xc]
+        movzx ecx, word ptr [ebp - 0x12]
+        add edx, ecx
+        movzx edx, byte ptr [edx]
+        mov ebx, dword ptr [ebx + edx*4]
+        mov ebx, dword ptr [ebx + 4]
+        cmp esi, dword ptr [DAT_007fe9a8]
+        movzx edx, word ptr [ebp - 0x8e]
+        sete cl
+        movzx edx, word ptr [ebx + edx*2]
+        or byte ptr [DAT_007feb14], cl
+        mov word ptr [esi], dx
+L4881c0:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x78]
+        add dword ptr [ebp - 0x14], ebx
+        mov ebx, dword ptr [ebp - 0x64]
+        add dword ptr [ebp - 0x28], ebx
+        mov ebx, dword ptr [ebp - 0x60]
+        add dword ptr [ebp - 0x20], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0xc]
+        jge L4881e1
+        cmp esi, edi
+        jg L4881e1
+        jmp L488166
+L4881e1:
+        pop edi
+        pop esi
+        mov edx, dword ptr [ebp - 0x3c]
+        mov eax, dword ptr [ebp + 8]
+        mov ebx, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [ebp - 0x40]
+        mov edi, dword ptr [ebp - 0x18]
+        mov esi, dword ptr [ebp - 0x2c]
+        add eax, edx
+        mov edx, dword ptr [ebp - 0x68]
+        mov dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x74]
+        add ebx, eax
+        mov eax, dword ptr [ebp - 0x48]
+        add edi, ecx
+        mov ecx, dword ptr [ebp - 0x1c]
+        add esi, edx
+        mov edx, dword ptr [ebp - 0x50]
+        mov dword ptr [ebp - 0x2c], esi
+        mov esi, dword ptr [ebp - 4]
+        add ecx, eax
+        mov eax, dword ptr [ebp - 0x30]
+        mov dword ptr [ebp + 0x10], ebx
+        mov ebx, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0x18], edi
+        mov edi, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x1c], ecx
+        mov ecx, dword ptr [ebp - 0x70]
+        add esi, eax
+        mov eax, dword ptr [ebp - 0x10]
+        add ebx, ecx
+        mov ecx, dword ptr [ebp - 0x6c]
+        add edi, edx
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x24], ebx
+        mov dword ptr [ebp - 8], edi
+        mov dword ptr [ebp - 4], esi
+        mov dword ptr [ebp - 0x10], eax
+        jl L488018
+L48824d:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x38]
+        sub ecx, dword ptr [ebp - 0x6c]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x7c]
+        sub eax, dword ptr [ebp - 0x88]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x3c], eax
+        mov eax, dword ptr [ebp - 0x4c]
+        sub eax, dword ptr [ebp - 0x58]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x40], eax
+        mov eax, dword ptr [ebp - 0x44]
+        sub eax, dword ptr [ebp - 0x54]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0x84]
+        sub eax, dword ptr [ebp - 0x80]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov esi, dword ptr [ebp - 0x10]
+        jmp L4883a5
+L4882b5:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x38]
+        sub ecx, dword ptr [ebp - 0x30]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp - 0x38]
+        sub ecx, dword ptr [ebp - 0x6c]
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x7c]
+        sub eax, dword ptr [ebp - 0x28]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x3c], eax
+        mov eax, dword ptr [ebp - 0x7c]
+        sub eax, dword ptr [ebp - 0x88]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x74], eax
+        mov eax, dword ptr [ebp - 0x4c]
+        sub eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x40], eax
+        mov eax, dword ptr [ebp - 0x4c]
+        sub eax, dword ptr [ebp - 0x58]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x68], eax
+        mov eax, dword ptr [ebp - 0x44]
+        sub eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x48], eax
+        mov eax, dword ptr [ebp - 0x44]
+        sub eax, dword ptr [ebp - 0x54]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x70], eax
+        mov eax, dword ptr [ebp - 0x84]
+        sub eax, dword ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x50], eax
+        mov eax, dword ptr [ebp - 0x84]
+        sub eax, dword ptr [ebp - 0x80]
+        mov ecx, dword ptr [ebp - 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x30], eax
+        mov ecx, dword ptr [ebp - 0x28]
+        mov edx, dword ptr [ebp - 0x88]
+        mov eax, dword ptr [ebp - 4]
+        mov dword ptr [ebp + 8], ecx
+        mov ecx, dword ptr [ebp - 0x58]
+        mov dword ptr [ebp + 0x10], edx
+        mov edx, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x18], eax
+        mov eax, dword ptr [ebp - 0x54]
+        mov dword ptr [ebp - 0x2c], ecx
+        mov ecx, dword ptr [ebp - 0x20]
+        mov dword ptr [ebp - 0x1c], edx
+        mov edx, dword ptr [ebp - 0x80]
+        mov dword ptr [ebp - 0x24], eax
+        mov dword ptr [ebp - 8], ecx
+        mov dword ptr [ebp - 4], edx
+L4883a5:
+        cmp esi, dword ptr [ViewportBottom]
+        jg L488664
+        mov edi, dword ptr [ebp - 0x38]
+        cmp esi, edi
+        jge L488664
+        mov ebx, dword ptr [ViewportTop]
+        mov ecx, dword ptr [ebp - 0x10]
+        mov edx, dword ptr [ebp - 0x38]
+        sub ebx, ecx
+        jle L488425
+        sub edx, ecx
+        jle L488425
+        cmp ebx, edx
+        mov ecx, edx
+        jns L4883d8
+        mov ecx, ebx
+L4883d8:
+        add dword ptr [ebp - 0x10], ecx
+        mov eax, dword ptr [ebp - 0x3c]
+        mul ecx
+        add dword ptr [ebp + 8], eax
+        mov eax, dword ptr [ebp - 0x74]
+        mul ecx
+        add dword ptr [ebp + 0x10], eax
+        mov eax, dword ptr [ebp - 0x40]
+        mul ecx
+        add dword ptr [ebp - 0x18], eax
+        mov eax, dword ptr [ebp - 0x68]
+        mul ecx
+        add dword ptr [ebp - 0x2c], eax
+        mov eax, dword ptr [ebp - 0x48]
+        mul ecx
+        add dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x70]
+        mul ecx
+        add dword ptr [ebp - 0x24], eax
+        mov eax, dword ptr [ebp - 0x50]
+        mul ecx
+        add dword ptr [ebp - 8], eax
+        mov eax, dword ptr [ebp - 0x30]
+        mul ecx
+        add dword ptr [ebp - 4], eax
+        mov eax, dword ptr [DAT_00701e58]
+        mul ecx
+        add dword ptr [ebp - 0x34], eax
+L488425:
+        cmp dword ptr [ebp - 0x10], edi
+        jge L488664
+L48842e:
+        mov eax, dword ptr [ebp - 0x10]
+        mov ecx, dword ptr [ViewportBottom]
+        cmp eax, ecx
+        jg L488664
+        mov eax, dword ptr [ebp - 0x34]
+        mov ecx, dword ptr [DAT_00701e58]
+        mov esi, dword ptr [ebp + 8]
+        mov edi, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp - 0x8c], eax
+        add eax, ecx
+        cmp esi, edi
+        mov dword ptr [ebp - 0x34], eax
+        jle L4884c6
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 8]
+        sub ecx, dword ptr [ebp + 0x10]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x18]
+        mov ecx, dword ptr [ebp - 0x2c]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x78], eax
+        mov eax, dword ptr [ebp - 0x1c]
+        mov ecx, dword ptr [ebp - 0x24]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x28], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x64], eax
+        mov eax, dword ptr [ebp - 8]
+        mov ecx, dword ptr [ebp - 4]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        sar edi, 0x10
+        sar esi, 0x10
+        mov dword ptr [ebp - 0x5c], edi
+        mov dword ptr [ebp - 0xc], esi
+        jmp L48852d
+L4884c6:
+        lea ebx, [DAT_00798000]
+        mov ecx, dword ptr [ebp + 0x10]
+        sub ecx, dword ptr [ebp + 8]
+        shr ecx, 0x10
+        inc ecx
+        mov eax, dword ptr [ebx + ecx*4]
+        mov dword ptr [ebp + 0xc], eax
+        mov eax, dword ptr [ebp - 0x2c]
+        mov ecx, dword ptr [ebp - 0x18]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x14], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x78], eax
+        mov eax, dword ptr [ebp - 0x24]
+        mov ecx, dword ptr [ebp - 0x1c]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x28], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x64], eax
+        mov eax, dword ptr [ebp - 4]
+        mov ecx, dword ptr [ebp - 8]
+        sub eax, ecx
+        mov dword ptr [ebp - 0x20], ecx
+        mov ecx, dword ptr [ebp + 0xc]
+        imul ecx
+        shrd eax, edx, 0x10
+        mov dword ptr [ebp - 0x60], eax
+        sar esi, 0x10
+        sar edi, 0x10
+        mov dword ptr [ebp - 0x5c], esi
+        mov dword ptr [ebp - 0xc], edi
+L48852d:
+        push esi
+        push edi
+        mov ecx, dword ptr [ebp - 0x5c]
+        mov edi, ecx
+        mov ebx, dword ptr [ViewportLeft]
+        sub ecx, ebx
+        jns L48855a
+        mov edi, ebx
+        neg ecx
+        mov eax, dword ptr [ebp - 0x78]
+        mul ecx
+        add dword ptr [ebp - 0x14], eax
+        mov eax, dword ptr [ebp - 0x64]
+        mul ecx
+        add dword ptr [ebp - 0x28], eax
+        mov eax, dword ptr [ebp - 0x60]
+        mul ecx
+        add dword ptr [ebp - 0x20], eax
+L48855a:
+        mov esi, edi
+        shl esi, 1
+        add esi, dword ptr [ebp - 0x8c]
+        mov eax, edi
+        mov edi, dword ptr [ViewportRight]
+        shl edi, 1
+        add edi, dword ptr [ebp - 0x8c]
+        cmp eax, dword ptr [ebp - 0xc]
+        jge L4885f8
+        cmp esi, edi
+        jg L4885f8
+L48857d:
+        mov ebx, dword ptr [DAT_00701e5c]
+        mov ecx, dword ptr [ebp - 0x10]
+        lea ebx, [ebx + eax*4]
+        shl ecx, 9
+        mov edx, dword ptr [ebp - 0x20]
+        cmp edx, dword ptr [ebx + ecx]
+        jb L4885d7
+        mov dword ptr [ebx + ecx], edx
+        mov ebx, dword ptr [DAT_0066b630]
+        mov ecx, dword ptr [ebx]
+        movzx edx, word ptr [ebp - 0x26]
+        shl edx, cl
+        add edx, dword ptr [ebx + 8]
+        mov ebx, dword ptr [ebx + 0xc]
+        movzx ecx, word ptr [ebp - 0x12]
+        add edx, ecx
+        movzx edx, byte ptr [edx]
+        mov ebx, dword ptr [ebx + edx*4]
+        mov ebx, dword ptr [ebx + 4]
+        cmp esi, dword ptr [DAT_007fe9a8]
+        movzx edx, word ptr [ebp - 0x8e]
+        sete cl
+        movzx edx, word ptr [ebx + edx*2]
+        or byte ptr [DAT_007feb14], cl
+        mov word ptr [esi], dx
+L4885d7:
+        inc eax
+        mov ebx, dword ptr [ebp - 0x78]
+        add dword ptr [ebp - 0x14], ebx
+        mov ebx, dword ptr [ebp - 0x64]
+        add dword ptr [ebp - 0x28], ebx
+        mov ebx, dword ptr [ebp - 0x60]
+        add dword ptr [ebp - 0x20], ebx
+        add esi, 2
+        cmp eax, dword ptr [ebp - 0xc]
+        jge L4885f8
+        cmp esi, edi
+        jg L4885f8
+        jmp L48857d
+L4885f8:
+        pop edi
+        pop esi
+        mov ecx, dword ptr [ebp - 0x3c]
+        mov ebx, dword ptr [ebp + 8]
+        mov edx, dword ptr [ebp - 0x74]
+        mov edi, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [ebp - 0x40]
+        mov esi, dword ptr [ebp - 0x18]
+        add ebx, ecx
+        mov ecx, dword ptr [ebp - 0x68]
+        add edi, edx
+        mov edx, dword ptr [ebp - 0x2c]
+        add edx, ecx
+        add esi, eax
+        mov eax, dword ptr [ebp - 0x1c]
+        mov dword ptr [ebp - 0x2c], edx
+        mov edx, dword ptr [ebp - 0x48]
+        mov ecx, dword ptr [ebp - 0x50]
+        add eax, edx
+        mov edx, dword ptr [ebp - 0x30]
+        mov dword ptr [ebp + 8], ebx
+        mov ebx, dword ptr [ebp - 0x24]
+        mov dword ptr [ebp - 0x1c], eax
+        mov eax, dword ptr [ebp - 0x70]
+        mov dword ptr [ebp + 0x10], edi
+        mov edi, dword ptr [ebp - 8]
+        mov dword ptr [ebp - 0x18], esi
+        mov esi, dword ptr [ebp - 4]
+        add ebx, eax
+        mov eax, dword ptr [ebp - 0x10]
+        add edi, ecx
+        mov ecx, dword ptr [ebp - 0x38]
+        add esi, edx
+        inc eax
+        cmp eax, ecx
+        mov dword ptr [ebp - 0x24], ebx
+        mov dword ptr [ebp - 8], edi
+        mov dword ptr [ebp - 4], esi
+        mov dword ptr [ebp - 0x10], eax
+        jl L48842e
+L488664:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00488670
 void FUN_00488670(struct Image *image, unsigned int index) {

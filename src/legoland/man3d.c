@@ -360,9 +360,65 @@ LEGO_EXPORT void IP_RenderBlokeIn3DNow(struct Bloke *bloke) {
     RenderBlokeIn3D(bloke);
 }
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00440020
-LEGO_EXPORT void SetPersonRotation(struct Person *person, float *src) { STUB(); }
+__declspec(naked) LEGO_EXPORT void SetPersonRotation(struct Person *person, float *src) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0xc
+        mov eax, dword ptr [ebp + 0xc]
+        push ebx
+        push esi
+        push edi
+        mov edi, dword ptr [ebp + 8]
+        mov ecx, dword ptr [eax]
+        mov dword ptr [ebp - 8], 0x47800000
+        mov dword ptr [edi + 0x40], ecx
+        mov edx, dword ptr [eax + 4]
+        mov dword ptr [edi + 0x44], edx
+        mov ecx, dword ptr [eax + 8]
+        mov dword ptr [edi + 0x48], ecx
+        mov edx, dword ptr [eax + 4]
+        lea eax, [edi + 0x58]
+        mov dword ptr [ebp - 0xc], edx
+        mov dword ptr [ebp - 4], eax
+        push esi
+        fld dword ptr [ebp - 0xc]
+        fsin
+        fmul dword ptr [ebp - 8]
+        fistp dword ptr [ebp + 8]
+        fld dword ptr [ebp - 0xc]
+        fcos
+        fmul dword ptr [ebp - 8]
+        fistp dword ptr [ebp + 0xc]
+        mov eax, dword ptr [ebp - 4]
+        xor ebx, ebx
+        mov ecx, 0x10000
+        mov edx, dword ptr [ebp + 8]
+        mov esi, dword ptr [ebp + 0xc]
+        mov dword ptr [eax], esi
+        mov dword ptr [eax + 4], ebx
+        mov dword ptr [eax + 8], edx
+        mov dword ptr [eax + 0xc], ebx
+        mov dword ptr [eax + 0x10], ecx
+        mov dword ptr [eax + 0x14], ebx
+        neg edx
+        mov dword ptr [eax + 0x18], edx
+        mov dword ptr [eax + 0x1c], ebx
+        mov dword ptr [eax + 0x20], esi
+        pop esi
+        mov ecx, dword ptr [edi + 0x68]
+        neg ecx
+        mov dword ptr [edi + 0x68], ecx
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004400b0
 LEGO_EXPORT void SetPersonDirection(struct Person *person, unsigned int direction) {
