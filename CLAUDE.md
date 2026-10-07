@@ -53,6 +53,9 @@ struct assignment, etc.).
   the last ones (hand-written assembly) were decompiled on 2026-10-07, and all but one match.
   `docs/remaining-work.md` lists what is left.
 - When you decompile a function: replace its `STUB()` body with real C, build, run reccmp, iterate to 100%.
+- **Before retrying a partial match, read its file in `docs/attempts/`** (what was tried, with scores) and don't
+  repeat a listed attempt; afterwards add your attempts there, failed ones included. `docs/attempts/README.md`
+  has the lessons that apply to most of them.
 - No `ctx.h` — include real MSVC6 headers; shared decls go in `src/legoland/legoland.h`.
 - **No forward declarations in `.c` files** — put all declarations in the TU's `.h` header.
   Run `uv run tools/needsdecl.py` to check.
