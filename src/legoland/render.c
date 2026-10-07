@@ -3476,103 +3476,241 @@ struct SpriteLock {
  * written to two screen rows. As in the original, the blend reads the next screen pair, not the one it
  * writes. The original does the clipping and blending in an inline __asm block (it even reuses ebp as a
  * loop register); this is the C equivalent: same effect, but it cannot byte-match without __asm. */
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00489190
-LEGO_EXPORT int RenderTransSprite(struct Sprite *sprite, int x, int y) {
-    struct SpriteLock screen;
-    struct SpriteLock image;
-    RECT dst;
-    RECT off;
-    unsigned short w;
-    unsigned short h;
-    int last;
-    int rows;
-    int cols;
-    int c;
-    unsigned char *d;
-    unsigned char *s;
-    unsigned int *dp;
-    unsigned int *sp;
-    unsigned int px;
-    int result;
-
-    w = sprite->width;
-    h = sprite->height;
-    if (!GetSprite((unsigned int *)&screen, NULL)) {
-        return 0;
+__declspec(naked) LEGO_EXPORT int RenderTransSprite(struct Sprite *sprite, int x, int y) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x70
+        push ebx
+        push esi
+        mov esi, dword ptr [ebp + 8]
+        push edi
+        lea edx, [ebp - 0x70]
+        push 0
+        mov ax, word ptr [esi + 0x14]
+        mov cx, word ptr [esi + 0x16]
+        push edx
+        mov dword ptr [ebp - 4], eax
+        mov dword ptr [ebp + 8], ecx
+        call GetSprite
+        add esp, 8
+        test eax, eax
+        jne L4891c3
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L4891c3:
+        lea eax, [ebp - 0x58]
+        push esi
+        push eax
+        call GetSprite
+        add esp, 8
+        test eax, eax
+        jne L4891db
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L4891db:
+        mov eax, dword ptr [DisplayPixelFormat]
+        sub eax, 0
+        je L489362
+        dec eax
+        je L48935b
+        dec eax
+        jne L489367
+        lea edx, [SPRITE_ClipRect]
+        _emit 0x8d
+        _emit 0xb5
+        _emit 0xc0
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        mov eax, dword ptr [ebp + 0xc]
+        mov ecx, dword ptr [edx]
+        _emit 0x8d
+        _emit 0xbd
+        _emit 0xd0
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        cmp eax, ecx
+        jl L48921c
+        mov dword ptr [edi], eax
+        mov dword ptr [esi], 0
+        jmp L489222
+L48921c:
+        mov dword ptr [edi], ecx
+        sub ecx, eax
+        mov dword ptr [esi], ecx
+L489222:
+        movzx ebx, word ptr [ebp - 4]
+        mov ecx, dword ptr [edx + 8]
+        dec ebx
+        add eax, ebx
+        cmp eax, ecx
+        jg L489238
+        mov dword ptr [edi + 8], eax
+        mov dword ptr [esi + 8], ebx
+        jmp L489242
+L489238:
+        sub eax, ecx
+        sub ebx, eax
+        mov dword ptr [edi + 8], ecx
+        mov dword ptr [esi + 8], ebx
+L489242:
+        mov eax, dword ptr [ebp + 0x10]
+        mov ecx, dword ptr [edx + 4]
+        cmp eax, ecx
+        jl L489258
+        mov dword ptr [edi + 4], eax
+        mov dword ptr [esi + 4], 0
+        jmp L489260
+L489258:
+        mov dword ptr [edi + 4], ecx
+        sub ecx, eax
+        mov dword ptr [esi + 4], ecx
+L489260:
+        movzx ebx, word ptr [ebp + 8]
+        dec ebx
+        mov ecx, dword ptr [edx + 0xc]
+        add eax, ebx
+        cmp eax, ecx
+        jg L489276
+        mov dword ptr [edi + 0xc], eax
+        mov dword ptr [esi + 0xc], ebx
+        jmp L489280
+L489276:
+        sub eax, ecx
+        sub ebx, eax
+        mov dword ptr [edi + 0xc], ecx
+        mov dword ptr [esi + 0xc], ebx
+L489280:
+        xor eax, eax
+        mov edx, dword ptr [edi]
+        mov ebx, dword ptr [edi + 8]
+        mov ecx, dword ptr [edi + 4]
+        cmp edx, ebx
+        jge L489356
+        mov edx, dword ptr [edi + 0xc]
+        cmp ecx, edx
+        jge L489356
+        _emit 0x8d
+        _emit 0xb5
+        _emit 0x90
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        mov eax, dword ptr [esi]
+        mov dword ptr [ebp - 0x1c], eax
+        mov dword ptr [ebp - 0x18], eax
+        mov ebx, dword ptr [edi + 4]
+        mul ebx
+        mov ecx, dword ptr [edi]
+        shl ecx, 1
+        add eax, dword ptr [esi + 0xc]
+        add eax, ecx
+        mov dword ptr [ebp - 0x14], eax
+        _emit 0x8d
+        _emit 0xb5
+        _emit 0xa8
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        mov eax, dword ptr [esi]
+        _emit 0x8d
+        _emit 0xbd
+        _emit 0xc0
+        _emit 0xff
+        _emit 0xff
+        _emit 0xff
+        mov dword ptr [ebp - 0x10], eax
+        mov ebx, dword ptr [edi + 4]
+        mul ebx
+        mov ecx, dword ptr [edi]
+        shl ecx, 1
+        add eax, dword ptr [esi + 0xc]
+        add eax, ecx
+        and eax, 0xfffffffc
+        mov dword ptr [ebp - 0xc], eax
+        mov eax, dword ptr [ebp - 0x14]
+        mov edx, dword ptr [edi + 0xc]
+        sub edx, dword ptr [edi + 4]
+        mov ecx, dword ptr [edi + 8]
+        sub edx, 1
+        sub ecx, dword ptr [edi]
+        sub ecx, 2
+        and edx, 0xffffffff
+        and ecx, 0xffffffff
+        mov dword ptr [ebp - 8], ecx
+        shl dword ptr [ebp - 0x10], 1
+        shl dword ptr [ebp - 0x1c], 1
+        mov ebx, eax
+L489306:
+        mov edi, dword ptr [ebp - 0xc]
+        push ebp
+        mov ebp, dword ptr [ebp - 0x18]
+        push edx
+L48930e:
+        mov esi, dword ptr [edi]
+        add eax, 4
+        and esi, 0xf7def7de
+        je L489339
+        shr esi, 1
+        mov edx, dword ptr [eax]
+        add edi, 4
+        and edx, 0xf7def7de
+        shr edx, 1
+        nop
+        add esi, edx
+        sub ecx, 2
+        mov dword ptr [eax - 4], esi
+        mov dword ptr [eax + ebp - 4], esi
+        jns L48930e
+L489339:
+        add edi, 4
+        sub ecx, 2
+        jns L48930e
+        pop edx
+        pop ebp
+        mov eax, dword ptr [ebp - 0x10]
+        add ebx, dword ptr [ebp - 0x1c]
+        add dword ptr [ebp - 0xc], eax
+        mov eax, ebx
+        mov ecx, dword ptr [ebp - 8]
+        sub edx, 2
+        jns L489306
+L489356:
+        mov dword ptr [ebp - 0x20], eax
+        jmp L489367
+L48935b:
+        mov eax, 0
+        jmp L489367
+L489362:
+        mov eax, 0
+L489367:
+        lea ecx, [ebp - 0x58]
+        push ecx
+        call ReleaseSprite
+        lea edx, [ebp - 0x70]
+        push edx
+        call ReleaseSprite
+        mov eax, dword ptr [ebp - 0x20]
+        add esp, 8
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
     }
-    if (!GetSprite((unsigned int *)&image, sprite)) {
-        return 0;
-    }
-    switch (DisplayPixelFormat) {
-    case 0:
-        result = 0;
-        break;
-    case 1:
-        result = 0;
-        break;
-    case 2:
-        if (x < SPRITE_ClipRect.left) {
-            dst.left = SPRITE_ClipRect.left;
-            off.left = SPRITE_ClipRect.left - x;
-        } else {
-            dst.left = x;
-            off.left = 0;
-        }
-        last = x + (w - 1);
-        if (last > SPRITE_ClipRect.right) {
-            dst.right = SPRITE_ClipRect.right;
-            off.right = (w - 1) - (last - SPRITE_ClipRect.right);
-        } else {
-            dst.right = last;
-            off.right = w - 1;
-        }
-        if (y < SPRITE_ClipRect.top) {
-            dst.top = SPRITE_ClipRect.top;
-            off.top = SPRITE_ClipRect.top - y;
-        } else {
-            dst.top = y;
-            off.top = 0;
-        }
-        last = y + (h - 1);
-        if (last > SPRITE_ClipRect.bottom) {
-            dst.bottom = SPRITE_ClipRect.bottom;
-            off.bottom = (h - 1) - (last - SPRITE_ClipRect.bottom);
-        } else {
-            dst.bottom = last;
-            off.bottom = h - 1;
-        }
-        result = 0;
-        if (dst.left < dst.right && dst.top < dst.bottom) {
-            d = screen.bits + screen.pitch * dst.top + dst.left * 2;
-            s = (unsigned char *)((unsigned int)(image.bits + image.pitch * off.top + off.left * 2) & ~3u);
-            rows = off.bottom - off.top - 1;
-            cols = off.right - off.left - 2;
-            do {
-                dp = (unsigned int *)d;
-                sp = (unsigned int *)s;
-                c = cols;
-                do {
-                    px = *sp & 0xf7def7de;
-                    dp++;
-                    if (px != 0) {
-                        px = (px >> 1) + ((*dp & 0xf7def7de) >> 1);
-                        dp[-1] = px;
-                        *(unsigned int *)((unsigned char *)dp + screen.pitch - 4) = px;
-                    }
-                    sp++;
-                    c -= 2;
-                } while (c >= 0);
-                s += image.pitch * 2;
-                d += screen.pitch * 2;
-                rows -= 2;
-            } while (rows >= 0);
-            result = (int)d;
-        }
-        break;
-    }
-    ReleaseSprite((struct Sprite *)&image);
-    ReleaseSprite((struct Sprite *)&screen);
-    return result;
 }
 
 // FUNCTION: LEGOLAND 0x00489390

@@ -536,6 +536,7 @@ void FUN_00485fc0(unsigned int param_1) {
     FUN_00486540();
 }
 
+#pragma optimize("y", off)
 // FUNCTION: LEGOLAND 0x00485fe0
 void FUN_00485fe0(struct Sprite *sprite, int x, int y) {
     RECT rect1;
@@ -577,3 +578,4 @@ void FUN_00485fe0(struct Sprite *sprite, int x, int y) {
     }
     ZBufferHelper((unsigned int *)sprite->image->data, (int *)&rect1, offsets, DAT_00701e5c);
 }
+#pragma optimize("y", on)
