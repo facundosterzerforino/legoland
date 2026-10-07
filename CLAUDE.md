@@ -20,6 +20,8 @@ cmake --build build --clean-first             # full rebuild (needed after heade
 ./tools/verify                                 # per-function + total match %
 ./tools/verify -v 0x004015c0                   # asm diff for one function
 uv run tools/progress.py                       # per-TU progress table
+uv run tools/progress.py --worst 30            # the 30 lowest-scoring functions
+uv run tools/asm2naked.py 0x00466d80 --apply   # transcribe a hand-written-asm function as naked __asm
 ```
 
 **Header changes require `--clean-first`** — the MSVC6 wrapper does not track header dependencies.
@@ -59,8 +61,8 @@ struct assignment, etc.).
   see "Functions With an ebp Frame" in `docs/decomp-tips.md`). `uv run tools/progress.py <tu>` flags them.
   Everything else stays pure C. First try C with `__asm` only for the parts C can't produce. If MSVC6's
   register or stack-slot choices around the asm won't converge, transcribe the whole function as
-  `__declspec(naked)` and say so in the comment above `// FUNCTION:`. The port replaces these functions with
-  plain-C equivalents tagged `// [library:asm]`.
+  `__declspec(naked)` (`tools/asm2naked.py` does it) and say so in the comment above `// FUNCTION:`. The port
+  replaces these functions with plain-C equivalents tagged `// [library:asm]`.
 - **`goto` only with named labels** — cleanup/error paths like `goto fail;` are fine (the original code
   used them, and they often match better than duplicated cleanup). No Ghidra-style `goto LAB_00446b71;`:
   give the label a meaningful name or restructure with `if`/loops.

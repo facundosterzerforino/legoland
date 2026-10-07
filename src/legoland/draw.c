@@ -3900,88 +3900,147 @@ L467610:
     }
 }
 
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00467640
-void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) {
-    unsigned int m;
-    unsigned int c;
-    unsigned int n;
-    unsigned short *p;
-    unsigned short v;
-
-    m = 3;
-    if (skip != 0) {
-        do {
-            for (;;) {
-                c = *mask & m;
-                m = _rotl(m, 2);
-                mask += m & 1;
-                if (!(c & 0xaaaaaaaa)) {
-                    src++;
-                }
-                if (c & 0x55555555) {
-                    n = *runs++;
-                    if (n == 0) {
-                        break;
-                    }
-                    c = *mask & m;
-                    m = _rotl(m, 2);
-                    mask += m & 1;
-                    if (!(c & 0xaaaaaaaa)) {
-                        if (c & 0x55555555) {
-                            src++;
-                        } else {
-                            src += n;
-                        }
-                    }
-                }
-            }
-        } while (--skip > 0);
+__declspec(naked) void FUN_00467640(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) {
+    __asm {
+        push edi
+        push esi
+        mov edi, dword ptr [esp + 0x24]
+        mov edx, dword ptr [esp + 0x18]
+        test edi, edi
+        mov esi, dword ptr [esp + 0x10]
+        push ebx
+        mov ebx, 3
+        push ebp
+        je L4676bc
+L467659:
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov ecx, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, ecx
+        jne L467675
+        add esi, 2
+L467675:
+        test ebp, 0x55555555
+        je L467659
+        xor ecx, ecx
+        mov eax, dword ptr [esp + 0x1c]
+        mov cl, byte ptr [eax]
+        inc eax
+        test ecx, ecx
+        mov dword ptr [esp + 0x1c], eax
+        je L4676b9
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov eax, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, eax
+        jne L467659
+        test ebp, 0x55555555
+        je L4676b4
+        add esi, 2
+        jmp L467659
+L4676b4:
+        lea esi, [esi + ecx*2]
+        jmp L467659
+L4676b9:
+        dec edi
+        jg L467659
+L4676bc:
+        mov edi, dword ptr [esp + 0x14]
+L4676c0:
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov ecx, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, ecx
+        je L467764
+        test ebp, 0x55555555
+        lea edi, [edi + 2]
+        je L4676c0
+        mov eax, dword ptr [esp + 0x1c]
+        xor ecx, ecx
+        sub edi, 2
+        mov cl, byte ptr [eax]
+        inc eax
+        test ecx, ecx
+        mov dword ptr [esp + 0x1c], eax
+        je L467782
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov eax, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, eax
+        jne L46775c
+        mov eax, dword ptr [esp + 0x3c]
+        sub eax, edi
+        sar eax, 1
+        cmp eax, ecx
+        jae L46772c
+        or dword ptr [DAT_007feb14], 1
+L46772c:
+        test ebp, 0x55555555
+        jne L467748
+L467734:
+        dec ecx
+        mov ax, word ptr [esi]
+        lea esi, [esi + 2]
+        mov word ptr [edi], ax
+        lea edi, [edi + 2]
+        jne L467734
+        jmp L4676c0
+L467748:
+        mov ax, word ptr [esi]
+        lea esi, [esi + 2]
+L46774e:
+        dec ecx
+        mov word ptr [edi], ax
+        lea edi, [edi + 2]
+        jne L46774e
+        jmp L4676c0
+L46775c:
+        lea edi, [edi + ecx*2]
+        jmp L4676c0
+L467764:
+        cmp dword ptr [esp + 0x3c], edi
+        jne L467771
+        or dword ptr [DAT_007feb14], 1
+L467771:
+        mov ax, word ptr [esi]
+        add esi, 2
+        mov word ptr [edi], ax
+        add edi, 2
+        jmp L4676c0
+L467782:
+        mov eax, dword ptr [esp + 0x14]
+        mov ecx, dword ptr [esp + 0x24]
+        add eax, dword ptr [esp + 0x28]
+        mov dword ptr [esp + 0x14], eax
+        mov edi, eax
+        dec ecx
+        test ecx, ecx
+        mov dword ptr [esp + 0x24], ecx
+        jne L4676c0
+        pop ebp
+        pop ebx
+        pop esi
+        pop edi
+        ret
     }
-    p = dst;
-    do {
-        for (;;) {
-            c = *mask & m;
-            m = _rotl(m, 2);
-            mask += m & 1;
-            if (c & 0xaaaaaaaa) {
-                p++;
-                if (c & 0x55555555) {
-                    p--;
-                    n = *runs++;
-                    if (n == 0) {
-                        break;
-                    }
-                    c = *mask & m;
-                    m = _rotl(m, 2);
-                    mask += m & 1;
-                    if (!(c & 0xaaaaaaaa)) {
-                        if ((unsigned int)(cursor - p) < n) {
-                            DAT_007feb14 |= 1;
-                        }
-                        if (!(c & 0x55555555)) {
-                            do {
-                                *p++ = *src++;
-                            } while (--n);
-                        } else {
-                            v = *src++;
-                            do {
-                                *p++ = v;
-                            } while (--n);
-                        }
-                    } else {
-                        p += n;
-                    }
-                }
-            } else {
-                if (cursor == p) {
-                    DAT_007feb14 |= 1;
-                }
-                *p++ = *src++;
-            }
-        }
-        dst = (unsigned short *)((char *)dst + stride);
-        p = dst;
-    } while (--h != 0);
 }
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
@@ -4679,81 +4738,137 @@ L467ecd:
     }
 }
 
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00467f00
-void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip) {
-    unsigned int m;
-    unsigned int c;
-    unsigned int n;
-    unsigned short *p;
-    unsigned short v;
-
-    m = 3;
-    if (skip != 0) {
-        do {
-            for (;;) {
-                c = *mask & m;
-                m = _rotl(m, 2);
-                mask += m & 1;
-                if (!(c & 0xaaaaaaaa)) {
-                    src++;
-                } else if (c & 0x55555555) {
-                    n = *runs++;
-                    if (n == 0) {
-                        break;
-                    }
-                    c = *mask & m;
-                    m = _rotl(m, 2);
-                    mask += m & 1;
-                    if (!(c & 0xaaaaaaaa)) {
-                        if (c & 0x55555555) {
-                            src++;
-                        } else {
-                            src += n;
-                        }
-                    }
-                }
-            }
-        } while (--skip > 0);
+__declspec(naked) void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip) {
+    __asm {
+        push edi
+        push esi
+        mov edi, dword ptr [esp + 0x24]
+        mov edx, dword ptr [esp + 0x18]
+        test edi, edi
+        mov esi, dword ptr [esp + 0x10]
+        push ebx
+        mov ebx, 3
+        push ebp
+        je L467f7e
+L467f19:
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov ecx, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, ecx
+        jne L467f37
+        add esi, 2
+        jmp L467f19
+L467f37:
+        test ebp, 0x55555555
+        je L467f19
+        xor ecx, ecx
+        mov eax, dword ptr [esp + 0x1c]
+        mov cl, byte ptr [eax]
+        inc eax
+        test ecx, ecx
+        mov dword ptr [esp + 0x1c], eax
+        je L467f7b
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov eax, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, eax
+        jne L467f19
+        test ebp, 0x55555555
+        je L467f76
+        add esi, 2
+        jmp L467f19
+L467f76:
+        lea esi, [esi + ecx*2]
+        jmp L467f19
+L467f7b:
+        dec edi
+        jg L467f19
+L467f7e:
+        mov edi, dword ptr [esp + 0x14]
+L467f82:
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov ecx, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, ecx
+        je L468002
+        test ebp, 0x55555555
+        lea edi, [edi + 2]
+        je L467f82
+        mov eax, dword ptr [esp + 0x1c]
+        xor ecx, ecx
+        sub edi, 2
+        mov cl, byte ptr [eax]
+        inc eax
+        test ecx, ecx
+        mov dword ptr [esp + 0x1c], eax
+        je L468013
+        mov ebp, dword ptr [edx]
+        and ebp, ebx
+        rol ebx, 2
+        mov eax, ebx
+        and ebx, 1
+        test ebp, 0xaaaaaaaa
+        lea edx, [edx + ebx*4]
+        mov ebx, eax
+        jne L467ffd
+        test ebp, 0x55555555
+        jne L467fec
+L467fdb:
+        dec ecx
+        mov ax, word ptr [esi]
+        lea esi, [esi + 2]
+        mov word ptr [edi], ax
+        lea edi, [edi + 2]
+        jne L467fdb
+        jmp L467f82
+L467fec:
+        mov ax, word ptr [esi]
+        lea esi, [esi + 2]
+L467ff2:
+        dec ecx
+        mov word ptr [edi], ax
+        lea edi, [edi + 2]
+        jne L467ff2
+        jmp L467f82
+L467ffd:
+        lea edi, [edi + ecx*2]
+        jmp L467f82
+L468002:
+        mov ax, word ptr [esi]
+        add esi, 2
+        mov word ptr [edi], ax
+        add edi, 2
+        jmp L467f82
+L468013:
+        mov eax, dword ptr [esp + 0x14]
+        mov ecx, dword ptr [esp + 0x24]
+        add eax, dword ptr [esp + 0x28]
+        dec ecx
+        mov dword ptr [esp + 0x14], eax
+        test ecx, ecx
+        mov edi, eax
+        mov dword ptr [esp + 0x24], ecx
+        jne L467f82
+        pop ebp
+        pop ebx
+        pop esi
+        pop edi
+        ret
     }
-    p = dst;
-    do {
-        for (;;) {
-            c = *mask & m;
-            m = _rotl(m, 2);
-            mask += m & 1;
-            if (c & 0xaaaaaaaa) {
-                p++;
-                if (c & 0x55555555) {
-                    p--;
-                    n = *runs++;
-                    if (n == 0) {
-                        break;
-                    }
-                    c = *mask & m;
-                    m = _rotl(m, 2);
-                    mask += m & 1;
-                    if (!(c & 0xaaaaaaaa)) {
-                        if (!(c & 0x55555555)) {
-                            do {
-                                *p++ = *src++;
-                            } while (--n);
-                        } else {
-                            v = *src++;
-                            do {
-                                *p++ = v;
-                            } while (--n);
-                        }
-                    } else {
-                        p += n;
-                    }
-                }
-            } else {
-                *p++ = *src++;
-            }
-        }
-        dst = (unsigned short *)((char *)dst + stride);
-        p = dst;
-    } while (--h != 0);
 }
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.

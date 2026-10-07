@@ -26,7 +26,10 @@ pure C, are done. `find_inline_asm` in `tools/progress.py` detects such function
 - **Byte-identical, but reccmp reports < 100%:** FUN_00440a30 (and the older naked FUN_00426980, FUN_00426ab0).
   They load plain constants (0x500000, 0x5a0000, 0x7fffff) that fall inside a data symbol in only one of the two
   images, so reccmp shows a symbol on that side. Needs a reccmp change, not a source change.
-- **Not matched:** FUN_00404630 (copters) at 54%, C with the `fistp` macro in `__asm`. It has a `switch` jump
+- **Two more found later, same blitter family:** FUN_00467640 and FUN_00467f00 (draw.c) were C attempts at 10%
+  and 5%; they have the blitters' prologue and `rol` (which `find_inline_asm` doesn't flag, since `_rotl` can
+  emit it). Transcribed with `tools/asm2naked.py`, 100%.
+- **Not matched:** CoptersPlaceRider (FUN_00404630, copters) at 54%, C with the `fistp` macro in `__asm`. It has a `switch` jump
   table, so it cannot be naked; what is left is a register permutation (the original keeps entry/layer/sprite in
   edi/ebx/esi and spills entry to the `node` slot).
 
