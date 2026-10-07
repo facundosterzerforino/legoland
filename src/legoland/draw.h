@@ -92,3 +92,6 @@ void FUN_00467d10(unsigned short *dst, unsigned short *src, unsigned char *runs,
 void FUN_00467f00(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip);
 void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos);
 void FUN_00468040(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void FUN_00464480(void);
+void FUN_00465240(void);
+void FUN_00468410(void);

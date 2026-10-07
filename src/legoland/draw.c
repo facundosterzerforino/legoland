@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "clipping.h"
+#include "debug.h"
 #include "debug_alloc.h"
 #include "globals.h"
 
@@ -1331,9 +1332,270 @@ L464ed3:
     }
 }
 
-// Hand-written assembly in the original (ebp frame + pusha/popa): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00464ee0
-void __fastcall FUN_00464ee0(struct Sprite *sprite, RECT *rect, int *off) { STUB(); }
+__declspec(naked) void __fastcall FUN_00464ee0(struct Sprite *sprite, RECT *rect, int *off) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x38
+        push ebx
+        mov ebx, ecx
+        push esi
+        mov esi, edx
+        mov al, byte ptr [ebx + 0x10]
+        push edi
+        test al, 0x20
+        mov dword ptr [ebp - 4], esi
+        mov dword ptr [ebp - 8], ebx
+        je L464fa1
+        lea eax, [ebp - 0x20]
+        push ebx
+        push eax
+        call GetSprite
+        movsx eax, word ptr [ebp - 0x20]
+        mov ecx, dword ptr [ebp - 0x14]
+        add esp, 8
+        cdq
+        sub eax, edx
+        mov dx, word ptr [ebp - 0x18]
+        sar eax, 1
+        lea edi, [ebp - 0x38]
+        mov dword ptr [ebp - 0x38], ecx
+        mov word ptr [ebp - 0x30], ax
+        mov word ptr [ebp - 0x2e], dx
+        mov dword ptr [ebp - 0x24], 1
+L464f30:
+        movsx edx, word ptr [ebx + 0x18]
+        mov eax, dword ptr [esi]
+        mov ecx, dword ptr [esi + 4]
+        add eax, edx
+        mov dword ptr [esi], eax
+        movsx eax, word ptr [ebx + 0x1a]
+        add ecx, eax
+        mov eax, dword ptr [esi + 8]
+        mov dword ptr [esi + 4], ecx
+        movsx ecx, word ptr [ebx + 0x18]
+        add eax, ecx
+        mov dword ptr [esi + 8], eax
+        movsx edx, word ptr [ebx + 0x1a]
+        mov ebx, dword ptr [esi + 0xc]
+        add ebx, edx
+        mov dword ptr [esi + 0xc], ebx
+        mov eax, dword ptr [CurrentSurfaceDesc + 0x10]
+        imul eax, dword ptr [MousePos + 0x4]
+        mov ecx, dword ptr [CurrentSurfaceDesc + 0x24]
+        mov edx, dword ptr [MousePos]
+        add ecx, eax
+        lea eax, [ecx + edx*2]
+        mov dword ptr [DAT_007fe9a8], eax
+        mov eax, dword ptr [edi + 0x14]
+        cmp eax, 2
+        jne L464fd1
+        mov ecx, dword ptr [ebp + 8]
+        mov edx, dword ptr [edi]
+        push ecx
+        push esi
+        push edx
+        call FUN_00464480
+        add esp, 0xc
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret 4
+L464fa1:
+        mov edi, dword ptr [ebx + 8]
+        push 1
+        mov eax, dword ptr [edi]
+        push eax
+        call dword ptr [IsBadReadPtr]
+        test eax, eax
+        je L464f30
+        mov ecx, dword ptr [edi + 0x10]
+        push ecx
+        push offset BltFastNoSpriteFmt
+        call DebugTrace
+        add esp, 8
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret 4
+L464fd1:
+        cmp eax, 3
+        jne L464fef
+        mov eax, dword ptr [ebp + 8]
+        mov ecx, dword ptr [edi]
+        push eax
+        push esi
+        push ecx
+        call FUN_00466770
+        add esp, 0xc
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret 4
+L464fef:
+        test eax, eax
+        jne L4650ba
+        mov edx, dword ptr [edi]
+        mov dword ptr [DAT_007fea40], edx
+        movsx eax, word ptr [edi + 8]
+        add eax, 3
+        and al, 0xfc
+        mov dword ptr [DAT_007fea1c], eax
+        movsx ecx, word ptr [edi + 0xa]
+        mov dword ptr [DAT_007fea14], ecx
+        mov edx, dword ptr [edi + 4]
+        add edx, 4
+        mov dword ptr [DAT_007fea20], edx
+        pushad
+        mov eax, dword ptr [ebp + 8]
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        add edi, dword ptr [eax]
+        add edi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add edi, ecx
+        mov eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [eax + 8]
+        sub edx, dword ptr [eax]
+        mov dword ptr [DAT_007fe9a4], edx
+        mov edx, dword ptr [eax + 0xc]
+        sub edx, dword ptr [eax + 4]
+        mov esi, dword ptr [DAT_007fea40]
+        add esi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [DAT_007fea1c]
+        add esi, ecx
+        mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        mov ebp, dword ptr [DAT_007fea1c]
+        sub ebp, dword ptr [DAT_007fe9a4]
+L465083:
+        mov ecx, dword ptr [DAT_007fe9a4]
+        push ebp
+        push ebx
+        mov ebx, dword ptr [DAT_007fea20]
+L465091:
+        movzx eax, byte ptr [esi]
+        movzx eax, word ptr [ebx + eax*2]
+        mov ebp, eax
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L4650a5
+        mov word ptr [edi], ax
+L4650a5:
+        inc esi
+        add edi, 2
+        loop L465091
+        pop ebx
+        pop ebp
+        add esi, ebp
+        add edi, ebx
+        dec edx
+        jne L465083
+        popad
+        jmp L4651a8
+L4650ba:
+        mov eax, dword ptr [edi]
+        mov dword ptr [DAT_007fea40], eax
+        movsx ecx, word ptr [edi + 8]
+        shl ecx, 1
+        mov dword ptr [DAT_007fea1c], ecx
+        movsx edx, word ptr [edi + 0xa]
+        mov dword ptr [DAT_007fea14], edx
+        pushad
+        mov eax, dword ptr [ebp + 8]
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        add edi, dword ptr [eax]
+        add edi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add edi, ecx
+        mov eax, dword ptr [ebp - 4]
+        mov edx, dword ptr [eax + 8]
+        sub edx, dword ptr [eax]
+        mov dword ptr [DAT_007fe9a4], edx
+        mov edx, dword ptr [eax + 0xc]
+        sub edx, dword ptr [eax + 4]
+        mov esi, dword ptr [DAT_007fea40]
+        add esi, dword ptr [eax]
+        add esi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [DAT_007fea1c]
+        add esi, ecx
+        mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        mov ebp, dword ptr [DAT_007fea1c]
+        sub ebp, dword ptr [DAT_007fe9a4]
+        sub ebp, dword ptr [DAT_007fe9a4]
+L46513f:
+        mov ecx, dword ptr [DAT_007fe9a4]
+L465145:
+        movzx eax, word ptr [esi]
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L465153
+        mov word ptr [edi], ax
+L465153:
+        add esi, 2
+        add edi, 2
+        dec ecx
+        je L4651a0
+        movzx eax, word ptr [esi]
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L46516a
+        mov word ptr [edi], ax
+L46516a:
+        add esi, 2
+        add edi, 2
+        dec ecx
+        je L4651a0
+        movzx eax, word ptr [esi]
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L465181
+        mov word ptr [edi], ax
+L465181:
+        add esi, 2
+        add edi, 2
+        dec ecx
+        je L4651a0
+        movzx eax, word ptr [esi]
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L46516a
+        mov word ptr [edi], ax
+        add esi, 2
+        add edi, 2
+        loop L465145
+L4651a0:
+        add esi, ebp
+        add edi, ebx
+        dec edx
+        jne L46513f
+        popad
+L4651a8:
+        mov eax, dword ptr [ebp - 8]
+        test byte ptr [eax + 0x10], 0x20
+        je L4651bd
+        lea ecx, [ebp - 0x20]
+        push ecx
+        call ReleaseSprite
+        add esp, 4
+L4651bd:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret 4
+    }
+}
 
 // The original fills the rows with an inline __asm block (pusha; rep stosw per row; popa) that
 // reads its loop bounds from the globals below. This is the C equivalent: same effect, but it
@@ -1937,9 +2199,425 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
     }
 }
 
-// Hand-written assembly in the original (ebp frame + pusha/popa): not reproducible in pure C, left as STUB().
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00465a40
-LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4) { STUB(); }
+__declspec(naked) LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 0x30
+        push ebx
+        mov ebx, dword ptr [ebp + 8]
+        push esi
+        push edi
+        test byte ptr [ebx + 0x10], 0x20
+        je L465b1f
+        lea eax, [ebp - 0x18]
+        push ebx
+        push eax
+        call GetSprite
+        movsx eax, word ptr [ebp - 0x18]
+        mov ecx, dword ptr [ebp - 0xc]
+        add esp, 8
+        cdq
+        sub eax, edx
+        mov dx, word ptr [ebp - 0x10]
+        sar eax, 1
+        lea esi, [ebp - 0x30]
+        mov dword ptr [ebp - 0x30], ecx
+        mov word ptr [ebp - 0x28], ax
+        mov word ptr [ebp - 0x26], dx
+        mov dword ptr [ebp - 0x1c], 1
+L465a88:
+        mov eax, dword ptr [ebp + 0x14]
+        xor ecx, ecx
+        mov edx, eax
+        mov cl, ah
+        and edx, 0xff
+        push edx
+        xor edx, edx
+        mov dl, byte ptr [ebp + 0x16]
+        push ecx
+        push edx
+        call GetNearestColour
+        mov edi, dword ptr [ebp + 0xc]
+        mov dword ptr [DAT_007fe998], eax
+        movsx eax, word ptr [ebx + 0x18]
+        mov ecx, dword ptr [edi]
+        mov edx, dword ptr [edi + 4]
+        add ecx, eax
+        mov eax, dword ptr [edi + 8]
+        mov dword ptr [edi], ecx
+        add esp, 0xc
+        movsx ecx, word ptr [ebx + 0x1a]
+        add edx, ecx
+        mov ecx, dword ptr [edi + 0xc]
+        mov dword ptr [edi + 4], edx
+        movsx edx, word ptr [ebx + 0x18]
+        add eax, edx
+        mov dword ptr [edi + 8], eax
+        movsx eax, word ptr [ebx + 0x1a]
+        add ecx, eax
+        mov dword ptr [edi + 0xc], ecx
+        mov ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        imul ecx, dword ptr [MousePos + 0x4]
+        mov edx, dword ptr [CurrentSurfaceDesc + 0x24]
+        mov eax, dword ptr [MousePos]
+        add edx, ecx
+        lea ecx, [edx + eax*2]
+        mov dword ptr [DAT_007fe9a8], ecx
+        mov eax, dword ptr [esi + 0x14]
+        cmp eax, 2
+        jne L465b4d
+        mov edx, dword ptr [ebp + 0x10]
+        mov eax, dword ptr [esi]
+        push edx
+        push edi
+        push eax
+        call FUN_00465240
+        add esp, 0xc
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L465b1f:
+        mov esi, dword ptr [ebx + 8]
+        push 1
+        mov eax, dword ptr [esi]
+        push eax
+        call dword ptr [IsBadReadPtr]
+        test eax, eax
+        je L465a88
+        mov ecx, dword ptr [esi + 0x10]
+        push ecx
+        push offset BltFastNoSpriteFmt
+        call DebugTrace
+        add esp, 8
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L465b4d:
+        cmp eax, 3
+        jne L465d38
+        test dword ptr [ebp + 0x14], 0xff000000
+        je L465d21
+        push 0xf
+        push 0xf
+        push 0xf
+        call GetNearestColour
+        mov edx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add esp, 0xc
+        not eax
+        mov dword ptr [DAT_007fe998], eax
+        mov ebx, dword ptr [esi]
+        mov dword ptr [DAT_007fe9a4], edx
+        mov ecx, dword ptr [edi]
+        mov dword ptr [SpriteClipOrigin + 0x4], ecx
+        mov eax, dword ptr [edi + 8]
+        mov ecx, dword ptr [edi]
+        lea esi, [ebx + 0x18]
+        sub eax, ecx
+        mov dword ptr [DrawClipExtent + 0x4], eax
+        mov ecx, dword ptr [edi + 4]
+        mov dword ptr [SpriteClipOrigin], ecx
+        mov ecx, dword ptr [edi + 0xc]
+        sub ecx, dword ptr [edi + 4]
+        mov dword ptr [DrawClipExtent], ecx
+        mov ecx, dword ptr [OverrideFrame]
+        test ecx, ecx
+        jge L465bbf
+        movsx ecx, word ptr [ebx]
+L465bbf:
+        movsx edi, word ptr [ebx + 0x10]
+        cmp ecx, edi
+        mov dword ptr [ebp + 0x14], ecx
+        jl L465bce
+        dec edi
+        mov dword ptr [ebp + 0x14], edi
+L465bce:
+        mov ecx, edx
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        imul ecx, dword ptr [MousePos + 0x4]
+        add edi, ecx
+        mov ecx, dword ptr [MousePos]
+        lea ecx, [edi + ecx*2]
+        mov dword ptr [DAT_007fe9a8], ecx
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [ecx]
+        mov ecx, dword ptr [SpriteClipOrigin + 0x4]
+        sub edi, ecx
+        mov ecx, dword ptr [ebp + 0x10]
+        mov dword ptr [ebp + 0x10], edi
+        mov edi, dword ptr [ecx + 4]
+        mov ecx, dword ptr [CurrentSurfaceDesc + 0x24]
+        imul edi, edx
+        mov edx, dword ptr [ebp + 0x10]
+        add ecx, edi
+        lea edi, [ecx + edx*2]
+        mov cl, byte ptr [ebx + 0x14]
+        test cl, 1
+        je L465cc9
+        mov edx, dword ptr [DAT_007fe9a8]
+        mov ecx, dword ptr [esi + 4]
+        push edx
+        mov edx, dword ptr [SpriteClipOrigin]
+        push 0
+        push eax
+        mov eax, dword ptr [SpriteClipOrigin + 0x4]
+        lea ecx, [ecx + ecx + 0x10]
+        push eax
+        mov eax, dword ptr [CurrentSurfaceDesc + 0x10]
+        push edx
+        mov edx, dword ptr [DrawClipExtent]
+        push eax
+        mov eax, dword ptr [esi + 8]
+        add eax, ecx
+        push edx
+        add eax, esi
+        add ecx, esi
+        push eax
+        push ecx
+        lea ecx, [esi + 0x10]
+        push ecx
+        push edi
+        call FUN_00468410
+        movsx eax, word ptr [ebx]
+        add esp, 0x2c
+        inc eax
+        mov edx, eax
+        dec eax
+        test edx, edx
+        je L465c77
+        inc eax
+L465c70:
+        mov edx, dword ptr [esi]
+        add esi, edx
+        dec eax
+        jne L465c70
+L465c77:
+        mov ecx, dword ptr [DAT_007fe9a8]
+        mov edx, dword ptr [DrawClipExtent + 0x4]
+        mov eax, dword ptr [esi + 4]
+        push ecx
+        mov ecx, dword ptr [SpriteClipOrigin + 0x4]
+        push 0
+        push edx
+        mov edx, dword ptr [SpriteClipOrigin]
+        push ecx
+        mov ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        push edx
+        mov edx, dword ptr [DrawClipExtent]
+        push ecx
+        mov ecx, dword ptr [esi + 8]
+        lea eax, [eax + eax + 0x10]
+        push edx
+        add ecx, eax
+        add eax, esi
+        add ecx, esi
+        add esi, 0x10
+        push ecx
+        push eax
+        push esi
+        push edi
+        call FUN_00468410
+        add esp, 0x2c
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L465cc9:
+        mov ecx, dword ptr [ebp + 0x14]
+        test ecx, ecx
+        je L465cd7
+L465cd0:
+        mov ebx, dword ptr [esi]
+        add esi, ebx
+        dec ecx
+        jne L465cd0
+L465cd7:
+        mov edx, dword ptr [DAT_007fe9a8]
+        mov ecx, dword ptr [esi + 4]
+        push edx
+        mov edx, dword ptr [SpriteClipOrigin]
+        push 0
+        push eax
+        mov eax, dword ptr [SpriteClipOrigin + 0x4]
+        lea ecx, [ecx + ecx + 0x10]
+        push eax
+        mov eax, dword ptr [CurrentSurfaceDesc + 0x10]
+        push edx
+        mov edx, dword ptr [DrawClipExtent]
+        push eax
+        mov eax, dword ptr [esi + 8]
+        add eax, ecx
+        push edx
+        add eax, esi
+        add ecx, esi
+        push eax
+        add esi, 0x10
+        push ecx
+        push esi
+        push edi
+        call FUN_00468410
+        add esp, 0x2c
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L465d21:
+        mov ecx, dword ptr [ebp + 0x10]
+        mov edx, dword ptr [esi]
+        push ecx
+        push edi
+        push edx
+        call FUN_00465ee0
+        add esp, 0xc
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+L465d38:
+        test eax, eax
+        jne L465e0a
+        mov eax, dword ptr [esi]
+        mov dword ptr [DAT_007fea40], eax
+        movsx ecx, word ptr [esi + 8]
+        add ecx, 3
+        and ecx, 0xfffffffc
+        mov dword ptr [DAT_007fea1c], ecx
+        movsx edx, word ptr [esi + 0xa]
+        mov dword ptr [DAT_007fea14], edx
+        mov eax, dword ptr [esi + 4]
+        add eax, 4
+        mov dword ptr [DAT_007fea20], eax
+        pushad
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        add edi, dword ptr [eax]
+        add edi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add edi, ecx
+        mov eax, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [eax + 8]
+        sub edx, dword ptr [eax]
+        mov dword ptr [DAT_007fe9a4], edx
+        mov edx, dword ptr [eax + 0xc]
+        sub edx, dword ptr [eax + 4]
+        mov esi, dword ptr [DAT_007fea40]
+        add esi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [DAT_007fea1c]
+        add esi, ecx
+        mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        mov ebp, dword ptr [DAT_007fea1c]
+        sub ebp, dword ptr [DAT_007fe9a4]
+L465dcc:
+        mov ecx, dword ptr [DAT_007fe9a4]
+        push ebp
+        push ebx
+        mov ebx, dword ptr [DAT_007fea20]
+L465dda:
+        movzx eax, byte ptr [esi]
+        movzx eax, word ptr [ebx + eax*2]
+        mov ebp, eax
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L465df5
+        and ax, word ptr [DAT_007fe998]
+        mov word ptr [edi], ax
+L465df5:
+        inc esi
+        add edi, 2
+        loop L465dda
+        pop ebx
+        pop ebp
+        add esi, ebp
+        add edi, ebx
+        dec edx
+        jne L465dcc
+        popad
+        jmp L465eba
+L465e0a:
+        mov ecx, dword ptr [esi]
+        mov dword ptr [DAT_007fea40], ecx
+        movsx edx, word ptr [esi + 8]
+        shl edx, 1
+        mov dword ptr [DAT_007fea1c], edx
+        movsx eax, word ptr [esi + 0xa]
+        mov dword ptr [DAT_007fea14], eax
+        pushad
+        mov eax, dword ptr [ebp + 0x10]
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        add edi, dword ptr [eax]
+        add edi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
+        add edi, ecx
+        mov eax, dword ptr [ebp + 0xc]
+        mov edx, dword ptr [eax + 8]
+        sub edx, dword ptr [eax]
+        mov dword ptr [DAT_007fe9a4], edx
+        mov edx, dword ptr [eax + 0xc]
+        sub edx, dword ptr [eax + 4]
+        mov esi, dword ptr [DAT_007fea40]
+        add esi, dword ptr [eax]
+        add esi, dword ptr [eax]
+        mov ecx, dword ptr [eax + 4]
+        imul ecx, dword ptr [DAT_007fea1c]
+        add esi, ecx
+        mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        mov ebp, dword ptr [DAT_007fea1c]
+        sub ebp, dword ptr [DAT_007fe9a4]
+        sub ebp, dword ptr [DAT_007fe9a4]
+L465e8f:
+        mov ecx, dword ptr [DAT_007fe9a4]
+L465e95:
+        movzx eax, word ptr [esi]
+        cmp eax, dword ptr [StoredTransparentColour]
+        je L465eaa
+        and ax, word ptr [DAT_007fe998]
+        mov word ptr [edi], ax
+L465eaa:
+        add esi, 2
+        add edi, 2
+        loop L465e95
+        add esi, ebp
+        add edi, ebx
+        dec edx
+        jne L465e8f
+        popad
+L465eba:
+        mov ecx, dword ptr [ebp + 8]
+        test byte ptr [ecx + 0x10], 0x20
+        je L465ecf
+        lea edx, [ebp - 0x18]
+        push edx
+        call ReleaseSprite
+        add esp, 4
+L465ecf:
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00465ee0
 void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {

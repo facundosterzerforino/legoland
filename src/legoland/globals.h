@@ -562,6 +562,8 @@ extern float DAT_004ab4a0;
 extern double DAT_004ab4a8;
 // 0x004ab4b0
 extern double DAT_004ab4b0;
+// 0x004ab4b8
+extern float FLOAT_004ab4b8;
 // 0x004ab430
 extern float DAT_004ab430;
 // 0x004ab43c
@@ -1064,6 +1066,8 @@ extern int DAT_004b9610;
 extern int (*BlitFrameFunc)(void);
 // 0x004b9ca8
 extern unsigned int OverrideFrame;
+// 0x004b9d0c
+extern const char BltFastNoSpriteFmt[];
 // 0x004b9e5c
 extern unsigned int ScriptEventCategories[71];
 // 0x004b9f78
@@ -3519,6 +3523,8 @@ extern struct Sprite *PointerSprites[9];
 extern unsigned int DAT_007fea10;
 // 0x007fea30
 extern RECT WatchRect;
+// 0x007fea40
+extern unsigned int DAT_007fea40;
 // 0x007fea44
 extern unsigned int StoredTransparentColour;
 // 0x007fea48
@@ -4220,6 +4226,10 @@ extern char DAT_004b4cac[];
 // 0x00641000
 extern int DAT_00641000;
 
+// 0x00641004
+extern int DAT_00641004[3000];
+// 0x00643edc
+extern int DAT_00643edc[9131];
 // 0x0063810c
 extern int DAT_0063810c;
 

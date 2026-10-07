@@ -133,6 +133,9 @@ double DAT_004ab4a8;
 // GLOBAL: LEGOLAND 0x004ab4b0
 double DAT_004ab4b0;
 
+// GLOBAL: LEGOLAND 0x004ab4b8
+float FLOAT_004ab4b8;
+
 // GLOBAL: LEGOLAND 0x004ab430
 float DAT_004ab430;
 
@@ -870,6 +873,9 @@ int (*BlitFrameFunc)(void);
 
 // GLOBAL: LEGOLAND 0x004b9ca8
 unsigned int OverrideFrame;
+
+// GLOBAL: LEGOLAND 0x004b9d0c
+const char BltFastNoSpriteFmt[] = "BltFast:Sprite Not Available:%s\n";
 
 // GLOBAL: LEGOLAND 0x004b9e5c
 unsigned int ScriptEventCategories[71];
@@ -4544,6 +4550,9 @@ unsigned int DAT_007fea10;
 // GLOBAL: LEGOLAND 0x007fea30
 RECT WatchRect;
 
+// GLOBAL: LEGOLAND 0x007fea40
+unsigned int DAT_007fea40;
+
 // GLOBAL: LEGOLAND 0x007fea44
 unsigned int StoredTransparentColour;
 
@@ -5507,6 +5516,12 @@ char DAT_004b4cac[] = "manbox??";
 
 // GLOBAL: LEGOLAND 0x00641000
 int DAT_00641000;
+
+// GLOBAL: LEGOLAND 0x00641004
+int DAT_00641004[3000];
+
+// GLOBAL: LEGOLAND 0x00643edc
+int DAT_00643edc[9131];
 
 // GLOBAL: LEGOLAND 0x0063810c
 int DAT_0063810c;
