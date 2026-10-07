@@ -5820,8 +5820,12 @@ void FUN_00423200(int n, int x, struct RecIdx *idx, struct RecSrc *src) {
 
 // FUNCTION: LEGOLAND 0x004232b0
 void FUN_004232b0(struct RecBuf *rb) {
-    struct RecIdx idx[8];
-    struct RecSrc src[8];
+    /* The edge tables are one block: the fill reads the last line from the high half of src[n - 1].f0, and
+     * writes idx[n].v (src[0] when n == 8). */
+    struct {
+        struct RecIdx idx[8];
+        struct RecSrc src[8];
+    } poly;
     int n = rb->n;
     int i;
 
@@ -5830,18 +5834,18 @@ void FUN_004232b0(struct RecBuf *rb) {
         short w2 = rb->ent[i].w;
 
         if (w < 0) {
-            src[i].flag = 1;
-            idx[i].v = -w;
+            poly.src[i].flag = 1;
+            poly.idx[i].v = -w;
         } else {
-            src[i].flag = 0;
-            idx[i].v = w2;
+            poly.src[i].flag = 0;
+            poly.idx[i].v = w2;
         }
-        idx[i].k = i;
-        src[i].fx = rb->ent[i - 1].s0n << 16;
-        src[i].d = rb->ent[i].d;
+        poly.idx[i].k = i;
+        poly.src[i].fx = rb->ent[i - 1].s0n << 16;
+        poly.src[i].d = rb->ent[i].d;
     }
-    *(short *)((char *)idx + i * 0x30 + 0x12) = (short)(rb->x - 1);
-    FUN_00423350(n, idx, src);
+    ((short *)&poly.src[i - 1].f0)[1] = (short)(rb->x - 1);
+    FUN_00423350(n, poly.idx, poly.src);
 }
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
