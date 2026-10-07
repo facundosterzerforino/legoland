@@ -41,7 +41,7 @@ def parse_annotations(source_dir: Path) -> tuple[dict[int, tuple[str, str]], lis
             if marker.type in (MarkerType.FUNCTION, MarkerType.STUB):
                 starts.append(marker.offset)
             if marker.type == MarkerType.FUNCTION:
-                name = re.search(r"([A-Za-z_]\w*)\s*\(", lines[i + 1]).group(1)
+                name = re.search(r"([A-Za-z_]\w*)\s*\(", re.sub(r"__declspec\(\w+\)", "", lines[i + 1])).group(1)
                 annotations[marker.offset] = (src.stem, name)
     return annotations, sorted(set(starts))
 
