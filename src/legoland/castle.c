@@ -4235,13 +4235,35 @@ void FUN_00423480(struct ClearRect *r) {
 // FUNCTION: LEGOLAND 0x004234e0
 void FUN_004234e0(void *param1) { STUB(); }
 
-// Hand-written assembly in the original (ebp frame + fldcw, fstcw): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x004236f0
-unsigned short FUN_004236f0(void) { STUB(); }
+unsigned short FUN_004236f0(void) {
+    unsigned int control_word;
+    unsigned short replacement;
+    unsigned char exception_masks;
 
-// Hand-written assembly in the original (ebp frame + fldcw): not reproducible in pure C, left as STUB().
+    __asm {
+        fstcw word ptr control_word
+    }
+    exception_masks = control_word;
+    if ((control_word & 0x300) != 0 || (exception_masks & 0x3f) != 0x3f || (control_word & 0xc00) != 0) {
+        __asm {
+            mov ax, word ptr control_word
+            and ax, 0xfcff
+            or ax, 0x3f
+            and ax, 0xf3ff
+            mov replacement, ax
+            fldcw replacement
+        }
+    }
+    return control_word;
+}
+
 // FUNCTION: LEGOLAND 0x00423730
-unsigned short FUN_00423730(unsigned short control_word) { STUB(); }
+void FUN_00423730(unsigned short control_word) {
+    __asm {
+        fldcw control_word
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00423740
 void FUN_00423740(void) {
