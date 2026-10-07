@@ -83,29 +83,35 @@ int FUN_00451f70(void) {
 // FUNCTION: LEGOLAND 0x00452030
 void FUN_00452030(void) {
     int bValidate;
-    struct ObjClass *cls;
-    int v74;
-    int v78;
-    int v7c;
-    int v80;
     int local_14;
     int local_10;
     int local_c;
     int local_8;
     int iVar5;
+    int v78;
+    int v80;
+    int v74;
+    int v7c;
+    struct ObjClass *cls;
 
     bValidate = 0;
     if ((GamePad & 0x800) != 0) {
-        if (abs((int)(DAT_00813a78 - DAT_00813a80)) < abs((int)(DAT_00813a74 - DAT_00813a7c))) {
-            DAT_00813a80 = DAT_00813a78;
+        v78 = DAT_00813a78;
+        v80 = DAT_00813a80;
+        v74 = DAT_00813a74;
+        v7c = DAT_00813a7c;
+        if (abs(v78 - v80) < abs(v74 - v7c)) {
+            DAT_00813a80 = v78;
         } else {
-            DAT_00813a7c = DAT_00813a74;
+            DAT_00813a7c = v74;
+            v7c = v74;
         }
+    } else {
+        v74 = DAT_00813a74;
+        v7c = DAT_00813a7c;
+        v78 = DAT_00813a78;
+        v80 = DAT_00813a80;
     }
-    v74 = DAT_00813a74;
-    v7c = DAT_00813a7c;
-    v78 = DAT_00813a78;
-    v80 = DAT_00813a80;
     if (EditMode.unk0 == 2) {
         local_14 = v7c;
         if (v74 < v7c) {

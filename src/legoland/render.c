@@ -3114,14 +3114,50 @@ void FUN_00488700(unsigned int base, struct RenderViewport *vp) {
     DAT_007fe9a8 = base + (vp->y * DAT_00701e58) + (vp->x * 2);
 }
 
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00488730
-unsigned short FUN_00488730(unsigned int p1, unsigned int p2, unsigned int p3) {
-    struct TextureDesc *desc = (struct TextureDesc *)DAT_0066b630;
-    unsigned int u = (unsigned int)((unsigned __int64)(desc->width - 1) * (p1 & 0xffff) >> 0x10);
-    unsigned int v = (unsigned int)((unsigned __int64)(desc->height - 1) * (p2 & 0xffff) >> 0x10);
-    unsigned int idx = (v << desc->shift) + u;
-    struct TextureFrame *frame = desc->frame_table[desc->index_map[idx]];
-    return frame->data[(p3 - ((p3 >> 0x10 & 1) != 0)) >> 10];
+__declspec(naked) unsigned short FUN_00488730(unsigned int p1, unsigned int p2, unsigned int p3) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        push ecx
+        push ebx
+        mov ebx, dword ptr [DAT_0066b630]
+        mov eax, dword ptr [ebx]
+        dec eax
+        mov ecx, dword ptr [ebp + 8]
+        and ecx, 0xffff
+        mul ecx
+        shrd eax, edx, 0x10
+        mov ecx, eax
+        mov eax, dword ptr [ebx + 4]
+        dec eax
+        mov edx, dword ptr [ebp + 0xc]
+        and edx, 0xffff
+        mul edx
+        shrd eax, edx, 0x10
+        mov edx, ecx
+        mov ecx, dword ptr [ebx + 8]
+        shl eax, cl
+        add eax, edx
+        mov edx, dword ptr [ebx + 0xc]
+        mov ebx, dword ptr [ebx + 0x10]
+        movzx edx, byte ptr [edx + eax]
+        mov ebx, dword ptr [ebx + edx*4]
+        mov ebx, dword ptr [ebx + 4]
+        mov eax, dword ptr [ebp + 0x10]
+        mov ecx, eax
+        shr ecx, 0x11
+        sbb eax, 0
+        shr eax, 0xa
+        movzx eax, word ptr [ebx + eax*2]
+        mov dword ptr [ebp - 4], eax
+        mov ax, word ptr [ebp - 4]
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
+    }
 }
 
 // FUNCTION: LEGOLAND 0x004887a0

@@ -1600,22 +1600,44 @@ L4651bd:
 // The original fills the rows with an inline __asm block (pusha; rep stosw per row; popa) that
 // reads its loop bounds from the globals below. This is the C equivalent: same effect, but it
 // cannot byte-match without __asm.
+// Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004651d0
-LEGO_EXPORT void SoftPrint_Clear(void) {
-    unsigned short colour = GetTransparentColour();
-    unsigned short *row;
-    int y;
-    int x;
-
-    DAT_007fea14 = CurrentSurfaceDesc.dwHeight;
-    DAT_007fea1c = CurrentSurfaceDesc.dwWidth;
-    DAT_007fe9a4 = DAT_007fea1c;
-    row = CurrentSurfaceDesc.lpSurface;
-    for (y = DAT_007fea14; y != 0; y--) {
-        for (x = 0; x < DAT_007fe9a4; x++) {
-            row[x] = colour;
-        }
-        row = (unsigned short *)((char *)row + CurrentSurfaceDesc.lPitch);
+__declspec(naked) LEGO_EXPORT void SoftPrint_Clear(void) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        push ecx
+        push ebx
+        push esi
+        push edi
+        call GetTransparentColour
+        mov ecx, dword ptr [CurrentSurfaceDesc + 0x8]
+        mov dword ptr [ebp - 4], eax
+        mov eax, dword ptr [CurrentSurfaceDesc + 0xc]
+        mov dword ptr [DAT_007fea14], ecx
+        mov dword ptr [DAT_007fea1c], eax
+        pushad
+        mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
+        mov edx, dword ptr [DAT_007fea1c]
+        mov dword ptr [DAT_007fe9a4], edx
+        mov edx, dword ptr [DAT_007fea14]
+        mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [DAT_007fe9a4]
+        mov eax, dword ptr [ebp - 4]
+L465223:
+        mov ecx, dword ptr [DAT_007fe9a4]
+        rep stosw
+        add edi, ebx
+        dec edx
+        jne L465223
+        popad
+        pop edi
+        pop esi
+        pop ebx
+        mov esp, ebp
+        pop ebp
+        ret
     }
 }
 
