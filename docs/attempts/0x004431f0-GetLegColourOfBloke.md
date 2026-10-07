@@ -4,13 +4,17 @@
 
 ## What still differs
 
-- The original zeroes both accumulators (`xor ecx,ecx` and `xor edx,edx`) before dereferencing `param_1->field_4`; ours zeroes one after it. The byte stores are `mov ch,R` / `mov dl,B` / `mov cl,G`, which suggests a source form that keeps both accumulators live from the start.
+- Only a register swap: the original builds R/G in `ecx` (`mov ch,R` / `mov cl,G`) and B in `edx`, zeroing both before dereferencing `param_1->field_4` (loaded via `eax`); ours builds R/G in `edx`, B in `cl`, and loads `field_4` via `ecx`. Every instruction shifts with it, hence 25%.
 
 ## Tried (don't repeat)
 
 | Date | Who | Change | Result |
 |---|---|---|---|
 | 2026-10-07 r2 | Haiku agent | About eight variants, including byte-combining `|=` / `<<=` | no change |
+| 2026-10-07 | Claude | Return the expression directly, no r/g/b locals | no change (25%) |
+| 2026-10-07 | Claude | `unsigned char` r/g/b locals | no change (25%) |
+| 2026-10-07 | Claude | r, g, b declared and loaded in that order | no change (25%) |
+| 2026-10-07 | Claude | One accumulator: `c = r; c = c << 8 | g; c = c << 8 | b` | no change (25%) |
 
 ## Ideas not tried yet
 

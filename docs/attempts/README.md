@@ -27,9 +27,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
   original uses the 4-byte form, the function comes out shorter and every later jump shifts. Emit those
   instructions as raw bytes with `_emit` (RenderTransSprite).
 - **reccmp false positives:** a constant that falls inside a data symbol's range in only one of the two
-  images used to show as a diff on a byte-identical line; `tools/reccmp_fixes.py` handles that now
-  (`decomp-tips.md`). Loop-end pointers and other addresses that really differ between the two layouts still
-  show as diffs.
+  images shows as a diff on a byte-identical line (`decomp-tips.md`).
 
 ## Index
 
@@ -65,4 +63,3 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00465850 | [FUN_00465850](0x00465850-FUN_00465850.md) | draw.c | 34.23% |
 | 0x0046f9a0 | [FUN_0046f9a0](0x0046f9a0-FUN_0046f9a0.md) | icon.c | 41.45% |
 | 0x00471ca0 | [RemoveNewObject](0x00471ca0-RemoveNewObject.md) | popupinfo.c | 63.16% |
-| 0x00485fe0 | [FUN_00485fe0](0x00485fe0-FUN_00485fe0.md) | print_sprite.c | 77.03% |
