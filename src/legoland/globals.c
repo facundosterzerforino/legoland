@@ -256,6 +256,18 @@ unsigned char Catapult_SFX[0x70];
 // GLOBAL: LEGOLAND 0x004b4140
 unsigned char Helicopter_SFX[0x70];
 
+// GLOBAL: LEGOLAND 0x004b42a0
+int DAT_004b42a0[3] = {0, 1, 2};
+
+// GLOBAL: LEGOLAND 0x004b42ac
+int DAT_004b42ac[3] = {0, 2, 1};
+
+// GLOBAL: LEGOLAND 0x004b42b8
+int DAT_004b42b8[3] = {1, -1, -1};
+
+// GLOBAL: LEGOLAND 0x004b42c4
+int DAT_004b42c4[3] = {-1, 1, 1};
+
 // GLOBAL: LEGOLAND 0x004b43f8
 unsigned char DRIVING_SCHOOL_SFX[0xa8];
 

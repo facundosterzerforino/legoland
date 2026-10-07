@@ -20,6 +20,7 @@
 #include "path_control.h"
 #include "print_sprite.h"
 #include "render3d.h"
+#include "screens.h"
 #include "tilemap.h"
 #include "timer.h"
 

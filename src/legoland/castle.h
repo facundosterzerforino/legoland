@@ -307,4 +307,3 @@ void FUN_00426560(struct FVec3 *dir, struct FVec3 *basis);
 unsigned int FUN_00428840(unsigned int param_1);
 void FUN_0042a2f0(void);
 unsigned int GetLtxFileTableEntry(unsigned int param);
-int _ftol();

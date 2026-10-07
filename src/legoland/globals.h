@@ -4409,3 +4409,11 @@ extern int DAT_004b8a88;
 extern int DAT_004b8a8c;
 // 0x004b8a90
 extern int DAT_004b8a90;
+// 0x004b42a0
+extern int DAT_004b42a0[3];
+// 0x004b42ac
+extern int DAT_004b42ac[3];
+// 0x004b42b8
+extern int DAT_004b42b8[3];
+// 0x004b42c4
+extern int DAT_004b42c4[3];

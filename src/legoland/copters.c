@@ -553,9 +553,80 @@ void CoptersAddObject(Element *obj, int *coords) {
     CoptersAddNode((struct CopterSource *)&tile);
 }
 
-// Hand-written assembly in the original (ebp frame + fistp): not reproducible in pure C, left as STUB().
 // FUNCTION: LEGOLAND 0x00404630
-void FUN_00404630(struct CopterNode *node, int index) { STUB(); }
+void FUN_00404630(struct CopterNode *node, volatile int index) {
+    struct Point p2;
+    struct Point p3;
+    struct Point p1;
+    struct Point base;
+    struct CopterLayer *entry;
+    struct Sprite *sprite;
+    struct PosFrame *frame;
+    struct Person *person;
+    float scale;
+    int layer;
+    int s;
+    int i;
+    int j;
+    int r;
+
+    entry = &node->layer[index];
+    base = GetScreenCoordsForObject((TileId *)node, ActiveCopterRide);
+    if (entry->rider != NULL) {
+        s = entry->active_layer;
+        layer = 1;
+        switch (index) {
+        case 0:
+            layer = 0;
+            index = 0xeb;
+            break;
+        case 1:
+            layer = 1;
+            index = 0xe6;
+            break;
+        case 2:
+            layer = 2;
+            index = 0xe6;
+            break;
+        case 3:
+            layer = 3;
+            index = 0xd7;
+            break;
+        case 4:
+            layer = 4;
+            index = 0xe1;
+            break;
+        }
+        p1 = GetRenderOffsetForLayer(CopterModelLayers, s);
+        sprite = GetSpriteForLayer(CopterModelLayers, s);
+        AdjustOffsetForViewMode(&p1);
+        p2.y = (int)CoptersPos->entries[layer][entry->frame].pos[1] + index;
+        AdjustOffsetForViewMode(&p2);
+        p2.x = sprite->width >> 1;
+        p3.x = base.x + p1.x + p2.x;
+        p3.y = base.y + p1.y + p2.y;
+        AdjustBlokePosition(&p3);
+        person = entry->rider->person;
+        SetPersonPosition(person, p3.x, p3.y);
+        scale = 65536.0f;
+        frame = &CoptersPos->entries[layer][entry->frame];
+        frame->mat[2][0] = frame->mat[0][2] * frame->mat[1][1] - frame->mat[1][2] * frame->mat[0][1];
+        frame->mat[2][1] = frame->mat[1][2] * frame->mat[0][0] - frame->mat[1][0] * frame->mat[0][2];
+        frame->mat[2][2] = frame->mat[1][0] * frame->mat[0][1] - frame->mat[0][0] * frame->mat[1][1];
+        for (i = 0; i < 3; i++) {
+            r = DAT_004b42a0[i];
+            for (j = 0; j < 3; j++) {
+                *(float *)&index = CoptersPos->entries[layer][entry->frame].mat[r][DAT_004b42ac[j]];
+                __asm {
+                fld dword ptr index
+                fmul scale
+                fistp index
+                }
+                person->m[j * 3 + i] = DAT_004b42b8[j] * DAT_004b42c4[r] * index;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00404860
 void CoptersAnimateLayer(struct CopterNode *node, int index) {
