@@ -16,6 +16,7 @@ os.environ["PATH"] = str(TOOLS_DIR) + os.pathsep + os.environ.get("PATH", "")
 
 import capstone
 from capstone import x86
+import reccmp_fixes  # noqa: F401  (project fix for a reccmp false positive; see the module)
 from reccmp.compare.core import Compare
 from reccmp.parser.marker import MarkerType, match_marker
 from reccmp.project.detect import RecCmpProject

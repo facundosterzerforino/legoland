@@ -1681,7 +1681,7 @@ L440fc9:
         test edi, edi
         mov dword ptr [ebp - 0x28], esi
         jle L441071
-        mov edx, 0x643ef0
+        mov edx, offset DAT_00643edc + 0x14
         mov ebx, edi
 L44105a:
         mov eax, dword ptr [edx]
@@ -1713,8 +1713,8 @@ L441071:
         test edi, edi
         jle L44115d
         mov ecx, dword ptr [ebp - 0x20]
-        mov edi, 0x641004
-        mov esi, 0x643ef0
+        mov edi, offset DAT_00641004
+        mov esi, offset DAT_00643edc + 0x14
         mov dword ptr [ebp - 0x5c], ecx
 L4410ae:
         mov eax, dword ptr [esi]
