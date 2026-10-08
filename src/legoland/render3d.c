@@ -828,7 +828,7 @@ unsigned char *Get3DDataListString(char *param_1, int param_2, volatile int para
 // FUNCTION: LEGOLAND 0x00442980
 void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) {
     int idx = 0;
-    int count1;
+    unsigned int count1;
     int count2;
     char *list_mid;
     char *list1;
@@ -851,12 +851,12 @@ void FUN_00442980(const char *param_1, const char *param_2, const char *param_3,
     int r;
 
     data = (char *)Load3DDataFile(param_3, param_1);
-    if (data != NULL) {
+    if (NULL != data) {
         name = data;
         p = data + strlen(data) + 1;
-        count1 = *(int *)p;
         list1 = p + 4;
-        if (count1 != 0) {
+        count1 = *(int *)p;
+        if (0 != count1) {
             q = list1;
             do {
                 q = q + strlen(q) + 1;
@@ -896,8 +896,8 @@ void FUN_00442980(const char *param_1, const char *param_2, const char *param_3,
         RES_ReadLine(file, line, 512);
         if (RES_ReadLine(file, line, 512) != NULL) {
             do {
-                p = line;
                 dst = path;
+                p = line;
                 do {
                     c = (char)tolower(*p);
                     p++;

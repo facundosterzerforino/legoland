@@ -44,6 +44,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00408f90 | [FUN_00408f90](0x00408f90-FUN_00408f90.md) | log_flume.c | 40.96% |
 | 0x004092b0 | [FUN_004092b0](0x004092b0-FUN_004092b0.md) | log_flume.c | 84.62% |
 | 0x0040a600 | [LogFlumeEntranceAddObject](0x0040a600-LogFlumeEntranceAddObject.md) | log_flume.c | 80.40% |
+| 0x0040a930 | [LogFlumeEntranceCalcCursor](0x0040a930-LogFlumeEntranceCalcCursor.md) | log_flume.c | 67.36% |
 | 0x0040abf0 | [LogFlumeEntranceRemoveObject](0x0040abf0-LogFlumeEntranceRemoveObject.md) | log_flume.c | 95.10% |
 | 0x0040ae90 | [FUN_0040ae90](0x0040ae90-FUN_0040ae90.md) | log_flume.c | 45.11% |
 | 0x0040bab0 | [FUN_0040bab0](0x0040bab0-FUN_0040bab0.md) | log_flume.c | 44.09% |
@@ -88,6 +89,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0042fbb0 | [Restaurant2Update](0x0042fbb0-Restaurant2Update.md) | eatery.c | 41.89% |
 | 0x004304e0 | [RenderEateryBaseLayers](0x004304e0-RenderEateryBaseLayers.md) | eatery.c | 87.10% |
 | 0x00430b10 | [RenderRestaurant2](0x00430b10-RenderRestaurant2.md) | eatery.c | 97.36% |
+| 0x004316f0 | [OctopusCafeUpdate](0x004316f0-OctopusCafeUpdate.md) | eatery.c | 60.85% |
 | 0x00433840 | [JungleCruiseBuildStepPath](0x00433840-JungleCruiseBuildStepPath.md) | jungle_cruise.c | 83.61% |
 | 0x00437260 | [SearchJunglePathConnected](0x00437260-SearchJunglePathConnected.md) | jungle_cruise.c | 38.41% |
 | 0x00438f10 | [SaloonUpdate](0x00438f10-SaloonUpdate.md) | western_town.c | 73.79% |
@@ -105,6 +107,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00441d60 | [RenderUsingRin](0x00441d60-RenderUsingRin.md) | render3d.c | 100% |
 | 0x00441f20 | [LoadPalette](0x00441f20-LoadPalette.md) | render3d.c | 81.00% |
 | 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 41.17% |
+| 0x00442980 | [FUN_00442980](0x00442980-FUN_00442980.md) | render3d.c | 60.78% |
 | 0x00442cc0 | [GetScreenCoordsForObject](0x00442cc0-GetScreenCoordsForObject.md) | render3d.c | 79.01% |
 | 0x004431f0 | [GetLegColourOfBloke](0x004431f0-GetLegColourOfBloke.md) | render3d.c | 25.00% |
 | 0x00443220 | [GetArmColourOfBloke](0x00443220-GetArmColourOfBloke.md) | render3d.c | 25.00% |
@@ -129,6 +132,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00457970 | [FUN_00457970](0x00457970-FUN_00457970.md) | bricks.c | 87.80% |
 | 0x00457a70 | [FUN_00457a70](0x00457a70-FUN_00457a70.md) | bricks.c | 100% effective match (reccmp), bytes still differ |
 | 0x00459970 | [FUN_00459970](0x00459970-FUN_00459970.md) | gamemap.c | 94.83% |
+| 0x0045a4a0 | [CalculateMapRenderOrder](0x0045a4a0-CalculateMapRenderOrder.md) | gamemap.c | 62.28% |
 | 0x0045acc0 | [GetTileBounds](0x0045acc0-GetTileBounds.md) | tilemap.c | 28.30% |
 | 0x0045ad60 | [GetTileCentre](0x0045ad60-GetTileCentre.md) | tilemap.c | 93.02% |
 | 0x0045ade0 | [FUN_0045ade0](0x0045ade0-FUN_0045ade0.md) | tilemap.c | 43.41% |
@@ -155,6 +159,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00465850 | [FUN_00465850](0x00465850-FUN_00465850.md) | draw.c | 34.23% |
 | 0x00465ee0 | [FUN_00465ee0](0x00465ee0-FUN_00465ee0.md) | draw.c | 84.56% |
 | 0x00466560 | [PushSetTarget](0x00466560-PushSetTarget.md) | draw.c | 85.71% |
+| 0x00466770 | [FUN_00466770](0x00466770-FUN_00466770.md) | draw.c | 75.06% |
 | 0x00469c80 | [ScriptEventClear](0x00469c80-ScriptEventClear.md) | objectives.c | 94.32% |
 | 0x0046a140 | [FUN_0046a140](0x0046a140-FUN_0046a140.md) | nerps.c | 100% |
 | 0x0046a5b0 | [ScriptEventNeedIn](0x0046a5b0-ScriptEventNeedIn.md) | nerps.c | 74.32% |
@@ -183,9 +188,11 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 96.75% |
 | 0x0048ad00 | [InitFreePlayLists](0x0048ad00-InitFreePlayLists.md) | freeplay.c | 100% |
 | 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 82.76% |
+| 0x0048cf10 | [PrintProfileDetails](0x0048cf10-PrintProfileDetails.md) | profile.c | 61.11% |
 | 0x0048dd00 | [PrintSavedGameDetails](0x0048dd00-PrintSavedGameDetails.md) | savegame_ui.c | 92.33% |
 | 0x0048e550 | [EnterSaveGameDetails](0x0048e550-EnterSaveGameDetails.md) | savegame_ui.c | 84.10% |
 | 0x004921c0 | [ConvertWaveToPcm16](0x004921c0-ConvertWaveToPcm16.md) | sound_sfx.c | 92.26% |
 | 0x00492380 | [CreateSampleFromWAV](0x00492380-CreateSampleFromWAV.md) | sound_sfx.c | 97.49% |
+| 0x004966a0 | [FUN_004966a0](0x004966a0-FUN_004966a0.md) | sound_music.c | 64.15% |
 | 0x00498420 | [SpeechParseWavHeader](0x00498420-SpeechParseWavHeader.md) | stream.c | 93.19% |
 | 0x0049a7f0 | [Mechanic_Build](0x0049a7f0-Mechanic_Build.md) | worker.c | 96.15% |

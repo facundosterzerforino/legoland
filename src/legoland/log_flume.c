@@ -1688,12 +1688,16 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
 // FUNCTION: LEGOLAND 0x0040a930
 void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_3) {
     struct Ride *ride;
+    register int x;
     int h;
-    int x;
-    int y;
+    unsigned int y;
 
+    unsigned int fy0;
+    int fx0;
+    int fy1;
     ride = elem->ride;
-    h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
+    fy1 = LogFlumeFootprint.y1;
+    h = fy1 - LogFlumeFootprint.y0;
 
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
     DefaultCursor(&EditCursor);
@@ -1707,7 +1711,7 @@ void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_
     DAT_004c2c18.next = &PathCursor;
     PathCursor.next = NULL;
     PathCursor.footprint.x1 = EditCursor.footprint.x1 + 1;
-    PathCursor.footprint.y1 = EditCursor.footprint.y1 + 1;
+    PathCursor.footprint.y1 = 1 + EditCursor.footprint.y1;
     PathCursor.footprint.next = NULL;
     PathCursor.field_1828 = 0x1000;
     FUN_0045f460(&PathCursor);
@@ -1715,10 +1719,12 @@ void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_
     DAT_004c8d78.footprint.x1 = LogFlumeFootprint.x1 - 1;
     DAT_004c8d78.footprint.y1 = DAT_004c8d78.footprint.y1 - 1;
     FUN_0045f460(&DAT_004c8d78);
-    x = EditCursor.tile_x;
     y = EditCursor.tile_y;
-    DAT_004c8d78.tile_x = LogFlumeEntranceRide->footprint.x0 + x;
-    DAT_004c8d78.tile_y = LogFlumeEntranceRide->footprint.y0 + y - h;
+    x = EditCursor.tile_x;
+    fx0 = LogFlumeEntranceRide->footprint.x0;
+    DAT_004c8d78.tile_x = fx0 + x;
+    fy0 = LogFlumeEntranceRide->footprint.y0;
+    DAT_004c8d78.tile_y = fy0 + y - h;
     DAT_004c8d78.tile_x++;
     DAT_004c2c18.tile_x = LogFlumeEntranceRide->footprint.x0 + x;
     DAT_004c2c18.tile_y = LogFlumeEntranceRide->footprint.y1 + y - 1 + h;
