@@ -1,4 +1,4 @@
-# FUN_00438f10 (0x00438f10, `src/legoland/western_town.c`)
+# SaloonUpdate (0x00438f10, `src/legoland/western_town.c`)
 
 **Best: 73.79%**
 

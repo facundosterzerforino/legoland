@@ -5060,7 +5060,7 @@ void FUN_00421e40(struct Struct1e40 *ptr1, float multiplier, struct Floats3 *ptr
 }
 
 // FUNCTION: LEGOLAND 0x00421e90
-void FUN_00421e90(float x0, float y0, float x1, float y1) {
+void SubdivideCurveAtMaxError(float x0, float y0, float x1, float y1) {
     float roots[2];
     float b;
     float by;
@@ -5105,8 +5105,8 @@ void FUN_00421e90(float x0, float y0, float x1, float y1) {
     if (fabs(best) > 1.0) {
         *DAT_004dd64c++ = bx;
         DAT_004dd650++;
-        FUN_00421e90(x0, y0, bx, by);
-        FUN_00421e90(bx, by, x1, y1);
+        SubdivideCurveAtMaxError(x0, y0, bx, by);
+        SubdivideCurveAtMaxError(bx, by, x1, y1);
     }
 }
 
@@ -5124,7 +5124,7 @@ int FUN_00422000(struct Struct1e40 *o, float *out) {
     DAT_004dd64c++;
     *DAT_004dd64c = o->t_end;
     DAT_004dd64c++;
-    FUN_00421e90(o->t_start, ((o->t_start * o->coef_t3 + o->coef_t2) * o->t_start + o->coef_t1) * o->t_start + o->coef_t0, o->t_end, ((o->t_end * o->coef_t3 + o->coef_t2) * o->t_end + o->coef_t1) * o->t_end + o->coef_t0);
+    SubdivideCurveAtMaxError(o->t_start, ((o->t_start * o->coef_t3 + o->coef_t2) * o->t_start + o->coef_t1) * o->t_start + o->coef_t0, o->t_end, ((o->t_end * o->coef_t3 + o->coef_t2) * o->t_end + o->coef_t1) * o->t_end + o->coef_t0);
     for (i = DAT_004dd650 - 1; i >= 0; i--) {
         for (j = 0; j < i; j++) {
             if (out[j] > out[j + 1]) {

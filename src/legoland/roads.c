@@ -268,7 +268,7 @@ int FUN_004135d0(int x, int y, struct NeighborResult *out) {
 }
 
 // FUNCTION: LEGOLAND 0x00413650
-void FUN_00413650(unsigned short param_1, int param_2, int param_3) {
+void UpdateQueuePathShape(unsigned short param_1, int param_2, int param_3) {
     struct NeighborResult r;
     struct RideQueueEntry *e;
     int count = 0;
@@ -493,7 +493,7 @@ void DrivingSchoolRoadsSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00413b50
-void FUN_00413b50(Element *obj, int *param_2, unsigned int param_3) {
+void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param_3) {
     unsigned int bits;
     struct Ride *ride = obj->ride;
     struct RoadTile *t;
@@ -647,7 +647,7 @@ void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00414020
-void FUN_00414020(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
+void DrivingSchoolRoadsAddObject(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
     struct NeighborResult r;
     struct RoadQueueEntry **q = (struct RoadQueueEntry **)&r;
     TileId id;
@@ -665,17 +665,17 @@ void FUN_00414020(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
         id.id = r.field_18->field_8;
     }
     FUN_004132a0(id, x, y, 0, 0);
-    FUN_00413650(id.id, x, y);
+    UpdateQueuePathShape(id.id, x, y);
     FUN_00405310(id);
     FUN_00413450(x, y, (struct RideQueueEntry **)&r);
-    if (q[0] && q[0]->field_8 == id.id && (q[0]->field_14 & 0xf) != 6) FUN_00413650(id.id, x, y - 4);
-    if (q[1] && q[1]->field_8 == id.id && (q[1]->field_14 & 0xf) != 6) FUN_00413650(id.id, x + 4, y - 4);
-    if (q[2] && q[2]->field_8 == id.id && (q[2]->field_14 & 0xf) != 6) FUN_00413650(id.id, x + 4, y);
-    if (q[3] && q[3]->field_8 == id.id && (q[3]->field_14 & 0xf) != 6) FUN_00413650(id.id, x + 4, y + 4);
-    if (q[4] && q[4]->field_8 == id.id && (q[4]->field_14 & 0xf) != 6) FUN_00413650(id.id, x, y + 4);
-    if (q[5] && q[5]->field_8 == id.id && (q[5]->field_14 & 0xf) != 6) FUN_00413650(id.id, x - 4, y + 4);
-    if (q[6] && q[6]->field_8 == id.id && (q[6]->field_14 & 0xf) != 6) FUN_00413650(id.id, x - 4, y);
-    if (q[7] && q[7]->field_8 == id.id && (q[7]->field_14 & 0xf) != 6) FUN_00413650(id.id, x - 4, y - 4);
+    if (q[0] && q[0]->field_8 == id.id && (q[0]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x, y - 4);
+    if (q[1] && q[1]->field_8 == id.id && (q[1]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x + 4, y - 4);
+    if (q[2] && q[2]->field_8 == id.id && (q[2]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x + 4, y);
+    if (q[3] && q[3]->field_8 == id.id && (q[3]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x + 4, y + 4);
+    if (q[4] && q[4]->field_8 == id.id && (q[4]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x, y + 4);
+    if (q[5] && q[5]->field_8 == id.id && (q[5]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x - 4, y + 4);
+    if (q[6] && q[6]->field_8 == id.id && (q[6]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x - 4, y);
+    if (q[7] && q[7]->field_8 == id.id && (q[7]->field_14 & 0xf) != 6) UpdateQueuePathShape(id.id, x - 4, y - 4);
     FUN_00406020(id.id, 1);
     IncrementObjectCount((struct ObjectCount *)edit->ride);
 }
@@ -696,7 +696,7 @@ void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor) {
         IncrementObjectCount((struct ObjectCount *)edit->data);
         DecrementObjectCount((struct ObjectCount *)ZebraCrossingRide);
         entry->field_14 &= 0xef;
-        FUN_00413650(tile.id, x, y);
+        UpdateQueuePathShape(tile.id, x, y);
         AddBricks(GetObjCost((struct Ride *)ZebraCrossingRide));
         return;
     }
@@ -705,14 +705,14 @@ void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor) {
     FUN_00405310(tile);
     FUN_004135d0(x, y, &r);
     FUN_00413450(x, y, (struct RideQueueEntry **)&r);
-    if (q[0] && q[0]->field_8 == tile.id && (q[0]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x, y - 4);
-    if (q[1] && q[1]->field_8 == tile.id && (q[1]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x + 4, y - 4);
-    if (q[2] && q[2]->field_8 == tile.id && (q[2]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x + 4, y);
-    if (q[3] && q[3]->field_8 == tile.id && (q[3]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x + 4, y + 4);
-    if (q[4] && q[4]->field_8 == tile.id && (q[4]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x, y + 4);
-    if (q[5] && q[5]->field_8 == tile.id && (q[5]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x - 4, y + 4);
-    if (q[6] && q[6]->field_8 == tile.id && (q[6]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x - 4, y);
-    if (q[7] && q[7]->field_8 == tile.id && (q[7]->field_14 & 0xf) != 6) FUN_00413650(tile.id, x - 4, y - 4);
+    if (q[0] && q[0]->field_8 == tile.id && (q[0]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x, y - 4);
+    if (q[1] && q[1]->field_8 == tile.id && (q[1]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x + 4, y - 4);
+    if (q[2] && q[2]->field_8 == tile.id && (q[2]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x + 4, y);
+    if (q[3] && q[3]->field_8 == tile.id && (q[3]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x + 4, y + 4);
+    if (q[4] && q[4]->field_8 == tile.id && (q[4]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x, y + 4);
+    if (q[5] && q[5]->field_8 == tile.id && (q[5]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x - 4, y + 4);
+    if (q[6] && q[6]->field_8 == tile.id && (q[6]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x - 4, y);
+    if (q[7] && q[7]->field_8 == tile.id && (q[7]->field_14 & 0xf) != 6) UpdateQueuePathShape(tile.id, x - 4, y - 4);
 }
 
 // FUNCTION: LEGOLAND 0x00414440
@@ -833,7 +833,7 @@ void ZebraCrossingSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00414880
-void FUN_00414880(struct RoadEditArg *param_1, unsigned int param_2, unsigned int param_3) {
+void ZebraCrossingCalcCursor(struct RoadEditArg *param_1, unsigned int param_2, unsigned int param_3) {
     void *obj = param_1->ride;
     struct RoadTile *tile;
     int cost;
@@ -871,14 +871,14 @@ void InitZebraCrossing(struct RoadEditArg *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00414950
-void FUN_00414950(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
+void ZebraCrossingAddObject(struct RoadEditArg *edit, struct RoadPlaceArg *place) {
     struct NeighborResult r;
     struct RoadTile *tile = (struct RoadTile *)FUN_004125a0(place->x, place->y);
 
     if (tile != NULL) {
         FUN_004135d0(place->x, place->y, &r);
         tile->flags |= 0x10;
-        FUN_00413650(*(short *)((char *)tile + 8), place->x, place->y);
+        UpdateQueuePathShape(*(short *)((char *)tile + 8), place->x, place->y);
         tile->field_1d = 0;
         tile->field_1c = 0;
         IncrementObjectCount((struct ObjectCount *)edit->ride);

@@ -1,4 +1,4 @@
-﻿# FUN_00421e90 (0x00421e90, `src/legoland/castle.c`)
+﻿# SubdivideCurveAtMaxError (0x00421e90, `src/legoland/castle.c`)
 
 **Best: 99.09%** (kept). Kind: C.
 

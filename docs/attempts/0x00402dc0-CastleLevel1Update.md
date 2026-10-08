@@ -1,4 +1,4 @@
-# FUN_00402dc0 (0x00402dc0, `src/legoland/castle_level.c`)
+# CastleLevel1Update (0x00402dc0, `src/legoland/castle_level.c`)
 
 **Best: 85.88%**. Kind: C.
 

@@ -1,4 +1,4 @@
-# FUN_00413650 (0x00413650, `src/legoland/roads.c`)
+# UpdateQueuePathShape (0x00413650, `src/legoland/roads.c`)
 
 **Best: 97.18%** (unchanged from start). Kind: C.
 

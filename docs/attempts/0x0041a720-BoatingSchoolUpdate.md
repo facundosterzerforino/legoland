@@ -1,4 +1,4 @@
-# FUN_0041a720 (0x0041a720, `src/legoland/boating_school.c`)
+# BoatingSchoolUpdate (0x0041a720, `src/legoland/boating_school.c`)
 
 **Best: 96.58%**. Kind: C.
 

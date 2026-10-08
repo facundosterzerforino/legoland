@@ -1,4 +1,4 @@
-# FUN_00439ef0 (0x00439ef0, `src/legoland/shops.c`)
+# LegoMediaShopUpdate (0x00439ef0, `src/legoland/shops.c`)
 
 **Best: 80.11%**. Kind: C.
 

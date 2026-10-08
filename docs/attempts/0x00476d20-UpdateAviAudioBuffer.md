@@ -1,4 +1,4 @@
-# FUN_00476d20 (0x00476d20, `src/legoland/interface.c`)
+# UpdateAviAudioBuffer (0x00476d20, `src/legoland/interface.c`)
 
 **Best: 97.69%** (start version, unchanged). Kind: C.
 

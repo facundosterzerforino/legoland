@@ -1,4 +1,4 @@
-# FUN_0042aa90 (0x0042aa90, `src/legoland/balloonz.c`)
+# BalloonzUpdate (0x0042aa90, `src/legoland/balloonz.c`)
 
 **Best: 94.65%**. Kind: C.
 

@@ -1,4 +1,4 @@
-# FUN_004304e0 (0x004304e0, `src/legoland/eatery.c`)
+# RenderEateryBaseLayers (0x004304e0, `src/legoland/eatery.c`)
 
 **Best: 87.10%**. Kind: C.
 
