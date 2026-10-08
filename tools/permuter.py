@@ -236,13 +236,25 @@ class Original:
         s = self.read(addr, 256).split(b"\0")[0]
         if len(s) >= 2 and all(32 <= c < 127 or c in (9, 10, 13) for c in s):
             return '"' + s.decode("latin-1") + '"'
-        i = bisect.bisect_right(self.addrs, addr) - 1
+        i = bisect.bisect_right(self.addrs, addr - 1) - 1  # addr - 1: an end pointer belongs to its array
         if i >= 0:
             base = self.addrs[i]
             name, typ, size = self.syms[base]
-            if addr - base < max(size, 1) and typ not in (FLOAT_TYPE, STRING_TYPE):
+            if addr - base <= max(size, 1) and typ not in (FLOAT_TYPE, STRING_TYPE):
                 return f"{bare(name)}+{addr - base:#x}"
         return "<addr>"
+
+    def in_symbol(self, v):
+        """A plain constant inside a known symbol (or exactly at its end: loop-end pointers) is an address,
+        unless it is a round number like 0x800000 or 0x7fffff, which only lands inside a symbol by chance."""
+        if (v & 0xFFFF) in (0, 0xFFFF):
+            return False
+        i = bisect.bisect_right(self.addrs, v - 1) - 1  # v - 1 so an end pointer finds its array
+        if i < 0:
+            return False
+        base = self.addrs[i]
+        name, typ, size = self.syms[base]
+        return size > 0 and base <= v <= base + size
 
     def function_listing(self, addr, size):
         """Listing of `size` bytes at `addr` (reccmp also reads the original with our function's size),
@@ -270,7 +282,7 @@ class Original:
                 elif op.type == x86.X86_OP_IMM and 0x400000 <= op.imm < 0x900000:
                     # a plain constant can fall inside a symbol's range by chance (the reccmp false positive
                     # tools/reccmp_fixes.py handles): only an exact symbol address counts as an address
-                    if op.imm in self.syms or op.imm in self.imports or (addr <= op.imm < nxt):
+                    if op.imm in self.syms or op.imm in self.imports or (addr <= op.imm < nxt) or self.in_symbol(op.imm):
                         v = op.imm
                 if v is None:
                     continue
@@ -740,18 +752,26 @@ def main():
 
     rng = random.Random(args.seed)
     best_body, current = base_body, base_body
-    seen = {hashlib.sha1(base_body.encode()).hexdigest()}
-    deadline = time.time() + args.minutes * 60
-    tries = compiled = failed = 0
+    # every variant ever compiled for this function (any run): never compile one twice
     outdir.mkdir(parents=True, exist_ok=True)
+    seen_file = outdir / "seen.txt"
+    seen = set(seen_file.read_text().split()) if seen_file.exists() else set()
+    known_before = len(seen)
+    seen.add(hashlib.sha1(base_body.encode()).hexdigest())
+    seen_log = seen_file.open("a")
+    deadline = time.time() + args.minutes * 60
+    tries = compiled = failed = skipped = 0
+    base_score = best
     while time.time() < deadline and best < 1.0:
         tries += 1
         start = current if rng.random() < 0.5 else best_body
         body = mutate(start, rng)
         h = hashlib.sha1(body.encode()).hexdigest()
         if h in seen:
+            skipped += 1
             continue
         seen.add(h)
+        seen_log.write(h + "\n")
         s, _, _ = evaluate(body)
         compiled += 1
         if s is None:
@@ -764,7 +784,18 @@ def main():
             print(f"[{compiled}] {s * 100:.2f}%  -> {path.relative_to(ROOT)}", flush=True)
         elif s == best:
             current = body  # walk along the plateau
-    print(f"done: best {best * 100:.2f}% after {compiled} compiles ({failed} did not compile, {tries} tries)")
+        if compiled % 50 == 0:
+            seen_log.flush()
+            print(f"[{compiled}] still {best * 100:.2f}% ({failed} did not compile, {skipped} already tried)", flush=True)
+    seen_log.close()
+    summary = (
+        f"{time.strftime('%Y-%m-%d %H:%M')} seed={args.seed} minutes={args.minutes:g} "
+        f"base={base_score * 100:.2f}% best={best * 100:.2f}% compiled={compiled} failed={failed} "
+        f"skipped_already_tried={skipped} variants_known={len(seen)} (was {known_before})"
+    )
+    with (outdir / "runs.log").open("a") as f:
+        f.write(summary + "\n")
+    print("done: " + summary)
 
 
 if __name__ == "__main__":
