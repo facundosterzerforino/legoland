@@ -1110,9 +1110,9 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
         *(unsigned char *)((char *)cursor + 0x1428) = (unsigned char)fbits;
         for (y = rect.y0; y <= rect.y1; y++) {
             if (rect.x0 <= rect.x1) {
+                x = rect.x0;
                 half2 = (short)((short)(size * 2) / 2);
                 half = (short)(size / 2);
-                x = rect.x0;
                 do {
                     unsigned short ux = (unsigned short)(((short)x - (short)y) * half2);
                     unsigned short uy = (unsigned short)(((short)y + (short)x) * half);
@@ -1137,11 +1137,11 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
                     if (y == rect.y1 && (cursor->field_1828 & 0x80) == 0) {
                         pts->xpts[pts->count] = ux;
                         pts->ypts[pts->count] = (unsigned short)(half + uy);
-                        pts->fpts[pts->count] = fbits | 2;
+                        pts->fpts[pts->count] = 2 | fbits;
                         pts->count++;
                     }
                     x++;
-                } while (x <= rect.x1);
+                } while (rect.x1 >= x);
             }
         }
         cursor = (struct Cursor *)cursor->field_1830;

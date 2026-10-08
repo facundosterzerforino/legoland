@@ -1572,19 +1572,23 @@ void FUN_0040a5d0(struct ParticleEmitter *param) {
 // FUNCTION: LEGOLAND 0x0040a600
 void LogFlumeEntranceAddObject(Element *elem, int *pt) {
     TileId t;
-    struct FlumeEntry *entry;
+    register struct FlumeEntry *entry;
     struct FlumeEntry *mid;
     struct FlumeEntry *node;
     struct FlumeEntry *prev;
-    struct Ride *ride;
+    register struct Ride *ride;
     int pos[2];
     int coords[2];
     int h;
     int midY;
+    register int last;
     int count;
-    int last;
     int i;
 
+    int fy0;
+    int fy1;
+    int node_y;
+    int fx0;
     t.pos.x = pt[0];
     t.pos.y = pt[1];
     ride = elem->ride;
@@ -1592,20 +1596,22 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
     FUN_00408e40(t);
     entry = FindFlumeEntryByTile(&t);
     if (entry != NULL) {
-        h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
+        fy1 = LogFlumeFootprint.y1;
+        h = fy1 - LogFlumeFootprint.y0;
         midY = t.pos.y + ride->footprint.y0 + ((ride->footprint.y1 - ride->footprint.y0) >> 1);
-        entry->sub2 = DAT_004c2ae8;
         pos[0] = t.pos.x + ride->footprint.x0 + 1;
+        entry->sub2 = DAT_004c2ae8;
         pos[1] = t.pos.y + ride->footprint.y0 - h;
         node = FUN_00409010();
-        if (node != NULL) {
+        if (NULL != node) {
             node->mode = 3;
             node->submode = 0;
             node->ride = LogFlumeTrackRide;
             node->parent = entry;
             node->link28 = NULL;
             node->flags10d |= 3;
-            node->tile.pos.x = pos[0] - LogFlumeFootprint.x0;
+            fx0 = LogFlumeFootprint.x0;
+            node->tile.pos.x = pos[0] - fx0;
             node->tile.pos.y = pos[1] - LogFlumeFootprint.y0;
         }
         FUN_004091f0((struct Node *)entry, (struct ListNode *)node);
@@ -1622,8 +1628,8 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
         FUN_004091f0((struct Node *)entry, (struct ListNode *)mid);
         entry->link = mid;
         LinkNodeAfter((struct Node *)node, (struct Node *)mid);
-        prev = node;
         count = (ride->footprint.y1 - ride->footprint.y0 + 1) / h;
+        prev = node;
         coords[1] = pos[1] + h;
         last = count - 1;
         for (i = 0; i < count; i++) {
@@ -1634,16 +1640,19 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
                 node->link28 = mid;
                 node->ride = LogFlumeTrackRide;
                 node->parent = entry;
-                node->flags10d |= 7;
+                node->flags10d = node->flags10d | 7;
                 node->tile.pos.x = pos[0] - LogFlumeFootprint.x0;
-                node->tile.pos.y = coords[1] - LogFlumeFootprint.y0;
+                fy0 = LogFlumeFootprint.y0;
+                node->tile.pos.y = coords[1] - fy0;
             }
-            if (coords[1] <= midY && coords[1] + h >= midY) {
-                entry->field_8 = node;
-                entry->field_c = prev;
+            if (coords[1] <= midY) {
+                if (coords[1] + h >= midY) {
+                    entry->field_8 = node;
+                    entry->field_c = prev;
+                }
             }
             AppendListNode((struct Node *)mid, (struct ListNode *)node);
-            if (i == 0) {
+            if (0 == i) {
                 mid->link30 = node;
             }
             if (i == last) {
@@ -1667,8 +1676,9 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
             node->tile.pos.y = coords[1] - LogFlumeFootprint.y0;
         }
         FUN_004091f0((struct Node *)entry, (struct ListNode *)node);
+        node_y = node->tile.pos.y;
         coords[0] = node->tile.pos.x;
-        coords[1] = node->tile.pos.y;
+        coords[1] = node_y;
         AddBasicObject(DAT_004c74f4, coords);
         LinkNodeAfter((struct Node *)prev, (struct Node *)node);
         FUN_0040a5d0((struct ParticleEmitter *)entry);
@@ -4009,12 +4019,15 @@ int FUN_0040e3b0(unsigned int *ctx) {
 
 // FUNCTION: LEGOLAND 0x0040e440
 void FUN_0040e440(struct FlumeXY p, unsigned int *result) {
+    int px;
+    unsigned int v3;
+    int v1;
     unsigned int h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
     unsigned int w = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
 
     switch (DAT_004c2af4) {
     case 0:
-        p.x += (unsigned char)DAT_004c445c->var_3c[0];
+        p.x = p.x + ((unsigned char)DAT_004c445c->var_3c[0]);
         p.y += (unsigned char)DAT_004c445c->var_3c[1];
         result[0] = 3;
         result[1] = p.x + 3;
@@ -4024,24 +4037,27 @@ void FUN_0040e440(struct FlumeXY p, unsigned int *result) {
         break;
     case 1:
         p.x += (unsigned char)DAT_004c2aa0->var_3c[0];
-        p.y += (unsigned char)DAT_004c2aa0->var_3c[1];
+        v1 = DAT_004c2aa0->var_3c[1];
         result[0] = 6;
+        p.y += (unsigned char)v1;
         result[3] = DAT_004c2aa0->var_3c[2] - DAT_004c2aa0->var_3c[0] - w + p.x + 1;
-        result[5] = p.x + 2;
+        result[5] = 2 + p.x;
         result[4] = p.y + 2;
         result[6] = DAT_004c2aa0->var_3c[3] - DAT_004c2aa0->var_3c[1] - h + p.y + 1;
         break;
     case 2:
         p.x += (unsigned char)DAT_004c2b0c->var_3c[0];
-        p.y += (unsigned char)DAT_004c2b0c->var_3c[1];
+        p.y = p.y + ((unsigned char)DAT_004c2b0c->var_3c[1]);
         result[0] = 12;
-        result[5] = p.x + 4;
+        px = p.x;
+        result[5] = 4 + px;
+        v3 = DAT_004c2b0c->var_3c[3];
         result[7] = p.x;
-        result[6] = DAT_004c2b0c->var_3c[3] - DAT_004c2b0c->var_3c[1] - h + p.y + 1;
+        result[6] = v3 - DAT_004c2b0c->var_3c[1] - h + p.y + 1;
         result[8] = p.y + 3;
         break;
     case 3:
-        p.x += (unsigned char)DAT_004c74d4->var_3c[0];
+        p.x = p.x + ((unsigned char)DAT_004c74d4->var_3c[0]);
         p.y += (unsigned char)DAT_004c74d4->var_3c[1];
         result[7] = p.x;
         result[1] = p.x + 4;

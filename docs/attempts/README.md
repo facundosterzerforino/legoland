@@ -34,6 +34,8 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | Address | Function | File | Best |
 |---|---|---|---|
 | 0x004019c0 | [FUN_004019c0](0x004019c0-FUN_004019c0.md) | ride_bloke.c | 92.08% |
+| 0x00401f30 | [PickQueueTurn](0x00401f30-PickQueueTurn.md) | ride_bloke.c | 70.73% |
+| 0x00402780 | [FUN_00402780](0x00402780-FUN_00402780.md) | ride_bloke.c | 75.00% |
 | 0x00402dc0 | [FUN_00402dc0](0x00402dc0-FUN_00402dc0.md) | castle_level.c | 85.88% |
 | 0x00404630 | [CoptersPlaceRider](0x00404630-CoptersPlaceRider.md) | copters.c | 54.39% |
 | 0x00405bd0 | [DrivingSchoolUpdate](0x00405bd0-DrivingSchoolUpdate.md) | driving_school.c | 80.18% |
@@ -41,6 +43,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00407ad0 | [JoustRemoveObject](0x00407ad0-JoustRemoveObject.md) | joust.c | 95.00% |
 | 0x00408f90 | [FUN_00408f90](0x00408f90-FUN_00408f90.md) | log_flume.c | 40.96% |
 | 0x004092b0 | [FUN_004092b0](0x004092b0-FUN_004092b0.md) | log_flume.c | 84.62% |
+| 0x0040a600 | [LogFlumeEntranceAddObject](0x0040a600-LogFlumeEntranceAddObject.md) | log_flume.c | 80.40% |
 | 0x0040abf0 | [LogFlumeEntranceRemoveObject](0x0040abf0-LogFlumeEntranceRemoveObject.md) | log_flume.c | 95.10% |
 | 0x0040ae90 | [FUN_0040ae90](0x0040ae90-FUN_0040ae90.md) | log_flume.c | 45.11% |
 | 0x0040bab0 | [FUN_0040bab0](0x0040bab0-FUN_0040bab0.md) | log_flume.c | 44.09% |
@@ -48,6 +51,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0040bf70 | [LogFlumeEntranceUpdate](0x0040bf70-LogFlumeEntranceUpdate.md) | log_flume.c | 82.05% |
 | 0x0040c250 | [FUN_0040c250](0x0040c250-FUN_0040c250.md) | log_flume.c | 42.86% |
 | 0x0040c8d0 | [FUN_0040c8d0](0x0040c8d0-FUN_0040c8d0.md) | log_flume.c | 92.59% |
+| 0x0040e440 | [FUN_0040e440](0x0040e440-FUN_0040e440.md) | log_flume.c | 70.67% |
 | 0x0040f050 | [FUN_0040f050](0x0040f050-FUN_0040f050.md) | log_flume.c | 83.96% |
 | 0x0040f5b0 | [FUN_0040f5b0](0x0040f5b0-FUN_0040f5b0.md) | log_flume.c | 91.50% |
 | 0x00411680 | [AdvanceFlumeMover](0x00411680-AdvanceFlumeMover.md) | log_flume.c | 40.52% |
@@ -62,6 +66,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004198a0 | [BoatingSchoolBuildStepPath](0x004198a0-BoatingSchoolBuildStepPath.md) | boating_school.c | 81.26% |
 | 0x0041a720 | [FUN_0041a720](0x0041a720-FUN_0041a720.md) | boating_school.c | 96.58% |
 | 0x0041df00 | [FUN_0041df00](0x0041df00-FUN_0041df00.md) | castle.c | 44.94% |
+| 0x0041e4a0 | [FUN_0041e4a0](0x0041e4a0-FUN_0041e4a0.md) | castle.c | 80.00% |
 | 0x0041ec50 | [FUN_0041ec50](0x0041ec50-FUN_0041ec50.md) | castle.c | 100% |
 | 0x0041ec70 | [FUN_0041ec70](0x0041ec70-FUN_0041ec70.md) | castle.c | 100% |
 | 0x0041eca0 | [FUN_0041eca0](0x0041eca0-FUN_0041eca0.md) | castle.c | 100% |
@@ -72,8 +77,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0041ef60 | [FUN_0041ef60](0x0041ef60-FUN_0041ef60.md) | castle.c | 43.10% |
 | 0x00421e90 | [FUN_00421e90](0x00421e90-FUN_00421e90.md) | castle.c | 99.09% |
 | 0x004227c0 | [EdgeMeshRemoveBackfaces](0x004227c0-EdgeMeshRemoveBackfaces.md) | castle.c | 95.06% |
+| 0x00423a10 | [FUN_00423a10](0x00423a10-FUN_00423a10.md) | castle.c | 68.53% |
 | 0x00424700 | [FUN_00424700](0x00424700-FUN_00424700.md) | castle.c | 88.41% |
 | 0x00425e20 | [FUN_00425e20](0x00425e20-FUN_00425e20.md) | castle.c | 90.70% |
+| 0x004284d0 | [FUN_004284d0](0x004284d0-FUN_004284d0.md) | castle.c | 71.38% |
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
 | 0x0042aa90 | [FUN_0042aa90](0x0042aa90-FUN_0042aa90.md) | balloonz.c | 94.65% |
 | 0x0042bcf0 | [RenderCarousel](0x0042bcf0-RenderCarousel.md) | carousel.c | 42.80% |
@@ -87,11 +94,13 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00439ef0 | [FUN_00439ef0](0x00439ef0-FUN_00439ef0.md) | shops.c | 80.11% |
 | 0x0043a7a0 | [FUN_0043a7a0](0x0043a7a0-FUN_0043a7a0.md) | space_tower.c | 37.65% |
 | 0x0043aac0 | [FUN_0043aac0](0x0043aac0-FUN_0043aac0.md) | space_tower.c | 83.93% |
+| 0x0043bac0 | [SpaceTowerUpdate](0x0043bac0-SpaceTowerUpdate.md) | space_tower.c | 75.32% |
 | 0x0043be70 | [RenderSpinningBarrels](0x0043be70-RenderSpinningBarrels.md) | spinning_barrels.c | 99.20% |
 | 0x0043c950 | [SpinningBarrelsUpdate](0x0043c950-SpinningBarrelsUpdate.md) | spinning_barrels.c | 84.84% |
 | 0x0043da60 | [RenderPlaneRide](0x0043da60-RenderPlaneRide.md) | plane_ride.c | 96.54% |
 | 0x0043e110 | [LoadZoomer](0x0043e110-LoadZoomer.md) | plane_ride.c | 97.89% |
 | 0x0043e410 | [PlaneRideUpdate](0x0043e410-PlaneRideUpdate.md) | plane_ride.c | 79.57% |
+| 0x0043ea30 | [ListBoxDialog](0x0043ea30-ListBoxDialog.md) | dialog.c | 69.84% |
 | 0x004401b0 | [FUN_004401b0](0x004401b0-FUN_004401b0.md) | man3d.c | 85.71% |
 | 0x00441d60 | [RenderUsingRin](0x00441d60-RenderUsingRin.md) | render3d.c | 100% |
 | 0x00441f20 | [LoadPalette](0x00441f20-LoadPalette.md) | render3d.c | 81.00% |
@@ -124,14 +133,16 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0045ad60 | [GetTileCentre](0x0045ad60-GetTileCentre.md) | tilemap.c | 93.02% |
 | 0x0045ade0 | [FUN_0045ade0](0x0045ade0-FUN_0045ade0.md) | tilemap.c | 43.41% |
 | 0x0045bcd0 | [PointToIsoPlane](0x0045bcd0-PointToIsoPlane.md) | tilemap.c | 25.70% |
+| 0x0045c900 | [FUN_0045c900](0x0045c900-FUN_0045c900.md) | tilemap.c | 65.71% |
 | 0x0045c9c0 | [FUN_0045c9c0](0x0045c9c0-FUN_0045c9c0.md) | tilemap.c | 49.38% |
 | 0x0045ca90 | [FUN_0045ca90](0x0045ca90-FUN_0045ca90.md) | tilemap.c | 42.86% |
 | 0x0045d5d0 | [FUN_0045d5d0](0x0045d5d0-FUN_0045d5d0.md) | tilemap.c | 42.28% |
-| 0x0045d770 | [FUN_0045d770](0x0045d770-FUN_0045d770.md) | tilemap.c | 67.69% |
+| 0x0045d770 | [FUN_0045d770](0x0045d770-FUN_0045d770.md) | tilemap.c | 69.87% |
 | 0x0045da60 | [RestoreBaseMap](0x0045da60-RestoreBaseMap.md) | tilemap.c | 95.65% |
 | 0x0045dd80 | [AddObjectToMap](0x0045dd80-AddObjectToMap.md) | map_object.c | 99.10% |
 | 0x0045eb30 | [BuildObject](0x0045eb30-BuildObject.md) | map_object.c | 96.81% |
 | 0x0045ed30 | [ObjectIsBuilt](0x0045ed30-ObjectIsBuilt.md) | map_object.c | 93.42% |
+| 0x0045f5f0 | [BuildCursorPtr](0x0045f5f0-BuildCursorPtr.md) | map_object.c | 87.65% |
 | 0x0045f810 | [ValidateCursor](0x0045f810-ValidateCursor.md) | map_object.c | 94.15% |
 | 0x0045fad0 | [FUN_0045fad0](0x0045fad0-FUN_0045fad0.md) | map_object.c | 93.59% |
 | 0x0045fca0 | [FUN_0045fca0](0x0045fca0-FUN_0045fca0.md) | map_object.c | 94.76% |
