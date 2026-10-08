@@ -43,6 +43,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0040ae90 | [FUN_0040ae90](0x0040ae90-FUN_0040ae90.md) | log_flume.c | 45.11% |
 | 0x0040bab0 | [FUN_0040bab0](0x0040bab0-FUN_0040bab0.md) | log_flume.c | 44.09% |
 | 0x0040be00 | [FUN_0040be00](0x0040be00-FUN_0040be00.md) | log_flume.c | 90.61% |
+| 0x0040bf70 | [LogFlumeEntranceUpdate](0x0040bf70-LogFlumeEntranceUpdate.md) | log_flume.c | 82.05% |
 | 0x0040c250 | [FUN_0040c250](0x0040c250-FUN_0040c250.md) | log_flume.c | 42.86% |
 | 0x0040c8d0 | [FUN_0040c8d0](0x0040c8d0-FUN_0040c8d0.md) | log_flume.c | 92.59% |
 | 0x0040f050 | [FUN_0040f050](0x0040f050-FUN_0040f050.md) | log_flume.c | 83.96% |
@@ -78,6 +79,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0043be70 | [RenderSpinningBarrels](0x0043be70-RenderSpinningBarrels.md) | spinning_barrels.c | 99.20% |
 | 0x0043da60 | [RenderPlaneRide](0x0043da60-RenderPlaneRide.md) | plane_ride.c | 96.54% |
 | 0x0043e110 | [LoadZoomer](0x0043e110-LoadZoomer.md) | plane_ride.c | 97.89% |
+| 0x0043e410 | [PlaneRideUpdate](0x0043e410-PlaneRideUpdate.md) | plane_ride.c | 79.57% |
 | 0x004401b0 | [FUN_004401b0](0x004401b0-FUN_004401b0.md) | man3d.c | 85.71% |
 | 0x00441f20 | [LoadPalette](0x00441f20-LoadPalette.md) | render3d.c | 81.00% |
 | 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 41.17% |
@@ -88,12 +90,15 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00444a70 | [DrawAppraisalBar](0x00444a70-DrawAppraisalBar.md) | challenge.c | 80.21% |
 | 0x004453a0 | [RunAppraisal](0x004453a0-RunAppraisal.md) | challenge.c | 15.39% |
 | 0x0044e010 | [__BMPLoader](0x0044e010-__BMPLoader.md) | gfx.c | 39.57% |
+| 0x0044e580 | [LoadColourTable](0x0044e580-LoadColourTable.md) | gfx.c | 83.78% |
 | 0x0044fe80 | [FUN_0044fe80](0x0044fe80-FUN_0044fe80.md) | bloke_ai.c | 94.89% |
 | 0x00451390 | [FUN_00451390](0x00451390-FUN_00451390.md) | cdcheck.c | 90.00% |
 | 0x00451740 | [PrintCertificate](0x00451740-PrintCertificate.md) | certificate.c | 81.20% |
 | 0x00451e70 | [SetupControllers](0x00451e70-SetupControllers.md) | controller.c | 91.89% |
 | 0x00452030 | [FUN_00452030](0x00452030-FUN_00452030.md) | controller.c | 33.15% |
+| 0x00453da0 | [stackdump](0x00453da0-stackdump.md) | exceptlog.c | 79.82% |
 | 0x00455370 | [BubbleHelp](0x00455370-BubbleHelp.md) | text.c | 24.23% |
+| 0x00455fc0 | [FUN_00455fc0](0x00455fc0-FUN_00455fc0.md) | text.c | 77.60% |
 | 0x004567a0 | [RenderFullMap](0x004567a0-RenderFullMap.md) | mapscreen.c | 81.85% |
 | 0x00457970 | [FUN_00457970](0x00457970-FUN_00457970.md) | bricks.c | 87.80% |
 | 0x00457a70 | [FUN_00457a70](0x00457a70-FUN_00457a70.md) | bricks.c | 100% effective match (reccmp), bytes still differ |
@@ -129,10 +134,13 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0046f9a0 | [FUN_0046f9a0](0x0046f9a0-FUN_0046f9a0.md) | icon.c | 41.45% |
 | 0x00471ca0 | [RemoveNewObject](0x00471ca0-RemoveNewObject.md) | popupinfo.c | 63.16% |
 | 0x00471d90 | [FUN_00471d90](0x00471d90-FUN_00471d90.md) | popupinfo.c | 96.67% |
+| 0x004724a0 | [DrawPopUpInfo](0x004724a0-DrawPopUpInfo.md) | popupinfo.c | 89.18% |
 | 0x00473b00 | [UpdateControllerFromMouseData](0x00473b00-UpdateControllerFromMouseData.md) | input.c | 90.83% |
 | 0x00476460 | [OpenAviMovie](0x00476460-OpenAviMovie.md) | interface.c | 89.77% |
 | 0x00476d20 | [FUN_00476d20](0x00476d20-FUN_00476d20.md) | interface.c | 97.69% |
 | 0x0047cba0 | [LLIDB_LoadTSFData](0x0047cba0-LLIDB_LoadTSFData.md) | llidb.c | 93.40% |
+| 0x0047d8e0 | [SaveGame](0x0047d8e0-SaveGame.md) | saveload.c | 91.55% |
+| 0x0047e980 | [LoadGame](0x0047e980-LoadGame.md) | saveload.c | 81.34% |
 | 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
 | 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
@@ -140,6 +148,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 96.75% |
 | 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 82.76% |
 | 0x0048dd00 | [PrintSavedGameDetails](0x0048dd00-PrintSavedGameDetails.md) | savegame_ui.c | 92.33% |
+| 0x0048e550 | [EnterSaveGameDetails](0x0048e550-EnterSaveGameDetails.md) | savegame_ui.c | 84.10% |
 | 0x004921c0 | [ConvertWaveToPcm16](0x004921c0-ConvertWaveToPcm16.md) | sound_sfx.c | 92.26% |
 | 0x00492380 | [CreateSampleFromWAV](0x00492380-CreateSampleFromWAV.md) | sound_sfx.c | 97.49% |
 | 0x00498420 | [SpeechParseWavHeader](0x00498420-SpeechParseWavHeader.md) | stream.c | 93.19% |
