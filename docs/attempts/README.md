@@ -81,6 +81,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00423a10 | [FUN_00423a10](0x00423a10-FUN_00423a10.md) | castle.c | 68.53% |
 | 0x00424700 | [RenderCastleDummy](0x00424700-RenderCastleDummy.md) | castle.c | 88.41% |
 | 0x00425e20 | [FUN_00425e20](0x00425e20-FUN_00425e20.md) | castle.c | 90.70% |
+| 0x004269e0 | [lego_sqrtf_init](0x004269e0-lego_sqrtf_init.md) | castle.c | 100% |
 | 0x004284d0 | [FUN_004284d0](0x004284d0-FUN_004284d0.md) | castle.c | 71.38% |
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
 | 0x0042aa90 | [BalloonzUpdate](0x0042aa90-BalloonzUpdate.md) | balloonz.c | 94.65% |
@@ -196,3 +197,4 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004966a0 | [FUN_004966a0](0x004966a0-FUN_004966a0.md) | sound_music.c | 64.15% |
 | 0x00498420 | [SpeechParseWavHeader](0x00498420-SpeechParseWavHeader.md) | stream.c | 93.19% |
 | 0x0049a7f0 | [Mechanic_Build](0x0049a7f0-Mechanic_Build.md) | worker.c | 96.15% |
+| 0x0049b350 | [FUN_0049b350](0x0049b350-FUN_0049b350.md) | worker.c | 100% |

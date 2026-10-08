@@ -24,9 +24,17 @@ address after an array is named after whatever symbol happens to follow it in th
 both sides, naming each address that is not inside a symbol as `<symbol the byte before is in>+1`. If
 both sides then read the same, the line is equal.
 
+   The address may also sit a few bytes past the end (a loop over the second field of each pair ends at
+   &arr[N].field): up to 32 bytes back are searched for the containing data symbol, skipping constants.
+
 4. The `__try` scope table: `push -1; push <scopetable>; push __except_handler3`. The table is compiler
 data that is never annotated, so its address is a plain number that differs between images. A `push`
 of a plain number directly before `push __except_handler3` counts as equal.
+
+5. Float constants reccmp only recognises in one image: `fmul dword ptr [<OFFSET1>]` against
+`fmul dword ptr [0.015625 (FLOAT)]`. When a line that still differs only in addresses names a float
+constant on one side, and the memory at each pair of addresses is identical (4 bytes, 8 for qword),
+the line is equal.
 """
 
 from __future__ import annotations
@@ -64,13 +72,35 @@ def _end_names(sanitizer, raw: str) -> str:
         value = int(m.group(0), 16)
         if value < 0x10000:
             return m.group(0)
-        inside = sanitizer.lookup(value - 1)
-        if inside is not None and "+" in inside:
-            return f"{inside}+1"
+        for back in range(1, 33):
+            inside = sanitizer.lookup(value - back)
+            if inside is None or "(FLOAT)" in inside or "(STRING)" in inside:
+                continue
+            if back == 1 and "+" not in inside:
+                return f"{inside}+1"
+            if "+" in inside or back > 1:
+                return f"{inside}+{back}"
         exact = sanitizer.lookup(value)
         return exact if exact is not None else m.group(0)
 
     return re.sub(r"0x[0-9a-f]+", name, raw)
+
+
+_HEX = re.compile(r"0x[0-9a-f]+")
+
+
+def _same_constants(self, raw_o: str, raw_r: str) -> bool:
+    """fix 5: the lines differ only in addresses whose memory holds the same constant in both images."""
+    if _HEX.sub("#", raw_o) != _HEX.sub("#", raw_r):
+        return False
+    size = 8 if "qword" in raw_o else 4
+    pairs = [(int(a, 16), int(b, 16)) for a, b in zip(_HEX.findall(raw_o), _HEX.findall(raw_r)) if a != b]
+    if not pairs:
+        return False
+    try:
+        return all(self.orig_bin.read(a, size) == self.recomp_bin.read(b, size) for a, b in pairs)
+    except Exception:
+        return False
 
 
 def _compare_function_assembly(self, orig, recomp, split_points):
@@ -93,6 +123,10 @@ def _compare_function_assembly(self, orig, recomp, split_points):
                 nxt_r = recomp[j1 + k + 1][1] if j1 + k + 1 < len(recomp) else ""
                 if (re.fullmatch(r"push 0x[0-9a-f]+", raw_o) and re.fullmatch(r"push 0x[0-9a-f]+", raw_r)
                         and "__except_handler3" in nxt_o and nxt_o == nxt_r):
+                    recomp[j1 + k] = (r_addr, o_text)
+                    continue
+                # fix 5: a float constant named in one image only
+                if ("(FLOAT)" in o_text or "(FLOAT)" in r_text) and _same_constants(self, raw_o, raw_r):
                     recomp[j1 + k] = (r_addr, o_text)
                     continue
                 # fix 3: pointers one past the end of the same symbol
