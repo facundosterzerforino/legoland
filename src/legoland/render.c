@@ -3363,7 +3363,7 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
             desc1.dwWidth = 0x500;
             desc1.dwHeight = 0x3c0;
             IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc1, &DAT_0079861c, NULL);
-            off[1] = off[0] = GetTransparentColour();
+            off[0] = off[1] = GetTransparentColour();
             IDirectDrawSurface_SetColorKey(DAT_0079861c, 8, (LPDDCOLORKEY)off);
         }
     }

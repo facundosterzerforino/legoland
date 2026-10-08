@@ -160,7 +160,8 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
     dx = MouseState.lX;
     dy = MouseState.lY;
     if (mode != 0) {
-        if (abs(dx) > buffer->mouse_threshold1 || abs(dy) > buffer->mouse_threshold1) {
+        if (abs(dx) > ((volatile struct CtrlBuffer *)buffer)->mouse_threshold1 ||
+            abs(dy) > ((volatile struct CtrlBuffer *)buffer)->mouse_threshold1) {
             dx += dx;
             dy += dy;
         }
