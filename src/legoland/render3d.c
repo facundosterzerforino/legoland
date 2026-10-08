@@ -1306,19 +1306,20 @@ LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1) {
 
 // FUNCTION: LEGOLAND 0x004431f0
 LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
-    unsigned int idx = param_1->field_4->field_8c;
-    unsigned int r = BlokeColours[idx * 3];
-    unsigned int b = BlokeColours[idx * 3 + 2];
+    volatile unsigned int idx = param_1->field_4->field_8c;
     unsigned int g = BlokeColours[idx * 3 + 1];
+    unsigned int b = BlokeColours[idx * 3 + 2];
+    unsigned int r = BlokeColours[idx * 3];
     return (((r << 8) | g) << 8) | b;
 }
 
 // FUNCTION: LEGOLAND 0x00443220
 LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1) {
     unsigned int idx = param_1->field_4->field_90;
-    unsigned int r = BlokeColours[idx * 3];
-    unsigned int b = BlokeColours[idx * 3 + 2];
     unsigned int g = BlokeColours[idx * 3 + 1];
+    unsigned int b = BlokeColours[idx * 3 + 2];
+    volatile int r;
+    r = BlokeColours[3 * idx];
     return (((r << 8) | g) << 8) | b;
 }
 

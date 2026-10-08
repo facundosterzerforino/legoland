@@ -111,8 +111,8 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 45.93% |
 | 0x00442980 | [FUN_00442980](0x00442980-FUN_00442980.md) | render3d.c | 60.78% |
 | 0x00442cc0 | [GetScreenCoordsForObject](0x00442cc0-GetScreenCoordsForObject.md) | render3d.c | 79.01% |
-| 0x004431f0 | [GetLegColourOfBloke](0x004431f0-GetLegColourOfBloke.md) | render3d.c | 25.00% |
-| 0x00443220 | [GetArmColourOfBloke](0x00443220-GetArmColourOfBloke.md) | render3d.c | 25.00% |
+| 0x004431f0 | [GetLegColourOfBloke](0x004431f0-GetLegColourOfBloke.md) | render3d.c | 27.78% |
+| 0x00443220 | [GetArmColourOfBloke](0x00443220-GetArmColourOfBloke.md) | render3d.c | 30.30% |
 | 0x004434d0 | [LoadBmpIntoImage](0x004434d0-LoadBmpIntoImage.md) | challenge.c | 84.04% |
 | 0x00443bd0 | [OpenAviAnim](0x00443bd0-OpenAviAnim.md) | challenge.c | 91.98% |
 | 0x00444a70 | [DrawAppraisalBar](0x00444a70-DrawAppraisalBar.md) | challenge.c | 80.21% |
@@ -138,7 +138,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0045acc0 | [GetTileBounds](0x0045acc0-GetTileBounds.md) | tilemap.c | 75.63% |
 | 0x0045ad60 | [GetTileCentre](0x0045ad60-GetTileCentre.md) | tilemap.c | 93.02% |
 | 0x0045ade0 | [FUN_0045ade0](0x0045ade0-FUN_0045ade0.md) | tilemap.c | 43.41% |
-| 0x0045bcd0 | [PointToIsoPlane](0x0045bcd0-PointToIsoPlane.md) | tilemap.c | 30.47% |
+| 0x0045bcd0 | [PointToIsoPlane](0x0045bcd0-PointToIsoPlane.md) | tilemap.c | 46.84% |
 | 0x0045c900 | [FUN_0045c900](0x0045c900-FUN_0045c900.md) | tilemap.c | 65.71% |
 | 0x0045c9c0 | [FUN_0045c9c0](0x0045c9c0-FUN_0045c9c0.md) | tilemap.c | 49.38% |
 | 0x0045ca90 | [FUN_0045ca90](0x0045ca90-FUN_0045ca90.md) | tilemap.c | 42.86% |

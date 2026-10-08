@@ -682,46 +682,55 @@ LEGO_EXPORT void RenderView(void) {
 
 // FUNCTION: LEGOLAND 0x0045bcd0
 LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
-    int iVar1;
     int iVar2;
-    int iVar3;
+    int iVar1;
     int iVar4;
-    int iVar5;
+    register int iVar3;
+    volatile int iVar5;
     int iVar6;
     char cVar7;
     int iVar8;
     int iVar9;
     int x;
-    int y;
-    short size;
     int half9;
+    volatile int y;
+    short size;
 
-    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
-    iVar9 = (int)size;
+    int y_raw;
+    volatile int sprite;
+    int y_in;
+    int out1;
+    int sprite_raw;
+    sprite_raw = TileSpriteArray[DAT_00667ca4];
+    sprite = sprite_raw;
+    size = ((struct TileSprite *)sprite)->size;
     iVar8 = (short)(size * 2);
     iVar4 = iVar8 + 1 >> 1;
+    iVar9 = (int)size;
     x = *param_1;
-    y = param_1[1];
-    half9 = iVar9 + 1 >> 1;
+    y_in = param_1[1];
+    y_raw = y_in;
+    y = y_raw;
     iVar1 = (x + iVar4) / iVar8;
+    half9 = iVar9 + 1 >> 1;
     iVar5 = (x + iVar4) % iVar8;
-    iVar2 = y / iVar9;
     iVar6 = y % iVar9;
-    iVar3 = iVar2 + iVar1;
-    *out = iVar3;
+    iVar2 = y / iVar9;
+    iVar3 = iVar1 + iVar2;
     iVar2 = iVar2 - iVar1;
+    *out = iVar3;
     out[1] = iVar2;
     if (iVar5 < 0) {
         iVar5 = iVar5 + -2 + iVar8;
         out[1] = iVar2 + 1;
         *out = iVar3 + -1;
     }
-    if (iVar6 < 0) {
+    if (0 > iVar6) {
         iVar6 = iVar6 + -1 + iVar9;
         out[1] = out[1] + -1;
         *out = *out + -1;
     }
-    cVar7 = (iVar4 <= iVar5) + '\x01';
+    cVar7 = (iVar5 >= iVar4) + '\x01';
     if (half9 < iVar6) {
         cVar7 = (iVar4 <= iVar5) + '\x03';
     }
@@ -740,7 +749,8 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
         break;
     case '\x03':
         if (iVar5 < iVar4 + (iVar6 - iVar9) * 2) {
-            out[1] = out[1] + 1;
+            out1 = out[1];
+            out[1] = 1 + out1;
             return;
         }
         break;
