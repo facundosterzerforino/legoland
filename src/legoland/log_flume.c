@@ -5804,40 +5804,43 @@ int FUN_00411650(struct FlumeSlot *slot) {
 
 // FUNCTION: LEGOLAND 0x00411680
 int AdvanceFlumeMover(struct FlumeMover *mover) {
+    volatile int next_y;
     struct FlumeNode *node = mover->node;
     struct FlumeNode *next;
-    int rev = 0;
+    int rev;
+    int flag;
     struct FlumeShape *shape = NULL;
-    volatile int flag;
     struct FlumeDims r;
-    TileId tile;
+    register TileId tile;
     float f;
     int dir;
     int dx;
     int dy;
-    int sub;
+    volatile int sub;
 
     flag = 0;
-    f = mover->f20 + mover->f18;
+    rev = 0;
+    f = mover->f18 + mover->f20;
     if (f > 1.0) {
-        f -= 1.0f;
+        f = f - 1.0f;
         node = (struct FlumeNode *)node->field_8;
         flag = 1;
     }
     next = (struct FlumeNode *)node->field_8;
-    if (next == NULL) {
+    if (NULL == next) {
         return 0;
     }
     tile = next->tile;
     dx = tile.pos.x - node->tile.pos.x;
-    dy = tile.pos.y - node->tile.pos.y;
-    if (dx < 0) {
+    next_y = tile.pos.y;
+    dy = next_y - node->tile.pos.y;
+    if (0 > dx) {
         dir = 7;
     }
     if (dx > 0) {
         dir = 3;
     }
-    if (dy < 0) {
+    if (0 > dy) {
         dir = 1;
     }
     if (dy > 0) {
@@ -5863,17 +5866,17 @@ int AdvanceFlumeMover(struct FlumeMover *mover) {
         sub = node->submode;
         if (sub == 3) {
             shape = &DAT_004c2c08;
-            if (dir == 7) {
+            if (7 == dir) {
                 rev = 1;
             }
         }
-        if (sub == 0) {
+        if (!sub) {
             shape = &DAT_004c2be8;
             if (dir == 1) {
                 rev = 1;
             }
         }
-        if (sub == 1) {
+        if (1 == sub) {
             shape = &DAT_004c2bc0;
             if (dir == 3) {
                 rev = 1;

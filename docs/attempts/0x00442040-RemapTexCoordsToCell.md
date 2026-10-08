@@ -15,6 +15,7 @@
 | 2026-10-07 r2 | Haiku agent | Reordered the locals | no change |
 | 2026-10-08 | permuter + Opus 5.5 | idx1 and iVar22 computed first (the original's first loads are idx1 into ebp, then iVar22 into edi) - prologue now matches | 41.17 -> 45.93 |
 | 2026-10-08 | permuter + Opus 5.5 | float declaration variants (v5 first, s0/s1 first or split, extra s2, all declared at top) for the missing slot | 45.93 (no change) x5 |
+| 2026-10-08 | permuter + Opus 5.5 | new permuter --decl-orders (6 min, 736 orders): best 44.30, found idx1 early on its own but not the full hand order | 44.30 (worse than current) |
 
 ## Ideas not tried yet
 

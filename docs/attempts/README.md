@@ -56,7 +56,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0040e440 | [FUN_0040e440](0x0040e440-FUN_0040e440.md) | log_flume.c | 70.67% |
 | 0x0040f050 | [FUN_0040f050](0x0040f050-FUN_0040f050.md) | log_flume.c | 83.96% |
 | 0x0040f5b0 | [FUN_0040f5b0](0x0040f5b0-FUN_0040f5b0.md) | log_flume.c | 91.50% |
-| 0x00411680 | [AdvanceFlumeMover](0x00411680-AdvanceFlumeMover.md) | log_flume.c | 41.56% |
+| 0x00411680 | [AdvanceFlumeMover](0x00411680-AdvanceFlumeMover.md) | log_flume.c | 63.04% |
 | 0x00411fa0 | [FUN_00411fa0](0x00411fa0-FUN_00411fa0.md) | ride_queue.c | 85.14% |
 | 0x00413450 | [FUN_00413450](0x00413450-FUN_00413450.md) | roads.c | 90.00% |
 | 0x00413650 | [UpdateQueuePathShape](0x00413650-UpdateQueuePathShape.md) | roads.c | 97.18% |

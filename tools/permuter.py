@@ -428,6 +428,22 @@ def score(orig: list[str], cand: list[str]) -> float:
     return difflib.SequenceMatcher(None, orig, cand, autojunk=False).ratio()
 
 
+_REG = re.compile(r"\b(?:e?[abcd]x|[abcd][lh]|e?[sd]i|e?bp)\b")
+_STACK = re.compile(r"\[esp(?: [+-] 0x[0-9a-f]+)?\]")
+
+
+def guide(orig: list[str], cand: list[str]) -> float:
+    """What the search climbs: exact similarity plus partial credit for lines that differ only in register
+    choice (and, less, in stack offsets). One register swap changes dozens of lines, so the exact score
+    alone has no slope; with this a variant that gets the structure right first still ranks higher."""
+    exact = score(orig, cand)
+    if exact == 1.0:
+        return 1.0
+    o2, c2 = [_REG.sub("R", l) for l in orig], [_REG.sub("R", l) for l in cand]
+    o3, c3 = [_STACK.sub("[S]", l) for l in o2], [_STACK.sub("[S]", l) for l in c2]
+    return 0.5 * exact + 0.3 * score(o2, c2) + 0.2 * score(o3, c3)
+
+
 # ---------------------------------------------------------------- mutations
 
 OPERAND = r"(?:\(\w+\s*\*?\)\s*)?[A-Za-z_][\w]*(?:(?:->|\.)\w+|\[[^\[\]]+\])*|\d+[uUlL]*|0x[0-9a-fA-F]+[uUlL]*"
@@ -758,7 +774,92 @@ def m_cast_compare(body, rng):
     return _sub_random(body, pat, repl, rng, op_group=2)
 
 
+def _decl_block(lines):
+    """Indices of the function's top-level declaration lines (right after the signature)."""
+    out = []
+    k = 1
+    while k < len(lines):
+        s = lines[k].strip()
+        if not s or s.startswith("//"):
+            k += 1
+            continue
+        if DECL.match(lines[k]) or INIT_DECL.match(lines[k]):
+            out.append(k)
+            k += 1
+            continue
+        break
+    return out
+
+
+INIT_DECL = re.compile(r"^\s+(?:const\s+|volatile\s+|register\s+)?(?:unsigned\s+|signed\s+)?(?:struct\s+\w+|\w+)\s*\**\s*(\w+)\s*=\s*[^;]+;\s*$")
+_DECL_NAME = re.compile(r"(\w+)\s*(?:\[[^\]]*\])*\s*(?:=[^;]*)?;\s*$")
+
+
+def _decl_name(line):
+    m = _DECL_NAME.search(line)
+    return m.group(1) if m else None
+
+
+def m_swap_decls_init(body, rng):
+    """Swap two adjacent declarations, initialised ones included, when neither initialiser reads the other."""
+    lines = body.split("\n")
+    ds = _decl_block(lines)
+    pairs = []
+    for k in ds:
+        if k + 1 not in ds:
+            continue
+        a, b = _decl_name(lines[k]), _decl_name(lines[k + 1])
+        if not a or not b:
+            continue
+        rhs_a = lines[k].split("=", 1)[1] if "=" in lines[k] else ""
+        rhs_b = lines[k + 1].split("=", 1)[1] if "=" in lines[k + 1] else ""
+        # an initialiser that calls something may have side effects: keep their order
+        if re.search(rf"\b{a}\b", rhs_b) or re.search(rf"\b{b}\b", rhs_a) or (_CALL.search(rhs_a) and _CALL.search(rhs_b)):
+            continue
+        pairs.append(k)
+    if not pairs:
+        return None
+    k = rng.choice(pairs)
+    lines[k], lines[k + 1] = lines[k + 1], lines[k]
+    return "\n".join(lines)
+
+
+def m_volatile(body, rng):
+    """Toggle volatile on a local scalar: forces it into a stack slot (or lets it back into a register)."""
+    lines = body.split("\n")
+    ds = [k for k in _decl_block(lines) if "[" not in lines[k] and "struct" not in lines[k] and "*" not in lines[k] and "register " not in lines[k]]
+    if not ds:
+        return None
+    k = rng.choice(ds)
+    l = lines[k]
+    lines[k] = l.replace("volatile ", "", 1) if "volatile " in l else re.sub(r"^(\s+)", r"\1volatile ", l, count=1)
+    return "\n".join(lines)
+
+
+def m_split_init(body, rng):
+    """int x = e;  ->  int x;  ... x = e; as the first statement (moves where the value is first computed)."""
+    lines = body.split("\n")
+    ds = _decl_block(lines)
+    cands = [k for k in ds if INIT_DECL.match(lines[k]) and "const " not in lines[k] and "[" not in lines[k]]
+    if not cands or not ds:
+        return None
+    k = rng.choice(cands)
+    name = _decl_name(lines[k])
+    decl, rhs = lines[k].split("=", 1)
+    ind = lines[k][: len(lines[k]) - len(lines[k].lstrip())]
+    # later initialisers that read it must keep seeing the value: only split when none do
+    if any(re.search(rf"\b{name}\b", lines[j].split("=", 1)[1]) for j in ds if j > k and "=" in lines[j]):
+        return None
+    lines[k] = decl.rstrip() + ";"
+    last = max(ds)
+    lines.insert(last + 1, f"{ind}{name} ={rhs}")
+    return "\n".join(lines)
+
+
 MUTATIONS = [
+    (m_swap_decls_init, 2),
+    (m_volatile, 1),
+    (m_split_init, 2),
     (m_swap_commutative, 5),
     (m_flip_compare, 3),
     (m_incdec, 2),
@@ -788,6 +889,51 @@ def mutate(body, rng):
     return body
 
 
+def decl_orders(body, rng, limit):
+    """Bodies with the top-level declarations in every valid order (a random sample when there are more than
+    limit). An order is valid when no initialiser reads a variable declared after it and initialisers that
+    call something keep their relative order."""
+    import itertools
+    import math
+
+    lines = body.split("\n")
+    ds = _decl_block(lines)
+    if len(ds) < 2 or ds != list(range(ds[0], ds[0] + len(ds))):
+        return []
+    decls = [lines[k] for k in ds]
+    names = [_decl_name(l) for l in decls]
+    rhs = [l.split("=", 1)[1] if "=" in l else "" for l in decls]
+    calls = [i for i, r in enumerate(rhs) if _CALL.search(r)]
+
+    def valid(perm):
+        pos = {i: n for n, i in enumerate(perm)}
+        for i in range(len(decls)):
+            for j in range(len(decls)):
+                if i != j and names[j] and re.search(rf"\b{names[j]}\b", rhs[i]) and pos[j] > pos[i]:
+                    return False
+        return all(pos[a] < pos[b] for a, b in zip(calls, calls[1:]))
+
+    idx = list(range(len(decls)))
+    if math.factorial(len(decls)) <= limit:
+        perms = [p for p in itertools.permutations(idx) if valid(p)]
+    else:
+        perms, tries = set(), 0
+        while len(perms) < limit and tries < limit * 20:
+            tries += 1
+            p = idx[:]
+            rng.shuffle(p)
+            if valid(p):
+                perms.add(tuple(p))
+        perms = list(perms)
+    out = []
+    for p in perms:
+        new = lines[:]
+        new[ds[0] : ds[0] + len(ds)] = [decls[i] for i in p]
+        out.append("\n".join(new))
+    rng.shuffle(out)
+    return out
+
+
 # ---------------------------------------------------------------- main
 
 
@@ -797,6 +943,7 @@ def main():
     ap.add_argument("--minutes", type=float, default=10)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--score-only", action="store_true", help="score the current source and show the diff")
+    ap.add_argument("--decl-orders", action="store_true", help="try every order of the top-level declarations (sampled when there are too many)")
     args = ap.parse_args()
 
     orig = Original()
@@ -814,27 +961,30 @@ def main():
     def evaluate(body):
         data = compile_tu(head + body + tail, work)
         if data is None or compile_tu.lossy > base_lossy[0]:
-            return None, None, None
+            return None, None, None, None
         try:
             cand, size = candidate_listing(Obj(data), cname)
         except KeyError:
-            return None, None, None
+            return None, None, None, None
         target = orig.function_listing(args.addr, size)
-        return score(target, cand), cand, target
+        return score(target, cand), cand, target, guide(target, cand)
 
     base_lossy = [99999]
-    best, cand, target = evaluate(base_body)
+    best, cand, target, best_guide = evaluate(base_body)
     base_lossy[0] = compile_tu.lossy
     if best is None:
         sys.exit(f"{cname}: the current source does not compile on its own")
-    print(f"{cname} ({src.name}) base score {best * 100:.2f}% ({len(target)} instructions)", flush=True)
+    print(f"{cname} ({src.name}) base score {best * 100:.2f}% (guide {best_guide * 100:.2f}%, {len(target)} instructions)", flush=True)
     if args.score_only:
         for line in difflib.unified_diff(target, cand, "original", "ours", lineterm="", n=1):
             print(line)
         return
 
     rng = random.Random(args.seed)
-    best_body, current = base_body, base_body
+    if args.decl_orders:
+        orders = decl_orders(base_body, rng, limit=int(args.minutes * 60 / 0.35))
+        print(f"{len(orders)} declaration orders to try", flush=True)
+    best_body, current, guide_body = base_body, base_body, base_body
     # every variant ever compiled for this function (any run): never compile one twice
     outdir.mkdir(parents=True, exist_ok=True)
     seen_file = outdir / "seen.txt"
@@ -847,25 +997,34 @@ def main():
     base_score = best
     while time.time() < deadline and best < 1.0:
         tries += 1
-        start = current if rng.random() < 0.5 else best_body
-        body = mutate(start, rng)
+        if args.decl_orders:
+            if not orders:
+                break
+            body = orders.pop()
+        else:
+            r = rng.random()
+            start = current if r < 0.4 else guide_body if r < 0.8 else best_body
+            body = mutate(start, rng)
         h = hashlib.sha1(body.encode()).hexdigest()
         if h in seen:
             skipped += 1
             continue
         seen.add(h)
         seen_log.write(h + "\n")
-        s, _, _ = evaluate(body)
+        s, _, _, g = evaluate(body)
         compiled += 1
         if s is None:
             failed += 1
             continue
         if s > best:
-            best, best_body, current = s, body, body
+            best, best_body = s, body
             path = outdir / f"{s * 100:07.3f}.c"
             path.write_text(marker + "\n" + body + "\n", encoding="latin-1")
             print(f"[{compiled}] {s * 100:.2f}%  -> {path.relative_to(ROOT)}", flush=True)
-        elif s == best:
+        # the search follows the graded score: partial register/stack progress counts
+        if g > best_guide:
+            best_guide, guide_body, current = g, body, body
+        elif g == best_guide:
             current = body  # walk along the plateau
         if compiled % 50 == 0:
             seen_log.flush()
@@ -873,7 +1032,7 @@ def main():
     seen_log.close()
     summary = (
         f"{time.strftime('%Y-%m-%d %H:%M')} seed={args.seed} minutes={args.minutes:g} "
-        f"base={base_score * 100:.2f}% best={best * 100:.2f}% compiled={compiled} failed={failed} "
+        f"base={base_score * 100:.2f}% best={best * 100:.2f}% guide={best_guide * 100:.2f}% compiled={compiled} failed={failed} "
         f"skipped_already_tried={skipped} variants_known={len(seen)} (was {known_before})"
     )
     with (outdir / "runs.log").open("a") as f:
