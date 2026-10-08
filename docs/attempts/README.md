@@ -108,7 +108,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004401b0 | [FUN_004401b0](0x004401b0-FUN_004401b0.md) | man3d.c | 85.71% |
 | 0x00441d60 | [RenderUsingRin](0x00441d60-RenderUsingRin.md) | render3d.c | 100% |
 | 0x00441f20 | [LoadPalette](0x00441f20-LoadPalette.md) | render3d.c | 81.00% |
-| 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 41.17% |
+| 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 45.93% |
 | 0x00442980 | [FUN_00442980](0x00442980-FUN_00442980.md) | render3d.c | 60.78% |
 | 0x00442cc0 | [GetScreenCoordsForObject](0x00442cc0-GetScreenCoordsForObject.md) | render3d.c | 79.01% |
 | 0x004431f0 | [GetLegColourOfBloke](0x004431f0-GetLegColourOfBloke.md) | render3d.c | 25.00% |

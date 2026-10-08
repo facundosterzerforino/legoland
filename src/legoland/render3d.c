@@ -516,13 +516,13 @@ struct CellEntry {
 void RemapTexCoordsToCell(struct CellContainer *param_1, int param_2, int param_3, float *param_4, int param_5) {
     struct CellEntry *entry1 = (struct CellEntry *)((char *)param_1->entries + param_2 * 6);
     struct CellEntry *entry2 = (struct CellEntry *)((char *)param_1->entries + param_3 * 6);
-    unsigned char bVar3 = entry1->field_4;
+    int idx1 = entry1->field_0 + param_1->field_4;
     int iVar22 = entry2->field_0 + param_1->field_4;
+    unsigned char bVar3 = entry1->field_4;
     int lo_x = entry1->x;
     int hi_x = bVar3 + entry1->x + 1;
     int lo_y = entry1->y;
     int hi_y = entry1->field_5 + entry1->y + 1;
-    int idx1 = entry1->field_0 + param_1->field_4;
     float *p;
     int local_18;
 
