@@ -62,6 +62,12 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004198a0 | [BoatingSchoolBuildStepPath](0x004198a0-BoatingSchoolBuildStepPath.md) | boating_school.c | 81.26% |
 | 0x0041a720 | [FUN_0041a720](0x0041a720-FUN_0041a720.md) | boating_school.c | 96.58% |
 | 0x0041df00 | [FUN_0041df00](0x0041df00-FUN_0041df00.md) | castle.c | 44.94% |
+| 0x0041ec50 | [FUN_0041ec50](0x0041ec50-FUN_0041ec50.md) | castle.c | 100% |
+| 0x0041ec70 | [FUN_0041ec70](0x0041ec70-FUN_0041ec70.md) | castle.c | 100% |
+| 0x0041eca0 | [FUN_0041eca0](0x0041eca0-FUN_0041eca0.md) | castle.c | 100% |
+| 0x0041ece0 | [FUN_0041ece0](0x0041ece0-FUN_0041ece0.md) | castle.c | 100% |
+| 0x0041ed00 | [FUN_0041ed00](0x0041ed00-FUN_0041ed00.md) | castle.c | 100% |
+| 0x0041ed50 | [FUN_0041ed50](0x0041ed50-FUN_0041ed50.md) | castle.c | 100% |
 | 0x0041ee40 | [FUN_0041ee40](0x0041ee40-FUN_0041ee40.md) | castle.c | 90.32% |
 | 0x0041ef60 | [FUN_0041ef60](0x0041ef60-FUN_0041ef60.md) | castle.c | 43.10% |
 | 0x00421e90 | [FUN_00421e90](0x00421e90-FUN_00421e90.md) | castle.c | 99.09% |
@@ -137,7 +143,9 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00465ee0 | [FUN_00465ee0](0x00465ee0-FUN_00465ee0.md) | draw.c | 84.56% |
 | 0x00466560 | [PushSetTarget](0x00466560-PushSetTarget.md) | draw.c | 85.71% |
 | 0x00469c80 | [ScriptEventClear](0x00469c80-ScriptEventClear.md) | objectives.c | 94.32% |
+| 0x0046a140 | [FUN_0046a140](0x0046a140-FUN_0046a140.md) | nerps.c | 100% |
 | 0x0046a5b0 | [ScriptEventNeedIn](0x0046a5b0-ScriptEventNeedIn.md) | nerps.c | 74.32% |
+| 0x0046b2d0 | [RunLevelScript](0x0046b2d0-RunLevelScript.md) | nerps.c | 100% |
 | 0x0046c7e0 | [LoadObjectiveEventList](0x0046c7e0-LoadObjectiveEventList.md) | nerps.c | 98.29% |
 | 0x0046c920 | [SaveScripts](0x0046c920-SaveScripts.md) | nerps.c | 89.23% |
 | 0x0046d850 | [ScrollIconRegion](0x0046d850-ScrollIconRegion.md) | icon.c | 71.73% |
@@ -154,6 +162,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0047d8e0 | [SaveGame](0x0047d8e0-SaveGame.md) | saveload.c | 91.55% |
 | 0x0047e980 | [LoadGame](0x0047e980-LoadGame.md) | saveload.c | 81.34% |
 | 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
+| 0x00484920 | [DoLowLevelAI](0x00484920-DoLowLevelAI.md) | bloke.c | 100% |
 | 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
 | 0x00488840 | [GenerateNewImageFromZBuffer](0x00488840-GenerateNewImageFromZBuffer.md) | render.c | 76.27% |

@@ -1,4 +1,6 @@
-"""Project-side fix for one reccmp false positive. Import this before comparing.
+"""Project-side fixes for two reccmp false positives. Import this before comparing.
+
+1. Immediates that look like addresses in one image only.
 
 reccmp decides for each image on its own whether an immediate operand is an address: it is if the
 value is a relocation target or falls inside any known symbol. Our image lays data out differently from
@@ -9,13 +11,19 @@ the original, so a plain constant can land inside a symbol in one image and not 
 The fix: when an instruction's raw (unsanitized) text is identical in both images and at least one side
 left the value as a plain number, the two lines count as equal. If both sides resolved the value to a
 symbol, the line is left alone: that may be a real pointer mismatch.
+
+2. Calls through a table: `call dword ptr [edx*4 + 0x4b9d44]`. reccmp names the displacement of
+`[reg + address]` operands for every instruction except `call`, where it only handles a plain
+`[address]`. So a call through a function-pointer table (ScriptEventHandlers[type](node)) always kept
+its raw address, which differs between the images. The fix gives calls the same relocated-displacement
+naming as every other instruction.
 """
 
 from __future__ import annotations
 
 from difflib import SequenceMatcher
 
-from reccmp.compare.asm.parse import ParseAsm
+from reccmp.compare.asm.parse import ParseAsm, displace_replace_regex
 from reccmp.compare.functions import FunctionComparator
 
 _orig_sanitize = ParseAsm.sanitize
@@ -26,6 +34,8 @@ _orig_compare = FunctionComparator._compare_function_assembly
 def _sanitize(self, inst):
     result = _orig_sanitize(self, inst)
     address, _size, mnemonic, op_str = inst
+    if result[0] == "call":
+        result = (result[0], displace_replace_regex.sub(self.hex_replace_relocated, result[1]))
     self._raw_text[address] = f"{mnemonic} {op_str}".rstrip()
     return result
 
