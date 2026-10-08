@@ -1,4 +1,4 @@
-# FUN_00424700 (0x00424700, `src/legoland/castle.c`)
+# RenderCastleDummy (0x00424700, `src/legoland/castle.c`)
 
 **Best: 88.41%**. Kind: C.
 

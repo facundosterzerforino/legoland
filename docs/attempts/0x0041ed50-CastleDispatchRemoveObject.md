@@ -1,4 +1,4 @@
-# FUN_0041ed50 (0x0041ed50, `src/legoland/castle.c`)
+# CastleDispatchRemoveObject (0x0041ed50, `src/legoland/castle.c`)
 
 **Best: 100%**
 

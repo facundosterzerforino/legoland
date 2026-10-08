@@ -1,4 +1,4 @@
-# FUN_0041ec50 (0x0041ec50, `src/legoland/castle.c`)
+# CastleDispatchSetEditMode (0x0041ec50, `src/legoland/castle.c`)
 
 **Best: 100%**
 

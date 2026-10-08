@@ -1,4 +1,4 @@
-# FUN_0041ece0 (0x0041ece0, `src/legoland/castle.c`)
+# CastleDispatchDCalcCursor (0x0041ed00, `src/legoland/castle.c`)
 
 **Best: 100%**
 

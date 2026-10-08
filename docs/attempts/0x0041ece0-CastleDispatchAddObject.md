@@ -1,4 +1,4 @@
-# FUN_0041ed00 (0x0041ed00, `src/legoland/castle.c`)
+# CastleDispatchAddObject (0x0041ece0, `src/legoland/castle.c`)
 
 **Best: 100%**
 
