@@ -501,6 +501,14 @@ def m_compound(body, rng):
     return _sub_random(body, pat2, lambda m: f"{m.group(1)}{m.group(2)} = {m.group(2)} {m.group(3)} {m.group(4)};", rng)
 
 
+def _in_condition(text, m):
+    """True when the match is a whole operand of an if/while condition or of && / || (its value is only tested)."""
+    before, after = text[: m.start()].rstrip(), text[m.end() :].lstrip()
+    if not (after.startswith((")", "&&", "||"))):
+        return False
+    return before.endswith(("&&", "||")) or re.search(r"\b(if|while)\s*\($", before) is not None
+
+
 def m_zero_test(body, rng):
     choices = [
         (r"\b(\w+(?:->\w+|\.\w+)?) != 0\b", lambda m: m.group(1)),
@@ -510,7 +518,11 @@ def m_zero_test(body, rng):
         (r"\b0 != (\w+)", lambda m: f"{m.group(1)} != 0"),
     ]
     pat, repl = rng.choice(choices)
-    return _sub_random(body, pat, repl, rng)
+    matches = [m for m in re.finditer(pat, body) if _in_condition(body, m)]
+    if not matches:
+        return None
+    m = rng.choice(matches)
+    return body[: m.start()] + repl(m) + body[m.end() :]
 
 
 def _statements(lines):
@@ -519,6 +531,12 @@ def _statements(lines):
     for k, l in enumerate(lines):
         s = l.strip()
         if not s.endswith(";") or s.startswith(("return", "break", "continue", "goto", "case", "default", "//")):
+            continue
+        # must start a statement: the previous code line ends one (not "y1 =" continued, not a braceless if/else/for/while)
+        prev = next((lines[j].strip() for j in range(k - 1, -1, -1) if lines[j].strip() and not lines[j].strip().startswith("//")), "{")
+        if not prev.endswith((";", "{", "}", ":")) or re.match(r"(\}\s*)?(else|do)\b", prev) and not prev.endswith("{"):
+            continue
+        if re.match(r"(?:\}\s*else\s+)?(?:if|for|while)\b", prev) and not prev.endswith("{"):
             continue
         if "{" in s or "}" in s or s.startswith(("if", "for", "while", "do", "switch", "else")):
             continue
