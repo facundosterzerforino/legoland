@@ -1,6 +1,6 @@
 # UpdateControllerFromMouseData (0x00473b00, `src/legoland/input.c`)
 
-**Best: 88.99%**. Kind: C.
+**Best: 90.83%**. Kind: C.
 
 ## What still differs
 
@@ -13,6 +13,7 @@
 | Date | Who | Change | Result |
 |---|---|---|---|
 | 2026-10-08 | Haiku 5.5 (agent a3) | `((volatile struct CtrlBuffer *)buffer)->mouse_threshold1` for both threshold compares in the accel block | 85.32% -> 88.99% (kept) |
+| 2026-10-08 | permuter + Opus 5.5 | `register int dy`, `unsigned int mode`, `cur_x` temp for delta_x, flags computed after delta_y, `2 | buttons` | 88.99 -> 90.83 |
 
 ## Ideas not tried yet
 

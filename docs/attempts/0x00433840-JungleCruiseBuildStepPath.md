@@ -1,6 +1,6 @@
 # JungleCruiseBuildStepPath (0x00433840, `src/legoland/jungle_cruise.c`)
 
-**Best: 84.23%** (start 83.61%). Kind: C.
+**Best: 83.61%** (start 83.61%). Kind: C.
 
 ## What still differs
 
@@ -15,6 +15,7 @@
 | 2026-10-08 | Haiku agent a7 | Final ring loop walks `p = &step_offsets[-6]` (+2 per iteration) instead of indexing `(i+4)*2` and `(i-3)*2` | 84.23% (+0.62) |
 | 2026-10-08 | Haiku agent a7 | Same, plus a `frame` pointer for the `step_frames` store | 84.23% (no change, reverted) |
 | 2026-10-08 | Haiku agent a7 | Replaced the nested `to < from ? ... : ...` ternary with an `int ok` flag set in an if/else before `if (ok == 0)` | 84.23% (no change, reverted) |
+| 2026-10-08 | permuter + Opus 5.5 | permuter 84.8% came from swapping `* DAT_004ab3fc + sy` to `* sy + DAT_004ab3fc` (precedence bug); without it no gain | rejected |
 
 ## Ideas not tried yet
 

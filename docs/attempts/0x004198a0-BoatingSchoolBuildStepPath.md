@@ -1,6 +1,6 @@
 # BoatingSchoolBuildStepPath (0x004198a0, `src/legoland/boating_school.c`)
 
-**Best: 81.56%** (start 81.26%). Kind: C. Near-copy of JungleCruiseBuildStepPath (see that file).
+**Best: 81.26%** (start 81.26%). Kind: C. Near-copy of JungleCruiseBuildStepPath (see that file).
 
 ## What still differs
 
@@ -11,6 +11,7 @@
 | Date | Who | Change | Result |
 |---|---|---|---|
 | 2026-10-08 | Haiku agent a7 | Final ring loop walks `p = &step_xy[-6]` (+2 per iteration) instead of indexing | 81.56% (+0.30) |
+| 2026-10-08 | permuter + Opus 5.5 | permuter 83.5% came from `(i + 4) * 2 + 1` -> `(i + 4) * 1 + 2` (precedence bug); without it no gain | rejected |
 
 ## Ideas not tried yet
 

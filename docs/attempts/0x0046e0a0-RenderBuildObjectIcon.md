@@ -13,6 +13,7 @@
 | Date | Who | Change | Result |
 |---|---|---|---|
 | 2026-10-08 | Haiku 5.5 (a6) | `char buf[12]` moved to function top, before `ctx` | 83.66% (no change; ctx still at `[esp+8]`) |
+| 2026-10-08 | permuter + Opus 5.5 | permuter 85.2% came from `0x156 < h + y` -> `h > 0x156 + y` (precedence bug); without it no gain | rejected |
 
 ## Best
 

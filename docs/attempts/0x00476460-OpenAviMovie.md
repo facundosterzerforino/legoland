@@ -1,6 +1,6 @@
 # OpenAviMovie (0x00476460, `src/legoland/interface.c`)
 
-**Best: 89.11%**. Kind: C.
+**Best: 89.77%**. Kind: C.
 
 ## What still differs
 
@@ -13,6 +13,7 @@
 |---|---|---|---|
 | 2026-10-08 | Haiku 5.5 (a6) | Removed `AVIFileRelease` and the epilogue from the `malloc`-failure block (it falls through to the shared bottom) | 85.71% (worse) |
 | 2026-10-08 | Haiku 5.5 (a6) | Moved `AVIFileRelease(file)` after the `video_stream` if/else, shared by both paths, `malloc`-failure falls through | 70.85% (worse) |
+| 2026-10-08 | permuter + Opus 5.5 | `int left` temp for frame_left; handle->file stored before handle->frame; `++AviOpenCount` | 89.11 -> 89.77 |
 
 ## Best
 

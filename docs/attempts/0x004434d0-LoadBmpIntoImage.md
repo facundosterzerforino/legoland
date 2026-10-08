@@ -1,6 +1,6 @@
 # LoadBmpIntoImage (0x004434d0, `src/legoland/challenge.c`)
 
-**Best: 82.98%** (start value, no change yet). Kind: C.
+**Best: 84.04%** (start value, no change yet). Kind: C.
 
 ## What still differs
 
@@ -14,6 +14,7 @@
 |---|---|---|---|
 | 2026-10-08 | Haiku 5.5 (a2) | Declaration order of `offbits` .. `y`: `dst`/`src` moved first, `dst` moved before `pixels`, `dst`/`src` moved last | 82.98% (no change; declaration order does not matter here) |
 | 2026-10-08 | Haiku 5.5 (a2) | `src = pixels + row_size` moved after the first `RES_SetFilePointer` | 79.79% (worse) |
+| 2026-10-08 | permuter + Opus 5.5 | `register` file, `int aligned_width`, clear loop and inner copy loop as while loops, `(unsigned)param_1->height` compare | 82.98 -> 84.04 |
 
 ## Best
 

@@ -3338,11 +3338,12 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
     RECT src;
     RECT dst;
     RECT clip;
-    RECT r2;
     DDSURFACEDESC desc1;
+    RECT r2;
     DDSURFACEDESC desc2;
     HRESULT hr;
 
+    void *bits;
     int x = param_2 + param_6[0];
     int y = param_3 + param_6[1];
     dst.left = x;
@@ -3367,8 +3368,8 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
             IDirectDrawSurface_SetColorKey(DAT_0079861c, 8, (LPDDCOLORKEY)off);
         }
     }
-    DAT_00798608 = DAT_00668108;
     DAT_00798598 = CurrentSurfaceDesc;
+    DAT_00798608 = DAT_00668108;
     memset(&desc2, 0, sizeof(desc2));
     desc2.dwSize = 0x6c;
     if (IDirectDrawSurface_Lock(DAT_0079861c, NULL, &desc2, 0x21, NULL) == 0) {
@@ -3394,7 +3395,8 @@ unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int p
             printf("break");
         }
         FUN_00464ee0(sprite, &r2, off);
-        IDirectDrawSurface_Unlock(DAT_0079861c, desc2.lpSurface);
+        bits = desc2.lpSurface;
+        IDirectDrawSurface_Unlock(DAT_0079861c, bits);
     }
     IDirectDrawSurface_SetClipper(renderEngine, DDrawClipper);
     hr = IDirectDrawSurface_Blt(renderEngine, &dst, DAT_0079861c, &src, 0x1008000, NULL);

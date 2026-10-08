@@ -1535,6 +1535,7 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
     unsigned int length;
     int i;
 
+    int left;
     video_stream = NULL;
     audio_stream = NULL;
     if (AviOpenCount == 0) {
@@ -1552,7 +1553,8 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
                     video_stream = stream;
                     AVIStreamAddRef(stream);
                     length = stream_info.length;
-                    width = stream_info.frame_right - stream_info.frame_left;
+                    left = stream_info.frame_left;
+                    width = stream_info.frame_right - left;
                     rate = stream_info.rate / stream_info.scale;
                     height = stream_info.frame_bottom - stream_info.frame_top;
                 } else if (stream_info.type == 0x73647561) {
@@ -1584,11 +1586,11 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
                 handle->frame_rate = rate;
                 handle->width = width;
                 handle->height = height;
-                handle->frame = NULL;
                 handle->file = file;
+                handle->frame = NULL;
                 handle->audio_stream = audio_stream;
                 handle->video_stream = video_stream;
-                AviOpenCount++;
+                ++AviOpenCount;
                 return handle;
             }
         }
