@@ -648,7 +648,7 @@ unsigned int LoadReport(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004442c0
-unsigned int FUN_004442c0(void) {
+int FUN_004442c0(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("DRIVING SCHOOL"); /* TODO: fold — ElemID handle (uint) viewed as RideElem* */
@@ -659,7 +659,7 @@ unsigned int FUN_004442c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004442f0
-unsigned int FUN_004442f0(void) {
+int FUN_004442f0(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("BOATING SCHOOL");
@@ -670,7 +670,7 @@ unsigned int FUN_004442f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444320
-unsigned int FUN_00444320(void) {
+int FUN_00444320(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("CASTLE OBJ");
@@ -681,7 +681,7 @@ unsigned int FUN_00444320(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444350
-unsigned int FUN_00444350(void) {
+int FUN_00444350(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("LOG FLUME ENTRANCE");
@@ -692,7 +692,7 @@ unsigned int FUN_00444350(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444380
-unsigned int FUN_00444380(void) {
+int FUN_00444380(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("JUNGLE CRUISE");
