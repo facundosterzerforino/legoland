@@ -843,7 +843,7 @@ void *Load3DDataFile(const char *param_1, const char *param_2) {
     unsigned int size;
     void *buffer;
 
-    sprintf(path, ".\\3ddata\\new\\%s\\%s", param_1, param_2);
+    sprintf(path, Path3DFormat, param_1, param_2);
     file = RES_OpenFile(path);
     if (file != 0) {
         size = RES_GetFileSize(file);

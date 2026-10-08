@@ -45,6 +45,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0042fbb0 | [Restaurant2Update](0x0042fbb0-Restaurant2Update.md) | eatery.c | 41.89% |
 | 0x00437260 | [SearchJunglePathConnected](0x00437260-SearchJunglePathConnected.md) | jungle_cruise.c | 38.41% |
 | 0x0043a7a0 | [FUN_0043a7a0](0x0043a7a0-FUN_0043a7a0.md) | space_tower.c | 37.65% |
+| 0x0043be70 | [RenderSpinningBarrels](0x0043be70-RenderSpinningBarrels.md) | spinning_barrels.c | 99.20% |
 | 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 41.17% |
 | 0x004431f0 | [GetLegColourOfBloke](0x004431f0-GetLegColourOfBloke.md) | render3d.c | 25.00% |
 | 0x00443220 | [GetArmColourOfBloke](0x00443220-GetArmColourOfBloke.md) | render3d.c | 25.00% |
@@ -59,7 +60,14 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0045ca90 | [FUN_0045ca90](0x0045ca90-FUN_0045ca90.md) | tilemap.c | 42.86% |
 | 0x0045d5d0 | [FUN_0045d5d0](0x0045d5d0-FUN_0045d5d0.md) | tilemap.c | 42.28% |
 | 0x0045d770 | [FUN_0045d770](0x0045d770-FUN_0045d770.md) | tilemap.c | 67.69% |
+| 0x0045da60 | [RestoreBaseMap](0x0045da60-RestoreBaseMap.md) | tilemap.c | 95.65% |
+| 0x0045eb30 | [BuildObject](0x0045eb30-BuildObject.md) | map_object.c | 96.81% |
 | 0x00461290 | [FUN_00461290](0x00461290-FUN_00461290.md) | map_object.c | 43.92% |
 | 0x00465850 | [FUN_00465850](0x00465850-FUN_00465850.md) | draw.c | 34.23% |
+| 0x0046c7e0 | [LoadObjectiveEventList](0x0046c7e0-LoadObjectiveEventList.md) | nerps.c | 98.29% |
 | 0x0046f9a0 | [FUN_0046f9a0](0x0046f9a0-FUN_0046f9a0.md) | icon.c | 41.45% |
 | 0x00471ca0 | [RemoveNewObject](0x00471ca0-RemoveNewObject.md) | popupinfo.c | 63.16% |
+| 0x00471d90 | [FUN_00471d90](0x00471d90-FUN_00471d90.md) | popupinfo.c | 96.67% |
+| 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
+| 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
+| 0x0049a7f0 | [Mechanic_Build](0x0049a7f0-Mechanic_Build.md) | worker.c | 96.15% |
