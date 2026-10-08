@@ -99,7 +99,9 @@ if __name__ == "__main__":
     o = P.Original()
     syms = json.load(open("permuter_out/.orig_symbols.json"))
     onames = {int(k): v[0] for k, v in syms.items()}
-    osize = syms[str(0x004453a0)][2]
+    # the symbol cache's size is OUR function's size when the original's is unknown: decode up to the next
+    # original symbol instead (recursive descent only follows reachable code anyway)
+    osize = min(a for a in onames if a > 0x004453a0) - 0x004453a0
     print("orig size", hex(osize))
     stdcall = json.loads(sys.argv[2]) if len(sys.argv) > 2 else {}
     insns, depth, conflicts, calls = analyse(o.read, o.imports, onames, 0x004453a0, osize, stdcall)
@@ -344,3 +346,33 @@ if __name__ == "__main__" and mode == "window":
         ann = [f"{(int(m.group(1), 0) if m.group(1) else 0) - depth[a]}" for m in ESP.finditer(ins.op_str)]
         ann += [f"idx{int(m.group(3), 0) - depth[a]}" for m in IDX.finditer(ins.op_str)]
         print(f"  {hex(a)} {ins.mnemonic:5s} {ins.op_str:36s} {' '.join(ann)} {cl.get(a, '')}")
+
+if __name__ == "__main__" and mode == "anchors":
+    # GetString(id) calls in the original (id = the closest preceding push imm) and in our C source (line numbers)
+    addrs = sorted(insns)
+    orig_rows = []
+    for a, t in sorted(calls):
+        if t != "GetString":
+            continue
+        i = addrs.index(a)
+        sid = None
+        for j in range(i - 1, max(i - 12, 0), -1):
+            mm = re.fullmatch(r"push\s+(0x[0-9a-f]+|\d+)", f"{insns[addrs[j]].mnemonic} {insns[addrs[j]].op_str}")
+            if mm:
+                sid = int(mm.group(1), 0)
+                break
+        orig_rows.append((a, sid))
+    src = open("src/legoland/challenge.c", encoding="latin-1").read().split("\n")
+    lo = next(i for i, l in enumerate(src) if l.startswith("// FUNCTION: LEGOLAND 0x004453a0"))
+    hi = next(i for i in range(lo + 1, len(src)) if src[i] == "}")
+    ours_rows = []
+    for n in range(lo, hi):
+        for mm in re.finditer(r"GetString\((0x[0-9a-f]+|\d+)\)", src[n]):
+            ours_rows.append((n + 1, int(mm.group(1), 0)))
+    used = set()
+    print("orig_addr  string_id  our_line")
+    for a, sid in orig_rows:
+        k = next((k for k, (n, x) in enumerate(ours_rows) if x == sid and k not in used), None)
+        if k is not None: used.add(k)
+        print(f"{hex(a)}  {hex(sid) if sid is not None else '?':>8}  {ours_rows[k][0] if k is not None else '-'}")
+    print("our GetString lines with no original match:", [n for k, (n, x) in enumerate(ours_rows) if k not in used])
