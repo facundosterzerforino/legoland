@@ -5808,7 +5808,7 @@ int AdvanceFlumeMover(struct FlumeMover *mover) {
     struct FlumeNode *next;
     int rev = 0;
     struct FlumeShape *shape = NULL;
-    int flag;
+    volatile int flag;
     struct FlumeDims r;
     TileId tile;
     float f;

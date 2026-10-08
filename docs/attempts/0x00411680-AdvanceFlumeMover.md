@@ -1,6 +1,6 @@
 # AdvanceFlumeMover (0x00411680, `src/legoland/log_flume.c`)
 
-**Best: 40.52%**. Kind: C.
+**Best: 41.56%**. Kind: C.
 
 ## What still differs
 
@@ -13,6 +13,8 @@
 |---|---|---|---|
 | 2026-10-07 r2 | Haiku agent | Reordered the declarations | no change |
 | 2026-10-07 r2 | Haiku agent | Took the address of `flag` to force it into memory | no change |
+| 2026-10-08 | permuter + Opus 5.5 | `volatile int flag`: frame now 0xc and flag kept in [esp+0xc] like the original | 40.52 -> 41.56 |
+| 2026-10-08 | permuter + Opus 5.5 | on top of volatile: register shape, shape = NULL as a statement, flag = (int)shape, next compared with shape, rev = 0 as a statement - the original keeps shape (0) in ebx from entry and uses it for flag = 0 and the NULL test | 41.56 (no change) x5 |
 
 ## Ideas not tried yet
 
