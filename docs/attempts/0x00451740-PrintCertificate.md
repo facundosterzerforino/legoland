@@ -15,6 +15,7 @@
 |---|---|---|---|
 | 2026-10-08 | Haiku 5.5 (a2) | Declaration order: `printers` moved to the end of the locals | 81.20% (no change) |
 | 2026-10-08 | Haiku 5.5 (a2) | Declaration order: `returned` declared before `needed` and `bmfh`/`bmih` first | 81.20% (no change) |
+| 2026-10-08 | permuter + Opus 5.5 | permuter 84.1% came from a temp landing as the body of the braceless `if (biBitCount < 9)` so `_read` always ran (behaviour change); without it no gain | rejected |
 
 ## Best
 

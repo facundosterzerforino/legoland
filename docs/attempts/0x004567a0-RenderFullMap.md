@@ -1,6 +1,6 @@
 # RenderFullMap (0x004567a0, `src/legoland/mapscreen.c`)
 
-**Best: 81.60%**. Kind: C.
+**Best: 81.85%**. Kind: C.
 
 ## What still differs
 
@@ -19,3 +19,5 @@ No attempts recorded yet (first session: baseline measured at 81.60%).
 ## Notes
 
 No earlier round notes for this function.
+
+| 2026-10-08 | permuter + Opus 5.5 | many temps (bounds_y1/y2, dest_x, uid_x, ...), `register` pen/base_x/x1, loops as while, nested ifs, unsigned py/x2 (permuter 84.5% included a y1/y2 bug: expression dropped) | 81.60 -> 81.85 |

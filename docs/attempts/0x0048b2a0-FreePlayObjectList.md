@@ -1,6 +1,6 @@
 # FreePlayObjectList (0x0048b2a0, `src/legoland/freeplay.c`)
 
-**Best: 81.50%**. Kind: C.
+**Best: 82.76%**. Kind: C.
 
 ## What still differs
 
@@ -14,6 +14,7 @@
 |---|---|---|---|
 | 2026-10-08 | Haiku 5.5 (a6) | `icon->x` kept in a new local `int x` instead of reusing `b` | 74.12% (worse; adds a stack slot, the original reuses the `b` slot) |
 | 2026-10-08 | Haiku 5.5 (a6) | `list = (struct PanelNode *)b;` moved before the `if` chain and the `else` dropped | 80.38% (worse) |
+| 2026-10-08 | permuter + Opus 5.5 | `register` group, `unsigned int y` via icon_y temp, Up2 sprite before Down2, `icon->y + icon->height` | 81.50 -> 82.76 |
 
 ## Best
 

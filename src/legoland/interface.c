@@ -1862,11 +1862,11 @@ int StopMovieAudio(void) {
 // FUNCTION: LEGOLAND 0x00476d20
 int FUN_00476d20(unsigned int param_1, int param_2) {
     char *dst;
-    unsigned int rem;
+    int rem;
     int produced;
     int play;
     unsigned int loops;
-    int play_pos;
+    register int play_pos;
     int bytes_out;
     unsigned int count;
 
@@ -1884,9 +1884,9 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
             if (loops >= DAT_00668f50) {
                 KLIBAUDIO_StopAVISoundBuffer(AviSoundBuffer);
                 AviAudioSamplePos = DAT_00668f90 * param_1;
-                DAT_00668fa0 = param_1 % DAT_00668f50;
                 play = 1;
                 loops = 0xb;
+                DAT_00668fa0 = param_1 % DAT_00668f50;
                 play_pos = DAT_00668f90 * DAT_00668fa0;
             } else if (loops == 0) {
                 return 1;

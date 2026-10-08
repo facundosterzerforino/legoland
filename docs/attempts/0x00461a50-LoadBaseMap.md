@@ -1,6 +1,6 @@
 # LoadBaseMap (0x00461a50, `src/legoland/map_object.c`)
 
-**Best: 81.95%** (unchanged from start). Kind: C.
+**Best: 84.15%** (unchanged from start). Kind: C.
 
 ## What still differs
 
@@ -16,6 +16,7 @@
 |---|---|---|---|
 | 2026-10-08 | Haiku agent | `elem` declared before `file` | 81.95% (same) |
 | 2026-10-08 | Haiku agent | `len` declared first in the locals list | 81.95% (same) |
+| 2026-10-08 | permuter + Opus 5.5 | `register int off`/`runlen`, reordered tile/v and prev/phase stores, tile_flags / rf temps, nested `(len & 8) == 0` if, constant-first operands | 81.95 -> 84.15 |
 
 MSVC does not seem to care about declaration order for these slots (the `file`/`elem` and `len` swaps changed nothing).
 

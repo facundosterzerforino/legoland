@@ -91,10 +91,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0044fe80 | [FUN_0044fe80](0x0044fe80-FUN_0044fe80.md) | bloke_ai.c | 94.89% |
 | 0x00451390 | [FUN_00451390](0x00451390-FUN_00451390.md) | cdcheck.c | 90.00% |
 | 0x00451740 | [PrintCertificate](0x00451740-PrintCertificate.md) | certificate.c | 81.20% |
-| 0x00451e70 | [SetupControllers](0x00451e70-SetupControllers.md) | controller.c | 80.56% |
+| 0x00451e70 | [SetupControllers](0x00451e70-SetupControllers.md) | controller.c | 91.89% |
 | 0x00452030 | [FUN_00452030](0x00452030-FUN_00452030.md) | controller.c | 33.15% |
 | 0x00455370 | [BubbleHelp](0x00455370-BubbleHelp.md) | text.c | 24.23% |
-| 0x004567a0 | [RenderFullMap](0x004567a0-RenderFullMap.md) | mapscreen.c | 81.60% |
+| 0x004567a0 | [RenderFullMap](0x004567a0-RenderFullMap.md) | mapscreen.c | 81.85% |
 | 0x00457970 | [FUN_00457970](0x00457970-FUN_00457970.md) | bricks.c | 87.80% |
 | 0x00457a70 | [FUN_00457a70](0x00457a70-FUN_00457a70.md) | bricks.c | 100% effective match (reccmp), bytes still differ |
 | 0x00459970 | [FUN_00459970](0x00459970-FUN_00459970.md) | gamemap.c | 94.83% |
@@ -116,7 +116,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0045ff00 | [RenderCursor](0x0045ff00-RenderCursor.md) | map_object.c | 95.48% |
 | 0x004610f0 | [FUN_004610f0](0x004610f0-FUN_004610f0.md) | map_object.c | 89.95% |
 | 0x00461290 | [FUN_00461290](0x00461290-FUN_00461290.md) | map_object.c | 43.92% |
-| 0x00461a50 | [LoadBaseMap](0x00461a50-LoadBaseMap.md) | map_object.c | 81.95% |
+| 0x00461a50 | [LoadBaseMap](0x00461a50-LoadBaseMap.md) | map_object.c | 84.15% |
 | 0x00462c60 | [FUN_00462c60](0x00462c60-FUN_00462c60.md) | map_object.c | 95.35% |
 | 0x00462ef0 | [DoMapAI](0x00462ef0-DoMapAI.md) | map_object.c | 93.43% |
 | 0x00465850 | [FUN_00465850](0x00465850-FUN_00465850.md) | draw.c | 34.23% |
@@ -131,14 +131,14 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00471d90 | [FUN_00471d90](0x00471d90-FUN_00471d90.md) | popupinfo.c | 96.67% |
 | 0x00473b00 | [UpdateControllerFromMouseData](0x00473b00-UpdateControllerFromMouseData.md) | input.c | 90.83% |
 | 0x00476460 | [OpenAviMovie](0x00476460-OpenAviMovie.md) | interface.c | 89.77% |
-| 0x00476d20 | [FUN_00476d20](0x00476d20-FUN_00476d20.md) | interface.c | 92.62% |
+| 0x00476d20 | [FUN_00476d20](0x00476d20-FUN_00476d20.md) | interface.c | 97.69% |
 | 0x0047cba0 | [LLIDB_LoadTSFData](0x0047cba0-LLIDB_LoadTSFData.md) | llidb.c | 93.40% |
 | 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
 | 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
 | 0x00488c80 | [FUN_00488c80](0x00488c80-FUN_00488c80.md) | render.c | 91.54% |
 | 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 96.75% |
-| 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 81.50% |
+| 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 82.76% |
 | 0x0048dd00 | [PrintSavedGameDetails](0x0048dd00-PrintSavedGameDetails.md) | savegame_ui.c | 92.33% |
 | 0x004921c0 | [ConvertWaveToPcm16](0x004921c0-ConvertWaveToPcm16.md) | sound_sfx.c | 92.26% |
 | 0x00492380 | [CreateSampleFromWAV](0x00492380-CreateSampleFromWAV.md) | sound_sfx.c | 97.49% |
