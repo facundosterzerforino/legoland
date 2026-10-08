@@ -415,6 +415,8 @@ def compile_tu(text: str, workdir: Path) -> bytes | None:
         text=True,
         cwd=ROOT,
     )
+    # lossy conversions (C4244, e.g. a float put in an int temporary) change behaviour: count them
+    compile_tu.lossy = r.stdout.count("C4244")
     if r.returncode != 0 or not obj.exists():
         return None
     return obj.read_bytes()
@@ -550,9 +552,13 @@ def _block_end(lines, k):
     """Index of the line that closes the brace opened at the end of lines[k]."""
     depth = 0
     for j in range(k, len(lines)):
-        depth += lines[j].count("{") - lines[j].count("}")
-        if depth == 0 and j > k:
-            return j
+        for ch in lines[j]:
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0 and j > k:
+                    return j  # first brace closing the block, even on a "} else {" line
     return None
 
 
@@ -627,6 +633,9 @@ def m_temp(body, rng):
     for k in st:
         rhs = lines[k].split("=", 1)[1] if "=" in lines[k] else lines[k]
         for m in re.finditer(r"[A-Za-z_]\w*(?:->\w+|\.\w+|\[[^\[\]]+\])+", rhs):
+            # never the target of ++/--: the temporary would be modified instead
+            if re.match(r"\s*(\+\+|--)", rhs[m.end() :]) or re.search(r"(\+\+|--)\s*$", rhs[: m.start()]):
+                continue
             cands.append((k, m.group(0)))
     if not cands:
         return None
@@ -732,7 +741,7 @@ def main():
 
     def evaluate(body):
         data = compile_tu(head + body + tail, work)
-        if data is None:
+        if data is None or compile_tu.lossy > base_lossy[0]:
             return None, None, None
         try:
             cand, size = candidate_listing(Obj(data), cname)
@@ -741,7 +750,9 @@ def main():
         target = orig.function_listing(args.addr, size)
         return score(target, cand), cand, target
 
+    base_lossy = [99999]
     best, cand, target = evaluate(base_body)
+    base_lossy[0] = compile_tu.lossy
     if best is None:
         sys.exit(f"{cname}: the current source does not compile on its own")
     print(f"{cname} ({src.name}) base score {best * 100:.2f}% ({len(target)} instructions)", flush=True)
