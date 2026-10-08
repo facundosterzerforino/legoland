@@ -1438,8 +1438,8 @@ unsigned int RunAppraisal(void) {
     unsigned int passtotal;
     unsigned int total;
     int *rowp;
-    unsigned int passtotacc;
-    unsigned int tottotacc;
+    volatile unsigned int passtotacc;
+    volatile unsigned int tottotacc;
     unsigned int passflag;
     int out58;
     int out5c;
