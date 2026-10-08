@@ -1,32 +1,32 @@
 # RunAppraisal (0x004453a0, `src/legoland/challenge.c`)
 
-**Best: 15.70%** (unchanged from start). Kind: C.
+**Best: 26.50%** (rewrite, 2026-10-08; was 15.70%). Kind: C.
 
 ## What still differs
 
-- (2026-10-08, tools/frame.py) Exact slot map. The original's frame, entry-relative:
-  scalars -9172..-9092 (with -9140 never touched), coord (short) at -9086, 11 output variables -9084..-9044,
-  the record array at -9040 (exactly 100 records of 19 ints, our rep[] + 9), fmtbuf at -1312, a 201-int area at the top.
-  -9160/-9156/-9152/-9148 are a RECT {0x50, 0x6d, 0x1a4, 0x83} (layout: written once, read 105-208 times from memory -
-  MSVC6 does not propagate constants through struct fields; our C has them as plain ints, so they fold away).
-  -9144/-9136 are written 207 times and never read (dead stores MSVC6 only keeps for struct fields: a second RECT
-  "cur" whose left/right are copied from layout at every page break; -9140 is its top, kept in edi; -9132 its bottom,
-  compared with 0x1b5). -9172 is the page-start record index (ebp). The decompiler propagated the constants and deleted
-  the overflow test of the first block and the cur copies at all 134 page-break sites.
-- (2026-10-08) Prologue comparison: the original zeroes FIVE stack slots on entry ([0x10], [0x14], [0x48], [0x5c], [0x60], with ebx/ebp both zero) plus esi; ours zeroes four (xbase, tottotacc, passtotacc, flags). So the original has at least one more variable initialised to 0 at the top. The 20 missing bytes are five dword slots. A quick automatic slot census was unreliable (deferred argument pops); this needs a careful manual slot-by-slot mapping of the first ~200 instructions.
-- Stack frame: original `sub esp, 0x23d4`, ours `0x23c0` (20 bytes short). `rep` starts at `[esp+0x70]` in the original and `[esp+0x68]` in ours.
-- The out slots are NOT unused in the current C: `out58`, `out5c`, `out60`, `out64`, `out68`, `out6c` are all passed by address to FUN_00444bf0 / FUN_00444c70 / FUN_00444cd0 / FUN_00444d20 / FUN_00444d70 and read back (`DAT_00666028 <= out5c` etc.). MSVC keeps them; the frame is still short, so the problem is *where* they sit, not whether they exist.
-- Findings about the original's slots (esp-relative, pre-push numbering):
-  - `[0x10]`, `[0x14]`, `[0x18]` (xbase), `[0x1c]`..`[0x28]` (colstep/ystart/rectr/wstart) are loop state, as in ours.
-  - `[0x48]`, `[0x4c]`, `[0x50]`: per-row counters, zeroed in the row loop (`mov [esp+0x50], ebx`), `[0x50]` incremented in the ReportFlags&0x80 block.
-  - `[0x58]`: pointer `piVar10 = &rep[iVar*19+10]` (the `lea ecx,[esp+ecx+0x98]` gives rep base 0x70). Written as `mov [ecx],1` / `mov [eax],0` through it. Ours keeps this in a register.
-  - `[0x5c]` and `[0x60]`: two running accumulators, zeroed on entry (`mov [esp+0x60], ebx; mov [esp+0x5c], ebx`). In the row loop they are shifted as a pair (`[0x60] += [0x50]`, `[0x5c] += [0x40]`, and `[0x58]`/`[0x5c]`/`[0x60]` rotate at the ends of blocks). These are the `tottotacc`/`passtotacc` pair; ours keeps them in registers.
-  - `[0x66]`: a **short** at 0x66, written `mov word ptr [esp+0x66], dx` and passed as `&coord` to FUN_0044f360 (ours `short coord`). So `coord` is at 0x66, between 0x64 and 0x68.
-  - `[0x68]`: read in the `ReportFlags & 0x8000` block (`cmp ecx, DAT_00666028` at 0x4457a6). This is the same value as `out5c` after the first FUN_00444bf0 call.
-  - `[0x6c]`: `lea ecx,[esp+0x6c]` is the second argument to the first FUN_00444bf0 call; read back at 0x44587d and 0x4476b7.
-  - Pending-push caveat: the first FUN_00444bf0 call sits after a `push 0x131` (GetString arg) that is only popped by the `add esp,0xc` after the call (MSVC defers the pop). So all esp offsets in that block are 4 lower than in straight-line code. The first call's first argument is read back as `[esp+0x8c]` after the pops. Put together, `out5c` appears at frame 0x68 and `out58` at frame 0x8c in the original. Frame 0x8c falls inside `rep` (rep[7] of record 0) if rep is at 0x70, so the mapping of out58 is still unclear.
-- Buffers: ours and the original agree on `[esp+0x1ec4]` and `[esp+0x1ec8]` (fmtbuf/wavbuf). The top of the frame differs only by the 0x14 bytes of scalars below rep, and maybe the placement of the 0x1e48/0x1e50 vs 0x1e58 slots (wavbuf start).
-- About 3,600 lines with many `goto LAB_...`: too big for one agent pass.
+State after the rewrite (2026-10-08). With registers, stack offsets and jump distances ignored, 95.3% of the original's
+8,086 instructions match (93-97% per section), and ours has the same instruction count. Record-field offsets match
+everywhere. The registers follow the original: ebx = 0, esi = i, edi = y, ebp = pagestart (copied to -9172) until the
+advice head, then the row offset. What is left is the stack frame, which shifts nearly every stack operand:
+
+- Ours is 0x23e8 bytes, the original 0x23d4: 20 bytes more.
+  - 16 of them are section 10's `RECT r`, the text and bar rectangles passed by value. One of its fields is spilled,
+    so it gets a frame slot; the original builds both rectangles in the argument area and never gives them a home.
+  - 4 of them are one more scalar slot than the original has: the slots are packed differently.
+- Order. MSVC6 sorts frame slots by weight, heaviest at the bottom. Small tests show this: names and declaration order
+  change nothing, an extra use moves a variable down, and equal weights come out in an unstable order.
+  - Ours: row-offset temporary (i*0x4c), rc, pagestart, x, first, ...
+  - Original: pagestart, x, row-offset temporary (shared with n and the render-object count), rc, ...
+  - Our row-offset temporary is heavier because the loop sections' strength-reduced offset is merged into it (70
+    extra uses in sections 2 and 3). In the original that offset has its own slot, -9112.
+- Packing. The original shares these slots:
+  - -9124: xp, and the loop sections' pass counter (a different variable from section 1's);
+  - -9112: section 1's pass counter, the loop offset and the tile count;
+  - -9104: the loop sections' row pointer, 19*i and the speech index;
+  - -9096: passacc and the display's first row;
+  - -9116: flags and the queued-speech count.
+
+  Ours shares them differently. See the analysis file for the full slot map.
 
 ## Tried (don't repeat)
 
@@ -38,10 +38,13 @@
 | 2026-10-08 | Haiku 5.5 | Moved `rep` above the six `out5x/out6x` declarations (declaration order probe) | frame still `0x23c0`, 15.39%; reverted |
 | 2026-10-08 | permuter + Opus 5.5 | volatile passtotacc and tottotacc (both / each alone / plus piVar10): the totals stay in memory like the original, frame unchanged at 0x23c0 | 15.39 -> 15.60 (both); 15.35-15.42 others |
 | 2026-10-08 | permuter + Opus 5.5 | each FUN_00444bf0/c70/cd0/d20/d70 output argument gets its own variable (11, the original's slots -9084..-9044, found with tools/frame.py): frame now 0x23d4 like the original | 15.60 -> 15.70 |
+| 2026-10-08 | Opus 5.5 + 9 section-writer agents (workflow) | Full rewrite: a skeleton (struct AppraisalRow, the layout/cur rectangles pinned with `if (0)`, page-break macros), ten sections written against a per-section harness (scratchpad ra/h.py), each part's shared restart block written as an explicit label. Then an adversarial behaviour review (12 agents) found one real bug, fixed: section 9 used the nids pointer before section 8 set it | 15.70 -> 26.50 (structure 95.3%) |
+| 2026-10-08 | Opus 5.5 | Frame probes on copies: rc declared first; separate subpass/rowp variables in the loop sections | frame order unchanged, score identical |
 
 ## Ideas not tried yet
 
-- Pin the MSVC placement of `coord` (short at 0x66) and the `out5c = 0x68` slot: try declaring the scalars in the order that puts `coord` right below `out68`/`out6c` (declaration order alone did not change the frame; this needs a layout-level change, not a reorder).
-- Remove or move the pending `push 0x131` (GetString call) out of the FUN_00444bf0 argument block so that the offsets line up with the original; then re-check the frame.
-- Model the two accumulators (`[0x5c]`/`[0x60]`) as real `int` locals that are read and written in the row loop (instead of the register `tottotacc`/`passtotacc` pair). They are the most likely cause of the 2 missing scalar slots.
-- Split the work: fix the frame first, then go block by block.
+- Give the loop sections' strength-reduced offset its own temporary, as the original does. That should bring the
+  row-offset temporary's weight below pagestart's and x's.
+- Remove section 10's RECT home: build the two rectangles so that no field is spilled.
+- Pack like the original: n and the render-object count into the row-offset temporary's slot, and so on (see
+  "Packing" above).
