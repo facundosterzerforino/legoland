@@ -1,4 +1,6 @@
-# 0x00415ae0 RenderSpider
+# RenderSpider (0x00415ae0, `src/legoland/spider_ride.c`)
+
+**Best: 98.62%**. Kind: C.
 
 File: `src/legoland/spider_ride.c`. Plain C.
 

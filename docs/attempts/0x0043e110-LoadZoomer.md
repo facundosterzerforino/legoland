@@ -1,4 +1,4 @@
-﻿# LoadZoomer (0x0043e110, `src/legoland/plane_ride.c`)
+# LoadZoomer (0x0043e110, `src/legoland/plane_ride.c`)
 
 **Best: 97.89%** (unchanged source from the earlier round). Kind: plain C.
 
