@@ -52,6 +52,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0040bf70 | [LogFlumeEntranceUpdate](0x0040bf70-LogFlumeEntranceUpdate.md) | log_flume.c | 82.05% |
 | 0x0040c250 | [FUN_0040c250](0x0040c250-FUN_0040c250.md) | log_flume.c | 42.86% |
 | 0x0040c8d0 | [LogFlumeTrackRemoveObject](0x0040c8d0-LogFlumeTrackRemoveObject.md) | log_flume.c | 92.59% |
+| 0x0040d6f0 | [FUN_0040d6f0](0x0040d6f0-FUN_0040d6f0.md) | log_flume.c | 97.67% |
 | 0x0040e440 | [FUN_0040e440](0x0040e440-FUN_0040e440.md) | log_flume.c | 70.67% |
 | 0x0040f050 | [FUN_0040f050](0x0040f050-FUN_0040f050.md) | log_flume.c | 83.96% |
 | 0x0040f5b0 | [FUN_0040f5b0](0x0040f5b0-FUN_0040f5b0.md) | log_flume.c | 91.50% |
