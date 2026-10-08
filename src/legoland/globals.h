@@ -3726,25 +3726,25 @@ extern unsigned int MouseTileX;
 // 0x00813a68
 extern unsigned int MouseTileY;
 // 0x00813a6c
-extern unsigned int FootprintWidth;
+extern int FootprintWidth;
 // 0x00813a70
-extern unsigned int FootprintHeight;
+extern int FootprintHeight;
 // 0x00813a74
-extern unsigned int DAT_00813a74;
+extern int DAT_00813a74;
 // 0x00813a78
-extern unsigned int DAT_00813a78;
+extern int DAT_00813a78;
 // 0x00813a7c
-extern unsigned int DAT_00813a7c;
+extern int DAT_00813a7c;
 // 0x00813a80
-extern unsigned int DAT_00813a80;
+extern int DAT_00813a80;
 // 0x00813a84
-extern unsigned int DAT_00813a84;
+extern int DAT_00813a84;
 // 0x00813a88
-extern unsigned int DAT_00813a88;
+extern int DAT_00813a88;
 // 0x00813a8c
-extern unsigned int DAT_00813a8c;
+extern int DAT_00813a8c;
 // 0x00813a90
-extern unsigned int DAT_00813a90;
+extern int DAT_00813a90;
 // 0x00813a94
 extern unsigned int DAT_00813a94;
 // 0x00813a98

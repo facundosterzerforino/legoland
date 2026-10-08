@@ -4866,34 +4866,34 @@ unsigned int MouseTileX;
 unsigned int MouseTileY;
 
 // GLOBAL: LEGOLAND 0x00813a6c
-unsigned int FootprintWidth;
+int FootprintWidth;
 
 // GLOBAL: LEGOLAND 0x00813a70
-unsigned int FootprintHeight;
+int FootprintHeight;
 
 // GLOBAL: LEGOLAND 0x00813a74
-unsigned int DAT_00813a74;
+int DAT_00813a74;
 
 // GLOBAL: LEGOLAND 0x00813a78
-unsigned int DAT_00813a78;
+int DAT_00813a78;
 
 // GLOBAL: LEGOLAND 0x00813a7c
-unsigned int DAT_00813a7c;
+int DAT_00813a7c;
 
 // GLOBAL: LEGOLAND 0x00813a80
-unsigned int DAT_00813a80;
+int DAT_00813a80;
 
 // GLOBAL: LEGOLAND 0x00813a84
-unsigned int DAT_00813a84;
+int DAT_00813a84;
 
 // GLOBAL: LEGOLAND 0x00813a88
-unsigned int DAT_00813a88;
+int DAT_00813a88;
 
 // GLOBAL: LEGOLAND 0x00813a8c
-unsigned int DAT_00813a8c;
+int DAT_00813a8c;
 
 // GLOBAL: LEGOLAND 0x00813a90
-unsigned int DAT_00813a90;
+int DAT_00813a90;
 
 // GLOBAL: LEGOLAND 0x00813a94
 unsigned int DAT_00813a94;

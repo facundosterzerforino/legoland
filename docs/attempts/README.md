@@ -123,7 +123,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00451390 | [FUN_00451390](0x00451390-FUN_00451390.md) | cdcheck.c | 90.00% |
 | 0x00451740 | [PrintCertificate](0x00451740-PrintCertificate.md) | certificate.c | 81.20% |
 | 0x00451e70 | [SetupControllers](0x00451e70-SetupControllers.md) | controller.c | 91.89% |
-| 0x00452030 | [FUN_00452030](0x00452030-FUN_00452030.md) | controller.c | 33.15% |
+| 0x00452030 | [FUN_00452030](0x00452030-FUN_00452030.md) | controller.c | 57.36% |
 | 0x00453d10 | [WinMain](0x00453d10-WinMain.md) | main.c | 100% |
 | 0x00453da0 | [stackdump](0x00453da0-stackdump.md) | exceptlog.c | 79.82% |
 | 0x00454380 | [WriteModuleInfo](0x00454380-WriteModuleInfo.md) | exceptlog.c | 100% |
