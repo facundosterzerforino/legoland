@@ -785,13 +785,15 @@ LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsign
 // FUNCTION: LEGOLAND 0x004401b0
 void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     struct Point pt;
-    int y;
     int x;
+    int y;
     short s;
-    int w;
-    int h;
+    volatile int w;
+    volatile int h;
 
-    SetPersonDirection(person, bloke->dir);
+    int dir;
+    dir = bloke->dir;
+    SetPersonDirection(person, dir);
     y = bloke->pos.y;
     x = bloke->pos.x;
     GetTileDimensions(&w, &h);
@@ -803,7 +805,7 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     pt.y -= s;
     person->sort_id = pt.y;
     pt.x += lpConfig->view_x;
-    pt.y += lpConfig->view_y - (bloke->height >> 1);
+    pt.y = pt.y + (lpConfig->view_y - (bloke->height >> 1));
     AdjustBlokePosition(&pt);
     SetPersonPosition(person, pt.x, pt.y);
     if (!(bloke->flags & 0x100)) {

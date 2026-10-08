@@ -4026,10 +4026,10 @@ int FUN_0040e3b0(unsigned int *ctx) {
 // FUNCTION: LEGOLAND 0x0040e440
 void FUN_0040e440(struct FlumeXY p, unsigned int *result) {
     int px;
-    unsigned int v3;
-    int v1;
-    unsigned int h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
     unsigned int w = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
+    unsigned int v3;
+    unsigned int h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
+    int v1;
 
     switch (DAT_004c2af4) {
     case 0:

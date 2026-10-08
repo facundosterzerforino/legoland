@@ -173,11 +173,11 @@ int FUN_00411f70(struct Queue *queue, struct QueueItemInner *inner) {
 void FUN_00411fa0(struct Queue *queue, int param_2, int param_3, struct QueueItemInner *inner) {
     struct QueueTable *table = queue->count;
     struct QueueStep *step = &table->steps[inner->field_38];
-    struct QueueNode *node;
     short cur;
+    struct QueueNode *node;
     char dir;
     int x;
-    int y;
+    volatile int y;
 
     x = (step->dx + param_2) << 8;
     y = (step->dy + param_3) << 8;

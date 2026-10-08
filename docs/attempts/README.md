@@ -53,11 +53,11 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0040c250 | [FUN_0040c250](0x0040c250-FUN_0040c250.md) | log_flume.c | 42.86% |
 | 0x0040c8d0 | [LogFlumeTrackRemoveObject](0x0040c8d0-LogFlumeTrackRemoveObject.md) | log_flume.c | 92.59% |
 | 0x0040d6f0 | [FUN_0040d6f0](0x0040d6f0-FUN_0040d6f0.md) | log_flume.c | 97.67% |
-| 0x0040e440 | [FUN_0040e440](0x0040e440-FUN_0040e440.md) | log_flume.c | 70.67% |
+| 0x0040e440 | [FUN_0040e440](0x0040e440-FUN_0040e440.md) | log_flume.c | 74.67% |
 | 0x0040f050 | [FUN_0040f050](0x0040f050-FUN_0040f050.md) | log_flume.c | 83.96% |
 | 0x0040f5b0 | [FUN_0040f5b0](0x0040f5b0-FUN_0040f5b0.md) | log_flume.c | 91.50% |
 | 0x00411680 | [AdvanceFlumeMover](0x00411680-AdvanceFlumeMover.md) | log_flume.c | 63.04% |
-| 0x00411fa0 | [FUN_00411fa0](0x00411fa0-FUN_00411fa0.md) | ride_queue.c | 85.14% |
+| 0x00411fa0 | [FUN_00411fa0](0x00411fa0-FUN_00411fa0.md) | ride_queue.c | 87.74% |
 | 0x00413450 | [FUN_00413450](0x00413450-FUN_00413450.md) | roads.c | 90.00% |
 | 0x00413650 | [UpdateQueuePathShape](0x00413650-UpdateQueuePathShape.md) | roads.c | 97.18% |
 | 0x00415220 | [SafariRideUpdate](0x00415220-SafariRideUpdate.md) | safari_ride.c | 75.56% |
@@ -105,7 +105,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0043e110 | [LoadZoomer](0x0043e110-LoadZoomer.md) | plane_ride.c | 97.89% |
 | 0x0043e410 | [PlaneRideUpdate](0x0043e410-PlaneRideUpdate.md) | plane_ride.c | 79.57% |
 | 0x0043ea30 | [ListBoxDialog](0x0043ea30-ListBoxDialog.md) | dialog.c | 69.84% |
-| 0x004401b0 | [FUN_004401b0](0x004401b0-FUN_004401b0.md) | man3d.c | 85.71% |
+| 0x004401b0 | [FUN_004401b0](0x004401b0-FUN_004401b0.md) | man3d.c | 90.20% |
 | 0x00441d60 | [RenderUsingRin](0x00441d60-RenderUsingRin.md) | render3d.c | 100% |
 | 0x00441f20 | [LoadPalette](0x00441f20-LoadPalette.md) | render3d.c | 81.00% |
 | 0x00442040 | [RemapTexCoordsToCell](0x00442040-RemapTexCoordsToCell.md) | render3d.c | 45.93% |
