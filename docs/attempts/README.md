@@ -116,7 +116,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004434d0 | [LoadBmpIntoImage](0x004434d0-LoadBmpIntoImage.md) | challenge.c | 84.04% |
 | 0x00443bd0 | [OpenAviAnim](0x00443bd0-OpenAviAnim.md) | challenge.c | 91.98% |
 | 0x00444a70 | [DrawAppraisalBar](0x00444a70-DrawAppraisalBar.md) | challenge.c | 80.21% |
-| 0x004453a0 | [RunAppraisal](0x004453a0-RunAppraisal.md) | challenge.c | 15.60% |
+| 0x004453a0 | [RunAppraisal](0x004453a0-RunAppraisal.md) | challenge.c | 15.70% |
 | 0x0044e010 | [__BMPLoader](0x0044e010-__BMPLoader.md) | gfx.c | 39.57% |
 | 0x0044e580 | [LoadColourTable](0x0044e580-LoadColourTable.md) | gfx.c | 83.78% |
 | 0x0044fe80 | [FUN_0044fe80](0x0044fe80-FUN_0044fe80.md) | bloke_ai.c | 94.89% |

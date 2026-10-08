@@ -1441,12 +1441,17 @@ unsigned int RunAppraisal(void) {
     volatile unsigned int passtotacc;
     volatile unsigned int tottotacc;
     unsigned int passflag;
-    int out58;
-    int out5c;
-    int out60;
-    int out64;
-    int out68;
-    int out6c;
+    int d70_count;
+    int bf0_total;
+    int d20_total;
+    int cd0_total;
+    int c70_total;
+    int c70_count;
+    int cd0_count;
+    int d70_p2;
+    int d20_count;
+    int d70_p3;
+    int bf0_count;
     int rep[0x777];
     char wavbuf[0x80];
     char fmtbuf[0x1fc];
@@ -1529,12 +1534,12 @@ LAB_00445422:
         rep[iVar14 * 0x13 + 18] = 0;
         rep[iVar14 * 0x13 + 19] = 0;
         iVar13 = xbase + 0x30;
-        FUN_00444bf0((unsigned int *)&out58, (unsigned int *)&out5c);
+        FUN_00444bf0((unsigned int *)&bf0_total, (unsigned int *)&bf0_count);
         if ((ReportFlags & 0x4000) == 0) {
         LAB_00445794:
             if ((ReportFlags & 0x8000) != 0) {
                 total = total + 1;
-                passflag = (int)DAT_00666028 <= out5c;
+                passflag = (int)DAT_00666028 <= bf0_count;
                 if (passflag == 0) {
                     flags = flags | 0x20;
                 } else {
@@ -1556,7 +1561,7 @@ LAB_00445422:
                 rep[(iVar12 - 1) * 0x13 + 13] = (int)uVar5;
                 rep[(iVar12 - 1) * 0x13 + 14] = 0;
                 rep[(iVar12 - 1) * 0x13 + 15] = 1;
-                rep[(iVar12 - 1) * 0x13 + 16] = out5c;
+                rep[(iVar12 - 1) * 0x13 + 16] = bf0_count;
                 rep[(iVar12 - 1) * 0x13 + 17] = DAT_00666028;
                 rep[(iVar12 - 1) * 0x13 + 18] = DAT_0066602c;
                 rep[(iVar12 - 1) * 0x13 + 19] = 0;
@@ -1925,7 +1930,7 @@ LAB_00445422:
             goto LAB_0044672e;
         }
         total = 1;
-        flatp = (int *)((int)DAT_00666020 <= out58);
+        flatp = (int *)((int)DAT_00666020 <= bf0_total);
         if (flatp == (int *)0x0) {
             flags = flags | 0x10;
         }
@@ -1942,7 +1947,7 @@ LAB_00445422:
             rep[iVar7 * 0x13 + 13] = (int)uVar5;
             rep[iVar7 * 0x13 + 14] = 0;
             rep[iVar7 * 0x13 + 15] = 1;
-            rep[iVar7 * 0x13 + 16] = out58;
+            rep[iVar7 * 0x13 + 16] = bf0_total;
             rep[iVar7 * 0x13 + 17] = DAT_00666020;
             rep[iVar7 * 0x13 + 18] = DAT_00666024;
             rep[iVar7 * 0x13 + 19] = 0;
@@ -1987,12 +1992,12 @@ LAB_00446751:
             rep[iVar12 * 0x13 + 17] = 0;
             rep[iVar12 * 0x13 + 18] = 0;
             rep[iVar12 * 0x13 + 19] = 0;
-            FUN_00444c70((unsigned int *)&out68, (unsigned int *)&out6c);
+            FUN_00444c70((unsigned int *)&c70_total, (unsigned int *)&c70_count);
             if ((ReportFlags & 0x8000000) == 0) {
             LAB_004469ab:
                 if ((ReportFlags & 0x10000000) != 0) {
                     total = total + 1;
-                    flatp = (int *)((int)DAT_00666078 <= out6c);
+                    flatp = (int *)((int)DAT_00666078 <= c70_count);
                     if (flatp == (int *)0x0) {
                         flags = flags | 0x2000;
                     } else {
@@ -2014,7 +2019,7 @@ LAB_00446751:
                     rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar13 - 1) * 0x13 + 14] = 0;
                     rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                    rep[(iVar13 - 1) * 0x13 + 16] = out6c;
+                    rep[(iVar13 - 1) * 0x13 + 16] = c70_count;
                     rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666078;
                     rep[(iVar13 - 1) * 0x13 + 18] = DAT_0066607c;
                     rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2029,7 +2034,7 @@ LAB_00446751:
                 break;
             }
             total = 1;
-            flatp = (int *)((int)DAT_00666070 <= out68);
+            flatp = (int *)((int)DAT_00666070 <= c70_total);
             if (flatp == (int *)0x0) {
                 flags = flags | 0x1000;
             }
@@ -2045,7 +2050,7 @@ LAB_00446751:
                 rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                 rep[(iVar12 + 1) * 0x13 + 14] = 0;
                 rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                rep[(iVar12 + 1) * 0x13 + 16] = out68;
+                rep[(iVar12 + 1) * 0x13 + 16] = c70_total;
                 rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666070;
                 rep[(iVar12 + 1) * 0x13 + 18] = DAT_00666074;
                 rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2094,12 +2099,12 @@ LAB_00446b71:
                 rep[iVar12 * 0x13 + 17] = 0;
                 rep[iVar12 * 0x13 + 18] = 0;
                 rep[iVar12 * 0x13 + 19] = 0;
-                FUN_00444cd0((unsigned int *)&out68, (unsigned int *)&out6c);
+                FUN_00444cd0((unsigned int *)&cd0_total, (unsigned int *)&cd0_count);
                 if ((ReportFlags & 0x40000000) == 0) {
                 LAB_00446deb:
                     if ((ReportFlags & 0x80000000) != 0) {
                         total = total + 1;
-                        flatp = (int *)((int)DAT_00666090 <= out6c);
+                        flatp = (int *)((int)DAT_00666090 <= cd0_count);
                         if (flatp == (int *)0x0) {
                             flags = flags | 0x10000;
                         } else {
@@ -2121,7 +2126,7 @@ LAB_00446b71:
                         rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                         rep[(iVar13 - 1) * 0x13 + 14] = 0;
                         rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                        rep[(iVar13 - 1) * 0x13 + 16] = out6c;
+                        rep[(iVar13 - 1) * 0x13 + 16] = cd0_count;
                         rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666090;
                         rep[(iVar13 - 1) * 0x13 + 18] = DAT_00666094;
                         rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2136,7 +2141,7 @@ LAB_00446b71:
                     break;
                 }
                 total = 1;
-                flatp = (int *)((int)DAT_00666088 <= out68);
+                flatp = (int *)((int)DAT_00666088 <= cd0_total);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x8000;
                 }
@@ -2152,7 +2157,7 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = out68;
+                    rep[(iVar12 + 1) * 0x13 + 16] = cd0_total;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666088;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_0066608c;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2201,12 +2206,12 @@ LAB_00446b71:
                 rep[iVar12 * 0x13 + 17] = 0;
                 rep[iVar12 * 0x13 + 18] = 0;
                 rep[iVar12 * 0x13 + 19] = 0;
-                FUN_00444d20((unsigned int *)&out60, (unsigned int *)&out6c);
+                FUN_00444d20((unsigned int *)&d20_total, (unsigned int *)&d20_count);
                 if ((ReportFlags & 0x10000) == 0) {
                 LAB_00447222:
                     if ((ReportFlags & 0x20000) != 0) {
                         total = total + 1;
-                        flatp = (int *)((int)DAT_00666048 <= out6c);
+                        flatp = (int *)((int)DAT_00666048 <= d20_count);
                         if (flatp == (int *)0x0) {
                             flags = flags | 0x40000;
                         } else {
@@ -2228,7 +2233,7 @@ LAB_00446b71:
                         rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                         rep[(iVar13 - 1) * 0x13 + 14] = 0;
                         rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                        rep[(iVar13 - 1) * 0x13 + 16] = out6c;
+                        rep[(iVar13 - 1) * 0x13 + 16] = d20_count;
                         rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666048;
                         rep[(iVar13 - 1) * 0x13 + 18] = DAT_0066604c;
                         rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2243,7 +2248,7 @@ LAB_00446b71:
                     break;
                 }
                 total = 1;
-                flatp = (int *)((int)DAT_00666040 <= out60);
+                flatp = (int *)((int)DAT_00666040 <= d20_total);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x20000;
                 }
@@ -2259,7 +2264,7 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = out60;
+                    rep[(iVar12 + 1) * 0x13 + 16] = d20_total;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666040;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_00666044;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -2308,10 +2313,10 @@ LAB_00446b71:
                 rep[iVar12 * 0x13 + 17] = 0;
                 rep[iVar12 * 0x13 + 18] = 0;
                 rep[iVar12 * 0x13 + 19] = 0;
-                FUN_00444d70((unsigned int *)&out58, (unsigned int *)&out5c, &out64);
+                FUN_00444d70((unsigned int *)&d70_count, (unsigned int *)&d70_p2, &d70_p3);
                 if ((ReportFlags & 0x80000) != 0) {
                     total = 1;
-                    flatp = (int *)((int)DAT_00666038 <= out58);
+                    flatp = (int *)((int)DAT_00666038 <= d70_count);
                     if (flatp == (int *)0x0) {
                         flags = flags | 0x80000;
                     }
@@ -2322,7 +2327,7 @@ LAB_00446b71:
                 LAB_004476a1:
                     if ((ReportFlags & 0x4000000) != 0) {
                         total = total + 1;
-                        flatp = (int *)((int)DAT_00666050 <= out64);
+                        flatp = (int *)((int)DAT_00666050 <= d70_p3);
                         if (flatp == (int *)0x0) {
                             flags = flags | 0x200000;
                         } else {
@@ -2344,7 +2349,7 @@ LAB_00446b71:
                         rep[(iVar13 - 1) * 0x13 + 13] = (int)uVar5;
                         rep[(iVar13 - 1) * 0x13 + 14] = 0;
                         rep[(iVar13 - 1) * 0x13 + 15] = 1;
-                        rep[(iVar13 - 1) * 0x13 + 16] = out64;
+                        rep[(iVar13 - 1) * 0x13 + 16] = d70_p3;
                         rep[(iVar13 - 1) * 0x13 + 17] = DAT_00666050;
                         rep[(iVar13 - 1) * 0x13 + 18] = DAT_00666054;
                         rep[(iVar13 - 1) * 0x13 + 19] = 0;
@@ -2359,7 +2364,7 @@ LAB_00446b71:
                     break;
                 }
                 total = total + 1;
-                flatp = (int *)((int)DAT_00666050 <= out5c);
+                flatp = (int *)((int)DAT_00666050 <= d70_p2);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x100000;
                 } else {
@@ -2376,7 +2381,7 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = out5c;
+                    rep[(iVar12 + 1) * 0x13 + 16] = d70_p2;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666050;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_00666054;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
