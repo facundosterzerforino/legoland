@@ -1164,6 +1164,8 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
     int tx;
     int ty;
 
+    int y1;
+    int x1;
     first = cursor;
     if (FUN_0045ead0((struct ObjState *)param) != 0 && (cursor->field_1828 & 0x4000) == 0) {
         FUN_0045f540(cursor);
@@ -1182,10 +1184,12 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
             bounds.left = 0;
             bounds.bottom = lpConfig->height;
             bounds.right = lpConfig->height;
-            box.right = rect->x1 + cursor->tile_x;
+            x1 = rect->x1;
+            box.right = x1 + cursor->tile_x;
             box.left = rect->x0 + cursor->tile_x;
+            y1 = rect->y1;
             box.top = rect->y0 + cursor->tile_y;
-            box.bottom = rect->y1 + cursor->tile_y;
+            box.bottom = y1 + cursor->tile_y;
             if (IntersectRect(&inter, &box, &bounds) != 0) {
                 people = CheckForPeople(&inter);
                 switch (people) {
