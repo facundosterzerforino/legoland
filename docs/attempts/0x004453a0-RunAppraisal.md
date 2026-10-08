@@ -1,12 +1,21 @@
 # RunAppraisal (0x004453a0, `src/legoland/challenge.c`)
 
-**Best: 15.39%**. Kind: C.
+**Best: 15.39%** (unchanged from start). Kind: C.
 
 ## What still differs
 
 - Stack frame: original `sub esp, 0x23d4`, ours `0x23c0` (20 bytes short). `rep` starts at `[esp+0x70]` in the original and `[esp+0x68]` in ours.
-- `out60`, `out64`, `out68`, `out6c` are declared but never used, so MSVC drops them. The original uses those slots: it zeroes `[esp+0x60]` and `[esp+0x5c]` on entry, reads `[esp+0x68]` around the `ReportFlags & 0x80` block and passes `lea ecx,[esp+0x6c]` to FUN_00444bf0.
-- The original keeps `xbase`, the zero counters and `[esp+0x58]` (a pointer into `rep`) in memory; ours keeps them in registers.
+- The out slots are NOT unused in the current C: `out58`, `out5c`, `out60`, `out64`, `out68`, `out6c` are all passed by address to FUN_00444bf0 / FUN_00444c70 / FUN_00444cd0 / FUN_00444d20 / FUN_00444d70 and read back (`DAT_00666028 <= out5c` etc.). MSVC keeps them; the frame is still short, so the problem is *where* they sit, not whether they exist.
+- Findings about the original's slots (esp-relative, pre-push numbering):
+  - `[0x10]`, `[0x14]`, `[0x18]` (xbase), `[0x1c]`..`[0x28]` (colstep/ystart/rectr/wstart) are loop state, as in ours.
+  - `[0x48]`, `[0x4c]`, `[0x50]`: per-row counters, zeroed in the row loop (`mov [esp+0x50], ebx`), `[0x50]` incremented in the ReportFlags&0x80 block.
+  - `[0x58]`: pointer `piVar10 = &rep[iVar*19+10]` (the `lea ecx,[esp+ecx+0x98]` gives rep base 0x70). Written as `mov [ecx],1` / `mov [eax],0` through it. Ours keeps this in a register.
+  - `[0x5c]` and `[0x60]`: two running accumulators, zeroed on entry (`mov [esp+0x60], ebx; mov [esp+0x5c], ebx`). In the row loop they are shifted as a pair (`[0x60] += [0x50]`, `[0x5c] += [0x40]`, and `[0x58]`/`[0x5c]`/`[0x60]` rotate at the ends of blocks). These are the `tottotacc`/`passtotacc` pair; ours keeps them in registers.
+  - `[0x66]`: a **short** at 0x66, written `mov word ptr [esp+0x66], dx` and passed as `&coord` to FUN_0044f360 (ours `short coord`). So `coord` is at 0x66, between 0x64 and 0x68.
+  - `[0x68]`: read in the `ReportFlags & 0x8000` block (`cmp ecx, DAT_00666028` at 0x4457a6). This is the same value as `out5c` after the first FUN_00444bf0 call.
+  - `[0x6c]`: `lea ecx,[esp+0x6c]` is the second argument to the first FUN_00444bf0 call; read back at 0x44587d and 0x4476b7.
+  - Pending-push caveat: the first FUN_00444bf0 call sits after a `push 0x131` (GetString arg) that is only popped by the `add esp,0xc` after the call (MSVC defers the pop). So all esp offsets in that block are 4 lower than in straight-line code. The first call's first argument is read back as `[esp+0x8c]` after the pops. Put together, `out5c` appears at frame 0x68 and `out58` at frame 0x8c in the original. Frame 0x8c falls inside `rep` (rep[7] of record 0) if rep is at 0x70, so the mapping of out58 is still unclear.
+- Buffers: ours and the original agree on `[esp+0x1ec4]` and `[esp+0x1ec8]` (fmtbuf/wavbuf). The top of the frame differs only by the 0x14 bytes of scalars below rep, and maybe the placement of the 0x1e48/0x1e50 vs 0x1e58 slots (wavbuf start).
 - About 3,600 lines with many `goto LAB_...`: too big for one agent pass.
 
 ## Tried (don't repeat)
@@ -15,8 +24,12 @@
 |---|---|---|---|
 | 2026-10-07 r1 | Haiku agent | Added a padding local to make up the 20 bytes | rejected: fake padding is not allowed |
 | 2026-10-07 r2 | Haiku agent | Analysis only (the frame findings above) | no change |
+| 2026-10-08 | Haiku 5.5 | Analysis of every `[esp+0x58..0x6c]` access in `orig`; noted that out58..out6c are already used | no change |
+| 2026-10-08 | Haiku 5.5 | Moved `rep` above the six `out5x/out6x` declarations (declaration order probe) | frame still `0x23c0`, 15.39%; reverted |
 
 ## Ideas not tried yet
 
-- Find which real variables live at `[esp+0x58..0x6c]` (the FUN_00444bf0 out-parameter at 0x6c first) and use them, so the frame grows naturally.
+- Pin the MSVC placement of `coord` (short at 0x66) and the `out5c = 0x68` slot: try declaring the scalars in the order that puts `coord` right below `out68`/`out6c` (declaration order alone did not change the frame; this needs a layout-level change, not a reorder).
+- Remove or move the pending `push 0x131` (GetString call) out of the FUN_00444bf0 argument block so that the offsets line up with the original; then re-check the frame.
+- Model the two accumulators (`[0x5c]`/`[0x60]`) as real `int` locals that are read and written in the row loop (instead of the register `tottotacc`/`passtotacc` pair). They are the most likely cause of the 2 missing scalar slots.
 - Split the work: fix the frame first, then go block by block.
