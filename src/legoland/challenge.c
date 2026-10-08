@@ -1001,36 +1001,36 @@ void LoadAppraisalSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444a70
-void DrawAppraisalBar(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7) {
+void DrawAppraisalBar(RECT rc, int value, int max, int goal) {
     int negative;
     int bar;
     unsigned int colour;
     int mark;
 
-    if (param_6 < 0) {
+    if (max < 0) {
         negative = 1;
-        param_6 = -param_6;
-        param_7 = param_6 - param_7;
+        max = -max;
+        goal = max - goal;
     } else {
         negative = 0;
     }
-    if (param_5 > param_6) {
-        param_5 = param_6;
+    if (value > max) {
+        value = max;
     }
     if (negative != 0) {
-        param_5 = param_6 - param_5;
+        value = max - value;
     }
-    if (param_5 >= param_7) {
+    if (value >= goal) {
         colour = GetNearestColour(0, 0xff, 0);
     } else {
         colour = GetNearestColour(0xff, 0, 0);
     }
-    bar = ((param_3 - param_1) * param_5) / param_6;
-    PrintSprite(AppBarSprite, param_1, param_2, 0, 0);
-    RenderBlock(param_1 + 3, param_2 + 2, bar - 2, 1, colour);
-    RenderBlock(param_1 + 2, param_2 + 3, bar, (param_4 - param_2) - 1, colour);
-    mark = (((param_3 - param_1) - 2) * param_7) / param_6 + 2 + param_1;
-    PrintSprite(AppBarMarkerSprite, mark, param_2 + 2, 0, 0);
+    bar = ((rc.right - rc.left) * value) / max;
+    PrintSprite(AppBarSprite, rc.left, rc.top, 0, 0);
+    RenderBlock(rc.left + 3, rc.top + 2, bar - 2, 1, colour);
+    RenderBlock(rc.left + 2, rc.top + 3, bar, (rc.bottom - rc.top) - 1, colour);
+    mark = (((rc.right - rc.left) - 2) * goal) / max + 2 + rc.left;
+    PrintSprite(AppBarMarkerSprite, mark, rc.top + 2, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00444b70
@@ -1047,7 +1047,7 @@ void DrawAppraisalMark(unsigned int param_1, unsigned int param_2, int param_3, 
 }
 
 // FUNCTION: LEGOLAND 0x00444bf0
-void FUN_00444bf0(unsigned int *param_1, unsigned int *param_2) {
+void FUN_00444bf0(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1071,7 +1071,7 @@ int FUN_00444c40(struct ObjectClass *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00444c70
-void FUN_00444c70(unsigned int *param_1, unsigned int *param_2) {
+void FUN_00444c70(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1090,7 +1090,7 @@ void FUN_00444c70(unsigned int *param_1, unsigned int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444cd0
-void FUN_00444cd0(unsigned int *param_1, unsigned int *param_2) {
+void FUN_00444cd0(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1109,7 +1109,7 @@ void FUN_00444cd0(unsigned int *param_1, unsigned int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444d20
-void FUN_00444d20(unsigned int *param_1, unsigned int *param_2) {
+void FUN_00444d20(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1128,7 +1128,7 @@ void FUN_00444d20(unsigned int *param_1, unsigned int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444d70
-void FUN_00444d70(unsigned int *param_1, unsigned int *param_2, int *param_3) {
+void FUN_00444d70(int *param_1, int *param_2, int *param_3) {
     struct Bloke *bloke;
     signed char value;
 
@@ -1354,7 +1354,7 @@ void UnlightAppraisalPageButtons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00445190
-void InitAppraisalScreen(void) {
+void InitAppraisalScreen(int pages) {
     struct IconNode *icon;
 
     NextPageSprite = LoadSprite("NextPage.lls", 4);
@@ -1534,7 +1534,7 @@ LAB_00445422:
         rep[iVar14 * 0x13 + 18] = 0;
         rep[iVar14 * 0x13 + 19] = 0;
         iVar13 = xbase + 0x30;
-        FUN_00444bf0((unsigned int *)&bf0_total, (unsigned int *)&bf0_count);
+        FUN_00444bf0(&bf0_total, &bf0_count);
         if ((ReportFlags & 0x4000) == 0) {
         LAB_00445794:
             if ((ReportFlags & 0x8000) != 0) {
@@ -1992,7 +1992,7 @@ LAB_00446751:
             rep[iVar12 * 0x13 + 17] = 0;
             rep[iVar12 * 0x13 + 18] = 0;
             rep[iVar12 * 0x13 + 19] = 0;
-            FUN_00444c70((unsigned int *)&c70_total, (unsigned int *)&c70_count);
+            FUN_00444c70(&c70_total, &c70_count);
             if ((ReportFlags & 0x8000000) == 0) {
             LAB_004469ab:
                 if ((ReportFlags & 0x10000000) != 0) {
@@ -2099,7 +2099,7 @@ LAB_00446b71:
                 rep[iVar12 * 0x13 + 17] = 0;
                 rep[iVar12 * 0x13 + 18] = 0;
                 rep[iVar12 * 0x13 + 19] = 0;
-                FUN_00444cd0((unsigned int *)&cd0_total, (unsigned int *)&cd0_count);
+                FUN_00444cd0(&cd0_total, &cd0_count);
                 if ((ReportFlags & 0x40000000) == 0) {
                 LAB_00446deb:
                     if ((ReportFlags & 0x80000000) != 0) {
@@ -2206,7 +2206,7 @@ LAB_00446b71:
                 rep[iVar12 * 0x13 + 17] = 0;
                 rep[iVar12 * 0x13 + 18] = 0;
                 rep[iVar12 * 0x13 + 19] = 0;
-                FUN_00444d20((unsigned int *)&d20_total, (unsigned int *)&d20_count);
+                FUN_00444d20(&d20_total, &d20_count);
                 if ((ReportFlags & 0x10000) == 0) {
                 LAB_00447222:
                     if ((ReportFlags & 0x20000) != 0) {
@@ -2313,7 +2313,7 @@ LAB_00446b71:
                 rep[iVar12 * 0x13 + 17] = 0;
                 rep[iVar12 * 0x13 + 18] = 0;
                 rep[iVar12 * 0x13 + 19] = 0;
-                FUN_00444d70((unsigned int *)&d70_count, (unsigned int *)&d70_p2, &d70_p3);
+                FUN_00444d70(&d70_count, &d70_p2, &d70_p3);
                 if ((ReportFlags & 0x80000) != 0) {
                     total = 1;
                     flatp = (int *)((int)DAT_00666038 <= d70_count);
@@ -4678,7 +4678,7 @@ LAB_0044acbb:
                     iVar13 = iVar13 + -1;
                 }
                 AppraisalPageCount = AppraisalPageCount + 1;
-                InitAppraisalScreen();
+                InitAppraisalScreen(AppraisalPageCount);
                 LoadAppraisalSprites();
                 do {
                     if (AppraisalScreenActive == 0) {
@@ -4796,7 +4796,14 @@ LAB_0044acbb:
                                 DrawTextOnRenderSurface((char *)piVar11[-6], 2, rcRow, piVar11[-5]);
                             }
                             if (piVar11[-4] != 0) {
-                                DrawAppraisalBar(0x126, rowy, 0x1a4, rowy + 8, piVar11[-3], piVar11[-1], piVar11[-2]);
+                                {
+                                    RECT bar;
+                                    bar.left = 0x126;
+                                    bar.top = rowy;
+                                    bar.right = 0x1a4;
+                                    bar.bottom = rowy + 8;
+                                    DrawAppraisalBar(bar, piVar11[-3], piVar11[-1], piVar11[-2]);
+                                }
                             }
                             rowy = rowy + 0x18;
                             passtotacc = passtotacc + 1;
