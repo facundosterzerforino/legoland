@@ -55,7 +55,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00416fa0 | [RenderTempleSlide](0x00416fa0-RenderTempleSlide.md) | temple_slide.c | 95.00% |
 | 0x00418710 | [FUN_00418710](0x00418710-FUN_00418710.md) | water_works.c | 82.69% |
 | 0x004198a0 | [BoatingSchoolBuildStepPath](0x004198a0-BoatingSchoolBuildStepPath.md) | boating_school.c | 81.56% |
-| 0x0041a720 | [FUN_0041a720](0x0041a720-FUN_0041a720.md) | boating_school.c | 94.41% |
+| 0x0041a720 | [FUN_0041a720](0x0041a720-FUN_0041a720.md) | boating_school.c | 96.58% |
 | 0x0041df00 | [FUN_0041df00](0x0041df00-FUN_0041df00.md) | castle.c | 44.94% |
 | 0x0041ee40 | [FUN_0041ee40](0x0041ee40-FUN_0041ee40.md) | castle.c | 90.32% |
 | 0x0041ef60 | [FUN_0041ef60](0x0041ef60-FUN_0041ef60.md) | castle.c | 43.10% |
@@ -64,7 +64,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00424700 | [FUN_00424700](0x00424700-FUN_00424700.md) | castle.c | 88.41% |
 | 0x00425e20 | [FUN_00425e20](0x00425e20-FUN_00425e20.md) | castle.c | 90.70% |
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
-| 0x0042aa90 | [FUN_0042aa90](0x0042aa90-FUN_0042aa90.md) | balloonz.c | 94.20% |
+| 0x0042aa90 | [FUN_0042aa90](0x0042aa90-FUN_0042aa90.md) | balloonz.c | 94.65% |
 | 0x0042bcf0 | [RenderCarousel](0x0042bcf0-RenderCarousel.md) | carousel.c | 42.80% |
 | 0x0042f0f0 | [FUN_0042f0f0](0x0042f0f0-FUN_0042f0f0.md) | eatery.c | 88.29% |
 | 0x0042fbb0 | [Restaurant2Update](0x0042fbb0-Restaurant2Update.md) | eatery.c | 41.89% |
@@ -76,7 +76,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0043a7a0 | [FUN_0043a7a0](0x0043a7a0-FUN_0043a7a0.md) | space_tower.c | 37.65% |
 | 0x0043aac0 | [FUN_0043aac0](0x0043aac0-FUN_0043aac0.md) | space_tower.c | 83.93% |
 | 0x0043be70 | [RenderSpinningBarrels](0x0043be70-RenderSpinningBarrels.md) | spinning_barrels.c | 99.20% |
-| 0x0043da60 | [RenderPlaneRide](0x0043da60-RenderPlaneRide.md) | plane_ride.c | 95.45% |
+| 0x0043da60 | [RenderPlaneRide](0x0043da60-RenderPlaneRide.md) | plane_ride.c | 96.54% |
 | 0x0043e110 | [LoadZoomer](0x0043e110-LoadZoomer.md) | plane_ride.c | 97.89% |
 | 0x004401b0 | [FUN_004401b0](0x004401b0-FUN_004401b0.md) | man3d.c | 85.71% |
 | 0x00441f20 | [LoadPalette](0x00441f20-LoadPalette.md) | render3d.c | 81.00% |
@@ -110,7 +110,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0045dd80 | [AddObjectToMap](0x0045dd80-AddObjectToMap.md) | map_object.c | 99.10% |
 | 0x0045eb30 | [BuildObject](0x0045eb30-BuildObject.md) | map_object.c | 96.81% |
 | 0x0045ed30 | [ObjectIsBuilt](0x0045ed30-ObjectIsBuilt.md) | map_object.c | 93.42% |
-| 0x0045f810 | [ValidateCursor](0x0045f810-ValidateCursor.md) | map_object.c | 92.01% |
+| 0x0045f810 | [ValidateCursor](0x0045f810-ValidateCursor.md) | map_object.c | 94.15% |
 | 0x0045fad0 | [FUN_0045fad0](0x0045fad0-FUN_0045fad0.md) | map_object.c | 93.59% |
 | 0x0045fca0 | [FUN_0045fca0](0x0045fca0-FUN_0045fca0.md) | map_object.c | 94.76% |
 | 0x0045ff00 | [RenderCursor](0x0045ff00-RenderCursor.md) | map_object.c | 95.48% |
@@ -122,7 +122,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00465850 | [FUN_00465850](0x00465850-FUN_00465850.md) | draw.c | 34.23% |
 | 0x00465ee0 | [FUN_00465ee0](0x00465ee0-FUN_00465ee0.md) | draw.c | 84.56% |
 | 0x00466560 | [PushSetTarget](0x00466560-PushSetTarget.md) | draw.c | 85.71% |
-| 0x00469c80 | [ScriptEventClear](0x00469c80-ScriptEventClear.md) | objectives.c | 93.18% |
+| 0x00469c80 | [ScriptEventClear](0x00469c80-ScriptEventClear.md) | objectives.c | 94.32% |
 | 0x0046c7e0 | [LoadObjectiveEventList](0x0046c7e0-LoadObjectiveEventList.md) | nerps.c | 98.29% |
 | 0x0046c920 | [SaveScripts](0x0046c920-SaveScripts.md) | nerps.c | 89.23% |
 | 0x0046e0a0 | [RenderBuildObjectIcon](0x0046e0a0-RenderBuildObjectIcon.md) | icon.c | 83.66% |
@@ -134,10 +134,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00476d20 | [FUN_00476d20](0x00476d20-FUN_00476d20.md) | interface.c | 92.62% |
 | 0x0047cba0 | [LLIDB_LoadTSFData](0x0047cba0-LLIDB_LoadTSFData.md) | llidb.c | 90.58% |
 | 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
-| 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 94.15% |
+| 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
 | 0x00488c80 | [FUN_00488c80](0x00488c80-FUN_00488c80.md) | render.c | 89.34% |
-| 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 92.37% |
+| 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 96.75% |
 | 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 81.50% |
 | 0x0048dd00 | [PrintSavedGameDetails](0x0048dd00-PrintSavedGameDetails.md) | savegame_ui.c | 92.33% |
 | 0x004921c0 | [ConvertWaveToPcm16](0x004921c0-ConvertWaveToPcm16.md) | sound_sfx.c | 92.26% |
