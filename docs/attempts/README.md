@@ -110,7 +110,9 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00451740 | [PrintCertificate](0x00451740-PrintCertificate.md) | certificate.c | 81.20% |
 | 0x00451e70 | [SetupControllers](0x00451e70-SetupControllers.md) | controller.c | 91.89% |
 | 0x00452030 | [FUN_00452030](0x00452030-FUN_00452030.md) | controller.c | 33.15% |
+| 0x00453d10 | [WinMain](0x00453d10-WinMain.md) | main.c | 100% |
 | 0x00453da0 | [stackdump](0x00453da0-stackdump.md) | exceptlog.c | 79.82% |
+| 0x00454380 | [WriteModuleInfo](0x00454380-WriteModuleInfo.md) | exceptlog.c | 100% |
 | 0x00455370 | [BubbleHelp](0x00455370-BubbleHelp.md) | text.c | 24.23% |
 | 0x004557c0 | [HTBubbleHelp](0x004557c0-HTBubbleHelp.md) | text.c | 76.47% |
 | 0x00455fc0 | [FUN_00455fc0](0x00455fc0-FUN_00455fc0.md) | text.c | 77.60% |
@@ -168,6 +170,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00488840 | [GenerateNewImageFromZBuffer](0x00488840-GenerateNewImageFromZBuffer.md) | render.c | 76.27% |
 | 0x00488c80 | [FUN_00488c80](0x00488c80-FUN_00488c80.md) | render.c | 91.54% |
 | 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 96.75% |
+| 0x0048ad00 | [InitFreePlayLists](0x0048ad00-InitFreePlayLists.md) | freeplay.c | 100% |
 | 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 82.76% |
 | 0x0048dd00 | [PrintSavedGameDetails](0x0048dd00-PrintSavedGameDetails.md) | savegame_ui.c | 92.33% |
 | 0x0048e550 | [EnterSaveGameDetails](0x0048e550-EnterSaveGameDetails.md) | savegame_ui.c | 84.10% |
