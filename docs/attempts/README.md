@@ -135,10 +135,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00457a70 | [FUN_00457a70](0x00457a70-FUN_00457a70.md) | bricks.c | 100% effective match (reccmp), bytes still differ |
 | 0x00459970 | [FUN_00459970](0x00459970-FUN_00459970.md) | gamemap.c | 94.83% |
 | 0x0045a4a0 | [CalculateMapRenderOrder](0x0045a4a0-CalculateMapRenderOrder.md) | gamemap.c | 62.28% |
-| 0x0045acc0 | [GetTileBounds](0x0045acc0-GetTileBounds.md) | tilemap.c | 28.30% |
+| 0x0045acc0 | [GetTileBounds](0x0045acc0-GetTileBounds.md) | tilemap.c | 75.63% |
 | 0x0045ad60 | [GetTileCentre](0x0045ad60-GetTileCentre.md) | tilemap.c | 93.02% |
 | 0x0045ade0 | [FUN_0045ade0](0x0045ade0-FUN_0045ade0.md) | tilemap.c | 43.41% |
-| 0x0045bcd0 | [PointToIsoPlane](0x0045bcd0-PointToIsoPlane.md) | tilemap.c | 25.70% |
+| 0x0045bcd0 | [PointToIsoPlane](0x0045bcd0-PointToIsoPlane.md) | tilemap.c | 30.47% |
 | 0x0045c900 | [FUN_0045c900](0x0045c900-FUN_0045c900.md) | tilemap.c | 65.71% |
 | 0x0045c9c0 | [FUN_0045c9c0](0x0045c9c0-FUN_0045c9c0.md) | tilemap.c | 49.38% |
 | 0x0045ca90 | [FUN_0045ca90](0x0045ca90-FUN_0045ca90.md) | tilemap.c | 42.86% |

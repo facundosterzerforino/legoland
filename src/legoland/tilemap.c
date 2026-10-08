@@ -183,8 +183,9 @@ unsigned int UnloadMapTiles(void) {
 // FUNCTION: LEGOLAND 0x0045acc0
 LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out) {
     struct TileSprite *sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
-    short size = sprite->size;
-    int top;
+    volatile int top;
+    short size;
+    size = sprite->size;
 
     out[0] = (short)(((short)(size * 2) + 1) >> 1) * ((ref->x - ref->y) - 1) + lpConfig->view_x - (ScrollX >> 8);
     top = (short)((size + 1) >> 1) * (ref->x + ref->y) + lpConfig->view_y - (ScrollY >> 8);
@@ -693,6 +694,7 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
     int x;
     int y;
     short size;
+    int half9;
 
     size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     iVar9 = (int)size;
@@ -700,6 +702,7 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
     iVar4 = iVar8 + 1 >> 1;
     x = *param_1;
     y = param_1[1];
+    half9 = iVar9 + 1 >> 1;
     iVar1 = (x + iVar4) / iVar8;
     iVar5 = (x + iVar4) % iVar8;
     iVar2 = y / iVar9;
@@ -719,7 +722,7 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
         *out = *out + -1;
     }
     cVar7 = (iVar4 <= iVar5) + '\x01';
-    if (iVar9 + 1 >> 1 < iVar6) {
+    if (half9 < iVar6) {
         cVar7 = (iVar4 <= iVar5) + '\x03';
     }
     switch (cVar7) {

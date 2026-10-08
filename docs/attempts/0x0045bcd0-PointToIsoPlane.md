@@ -1,6 +1,6 @@
 # PointToIsoPlane (0x0045bcd0, `src/legoland/tilemap.c`)
 
-**Best: 25.70%** (round 2 version). Kind: C.
+**Best: 30.47%** (round 2 version). Kind: C.
 
 ## What still differs
 
@@ -13,6 +13,7 @@
 |---|---|---|---|
 | 2026-10-07 r1 | Haiku agent | Changed a type to `char` | 23.67% -> 22.04% (worse, reverted) |
 | 2026-10-07 r2 | Haiku agent | Load `*param_1` and `param_1[1]` once into `int x`, `int y` (the original reads each once) | 23.67% -> 25.70% (kept) |
+| 2026-10-08 | permuter + Opus 5.5 | half9 = (iVar9 + 1) >> 1 as a local right after x/y, used in the comparison (the original holds it in ebp, which pushes iVar1-3 to the stack) | 25.70 -> 30.47 |
 
 ## Ideas not tried yet
 
