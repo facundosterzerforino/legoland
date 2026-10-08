@@ -473,11 +473,12 @@ LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
     RECT frame;
     struct TextCell *cell;
     HDC hdc;
-    HGDIOBJ old_font;
+    register HGDIOBJ old_font;
     unsigned int block_color;
     int text_h;
     int cx;
 
+    int cell_h;
     box.left = 0;
     box.top = 0;
     box.right = 0;
@@ -499,8 +500,9 @@ LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
         } else {
             box.left = 0;
             box.top = 0;
+            cell_h = cell->height;
             box.right = cell->width;
-            box.bottom = cell->height;
+            box.bottom = cell_h;
             text_h = cell->height;
         }
         cx = (rect->right + rect->left) >> 1;

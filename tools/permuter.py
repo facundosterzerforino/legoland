@@ -491,14 +491,20 @@ def m_incdec(body, rng):
 def m_compound(body, rng):
     def repl(m):
         ind, v, rhs_v, op, rest = m.groups()
-        return f"{ind}{v} {op}= {rest};" if v == rhs_v else None
+        # v = v - a / 2 - b is not v -= a / 2 - b: only fold a single operand (or a parenthesised one)
+        single = re.fullmatch(rf"\s*(?:{OPERAND}|\([^()]*\))\s*", rest)
+        return f"{ind}{v} {op}= {rest};" if v == rhs_v and single else None
 
     pat = r"(?m)^(\s*)(\w+(?:->\w+|\.\w+)?) = (\w+(?:->\w+|\.\w+)?) ([-+*&|^]) ([^;]+);"
     out = _sub_random(body, pat, repl, rng)
     if out is not None:
         return out
     pat2 = r"(?m)^(\s*)(\w+(?:->\w+|\.\w+)?) ([-+*&|^])= ([^;]+);"
-    return _sub_random(body, pat2, lambda m: f"{m.group(1)}{m.group(2)} = {m.group(2)} {m.group(3)} {m.group(4)};", rng)
+    # v -= a + b is v = v - (a + b): keep the parentheses unless the right side is a single operand
+    def unfold(m):
+        rest = m.group(4) if re.fullmatch(rf"\s*(?:{OPERAND}|\([^()]*\))\s*", m.group(4)) else f"({m.group(4)})"
+        return f"{m.group(1)}{m.group(2)} = {m.group(2)} {m.group(3)} {rest};"
+    return _sub_random(body, pat2, unfold, rng)
 
 
 def _in_condition(text, m):
