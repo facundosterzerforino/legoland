@@ -1,6 +1,6 @@
-# 0x00492380 CreateSampleFromWAV
+# CreateSampleFromWAV (0x00492380, `src/legoland/sound_sfx.c`)
 
-Best: 97.49% (start 97.49%)
+**Best: 97.49%** (start 97.49%)
 
 ## Tried
 | Date | Model | Change | Result |

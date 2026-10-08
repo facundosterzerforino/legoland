@@ -50,9 +50,11 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00416fa0 | [RenderTempleSlide](0x00416fa0-RenderTempleSlide.md) | temple_slide.c | 95.00% |
 | 0x0041a720 | [FUN_0041a720](0x0041a720-FUN_0041a720.md) | boating_school.c | 94.41% |
 | 0x0041df00 | [FUN_0041df00](0x0041df00-FUN_0041df00.md) | castle.c | 44.94% |
+| 0x0041ee40 | [FUN_0041ee40](0x0041ee40-FUN_0041ee40.md) | castle.c | 90.32% |
 | 0x0041ef60 | [FUN_0041ef60](0x0041ef60-FUN_0041ef60.md) | castle.c | 43.10% |
 | 0x00421e90 | [FUN_00421e90](0x00421e90-FUN_00421e90.md) | castle.c | 99.09% |
 | 0x004227c0 | [EdgeMeshRemoveBackfaces](0x004227c0-EdgeMeshRemoveBackfaces.md) | castle.c | 95.06% |
+| 0x00425e20 | [FUN_00425e20](0x00425e20-FUN_00425e20.md) | castle.c | 90.70% |
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
 | 0x0042aa90 | [FUN_0042aa90](0x0042aa90-FUN_0042aa90.md) | balloonz.c | 94.20% |
 | 0x0042bcf0 | [RenderCarousel](0x0042bcf0-RenderCarousel.md) | carousel.c | 42.80% |
@@ -106,5 +108,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
 | 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 92.37% |
 | 0x0048dd00 | [PrintSavedGameDetails](0x0048dd00-PrintSavedGameDetails.md) | savegame_ui.c | 92.33% |
+| 0x004921c0 | [ConvertWaveToPcm16](0x004921c0-ConvertWaveToPcm16.md) | sound_sfx.c | 92.26% |
+| 0x00492380 | [CreateSampleFromWAV](0x00492380-CreateSampleFromWAV.md) | sound_sfx.c | 97.49% |
 | 0x00498420 | [SpeechParseWavHeader](0x00498420-SpeechParseWavHeader.md) | stream.c | 93.19% |
 | 0x0049a7f0 | [Mechanic_Build](0x0049a7f0-Mechanic_Build.md) | worker.c | 96.15% |

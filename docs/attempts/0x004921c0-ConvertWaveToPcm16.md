@@ -1,6 +1,6 @@
-# 0x004921c0 ConvertWaveToPcm16
+# ConvertWaveToPcm16 (0x004921c0, `src/legoland/sound_sfx.c`)
 
-Best: 92.26% (start 92.26%)
+**Best: 92.26%** (start 92.26%)
 
 ## Tried
 | Date | Model | Change | Result |
