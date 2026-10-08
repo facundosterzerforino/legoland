@@ -435,8 +435,28 @@ COMMUTATIVE = r"\+|\*|&(?!&)|\|(?!\|)|\^|==|!="
 FLIP = {"<": ">", ">": "<", "<=": ">=", ">=": "<="}
 
 
-def _sub_random(text, pattern, repl, rng, flags=0):
+_LOOSE_BEFORE = ("(", ",", "[", "?", ":", "{", ";", "&&", "||", "return", "=")
+_LOOSE_AFTER = (")", ",", "]", ";", "?", ":", "&&", "||")
+
+
+def _isolated(text, m, op=""):
+    """True when the matched binary expression isn't an operand of a tighter (or equal) operator next to it,
+    so rewriting it can't change how the surrounding expression parses (a * b + c must not become a * c + b)."""
+    before, after = text[: m.start()].rstrip(), text[m.end() :].lstrip()
+    if before.endswith(("==", "!=", "<=", ">=")) and op in ("==", "!="):
+        return False
+    if not before.endswith(_LOOSE_BEFORE) or before.endswith(("<<=", ">>=")):
+        return False
+    if after.startswith(_LOOSE_AFTER):
+        return True
+    # + and * bind tighter than comparisons, so a following comparison is fine for them
+    return op in ("+", "*") and re.match(r"(==|!=|<=|>=|<(?!<)|>(?!>))", after) is not None
+
+
+def _sub_random(text, pattern, repl, rng, flags=0, op_group=None):
     matches = list(re.finditer(pattern, text, flags))
+    if op_group is not None:
+        matches = [m for m in matches if _isolated(text, m, m.group(op_group))]
     if not matches:
         return None
     m = rng.choice(matches)
@@ -448,12 +468,12 @@ def _sub_random(text, pattern, repl, rng, flags=0):
 
 def m_swap_commutative(body, rng):
     pat = rf"(?<![\w\]\)])({OPERAND})\s*({COMMUTATIVE})\s*({OPERAND})(?![\w\[(])"
-    return _sub_random(body, pat, lambda m: f"{m.group(3)} {m.group(2)} {m.group(1)}", rng)
+    return _sub_random(body, pat, lambda m: f"{m.group(3)} {m.group(2)} {m.group(1)}", rng, op_group=2)
 
 
 def m_flip_compare(body, rng):
     pat = rf"(?<![\w\]\)])({OPERAND})\s*(<=|>=|<(?!<)|>(?!>))\s*({OPERAND})(?![\w\[(])"
-    return _sub_random(body, pat, lambda m: f"{m.group(3)} {FLIP[m.group(2)]} {m.group(1)}", rng)
+    return _sub_random(body, pat, lambda m: f"{m.group(3)} {FLIP[m.group(2)]} {m.group(1)}", rng, op_group=2)
 
 
 def m_incdec(body, rng):
@@ -506,6 +526,23 @@ def _statements(lines):
     return out
 
 
+_CALL = re.compile(r"\b(?!sizeof\b|if\b|while\b|for\b|switch\b|return\b)[A-Za-z_]\w*\s*\(")
+
+
+def _idents(s):
+    return set(re.findall(r"[A-Za-z_]\w*", s))
+
+
+def _written(stmt):
+    """Identifiers in the target of an assignment / ++ / -- statement (conservative: every name in it)."""
+    s = stmt.strip()
+    m = re.match(r"(.*?)\s*(?:<<|>>|[-+*/%&|^])?=(?!=)", s)
+    if m:
+        return _idents(m.group(1))
+    m = re.match(r"(?:\+\+|--)?\s*(.*?)\s*(?:\+\+|--)?;$", s)
+    return _idents(m.group(1)) if m and ("++" in s or "--" in s) else set()
+
+
 def m_swap_statements(body, rng):
     lines = body.split("\n")
     st = set(_statements(lines))
@@ -515,9 +552,12 @@ def m_swap_statements(body, rng):
         return None
     k = rng.choice(pairs)
     a, b = lines[k], lines[k + 1]
-    # don't swap if the second reads what the first writes (simple check)
-    w = re.match(r"\s*\*?(\w+)", a)
-    if w and re.search(rf"\b{w.group(1)}\b", b.split("=", 1)[-1]):
+    # a call may read or write anything: never move a statement across one
+    if _CALL.search(a) or _CALL.search(b):
+        return None
+    # no dependency either way: neither statement may mention anything the other writes
+    wa, wb = _written(a), _written(b)
+    if wa & _idents(b) or wb & _idents(a):
         return None
     lines[k], lines[k + 1] = b, a
     return "\n".join(lines)
@@ -683,7 +723,14 @@ def m_cast_compare(body, rng):
     pat = rf"(?<![\w\]\)])({OPERAND})(\s*(?:<=|>=|<(?!<)|>(?!>)|==|!=)\s*)({OPERAND})(?![\w\[(])"
     cast = rng.choice(["(int)", "(unsigned int)", "(unsigned)"])
     side = rng.randint(1, 2)
-    return _sub_random(body, pat, lambda m: f"{cast}{m.group(1)}{m.group(2)}{m.group(3)}" if side == 1 else f"{m.group(1)}{m.group(2)}{cast}{m.group(3)}", rng)
+
+    def repl(m):
+        # an unsigned compare against 0 or a negative literal changes the result (x < (unsigned)0 is never true)
+        if cast != "(int)" and any(re.fullmatch(r"-?0[uUlL]*|-\s*\w+", g.strip()) for g in (m.group(1), m.group(3))):
+            return None
+        return f"{cast}{m.group(1)}{m.group(2)}{m.group(3)}" if side == 1 else f"{m.group(1)}{m.group(2)}{cast}{m.group(3)}"
+
+    return _sub_random(body, pat, repl, rng, op_group=2)
 
 
 MUTATIONS = [
