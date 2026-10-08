@@ -562,22 +562,22 @@ void PlaneRideUpdate(struct Element *elem) {
     struct RideNode *next;
     struct PlaneRideNode *node;
     struct Bloke *bloke;
-    TileId *pos;
+    register TileId *pos;
     int iv12, iv13;
     int tw, th;
     int coords[2];
     struct Point tmp;
     int coords2[2];
 
-    while (rn != NULL) {
+    while (NULL != rn) {
         next = rn->next;
         bloke = rn->rider;
         pos = &rn->tile;
         node = (struct PlaneRideNode *)FindPlaneRideNode(pos);
-        if (node == NULL) {
+        if (!node) {
             return;
         }
-        if (bloke->low_level_action == 0) {
+        if (0 == bloke->low_level_action) {
             switch (bloke->param_action) {
             case 0: {
                 struct Point sc;
@@ -642,9 +642,9 @@ void PlaneRideUpdate(struct Element *elem) {
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 UnAdjustBlokePosition(&tmp);
-                bloke->flags |= 0x80;
                 coords2[0] = tmp.x;
                 coords2[1] = tmp.y;
+                bloke->flags |= 0x80;
                 bloke->person->sprite = DAT_0062fe98;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
@@ -692,7 +692,7 @@ void PlaneRideUpdate(struct Element *elem) {
                 break;
             }
             case 0xe:
-                bloke->flags &= 0xfff7;
+                bloke->flags = bloke->flags & 0xfff7;
                 RemoveBlokeFromRide(ride, rn);
                 if (--node->b3 == 0) {
                     node->b2 = 0;

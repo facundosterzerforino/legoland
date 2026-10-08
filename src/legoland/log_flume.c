@@ -2450,6 +2450,7 @@ void FUN_0040bf50(void) {
 
 // FUNCTION: LEGOLAND 0x0040bf70
 void LogFlumeEntranceUpdate(Element *obj) {
+    int field_73;
     Ride *ride = obj->ride;
     RideNode *elem = ride->riders;
     RideNode *next;
@@ -2458,7 +2459,7 @@ void LogFlumeEntranceUpdate(Element *obj) {
     struct FlumeEntry *entry;
     unsigned int x;
     unsigned int y;
-    unsigned char dir;
+    char dir;
     int v;
 
     FUN_0040bf50();
@@ -2466,8 +2467,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
         tile = &elem->tile;
         x = ride->field_24 + tile->pos.x;
         next = elem->next;
-        y = ride->field_25 + tile->pos.y;
         bloke = elem->rider;
+        y = ride->field_25 + tile->pos.y;
         if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
@@ -2503,12 +2504,12 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->param_action++;
                 break;
             case 4:
-                bloke->flags |= 0x80;
+                bloke->flags = bloke->flags | 0x80;
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 entry = FindFlumeEntryByTile(tile);
                 if (entry != NULL) {
-                    if (entry->target != NULL) {
+                    if (NULL != entry->target) {
                         *(int *)entry->target = 1;
                         entry->target = NULL;
                     }
@@ -2528,7 +2529,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                field_73 = bloke->field_73;
+                NewDirForAction(bloke, (field_73 >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 7:
@@ -2538,7 +2540,7 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->dest.y = v;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
+                bloke->field_73 = 0x10 + dir;
                 NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
                 bloke->param_action++;
                 break;

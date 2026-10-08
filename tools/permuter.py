@@ -610,7 +610,8 @@ def _block_end(lines, k):
     """Index of the line that closes the brace opened at the end of lines[k]."""
     depth = 0
     for j in range(k, len(lines)):
-        for ch in lines[j]:
+        # on the opening line only the last "{" counts ("} else {" opens a block, its "}" closes another)
+        for ch in (lines[j][lines[j].rfind("{") :] if j == k else lines[j]):
             if ch == "{":
                 depth += 1
             elif ch == "}":
@@ -691,8 +692,8 @@ def m_temp(body, rng):
     for k in st:
         rhs = lines[k].split("=", 1)[1] if "=" in lines[k] else lines[k]
         for m in re.finditer(r"[A-Za-z_]\w*(?:->\w+|\.\w+|\[[^\[\]]+\])+", rhs):
-            # never the target of ++/--: the temporary would be modified instead
-            if re.match(r"\s*(\+\+|--)", rhs[m.end() :]) or re.search(r"(\+\+|--)\s*$", rhs[: m.start()]):
+            # never the target of ++/-- or an address taken with &: the temporary would be modified instead
+            if re.match(r"\s*(\+\+|--)", rhs[m.end() :]) or re.search(r"(\+\+|--|&)\s*(\(\s*[\w\s*]+\)\s*)?$", rhs[: m.start()]):
                 continue
             cands.append((k, m.group(0)))
     if not cands:
