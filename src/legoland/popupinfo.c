@@ -641,38 +641,25 @@ void AddNewObjectIcon(struct NewObjInfo *param_1) {
 
 // FUNCTION: LEGOLAND 0x00471ca0
 void RemoveNewObject(void *param) {
-    struct Sprite **q;
-    int n;
-    int k;
     int j;
+    int k;
 
-    n = (int)NewObjects.count;
-    if (0 < n) {
-        for (j = 0; j < n; j++) {
-            if (param == NewObjects.objs[j]) {
-                if (NewObjects.sprites[j] != NULL) {
-                    KillSprite(NewObjects.sprites[j]);
-                    NewObjects.sprites[j] = NULL;
-                }
-                k = j + 1;
-                if (k < (int)NewObjects.count) {
-                    q = &NewObjects.sprites[j];
-                    do {
-                        k++;
-                        q[0] = q[1];
-                        ((void **)q)[-0x14] = ((void **)q)[-0x13];
-                        q++;
-                    } while (k < (int)NewObjects.count);
-                }
-                n = (int)NewObjects.count;
-                n--;
-                if (NewObjects.current >= n) {
-                    NewObjects.current = n - 1;
-                }
-                NewObjects.count = n;
-                if ((n == 0) && (DAT_007fdfa0 == 2)) {
-                    DAT_007fdfa0 = n;
-                }
+    for (j = 0; j < (int)NewObjects.count; j++) {
+        if (param == NewObjects.objs[j]) {
+            if (NewObjects.sprites[j] != NULL) {
+                KillSprite(NewObjects.sprites[j]);
+                NewObjects.sprites[j] = NULL;
+            }
+            for (k = j; k + 1 < (int)NewObjects.count; k++) {
+                NewObjects.sprites[k] = NewObjects.sprites[k + 1];
+                NewObjects.objs[k] = NewObjects.objs[k + 1];
+            }
+            NewObjects.count--;
+            if (NewObjects.current >= (int)NewObjects.count) {
+                NewObjects.current = NewObjects.count - 1;
+            }
+            if (NewObjects.count == 0 && DAT_007fdfa0 == 2) {
+                DAT_007fdfa0 = 0;
             }
         }
     }
