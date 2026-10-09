@@ -108,53 +108,59 @@ void FUN_00432cb0(struct JungleRide *ride) {
 }
 
 // FUNCTION: LEGOLAND 0x00432d00
-void FUN_00432d00(int param_1) {
-    int ptmp3;
+void DrawJungleCruiseBoats(int docked) {
+    /* Draws the jungle cruise boats and their passengers. The docked pass (docked != 0) draws the boats in
+     * state 1 or 0x10 or on the dock tile's column five or more rows down; the other pass draws the rest.
+     * The docked pass also releases the passengers at the end of the ride. */
     struct JungleRide *ride = JungleRideList;
     int tw;
+    int th;
     int tw2;
     int th2;
     struct Point off;
-    int th;
+    struct Point fwdPos; /* passenger offset, front-to-back pass */
+    struct Point backPos; /* passenger offset, back-to-front pass */
     int a;
-    int dx;
     int b;
+    struct Point base; /* screen position of the boat's tile */
+    int dx;
     int dy;
-    unsigned int baseX;
-    int baseY;
     int row;
     int seat;
     int d;
-    struct Sprite *sprite;
+    unsigned int frame; /* boat overlay sprite index */
     struct Person *person;
 
     GetTileDimensions(&tw, &th);
     while (ride != NULL) {
-        if (param_1 != 0 ? (ride->field_3e0 == 1 || ride->field_3e0 == 0x10 ||
-                               (ride->cur_x == ride->tile.pos.x && (int)ride->cur_y >= ride->tile.pos.y + 5))
-                         : !(ride->field_3e0 == 1 || ride->field_3e0 == 0x10 ||
-                               (ride->cur_x == ride->tile.pos.x && (int)ride->cur_y >= ride->tile.pos.y + 5))) {
+        if (docked != 0 ? (ride->field_3e0 == 1 || ride->field_3e0 == 0x10 ||
+                              (ride->cur_x == ride->tile.pos.x && (int)ride->cur_y >= ride->tile.pos.y + 5))
+                        : !(ride->field_3e0 == 1 || ride->field_3e0 == 0x10 ||
+                              (ride->cur_x == ride->tile.pos.x && (int)ride->cur_y >= ride->tile.pos.y + 5))) {
             b = ride->step_offsets[JungleCruiseStep * 2 + 1];
             a = ride->step_offsets[JungleCruiseStep * 2];
             GetTileDimensions(&tw2, &th2);
             dx = (a - b) * tw2 >> 9;
             dy = (a + b) * th2 >> 9;
-            baseX = ((int)ride->cur_x - (int)ride->cur_y) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
-            baseY = ((int)ride->cur_x + (int)ride->cur_y) * (th >> 1) - (ScrollY >> 8);
+            base.x = (ride->cur_x - ride->cur_y) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
+            base.y = (ride->cur_x + ride->cur_y) * (th >> 1) - (ScrollY >> 8);
+
+            /* boat hull */
             off.x = JungleCruiseBoats->offset_x[ride->step_frames[JungleCruiseStep] & 0xff] >> 1;
             off.y = JungleCruiseBoats->offset_y[ride->step_frames[JungleCruiseStep] & 0xff] >> 1;
             AdjustOffsetForViewMode(&off);
-            ptmp3 = off.y;
-            ride->screen_x = lpConfig->view_x + dx + off.x + baseX;
-            ride->screen_y = lpConfig->view_y + dy + ptmp3 + baseY;
-            PrintSprite(JungleCruiseBoats->sprites[ride->step_frames[JungleCruiseStep] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
-            off.x = lpConfig->view_x + dx + baseX;
-            off.y = lpConfig->view_y + dy + baseY;
-            AdjustBlokePosition((struct Point *)&off);
-            if ((int)ride->step_frames[JungleCruiseStep] >= 4 && 12 > (int)ride->step_frames[JungleCruiseStep]) {
-                for (row = 0; row < 3; row++) {
-                    struct Point pos;
+            ride->screen_x = lpConfig->view_x + dx + off.x + base.x;
+            ride->screen_y = lpConfig->view_y + dy + off.y + base.y;
+            PrintSprite(JungleCruiseBoats->sprites[ride->step_frames[JungleCruiseStep] & 0xff], ride->screen_x,
+                ride->screen_y, 0, 0);
 
+            /* anchor for the passengers */
+            off.x = lpConfig->view_x + dx + base.x;
+            off.y = lpConfig->view_y + dy + base.y;
+            AdjustBlokePosition(&off);
+
+            if ((int)ride->step_frames[JungleCruiseStep] >= 4 && (int)ride->step_frames[JungleCruiseStep] < 12) {
+                for (row = 0; row < 3; row++) {
                     d = 0;
                     if ((int)ride->step_frames[JungleCruiseStep] > 8) {
                         if (row == 1) {
@@ -163,39 +169,47 @@ void FUN_00432d00(int param_1) {
                             d = -1;
                         }
                     }
-                    seat = d + row;
+                    seat = row + d;
                     if (ride->blokes[seat] != NULL) {
                         person = Find3DPersonFromBloke(ride->blokes[seat]);
-                        pos.x = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
-                        pos.y = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
+                        fwdPos.x = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
+                        fwdPos.y = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
                         switch (seat) {
                         case 0:
-                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
+                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 +
+                                                   DAT_004ab3e4) *
+                                DAT_004ab3dc * DAT_004ab3e0;
                             break;
                         case 1:
-                            person->field_44 = ((float)(int)((6 + ride->step_frames[JungleCruiseStep]) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
-                            pos.y -= 0x10;
+                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] + 6) & 0xf) *
+                                                       DAT_004ab3e8 +
+                                                   DAT_004ab3e4) *
+                                DAT_004ab3dc * DAT_004ab3e0;
+                            fwdPos.y -= 0x10;
                             break;
                         case 2:
-                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
-                            pos.y = pos.y - 0x10;
+                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) *
+                                                       DAT_004ab3e8 +
+                                                   DAT_004ab3e4) *
+                                DAT_004ab3dc * DAT_004ab3e0;
+                            fwdPos.y -= 0x10;
                             break;
                         }
                         SetPersonRotation(person, &person->field_40);
-                        AdjustOffsetForViewMode(&pos);
-                        person->field_1c = pos.x + off.x;
-                        person->field_20 = pos.y + off.y;
+                        AdjustOffsetForViewMode(&fwdPos);
+                        person->field_1c = fwdPos.x + off.x;
+                        person->field_20 = fwdPos.y + off.y;
                         IP_RenderBlokeIn3DNow(ride->blokes[seat]);
                     }
+                    /* boat overlays between the passenger rows */
                     if (row == 0 || row == 2) {
-                        sprite = JungleCruiseBoats->sprites[(row == 0 ? ride->step_frames[JungleCruiseStep] + 0x10 : ride->step_frames[JungleCruiseStep] + 0x20) & 0xff];
-                        PrintSprite(sprite, ride->screen_x, ride->screen_y, 0, 0);
+                        frame = row == 0 ? ride->step_frames[JungleCruiseStep] + 0x10
+                                         : ride->step_frames[JungleCruiseStep] + 0x20;
+                        PrintSprite(JungleCruiseBoats->sprites[frame & 0xff], ride->screen_x, ride->screen_y, 0, 0);
                     }
                 }
             } else {
                 for (row = 2; row >= 0; row--) {
-                    struct Point pos;
-
                     d = 0;
                     if ((int)ride->step_frames[JungleCruiseStep] < 8) {
                         if (row == 1) {
@@ -204,38 +218,49 @@ void FUN_00432d00(int param_1) {
                             d = -1;
                         }
                     }
-                    seat = d + row;
+                    seat = row + d;
                     if (ride->blokes[seat] != NULL) {
                         person = Find3DPersonFromBloke(ride->blokes[seat]);
-                        pos.x = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
-                        pos.y = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
+                        backPos.x = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
+                        backPos.y = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
                         switch (seat) {
                         case 0:
-                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
+                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 +
+                                                   DAT_004ab3e4) *
+                                DAT_004ab3dc * DAT_004ab3e0;
                             break;
                         case 1:
-                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] + 6) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
-                            pos.y -= 0x10;
+                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] + 6) & 0xf) *
+                                                       DAT_004ab3e8 +
+                                                   DAT_004ab3e4) *
+                                DAT_004ab3dc * DAT_004ab3e0;
+                            backPos.y -= 0x10;
                             break;
                         case 2:
-                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
-                            pos.y -= 0x10;
+                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) *
+                                                       DAT_004ab3e8 +
+                                                   DAT_004ab3e4) *
+                                DAT_004ab3dc * DAT_004ab3e0;
+                            backPos.y -= 0x10;
                             break;
                         }
                         SetPersonRotation(person, &person->field_40);
-                        AdjustOffsetForViewMode(&pos);
-                        person->field_1c = pos.x + off.x;
-                        person->field_20 = pos.y + off.y;
+                        AdjustOffsetForViewMode(&backPos);
+                        person->field_1c = backPos.x + off.x;
+                        person->field_20 = backPos.y + off.y;
                         IP_RenderBlokeIn3DNow(ride->blokes[seat]);
                     }
                     if (row == 0 || row == 1) {
-                        sprite = JungleCruiseBoats->sprites[(row == 0 ? ride->step_frames[JungleCruiseStep] + 0x20 : ride->step_frames[JungleCruiseStep] + 0x10) & 0xff];
-                        PrintSprite(sprite, ride->screen_x, ride->screen_y, 0, 0);
+                        frame = row == 0 ? ride->step_frames[JungleCruiseStep] + 0x20
+                                         : ride->step_frames[JungleCruiseStep] + 0x10;
+                        PrintSprite(JungleCruiseBoats->sprites[frame & 0xff], ride->screen_x, ride->screen_y, 0, 0);
                     }
                 }
             }
         }
-        if (ride->field_3e0 == 0x10 && ride->field_3e4 == 2 && JungleCruiseStep == 0x4f && param_1 != 0 && ride->blokes[0] != NULL) {
+        /* end of the ride: release the passengers */
+        if (ride->field_3e0 == 0x10 && ride->field_3e4 == 2 && JungleCruiseStep == 0x4f && docked != 0 &&
+            ride->blokes[0] != NULL) {
             ride->blokes[0]->param_action++;
             ride->blokes[0] = NULL;
             if (ride->blokes[1] != NULL) {
@@ -1399,7 +1424,7 @@ void JungleCruiseUpdate(void) {
         JungleCruiseStep = 0;
         FUN_004332f0();
     }
-    FUN_00432d00(0);
+    DrawJungleCruiseBoats(0);
     /* launch boats whose seats are filled and whose wait timer ran out */
     for (boat = JungleScoreList; boat != NULL; boat = boat->next) {
         tile.id = boat->tile.id;
@@ -1539,7 +1564,7 @@ void RenderJungleCruise(int param_1, unsigned int param_2, unsigned int param_3,
     unsigned int lls2;
     struct Point coords;
 
-    FUN_00432d00(1);
+    DrawJungleCruiseBoats(1);
     for (; node != NULL; node = (unsigned int *)*node) {
         if (*param_4 == *(short *)(node + 3) && *(char *)(node[2] + 0x60) != '\x02') {
             IP_RenderBlokeIn3DNow((struct Bloke *)node[2]);

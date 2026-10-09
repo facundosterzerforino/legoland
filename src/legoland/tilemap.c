@@ -1750,101 +1750,73 @@ struct PathItem {
 
 // FUNCTION: LEGOLAND 0x0045d770
 void FUN_0045d770(struct Cursor *param_1) {
-    unsigned char *pb;
     struct Cursor *cur;
-    struct Cursor *chain;
-    struct PathItem *item;
-    int i;
-    unsigned int x;
-    volatile unsigned int y;
+    struct Cursor *found;
+    struct Footprint *item;
     struct MapRect rect;
-    struct Point local_18;
+    struct Point pt;
+    int i;
 
-    int ptmp445;
-    unsigned int ptmp446;
-    int ptmp447;
-    int ptmp487;
-    cur = param_1;
-    if (param_1 != NULL) {
-        while ((cur->field_1828 & 0x1000) == 0) {
-            cur = (struct Cursor *)cur->field_1830;
-            if (NULL == cur) {
-                return;
-            }
-        }
-        if (cur != NULL) {
-            DAT_00667d3c = 0;
-            rect.x0 = cur->field_1414[0] + cur->tile_x;
-            rect.y0 = cur->field_1414[1] + cur->tile_y;
-            rect.x1 = cur->field_1414[2] + cur->tile_x;
-            rect.y1 = cur->field_1414[3] + cur->tile_y;
-            FUN_0045d730(&rect);
-            do {
-                chain = param_1;
-                if ((param_1->field_1828 & 0x1000) != 0) {
-                    break;
-                }
-                rect.x0 = param_1->tile_x + param_1->field_1414[0];
-                ptmp446 = param_1->tile_y;
-                rect.y0 = param_1->field_1414[1] + ptmp446;
-                rect.x1 = param_1->field_1414[2] + param_1->tile_x;
-                rect.y1 = param_1->field_1414[3] + param_1->tile_y;
-                FUN_0045d5d0(&rect);
-                for (item = (struct PathItem *)&param_1->field_1414; item != NULL; item = item->next) {
-                    rect.x0 = param_1->tile_x + item->x0;
-                    ptmp447 = param_1->tile_y;
-                    rect.y0 = item->y0 + ptmp447;
-                    rect.x1 = item->x1 + param_1->tile_x;
-                    rect.y1 = item->y1 + param_1->tile_y;
-                    FUN_0045d5d0(&rect);
-                }
-                param_1 = (struct Cursor *)param_1->field_1830;
-            } while (NULL != param_1);
-            if (0 < DAT_00667d3c) {
-                i = 0;
-                do {
-                    local_18.y = DAT_00801a80[i].y0;
-                    if (local_18.y <= DAT_00801a80[i].y1) {
-                        do {
-                            local_18.x = DAT_00801a80[i].x0;
-                            if (local_18.x <= DAT_00801a80[i].x1) {
-                                do {
-                                    FUN_004779d0(&local_18);
-                                    pb = (unsigned char *)((char *)GameMap[local_18.y] + 0x10 + local_18.x * 0x14);
-                                    *pb = *pb & 0xfc;
-                                    AddPathTileGFX(&local_18, *(unsigned short *)PathSprite);
-                                    ScriptDirtyCategories = ScriptDirtyCategories | 0x10;
-                                    AddPathSquare((struct Point *)&local_18);
-                                    local_18.x += 1;
-                                } while (local_18.x <= DAT_00801a80[i].x1);
-                            }
-                            local_18.y = 1 + local_18.y;
-                        } while (local_18.y <= (unsigned int)DAT_00801a80[i].y1);
-                    }
-                    i = i + 1;
-                } while (i < DAT_00667d3c);
-            }
-            ptmp445 = chain->tile_y;
-            y = chain->field_1414[1] + 1 + ptmp445;
-            PathUpdateNeeded = 1;
-            if (y <= chain->tile_y + -1 + chain->field_1414[3]) {
-                do {
-                    ptmp487 = chain->field_1414[0];
-                    x = ptmp487 + 1 + chain->tile_x;
-                    if (x <= chain->field_1414[2] + -1 + chain->tile_x) {
-                        do {
-                            local_18.x = x;
-                            local_18.y = y;
-                            AddPathTileGFX(&local_18, *(unsigned short *)PathSprite);
-                            x = x + 1;
-                        } while (x <= chain->field_1414[2] + -1 + chain->tile_x);
-                    }
-                    y += 1;
-                } while (y <= chain->tile_y + -1 + chain->field_1414[3]);
-            }
-            PathUpdateNeeded = 1;
+    /* find the first cursor in the chain that has flag 0x1000 */
+    found = NULL;
+    for (cur = param_1; cur != NULL; cur = cur->next) {
+        if (cur->field_1828 & 0x1000) {
+            found = cur;
+            break;
         }
     }
+    if (found == NULL) {
+        return;
+    }
+
+    DAT_00667d3c = 0;
+    rect.x0 = found->footprint.x0 + found->tile_x;
+    rect.y0 = found->footprint.y0 + found->tile_y;
+    rect.x1 = found->footprint.x1 + found->tile_x;
+    rect.y1 = found->footprint.y1 + found->tile_y;
+    FUN_0045d730(&rect);
+
+    /* cursors before the flagged one: collect their footprints */
+    for (cur = param_1; cur != NULL; cur = cur->next) {
+        if (cur->field_1828 & 0x1000) {
+            found = cur;
+            break;
+        }
+        rect.x0 = cur->footprint.x0 + cur->tile_x;
+        rect.y0 = cur->footprint.y0 + cur->tile_y;
+        rect.x1 = cur->footprint.x1 + cur->tile_x;
+        rect.y1 = cur->footprint.y1 + cur->tile_y;
+        FUN_0045d5d0(&rect);
+        for (item = &cur->footprint; item != NULL; item = item->next) {
+            rect.x0 = item->x0 + cur->tile_x;
+            rect.y0 = item->y0 + cur->tile_y;
+            rect.x1 = item->x1 + cur->tile_x;
+            rect.y1 = item->y1 + cur->tile_y;
+            FUN_0045d5d0(&rect);
+        }
+    }
+
+    /* re-lay path tiles over every collected rectangle */
+    for (i = 0; i < DAT_00667d3c; i++) {
+        for (pt.y = DAT_00801a80[i].y0; pt.y <= DAT_00801a80[i].y1; pt.y++) {
+            for (pt.x = DAT_00801a80[i].x0; pt.x <= DAT_00801a80[i].x1; pt.x++) {
+                FUN_004779d0(&pt);
+                GameMap[pt.y][pt.x].field_10 &= 0xfc;
+                AddPathTileGFX(&pt, *(unsigned short *)PathSprite);
+                ScriptDirtyCategories |= 0x10;
+                AddPathSquare(&pt);
+            }
+        }
+    }
+
+    /* fill the interior of the flagged cursor's footprint */
+    PathUpdateNeeded = 1;
+    for (pt.y = found->footprint.y0 + found->tile_y + 1; pt.y <= found->footprint.y1 + found->tile_y - 1; pt.y++) {
+        for (pt.x = found->footprint.x0 + found->tile_x + 1; pt.x <= found->footprint.x1 + found->tile_x - 1; pt.x++) {
+            AddPathTileGFX(&pt, *(unsigned short *)PathSprite);
+        }
+    }
+    PathUpdateNeeded = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0045da60
