@@ -163,18 +163,15 @@ void FreeJoustNodeList(void) {
 // FUNCTION: LEGOLAND 0x00407ad0
 void JoustRemoveObject(Element *editObj, TileId coords, struct Cursor *cursor) {
     struct JoustNode *node;
-    struct {
-        unsigned int kind;
-        unsigned int pad;
-        unsigned int x;
-        unsigned int y;
-    } source;
 
     node = FindJoustNode(&coords);
     if (node != NULL) {
-        source.x = node->id.pos.x;
-        source.kind = 2;
-        source.y = node->id.pos.y;
+        struct {
+            unsigned int kind;
+            unsigned int : 32; /* SampleSource.bloke, unused for type 2 and left unwritten */
+            unsigned int x;
+            unsigned int y;
+        } source = {2, node->id.pos.x, node->id.pos.y};
         UnSourceAndFadeAllSamplesFromSource(&source, -200);
         node->sample = 0;
         RemoveJoustNode(node);
