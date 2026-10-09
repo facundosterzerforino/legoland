@@ -282,8 +282,6 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
     struct FileNode *head;
     struct FileNode *tail;
     struct FileNode *node;
-    struct FileNode *a;
-    struct FileNode *b;
     struct FileNode **nodes;
     char **names;
     struct Sprite **icons;
@@ -294,6 +292,7 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
     int i;
     int j;
     int swapped;
+    int dirDiff;
     int r;
 
     tail = 0;
@@ -308,10 +307,11 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
     _chdir(dir);
     // STRING: LEGOLAND 0x004b7a90
     sprintf(spec, "%s%s", fname, ext);
-    count = 0;
     chdirFlag = 0;
+    count = 0;
     h = _findfirst(spec, &fd);
     while (h != -1) {
+        /* build a linked list of the directory entries */
         do {
             if (tail) {
                 tail->next = malloc(12);
@@ -326,58 +326,58 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
             tail->attrib = fd.attrib;
         } while (_findnext(h, &fd) != -1);
         _findclose(h);
-        h = count;
         tail->next = 0;
-        names = malloc(h * 4 + 4);
-        icons = malloc(h * 4);
-        nodes = malloc(h * 4);
-        names[h] = 0;
+        names = malloc(count * 4 + 4);
+        icons = malloc(count * 4);
+        nodes = malloc(count * 4);
+        names[count] = 0;
         node = head;
-        for (i = 0; i < h; i++) {
+        for (i = 0; i < count; i++) {
             nodes[i] = node;
             node = node->next;
         }
-        for (i = 0; i < h - 1; i++) {
+        /* bubble sort: folders first, then by name */
+        for (i = 0; i < count - 1; i++) {
             swapped = 0;
-            for (j = h - 2; j >= i; j--) {
-                a = nodes[j + 1];
-                b = nodes[j];
-                if (((b->attrib ^ a->attrib) >> 4 & 1) != 0) {
-                    if (!(a->attrib & 0x10)) {
-                        continue;
-                    }
-                } else if (_strcmpi(a->name, b->name) >= 0) {
-                    continue;
+            for (j = count - 2; j >= i; j--) {
+                dirDiff = ((nodes[j]->attrib ^ nodes[j + 1]->attrib) >> 4) & 1;
+                if ((dirDiff && (nodes[j + 1]->attrib & 0x10)) ||
+                    (!dirDiff && _strcmpi(nodes[j + 1]->name, nodes[j]->name) < 0)) {
+                    node = nodes[j + 1];
+                    nodes[j + 1] = nodes[j];
+                    nodes[j] = node;
+                    swapped = 1;
                 }
-                nodes[j + 1] = b;
-                nodes[j] = a;
-                swapped = 1;
             }
             if (!swapped) {
                 break;
             }
         }
-        for (i = 0; i < h; i++) {
+        for (i = 0; i < count; i++) {
             names[i] = nodes[i]->name;
-            icons[i] = (nodes[i]->attrib & 0x10) ? folder : file;
+            if (nodes[i]->attrib & 0x10) {
+                icons[i] = folder;
+            } else {
+                icons[i] = file;
+            }
         }
         r = ListBoxDialog(names, title, bg, box, 0, icons, 0x1c, 0x18, 0);
         if (r != -1) {
             if (nodes[r]->attrib & 0x10) {
                 chdirFlag = 1;
             }
-            strcpy(DAT_0081c8e0, names[r]);
             result = DAT_0081c8e0;
+            strcpy(result, names[r]);
         } else {
             result = 0;
         }
         free(names);
         free(icons);
-        for (i = 0; i < h; i++) {
+        for (i = 0; i < count; i++) {
             free(nodes[i]);
         }
         free(nodes);
-        if (chdirFlag == 0) {
+        if (!chdirFlag) {
             KillSprite(drive);
             KillSprite(folder);
             KillSprite(file);
@@ -386,9 +386,8 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
         }
         _chdir(DAT_0081c8e0);
         chdirFlag = 0;
-        result = 0;
-        count = 0;
         tail = 0;
+        count = 0;
         h = _findfirst(spec, &fd);
     }
     return 0;

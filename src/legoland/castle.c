@@ -7289,79 +7289,81 @@ void FUN_00425170(Element *obj) {
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004251c0
 void CastleObjUpdate(Element *obj) {
-    Ride *ride;
-    RideNode *elem;
-    RideNode *next;
-    Bloke *bloke;
-    TileId *tile;
-    unsigned int x;
-    unsigned int y;
-    struct TimerNode *node;
+    /* /Od build: stack-slot order follows the (hashed) local names; these single-letter
+     * names reproduce the original layout (a at ebp-4 ... i at ebp-0x24). */
+    RideNode *a; /* current rider node */
+    TileId *b; /* &a->tile */
     struct {
         unsigned char pad_0[0xa8];
         struct SprObj *prev;
         unsigned char pts_a[0x14];
         struct SprObj *next;
         unsigned char pts_b[0x14];
-    } *cs;
+    } *c; /* castle sprite state at DAT_00829ae0 */
+    Ride *d; /* the castle ride */
+    unsigned int e; /* tile y */
+    unsigned int f; /* tile x */
+    Bloke *g; /* rider */
+    RideNode *h; /* next rider node */
+    struct TimerNode *i; /* timer node (unused) */
 
-    ride = obj->ride;
-    elem = ride->riders;
-    cs = (void *)&DAT_00829ae0;
-    if (cs->prev != NULL) {
-        FUN_0041d170(cs->prev, (unsigned int)cs->pts_a);
+    d = obj->ride;
+    a = d->riders;
+    c = (void *)&DAT_00829ae0;
+    if (c->prev != NULL) {
+        FUN_0041d170(c->prev, (unsigned int)c->pts_a);
     }
-    if (cs->next != NULL) {
-        FUN_0041d190(cs->next, (unsigned int)cs->pts_b);
+    if (c->next != NULL) {
+        FUN_0041d190(c->next, (unsigned int)c->pts_b);
     }
-    while (elem != NULL) {
-        next = elem->next;
-        tile = &elem->tile;
-        x = tile->pos.x + ride->x;
-        y = tile->pos.y + ride->y;
-        bloke = elem->rider;
-        switch (bloke->param_action) {
+    while (a != NULL) {
+        h = a->next;
+        b = &a->tile;
+        f = b->pos.x + d->x;
+        e = b->pos.y + d->y;
+        g = a->rider;
+        switch (g->param_action) {
         case 0:
-            bloke->flags |= 8;
-            if (bloke->low_level_action == 0) {
-                bloke->dest.x = (x - 8) << 8;
-                bloke->dest.y = (y - 1) << 8;
-                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->low_level_action = 7;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
-                bloke->param_action++;
+            g->flags |= 8;
+            if (g->low_level_action == 0) {
+                g->dest.x = (f - 8) << 8;
+                g->dest.y = (e - 1) << 8;
+                g->field_73 = ((CalcMoveLineIntFn)CalcMoveLine)(g->pos, g->dest, &g->nav) + 0x10;
+                g->low_level_action = 7;
+                NewDirForAction(g, (g->field_73 >> 5) + 3);
+                g->param_action++;
             }
             break;
         case 1:
-            if (bloke->low_level_action == 0) {
-                bloke->param_action = 0x10;
+            if (g->low_level_action == 0) {
+                g->param_action = 0x10;
             }
             break;
         case 0x10:
-            node = FUN_00421930((unsigned int)bloke, (struct Timer *)&DAT_00829ae0);
-            bloke->param_action = 0x20;
+            i = FUN_00421930((unsigned int)g, (struct Timer *)&DAT_00829ae0);
+            g->param_action = 0x20;
             break;
         case 0x21:
-            if (bloke->low_level_action == 0) {
-                bloke->dest.x = (x << 8) + 0x80;
-                bloke->dest.y = (y << 8) + 0x80;
-                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-                bloke->low_level_action = 7;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
-                bloke->param_action++;
+            if (g->low_level_action == 0) {
+                g->dest.x = (f << 8) + 0x80;
+                g->dest.y = (e << 8) + 0x80;
+                g->field_73 = ((CalcMoveLineIntFn)CalcMoveLine)(g->pos, g->dest, &g->nav) + 0x10;
+                g->low_level_action = 7;
+                NewDirForAction(g, (g->field_73 >> 5) + 3);
+                g->param_action++;
             }
             break;
         case 0x22:
-            if (bloke->low_level_action == 0) {
-                bloke->param_action = 0x40;
+            if (g->low_level_action == 0) {
+                g->param_action = 0x40;
             }
             break;
         case 0x40:
-            bloke->flags &= 0xfff7;
-            RemoveBlokeFromRide(ride, elem);
+            g->flags &= 0xfff7;
+            RemoveBlokeFromRide(d, a);
             break;
         }
-        elem = next;
+        a = h;
     }
     FUN_00425170(obj);
 }

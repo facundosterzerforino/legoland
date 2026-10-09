@@ -202,7 +202,7 @@ LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct Ride *ride, const Tile
 }
 
 // FUNCTION: LEGOLAND 0x0048a0f0
-LEGO_EXPORT void HandleRideAI(int arg_1, int arg_2, int arg_3) {}
+LEGO_EXPORT void HandleRideAI(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a100
 LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
