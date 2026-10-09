@@ -648,7 +648,7 @@ unsigned int LoadReport(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004442c0
-int FUN_004442c0(void) {
+int GetDrivingSchoolScore(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("DRIVING SCHOOL"); /* TODO: fold — ElemID handle (uint) viewed as RideElem* */
@@ -659,7 +659,7 @@ int FUN_004442c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004442f0
-int FUN_004442f0(void) {
+int GetBoatingSchoolScore(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("BOATING SCHOOL");
@@ -670,7 +670,7 @@ int FUN_004442f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444320
-int FUN_00444320(void) {
+int GetCastleScore(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("CASTLE OBJ");
@@ -681,7 +681,7 @@ int FUN_00444320(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444350
-int FUN_00444350(void) {
+int GetLogFlumeScore(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("LOG FLUME ENTRANCE");
@@ -692,7 +692,7 @@ int FUN_00444350(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444380
-int FUN_00444380(void) {
+int GetJungleCruiseScore(void) {
     struct RideElem *elem;
 
     elem = (struct RideElem *)ElemID("JUNGLE CRUISE");
@@ -1047,7 +1047,7 @@ void DrawAppraisalMark(unsigned int param_1, unsigned int param_2, int param_3, 
 }
 
 // FUNCTION: LEGOLAND 0x00444bf0
-void FUN_00444bf0(int *param_1, int *param_2) {
+void CountClassesOfType1Or3(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1066,12 +1066,12 @@ void FUN_00444bf0(int *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444c40
-int FUN_00444c40(struct ObjectClass *node) {
+int IsRidePartClass(struct ObjectClass *node) {
     return FindStringNoCase((const char *)**(int **)((char *)node + 0xc4), &DAT_004b7e9c, 0x16) >= 0;
 }
 
 // FUNCTION: LEGOLAND 0x00444c70
-void FUN_00444c70(int *param_1, int *param_2) {
+void CountType2ClassesExceptRideParts(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1081,7 +1081,7 @@ void FUN_00444c70(int *param_1, int *param_2) {
         return;
     }
     do {
-        if (node->count != 0 && node->type == 2 && FUN_00444c40(node) == 0) {
+        if (node->count != 0 && node->type == 2 && IsRidePartClass(node) == 0) {
             *param_1 += node->count;
             *param_2 += 1;
         }
@@ -1090,7 +1090,7 @@ void FUN_00444c70(int *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444cd0
-void FUN_00444cd0(int *param_1, int *param_2) {
+void CountClassesOfType4(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1109,7 +1109,7 @@ void FUN_00444cd0(int *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444d20
-void FUN_00444d20(int *param_1, int *param_2) {
+void CountFoodStallClasses(int *param_1, int *param_2) {
     struct ObjectClass *node;
 
     node = ObjectClassList;
@@ -1128,27 +1128,27 @@ void FUN_00444d20(int *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444d70
-void FUN_00444d70(int *param_1, int *param_2, int *param_3) {
+void SurveyBlokes(int *count, int *happiness, int *fullness) {
     struct Bloke *bloke;
     signed char value;
 
     bloke = FirstBloke;
-    *param_1 = 0;
-    *param_2 = 0;
-    *param_3 = 0;
+    *count = 0;
+    *happiness = 0;
+    *fullness = 0;
     if (bloke == 0) {
         return;
     }
     do {
-        *param_1 += 1;
+        *count += 1;
         if (bloke->mood > MapStats.mood_threshold3) {
-            *param_2 += 1;
+            *happiness += 1;
         }
         if (bloke->mood > MapStats.mood_threshold4) {
-            *param_2 += 1;
+            *happiness += 1;
         }
-        value = FUN_0044eb10(bloke);
-        *param_3 += 4 - value;
+        value = GetBlokeHungerLevel(bloke);
+        *fullness += 4 - value;
         bloke = bloke->next;
     } while (bloke != 0);
 }
@@ -1177,7 +1177,7 @@ struct RenderObj {
 };
 
 // FUNCTION: LEGOLAND 0x00444df0
-int FUN_00444df0(void) {
+int GetLinkedObjectPercent(void) {
     struct RenderObj *obj;
     struct GslImage *img;
     short type;
@@ -1603,7 +1603,7 @@ s1:
         i++;
         y += 0x18;
         x += 0x30;
-        FUN_00444bf0(&bf0_total, &bf0_count);
+        CountClassesOfType1Or3(&bf0_total, &bf0_count);
         if (ReportFlags & 0x4000) {
             total++;
             ok = bf0_total >= DAT_00666020;
@@ -1663,7 +1663,7 @@ s1:
             y += 0x18;
         }
         if (ReportFlags & 0x40000) {
-            val = FUN_00444df0();
+            val = GetLinkedObjectPercent();
             total++;
             ok = val >= DAT_00666030;
             if (ok) {
@@ -1694,7 +1694,7 @@ s1:
         }
         if (ReportFlags & 0x30) {
             total++;
-            ok = FUN_00444320() >= DAT_0066600c;
+            ok = GetCastleScore() >= DAT_0066600c;
             if (ok) {
                 pass++;
             } else {
@@ -1769,7 +1769,7 @@ s1:
         }
         if (ReportFlags & 0xc0) {
             total++;
-            ok = FUN_004442c0() >= DAT_00666010;
+            ok = GetDrivingSchoolScore() >= DAT_00666010;
             if (ok) {
                 pass++;
             } else {
@@ -1844,7 +1844,7 @@ s1:
         }
         if (ReportFlags & 0x300) {
             total++;
-            ok = FUN_00444350() >= DAT_00666014;
+            ok = GetLogFlumeScore() >= DAT_00666014;
             if (ok) {
                 pass++;
             } else {
@@ -1919,7 +1919,7 @@ s1:
         }
         if (ReportFlags & 0xc00) {
             total++;
-            ok = FUN_004442f0() >= DAT_00666018;
+            ok = GetBoatingSchoolScore() >= DAT_00666018;
             if (ok) {
                 pass++;
             } else {
@@ -1994,7 +1994,7 @@ s1:
         }
         if (ReportFlags & 0x3000) {
             total++;
-            ok = FUN_00444380() >= DAT_0066601c;
+            ok = GetJungleCruiseScore() >= DAT_0066601c;
             if (ok) {
                 pass++;
             } else {
@@ -2104,7 +2104,7 @@ s1:
             i++;
             y += 0x18;
             x += 0x30;
-            FUN_00444c70(&c70_total, &c70_count);
+            CountType2ClassesExceptRideParts(&c70_total, &c70_count);
             if (ReportFlags & 0x8000000) {
                 total++;
                 ok = c70_total >= DAT_00666070;
@@ -2201,7 +2201,7 @@ s1:
             i++;
             y += 0x18;
             x += 0x30;
-            FUN_00444cd0(&cd0_total, &cd0_count);
+            CountClassesOfType4(&cd0_total, &cd0_count);
             if (ReportFlags & 0x40000000) {
                 total++;
                 ok = cd0_total >= DAT_00666088;
@@ -2298,7 +2298,7 @@ s1:
             i++;
             y += 0x18;
             x += 0x30;
-            FUN_00444d20(&d20_total, &d20_count);
+            CountFoodStallClasses(&d20_total, &d20_count);
             if (ReportFlags & 0x10000) {
                 total++;
                 ok = d20_total >= DAT_00666040;
@@ -2396,7 +2396,7 @@ s1:
             i++;
             y += 0x18;
             x += 0x30;
-            FUN_00444d70(&d70_count, &d70_p2, &d70_p3);
+            SurveyBlokes(&d70_count, &d70_p2, &d70_p3);
             if (ReportFlags & 0x80000) {
                 total++;
                 ok = d70_count >= DAT_00666038;

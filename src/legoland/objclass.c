@@ -677,7 +677,7 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
     int counter;
 
     fatigue = bloke->field_7e;
-    category = FUN_0044eb10(bloke);
+    category = GetBlokeHungerLevel(bloke);
     rating = item->intensity;
     blokenum = GetBlokeNum(bloke);
     counter = GetBlokeCounter(item, blokenum);

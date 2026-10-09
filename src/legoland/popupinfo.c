@@ -1083,7 +1083,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     PopRenderingStatus();
     if (DAT_007fdf9c == 0x306) {
         mood = GetBlokeMood(bloke);
-        hunger = FUN_0044eb10(bloke);
+        hunger = GetBlokeHungerLevel(bloke);
         left = x + 0xc;
         right = size * 32 + x + 0xb0;
         width = right - left;
