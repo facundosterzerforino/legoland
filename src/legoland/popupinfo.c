@@ -743,11 +743,8 @@ void FUN_00471f10(void) {
     int cy;
     int row;
     int col;
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {1};
 
-    ctx.node = 0;
-    ctx.flags = 1;
-    ctx.field_8 = 0;
     count = *(unsigned int *)&PopupInfoLineCount & 0xff;
     x = PopUpInfoX;
     y = PopUpInfoY;
