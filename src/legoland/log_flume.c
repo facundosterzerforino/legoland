@@ -2956,16 +2956,17 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
     int i;
     struct FlumeSlot *slot;
     double w;
+    struct FlumeEntry *next;
+    unsigned char thisX;
     struct Sprite *spr;
     struct Point pos;
-    unsigned char px;
-    unsigned char ex;
     int idx;
 
     RenderItems2_New();
     DAT_004c8d74 = NULL;
     DAT_004ca5ac = NULL;
-    for (i = 0; i < entry->parent->count; i++) {
+    /* sort the slots at this corner into the lists drawn before / after the corner sprite */
+    for (i = 0; i < par->count; i++) {
         slot = &par->slots[i];
         if (FUN_0040b210((struct FlumeWeighted *)slot, (struct FlumeWeighted *)entry)) {
             w = slot->weight;
@@ -2986,37 +2987,40 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
         }
     }
     if (count != 0) {
-        par = entry->parent8;
+        next = entry->parent8;
         pos = FUN_0040cfd0(entry);
         spr = LogFlumeFc1M3Sprite;
         if (entry->submode != 0) {
             spr = LogFlumeFc3M3Sprite;
         }
-        px = par->tile.pos.x;
-        ex = entry->tile.pos.x;
+        thisX = entry->tile.pos.x;
         if (entry->submode == 0) {
-            if (px != ex) {
+            if (next->tile.pos.x != thisX) {
                 FUN_0040ca30(&DAT_004c8d74, (int)entry);
                 if (spr != NULL) {
                     PrintSprite(spr, pos.x, pos.y, arg, 0);
                 }
                 FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-                goto track;
+            } else {
+                FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+                if (spr != NULL) {
+                    PrintSprite(spr, pos.x, pos.y, 0, 0);
+                }
+                FUN_0040ca30(&DAT_004c8d74, (int)entry);
             }
-        } else if (px == ex) {
+        } else if (next->tile.pos.x != thisX) {
+            FUN_0040ca30(&DAT_004ca5ac, (int)entry);
+            if (spr != NULL) {
+                PrintSprite(spr, pos.x, pos.y, 0, 0);
+            }
+            FUN_0040ca30(&DAT_004c8d74, (int)entry);
+        } else {
             FUN_0040ca30(&DAT_004c8d74, (int)entry);
             if (spr != NULL) {
                 PrintSprite(spr, pos.x, pos.y, 0, 0);
             }
             FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-            goto track;
         }
-        FUN_0040ca30(&DAT_004ca5ac, (int)entry);
-        if (spr != NULL) {
-            PrintSprite(spr, pos.x, pos.y, 0, 0);
-        }
-        FUN_0040ca30(&DAT_004c8d74, (int)entry);
-    track:
         idx = FUN_0040ad50((struct StateNode *)entry);
         pos = FUN_0040cfd0(entry);
         spr = LogFlumeTrackSprites[idx];
