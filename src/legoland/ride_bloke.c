@@ -794,18 +794,24 @@ int PickQueueTurn(unsigned short id, struct PathPair *p, int dir) {
 
 // FUNCTION: LEGOLAND 0x00402150
 int GetQueueTurn(unsigned short id, struct PathPair *p, int dir) {
-    struct RideQueueEntry *e;
     struct RideQueueEntry *q;
     struct RideQueueEntry *s;
+    struct RideQueueEntry *e;
     struct PathPair pt;
 
+    unsigned int ptmp99;
+    volatile int ptmp102;
+    volatile int ptmp310;
     e = (struct RideQueueEntry *)FindQueueEntryAtTile(p->a, p->b);
-    if (e != NULL) {
-        if (e->field_18 == NULL) {
+    if (e) {
+        if (e->field_18 == (int)NULL) {
             return PickQueueTurn(id, p, dir);
         }
         StepPointByDirection(&e->x, &pt.a, dir);
-        q = FUN_004125a0(pt.a, pt.b);
+        ptmp102 = pt.b;
+        { ptmp99 = ptmp102; }
+        ptmp310 = pt.a;
+        q = FUN_004125a0(ptmp310, ptmp99);
         if (q == NULL) {
             return PickQueueTurn(id, p, dir);
         }
@@ -816,13 +822,15 @@ int GetQueueTurn(unsigned short id, struct PathPair *p, int dir) {
             return 5;
         }
         s = FUN_00412650(id);
-        if ((s->y != q->y || s->x + 4 != q->x) && (q->field_14 & 0xf) != 4 && (q->field_14 & 0xf) != 5) {
-            return PickQueueTurn(id, p, dir);
+        if ((s->y != q->y || s->x + 4 != q->x) && (q->field_14 & 0xf) != 4) {
+            if ((q->field_14 & 0xf) != 5) {
+                return PickQueueTurn(id, p, dir);
+            }
         }
         s = q->field_18;
-        StepPointByDirection(&e->x, &pt.a, dir);
+        { StepPointByDirection(&e->x, &pt.a, dir); }
         StepPointByDirection(&pt.a, &pt.a, (dir - 2) & 7);
-        if (s->x == pt.a && s->y == pt.b) {
+        if (s->x == (unsigned)pt.a && s->y == pt.b) {
             return 1;
         }
         StepPointByDirection(&e->x, &pt.a, dir);
@@ -1020,7 +1028,7 @@ void SetPersonYawFromDir16(struct Person *person, unsigned int direction) {
 // FUNCTION: LEGOLAND 0x00402780
 void FUN_00402780(struct NewBloke *b) {
     volatile int id;
-    int car_x;
+    volatile int car_x;
     struct Bloke *bloke;
     int lo;
     int c6;
@@ -1049,8 +1057,8 @@ void FUN_00402780(struct NewBloke *b) {
     cfg.field_8 = 0;
     r.i = MapToPlayfieldInl(b->fx >> 8, b->fy >> 8);
     of = b->f;
-    wp0 = b->wp[0];
     op = b->p;
+    wp0 = b->wp[0];
     v = 0;
     FindQueueEntryAtTile(b->px, b->py);
     GetTileDimensions(&w2, &h2);
@@ -1104,7 +1112,7 @@ void FUN_00402780(struct NewBloke *b) {
             break;
         }
         b->f_bc = 0;
-        if (b->f_c8 < b->f_c6) {
+        if ((unsigned)b->f_c8 < b->f_c6) {
             b->f_c8 += 0x40;
         }
         FUN_004019c0((struct RideMover *)b);

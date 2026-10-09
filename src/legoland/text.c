@@ -722,24 +722,29 @@ void FUN_00455fc0(RECT *rect, const char *text, int font, int mood) {
     HGDIOBJ old_font;
     struct TextCell *cell;
     unsigned int block_color;
+    int cx;
     volatile int mood_pad;
     int text_h;
-    int cx;
     int half_mood;
 
+    volatile int ptmp23;
+    volatile int ptmp24;
+    volatile int ptmp25;
+    volatile int ptmp42;
+    int ptmp74;
     box.right = 0;
     box.bottom = 0;
     box.top = 0;
     box.left = 0;
     block_color = GetNearestColour(0xda, 0xc6, 0x96);
     mood_pad = 0;
-    if (mood != 0) {
+    if (mood) {
         mood_pad = 0x28;
     }
-    if (text != NULL) {
-        box.right = 200;
+    if (NULL != text) {
+        { box.right = 200; }
         cell = FUN_00455d40(text, font, 0x10, 0x96c6da, 0);
-        if (cell == NULL) {
+        if (!cell) {
             hdc = CreateCompatibleDC(NULL);
             SetBkMode(hdc, 1);
             old_font = SelectFont(hdc, font);
@@ -770,10 +775,12 @@ void FUN_00455fc0(RECT *rect, const char *text, int font, int mood) {
             if (box.left < 0) {
                 box.left = 0;
             } else if (right >= (int)(unsigned int)lpConfig->screen_width) {
-                box.left = ((unsigned int)lpConfig->screen_width - width) - mood_pad;
+                ptmp23 = lpConfig->screen_width;
+                box.left = ((unsigned int)ptmp23 - width) - mood_pad;
             }
             half_mood = mood_pad / 2;
-            box.right = half_mood + width + box.left;
+            ptmp42 = box.left;
+            box.right = half_mood + width + ptmp42;
         }
         if (rect->top < (box.bottom - box.top) + 8) {
             box.top = rect->bottom + 6;
@@ -785,13 +792,16 @@ void FUN_00455fc0(RECT *rect, const char *text, int font, int mood) {
         frame.left = box.left - 4;
         frame.top = box.top - 4;
         frame.right = box.right + 4;
-        frame.bottom = box.bottom + 4;
+        frame.bottom = 4 + box.bottom;
         RenderBlock(frame.left + 1, frame.top + 1, frame.right - frame.left, frame.bottom - frame.top - 1, block_color);
         RenderBlock(frame.left, frame.top, frame.right - frame.left, 1, 0);
-        RenderBlock(frame.left, frame.bottom, frame.right - frame.left, 1, 0);
-        RenderBlock(frame.left, frame.top, 1, frame.bottom - frame.top, 0);
+        ptmp74 = frame.left;
+        RenderBlock(ptmp74, frame.bottom, frame.right - frame.left, 1, 0);
+        ptmp24 = frame.left;
+        ptmp25 = frame.top;
+        RenderBlock(ptmp24, ptmp25, 1, frame.bottom - frame.top, 0);
         RenderBlock(frame.right, frame.top, 1, frame.bottom - frame.top, 0);
-        if (0 != (int)mood) {
+        if (0 != (int)(int)mood) {
             PrintSprite((&DAT_008139e0)[mood], frame.right - half_mood, (frame.top + frame.bottom) / 2 - 0x14, 0, 0);
         }
         PushRenderingStatusAndUnlockVideoSurface();
