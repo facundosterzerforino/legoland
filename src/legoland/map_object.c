@@ -1991,86 +1991,90 @@ void FUN_00461220(void) {
 
 // FUNCTION: LEGOLAND 0x00461290
 void FUN_00461290(int param_1, int param_2, int param_3, int param_4) {
-    int v10;
-    int v4;
-    int vc;
-    int v8;
-    int v14;
-    int v18;
-    int v20;
-    int iv4;
-    int w;
-    int h;
-    int wfull;
-    int whalf;
-    int hneg;
-    int sum;
-    int ix;
-    int iy;
-    int adj;
+    int marginTopRight; /* DAT_004b95f4 / 2 */
+    int marginBottomLeft; /* DAT_004b95f8 / 2 */
+    int marginTopLeft; /* DAT_004b95fc / 2 */
+    int marginBottomRight; /* DAT_004b9600 / 2 */
+    int marginTop; /* DAT_004b960c / 2 */
+    int marginBottom; /* DAT_004b9610 / 2 */
+    int marginLeft; /* DAT_004b9608 / 2 */
+    int maxX; /* DAT_004b9604 / 2, then the right clamp */
+    int tileW;
+    int tileH;
+    int rightX; /* right corner of the map diamond */
+    int rightY;
+    int leftX; /* left corner */
+    int leftY;
+    int bottomX; /* bottom corner */
+    int bottomY;
+    int x;
+    int y;
+    int over;
 
-    v10 = DAT_004b95f4 >> 1;
-    v4 = DAT_004b95f8 >> 1;
-    vc = DAT_004b95fc >> 1;
-    v8 = DAT_004b9600 >> 1;
-    v14 = DAT_004b960c >> 1;
-    v18 = DAT_004b9610 >> 1;
-    v20 = DAT_004b9608 >> 1;
-    iv4 = DAT_004b9604 >> 1;
-    GetTileDimensions(&w, &h);
-    w *= 0x80;
-    h = w >> 1;
-    wfull = lpConfig->width * w;
-    whalf = lpConfig->width * h;
-    hneg = -(lpConfig->height * w);
-    w = lpConfig->height * h;
-    h = hneg + wfull;
-    sum = w + whalf;
-    ix = param_3 + ScrollX;
-    iy = param_4 + ScrollY;
-    iv4 += wfull - param_1;
-    if (ix > iv4) {
-        ix = iv4;
+    marginTopRight = DAT_004b95f4 >> 1;
+    marginBottomLeft = DAT_004b95f8 >> 1;
+    marginTopLeft = DAT_004b95fc >> 1;
+    marginBottomRight = DAT_004b9600 >> 1;
+    marginTop = DAT_004b960c >> 1;
+    marginBottom = DAT_004b9610 >> 1;
+    marginLeft = DAT_004b9608 >> 1;
+    maxX = DAT_004b9604 >> 1;
+    GetTileDimensions(&tileW, &tileH);
+    tileW *= 0x80;
+    tileH = tileW >> 1;
+    rightX = lpConfig->width * tileW;
+    rightY = lpConfig->width * tileH;
+    leftX = -(lpConfig->height * tileW);
+    leftY = lpConfig->height * tileH;
+    bottomX = leftX + rightX;
+    bottomY = leftY + rightY;
+    x = param_3 + ScrollX;
+    y = param_4 + ScrollY;
+    /* clamp to the bounding box */
+    maxX += rightX - param_1;
+    if (x > maxX) {
+        x = maxX;
     }
-    if (ix < hneg - v20) {
-        ix = hneg - v20;
+    if (x < leftX - marginLeft) {
+        x = leftX - marginLeft;
     }
-    if (iy > sum - param_2 + v18) {
-        iy = sum - param_2 + v18;
+    if (y > bottomY - param_2 + marginBottom) {
+        y = bottomY - param_2 + marginBottom;
     }
-    if (iy < -v14) {
-        iy = -v14;
+    if (y < -marginTop) {
+        y = -marginTop;
     }
-    if (iy < whalf && param_1 + ix > 0) {
-        adj = ix - iy * 2 - v10 + param_1;
-        if (adj > 0) {
-            ix -= adj >> 1;
-            iy += adj >> 2;
+    /* push back inside each diagonal edge */
+    if (y < rightY && param_1 + x > 0) {
+        over = x - y * 2 - marginTopRight + param_1;
+        if (over > 0) {
+            x -= over >> 1;
+            y += over >> 2;
         }
     }
-    if (iy < w && ix < 0) {
-        adj = -ix - iy * 2 - vc;
-        if (adj > 0) {
-            ix += adj >> 1;
-            iy += adj >> 2;
+    if (y < leftY && x < 0) {
+        over = -x - y * 2 - marginTopLeft;
+        if (over > 0) {
+            x += over >> 1;
+            y += over >> 2;
         }
     }
-    if (param_2 + iy > whalf && param_1 + ix > h) {
-        adj = (iy - whalf + param_2) * 2 - wfull - v8 + ix + param_1;
-        if (adj > 0) {
-            ix -= adj >> 1;
-            iy -= adj >> 2;
+    if (param_2 + y > rightY && param_1 + x > bottomX) {
+        over = (y - rightY + param_2) * 2 - rightX - marginBottomRight + x + param_1;
+        if (over > 0) {
+            x -= over >> 1;
+            y -= over >> 2;
         }
     }
-    if (param_2 + iy > w && ix < h) {
-        adj = (iy - w + param_2) * 2 - ix - v4 + hneg;
-        if (adj > 0) {
-            ix += adj >> 1;
-            iy -= adj >> 2;
+    if (param_2 + y > leftY && x < bottomX) {
+        over = (y - leftY + param_2) * 2 - x - marginBottomLeft + leftX;
+        if (over > 0) {
+            x += over >> 1;
+            y -= over >> 2;
         }
     }
-    ScrollX = ix - param_3;
-    ScrollY = iy - param_4;
+    ScrollX = x - param_3;
+    ScrollY = y - param_4;
 }
 
 // FUNCTION: LEGOLAND 0x004614a0

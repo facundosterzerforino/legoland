@@ -1384,7 +1384,8 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
 void JungleCruiseUpdate(void) {
     struct RideNode *node = JungleCruiseRide->riders;
     struct RideNode *next;
-    struct JungleScore *score;
+    struct JungleScore *boat;
+    struct JungleScore *queue;
     struct Bloke *bloke;
     struct Person *person;
     TileId tile;
@@ -1399,41 +1400,41 @@ void JungleCruiseUpdate(void) {
         FUN_004332f0();
     }
     FUN_00432d00(0);
-    for (score = JungleScoreList; score != NULL; score = score->next) {
-        tile.id = score->tile.id;
-        if (score->seats[0] != NULL && --score->timer <= 0 && score->connected != 0 &&
-            score->field_40 > (int)FUN_004332c0(&score->tile.id) * 6 &&
-            FUN_00432b90(tile, score->seats[0], score->seats[1], score->seats[2]) != 0) {
-            score->seats[0]->flags |= 0x80;
-            score->seats[0]->param_action++;
-            BlokeSitAnim(score->seats[0]);
-            BlokeSetFrame(score->seats[0], 0);
-            if (score->seats[1] != NULL) {
-                score->seats[1]->flags |= 0x80;
-                score->seats[1]->param_action++;
-                BlokeSitAnim(score->seats[1]);
-                BlokeSetFrame(score->seats[1], 0);
+    /* launch boats whose seats are filled and whose wait timer ran out */
+    for (boat = JungleScoreList; boat != NULL; boat = boat->next) {
+        tile.id = boat->tile.id;
+        if (boat->seats[0] != NULL && --boat->timer <= 0 && boat->connected != 0 &&
+            boat->field_40 > (int)FUN_004332c0(&boat->tile.id) * 6 &&
+            FUN_00432b90(tile, boat->seats[0], boat->seats[1], boat->seats[2]) != 0) {
+            boat->seats[0]->flags |= 0x80;
+            boat->seats[0]->param_action++;
+            BlokeSitAnim(boat->seats[0]);
+            BlokeSetFrame(boat->seats[0], 0);
+            if (boat->seats[1] != NULL) {
+                boat->seats[1]->flags |= 0x80;
+                boat->seats[1]->param_action++;
+                BlokeSitAnim(boat->seats[1]);
+                BlokeSetFrame(boat->seats[1], 0);
             }
-            if (score->seats[2] != NULL) {
-                score->seats[2]->flags |= 0x80;
-                score->seats[2]->param_action++;
-                BlokeSitAnim(score->seats[2]);
-                BlokeSetFrame(score->seats[2], 0);
+            if (boat->seats[2] != NULL) {
+                boat->seats[2]->flags |= 0x80;
+                boat->seats[2]->param_action++;
+                BlokeSitAnim(boat->seats[2]);
+                BlokeSetFrame(boat->seats[2], 0);
             }
-            score->timer = 150;
-            score->seats[0] = NULL;
-            score->seats[1] = NULL;
-            score->seats[2] = NULL;
+            boat->timer = 150;
+            boat->seats[0] = NULL;
+            boat->seats[1] = NULL;
+            boat->seats[2] = NULL;
         }
     }
+    /* walk every rider through the queue, the boat and the exit */
     for (; node != NULL; node = next) {
-        score = JungleScoreList;
+        queue = JungleScoreList;
         next = node->next;
         tile = node->tile;
-        for (; score != NULL; score = score->next) {
-            if (score->tile.id == tile.id) {
-                break;
-            }
+        while (queue != NULL && queue->tile.id != tile.id) {
+            queue = queue->next;
         }
         bloke = node->rider;
         if (bloke->low_level_action != 0) {
@@ -1441,27 +1442,29 @@ void JungleCruiseUpdate(void) {
         }
         switch (bloke->param_action) {
         case 0:
+            /* join the queue, or move one place up it */
             slot = 4;
             for (i = 0; i < 5; i++) {
-                if (score->blokes[i] == bloke) {
+                if (queue->blokes[i] == bloke) {
                     slot = i;
                     break;
                 }
             }
             if (i == 5) {
-                if (score->bloke_count == 5 || score->blokes[4] != NULL) {
+                /* queue full: the rider gives up */
+                if (queue->bloke_count == 5 || queue->blokes[4] != NULL) {
                     RemoveBlokeFromRide(JungleCruiseRide, node);
                     break;
                 }
-                score->blokes[slot] = bloke;
-                score->bloke_count++;
+                queue->blokes[slot] = bloke;
+                queue->bloke_count++;
             } else {
-                bloke = score->blokes[slot];
-                if (score->blokes[slot - 1] != NULL) {
+                bloke = queue->blokes[slot];
+                if (queue->blokes[slot - 1] != NULL) {
                     break;
                 }
-                score->blokes[slot - 1] = bloke;
-                score->blokes[slot] = NULL;
+                queue->blokes[slot - 1] = bloke;
+                queue->blokes[slot] = NULL;
                 if (--slot == 0) {
                     bloke->param_action++;
                 }
@@ -1475,31 +1478,33 @@ void JungleCruiseUpdate(void) {
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             break;
         case 1:
-            if (bloke == score->blokes[0]) {
+            /* head of the queue: take a free boat seat */
+            if (bloke == queue->blokes[0]) {
                 for (i = 0; i < 3; i++) {
-                    if (score->seats[i] == NULL) {
+                    if (queue->seats[i] == NULL) {
                         bloke->pos.x = -9999;
                         bloke->pos.y = -9999;
-                        score->seats[i] = bloke;
-                        score->blokes[0] = NULL;
-                        score->bloke_count--;
+                        queue->seats[i] = bloke;
+                        queue->blokes[0] = NULL;
+                        queue->bloke_count--;
                         break;
                     }
                 }
             }
             break;
         case 3:
+            /* back from the cruise: step off the boat */
             pos.x = 0;
             pos.y = 0;
             BlokeWalkAnim(bloke);
             BlokeSetFrame(bloke, 0);
             person = Find3DPersonFromBloke(bloke);
-            AdjustBlokePosition((struct Point *)&pos);
+            AdjustBlokePosition(&pos);
             pos.x = person->field_1c - pos.x - 0x10;
             pos.y = person->field_20 - pos.y;
             ScreenToMapRef2(&pos, &map, 0);
-            bloke->flags &= 0xff7f;
             bloke->pos = map;
+            bloke->flags &= 0xff7f;
             bloke->dir = 10;
             bloke->dest.x = ((JungleCruiseRide->field_24 + tile.pos.x) << 8) - 0x180;
             bloke->dest.y = ((JungleCruiseRide->field_25 + tile.pos.y) << 8) + 0x80;
