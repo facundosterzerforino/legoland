@@ -2605,7 +2605,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
 // FUNCTION: LEGOLAND 0x0040c250
 int FUN_0040c250(struct FlumeEntry *entry) {
     struct FlumeSlotSet *set = entry->slotset;
-    struct FlumeEntry *param_1 = entry;
+    /* Original bug: target is read uninitialised when entry has no alt/next (its stack slot then holds entry). */
+    struct FlumeEntry *target;
     struct FlumeEntry *tmp;
     struct FlumeEntry *node;
     int i;
@@ -2615,30 +2616,33 @@ int FUN_0040c250(struct FlumeEntry *entry) {
         tmp = entry->next;
     }
     if (tmp != NULL) {
-        param_1 = tmp;
+        target = tmp;
     }
-    if (param_1 == NULL) {
+    if (target == NULL) {
         return 0;
     }
-    tmp = param_1->sub2;
+    tmp = target->sub2;
     if (tmp != NULL) {
-        param_1 = tmp;
+        target = tmp;
     }
     for (i = 0; i < set->count; i++) {
         node = entry->sub2;
         if (node == NULL) {
-            if (FUN_0040b270((unsigned int *)&set->slots[i], (unsigned int)entry)) {
-                set->slots[i].owner = (struct FlumeWeighted *)param_1;
+            if (!FUN_0040b270((unsigned int *)&set->slots[i], (unsigned int)entry)) {
+                continue;
             }
         } else {
             do {
                 if (FUN_0040b270((unsigned int *)&set->slots[i], (unsigned int)node)) {
-                    set->slots[i].owner = (struct FlumeWeighted *)param_1;
                     break;
                 }
                 node = node->next;
             } while (node != NULL);
+            if (node == NULL) {
+                continue;
+            }
         }
+        set->slots[i].owner = (struct FlumeWeighted *)target;
     }
     return 1;
 }
