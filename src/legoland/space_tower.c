@@ -433,13 +433,16 @@ int FUN_0043ad00(unsigned char *param_1, int param_2) {
 void FUN_0043ad90(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     struct Point coords;
     struct Point off;
+    struct Point pos;
 
     coords = GetScreenCoordsForObject((unsigned char *)param_1, SpaceTowerRideObj);
     if (SpaceTowerSeatMatteSprites[param_2] != NULL) {
         off = DAT_0062fd88[param_2];
         off.y -= param_1->seats[param_2].pos;
         AdjustOffsetForViewMode(&off);
-        PrintSprite(SpaceTowerSeatMatteSprites[param_2], coords.x + off.x, coords.y + off.y, param_3, 0);
+        pos.x = coords.x + off.x;
+        pos.y = coords.y + off.y;
+        PrintSprite(SpaceTowerSeatMatteSprites[param_2], pos.x, pos.y, param_3, 0);
     }
 }
 
