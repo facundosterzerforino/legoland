@@ -31,7 +31,7 @@ void ClearAdvisorHelp(void) {
     }
     DAT_007fe040 &= ~0x3;
     FUN_00476000();
-    FUN_00444070(0, 0);
+    SetNextAdvisorAnimState(0, 0);
     SpeechStop();
 }
 
@@ -85,7 +85,7 @@ unsigned int FUN_0046cf20(void) {
 LEGO_EXPORT void ProcessInGameHelp(void) {
     int delta;
 
-    FUN_00469400();
+    PostPendingObjectiveHints();
 
     delta = (int)(GetGameTimer() - DAT_007fe054);
     if (delta > 0xc8) {
@@ -103,7 +103,7 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
         }
     } else {
         if (FUN_0046cee0() != 0) {
-            FUN_00468c00();
+            ShowNextObjectiveMessage();
         }
     }
 

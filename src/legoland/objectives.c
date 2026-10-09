@@ -87,26 +87,26 @@ struct SweepInstance {
 };
 
 // FUNCTION: LEGOLAND 0x00468810
-void FUN_00468810(char *name) {
+void SetHintsFileName(char *name) {
     strncpy(DAT_0066869c, name, 0x80);
     DAT_0066869c[0x7f] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468830
-void FUN_00468830(void) {
+void ClearBriefingAndHintsFileNames(void) {
     DAT_0066869c[0] = 0;
     DAT_0066861c[0] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468840
-void FUN_00468840(void) {
+void ClearObjectiveCounters(void) {
     *(unsigned int *)ObjectiveCounters = 0;
     *(unsigned int *)(ObjectiveCounters + 4) = 0;
     *(unsigned short *)(ObjectiveCounters + 8) = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468860
-void FUN_00468860(int index, signed char value) {
+void SetObjectiveCounter(int index, signed char value) {
     if (index < 10) {
         ObjectiveCounters[index] = value;
         if (index < 4) {
@@ -116,7 +116,7 @@ void FUN_00468860(int index, signed char value) {
 }
 
 // FUNCTION: LEGOLAND 0x00468890
-unsigned char FUN_00468890(int index, unsigned char value) {
+unsigned char AddObjectiveCounter(int index, unsigned char value) {
     if (index < 10) {
         ObjectiveCounters[index] += value;
         return ObjectiveCounters[index];
@@ -125,7 +125,7 @@ unsigned char FUN_00468890(int index, unsigned char value) {
 }
 
 // FUNCTION: LEGOLAND 0x004688c0
-char FUN_004688c0(int index) {
+char GetObjectiveCounter(int index) {
     if (index < 10) {
         return ObjectiveCounters[index];
     }
@@ -177,7 +177,7 @@ void FreeObjectiveEventList(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x004689a0
-void FUN_004689a0(void) {
+void FreeScriptStrings(void) {
     int i;
     unsigned int *p;
 
@@ -197,7 +197,7 @@ void FUN_004689a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004689f0
-unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) {
+unsigned int AddScriptString(char *param_1, char *param_2, int param_3) {
     void *buffer;
 
     if (param_3 != 0) {
@@ -226,7 +226,7 @@ unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00468b00
-void FUN_00468b00(struct ObjectiveEvent *event) {
+void InsertObjectiveMessageSorted(struct ObjectiveEvent *event) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
     int key;
@@ -254,7 +254,7 @@ void FUN_00468b00(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00468b40
-void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) {
+void SetObjectiveEventText(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) {
     char *buffer;
 
     if (param_3 != 0) {
@@ -277,14 +277,14 @@ struct ObjectiveEvent *PostObjectiveMessage(const char *format, ...) {
     if (event != NULL) {
         va_start(args, format);
         vsprintf(DAT_0066820c, format, args);
-        FUN_00468b40(event, (unsigned int)DAT_0066820c, 1);
-        FUN_00468b00(event);
+        SetObjectiveEventText(event, (unsigned int)DAT_0066820c, 1);
+        InsertObjectiveMessageSorted(event);
     }
     return event;
 }
 
 // FUNCTION: LEGOLAND 0x00468c00
-void FUN_00468c00(void) {
+void ShowNextObjectiveMessage(void) {
     struct ObjectiveEvent *event;
     char *at;
 
@@ -299,7 +299,7 @@ void FUN_00468c00(void) {
             FUN_0046d3a0();
         }
         if (DisplayAdvisorHelp((char *)event->field_8, event->type == 0, 0) != 0) {
-            FUN_00444070(5, 0);
+            SetNextAdvisorAnimState(5, 0);
             DAT_00668724 = DAT_00668724->next;
             FreeObjectiveEvent(event);
         }
@@ -346,21 +346,21 @@ struct ObjectiveEvent *AllocTimestampedObjectiveEvent(unsigned int type, int sor
 }
 
 // FUNCTION: LEGOLAND 0x00468d00
-void FUN_00468d00(void) {
+void ResetObjectiveHintTimer(void) {
     DAT_00668780 = GetGameTimer();
 }
 
 // FUNCTION: LEGOLAND 0x00468d10
-int FUN_00468d10(void) {
+int IsObjectiveHintDue(void) {
     if ((int)(GetGameTimer() - DAT_00668780) > 0xc350) {
-        FUN_00468d00();
+        ResetObjectiveHintTimer();
         return 1;
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468d30
-int FUN_00468d30(struct NerpsArg *object) {
+int QueueCustomObjectiveHint(struct NerpsArg *object) {
     struct ObjectiveEvent *event;
     struct NerpsTarget *target;
 
@@ -379,13 +379,13 @@ int FUN_00468d30(struct NerpsArg *object) {
 }
 
 // FUNCTION: LEGOLAND 0x00468d80
-void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b) {
+void QueueBuildMoreObjectsHint(struct NerpsArg *object, unsigned int a, int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(1, 1);
@@ -395,13 +395,13 @@ void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00468dc0
-void FUN_00468dc0(struct NerpsArg *object, unsigned int a) {
+void QueueConnectToPathHint(struct NerpsArg *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(2, 1);
@@ -411,13 +411,13 @@ void FUN_00468dc0(struct NerpsArg *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468e00
-void FUN_00468e00(struct NerpsArg *object, unsigned int a) {
+void QueueLinkToEntranceHint(struct NerpsArg *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(2, 1);
@@ -427,13 +427,13 @@ void FUN_00468e00(struct NerpsArg *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468e40
-void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
+void QueueBuildRangeAttractionsHint(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(3, 1);
@@ -450,13 +450,13 @@ void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int su
 }
 
 // FUNCTION: LEGOLAND 0x00468ea0
-void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
+void QueueDeleteRangeAttractionsHint(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(4, 1);
@@ -473,13 +473,13 @@ void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int su
 }
 
 // FUNCTION: LEGOLAND 0x00468f00
-void FUN_00468f00(struct NerpsArg *object, int a) {
+void QueueClearAreaHint(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(5, 1);
@@ -488,13 +488,13 @@ void FUN_00468f00(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468f40
-void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) {
+void QueueDeleteObjectsHint(struct NerpsArg *arg, unsigned int class_id, int count) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(6, 1);
@@ -504,13 +504,13 @@ void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) {
 }
 
 // FUNCTION: LEGOLAND 0x00468f80
-void FUN_00468f80(struct NerpsArg *object, int a) {
+void QueueAttractVisitorsHint(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(7, 1);
@@ -519,13 +519,13 @@ void FUN_00468f80(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468fc0
-void FUN_00468fc0(struct NerpsArg *object, int a) {
+void QueueMoreGardenersHint(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(8, 1);
@@ -534,13 +534,13 @@ void FUN_00468fc0(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469000
-void FUN_00469000(struct NerpsArg *object, int a) {
+void QueueFewerGardenersHint(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(8, 1);
@@ -549,13 +549,13 @@ void FUN_00469000(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469040
-void FUN_00469040(struct NerpsArg *object, unsigned int a) {
+void QueueMoreMechanicsHint(struct NerpsArg *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(9, 1);
@@ -564,13 +564,13 @@ void FUN_00469040(struct NerpsArg *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469080
-void FUN_00469080(struct NerpsArg *object, int a) {
+void QueueFewerMechanicsHint(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(9, 1);
@@ -579,13 +579,13 @@ void FUN_00469080(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x004690c0
-void FUN_004690c0(struct NerpsArg *arg, int count) {
+void QueueSaveCoinsHint(struct NerpsArg *arg, int count) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0xd, 1);
@@ -594,13 +594,13 @@ void FUN_004690c0(struct NerpsArg *arg, int count) {
 }
 
 // FUNCTION: LEGOLAND 0x00469100
-void FUN_00469100(struct NerpsArg *object, int a, unsigned int b) {
+void QueueHappyVisitorsHint(struct NerpsArg *object, int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0xe, 1);
@@ -610,13 +610,13 @@ void FUN_00469100(struct NerpsArg *object, int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469140
-void FUN_00469140(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void QueueFewerHungryVisitorsHint(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0xf, 1);
@@ -627,13 +627,13 @@ void FUN_00469140(struct NerpsArg *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469190
-void FUN_00469190(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void QueueMoreFedVisitorsHint(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0xf, 1);
@@ -644,13 +644,13 @@ void FUN_00469190(struct NerpsArg *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004691e0
-void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3) {
+void QueueRepairObjectsHint(struct NerpsArg *arg, int param_2, unsigned int param_3) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0x10, 1);
@@ -660,13 +660,13 @@ void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00469220
-void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void QueueRideVisitorsHint(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0x11, 1);
@@ -676,13 +676,13 @@ void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469260
-void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int count) {
+void QueueAddRidePartsHint(struct NerpsArg *arg, unsigned int class_id, int sum, int count) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0x12, 1);
@@ -699,13 +699,13 @@ void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int coun
 }
 
 // FUNCTION: LEGOLAND 0x00469310
-void FUN_00469310(struct NerpsArg *object, unsigned int a, int b) {
+void QueueCoverSquaresHint(struct NerpsArg *object, unsigned int a, int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0xa, 1);
@@ -715,13 +715,13 @@ void FUN_00469310(struct NerpsArg *object, unsigned int a, int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469350
-void FUN_00469350(struct NerpsArg *object, int a) {
+void QueuePathSceneryHint(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
     event = AllocTimestampedObjectiveEvent(0xb, 1);
@@ -730,14 +730,14 @@ void FUN_00469350(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469390
-void FUN_00469390(struct NerpsArg *object) {
-    if (FUN_00468d10() != 0) {
-        FUN_00468d30(object);
+void QueueCustomObjectiveHintIfDue(struct NerpsArg *object) {
+    if (IsObjectiveHintDue() != 0) {
+        QueueCustomObjectiveHint(object);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004693b0
-void FUN_004693b0(unsigned int type) {
+void RemoveObjectiveEventsOfType(unsigned int type) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *next;
     struct ObjectiveEvent *prev;
@@ -761,7 +761,7 @@ void FUN_004693b0(unsigned int type) {
 }
 
 // FUNCTION: LEGOLAND 0x00469400
-void FUN_00469400(void) {
+void PostPendingObjectiveHints(void) {
     struct ObjectiveEvent *node;
 
     GetGameTimer();
@@ -953,13 +953,13 @@ void FUN_00469400(void) {
                 }
                 break;
             }
-            FUN_004693b0(node->type);
+            RemoveObjectiveEventsOfType(node->type);
         }
     } while (node != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00469900
-void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void GiveRewardObject(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct RewardObject *obj;
     unsigned int flags;
 
@@ -1031,7 +1031,7 @@ void FUN_00469a80(struct NerpsArg *object) {
 }
 
 // FUNCTION: LEGOLAND 0x00469ab0
-void FUN_00469ab0(struct NerpsArg *object) {
+void TakeRewardObject(struct NerpsArg *object) {
     unsigned int flags;
 
     if (object != NULL) {
@@ -1062,7 +1062,7 @@ int ScriptEventGive(struct ObjectiveEvent *event) {
     struct NerpsArg *object;
 
     object = (struct NerpsArg *)event->field_4;
-    FUN_00469900(object, event->field_14, 0);
+    GiveRewardObject(object, event->field_14, 0);
     object = (struct NerpsArg *)event->field_4;
     ((struct ObjectiveEvent *)object)->field_8 |= 0x20000;
     return 1;
@@ -1076,7 +1076,7 @@ int FUN_00469b50(struct ObjectiveEvent *event) {
 
 // FUNCTION: LEGOLAND 0x00469b70
 int ScriptEventTake(struct ObjectiveEvent *event) {
-    FUN_00469ab0((struct NerpsArg *)event->field_4);
+    TakeRewardObject((struct NerpsArg *)event->field_4);
     return 1;
 }
 
@@ -1093,7 +1093,7 @@ int ObjectiveEventSetBricks(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00469bd0
-void FUN_00469bd0(unsigned int a, void *b) {
+void PlaceObjectAtTile(unsigned int a, void *b) {
     struct PlaceObject *object;
     struct ObjClass *cls;
     struct Point centre;
@@ -1112,12 +1112,12 @@ void FUN_00469bd0(unsigned int a, void *b) {
 
 // FUNCTION: LEGOLAND 0x00469c40
 int ScriptEventPlace(struct ObjectiveEvent *event) {
-    FUN_00469bd0(event->field_4, &event->field_20);
+    PlaceObjectAtTile(event->field_4, &event->field_20);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469c60
-int FUN_00469c60(unsigned int handle) {
+int FadeOutSampleCallback(unsigned int handle) {
     SetSampleFade((struct Sample *)handle, -100);
     return 0;
 }
@@ -1140,7 +1140,7 @@ int ScriptEventClear(struct MapRectArg *arg) {
     int right;
     sample = PlayInstanceOfSample(GameFX[FX_INVENTORY_OUT].sample, 1, 1, 0);
     FUN_00496d10(sample);
-    AddSFX_Callback((struct CallbackEntry *)sample, 3000, (unsigned int (*)(struct CallbackEntry *))FUN_00469c60);
+    AddSFX_Callback((struct CallbackEntry *)sample, 3000, (unsigned int (*)(struct CallbackEntry *))FadeOutSampleCallback);
     for (phase = 0; phase < 3; phase++) {
         current = (struct SweepInstance *)GetFirstRenderObject();
         while (current != NULL) {
