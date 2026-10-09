@@ -1443,6 +1443,43 @@ void UpdateAppraisalPageButtons(void) {
     recs[i].rnd = rand() % 5; \
     recs[i].text = GetString(id)
 
+/* RunAppraisal's report layout. Each row of the report is a struct AppraisalRow; a row is 0x16 high and rows are
+ * 0x18 apart. A row whose bottom would pass 0x1b5 goes to the top of a new page. rc.layout is the first row's
+ * rectangle on a page, rc.cur the current row's. The report is built in sections (a header row, then one row per
+ * check); a section that does not fit on the page it started on is written again from its header on a new page.
+ * Every page test carries its own copy of that restart and jumps back to the section's head (the only gotos here);
+ * the compiler merges the copies into one block per section, as in the original, and the copies' references are
+ * what make pagestart and x the heaviest locals, so they come first in the frame, as in the original. */
+
+/* back to the top of the page: the original reloads the layout rectangle from memory at every page break */
+#define APPR_TOP_OF_PAGE() \
+    rc.cur.left = rc.layout.left; \
+    y = rc.layout.top; \
+    rc.cur.right = rc.layout.right; \
+    bottom = rc.layout.bottom
+/* ... and the row starts a new page */
+#define APPR_NEW_PAGE() \
+    AppraisalPageCount++; \
+    pagestart = i; \
+    rc.cur.left = rc.layout.left; \
+    y = rc.layout.top; \
+    rc.cur.right = rc.layout.right; \
+    rc.cur.bottom = rc.layout.bottom
+/* a section header that does not fit: retry it at the top of a new page */
+#define APPR_RETRY(label) \
+    { \
+        AppraisalPageCount++; \
+        pagestart = i; \
+        goto label; \
+    }
+/* the common start of a text row */
+#define APPR_ROW(kind, id) \
+    recs[i].page = AppraisalPageCount; \
+    recs[i].x = x; \
+    recs[i].type = (kind); \
+    recs[i].rnd = rand() % 5; \
+    recs[i].text = GetString(id)
+
 // FUNCTION: LEGOLAND 0x004453a0
 unsigned int RunAppraisal(void) {
     int i; /* the row being written (= rows written so far) */
@@ -1457,7 +1494,6 @@ unsigned int RunAppraisal(void) {
     int flags; /* failed checks, one bit each */
     int totacc; /* checks in all sections */
     int passacc; /* checks passed in all sections */
-    int n; /* advice rows written */
     int val; /* a check's measured value, when it is kept for the row */
     int *xp; /* &recs[first].x: x of the current section's header row, restored on a restart */
     int bf0_total;
@@ -1480,7 +1516,6 @@ unsigned int RunAppraisal(void) {
     int chances; /* appraisals the park may still fail before it is closed */
     int *nidp; /* &recs[i].nids: the speech-id count of the advice row being written */
     int shown; /* the row being drawn */
-    int nqueued; /* speech ids queued */
     int played; /* next queued speech id to play */
     int nids; /* speech ids of the row being drawn */
     RECT r; /* a rectangle passed by value */
@@ -1579,7 +1614,13 @@ s1:
             }
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto s1_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto s1;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(ok, 0x132);
@@ -1602,7 +1643,13 @@ s1:
             }
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto s1_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto s1;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(ok, 0x133);
@@ -1626,7 +1673,13 @@ s1:
             }
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto s1_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto s1;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(ok, 0x134);
@@ -1651,7 +1704,13 @@ s1:
             case 1:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x135);
@@ -1666,7 +1725,13 @@ s1:
             case 2:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x136);
@@ -1681,7 +1746,13 @@ s1:
             case 3:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x137);
@@ -1708,7 +1779,13 @@ s1:
             case 1:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x138);
@@ -1723,7 +1800,13 @@ s1:
             case 2:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x139);
@@ -1738,7 +1821,13 @@ s1:
             case 3:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x13a);
@@ -1765,7 +1854,13 @@ s1:
             case 1:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x13b);
@@ -1780,7 +1875,13 @@ s1:
             case 2:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x13c);
@@ -1795,7 +1896,13 @@ s1:
             case 3:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x13d);
@@ -1822,7 +1929,13 @@ s1:
             case 1:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x13e);
@@ -1837,7 +1950,13 @@ s1:
             case 2:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x13f);
@@ -1852,7 +1971,13 @@ s1:
             case 3:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x140);
@@ -1879,7 +2004,13 @@ s1:
             case 1:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x141);
@@ -1894,7 +2025,13 @@ s1:
             case 2:
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s1_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto s1;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x142);
@@ -1911,11 +2048,10 @@ s1:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in this section that cannot start a new page restarts the section here */
-                    s1_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         goto s1;
                     }
                     APPR_NEW_PAGE();
@@ -1940,9 +2076,11 @@ s1:
     }
     /* section 2 (0x44672e-0x4473e2): the loop sections 0x38000000, 0xc0000000 and 0x30000 */
     if (ReportFlags & 0x38000000) {
+        int lpass; /* checks passed in it */
+
         do {
             total = 0;
-            pass = 0;
+            lpass = 0;
             first = i;
             xp = &recs[i].x;
             *xp = x;
@@ -1971,13 +2109,19 @@ s1:
                 total++;
                 ok = c70_total >= DAT_00666070;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x1000;
                 }
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s2a_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        continue;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x132);
@@ -1994,7 +2138,7 @@ s1:
                 total++;
                 ok = c70_count >= DAT_00666078;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x2000;
                 }
@@ -2002,11 +2146,10 @@ s1:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in this section that cannot start a new page restarts the section here */
-                    s2a_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         continue;
                     }
                     APPR_NEW_PAGE();
@@ -2021,18 +2164,20 @@ s1:
                 i++;
                 y += 0x18;
             }
-            recs[first].type = pass == total;
+            recs[first].type = lpass == total;
             totacc += total;
-            passacc += pass;
+            passacc += lpass;
             x -= 0x30;
             bottom = y + 0x16;
             break;
         } while (ReportFlags & 0x38000000);
     }
     if (ReportFlags & 0xc0000000) {
+        int lpass; /* checks passed in it */
+
         do {
             total = 0;
-            pass = 0;
+            lpass = 0;
             first = i;
             xp = &recs[i].x;
             *xp = x;
@@ -2061,13 +2206,19 @@ s1:
                 total++;
                 ok = cd0_total >= DAT_00666088;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x8000;
                 }
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s2b_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        continue;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x132);
@@ -2084,7 +2235,7 @@ s1:
                 total++;
                 ok = cd0_count >= DAT_00666090;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x10000;
                 }
@@ -2092,11 +2243,10 @@ s1:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in this section that cannot start a new page restarts the section here */
-                    s2b_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         continue;
                     }
                     APPR_NEW_PAGE();
@@ -2111,18 +2261,20 @@ s1:
                 i++;
                 y += 0x18;
             }
-            recs[first].type = pass == total;
+            recs[first].type = lpass == total;
             totacc += total;
-            passacc += pass;
+            passacc += lpass;
             x -= 0x30;
             bottom = y + 0x16;
             break;
         } while (ReportFlags & 0xc0000000);
     }
     if (ReportFlags & 0x30000) {
+        int lpass; /* checks passed in it */
+
         do {
             total = 0;
-            pass = 0;
+            lpass = 0;
             first = i;
             xp = &recs[i].x;
             *xp = x;
@@ -2151,13 +2303,19 @@ s1:
                 total++;
                 ok = d20_total >= DAT_00666040;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x20000;
                 }
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s2c_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        continue;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x132);
@@ -2174,7 +2332,7 @@ s1:
                 total++;
                 ok = d20_count >= DAT_00666048;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x40000;
                 }
@@ -2182,11 +2340,10 @@ s1:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in this section that cannot start a new page restarts the section here */
-                    s2c_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         continue;
                     }
                     APPR_NEW_PAGE();
@@ -2201,9 +2358,9 @@ s1:
                 i++;
                 y += 0x18;
             }
-            recs[first].type = pass == total;
+            recs[first].type = lpass == total;
             totacc += total;
-            passacc += pass;
+            passacc += lpass;
             x -= 0x30;
             bottom = y + 0x16;
             break;
@@ -2211,9 +2368,11 @@ s1:
     }
     /* section 3 (0x4473e2-0x447e73): loop sections 0x5080000 (paths) and 0xe00000 (power, objects, map size) */
     if (ReportFlags & 0x5080000) {
+        int lpass; /* checks passed in it */
+
         do {
             total = 0;
-            pass = 0;
+            lpass = 0;
             first = i;
             xp = &recs[i].x;
             *xp = x;
@@ -2242,7 +2401,7 @@ s1:
                 total++;
                 ok = d70_count >= DAT_00666038;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x80000;
                 }
@@ -2252,13 +2411,19 @@ s1:
                 total++;
                 ok = d70_p2 >= DAT_00666050;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x100000;
                 }
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s3a_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        continue;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x148);
@@ -2275,7 +2440,7 @@ s1:
                 total++;
                 ok = d70_p3 >= DAT_00666050;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x200000;
                 }
@@ -2283,11 +2448,10 @@ s1:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in this section that cannot start a new page restarts it here */
-                    s3a_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         continue;
                     }
                     APPR_NEW_PAGE();
@@ -2302,18 +2466,20 @@ s1:
                 i++;
                 y += 0x18;
             }
-            recs[first].type = pass == total;
+            recs[first].type = lpass == total;
             totacc += total;
-            passacc += pass;
+            passacc += lpass;
             x -= 0x30;
             bottom = y + 0x16;
             break;
         } while (ReportFlags & 0x5080000);
     }
     if (ReportFlags & 0xe00000) {
+        int lpass; /* checks passed in it */
+
         do {
             total = 0;
-            pass = 0;
+            lpass = 0;
             first = i;
             xp = &recs[i].x;
             *xp = x;
@@ -2341,13 +2507,19 @@ s1:
                 total++;
                 ok = MapStats.power_supply >= DAT_00666058;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x400000;
                 }
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s3b_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        continue;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x14b);
@@ -2372,13 +2544,19 @@ s1:
                 total++;
                 ok = objcount >= DAT_00666060;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x800000;
                 }
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto s3b_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        continue;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(ok, 0x14c);
@@ -2396,7 +2574,7 @@ s1:
                 total++;
                 ok = tiles >= DAT_00666068;
                 if (ok) {
-                    pass++;
+                    lpass++;
                 } else {
                     flags |= 0x1000000;
                 }
@@ -2404,11 +2582,10 @@ s1:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in this section that cannot start a new page restarts it here */
-                    s3b_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         continue;
                     }
                     APPR_NEW_PAGE();
@@ -2423,9 +2600,9 @@ s1:
                 i++;
                 y += 0x18;
             }
-            recs[first].type = pass == total;
+            recs[first].type = lpass == total;
             totacc += total;
-            passacc += pass;
+            passacc += lpass;
             x -= 0x30;
             bottom = y + 0x16;
             break;
@@ -2456,7 +2633,13 @@ summary:
     if (passacc < totacc / 2) {
         if (bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-2, 0x14f);
@@ -2472,7 +2655,13 @@ summary:
         recs[i - 1].nids++;
         if (y + 0x16 > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-2, 0x150);
@@ -2490,7 +2679,13 @@ summary:
     } else if (passacc < totacc) {
         if (bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-2, 0x151);
@@ -2506,7 +2701,13 @@ summary:
         recs[i - 1].nids++;
         if (y + 0x16 > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-2, 0x150);
@@ -2522,7 +2723,13 @@ summary:
     } else {
         if (bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-2, 0x153);
@@ -2538,7 +2745,13 @@ summary:
         recs[i - 1].nids++;
         if (y + 0x16 > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-2, 0x154);
@@ -2556,7 +2769,13 @@ summary:
     if (flags & 1) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x155);
@@ -2574,7 +2793,13 @@ summary:
     if (flags & 2) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x156);
@@ -2592,7 +2817,13 @@ summary:
     if (flags & 4) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x157);
@@ -2610,7 +2841,13 @@ summary:
     if (flags & 8) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x158);
@@ -2629,7 +2866,13 @@ summary:
     case 0x10:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x159);
@@ -2647,7 +2890,13 @@ summary:
     case 0x20:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x15a);
@@ -2666,7 +2915,13 @@ summary:
         /* the original does not advance y between these two rows, so the 0x133 row tests the same bottom */
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x15b);
@@ -2679,7 +2934,13 @@ summary:
         i++;
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-3, 0x133);
@@ -2698,7 +2959,13 @@ summary:
     if (flags & 0x40) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x15c);
@@ -2714,7 +2981,13 @@ summary:
         y += 0x18;
         if (y + 0x16 > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-3, 0x15d);
@@ -2731,7 +3004,13 @@ summary:
     if (flags & 0x80) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x15e);
@@ -2749,7 +3028,13 @@ summary:
     if (flags & 0x100) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x15f);
@@ -2767,7 +3052,13 @@ summary:
     if (flags & 0x200) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x160);
@@ -2785,7 +3076,13 @@ summary:
     if (flags & 0x400) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x161);
@@ -2803,7 +3100,13 @@ summary:
     if (flags & 0x800) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x162);
@@ -2823,7 +3126,13 @@ summary:
     case 0x1000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x163);
@@ -2841,7 +3150,13 @@ summary:
     case 0x2000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x164);
@@ -2859,7 +3174,13 @@ summary:
     case 0x3000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x165);
@@ -2879,7 +3200,13 @@ summary:
     case 0x8000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x166);
@@ -2897,7 +3224,13 @@ summary:
     case 0x10000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x167);
@@ -2915,7 +3248,13 @@ summary:
     case 0x18000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x168);
@@ -2935,7 +3274,13 @@ summary:
     case 0x20000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x169);
@@ -2953,7 +3298,13 @@ summary:
     case 0x40000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x16a);
@@ -2971,7 +3322,13 @@ summary:
     case 0x60000:
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x16b);
@@ -2987,7 +3344,13 @@ summary:
         recs[i - 1].ids[recs[i - 1].nids++] = 0x16b;
         if (y + 0x16 > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-3, 0x231);
@@ -3005,7 +3368,13 @@ summary:
     if (flags & 0x80000) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x16c);
@@ -3023,7 +3392,13 @@ summary:
     if (flags & 0x100000) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x16d);
@@ -3041,7 +3416,13 @@ summary:
     if (flags & 0x200000) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x16f);
@@ -3059,7 +3440,13 @@ summary:
     if (flags & 0x400000) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x170);
@@ -3078,7 +3465,13 @@ summary:
     if (flags & 0x800000) {
         if (rc.cur.bottom > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-1, 0x171);
@@ -3093,7 +3486,13 @@ summary:
         recs[i - 1].ids[recs[i - 1].nids++] = 0x171;
         if (y + 0x16 > 0x1b5) {
             APPR_TOP_OF_PAGE();
-            if (pagestart != first) goto summary_restart;
+            if (pagestart != first) {
+                i = first;
+                x = *xp;
+                AppraisalPageCount++;
+                pagestart = first;
+                goto summary;
+            }
             APPR_NEW_PAGE();
         }
         APPR_ROW(-3, 0x172);
@@ -3112,11 +3511,10 @@ summary:
             APPR_TOP_OF_PAGE();
             if (pagestart != first) {
                 /* every page break of the summary and the failure rows restarts the summary here */
-            summary_restart:
                 i = first;
-                pagestart = first;
                 x = *xp;
                 AppraisalPageCount++;
+                pagestart = first;
                 goto summary;
             }
             APPR_NEW_PAGE();
@@ -3143,7 +3541,13 @@ summary:
             sprintf(fmtbuf, GetString(0x235), GetString(chances + 0x514));
             if (rc.cur.bottom > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto limit_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = recs[first].x;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             recs[i].page = AppraisalPageCount;
@@ -3163,7 +3567,13 @@ summary:
             recs[i - 1].ids[recs[i - 1].nids++] = 0x236;
             if (rc.cur.bottom > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto limit_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = recs[first].x;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-2, 0x236);
@@ -3177,7 +3587,13 @@ summary:
         } else if (chances > 0) {
             if (rc.cur.bottom > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto limit_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = recs[first].x;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-2, 0x514);
@@ -3191,7 +3607,13 @@ summary:
             recs[i - 1].ids[recs[i - 1].nids++] = 0x514;
             if (rc.cur.bottom > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto limit_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = recs[first].x;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-2, 0x236);
@@ -3205,7 +3627,13 @@ summary:
         } else {
             if (rc.cur.bottom > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto limit_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = recs[first].x;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-2, 0x237);
@@ -3221,11 +3649,10 @@ summary:
                 APPR_TOP_OF_PAGE();
                 if (pagestart != first) {
                     /* every page break of the fail-limit rows restarts the advice here */
-                limit_restart:
                     i = first;
-                    pagestart = first;
                     x = recs[first].x;
                     AppraisalPageCount++;
+                    pagestart = first;
                     goto advice;
                 }
                 APPR_NEW_PAGE();
@@ -3265,7 +3692,7 @@ advice:
     recs[i - 1].ids[recs[i - 1].nids] = 0x174;
     recs[i - 1].nids++;
     y += 0x18;
-    n = 0; /* advice rows written */
+    total = 0; /* from here on, total counts the advice rows (the checks' total is no longer needed) */
     x += 0x30;
     /* one of four pieces of advice for the failed checks 0x10..0x80 (flags & 0xf) */
     if (flags & 0xf) {
@@ -3273,7 +3700,13 @@ advice:
         case 0:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x17c);
@@ -3290,7 +3723,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x17d);
@@ -3305,12 +3744,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x17d;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 1:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x187);
@@ -3327,7 +3772,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x188);
@@ -3342,12 +3793,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x188;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 2:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x190);
@@ -3364,7 +3821,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x191);
@@ -3381,7 +3844,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x192);
@@ -3396,12 +3865,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x192;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 3:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x19a);
@@ -3418,7 +3893,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x19b);
@@ -3433,7 +3914,7 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x19b;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         }
     }
@@ -3443,7 +3924,13 @@ advice:
         case 0:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1a4);
@@ -3460,7 +3947,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1a5);
@@ -3477,7 +3970,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1a6);
@@ -3492,12 +3991,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1a6;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 1:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1ae);
@@ -3514,7 +4019,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1af);
@@ -3531,7 +4042,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1b0);
@@ -3546,12 +4063,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1b0;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 2:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1b8);
@@ -3568,7 +4091,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1b9);
@@ -3583,7 +4112,7 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1b9;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         }
     }
@@ -3594,7 +4123,13 @@ advice:
         case 0:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1c2);
@@ -3611,7 +4146,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1c3);
@@ -3628,7 +4169,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1c4);
@@ -3643,12 +4190,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1c4;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 1:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1cc);
@@ -3665,7 +4218,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1cd);
@@ -3680,7 +4239,7 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1cd;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         }
     }
@@ -3689,7 +4248,13 @@ advice:
         case 0:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1d6);
@@ -3706,7 +4271,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1d7);
@@ -3723,7 +4294,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1d8);
@@ -3738,12 +4315,18 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1d8;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 1:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1e0);
@@ -3760,7 +4343,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1e1);
@@ -3775,7 +4364,7 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1e1;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         }
     }
@@ -3785,7 +4374,13 @@ advice:
             if (flags & 0x200000) {
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-1, 0x1ea);
@@ -3802,7 +4397,13 @@ advice:
                 y += 0x18;
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-3, 0x1eb);
@@ -3819,7 +4420,13 @@ advice:
                 y += 0x18;
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-3, 0x1ec);
@@ -3834,13 +4441,19 @@ advice:
                 recs[i - 1].ids[recs[i - 1].nids] = 0x1ec;
                 recs[i - 1].nids++;
                 y += 0x18;
-                n++;
+                total++;
             }
             break;
         case 1:
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x1f4);
@@ -3857,7 +4470,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x1f5);
@@ -3872,13 +4491,19 @@ advice:
             recs[i - 1].ids[recs[i - 1].nids] = 0x1f5;
             recs[i - 1].nids++;
             y += 0x18;
-            n++;
+            total++;
             break;
         case 2:
             if (ReportFlags & 0xf) {
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-1, 0x1fe);
@@ -3895,7 +4520,13 @@ advice:
                 y += 0x18;
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-3, 0x1ff);
@@ -3910,7 +4541,7 @@ advice:
                 recs[i - 1].ids[recs[i - 1].nids] = 0x1ff;
                 recs[i - 1].nids++;
                 y += 0x18;
-                n++;
+                total++;
             }
             break;
         }
@@ -3919,7 +4550,13 @@ advice:
         if (rand() & 1) {
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x208);
@@ -3937,7 +4574,13 @@ advice:
         } else {
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-1, 0x212);
@@ -3954,7 +4597,13 @@ advice:
             y += 0x18;
             if (y + 0x16 > 0x1b5) {
                 APPR_TOP_OF_PAGE();
-                if (pagestart != first) goto advice_restart;
+                if (pagestart != first) {
+                    i = first;
+                    x = *xp;
+                    AppraisalPageCount++;
+                    pagestart = first;
+                    goto advice;
+                }
                 APPR_NEW_PAGE();
             }
             APPR_ROW(-3, 0x213);
@@ -3970,14 +4619,20 @@ advice:
             recs[i - 1].nids++;
             y += 0x18;
         }
-        n++;
+        total++;
     }
     if (flags & 0xc00000) {
         if (rand() & 1) {
             if (flags & 0x800000) {
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-1, 0x21c);
@@ -3994,7 +4649,13 @@ advice:
                 y += 0x18;
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     /* the new page does not move pagestart */
                     AppraisalPageCount++;
                     rc.cur.left = rc.layout.left;
@@ -4014,13 +4675,19 @@ advice:
                 recs[i - 1].ids[recs[i - 1].nids] = 0x21d;
                 recs[i - 1].nids++;
                 y += 0x18;
-                n++;
+                total++;
             }
         } else {
             if (flags & 0x400000) {
                 if (y + 0x16 > 0x1b5) {
                     APPR_TOP_OF_PAGE();
-                    if (pagestart != first) goto advice_restart;
+                    if (pagestart != first) {
+                        i = first;
+                        x = *xp;
+                        AppraisalPageCount++;
+                        pagestart = first;
+                        goto advice;
+                    }
                     APPR_NEW_PAGE();
                 }
                 APPR_ROW(-1, 0x226);
@@ -4039,11 +4706,10 @@ advice:
                     APPR_TOP_OF_PAGE();
                     if (pagestart != first) {
                         /* every page break in the advice rows that cannot start a new page restarts the advice here */
-                    advice_restart:
                         i = first;
-                        pagestart = first;
                         x = *xp;
                         AppraisalPageCount++;
+                        pagestart = first;
                         goto advice;
                     }
                     /* the new page does not move pagestart */
@@ -4065,12 +4731,12 @@ advice:
                 recs[i - 1].ids[recs[i - 1].nids] = 0x227;
                 recs[i - 1].nids++;
                 y += 0x18;
-                n++;
+                total++;
             }
         }
     }
     /* section 10 (0x44d744-0x44db06): end of the layout, the display/speech loop, the result */
-    if (n == 0) {
+    if (total == 0) {
         /* no advice rows: drop the advice header */
         i--;
     }
@@ -4103,7 +4769,7 @@ advice:
         }
         if (AppraisalPageChanged) {
             played = 0;
-            nqueued = 0;
+            flags = 0; /* flags is free now: it counts the speech ids queued for the page */
         }
         for (; shown < i; shown++) {
             if (recs[shown].page != AppraisalPage) {
@@ -4112,27 +4778,27 @@ advice:
             if (AppraisalPageChanged) {
                 nids = recs[shown].nids;
                 if (nids != 0) {
-                    queue[nqueued++] = recs[shown].ids[0];
+                    queue[flags++] = recs[shown].ids[0];
                     if (nids > 1) {
-                        queue[nqueued++] = recs[shown].ids[1];
+                        queue[flags++] = recs[shown].ids[1];
                     }
                     if (nids > 2) {
-                        queue[nqueued++] = recs[shown].ids[2];
+                        queue[flags++] = recs[shown].ids[2];
                     }
                     if (nids > 3) {
-                        queue[nqueued++] = recs[shown].ids[3];
+                        queue[flags++] = recs[shown].ids[3];
                     }
                     if (nids > 4) {
-                        queue[nqueued++] = recs[shown].ids[4];
+                        queue[flags++] = recs[shown].ids[4];
                     }
                     if (nids > 5) {
-                        queue[nqueued++] = recs[shown].ids[5];
+                        queue[flags++] = recs[shown].ids[5];
                     }
                     if (nids > 6) {
-                        queue[nqueued++] = recs[shown].ids[6];
+                        queue[flags++] = recs[shown].ids[6];
                     }
                     if (nids > 7) {
-                        queue[nqueued++] = recs[shown].ids[7];
+                        queue[flags++] = recs[shown].ids[7];
                     }
                 }
             }
@@ -4145,13 +4811,15 @@ advice:
             r.left = rc.cur.left;
             r.right = 0x1a4;
             r.top = rc.cur.top;
-            r.bottom = r.top + 0x16;
+            rc.cur.bottom = r.top + 0x16;
+            r.bottom = rc.cur.bottom;
             DrawTextOnRenderSurface(recs[shown].text, 2, r, recs[shown].arg);
             if (recs[shown].bar) {
                 r.left = 0x126;
                 r.top = rc.cur.top;
                 r.right = 0x1a4;
-                r.bottom = r.top + 8;
+                rc.cur.bottom = r.top + 8;
+                r.bottom = rc.cur.bottom;
                 DrawAppraisalBar(r, recs[shown].value, recs[shown].max, recs[shown].goal);
             }
             rc.cur.top += 0x18;
@@ -4159,7 +4827,7 @@ advice:
         if (AppraisalPageChanged) {
             AppraisalPageChanged = 0;
         }
-        if (played >= nqueued) {
+        if (played >= flags) {
             if (SpeechIsPlaying() == 0) {
                 UpdateSpeechPlayback();
             }
@@ -4194,6 +4862,10 @@ advice:
     return 1;
     return 0;
 }
+#undef APPR_TOP_OF_PAGE
+#undef APPR_NEW_PAGE
+#undef APPR_RETRY
+#undef APPR_ROW
 #undef APPR_TOP_OF_PAGE
 #undef APPR_NEW_PAGE
 #undef APPR_RETRY
