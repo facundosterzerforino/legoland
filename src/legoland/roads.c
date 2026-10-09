@@ -494,7 +494,7 @@ void DrivingSchoolRoadsSetEditMode(void) {
 
 // FUNCTION: LEGOLAND 0x00413b50
 void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param_3) {
-    unsigned int bits;
+    int bits;
     struct RoadTile *t;
     struct Ride *ride;
 
@@ -502,13 +502,17 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
     struct NeighborResult r;
     unsigned short type;
     int ptmp553;
+    int ptmp236;
+    volatile int ptmp237;
     register volatile unsigned int ptmp554;
     struct RoadQueueEntry **q = (struct RoadQueueEntry **)&r;
     int result;
     int cost;
-    ride = obj->ride;
+    ptmp236 = obj->ride;
+    ride = ptmp236;
 
-    memcpy(EditCursor.field_1414, &ride->footprint, 20);
+    ptmp237 = EditCursor.field_1414;
+    memcpy(ptmp237, &ride->footprint, 20);
     bits = 0;
     EditCursor.field_1830 = bits;
     ScreenToMapRef(param_2, (int *)&EditCursor.tile_x, param_3);
@@ -569,7 +573,7 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
                 memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
                 EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
                 DAT_0082f760.tile_x = t->x;
-                ptmp554 = t->y;
+                { ptmp554 = t->y; }
                 DAT_0082f760.tile_y = ptmp554;
                 DAT_0082f760.field_1830 = 0;
                 DAT_0082f760.field_1828 = 0x2034;

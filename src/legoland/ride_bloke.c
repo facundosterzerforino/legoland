@@ -518,7 +518,7 @@ int *FUN_00401970(int *param_1, int param_2, int param_3) {
 // FUNCTION: LEGOLAND 0x004019c0
 void FUN_004019c0(struct RideMover *m) {
     unsigned char oldDir = m->dir;
-    unsigned char moving = m->moving;
+    volatile unsigned char moving = m->moving;
     int dy, dx, dist, diff, vx, vy;
     unsigned char newDir;
 
@@ -538,7 +538,7 @@ void FUN_004019c0(struct RideMover *m) {
                 diff = (newDir - oldDir) & 15;
                 if (diff & 8)
                     diff |= -16;
-                if (diff < -2 || diff > 2) {
+                if (diff < -2 || (unsigned)diff > 2) {
                     if (diff & 8)
                         oldDir--;
                     else

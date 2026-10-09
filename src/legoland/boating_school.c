@@ -411,8 +411,8 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
     int i;
     int bit;
     int idx;
-    int sx;
     int sy;
+    int sx;
     volatile int tx;
     int ty;
     unsigned int dx;
@@ -466,8 +466,8 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
         if (to == 1) {
             to = 0x11;
         }
-        if ((to < from ? to & (from >> 2) : to == from || from & (to >> 2)) == 0) {
-            if ((to & (from * 2)) != 0) {
+        if (((unsigned)to < from ? to & (from >> 2) : to == from || from & (to >> 2)) == 0) {
+            if ((to & (2 * from)) != 0) {
                 arc = DAT_004b5158;
             } else if ((from & (to * 2)) != 0) {
                 arc = DAT_004b5198;
@@ -518,12 +518,12 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
         }
     }
     for (i = 0; i < 80; i++) {
-        if (i < 76) {
-            tx = ride->step_xy[(i + 4) * 2];
-            ty = ride->step_xy[(i + 4) * 2 + 1];
-        } else {
+        if (!(i < 76)) {
             ty = ride->step_xy[0x9f];
             tx = ride->step_xy[0x9e];
+        } else {
+            ty = ride->step_xy[(i + 4) * 2 + 1];
+            tx = ride->step_xy[(i + 4) * 2];
         }
         if (i > 3) {
             dx = tx - ride->step_xy[(i - 3) * 2];

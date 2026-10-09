@@ -5429,6 +5429,7 @@ struct EdgeMesh {
 // FUNCTION: LEGOLAND 0x004227c0
 struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src) {
     int *triFlag;
+    volatile int ptmp45;
     int nV = 0;
     int *edgeFlag;
     int j;
@@ -5477,7 +5478,8 @@ struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src) {
                     if (e & 0x80000000) {
                         v[k] = src->edges[e & 0x7fffffff].v1;
                     } else {
-                        v[k] = src->edges[e & 0x7fffffff].v0;
+                        ptmp45 = src->edges[e & 0x7fffffff].v0;
+                        v[k] = ptmp45;
                     }
                 }
                 p0 = &src->verts[v[0]];
@@ -5512,7 +5514,8 @@ struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src) {
                     }
                 }
             }
-            for (i = 0; i < nEdges; i++) {
+            i = 0;
+            while (i < nEdges) {
                 if (edgeFlag[i] != 0) {
                     int *pv = &src->edges[i].v0;
                     for (k = 0; k < 2; k++) {
@@ -5531,6 +5534,7 @@ struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src) {
                         pv++;
                     }
                 }
+                i++;
             }
             for (i = 0; i < nEdges; i++) {
                 if (edgeFlag[i] != 0) {
@@ -5558,7 +5562,7 @@ struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src) {
                         j++;
                     }
                 }
-                for (i = 0, j = 0; i < nEdges; i++) {
+                for (i = 0, j = 0; nEdges > i; i++) {
                     if (edgeFlag[i] == 0) {
                         out->edges[j].v0 = src->edges[i].v0 - vertFlag[src->edges[i].v0];
                         out->edges[j].v1 = src->edges[i].v1 - vertFlag[src->edges[i].v1];
@@ -5570,7 +5574,7 @@ struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src) {
                 for (i = 0; i < src->nTris; i++) {
                     if (triFlag[i] == 0) {
                         int e = src->tris[i].e[0];
-                        if (e & 0x80000000) {
+                        if (0x80000000 & e) {
                             out->tris[j].e[0] = (e - edgeFlag[e & 0x7fffffff]) | 0x80000000;
                         } else {
                             out->tris[j].e[0] = e - edgeFlag[e];
@@ -9669,21 +9673,21 @@ unsigned int FUN_004283c0(struct AnimPair *pair) {
 
 // FUNCTION: LEGOLAND 0x004284d0
 void FUN_004284d0(void) {
-    register struct Obj421ce0 *base;
+    struct Obj421ce0 *base;
     register struct Obj421ce0 *cur;
     struct Words3 *p;
     struct Words3 *q;
-    volatile int x;
+    int x;
     unsigned int y;
     int j;
-    register unsigned int i;
     register int qi;
+    register unsigned int i;
     unsigned int k;
     int n;
     int ptmp22;
     n = 0;
 
-    for (i = 0; 3 >= i; i++) {
+    for (i = 0; i <= 3; i++) {
         DAT_006117c0[i].x = DAT_004b5e00[i][0] * 20.0f;
         DAT_006117c0[i].y = DAT_004b5e00[i][1] * 20.0f;
         DAT_006117c0[i].z = DAT_004b5e00[i][2] * 20.0f;
@@ -9708,13 +9712,13 @@ void FUN_004284d0(void) {
         ++i;
     }
     i = 0;
-    while (i <= 3) {
+    while (3 >= i) {
         ptmp22 = DAT_004b5ef4[i][1];
         qi = ptmp22;
         q = (struct Words3 *)&DAT_00611750[qi];
         y = DAT_004b5f14[i][1];
-        x = DAT_004b5f14[i][0];
         p = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][0]];
+        x = DAT_004b5f14[i][0];
         FUN_00421ce0(p, q, (struct Words3 *)&DAT_006116e0[i], &((struct Obj421ce0 *)DAT_00828fe0)[n++], x, y);
         if (5 == n) {
             n = 5;

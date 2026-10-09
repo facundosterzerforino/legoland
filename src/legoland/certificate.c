@@ -32,8 +32,8 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
     int hres;
     HDC hDC;
     int vres;
-    volatile int ncolors;
     int fd;
+    volatile int ncolors;
 
     volatile int ptmp10;
     returned;
@@ -41,8 +41,9 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
     pInfo;
     pInfo;
     pInfo;
-    returned = 0;
+    returned;
     pInfo = NULL;
+    returned = 0;
     if (EnumPrintersA(1, NULL, 2, printers, 0x540, &needed, &returned) <= 0)
         return 0;
     if (returned <= 0)
@@ -68,10 +69,10 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
             if ((unsigned int)NULL == pInfo) {
                 GlobalFree(hInfo);
             } else {
+                ptmp10 = bmih.biXPelsPerMeter;
                 pInfo->bmiHeader.biSize = bmih.biSize;
                 pInfo->bmiHeader.biWidth = bmih.biWidth;
                 pInfo->bmiHeader.biHeight = bmih.biHeight;
-                ptmp10 = bmih.biXPelsPerMeter;
                 pInfo->bmiHeader.biPlanes = bmih.biPlanes;
                 pInfo->bmiHeader.biBitCount = bmih.biBitCount;
                 pInfo->bmiHeader.biCompression = bmih.biCompression;
@@ -80,7 +81,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                 pInfo->bmiHeader.biYPelsPerMeter = bmih.biYPelsPerMeter;
                 pInfo->bmiHeader.biClrUsed = bmih.biClrUsed;
                 pInfo->bmiHeader.biClrImportant = bmih.biClrImportant;
-                if (pInfo->bmiHeader.biBitCount < 9)
+                if (9 > pInfo->bmiHeader.biBitCount)
                     _read(fd, pInfo->bmiColors, (1 << bmih.biBitCount) * 4);
                 hBits = GlobalAlloc(GHND, bmfh.bfSize - bmfh.bfOffBits);
                 if (hBits == NULL) {
