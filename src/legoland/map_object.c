@@ -748,7 +748,7 @@ struct BuildBuf {
 // FUNCTION: LEGOLAND 0x0045ed30
 LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
     struct Point pos;
-    struct SampleParams source;
+    struct Point saved_tile;
     int out[2];
     struct FootprintNode saved_rect;
     int saved_140c;
@@ -765,16 +765,19 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
 
     pos.x = coords.pos.x;
     pos.y = coords.pos.y;
-    source.field_0 = 2;
-    source.x = pos.x;
-    source.y = pos.y;
-    UnSourceAndFadeAllSamplesFromSource(&source, -200);
+    {
+        struct SampleParams source;
+        source.field_0 = 2;
+        source.x = pos.x;
+        source.y = pos.y;
+        UnSourceAndFadeAllSamplesFromSource(&source, -200);
+    }
     GetTileCentre(&pos, out);
     EditCursor.field_1830 = 0;
     if (GamePad & 0x1000) {
         saved_rect = *(struct FootprintNode *)EditCursor.field_1414;
-        source.field_0 = EditCursor.tile_x;
-        source.field_4 = EditCursor.tile_y;
+        saved_tile.x = EditCursor.tile_x;
+        saved_tile.y = EditCursor.tile_y;
         saved_140c = EditCursor.field_140c;
         saved_1410 = EditCursor.field_1410;
     }
@@ -815,8 +818,8 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
     EditCursor.field_1830 = 0;
     if (GamePad & 0x1000) {
         *(struct FootprintNode *)EditCursor.field_1414 = saved_rect;
-        EditCursor.tile_x = source.field_0;
-        EditCursor.tile_y = source.field_4;
+        EditCursor.tile_x = saved_tile.x;
+        EditCursor.tile_y = saved_tile.y;
         EditCursor.field_140c = saved_140c;
         EditCursor.field_1410 = saved_1410;
     } else if (EditMode.unk8 != 0) {
