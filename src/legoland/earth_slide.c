@@ -390,9 +390,8 @@ void FUN_0042d560(unsigned short *param_1) {
     flags = *(unsigned int *)((char *)param_1 + 0x10);
     if ((flags & 1) != 0) {
         if ((v14 = ++*(int *)((char *)param_1 + 0x14)) > 2) {
-            nb = *(char *)((char *)param_1 + 0xb) + 1;
             *(int *)((char *)param_1 + 0x14) = 0;
-            *(char *)((char *)param_1 + 0xb) = nb;
+            nb = ++*(char *)((char *)param_1 + 0xb);
             if ((int)nb >= *(int *)((char *)EarthSlideRin + 0x14)) {
                 flags = flags & 0xfffffffe;
                 *(unsigned char *)((char *)param_1 + 0xb) = 0;
