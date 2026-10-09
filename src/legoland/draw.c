@@ -2902,6 +2902,7 @@ LEGO_EXPORT int RenderingComplete(void) {
 LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     LPDIRECTDRAWSURFACE surface;
     int locked;
+    LPDIRECTDRAWSURFACE *slot;
 
     locked = VideoSurfaceLocked;
     DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
@@ -2914,9 +2915,10 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
         }
     }
     VideoSurfaceLocked = 0;
-    renderEngineTargets[renderEngineTargetIdx] = renderEngine;
-    renderEngine = sprite->surface;
+    slot = &renderEngineTargets[renderEngineTargetIdx];
+    *slot = renderEngine;
     renderEngineTargetIdx++;
+    renderEngine = sprite->surface;
     FUN_004640f0();
 }
 
