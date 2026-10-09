@@ -1968,7 +1968,7 @@ float invsqrtf_exp_table[256];
 float sqrtf_exp_table[256];
 
 // GLOBAL: LEGOLAND 0x00611648
-unsigned int DAT_00611648 = 0;
+unsigned int DAT_00611648;
 
 // GLOBAL: LEGOLAND 0x0061164c
 float DAT_0061164c = 0;
@@ -1983,7 +1983,7 @@ float DAT_00611654 = 0;
 Vector3 DAT_00611658[4] = {0};
 
 // GLOBAL: LEGOLAND 0x00611688
-struct KeyValuePair DAT_00611688[11];
+struct KeyValuePair DAT_00611688[11] = {0};
 
 // GLOBAL: LEGOLAND 0x006116e0
 Vector3 DAT_006116e0[4] = {0};
