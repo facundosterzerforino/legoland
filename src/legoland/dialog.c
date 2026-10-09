@@ -50,22 +50,17 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
     RECT clip;
     RECT bar;
     RECT saved;
-    register RECT *items;
+    RECT *items;
     int sel;
     int n;
     int retry;
     int i;
-    int j;
     int y;
     int tw;
     int itemW;
     int viewH;
     int over;
     int my;
-    int l;
-    int t;
-    char **np;
-    RECT *ip;
 
     sel = -1;
     clip.left = box->left + 8;
@@ -83,10 +78,11 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
     }
     items = malloc(n * 16);
     viewH = clip.bottom - clip.top + 1;
+    /* lay the items out; if they overflow, narrow the list for a scroll bar and redo it once */
     for (;;) {
         itemW = clip.right - clip.left - 1;
         y = 0;
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < n; i++, y += 4) {
             items[i].top = y;
             tw = MeasureTextHeight(names[i], 2, itemW);
             if (tw < 8) {
@@ -96,7 +92,6 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
             }
             y += tw;
             items[i].bottom = y;
-            y += 4;
         }
         if (!retry && y > viewH) {
             clip.right -= 16;
@@ -113,14 +108,11 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
     bar.left = box->right + box->left - 20;
     bar.top = clip.top;
     bar.right = box->right + box->left - 5;
-    bar.bottom = 0 + clip.bottom;
-    for (;;) {
-        if (!ProcessSystemEvents()) {
-            break;
-        }
+    bar.bottom = clip.bottom;
+    while (ProcessSystemEvents()) {
         ReadGameButtons();
         if ((DAT_00813ad4 & 1) || (DAT_00813acc & 1)) {
-            break;
+            return -1;
         }
         if (MousePos.x >= clip.left && MousePos.x <= clip.right && MousePos.y >= clip.top && MousePos.y <= clip.bottom) {
             my = MousePos.y - clip.top + DialogListScrollY;
@@ -155,30 +147,22 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
         }
         GetClipping(&saved);
         SetClipping(&clip);
-        j = 0;
-        while (j < n) {
-            if (items[j].bottom >= DialogListScrollY) {
+        /* skip the items scrolled off the top */
+        for (i = 0; i < n; i++) {
+            if (items[i].bottom >= DialogListScrollY) {
                 break;
             }
-            j++;
         }
-        if (n > (unsigned int)j) {
-            np = j + names;
-            for (i = j; n > i; i++) {
-                ip = &items[i];
-                if (ip->top >= DialogListScrollY + viewH) {
-                    break;
-                }
-                t = ip->top;
-                l = ip->left;
-                if (i == sel) {
-                    RenderBlock(l + clip.left, t - DialogListScrollY + clip.top, ip->right - l + 1, ip->bottom - t + 1, GetNearestColour(0x7f, 0x7f, 0xef));
-                } else {
-                    RenderBox(l + clip.left, t - DialogListScrollY + clip.top, ip->right - l + 1, ip->bottom - t + 1, GetNearestColour(0xcf, 0xcf, 0xcf));
-                }
-                FUN_00455220(ip->left + clip.left, ip->top - DialogListScrollY + clip.top, *np, 2, itemW);
-                np++;
+        for (; i < n; i++) {
+            if (items[i].top >= DialogListScrollY + viewH) {
+                break;
             }
+            if (sel == i) {
+                RenderBlock(items[i].left + clip.left, items[i].top - DialogListScrollY + clip.top, items[i].right - items[i].left + 1, items[i].bottom - items[i].top + 1, GetNearestColour(0x7f, 0x7f, 0xef));
+            } else {
+                RenderBox(items[i].left + clip.left, items[i].top - DialogListScrollY + clip.top, items[i].right - items[i].left + 1, items[i].bottom - items[i].top + 1, GetNearestColour(0xcf, 0xcf, 0xcf));
+            }
+            FUN_00455220(items[i].left + clip.left, items[i].top - DialogListScrollY + clip.top, names[i], 2, itemW);
         }
         SetClipping(&saved);
         RenderingComplete();
