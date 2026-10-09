@@ -1454,13 +1454,18 @@ void FUN_0041e460(struct RingNode *node, struct RingHost *host) {
 
 // FUNCTION: LEGOLAND 0x0041e4a0
 unsigned int FUN_0041e4a0(struct FlagWord *obj) {
-    int v = *(signed char *)obj;
-    return (unsigned int)(v & 2) >> 1;
+    if (*(signed char *)obj & 2) {
+        return 1;
+    }
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0041e4b0
 unsigned int FUN_0041e4b0(struct FlagWord *obj) {
-    return (unsigned int)(*(volatile signed char *)obj & 0x40) >> 6;
+    if (*(signed char *)obj & 0x40) {
+        return 1;
+    }
+    return 0;
 }
 
 struct TimerFlags {
@@ -1576,7 +1581,10 @@ void FUN_0041e640(unsigned int *flags, unsigned int set) {
 
 // FUNCTION: LEGOLAND 0x0041e660
 unsigned int FUN_0041e660(unsigned int a) {
-    return *(volatile signed char *)a & 1;
+    if (*(signed char *)a & 1) {
+        return 1;
+    }
+    return 0;
 }
 
 struct DualId {
