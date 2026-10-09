@@ -9673,20 +9673,22 @@ void FUN_004284d0(void) {
     register struct Obj421ce0 *cur;
     struct Words3 *p;
     struct Words3 *q;
-    int x;
+    volatile int x;
     unsigned int y;
-    register unsigned int i;
     int j;
-    register unsigned int k;
-    int qi;
-    int n = 0;
+    register unsigned int i;
+    register int qi;
+    unsigned int k;
+    int n;
+    int ptmp22;
+    n = 0;
 
-    for (i = 0; i <= 3; i++) {
+    for (i = 0; 3 >= i; i++) {
         DAT_006117c0[i].x = DAT_004b5e00[i][0] * 20.0f;
         DAT_006117c0[i].y = DAT_004b5e00[i][1] * 20.0f;
         DAT_006117c0[i].z = DAT_004b5e00[i][2] * 20.0f;
     }
-    for (i = 0; 3 >= i; i++) {
+    for (i = 0; i <= 3; i++) {
         DAT_00611658[i].x = DAT_004b5e30[i][0] * 20.0f;
         DAT_00611658[i].y = DAT_004b5e30[i][1] * 20.0f;
         DAT_00611658[i].z = DAT_004b5e30[i][2] * 20.0f;
@@ -9702,15 +9704,16 @@ void FUN_004284d0(void) {
     while (i <= 3) {
         DAT_006116e0[i].x = DAT_004b5e90[i][0] * 20.0f;
         DAT_006116e0[i].y = DAT_004b5e90[i][1] * 20.0f;
-        DAT_006116e0[i].z = DAT_004b5e90[i][2] * 20.0f;
+        { DAT_006116e0[i].z = DAT_004b5e90[i][2] * 20.0f; }
         ++i;
     }
     i = 0;
     while (i <= 3) {
-        qi = DAT_004b5ef4[i][1];
+        ptmp22 = DAT_004b5ef4[i][1];
+        qi = ptmp22;
         q = (struct Words3 *)&DAT_00611750[qi];
-        x = DAT_004b5f14[i][0];
         y = DAT_004b5f14[i][1];
+        x = DAT_004b5f14[i][0];
         p = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][0]];
         FUN_00421ce0(p, q, (struct Words3 *)&DAT_006116e0[i], &((struct Obj421ce0 *)DAT_00828fe0)[n++], x, y);
         if (5 == n) {

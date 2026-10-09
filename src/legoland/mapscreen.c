@@ -205,8 +205,9 @@ LEGO_EXPORT void RenderFullMap(void) {
     int bounds_y1;
     int cfg_height;
     int bounds_y2;
+    int ptmp50;
     // STRING: LEGOLAND 0x004b5bfc
-    square_track = ElemID("SQUARE_TRACK");
+    square_track;
     // STRING: LEGOLAND 0x004b5be8
     square_track_height = ElemID("SQUARE_TRACK_HEIGHT");
     // STRING: LEGOLAND 0x004b5bd0
@@ -223,6 +224,8 @@ LEGO_EXPORT void RenderFullMap(void) {
     stick = LoadSprite("TRACKSTICK.LLS", 1);
     // STRING: LEGOLAND 0x004b90c4
     lights = LoadSprite("MAPLIGHTS.LLS", 1);
+    pen;
+    square_track = ElemID("SQUARE_TRACK");
     pen = CreatePen(PS_SOLID, 2, 0xff4000);
 
     if (DAT_00667c30 == 0) {
@@ -254,7 +257,7 @@ LEGO_EXPORT void RenderFullMap(void) {
         memset(DAT_008119c0, 0, 0x2000);
         MapViewX = 0;
         MapViewY = 0x20;
-        MapViewWidth = 0x280;
+        { MapViewWidth = 0x280; }
         MapViewHeight = 0x154;
         StoreClipping();
         {
@@ -344,7 +347,8 @@ LEGO_EXPORT void RenderFullMap(void) {
         }
 
         PushRenderingStatusAndUnlockVideoSurface();
-        for (tile_pos.y = 0; tile_pos.y < (int)lpConfig->height; tile_pos.y++) {
+        tile_pos.y = 0;
+        while (tile_pos.y < (int)lpConfig->height) {
             tile_pos.x = 0;
             while (tile_pos.x < (int)lpConfig->width) {
                 if (tile_pos.x >= 0 && tile_pos.x < (int)lpConfig->width &&
@@ -382,6 +386,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                 }
                 tile_pos.x++;
             }
+            tile_pos.y++;
         }
 
         {
@@ -556,13 +561,14 @@ LEGO_EXPORT void RenderFullMap(void) {
                 loc.x = 0;
                 loc.y = (int)-height_value.f1;
             } else if (ride->flags & 0x400) {
-                if (ride->cb_sprite == NULL) {
+                if (ride->cb_sprite == (int)NULL) {
                     continue;
                 }
                 info = ride->cb_sprite(ride->element, uid);
             } else {
                 loc.sprite = ride->layer;
-                ride_x = ride->field_14;
+                ptmp50 = ride->field_14;
+                ride_x = ptmp50;
                 loc.x = ride_x;
                 loc.y = ride->field_18;
                 info = &loc;
@@ -606,7 +612,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                     int hx;
                     int hy;
                     int ox;
-                    int oy;
+                    unsigned int oy;
                     struct Point pt;
 
                     sub = ((struct Sprite *)info->sprite)->group->subs[i];

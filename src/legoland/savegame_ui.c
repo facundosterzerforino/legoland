@@ -632,22 +632,24 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
     int field_e;
     char *name;
     int sprite_y;
-    char zero = 0;
+    unsigned char zero;
     int left;
     register int right;
     unsigned int bottom;
     int center_x;
     int top;
-    char *blink;
+    register char *blink;
     struct EditSprite *focus;
     int fx;
     int fy;
+    int ptmp192;
+    zero = 0;
 
     *(short *)cursor_str = *(short *)"|";
     count = TempProfile.name_len;
     input = GetInputChar();
     if (input != zero) {
-        if (input == -1 && zero != count) {
+        if (input == -1 && count != zero) {
             count -= 1;
             TempProfile.name[count] = zero;
         }
@@ -669,12 +671,13 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
             }
         }
     }
-    top = 0x24 + sprite->field_e;
+    ptmp192 = sprite->field_e;
+    top = 0x24 + ptmp192;
     left = 0x28 + sprite->field_c;
     bottom = top + 0x11;
     right = left + 0xd7;
     if (count != zero) {
-        RECT rc;
+        register RECT rc;
         rc.left = left;
         rc.top = top;
         rc.right = right;

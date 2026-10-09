@@ -2286,22 +2286,22 @@ void SetBridgeParamsByName(const char *param_1) {
 LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     struct ResFile *file;
     int elem;
-    struct TileMap *tilemap;
     unsigned int len;
+    struct TileMap *tilemap;
     int i;
-    int row;
     int col;
+    int row;
     register int off;
     int count;
     unsigned int blocklen;
     int mode;
     int phase;
-    int obj;
     struct MapElement *tile;
+    int obj;
     unsigned char *stream;
-    int curx;
     int cury;
-    int sample;
+    int curx;
+    volatile int sample;
     unsigned int filepos;
     char hdr[200];
     char namebuf[512];
@@ -2309,7 +2309,9 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     struct Point pos;
 
     int tile_flags;
-    int rf;
+    unsigned int rf;
+    int ptmp162;
+    volatile int ptmp165;
     if (MapDataLoaded != 0) {
         return 0xffffffff;
     }
@@ -2349,9 +2351,11 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
         return 1;
     }
     for (row = 0; row < lpConfig->height; row++) {
-        for (col = 0; col < lpConfig->width; col++) {
+        col = 0;
+        while (col < lpConfig->width) {
             GameMap[row][col].flags = 0;
             GameMap[row][col].field_12 = 0;
+            col++;
         }
     }
     DAT_00801a68 = malloc(DAT_00801b28 * 4);
@@ -2376,13 +2380,15 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
         struct Point objpos;
 
         RES_ReadFile(file, &n, 4);
-        for (i = 0; i < n; i++) {
+        i = 0;
+        while (i < n) {
             DrawWatchSprite();
             RES_ReadFile(file, &idx, 4);
             RES_ReadFile(file, &objpos, 8);
             *(int *)(*(int *)(*(int *)((int)DAT_00801a68 + idx * 4) + 0xc) + 0x4c) = 0;
             obj = *(int *)((int)DAT_00801a68 + idx * 4);
             PutObjOnMap((struct ObjClass *)*(int *)(obj + 0xc), obj, &objpos);
+            i++;
         }
     }
     RES_ReadFile(file, &curx, 4);
@@ -2443,7 +2449,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
                         }
                         obj = ((int **)DAT_00801a70)[prev & 0x1f][5];
                         tile->field_0 = obj;
-                        PutObjOnMap(*(struct ObjClass **)(obj + 0xc), obj, &pos);
+                        PutObjOnMap(*(struct ObjClass **)(0xc + obj), obj, &pos);
                         phase++;
                     } else {
                         GameMap[cury][curx].field_a = TILE_REF(tilemap, prev, stream[phase]);
@@ -2484,7 +2490,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
                         cury++;
                     }
                 }
-                phase += 1;
+                phase = phase + 1;
                 break;
             case 0xc0:
                 while (runlen--) {
@@ -2522,11 +2528,12 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
             }
             switch (0xc0 & rle) {
             case 0x80:
-                v = stream[phase++];
+                ptmp162 = stream[phase++];
+                v = ptmp162;
                 while (runlen--) {
                     tile = &GameMap[cury][curx];
                     if (TileSpriteInfo[tile->field_8].sprite & 0x20) {
-                        SetMapFlags(curx, cury, tile->flags | v);
+                        SetMapFlags(curx, cury, v | tile->flags);
                     } else {
                         SetMapFlags(curx, cury, tile->flags | v);
                     }
@@ -2561,7 +2568,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
 
     {
         register int runlen;
-        int rle;
+        register int rle;
 
         curx = 0;
         cury = 0;
@@ -2591,7 +2598,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
                         }
                     }
                     tile = &GameMap[cury][curx];
-                    if ((tile->field_10 & 1) || ((tile->flags & 0x10) && (tile->field_10 & 2) == 0)) {
+                    if ((tile->field_10 & 1) || ((tile->flags & 0x10) && (2 & tile->field_10) == 0)) {
                         struct Point sq;
 
                         sq.x = curx;
@@ -2619,7 +2626,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
                         AddPathTileGFX(&gfx, *(unsigned short *)PathSprite);
                     }
                     tile = &GameMap[cury][curx];
-                    if ((tile->field_10 & 1) || ((tile->flags & 0x10) && (tile->field_10 & 2) == 0)) {
+                    if ((tile->field_10 & 1) || ((0x10 & tile->flags) && (2 & tile->field_10) == 0)) {
                         struct Point sq;
 
                         sq.x = curx;
@@ -2639,8 +2646,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     }
 
     {
-        int runlen;
         int rle;
+        int runlen;
 
         curx = 0;
         cury = 0;
@@ -2658,7 +2665,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
             switch (rle & 0xc0) {
             case 0x80:
                 while (runlen--) {
-                    Set_UserFlags(curx << 8, cury << 8, stream[phase]);
+                    ptmp165 = stream[phase];
+                    Set_UserFlags(curx << 8, cury << 8, ptmp165);
                     curx++;
                     if (curx >= lpConfig->width) {
                         curx = 0;

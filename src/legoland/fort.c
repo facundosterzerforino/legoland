@@ -148,18 +148,19 @@ void FortWanderUpdate(RideNode *node, Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00406660
 void FortUpdate(Element *elem) {
+    volatile int ptmp785;
     struct Ride *ride = elem->ride;
     struct Sprite *spr;
-    short *lls;
     RideNode *node;
+    short *lls;
     RideNode *next;
-    register Bloke *bloke;
     int x, y;
-    unsigned char tx;
+    register Bloke *bloke;
+    char tx;
     unsigned char dir;
 
     spr = GetSpriteForLayer(FortLayer, 2);
-    if (spr != NULL) {
+    if (spr != (int)NULL) {
         lls = (short *)GetLLSForSprite((struct SpriteLLS *)spr);
         if (lls) {
             if (++lls[0] >= lls[8]) {
@@ -167,16 +168,17 @@ void FortUpdate(Element *elem) {
             }
         }
     }
-    node = ride->riders;
+    ptmp785 = ride->riders;
+    node = ptmp785;
     if (node != NULL) {
         do {
             next = node->next;
             bloke = node->rider;
             x = ride->x;
             tx = node->tile.pos.x;
-            y = ride->y + node->tile.pos.y;
-            x += tx;
-            if (bloke->low_level_action == 0) {
+            x = x + tx;
+            y = node->tile.pos.y + ride->y;
+            if ((int)bloke->low_level_action == 0) {
                 switch (bloke->param_action) {
                 case 0:
                     bloke->flags |= 8;
@@ -197,8 +199,8 @@ void FortUpdate(Element *elem) {
                     bloke->dest.y = (node->tile.pos.y << 8) + 0x80;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->low_level_action = 7;
-                    bloke->field_73 = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->field_73 = 0x10 + dir;
+                    NewDirForAction(bloke, ((unsigned char)(0x10 + dir) >> 5) + 3);
                     bloke->param_action++;
                     break;
                 case 3:
@@ -212,7 +214,7 @@ void FortUpdate(Element *elem) {
                     break;
                 case 4:
                     RemoveBlokeFromRide(ride, node);
-                    bloke->flags &= ~8;
+                    bloke->flags = bloke->flags & (~8);
                     break;
                 }
             }

@@ -716,13 +716,13 @@ void FlushTextCells(int evict_all) {
 // FUNCTION: LEGOLAND 0x00455fc0
 void FUN_00455fc0(RECT *rect, const char *text, int font, int mood) {
     RECT box;
-    RECT frame;
+    register RECT frame;
     HDC hdc;
     HDC ddhdc;
     HGDIOBJ old_font;
     struct TextCell *cell;
     unsigned int block_color;
-    int mood_pad;
+    volatile int mood_pad;
     int text_h;
     int cx;
     int half_mood;
@@ -791,7 +791,7 @@ void FUN_00455fc0(RECT *rect, const char *text, int font, int mood) {
         RenderBlock(frame.left, frame.bottom, frame.right - frame.left, 1, 0);
         RenderBlock(frame.left, frame.top, 1, frame.bottom - frame.top, 0);
         RenderBlock(frame.right, frame.top, 1, frame.bottom - frame.top, 0);
-        if (mood != 0) {
+        if (0 != (int)mood) {
             PrintSprite((&DAT_008139e0)[mood], frame.right - half_mood, (frame.top + frame.bottom) / 2 - 0x14, 0, 0);
         }
         PushRenderingStatusAndUnlockVideoSurface();

@@ -1732,11 +1732,15 @@ void FUN_0045d770(struct Cursor *param_1) {
     struct Cursor *chain;
     struct PathItem *item;
     int i;
-    int x;
-    int y;
+    unsigned int x;
+    volatile unsigned int y;
     struct MapRect rect;
     struct Point local_18;
 
+    int ptmp445;
+    unsigned int ptmp446;
+    int ptmp447;
+    int ptmp487;
     cur = param_1;
     if (param_1 != NULL) {
         while ((cur->field_1828 & 0x1000) == 0) {
@@ -1758,19 +1762,21 @@ void FUN_0045d770(struct Cursor *param_1) {
                     break;
                 }
                 rect.x0 = param_1->tile_x + param_1->field_1414[0];
-                rect.y0 = param_1->field_1414[1] + param_1->tile_y;
+                ptmp446 = param_1->tile_y;
+                rect.y0 = param_1->field_1414[1] + ptmp446;
                 rect.x1 = param_1->field_1414[2] + param_1->tile_x;
                 rect.y1 = param_1->field_1414[3] + param_1->tile_y;
                 FUN_0045d5d0(&rect);
                 for (item = (struct PathItem *)&param_1->field_1414; item != NULL; item = item->next) {
                     rect.x0 = param_1->tile_x + item->x0;
-                    rect.y0 = item->y0 + param_1->tile_y;
+                    ptmp447 = param_1->tile_y;
+                    rect.y0 = item->y0 + ptmp447;
                     rect.x1 = item->x1 + param_1->tile_x;
                     rect.y1 = item->y1 + param_1->tile_y;
                     FUN_0045d5d0(&rect);
                 }
                 param_1 = (struct Cursor *)param_1->field_1830;
-            } while (param_1 != NULL);
+            } while (NULL != param_1);
             if (0 < DAT_00667d3c) {
                 i = 0;
                 do {
@@ -1786,20 +1792,22 @@ void FUN_0045d770(struct Cursor *param_1) {
                                     AddPathTileGFX(&local_18, *(unsigned short *)PathSprite);
                                     ScriptDirtyCategories = ScriptDirtyCategories | 0x10;
                                     AddPathSquare((struct Point *)&local_18);
-                                    local_18.x = local_18.x + 1;
+                                    local_18.x += 1;
                                 } while (local_18.x <= DAT_00801a80[i].x1);
                             }
-                            local_18.y = local_18.y + 1;
+                            local_18.y = 1 + local_18.y;
                         } while (local_18.y <= (unsigned int)DAT_00801a80[i].y1);
                     }
                     i = i + 1;
                 } while (i < DAT_00667d3c);
             }
-            y = chain->field_1414[1] + 1 + chain->tile_y;
+            ptmp445 = chain->tile_y;
+            y = chain->field_1414[1] + 1 + ptmp445;
             PathUpdateNeeded = 1;
             if (y <= chain->tile_y + -1 + chain->field_1414[3]) {
                 do {
-                    x = chain->field_1414[0] + 1 + chain->tile_x;
+                    ptmp487 = chain->field_1414[0];
+                    x = ptmp487 + 1 + chain->tile_x;
                     if (x <= chain->field_1414[2] + -1 + chain->tile_x) {
                         do {
                             local_18.x = x;
@@ -1808,7 +1816,7 @@ void FUN_0045d770(struct Cursor *param_1) {
                             x = x + 1;
                         } while (x <= chain->field_1414[2] + -1 + chain->tile_x);
                     }
-                    y = y + 1;
+                    y += 1;
                 } while (y <= chain->tile_y + -1 + chain->field_1414[3]);
             }
             PathUpdateNeeded = 1;

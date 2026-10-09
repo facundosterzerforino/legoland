@@ -426,7 +426,7 @@ void SafariRideUpdate(Element *obj) {
     int coords[4];
     int coords2[4];
     struct Point pos;
-    char dir;
+    volatile char dir;
 
     FUN_00415200();
     for (node = ride->riders; node != NULL; node = next) {

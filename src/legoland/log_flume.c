@@ -2467,23 +2467,26 @@ void FUN_0040bf50(void) {
 // FUNCTION: LEGOLAND 0x0040bf70
 void LogFlumeEntranceUpdate(Element *obj) {
     int field_73;
+    int ptmp375;
     Ride *ride = obj->ride;
-    RideNode *elem = ride->riders;
+    RideNode *elem;
+    register Bloke *bloke;
     RideNode *next;
-    Bloke *bloke;
-    TileId *tile;
+    register TileId *tile;
     struct FlumeEntry *entry;
     unsigned int x;
-    unsigned int y;
     char dir;
+    unsigned int y;
     int v;
+    ptmp375 = ride->riders;
+    elem = ptmp375;
 
     FUN_0040bf50();
-    while (elem != NULL) {
+    while (NULL != elem) {
         tile = &elem->tile;
         x = ride->field_24 + tile->pos.x;
-        next = elem->next;
         bloke = elem->rider;
+        next = elem->next;
         y = ride->field_25 + tile->pos.y;
         if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
@@ -2525,7 +2528,7 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 BlokeSetFrame(bloke, 0);
                 entry = FindFlumeEntryByTile(tile);
                 if (entry != NULL) {
-                    if (NULL != entry->target) {
+                    if ((unsigned)NULL != entry->target) {
                         *(int *)entry->target = 1;
                         entry->target = NULL;
                     }
@@ -2577,7 +2580,7 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 break;
             case 11:
                 RemoveBlokeFromRide(ride, elem);
-                bloke->flags &= ~8;
+                bloke->flags = bloke->flags & (~8);
                 break;
             }
         }

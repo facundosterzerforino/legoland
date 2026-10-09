@@ -492,21 +492,23 @@ void FUN_004334c0(struct JungleRide *ride, int param_2) {
 
 // FUNCTION: LEGOLAND 0x00433840
 void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
-    struct BoatArc *arc = NULL;
+    struct BoatArc *arc;
     int *p;
     int i;
     int bit;
-    int idx;
+    register int idx;
     int sx;
     int sy;
-    int tx;
+    volatile int tx;
     int ty;
-    int dx;
+    unsigned int dx;
     int dy;
     float fx;
     float fy;
     float angle;
     float step;
+    int ptmp73;
+    arc = NULL;
 
     if (to == -1) {
         if (from == -1) {
@@ -541,7 +543,7 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
                 ride->step_offsets[i * 2] = DAT_004b7148[idx].dx * 16 + ride->step_offsets[i * 2 - 2];
                 ride->step_offsets[i * 2 + 1] = DAT_004b7148[idx].dy * 16 + ride->step_offsets[i * 2 - 1];
             } else {
-                ride->step_offsets[i * 2] = 0;
+                ride->step_offsets[2 * i] = 0;
                 ride->step_offsets[i * 2 + 1] = 0;
             }
         }
@@ -558,10 +560,12 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
             } else if ((from & (to * 2)) != 0) {
                 arc = DAT_004b71c8;
             }
-            for (bit = 0; bit < 4; bit++) {
+            bit = 0;
+            while (bit < 4) {
                 if ((from & (1 << bit)) != 0) {
                     break;
                 }
+                bit++;
             }
             arc += bit;
             step = (arc->a1 - arc->a0) * DAT_004ab3f8;
@@ -571,9 +575,9 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
             p = &ride->step_offsets[3];
             for (i = 0x4f; i != 0; i--) {
                 angle += step;
-                p[-1] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
+                p[-1] = (int)((sin(DAT_004ab3f4 * angle) + arc->cx) * DAT_004ab3f0);
                 p[0] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
-                p += 2;
+                p = p + 2;
             }
         } else {
             for (bit = 0; bit < 4; bit++) {
@@ -615,7 +619,8 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
             dx = tx - ride->step_offsets[(i - 3) * 2];
             dy = ty - ride->step_offsets[(i - 3) * 2 + 1];
         } else {
-            dx = tx - ride->step_offsets[0];
+            ptmp73 = ride->step_offsets[0];
+            dx = tx - ptmp73;
             dy = ty - ride->step_offsets[1];
         }
         ride->step_frames[i] = ((ArcTan256(dx, dy) >> 4) + 6 & 0xf) + 0;

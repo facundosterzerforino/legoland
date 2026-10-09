@@ -386,10 +386,11 @@ unsigned int ScriptEventNeedAt(struct NerpsArg *arg) {
 // FUNCTION: LEGOLAND 0x0046a5b0
 unsigned int ScriptEventNeedIn(struct NerpsArg *arg) {
     struct MapElement *tile;
-    int count;
     int x;
-    int y;
+    int count;
+    unsigned int y;
 
+    count;
     count = 0;
     for (y = arg->field_2c; y <= arg->field_34; y++) {
         for (x = arg->field_28; x <= arg->field_30; x++) {
@@ -398,8 +399,8 @@ unsigned int ScriptEventNeedIn(struct NerpsArg *arg) {
             } else {
                 tile = NULL;
             }
-            if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->field_4 && tile->field_4 == x && tile->field_5 == y) {
-                count++;
+            if ((0x80 & tile->flags) != 0 && (unsigned int)tile->field_0 == arg->field_4 && tile->field_4 == x && tile->field_5 == y) {
+                ++count;
             }
         }
     }

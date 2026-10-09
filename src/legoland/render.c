@@ -3182,10 +3182,11 @@ unsigned int FUN_00488820(unsigned int x, unsigned int y) {
 
 // FUNCTION: LEGOLAND 0x00488840
 LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, struct Sprite *param_2, int param_3, int param_4, int param_5) {
-    register int top;
+    register unsigned int top;
+    register int left;
     int right;
-    int left;
     int left2;
+    volatile int ptmp19;
     int w = (short)sprite->width;
     int h = (short)sprite->height;
     struct ZBlitDesc local;
@@ -3221,7 +3222,8 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     local.rect.bottom = h;
     StoredTransparentColour = GetTransparentColour();
     SoftPrint_Clear();
-    FUN_00464ee0(param_2, &local.rect, local.off);
+    ptmp19 = local.off;
+    FUN_00464ee0(param_2, &local.rect, ptmp19);
     FUN_00485fe0(param_2, param_4, param_5);
     transp = GetTransparentColour();
     yy = 0;
@@ -3238,8 +3240,8 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
         yy = 1 + yy;
     }
     DAT_0066be50->width = (short)w;
-    DAT_00701e64->width = (short)w;
     DAT_0066be50->height = (short)h;
+    DAT_00701e64->width = (short)w;
     DAT_00701e64->height = (short)h;
     DAT_00668108.right = DAT_0066b628;
     CurrentSurfaceDesc = DAT_0066b5b0;

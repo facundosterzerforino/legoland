@@ -1019,12 +1019,13 @@ void SetPersonYawFromDir16(struct Person *person, unsigned int direction) {
 
 // FUNCTION: LEGOLAND 0x00402780
 void FUN_00402780(struct NewBloke *b) {
-    int id;
+    volatile int id;
     int car_x;
     struct Bloke *bloke;
     int lo;
     int c6;
     register int vel_y;
+    int ptmp5;
     int w2, h2;
     register struct Point of;
     struct Point off;
@@ -1043,7 +1044,8 @@ void FUN_00402780(struct NewBloke *b) {
     struct Point *scr;
 
     cfg.type = 0x306;
-    cfg.field_4 = b->owner;
+    ptmp5 = b->owner;
+    cfg.field_4 = ptmp5;
     cfg.field_8 = 0;
     r.i = MapToPlayfieldInl(b->fx >> 8, b->fy >> 8);
     of = b->f;
@@ -1120,7 +1122,7 @@ void FUN_00402780(struct NewBloke *b) {
     }
     if ((((wp0.x - b->fx) ^ (wp0.x - of.x)) | ((wp0.y - b->fy) ^ (wp0.y - of.y))) & 0x80000000) {
     } else if (0 != b->f_bb) {
-        if (wp0.x != b->fx || wp0.y != b->fy) {
+        if (b->fx != wp0.x || wp0.y != b->fy) {
             return;
         }
     }

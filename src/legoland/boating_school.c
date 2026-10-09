@@ -413,9 +413,9 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
     int idx;
     int sx;
     int sy;
-    int tx;
+    volatile int tx;
     int ty;
-    int dx;
+    unsigned int dx;
     int dy;
     float fx;
     float fy;
@@ -477,7 +477,7 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
                     break;
                 }
             }
-            arc += bit;
+            arc = arc + bit;
             step = (arc->a1 - arc->a0) * DAT_004ab3f8;
             angle = arc->a0;
             ride->step_xy[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
@@ -522,8 +522,8 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
             tx = ride->step_xy[(i + 4) * 2];
             ty = ride->step_xy[(i + 4) * 2 + 1];
         } else {
-            tx = ride->step_xy[0x9e];
             ty = ride->step_xy[0x9f];
+            tx = ride->step_xy[0x9e];
         }
         if (i > 3) {
             dx = tx - ride->step_xy[(i - 3) * 2];
