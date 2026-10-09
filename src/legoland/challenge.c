@@ -1480,6 +1480,43 @@ void UpdateAppraisalPageButtons(void) {
     recs[i].rnd = rand() % 5; \
     recs[i].text = GetString(id)
 
+/* RunAppraisal's report layout. Each row of the report is a struct AppraisalRow; a row is 0x16 high and rows are
+ * 0x18 apart. A row whose bottom would pass 0x1b5 goes to the top of a new page. rc.layout is the first row's
+ * rectangle on a page, rc.cur the current row's. The report is built in sections (a header row, then one row per
+ * check); a section that does not fit on the page it started on is written again from its header on a new page.
+ * Every page test carries its own copy of that restart and jumps back to the section's head (the only gotos here);
+ * the compiler merges the copies into one block per section, as in the original, and the copies' references are
+ * what make pagestart and x the heaviest locals, so they come first in the frame, as in the original. */
+
+/* back to the top of the page: the original reloads the layout rectangle from memory at every page break */
+#define APPR_TOP_OF_PAGE() \
+    rc.cur.left = rc.layout.left; \
+    y = rc.layout.top; \
+    rc.cur.right = rc.layout.right; \
+    bottom = rc.layout.bottom
+/* ... and the row starts a new page */
+#define APPR_NEW_PAGE() \
+    AppraisalPageCount++; \
+    pagestart = i; \
+    rc.cur.left = rc.layout.left; \
+    y = rc.layout.top; \
+    rc.cur.right = rc.layout.right; \
+    rc.cur.bottom = rc.layout.bottom
+/* a section header that does not fit: retry it at the top of a new page */
+#define APPR_RETRY(label) \
+    { \
+        AppraisalPageCount++; \
+        pagestart = i; \
+        goto label; \
+    }
+/* the common start of a text row */
+#define APPR_ROW(kind, id) \
+    recs[i].page = AppraisalPageCount; \
+    recs[i].x = x; \
+    recs[i].type = (kind); \
+    recs[i].rnd = rand() % 5; \
+    recs[i].text = GetString(id)
+
 // FUNCTION: LEGOLAND 0x004453a0
 unsigned int RunAppraisal(void) {
     int i; /* the row being written (= rows written so far) */
@@ -1575,10 +1612,10 @@ top:
         recs[i].goal = 0;
         recs[i].max = 0;
         recs[i].nids = 0;
-        y += 0x18;
-        bottom = y + 0x16;
         recs[i].type = 1;
         i++;
+        y += 0x18;
+        bottom = y + 0x16;
     }
     /* section 1 (0x445539-0x44672e): the 0x4fff0 checks */
 s1:
@@ -2069,10 +2106,10 @@ s1:
             y += 0x18;
         }
         recs[first].type = pass == total;
-        passacc += pass;
-        totacc += total;
         x -= 0x30;
         bottom = y + 0x16;
+        totacc += total;
+        passacc += pass;
     }
     /* section 2 (0x44672e-0x4473e2): the loop sections 0x38000000, 0xc0000000 and 0x30000 */
     if (ReportFlags & 0x38000000) {
@@ -4755,10 +4792,10 @@ advice:
         PrintSprite(SPRITE_TitleScreenBk, 0, 0, 0, 0);
         UnlightAppraisalPageButtons();
         RenderIcons2(1, 0, 0);
-        r.left = 0x28;
         r.top = 0x45;
-        r.right = 0x1a4;
         r.bottom = 0x6d;
+        r.left = 0x28;
+        r.right = 0x1a4;
         NewPrintCent(GetString(0x228), 3, r, 0);
         /* the rows of the page being shown start at the top */
         rc.cur = rc.layout;
@@ -4809,15 +4846,15 @@ advice:
             }
             DrawAppraisalMark(rc.cur.left - 0x28, rc.cur.top, recs[shown].type, recs[shown].rnd);
             r.left = rc.cur.left;
-            r.right = 0x1a4;
             r.top = rc.cur.top;
+            r.right = 0x1a4;
             rc.cur.bottom = r.top + 0x16;
             r.bottom = rc.cur.bottom;
             DrawTextOnRenderSurface(recs[shown].text, 2, r, recs[shown].arg);
             if (recs[shown].bar) {
                 r.left = 0x126;
-                r.top = rc.cur.top;
                 r.right = 0x1a4;
+                r.top = rc.cur.top;
                 rc.cur.bottom = r.top + 8;
                 r.bottom = rc.cur.bottom;
                 DrawAppraisalBar(r, recs[shown].value, recs[shown].max, recs[shown].goal);
@@ -4862,6 +4899,10 @@ advice:
     return 1;
     return 0;
 }
+#undef APPR_TOP_OF_PAGE
+#undef APPR_NEW_PAGE
+#undef APPR_RETRY
+#undef APPR_ROW
 #undef APPR_TOP_OF_PAGE
 #undef APPR_NEW_PAGE
 #undef APPR_RETRY

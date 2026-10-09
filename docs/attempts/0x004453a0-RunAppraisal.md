@@ -1,6 +1,6 @@
 # RunAppraisal (0x004453a0, `src/legoland/challenge.c`)
 
-**Best: 86.37%** (2026-10-08: rewrite 26.50%, then frame 86.37%; was 15.70%). Kind: C.
+**Best: 86.72%** (2026-10-09; was 15.70%) (2026-10-08: rewrite 26.50%, then frame 86.37%; was 15.70%). Kind: C.
 
 ## What still differs
 
@@ -33,6 +33,7 @@ How the frame was found (five probe agents with small MSVC6 tests):
 | 2026-10-08 | Opus 5.5 + 9 section-writer agents (workflow) | Full rewrite: a skeleton (struct AppraisalRow, the layout/cur rectangles pinned with `if (0)`, page-break macros), ten sections written against a per-section harness (scratchpad ra/h.py), each part's shared restart block written as an explicit label. Then an adversarial behaviour review (12 agents) found one real bug, fixed: section 9 used the nids pointer before section 8 set it | 15.70 -> 26.50 (structure 95.3%) |
 | 2026-10-08 | Opus 5.5 | Frame probes on copies: rc declared first; separate subpass/rowp variables in the loop sections | frame order unchanged, score identical |
 | 2026-10-08 | Opus 5.5 + 5 frame-probe agents (workflow) | Restart code inlined at every page test (pagestart last), loop-section pass counter, n -> total, nqueued -> flags, RECT bottom through rc.cur.bottom | 26.50 -> 86.37 |
+| 2026-10-09 | Opus 5.5 + 7 section agents | Statement order: S0 title row (type/i++ before y), S1 end (x, bottom, totacc, passacc), S10 rectangle field orders (title top/bottom/left/right; text right after top; bar left/right/top). No gain found in S2-S9: the remaining gap is (1) the page-test register pattern (original reuses eax for the test and layout.right), (2) rc.cur.bottom kept in eax across rows (original re-reads memory; ~35 forms tried), (3) the equal-weight out-value order (ties ordered by last read, then a frame-dependent scramble; not reproducible from the out-value lines), (4) S7's surviving restart copy (depends on whole-function size) | 86.37 -> 86.72 |
 
 ## Ideas not tried yet
 
