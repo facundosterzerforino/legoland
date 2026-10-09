@@ -141,6 +141,7 @@ struct ElemView {
     /* 0x08 */ unsigned int flags;
 };
 
+// GLOBAL: LEGOLAND 0x004bcdcc
 static const struct ObjClassAlias ObjClassAliasTable[] = {
     {"CASTLE OBJ",
         // STRING: LEGOLAND 0x004bce60
@@ -172,7 +173,7 @@ void LoadObjectClassAliasElements(struct ElemView *cls) {
 
     slot = &ObjClassAliasTable[0].aliases;
     do {
-        if (_stricmp(cls->name, slot[-1]) == 0) {
+        if (_strcmpi(cls->name, slot[-1]) == 0) {
             strcpy(buffer, slot[0]);
             token = buffer;
             semicolon = strchr(buffer, ';');
