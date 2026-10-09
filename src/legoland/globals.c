@@ -1566,7 +1566,13 @@ void *SafariRunBNV;
 void *DAT_007988d0[600];
 
 // GLOBAL: LEGOLAND 0x00799230
-struct DirectMusicSegment *MusicSegments[35];
+struct DirectMusicSegment *MusicIntroSegments[5]; /* seg<theme>1.sgt */
+
+// GLOBAL: LEGOLAND 0x00799244
+struct DirectMusicSegment *MusicLoopSegments[5]; /* seg<theme>2.sgt */
+
+// GLOBAL: LEGOLAND 0x00799258
+struct DirectMusicSegment *MusicTransitionSegments[5][5]; /* [from][to] */
 
 // GLOBAL: LEGOLAND 0x00799c1c
 unsigned char *DAT_00799c1c[35];
@@ -3954,7 +3960,7 @@ void *AviLockPtr2;
 void *SoundHwnd;
 
 // GLOBAL: LEGOLAND 0x007988bc
-unsigned int DAT_007988bc;
+volatile unsigned int DAT_007988bc;
 
 // GLOBAL: LEGOLAND 0x007988c0
 unsigned int SoundAvailable;

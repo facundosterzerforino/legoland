@@ -1502,7 +1502,11 @@ extern void *SafariRunBNV;
 // 0x007988d0
 extern void *DAT_007988d0[600];
 // 0x00799230
-extern struct DirectMusicSegment *MusicSegments[35];
+extern struct DirectMusicSegment *MusicIntroSegments[5];
+// 0x00799244
+extern struct DirectMusicSegment *MusicLoopSegments[5];
+// 0x00799258
+extern struct DirectMusicSegment *MusicTransitionSegments[5][5];
 // 0x00799c1c
 extern unsigned char *DAT_00799c1c[35];
 // 0x0079a608
@@ -3102,7 +3106,7 @@ extern void *AviLockPtr2;
 // 0x007988b0
 extern void *SoundHwnd;
 // 0x007988bc
-extern unsigned int DAT_007988bc;
+extern volatile unsigned int DAT_007988bc; /* the music thread has finished starting (polled) */
 // 0x007988c0
 extern unsigned int SoundAvailable;
 // 0x007988c4
