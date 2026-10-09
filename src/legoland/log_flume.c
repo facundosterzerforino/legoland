@@ -2283,9 +2283,8 @@ int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
 
     if (slot != NULL) {
         link = slot->owner;
-        if (link->a != NULL) {
+        if (slot->owner->a != NULL) {
             weight = slot->weight;
-            f = weight;
             for (i = 0, other = set->slots; i < set->count; i++, other++) {
                 if (i != index) {
                     if (other->owner == link || other->owner == link->a) {
