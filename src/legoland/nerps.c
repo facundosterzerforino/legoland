@@ -293,14 +293,17 @@ unsigned int ScriptEventLookAt(struct NerpsArg *arg) {
     int dimY;
     int v24;
     int v20;
+    struct Point pt;
 
     v24 = arg->field_24;
     v20 = arg->field_20;
     GetTileDimensions(&dimX, &dimY);
-    dimX = (v20 - v24) * dimX;
-    dimY = (v20 + v24) * dimY;
-    ScrollX = ((dimX >> 9) - (lpConfig->view_width >> 1)) * 0x100;
-    ScrollY = ((dimY >> 9) - (lpConfig->view_height >> 1)) * 0x100;
+    pt.x = (v20 - v24) * dimX;
+    pt.y = (v20 + v24) * dimY;
+    pt.x >>= 9;
+    pt.y >>= 9;
+    ScrollX = (pt.x - (lpConfig->view_width >> 1)) * 0x100;
+    ScrollY = (pt.y - (lpConfig->view_height >> 1)) * 0x100;
     return 1;
 }
 
