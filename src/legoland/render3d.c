@@ -821,9 +821,14 @@ unsigned char *Get3DDataListString(char *param_1, int param_2, volatile int para
     return GetNthStringInList((unsigned char *)names, param_3);
 }
 
+// GLOBAL: LEGOLAND 0x004b7d00
+const char ModelLineFormat[] = "%s %i %i %i %i %i";
+
 // FUNCTION: LEGOLAND 0x00442980
 void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) {
     int idx = 0;
+    /* As in the original (0x442a13), count1 and count2 are not set when Load3DDataFile fails, and count2 is not set
+     * when count1 is 0: the game reads whatever is in their stack slots there. */
     unsigned int count1;
     int count2;
     char *list_mid;
@@ -850,10 +855,11 @@ void FUN_00442980(const char *param_1, const char *param_2, const char *param_3,
     if (NULL != data) {
         name = data;
         p = data + strlen(data) + 1;
-        list1 = p + 4;
         count1 = *(int *)p;
+        p += 4;
+        list1 = p;
         if (0 != count1) {
-            q = list1;
+            q = p;
             do {
                 q = q + strlen(q) + 1;
             } while (strlen(q) != 0);
@@ -863,10 +869,8 @@ void FUN_00442980(const char *param_1, const char *param_2, const char *param_3,
             count2 = *(int *)q;
             list2 = q + 4;
         }
-    } else {
-        count1 = 0;
     }
-    sprintf(path, ".\\3ddata\\new\\%s\\%s", param_3, param_2);
+    sprintf(path, Path3DFormat, param_3, param_2);
     if (param_4 == 0) {
         DAT_0063810c = count1;
         DAT_00655a38 = (int *)malloc(count1 * 4);
@@ -892,19 +896,18 @@ void FUN_00442980(const char *param_1, const char *param_2, const char *param_3,
         RES_ReadLine(file, line, 512);
         if (RES_ReadLine(file, line, 512) != NULL) {
             do {
+                /* lowercase the model name up to the first '.' */
                 dst = path;
                 p = line;
                 do {
-                    c = (char)tolower(*p);
-                    p++;
+                    c = (char)tolower(*p++);
                     if (c == '.') c = 0;
-                    *dst = c;
-                    dst++;
+                    *dst++ = c;
                 } while (c != 0);
-                sscanf(p, "%s %i %i %i %i %i", word, &v5, &v4, &v3, &v2, &v1);
-                if (strcmp(name, path) == 0) {
+                sscanf(p, ModelLineFormat, word, &v5, &v4, &v3, &v2, &v1);
+                if (_strcmpi(name, path) == 0) {
                     *out_a = idx;
-                } else if (strcmp(list_mid, path) == 0) {
+                } else if (_strcmpi(list_mid, path) == 0) {
                     *out_b = idx;
                 }
                 if (count1 != 0) {
