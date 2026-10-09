@@ -947,29 +947,27 @@ unsigned int FUN_00442c70(void) {
 LEGO_EXPORT struct Point GetScreenCoordsForObject(TileId *tile, struct Ride *ride) {
     int bounds[4];
     struct Point ref;
-    unsigned int iVar1;
-    int iVar2;
-    register struct Point r;
+    int dx;
+    int dy;
+    struct Point r;
 
-    int bounds0;
     ref.x = tile->pos.x;
     ref.y = tile->pos.y;
     GetTileBounds(&ref, bounds);
-    iVar2 = ride->field_14;
-    iVar1 = ride->field_18;
-    if (0 > iVar2) {
-        iVar2 = -(-iVar2 >> 1);
+    dx = ride->field_14;
+    dy = ride->field_18;
+    if (dx < 0) {
+        dx = -(-dx >> 1);
     } else {
-        iVar2 = iVar2 >> 1;
+        dx = dx >> 1;
     }
-    if ((int)iVar1 < 0) {
-        bounds0 = bounds[0];
-        r.x = iVar2 + bounds0;
-        r.y = bounds[1] - (-iVar1 >> 1);
-        return r;
+    if (dy < 0) {
+        dy = -(-dy >> 1);
+    } else {
+        dy = dy >> 1;
     }
-    r.x = bounds[0] + iVar2;
-    r.y = bounds[1] + (iVar1 >> 1);
+    r.x = bounds[0] + dx;
+    r.y = bounds[1] + dy;
     return r;
 }
 
