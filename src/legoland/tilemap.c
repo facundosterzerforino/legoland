@@ -183,15 +183,12 @@ unsigned int UnloadMapTiles(void) {
 // FUNCTION: LEGOLAND 0x0045acc0
 LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out) {
     struct TileSprite *sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
-    volatile int top;
-    short size;
-    size = sprite->size;
+    short size = sprite->size;
 
     out[0] = (short)(((short)(size * 2) + 1) >> 1) * ((ref->x - ref->y) - 1) + lpConfig->view_x - (ScrollX >> 8);
-    top = (short)((size + 1) >> 1) * (ref->x + ref->y) + lpConfig->view_y - (ScrollY >> 8);
-    out[1] = top;
+    out[1] = (short)((size + 1) >> 1) * (ref->x + ref->y) + lpConfig->view_y - (ScrollY >> 8);
     out[2] = (short)(size * 2) - 1 + out[0];
-    out[3] = top - 1 + size;
+    out[3] = out[1] - 1 + size;
 }
 
 // FUNCTION: LEGOLAND 0x0045ad60
