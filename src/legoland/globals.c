@@ -556,8 +556,11 @@ unsigned int DAT_004b5f14[4][2] = {{0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc0
 // GLOBAL: LEGOLAND 0x004b5f60
 unsigned char DAT_004b5f60[0x20];
 
+// GLOBAL: LEGOLAND 0x004b6150
+unsigned int DAT_004b6150[36] = {0};
+
 // GLOBAL: LEGOLAND 0x004b61e0
-struct CastleFloatEnt DAT_004b61e0[8];
+struct CastleFloatEnt DAT_004b61e0[8] = {0};
 
 // GLOBAL: LEGOLAND 0x004b62f0
 unsigned int DAT_004b62f0[4];
@@ -2015,8 +2018,11 @@ char DAT_00612178[1];
 // GLOBAL: LEGOLAND 0x006122a0
 float DAT_006122a0[90][3];
 
+// GLOBAL: LEGOLAND 0x006139c8
+unsigned char DAT_006139c8[0xe90] = {0};
+
 // GLOBAL: LEGOLAND 0x00614858
-struct CastleFloatEnt DAT_00614858[8];
+struct CastleFloatEnt DAT_00614858[8] = {0};
 
 // GLOBAL: LEGOLAND 0x00616180
 struct Cursor DAT_00616180[8];
@@ -2044,9 +2050,6 @@ float DAT_00615ff4;
 
 // GLOBAL: LEGOLAND 0x004b5f80
 struct CastleFloatEnt DAT_004b5f80[3][4];
-
-// GLOBAL: LEGOLAND 0x004b6150
-unsigned int DAT_004b6150[36];
 
 // GLOBAL: LEGOLAND 0x006121c8
 float DAT_006121c8[6][3] = {0};
@@ -5726,9 +5729,6 @@ unsigned int DAT_00613878[36];
 
 // GLOBAL: LEGOLAND 0x00613908
 int DAT_00613908[24][2];
-
-// GLOBAL: LEGOLAND 0x006139c8
-unsigned char DAT_006139c8[0xe90];
 
 // GLOBAL: LEGOLAND 0x006148b8
 int DAT_006148b8[546][2];
