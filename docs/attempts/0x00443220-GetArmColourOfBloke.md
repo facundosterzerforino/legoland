@@ -12,6 +12,7 @@
 |---|---|---|---|
 | 2026-10-07 r2 | Haiku agent | The same variants as GetLegColourOfBloke | no change |
 | 2026-10-08 | permuter + Opus 5.5 | new permuter: volatile r assigned last (register swap not found) | 25.00 -> 30.30 |
+| 2026-10-09 | Opus 5.5 | MAKEWORD form, see GetLegColourOfBloke (same code, field_90) | original shape, ecx/edx swapped |
 
 ## Ideas not tried yet
 
