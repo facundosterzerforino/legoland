@@ -95,12 +95,13 @@ void FUN_00418f90(struct BoatRide *param_1) {
 
 // FUNCTION: LEGOLAND 0x00418fe0
 void FUN_00418fe0(int param_1) {
-    struct BoatRide *ride = BoatRideList;
+    int ptmp349;
+    struct BoatRide *ride;
     int tw;
     int th;
     int tw2;
-    int th2;
     int dx;
+    int th2;
     int dy;
     int bx;
     int by;
@@ -109,6 +110,7 @@ void FUN_00418fe0(int param_1) {
     int person;
     struct Point off;
     struct Point seat;
+    ride = BoatRideList;
 
     GetTileDimensions(&tw, &th);
     for (; ride != NULL; ride = ride->next) {
@@ -124,8 +126,9 @@ void FUN_00418fe0(int param_1) {
             off.x = BoatingSchoolBoats->offset_x[ride->step_sprite[BoatingSchoolAnimTick] & 0xff] >> 1;
             off.y = BoatingSchoolBoats->offset_y[ride->step_sprite[BoatingSchoolAnimTick] & 0xff] >> 1;
             AdjustOffsetForViewMode(&off);
+            ptmp349 = off.y;
             ride->screen_x = lpConfig->view_x + bx + off.x + sx;
-            ride->screen_y = lpConfig->view_y + by + off.y + sy;
+            ride->screen_y = lpConfig->view_y + by + ptmp349 + sy;
             PrintSprite(BoatingSchoolBoats->sprites[ride->step_sprite[BoatingSchoolAnimTick] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             if (ride->bloke != 0) {
                 person = (int)Find3DPersonFromBloke(ride->bloke);
@@ -143,9 +146,11 @@ void FUN_00418fe0(int param_1) {
                 PrintSprite(BoatingSchoolBoats->sprites[(ride->step_sprite[BoatingSchoolAnimTick] + 0x30) & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             }
         }
-        if (ride->field_3e4 == 0x10 && ride->field_3e8 == 2 && BoatingSchoolAnimTick == 0x4f && param_1 != 0 && ride->bloke != 0) {
-            ((struct Bloke *)ride->bloke)->param_action++;
-            ride->bloke = 0;
+        if (ride->field_3e4 == 0x10 && ride->field_3e8 == 2 && BoatingSchoolAnimTick == 0x4f && param_1 != 0) {
+            if (ride->bloke != 0) {
+                ((struct Bloke *)ride->bloke)->param_action++;
+                ride->bloke = 0;
+            }
         }
     }
 }

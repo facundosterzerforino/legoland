@@ -3166,14 +3166,16 @@ LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
 void FUN_00463460(struct MapElement *tile, struct Point *pos) {
     unsigned int flags;
     Ride *ride;
-    int threshold;
     int power;
+    volatile int threshold;
 
+    int ptmp5;
     if (tile->durability_level != 0) {
         ride = tile->field_0->ride;
         flags = tile->flags;
         tile->flags &= 0xfdff;
-        threshold = ride->durability >> 2;
+        ptmp5 = ride->durability;
+        threshold = ptmp5 >> 2;
         if (tile->durability_level < threshold) {
             if (tile->flags & 4) {
                 tile->flags |= 0x200;

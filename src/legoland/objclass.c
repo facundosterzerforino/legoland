@@ -670,9 +670,9 @@ LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStat
 
 // FUNCTION: LEGOLAND 0x004814c0
 LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke, int param_3) {
-    int fatigue;
-    int category;
+    volatile int category;
     int rating;
+    int fatigue;
     int blokenum;
     int counter;
 
@@ -703,7 +703,7 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
         }
         break;
     case 1:
-        if (item->type == 5 && param_3 == 0) {
+        if (item->type == 5 && !param_3) {
             return -100;
         }
         break;
@@ -713,14 +713,14 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
                 counter = 0x14;
             }
             if (param_3 != 0) {
-                return counter * 2;
+                return 2 * counter;
             }
         }
         break;
     case 3:
     case 4:
         if (item->type == 5) {
-            if (counter < 0x14) {
+            if (0x14 > counter) {
                 counter = 0x32;
             }
             return counter * (param_3 != 0 ? 6 : 4);

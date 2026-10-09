@@ -82,13 +82,18 @@ int FUN_00451f70(void) {
 
 // FUNCTION: LEGOLAND 0x00452030
 void FUN_00452030(void) {
-    int bValidate;
-    int local_14;
-    int local_10;
+    unsigned int bValidate;
+    register int local_10;
+    register int local_14;
     int local_c;
     int iVar5;
-    struct ObjClass *cls;
+    register struct ObjClass *cls;
 
+    register int ptmp4;
+    int ptmp7;
+    int ptmp14;
+    { bValidate; }
+    bValidate;
     bValidate = 0;
     if ((GamePad & 0x800) != 0) {
         if (abs(DAT_00813a74 - DAT_00813a7c) > abs(DAT_00813a78 - DAT_00813a80)) {
@@ -118,20 +123,21 @@ void FUN_00452030(void) {
         }
         if (DAT_0080ff6c != NULL) {
             cls = (struct ObjClass *)DAT_0080ff6c;
+            ptmp14 = cls->footprint.v[3];
             FootprintWidth = (cls->footprint.v[2] - cls->footprint.v[0]) + 1;
-            FootprintHeight = (cls->footprint.v[3] - cls->footprint.v[1]) + 1;
+            FootprintHeight = (ptmp14 - cls->footprint.v[1]) + 1;
         } else {
             FootprintWidth = 1;
             FootprintHeight = 1;
         }
         DAT_00813a84 = local_14;
-        DAT_00813a88 = local_10;
         DAT_00813a8c = local_c;
+        DAT_00813a88 = local_10;
         DAT_00813a90 = iVar5;
     } else {
         local_14 = DAT_00813a74;
         if (DAT_00813a74 >= DAT_00813a7c) {
-            local_14 = DAT_00813a7c;
+            { local_14 = DAT_00813a7c; }
         }
         local_10 = DAT_00813a78;
         if (DAT_00813a78 >= DAT_00813a80) {
@@ -147,14 +153,16 @@ void FUN_00452030(void) {
             iVar5 = DAT_00813a80;
         }
         cls = (struct ObjClass *)EditMode.unk8;
-        FootprintWidth = (cls->footprint.v[2] - cls->footprint.v[0]) + 1;
-        FootprintHeight = (cls->footprint.v[3] - cls->footprint.v[1]) + 1;
+        ptmp4 = cls->footprint.v[2];
+        FootprintWidth = (ptmp4 - cls->footprint.v[0]) + 1;
+        ptmp7 = cls->footprint.v[3];
+        FootprintHeight = (ptmp7 - cls->footprint.v[1]) + 1;
         if (memcmp(&DAT_00813a74, &DAT_00813a7c, 8) != 0) {
-            if (FootprintWidth > 1 && local_14 == DAT_00813a7c && local_c == DAT_00813a74) {
+            if (!(FootprintWidth > (unsigned)1 && local_14 == DAT_00813a7c && local_c == DAT_00813a74)) {
+                local_c = ((FootprintWidth - local_14) + local_c) / FootprintWidth * FootprintWidth + -1 + local_14;
+            } else {
                 local_14 = local_c - ((FootprintWidth - local_14) + local_c) / FootprintWidth * FootprintWidth;
                 local_c = FootprintWidth - 1 + DAT_00813a74;
-            } else {
-                local_c = ((FootprintWidth - local_14) + local_c) / FootprintWidth * FootprintWidth + -1 + local_14;
             }
             if (FootprintHeight > 1 && local_10 == DAT_00813a80 && iVar5 == DAT_00813a78) {
                 iVar5 = DAT_00813a78 + -1 + FootprintHeight;
@@ -162,20 +170,24 @@ void FUN_00452030(void) {
             } else {
                 iVar5 = ((FootprintHeight - local_10) + iVar5) / FootprintHeight * FootprintHeight + -1 + local_10;
             }
-            if (abs(local_14 - local_c) <= FootprintWidth && abs(local_10 - iVar5) <= FootprintHeight) {
-                bValidate = 1;
+            if (abs(local_14 - local_c) <= FootprintWidth) {
+                if (abs(local_10 - iVar5) <= FootprintHeight) {
+                    bValidate = 1;
+                }
             }
         } else {
-            bValidate = 1;
             local_c = ((FootprintWidth - local_14) + local_c) / FootprintWidth * FootprintWidth + -1 + local_14;
             iVar5 = ((FootprintHeight - local_10) + iVar5) / FootprintHeight * FootprintHeight + -1 + local_10;
+            bValidate = 1;
         }
-        if (EditMode.unk0 == 1 && EditMode.unk8 != NULL) {
-            cls = (struct ObjClass *)EditMode.unk8;
-            DAT_00813a84 = cls->footprint.v[0] + local_14;
-            DAT_00813a88 = cls->footprint.v[1] + local_10;
-            DAT_00813a8c = cls->footprint.v[0] + local_c;
-            DAT_00813a90 = cls->footprint.v[1] + iVar5;
+        if (EditMode.unk0 == 1) {
+            if (EditMode.unk8 != NULL) {
+                cls = (struct ObjClass *)EditMode.unk8;
+                DAT_00813a8c = cls->footprint.v[0] + local_c;
+                DAT_00813a88 = cls->footprint.v[1] + local_10;
+                DAT_00813a90 = cls->footprint.v[1] + iVar5;
+                DAT_00813a84 = cls->footprint.v[0] + local_14;
+            }
         }
     }
     EditCursor.field_1414[2] = DAT_00813a8c - local_14;

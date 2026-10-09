@@ -597,7 +597,7 @@ int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int
     char line[1024];
     char *tokens[20];
     char *p;
-    int r = 0;
+    unsigned int r;
     int errors = 0;
     ScriptCommandFn deflt = NULL;
     int ntok;
@@ -607,6 +607,7 @@ int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int
 
     DAT_00668fcc = 0;
     cmd = commands;
+    r = 0;
     // STRING: LEGOLAND 0x004bbdcc
     if (strcmp(cmd->name, "none") == 0)
         deflt = cmd->fn;
@@ -625,7 +626,7 @@ int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int
                 if (strcmp(tokens[0], cmd->name) == 0) {
                     found = 1;
                     r = commands[i].fn(tokens, ntok - 1, flags);
-                    if (r == 0)
+                    if (0 == r)
                         errors++;
                     break;
                 }

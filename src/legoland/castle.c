@@ -10316,16 +10316,18 @@ void FUN_00428ec0(void *p, unsigned int a, unsigned int b) {
 
 // FUNCTION: LEGOLAND 0x00428f00
 void FUN_00428f00(void) {
+    volatile unsigned int ptmp7;
+    int ptmp8;
     int i, j, k, m, n, t, e, v;
-    int cnt;
-    float ang;
+    register float ang;
+    register int cnt;
     float s;
     unsigned int *g, *out;
     int (*d)[2];
     int (*sp)[2];
     int k6, k18;
 
-    for (i = 0; i <= 4; i++) {
+    for (i = 0; 4 >= i; i++) {
         DAT_00613908[i][0] = i;
         DAT_00613908[i][1] = i + 1;
     }
@@ -10337,7 +10339,7 @@ void FUN_00428f00(void) {
         DAT_00613908[n][1] = j + 6;
         n++;
         DAT_00613908[n][0] = j;
-        DAT_00613908[n][1] = j + 7;
+        DAT_00613908[n][1] = 7 + j;
         n++;
     }
     DAT_00613908[n][0] = j;
@@ -10348,7 +10350,7 @@ void FUN_00428f00(void) {
     n++;
     for (j = 0; j <= 4; j++) {
         DAT_00613908[n][0] = j + 6;
-        DAT_00613908[n][1] = j + 7;
+        DAT_00613908[n][1] = 7 + j;
         n++;
     }
     DAT_00613908[n][0] = j + 6;
@@ -10356,7 +10358,7 @@ void FUN_00428f00(void) {
 
     t = 0;
     v = 6;
-    for (e = 18; e < 23; e++) {
+    for (e = 18; 23 > e; e++) {
         DAT_00613878[t * 3] = e - 18 + 0x80000000;
         DAT_00613878[t * 3 + 1] = v + 1;
         DAT_00613878[t * 3 + 2] = v + 2 + 0x80000000;
@@ -10375,8 +10377,11 @@ void FUN_00428f00(void) {
     DAT_00613878[t * 3 + 5] = v + 1 + 0x80000000;
 
     n = 0;
-    g = DAT_00612708[0];
-    for (k = 0; k < 30; k++) {
+    ptmp8 = DAT_00612708[0];
+    ptmp7 = ptmp8;
+    g = ptmp7;
+    k = 0;
+    while (k < 30) {
         k6 = k * 6;
         k18 = k * 18;
         cnt = 18;
@@ -10393,17 +10398,18 @@ void FUN_00428f00(void) {
             sp++;
         } while (--cnt);
         out = g;
-        g += 36;
+        g = g + 36;
         for (i = 0; i < 12; i++) {
-            for (j = 0; j < 3; j++) {
+            for (j = 0; 3 > j; j++) {
                 unsigned int x = DAT_00613878[i * 3 + j];
                 *out++ = ((x & 0x7fffffff) + k18) | (x & 0x80000000);
             }
         }
+        k++;
     }
 
     ang = FLOAT_004ab390;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < (unsigned)6; i++) {
         DAT_006121c8[i][0] = 0.0f;
         DAT_006121c8[i][1] = (float)cos(ang) * 1.8f;
         s = (float)sin(ang);

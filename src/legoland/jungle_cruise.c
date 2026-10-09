@@ -109,17 +109,18 @@ void FUN_00432cb0(struct JungleRide *ride) {
 
 // FUNCTION: LEGOLAND 0x00432d00
 void FUN_00432d00(int param_1) {
+    int ptmp3;
     struct JungleRide *ride = JungleRideList;
     int tw;
     int tw2;
     int th2;
-    int th;
     struct Point off;
+    int th;
     int a;
-    int b;
     int dx;
+    int b;
     int dy;
-    int baseX;
+    unsigned int baseX;
     int baseY;
     int row;
     int seat;
@@ -143,13 +144,14 @@ void FUN_00432d00(int param_1) {
             off.x = JungleCruiseBoats->offset_x[ride->step_frames[JungleCruiseStep] & 0xff] >> 1;
             off.y = JungleCruiseBoats->offset_y[ride->step_frames[JungleCruiseStep] & 0xff] >> 1;
             AdjustOffsetForViewMode(&off);
+            ptmp3 = off.y;
             ride->screen_x = lpConfig->view_x + dx + off.x + baseX;
-            ride->screen_y = lpConfig->view_y + dy + off.y + baseY;
+            ride->screen_y = lpConfig->view_y + dy + ptmp3 + baseY;
             PrintSprite(JungleCruiseBoats->sprites[ride->step_frames[JungleCruiseStep] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             off.x = lpConfig->view_x + dx + baseX;
             off.y = lpConfig->view_y + dy + baseY;
             AdjustBlokePosition((struct Point *)&off);
-            if ((int)ride->step_frames[JungleCruiseStep] >= 4 && (int)ride->step_frames[JungleCruiseStep] < 12) {
+            if ((int)ride->step_frames[JungleCruiseStep] >= 4 && 12 > (int)ride->step_frames[JungleCruiseStep]) {
                 for (row = 0; row < 3; row++) {
                     struct Point pos;
 
@@ -171,12 +173,12 @@ void FUN_00432d00(int param_1) {
                             person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
                             break;
                         case 1:
-                            person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] + 6) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
+                            person->field_44 = ((float)(int)((6 + ride->step_frames[JungleCruiseStep]) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
                             pos.y -= 0x10;
                             break;
                         case 2:
                             person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
-                            pos.y -= 0x10;
+                            pos.y = pos.y - 0x10;
                             break;
                         }
                         SetPersonRotation(person, &person->field_40);

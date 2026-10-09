@@ -5053,30 +5053,41 @@ unsigned int LogFlumeHoldUpRemoveObject(unsigned int param_1, unsigned int param
 
 // FUNCTION: LEGOLAND 0x00410180
 void FUN_00410180(struct FlumeNode *param_1) {
-    struct FlumeNode *parent = param_1;
+    volatile int ptmp170;
+    int ptmp171;
+    struct FlumeNode *parent;
     struct FlumeNode *node;
+    register TileId pos;
     struct FlumeNode *prev;
-    TileId pos;
-    int w = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
-    int n;
+    register int ptmp172;
+    int w;
+    register int n;
+    volatile int ptmp424;
+    parent;
+    parent = param_1;
+    w = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
 
     pos.pos.y = ((struct Ride *)DAT_004c8d6c)->footprint.y0 + parent->tile.pos.y;
     pos.pos.x = ((struct Ride *)DAT_004c8d6c)->footprint.x0 + parent->tile.pos.x + 2;
     node = NewFlumeNode(parent, 3, 0, pos.pos.y, pos.pos.x);
     AppendListNode((struct Node *)parent, (struct ListNode *)node);
     n = 0x18 / w;
-    n += -2;
+    n = n + (-2);
     parent->field_30 = (unsigned int)node;
     prev = node;
-    for (; n > 0; n--) {
+    for (; 0 < n; n--) {
         pos.pos.y += w;
-        node = NewFlumeNode(parent, 1, 0, pos.pos.y, pos.pos.x);
-        AppendListNode((struct Node *)parent, (struct ListNode *)node);
+        ptmp170 = pos.pos.y;
+        node = NewFlumeNode(parent, 1, 0, ptmp170, pos.pos.x);
+        { AppendListNode((struct Node *)parent, (struct ListNode *)node); }
         LinkNodeAfter((struct Node *)prev, (struct Node *)node);
         prev = node;
     }
     pos.pos.y += w;
-    node = NewFlumeNode(parent, 3, 2, pos.pos.y, pos.pos.x);
+    ptmp172 = pos.pos.x;
+    ptmp171 = ptmp172;
+    ptmp424 = pos.pos.y;
+    node = NewFlumeNode(parent, 3, 2, ptmp424, ptmp171);
     AppendListNode((struct Node *)parent, (struct ListNode *)node);
     LinkNodeAfter((struct Node *)prev, (struct Node *)node);
     parent->field_34 = (unsigned int)node;
