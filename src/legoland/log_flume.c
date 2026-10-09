@@ -4955,16 +4955,20 @@ unsigned int FUN_0040fe80(unsigned int *param_1) {
 // FUNCTION: LEGOLAND 0x0040feb0
 void FUN_0040feb0(TileId pos, struct FlumeOut *out) {
     struct Ride *ride = (struct Ride *)DAT_004c2b60;
-    unsigned char x = pos.pos.x + (unsigned char)ride->footprint.x0;
-    unsigned char y = pos.pos.y + (unsigned char)ride->footprint.y0;
-    int span = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
+    unsigned char x;
+    unsigned char y;
+    int span;
+
+    span = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
+    x = pos.pos.x + (unsigned char)ride->footprint.x0;
+    y = pos.pos.y + (unsigned char)ride->footprint.y0;
     pos.pos.x = x;
     pos.pos.y = y;
     out->kind = 10;
     out->f_1c = pos.pos.x;
     out->f_20 = pos.pos.y + 9;
-    out->f_10 = pos.pos.y + 7;
     ride = (struct Ride *)DAT_004c2b60;
+    out->f_10 = pos.pos.y + 7;
     out->f_0c = ride->footprint.x1 - ride->footprint.x0 - span + pos.pos.x + 1;
 }
 
