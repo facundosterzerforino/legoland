@@ -1217,34 +1217,22 @@ unsigned int FUN_0045c9c0(int *param_1) {
 
 // FUNCTION: LEGOLAND 0x0045ca90
 int FUN_0045ca90(int *param_1, int *param_2) {
-    int dx;
-    int x;
     unsigned int mask;
-    unsigned int *tbl;
-    unsigned int v;
     int i;
     struct Point pt;
 
     pt.x = *param_1 + -2;
     pt.y = param_1[1] + -2;
     mask = FUN_0045c9c0((int *)&pt);
-    i = 0;
-    tbl = DAT_004b9558;
-    v = *tbl;
-    do {
-        if ((v & mask) == v) {
-            dx = DAT_004b957c[i];
-            x = *param_1;
-            param_2[0] = dx + x;
-            i = DAT_004b95a0[i] + param_1[1];
-            param_2[1] = i;
-            param_2[2] = dx + x + 2;
-            param_2[3] = i + 2;
+    for (i = 0; i < 9; i++) {
+        if ((DAT_004b9558[i] & mask) == DAT_004b9558[i]) {
+            param_2[0] = DAT_004b957c[i] + param_1[0];
+            param_2[1] = DAT_004b95a0[i] + param_1[1];
+            param_2[2] = param_2[0] + 2;
+            param_2[3] = param_2[1] + 2;
             return 1;
         }
-        tbl = tbl + 1;
-        i = i + 1;
-    } while ((int)tbl < (int)&DAT_004b957c);
+    }
     return 0;
 }
 
