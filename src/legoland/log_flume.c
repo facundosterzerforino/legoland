@@ -1858,23 +1858,15 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
 }
 
 // FUNCTION: LEGOLAND 0x0040ae90
-void FUN_0040ae90(unsigned int param_1, int param_2, int param_3) {
-    struct FlumeSlot *slot = (struct FlumeSlot *)param_1;
-    struct FlumeEntry *other = (struct FlumeEntry *)param_2;
+void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int drawBarrel) {
+    /* Draws one log-flume barrel (and its rider, if any). The clip rect is narrowed to the
+       edge of the neighbouring track tile `other` so the barrel is hidden behind it. */
     struct FlumeEntry *owner = (struct FlumeEntry *)slot->owner;
     struct Sprite *spriteA;
     struct Sprite *spriteB;
     RECT saved;
     RECT clip;
     struct Point p;
-    struct Point q;
-    struct Point bp;
-    int out[4];
-    int out2[4];
-    int w;
-    int h;
-    int frame;
-    struct LLS *lls;
 
     if (slot->flags & 4) {
         spriteA = LogFlumeBarrelMatteSprite;
@@ -1886,73 +1878,96 @@ void FUN_0040ae90(unsigned int param_1, int param_2, int param_3) {
     GetClipping(&saved);
     clip = saved;
     if (other != owner) {
+        int w;
+        int h;
+        int bounds[4];
+
         GetTileDimensions(&w, &h);
         if (owner->tile.pos.x == other->tile.pos.x) {
             p.x = other->tile.pos.x + 1;
             p.y = other->tile.pos.y;
-            GetTileBounds(&p, out);
-            if (out[2] < clip.right) {
-                clip.right = out[2];
+            GetTileBounds(&p, bounds);
+            if (bounds[2] < clip.right) {
+                clip.right = bounds[2];
             }
             p.x = other->tile.pos.x + 1;
             p.y = other->tile.pos.y + 1;
-            GetTileBounds(&p, out);
-            if ((w >> 1) + out[0] > clip.left) {
-                clip.left = (w >> 1) + out[0];
+            GetTileBounds(&p, bounds);
+            if ((w >> 1) + bounds[0] > clip.left) {
+                clip.left = (w >> 1) + bounds[0];
             }
         } else {
             p.x = other->tile.pos.x;
             p.y = other->tile.pos.y + 1;
-            GetTileBounds(&p, out);
-            if (out[0] + 1 > clip.left) {
-                clip.left = out[0] + 1;
+            GetTileBounds(&p, bounds);
+            if (bounds[0] + 1 > clip.left) {
+                clip.left = bounds[0] + 1;
             }
             p.x = other->tile.pos.x + 1;
             p.y = other->tile.pos.y + 1;
-            GetTileBounds(&p, out);
-            if ((w >> 1) + out[0] + 1 < clip.right) {
-                clip.right = (w >> 1) + out[0] + 1;
+            GetTileBounds(&p, bounds);
+            if ((w >> 1) + bounds[0] + 1 < clip.right) {
+                clip.right = (w >> 1) + bounds[0] + 1;
             }
         }
     }
     SetClipping(&clip);
     if (spriteB != NULL) {
-        p.y = slot->y;
-        p.x = slot->x;
+        int w;
+        int h;
+        struct Point pos;
+        struct Point tile;
+        int bounds[4];
+        struct Point q;
+
+        pos.x = slot->x;
+        pos.y = slot->y;
         GetTileDimensions(&w, &h);
         w <<= 1;
         h <<= 1;
-        p.x -= w >> 1;
-        out[0] = owner->tile.pos.x;
-        out[1] = owner->tile.pos.y;
-        GetTileBounds((struct Point *)out, out2);
-        q.x = out2[0];
-        q.y = out2[1];
+        pos.x -= w >> 1;
+        tile.x = owner->tile.pos.x;
+        tile.y = owner->tile.pos.y;
+        GetTileBounds(&tile, bounds);
+        q.x = bounds[0];
+        q.y = bounds[1];
         if (owner->link28 != NULL) {
             FUN_0040cfd0(owner->link28);
         }
         if (owner->link28 == NULL) {
             FUN_0040cfd0(owner);
         }
+        p = pos;
         AdjustOffsetForViewMode(&p);
-        p.x -= spriteB->width >> 1;
-        p.y -= (int)((float)(short)spriteB->height * 0.75f + (slot->field_1c >> 1));
-        if (param_3 != 0) {
+        /* centre the barrel sprite horizontally; lift it by 3/4 of its height plus half the
+           slot's bob offset */
+        pos.x = p.x - (spriteB->width >> 1);
+        p.y -= (int)((short)spriteB->height * 0.75f + (slot->field_1c >> 1));
+        p.x = pos.x;
+        if (drawBarrel != 0) {
+            struct RideNode *node;
+
             PrintSprite(spriteB, p.x + q.x, p.y + q.y, 0, 0);
-            if (slot->busy != NULL) {
-                if (((struct RideNode *)slot->busy)->rider->flags & 0x80) {
-                    if (((struct RideNode *)slot->busy)->person != NULL) {
-                        bp.x = p.x + (spriteB->width >> 1);
-                        bp.y = p.y + ((short)spriteB->height >> 2) + ((short)spriteB->height >> 1);
-                        AdjustBlokePosition(&bp);
-                        SetPersonPosition(((struct RideNode *)slot->busy)->person, bp.x + q.x, bp.y + q.y);
-                        SetPersonDirection(((struct RideNode *)slot->busy)->person, FUN_004092b0((struct FlumeHolder *)slot));
-                        IP_RenderBlokeIn3DNow(((struct RideNode *)slot->busy)->rider);
-                    }
+            node = (struct RideNode *)slot->busy;
+            if (node != NULL && (node->rider->flags & 0x80)) {
+                struct Person *person = node->person;
+
+                if (person != NULL) {
+                    struct Point bp;
+
+                    bp.x = p.x + (spriteB->width >> 1);
+                    bp.y = p.y + ((short)spriteB->height >> 2) + ((short)spriteB->height >> 1);
+                    AdjustBlokePosition(&bp);
+                    SetPersonPosition(person, bp.x + q.x, bp.y + q.y);
+                    SetPersonDirection(person, FUN_004092b0((struct FlumeHolder *)slot));
+                    IP_RenderBlokeIn3DNow(((struct RideNode *)slot->busy)->rider);
                 }
             }
         }
         if (spriteA != NULL) {
+            int frame;
+            struct LLS *lls;
+
             frame = 0;
             lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)spriteB);
             if (lls != NULL) {
@@ -2008,7 +2023,7 @@ void FUN_0040b290(struct FlumeEntry *entry, int x, int y, struct FlumeStageList 
         do {
             for (j = 0; j < set->count; j++) {
                 if (FUN_0040b210((struct FlumeWeighted *)&set->slots[j], (struct FlumeWeighted *)node)) {
-                    FUN_0040ae90((unsigned int)&set->slots[j], (int)node, 1);
+                    DrawLogFlumeBarrel(&set->slots[j], node, 1);
                 }
             }
             if (reverse == 0) {
@@ -2043,14 +2058,14 @@ int FUN_0040b390(struct FlumeEntry *entry) {
         if (node != NULL) {
             do {
                 if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)node)) {
-                    FUN_0040ae90((unsigned int)&set->slots[i], (int)node, 1);
+                    DrawLogFlumeBarrel(&set->slots[i], node, 1);
                     matched++;
                 }
                 node = node->next;
             } while (node != NULL);
         } else {
             if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)entry)) {
-                FUN_0040ae90((unsigned int)&set->slots[i], (int)entry, 1);
+                DrawLogFlumeBarrel(&set->slots[i], entry, 1);
                 matched++;
             }
         }
@@ -2923,7 +2938,7 @@ void FUN_0040ca30(void *a1, int a2) {
     if (node != NULL) {
         do {
             if (node->var_4 != 0) {
-                FUN_0040ae90(node->var_4, a2, 1);
+                DrawLogFlumeBarrel((struct FlumeSlot *)node->var_4, (struct FlumeEntry *)a2, 1);
             }
             node = node->var_8;
         } while (node != NULL);

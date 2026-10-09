@@ -1676,7 +1676,7 @@ void FUN_00460560(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
-void FUN_004608c0(struct Point *pos, RECT *clip) {
+void DrawMapTiles(struct Point *pos, RECT *clip) {
     struct Overlay *ov;
     int dx;
     int dy;
@@ -1692,12 +1692,12 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
     int ybot;
     int xright;
     int draw_y;
-    int draw_y2;
     int col;
-    struct Point cell;
-    struct Point saved;
+    int x2;
+    int cell[2];
+    int row_x;
+    int row_y;
     struct MapElement *tile;
-    struct SpriteSet *set;
     struct Sprite *sprite;
     int frame;
     int k;
@@ -1708,16 +1708,16 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
     dx = pos->x - clip->left;
     dy = pos->y - clip->top;
     SetClipping(clip);
-    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     dbl = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
+    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     sx = pos->x / dbl;
     half_x = (dbl + 1) >> 1;
     half_y = (size + 1) >> 1;
     mx = pos->x % dbl;
     row = (pos->y - half_y) / size;
     phase = (pos->y - half_y) % size;
-    cell.x = row + sx - 3;
-    cell.y = row - sx;
+    cell[0] = row + sx - 3;
+    cell[1] = row - sx;
     which = (mx >= half_x) + 1;
     if (phase > half_y) {
         which += 2;
@@ -1726,27 +1726,27 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
     case 1:
         if (mx < half_x - phase * 2) {
             mx += half_x;
-            cell.x--;
+            cell[0]--;
             phase += half_y;
         }
         break;
     case 2:
         if (mx >= half_x + phase * 2) {
-            cell.y--;
+            cell[1]--;
             mx -= half_x;
             phase += half_y;
         }
         break;
     case 3:
         if (mx < half_x + (phase - size) * 2) {
-            cell.y++;
+            cell[1]++;
             mx += half_x;
             phase -= half_y;
         }
         break;
     case 4:
         if (mx >= half_x + (size - phase) * 2) {
-            cell.x++;
+            cell[0]++;
             mx -= half_x;
             phase -= half_y;
         }
@@ -1755,12 +1755,12 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
     ybot = clip->bottom + size * 2;
     xright = clip->right + dbl * 2;
     PushRenderingStatusAndLockVideoSurface();
-    for (draw_y = clip->top - size * 2 - phase, draw_y2 = half_y + draw_y; draw_y < ybot;
-        draw_y += size, draw_y2 += size) {
-        saved = cell;
+    for (draw_y = clip->top - size * 2 - phase; draw_y < ybot; draw_y += size) {
+        row_x = cell[0];
+        row_y = cell[1];
         for (col = clip->left - dbl * 2 - mx; col < xright; col += dbl) {
-            if (cell.x >= 0 && cell.x < lpConfig->width && cell.y >= 0 && cell.y < lpConfig->height) {
-                tile = &GameMap[cell.y][cell.x];
+            if (cell[0] >= 0 && cell[0] < lpConfig->width && cell[1] >= 0 && cell[1] < lpConfig->height) {
+                tile = &GameMap[cell[1]][cell[0]];
             } else {
                 tile = 0;
             }
@@ -1772,20 +1772,20 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
                 } else {
                     PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     if (FUN_0045ce10((struct MapTile *)tile) != 0) {
-                        FUN_00460e90((int *)&cell, col, draw_y, 0);
+                        FUN_00460e90(cell, col, draw_y, 0);
                     }
                 }
             }
-            cell.x++;
+            cell[0]++;
             if (tile != 0) {
-                if (cell.x == lpConfig->width) {
+                if (cell[0] == lpConfig->width) {
                     break;
                 }
                 tile++;
             }
             if (tile == 0) {
-                if (cell.x >= 0 && cell.x < lpConfig->width && cell.y >= 0 && cell.y < lpConfig->height) {
-                    tile = &GameMap[cell.y][cell.x];
+                if (cell[0] >= 0 && cell[0] < lpConfig->width && cell[1] >= 0 && cell[1] < lpConfig->height) {
+                    tile = &GameMap[cell[1]][cell[0]];
                 } else {
                     tile = 0;
                 }
@@ -1796,16 +1796,17 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
                         PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     }
                 } else {
-                    PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], col + half_x, draw_y2);
+                    x2 = col + half_x;
+                    PrintSpriteSimple((struct Sprite *)TileSpriteArray[tile->field_8], x2, draw_y + half_y);
                     if (FUN_0045ce10((struct MapTile *)tile) != 0) {
-                        FUN_00460e90((int *)&cell, col + half_x, draw_y2, 0);
+                        FUN_00460e90(cell, x2, draw_y + half_y, 0);
                     }
                 }
             }
-            cell.y--;
+            cell[1]--;
         }
-        cell.x = saved.x + 1;
-        cell.y = saved.y + 1;
+        cell[0] = row_x + 1;
+        cell[1] = row_y + 1;
     }
     for (; ov != 0; ov = ov->next) {
         if (ov->sprite == 0) {
@@ -1816,28 +1817,34 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
         if ((frame & 0xff00) == 0 || MapStats.field_3e0[(frame >> 8) - 1] == 0) {
             continue;
         }
-        set = (struct SpriteSet *)BridgesData;
         if ((frame & 0xff) == 0) {
             ox = ov->x - dx;
             oy = ov->y - dy;
-            PrintSpriteSimple(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9218, oy + DAT_004b921c);
+            PrintSpriteSimple(((struct SpriteSet *)BridgesData)->sprites[(frame + 2) & 0xff], ox + DAT_004b9218,
+                oy + DAT_004b921c);
             k = (ov->field_10 + 4) & 0xff;
-            if (k < ((struct SpriteSet *)BridgesData)->count) {
+            if (((struct SpriteSet *)BridgesData)->count > k) {
                 sprite = ((struct SpriteSet *)BridgesData)->sprites[k];
                 SortSprite(sprite, ox + DAT_00805f40, oy + DAT_00805f44, (short)sprite->height + oy + DAT_00805f44, 0, 0);
             }
         } else if ((frame & 0xff) == 1) {
             ox = ov->x - dx;
             oy = ov->y - dy;
-            PrintSpriteSimple(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9210, oy + DAT_004b9214);
+            PrintSpriteSimple(((struct SpriteSet *)BridgesData)->sprites[(frame + 2) & 0xff], ox + DAT_004b9210,
+                oy + DAT_004b9214);
             k = (ov->field_10 + 4) & 0xff;
-            if (k < ((struct SpriteSet *)BridgesData)->count) {
+            if (((struct SpriteSet *)BridgesData)->count > k) {
                 sprite = ((struct SpriteSet *)BridgesData)->sprites[k];
                 SortSprite(sprite, ox + DAT_00801a60, oy + DAT_00801a64, (short)sprite->height + oy + DAT_00801a64, 0, 0);
             }
         }
     }
     PopRenderingStatus();
+    /* The original keeps half_x in memory (address-taken): it is reloaded after stores and is not
+       strength-reduced in the column loop. Taking its address in dead code reproduces that. */
+    if (0) {
+        FUN_00460e90(&half_x, 0, 0, 0);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x00460e00
@@ -1855,7 +1862,7 @@ void FUN_00460e00(void) {
     clip.top = lpConfig->view_y;
     clip.right = lpConfig->view_width + clip.left;
     clip.bottom = lpConfig->view_height + clip.top;
-    FUN_004608c0(&pos, &clip);
+    DrawMapTiles(&pos, &clip);
     DAT_004b95ec = sy;
     DAT_004b95e8 = sx;
     DAT_00667cd0 = 0;

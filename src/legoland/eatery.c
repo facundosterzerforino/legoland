@@ -1986,170 +1986,166 @@ void UnloadOctopusCafeResources(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004316f0
-void OctopusCafeUpdate(int param_1) {
-    unsigned char *pos;
-    int bloke;
-    unsigned int *node;
-    unsigned int *next;
-    char cv;
-    char state;
-    int t;
-    int u;
-    int y;
-    int f36;
-    int ride = *(int *)(param_1 + 0xc);
-    node = *(unsigned int **)(ride + 0xcc);
-    while (node != NULL) {
-        bloke = node[2];
-        next = (unsigned int *)*node;
-        pos = (unsigned char *)(node + 3);
-        if (*(short *)(bloke + 0xe) == 0) {
-            state = *(char *)(bloke + 0x60);
-            switch (state) {
-            case 0:
-                cv = (char)Get_UserFlags((unsigned int)pos[0] << 8, (unsigned int)*((unsigned char *)node + 0xd) << 8);
-                *(unsigned char *)(bloke + 0x62) |= 8;
-                *(char *)(bloke + 0x36) = cv;
-                *(short *)(bloke + 0x40) = 0;
-                *(int *)(bloke + 0x5c) = 0x32;
-                *(char *)(bloke + 0x60) += 1;
-                Set_UserFlags((unsigned int)pos[0] << 8, (unsigned int)*((unsigned char *)node + 0xd) << 8, cv + 1 & 0x1f);
-                break;
-            case 1:
-            case 2:
-                if (state != 2 || (t = *(int *)(bloke + 0x5c), *(int *)(bloke + 0x5c) = t + -1, t < 0)) {
-                    goto buy;
-                }
-                break;
-            case 3:
-            case 4:
-            buy:
-                BuyItem(param_1, pos, 1);
-                f36 = *(unsigned char *)(bloke + 0x36);
-                t = DAT_004b6a34[(unsigned int)*(unsigned char *)(bloke + 0x60) + (f36 >> 1) * 4];
-                if (t != -1) {
-                    goto move_to;
-                }
-                *(unsigned char *)(bloke + 0x60) += 1;
-                break;
-            case 5:
-                t = *(int *)(bloke + 0x5c);
-                *(int *)(bloke + 0x5c) = t + -1;
-                if (t < 0) {
-                    *(char *)(bloke + 0x60) = state + 1;
-                }
-                break;
-            case 6:
-                f36 = *(unsigned char *)(bloke + 0x36);
-                u = DAT_004b6a44[(f36 >> 1) * 4];
-                *(int *)(bloke + 0x68) = *(int *)(bloke + 0x24);
-                *(int *)(bloke + 0x6c) = *(int *)(bloke + 0x28);
-                t = DAT_004b6b38[DAT_004b6be8[f36] * 4 + 1];
-                *(unsigned int *)(bloke + 0x24) = DAT_004b6990[u * 2] + (unsigned int)pos[0] * 0x100 + -0x80 + DAT_004b6b38[DAT_004b6be8[f36] * 4];
-                y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + DAT_004b6990[u * 2 + 1] + 0x80 + t;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                goto setdir;
-            case 7:
-                NewDirForAction(bloke, (*(char *)(bloke + 0x72) + -4) & 7);
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 8:
-                *(int *)(bloke + 0x68) = *(int *)(bloke + 0x24);
-                *(int *)(bloke + 0x6c) = *(int *)(bloke + 0x28);
-                *(short *)(bloke + 0x40) = 1;
-                f36 = *(unsigned char *)(bloke + 0x36);
-                t = DAT_004b6b38[DAT_004b6be8[f36] * 4 + 3];
-                u = DAT_004b6a44[(f36 >> 1) * 4];
-                *(unsigned int *)(bloke + 0x24) = DAT_004b6990[u * 2] + (unsigned int)pos[0] * 0x100 + -0x80 + DAT_004b6b38[DAT_004b6be8[f36] * 4 + 2];
-                y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + DAT_004b6990[u * 2 + 1] + 0x80 + t;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(char *)(bloke + 0x73) = cv + 0x10;
-                *(short *)(bloke + 0xe) = 7;
-                *(char *)(bloke + 0x60) += 1;
-                *(int *)(bloke + 0x5c) = 200;
-                break;
-            case 9:
-                *(unsigned char *)(bloke + 0x63) |= 1;
-                *(int *)(bloke + 0x68) = *(int *)(bloke + 0x24);
-                *(int *)(bloke + 0x6c) = *(int *)(bloke + 0x28);
-                *(short *)(bloke + 0x70) = 10;
-                BlokeSitAnim(bloke);
-                BlokeSetFrame(bloke, 0);
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 10:
-                t = *(int *)(bloke + 0x5c);
-                *(int *)(bloke + 0x5c) = t + -1;
-                if (t < 0) {
-                    *(char *)(bloke + 0x60) = state + 1;
-                }
-                break;
-            case 11:
-                *(unsigned short *)(bloke + 0x62) &= 0xfeff;
-                *(short *)(bloke + 0x70) = 0;
-                BlokeWalkAnim((struct Bloke *)bloke);
-                f36 = *(unsigned char *)(bloke + 0x36);
-                t = DAT_004b6b38[DAT_004b6be8[f36] * 4 + 1];
-                u = DAT_004b6a44[(f36 >> 1) * 4];
-                *(unsigned int *)(bloke + 0x24) = DAT_004b6990[u * 2] + (unsigned int)pos[0] * 0x100 + -0x80 + DAT_004b6b38[DAT_004b6be8[f36] * 4];
-                y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + DAT_004b6990[u * 2 + 1] + 0x80 + t;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(char *)(bloke + 0x73) = cv + 0x10;
-                *(short *)(bloke + 0xe) = 7;
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 12:
-                *(short *)(bloke + 0x40) = 0;
-                f36 = *(unsigned char *)(bloke + 0x36);
-                t = DAT_004b6a44[(f36 >> 1) * 4];
-            move_to:
-                *(unsigned int *)(bloke + 0x24) = DAT_004b6990[t * 2] + -0x80 + (unsigned int)pos[0] * 0x100;
-                y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + 0x80 + DAT_004b6990[t * 2 + 1];
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-            setdir:
-                *(short *)(bloke + 0xe) = 7;
-                NewDirForAction(bloke, ((unsigned char)(*(unsigned char *)(bloke + 0x73)) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-                do {
-                    t = DAT_004b6a78[(*(unsigned char *)(bloke + 0x36) >> 1) * 4 - (unsigned int)*(unsigned char *)(bloke + 0x60)];
-                    *(unsigned char *)(bloke + 0x60) += 1;
-                } while (t == -1);
-                *(unsigned int *)(bloke + 0x24) = DAT_004b6990[t * 2] + -0x80 + (unsigned int)pos[0] * 0x100;
-                y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + 0x80 + DAT_004b6990[t * 2 + 1];
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                break;
-            case 17:
-                BlokeWalkAnim((struct Bloke *)bloke);
-                *(unsigned int *)(bloke + 0x24) = (*(int *)(ride + 0xc) + (unsigned int)pos[0]) * 0x100 + 0x80;
-                y = ((unsigned int)*((unsigned char *)node + 0xd) + *(int *)(ride + 0x10)) * 0x100 + 0x80;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 18:
-                RemoveBlokeFromRide((void *)ride, node);
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
-            }
+void OctopusCafeUpdate(Element *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    TileId *tile;
+    int seat;
+    char dir;
+    int spot;
+    int chair;
+    Point off;
+    int idx;
+
+    /* walk every bloke in the cafe through its scripted visit */
+    for (node = ride->riders; node != NULL; node = next) {
+        bloke = node->rider;
+        next = node->next;
+        tile = &node->tile;
+        if (bloke->low_level_action != 0) {
+            continue;
         }
-        node = next;
+        switch (bloke->param_action) {
+        case 0:
+            /* claim the next seat of this table */
+            seat = Get_UserFlags(tile->pos.x << 8, tile->pos.y << 8);
+            bloke->flags |= 8;
+            bloke->field_36 = (unsigned char)seat;
+            bloke->field_40 = 0;
+            bloke->field_5c = 50;
+            bloke->param_action++;
+            Set_UserFlags(tile->pos.x << 8, tile->pos.y << 8, (seat + 1) & 0x1f);
+            continue;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            if (bloke->param_action == 2 && bloke->field_5c-- >= 0) {
+                continue;
+            }
+            BuyItem((struct BuyItemArg *)obj, tile, 1);
+            idx = DAT_004b6a34[bloke->param_action + (bloke->field_36 >> 1) * 4];
+            if (idx == -1) {
+                bloke->param_action++;
+                continue;
+            }
+            break;
+        case 5:
+            if (bloke->field_5c-- < 0) {
+                bloke->param_action++;
+            }
+            continue;
+        case 6:
+            /* walk to the chair */
+            spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            bloke->pos = bloke->dest;
+            chair = DAT_004b6be8[bloke->field_36];
+            off.x = DAT_004b6b38[chair * 4];
+            off.y = DAT_004b6b38[chair * 4 + 1];
+            bloke->dest.x = DAT_004b6990[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
+            bloke->dest.y = (tile->pos.y << 8) + DAT_004b6990[spot * 2 + 1] + 0x80 + off.y;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_73 = dir + 0x10;
+            bloke->low_level_action = 7;
+            NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+            bloke->param_action++;
+            continue;
+        case 7:
+            NewDirForAction(bloke, (bloke->dir - 4) & 7);
+            bloke->param_action++;
+            continue;
+        case 8:
+            /* sit down on the chair */
+            bloke->pos = bloke->dest;
+            bloke->field_40 = 1;
+            chair = DAT_004b6be8[bloke->field_36];
+            off.x = DAT_004b6b38[chair * 4 + 2];
+            off.y = DAT_004b6b38[chair * 4 + 3];
+            spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            bloke->dest.x = DAT_004b6990[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
+            bloke->dest.y = (tile->pos.y << 8) + DAT_004b6990[spot * 2 + 1] + 0x80 + off.y;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_73 = dir + 0x10;
+            bloke->low_level_action = 7;
+            bloke->param_action++;
+            bloke->field_5c = 200;
+            continue;
+        case 9:
+            bloke->flags |= 0x100;
+            bloke->pos = bloke->dest;
+            bloke->height = 10;
+            BlokeSitAnim(bloke);
+            BlokeSetFrame(bloke, 0);
+            bloke->param_action++;
+            continue;
+        case 10:
+            if (bloke->field_5c-- < 0) {
+                bloke->param_action++;
+            }
+            continue;
+        case 11:
+            /* get up again */
+            bloke->flags &= ~0x100;
+            bloke->height = 0;
+            BlokeWalkAnim(bloke);
+            chair = DAT_004b6be8[bloke->field_36];
+            off.x = DAT_004b6b38[chair * 4];
+            off.y = DAT_004b6b38[chair * 4 + 1];
+            spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            bloke->dest.x = DAT_004b6990[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
+            bloke->dest.y = (tile->pos.y << 8) + DAT_004b6990[spot * 2 + 1] + 0x80 + off.y;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_73 = dir + 0x10;
+            bloke->low_level_action = 7;
+            bloke->param_action++;
+            continue;
+        case 12:
+            bloke->field_40 = 0;
+            idx = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            break;
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+            /* walk out along the table's exit path, skipping unused points */
+            do {
+                idx = DAT_004b6a78[(bloke->field_36 >> 1) * 4 - bloke->param_action];
+                bloke->param_action++;
+            } while (idx == -1);
+            bloke->dest.x = DAT_004b6990[idx * 2] - 0x80 + (tile->pos.x << 8);
+            bloke->dest.y = (tile->pos.y << 8) + 0x80 + DAT_004b6990[idx * 2 + 1];
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->low_level_action = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            continue;
+        case 17:
+            BlokeWalkAnim(bloke);
+            bloke->dest.x = ((ride->x + tile->pos.x) << 8) + 0x80;
+            bloke->dest.y = ((tile->pos.y + ride->y) << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->low_level_action = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            continue;
+        case 18:
+            RemoveBlokeFromRide(ride, node);
+            bloke->flags &= ~8;
+            continue;
+        default:
+            continue;
+        }
+        /* walk to waypoint idx of the table */
+        bloke->dest.x = DAT_004b6990[idx * 2] - 0x80 + (tile->pos.x << 8);
+        bloke->dest.y = (tile->pos.y << 8) + 0x80 + DAT_004b6990[idx * 2 + 1];
+        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+        bloke->field_73 = dir + 0x10;
+        bloke->low_level_action = 7;
+        NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+        bloke->param_action++;
     }
 }
 

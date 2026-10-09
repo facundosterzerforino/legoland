@@ -206,126 +206,123 @@ LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ade0
-void FUN_0045ade0(void) {
-    int iVar1;
-    int iVar2;
-    int iVar3;
-    char cVar4;
-    int iVar7;
-    int iVar8;
-    int iVar9;
-    int iVar10;
-    int iVar11;
-    int iVar13;
-    int local_50;
-    int local_4c;
-    int local_2c;
-    RECT local_24;
-    short size;
-    struct MapTile tile;
+void DrawMarkedTileHighlights(void) {
+    RECT clip;
+    short tile_h;
+    int size; /* tile height */
+    int dbl; /* tile width (2 * height) */
+    int half_y; /* half a tile, vertically */
+    int half_x; /* half a tile, horizontally */
+    int scroll_x;
+    int scroll_y;
+    int col_q;
+    int x_phase; /* scroll offset inside the first tile column */
+    int y_phase; /* scroll offset inside the first tile row */
+    int row_q;
+    int row; /* map y of the tile being drawn (even half-rows) */
+    int saved_col; /* map x of the first tile of the current screen row */
+    int saved_row; /* map y of the first tile of the current screen row */
+    int x;
+    int y; /* screen y of the current row */
+    int which;
+    struct Point cell; /* map tile being drawn (x always; y for the odd half-rows) */
+    struct MapElement tile;
 
-    local_24.left = lpConfig->view_x;
-    local_24.top = lpConfig->view_y;
-    local_24.right = lpConfig->screen_width;
-    local_24.bottom = lpConfig->screen_height;
-    SetClipping(&local_24);
-    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
-    iVar9 = (int)size;
-    iVar13 = (short)(size * 2);
-    iVar1 = iVar9 + 1 >> 1;
-    local_4c = (ScrollY >> 8) - iVar1;
-    iVar2 = (ScrollX >> 8) / iVar13;
-    iVar7 = iVar13 + 1 >> 1;
-    local_50 = (ScrollX >> 8) % iVar13;
-    iVar3 = local_4c / iVar9;
-    local_4c = local_4c % iVar9;
-    local_2c = iVar3 + -3 + iVar2;
-    iVar3 = iVar3 - iVar2;
-    cVar4 = (iVar7 <= local_50) + '\x01';
-    if (iVar1 < local_4c) {
-        cVar4 = (iVar7 <= local_50) + '\x03';
+    clip.left = lpConfig->view_x;
+    clip.top = lpConfig->view_y;
+    clip.right = lpConfig->screen_width;
+    clip.bottom = lpConfig->screen_height;
+    SetClipping(&clip);
+
+    /* Scroll position -> first visible map tile (same maths as the map renderers). */
+    tile_h = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
+    dbl = (short)(tile_h * 2);
+    size = tile_h;
+    scroll_x = ScrollX >> 8;
+    half_y = (tile_h + 1) >> 1;
+    if (0) {
+        /* never runs: half_y is address-taken in the original, so it stays in memory and
+           y + half_y is recomputed in the odd half-row loop */
+        SetClipping((RECT *)&half_y);
     }
-    switch (cVar4) {
-    case '\x01':
-        if (local_50 < iVar7 + local_4c * -2) {
-            local_50 = local_50 + iVar7;
-            local_2c = local_2c + -1;
-            local_4c = local_4c + iVar1;
-        }
-        break;
-    case '\x02':
-        if (iVar7 + local_4c * 2 <= local_50) {
-            local_50 = local_50 - iVar7;
-            iVar3 = iVar3 + -1;
-            local_4c = local_4c + iVar1;
-        }
-        break;
-    case '\x03':
-        if (iVar7 + (local_4c - iVar9) * 2 <= local_50) {
-            break;
-        }
-        iVar3 = iVar3 + 1;
-        iVar2 = iVar7;
-        local_50 = local_50 + iVar2;
-        local_4c = local_4c - iVar1;
-        break;
-    case '\x04':
-        if (local_50 < iVar7 + (iVar9 - local_4c) * 2) {
-            break;
-        }
-        local_2c = local_2c + 1;
-        iVar2 = -iVar7;
-        local_50 = local_50 + iVar2;
-        local_4c = local_4c - iVar1;
+    scroll_y = (ScrollY >> 8) - half_y;
+    col_q = scroll_x / dbl;
+    half_x = (dbl + 1) >> 1;
+    x_phase = scroll_x % dbl;
+    row_q = scroll_y / size;
+    y_phase = scroll_y % size;
+    cell.x = row_q + col_q - 3;
+    row = row_q - col_q;
+    which = (x_phase >= half_x) + 1;
+    if (y_phase > half_y) {
+        which += 2;
     }
-    local_4c = (local_24.top + iVar9 * -2) - local_4c;
-    if (local_4c < (int)(iVar9 * 2 + local_24.bottom)) {
-        do {
-            iVar2 = local_2c;
-            iVar8 = (local_24.left + iVar13 * -2) - local_50;
-            if (iVar8 < (int)(iVar13 * 2 + local_24.right)) {
-                iVar10 = iVar3;
-                do {
-                    if (local_2c >= 0 && local_2c < (int)lpConfig->width && iVar10 >= 0 &&
-                        iVar10 < (int)lpConfig->height) {
-                        tile = *(struct MapTile *)&GameMap[iVar10][local_2c];
-                    } else {
-                        tile.flags_10 = 0;
-                    }
-                    if ((tile.flags_10 & 2) != 0) {
-                        PrintSprite((struct Sprite *)TileSpriteArray[(DAT_00805f48 & 0xff) + *(unsigned int *)DAT_00801a6c], iVar8, local_4c, 0xff6868, 0);
-                    }
-                    local_2c = local_2c + 1;
-                    iVar8 = iVar8 + iVar13;
-                    iVar10 = iVar10 + -1;
-                } while (iVar8 < (int)(iVar13 * 2 + local_24.right));
+    switch (which) {
+    case 1:
+        if (x_phase < half_x - y_phase * 2) {
+            cell.x--;
+            x_phase += half_x;
+            y_phase += half_y;
+        }
+        break;
+    case 2:
+        if (x_phase >= half_x + y_phase * 2) {
+            x_phase -= half_x;
+            row--;
+            y_phase += half_y;
+        }
+        break;
+    case 3:
+        if (x_phase < half_x + (y_phase - size) * 2) {
+            row++;
+            x_phase += half_x;
+            y_phase -= half_y;
+        }
+        break;
+    case 4:
+        if (x_phase >= half_x + (size - y_phase) * 2) {
+            cell.x++;
+            x_phase -= half_x;
+            y_phase -= half_y;
+        }
+        break;
+    }
+
+    /* Walk the visible tiles in diagonal rows (x+1, y-1 per screen column), two half-rows per
+       screen row, and draw the tinted highlight tile on every tile marked with field_10 & 2. */
+    for (y = clip.top - size * 2 - y_phase; y < clip.bottom + size * 2; y += size) {
+        /* even half-row */
+        saved_col = cell.x;
+        saved_row = row;
+        for (x = clip.left - dbl * 2 - x_phase; x < dbl * 2 + clip.right; x += dbl) {
+            if (cell.x >= 0 && cell.x < lpConfig->width && row >= 0 && row < lpConfig->height) {
+                tile = GameMap[row][cell.x];
+            } else {
+                tile.field_10 = 0;
             }
-            iVar2 = iVar2 + 1;
-            iVar8 = (local_24.left + iVar13 * -2) - local_50;
-            if (iVar8 < (int)(iVar13 * 2 + local_24.right)) {
-                iVar10 = iVar8 + iVar7;
-                iVar11 = iVar3;
-                local_2c = iVar2;
-                do {
-                    if (local_2c >= 0 && local_2c < (int)lpConfig->width && iVar11 >= 0 &&
-                        iVar11 < (int)lpConfig->height) {
-                        tile = *(struct MapTile *)&GameMap[iVar11][local_2c];
-                    } else {
-                        tile.flags_10 = 0;
-                    }
-                    if ((tile.flags_10 & 2) != 0) {
-                        PrintSprite((struct Sprite *)TileSpriteArray[(DAT_00805f48 & 0xff) + *(unsigned int *)DAT_00801a6c], iVar10, local_4c + iVar1, 0xff6868, 0);
-                    }
-                    local_2c = local_2c + 1;
-                    iVar8 = iVar8 + iVar13;
-                    iVar11 = iVar11 + -1;
-                    iVar10 = iVar10 + iVar13;
-                } while (iVar8 < (int)(iVar13 * 2 + local_24.right));
+            if (tile.field_10 & 2) {
+                PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *DAT_00801a6c], x, y, 0xff6868, 0);
             }
-            iVar3 = iVar3 + 1;
-            local_4c = local_4c + iVar9;
-            local_2c = iVar2;
-        } while (local_4c < (int)(iVar9 * 2 + local_24.bottom));
+            cell.x++;
+            row--;
+        }
+        /* odd half-row, offset by half a tile */
+        cell.x = saved_col + 1;
+        cell.y = saved_row;
+        for (x = clip.left - dbl * 2 - x_phase; x < dbl * 2 + clip.right; x += dbl) {
+            if (cell.x >= 0 && cell.x < lpConfig->width && cell.y >= 0 && cell.y < lpConfig->height) {
+                tile = GameMap[cell.y][cell.x];
+            } else {
+                tile.field_10 = 0;
+            }
+            if (tile.field_10 & 2) {
+                PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *DAT_00801a6c], x + half_x, y + half_y, 0xff6868, 0);
+            }
+            cell.x++;
+            cell.y--;
+        }
+        cell.x = saved_col + 1;
+        row = saved_row + 1;
     }
 }
 
@@ -401,7 +398,7 @@ LEGO_EXPORT void RenderView(void) {
     }
     SetClipping(&rect);
 
-    /* Scroll position -> first map tile of the view (same maths as FUN_0045ade0). */
+    /* Scroll position -> first map tile of the view (same maths as DrawMarkedTileHighlights). */
     h = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     w = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
     px = ScrollX >> 8;

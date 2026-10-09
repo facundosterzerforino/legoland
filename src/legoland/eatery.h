@@ -57,7 +57,7 @@ void EateryRemoveObject(unsigned int param_1, TileId tile, unsigned int param_3)
 void LoadOctopusCafeResources(struct EateryObj *obj);
 void OctopusCafeAddObject(unsigned int param_1, struct UserFlagsArg *param_2);
 void UnloadOctopusCafeResources();
-void OctopusCafeUpdate(int param_1);
+void OctopusCafeUpdate(Element *obj);
 void RenderOctopusCafe(int param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6);
 int Restaurant1_Save(void);
 int Restaurant1_Load(void);
