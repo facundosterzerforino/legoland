@@ -2131,12 +2131,11 @@ void FUN_00465850(struct AviFrame *frame) {
     unsigned short *s;
     unsigned short *p0;
     unsigned short *p1;
-    unsigned short v;
+    short v;
     int width;
     int height;
     int half;
     int rest;
-    int y;
     int x;
 
     dst = CurrentSurfaceDesc.lpSurface;
@@ -2148,11 +2147,13 @@ void FUN_00465850(struct AviFrame *frame) {
     half = rest / 2;
     rest = rest - half;
     row = frame->pixels + (height - 1) * width;
-    for (y = half; y > 0; y--) {
+    /* black band above the picture */
+    for (; half > 0; half--) {
         memset(dst, 0, 0x500);
         dst += CurrentSurfaceDesc.lPitch;
     }
-    for (y = height; y != 0; y--) {
+    /* each source pixel becomes a 2x2 block; the frame is stored bottom-up */
+    for (; height != 0; height--) {
         next = dst + CurrentSurfaceDesc.lPitch;
         s = row;
         p0 = (unsigned short *)dst;
@@ -2160,7 +2161,7 @@ void FUN_00465850(struct AviFrame *frame) {
         for (x = width; x > 0; x--) {
             v = *s;
             if (DisplayPixelFormat == 2) {
-                v = (v & 0x1f) | (v & 0xffe0) << 1;
+                v = (v & 0x1f) | (v & ~0x1f) << 1;
             }
             p0[0] = v;
             p1[0] = v;
@@ -2173,8 +2174,9 @@ void FUN_00465850(struct AviFrame *frame) {
         row -= width;
         dst += CurrentSurfaceDesc.lPitch * 2;
     }
+    /* black band below */
     dst = next + CurrentSurfaceDesc.lPitch;
-    for (y = rest; y > 0; y--) {
+    for (; rest > 0; rest--) {
         memset(dst, 0, 0x500);
         dst += CurrentSurfaceDesc.lPitch;
     }

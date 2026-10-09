@@ -1120,35 +1120,32 @@ struct BisectOut {
 // FUNCTION: LEGOLAND 0x0041df00
 float FUN_0041df00(unsigned char *obj, float t) {
     struct BisectPair s;
-    struct AnimOut *state = (struct AnimOut *)(obj + 0x20);
-    float f4;
-    float f8;
+    struct AnimOut anim;
     float lo;
     float hi;
-    float mid;
 
+    /* bisection on t in [0, t]: t itself holds the midpoint being tried */
     lo = 0.0f;
     hi = t;
+    anim = *(struct AnimOut *)(obj + 0x20);
     s.p = 0.0f;
-    s.q = state->kind;
-    f4 = state->f4;
-    f8 = state->f8;
+    s.q = anim.kind;
     while (hi - lo > DAT_004ab418) {
-        mid = (hi + lo) * 0.5f;
-        FUN_0041da10(obj, f4, obj + 0xc);
-        FUN_0041dad0((struct FloatHolder *)obj, f8);
-        FUN_00420310((struct VecOps *)(obj + 0x2c), &s, mid);
+        t = (hi + lo) * 0.5f;
+        FUN_0041da10(obj, anim.f4, obj + 0xc);
+        FUN_0041dad0((struct FloatHolder *)obj, anim.f8);
+        FUN_00420310((struct VecOps *)(obj + 0x2c), &s, t);
         if (*(float *)(obj + 0x24) > *(float *)(*(unsigned char **)(obj + 0x10) + 0x48)) {
-            hi = mid;
+            hi = t;
         } else {
-            lo = mid;
+            lo = t;
         }
     }
-    FUN_0041da10(obj, f4, obj + 0xc);
-    FUN_0041dad0((struct FloatHolder *)obj, f8);
-    mid = (hi + lo) * 0.5f;
-    FUN_00420310((struct VecOps *)(obj + 0x2c), &s, mid);
-    return mid;
+    FUN_0041da10(obj, anim.f4, obj + 0xc);
+    FUN_0041dad0((struct FloatHolder *)obj, anim.f8);
+    t = (hi + lo) * 0.5f;
+    FUN_00420310((struct VecOps *)(obj + 0x2c), &s, t);
+    return t;
 }
 
 // FUNCTION: LEGOLAND 0x0041e000

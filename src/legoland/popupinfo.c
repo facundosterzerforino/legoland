@@ -1470,44 +1470,46 @@ void FUN_004736e0(void) {
 
 // FUNCTION: LEGOLAND 0x004736f0
 void FUN_004736f0(void) {
-    int iVar1;
-    int iVar2;
-    int iVar3;
-    int iVar4;
-    struct PrintCtx ctx;
+    int x;
+    int y;
+    int i;
+    RECT rc;
+    RECT hit;
 
-    iVar1 = DAT_007fe014;
-    iVar3 = DAT_007fe010;
     if (DAT_00668d68 != 0) {
-        ctx.node = 0;
-        ctx.flags = 1;
-        ctx.field_8 = 0;
-        PrintSprite(CBBGLeftSprite, iVar3, iVar1, 0, (int *)&ctx);
-        iVar3 = iVar3 + 0x7a;
-        iVar2 = 0;
-        if (0 < DAT_00668964) {
-            do {
-                PrintSprite(CBBGCentreSprite, iVar3, iVar1, 0, (int *)&ctx);
-                iVar3 = iVar3 + 0x20;
-                iVar2 = iVar2 + 1;
-            } while (iVar2 < DAT_00668964);
+        struct PrintCtx ctx = {1};
+
+        y = DAT_007fe014;
+        x = DAT_007fe010;
+        /* the bar: left end, DAT_00668964 centre pieces, right end */
+        PrintSprite(CBBGLeftSprite, x, y, 0, (int *)&ctx);
+        x += 0x7a;
+        for (i = 0; i < DAT_00668964; i++) {
+            PrintSprite(CBBGCentreSprite, x, y, 0, (int *)&ctx);
+            x += 0x20;
         }
-        PrintSprite(CBBGRightSprite, iVar3, iVar1, 0, (int *)&ctx);
-        iVar3 = iVar3 + 0x4e;
-        PopUpInfoOkIcon->flags = PopUpInfoOkIcon->flags & 0xfffffbff;
-        PopUpInfoOkIcon->x = (short)(iVar3 - 0x4b);
+        PrintSprite(CBBGRightSprite, x, y, 0, (int *)&ctx);
+        x += 0x4e;
+        PopUpInfoOkIcon->flags &= ~0x400;
+        PopUpInfoOkIcon->x = (short)(x - 0x4b);
         PopUpInfoOkIcon->y = (short)DAT_007fe014 + 3;
-        CBCloseIcon->flags = CBCloseIcon->flags & 0xfffffbff;
-        CBCloseIcon->x = (short)(iVar3 - 0x27);
+        CBCloseIcon->flags &= ~0x400;
+        CBCloseIcon->x = (short)(x - 0x27);
         CBCloseIcon->y = (short)DAT_007fe014 + 3;
-        iVar2 = DAT_007fe010 + 0xc;
-        iVar4 = DAT_007fe014 + 6;
-        FUN_00455e50(DAT_00668968, iVar2, iVar4, (iVar2 + DAT_00668964 * 0x14 + 0x7a) - iVar2,
-            (iVar4 + 0x1b) - iVar4, 1, 5, 0xff0000, 0xffffff);
-        if ((CBCloseIcon->x + 0x24 < (int)MousePos.x) || ((int)MousePos.x < PopUpInfoOkIcon->x)) {
+        rc.left = DAT_007fe010 + 0xc;
+        rc.top = DAT_007fe014 + 6;
+        rc.right = rc.left + DAT_00668964 * 0x14 + 0x7a;
+        rc.bottom = rc.top + 0x1b;
+        FUN_00455e50(DAT_00668968, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 1, 5, 0xff0000, 0xffffff);
+        /* hit box of the bar: outside it, reset the OK/close icons */
+        hit.left = PopUpInfoOkIcon->x;
+        hit.right = CBCloseIcon->x + 0x24;
+        hit.top = y;
+        hit.bottom = y + 0x1b;
+        if (hit.right < (int)MousePos.x || (int)MousePos.x < hit.left) {
             SetPopUpOkCloseIconSprites();
         }
-        if ((iVar1 + 0x1b < (int)MousePos.y) || ((int)MousePos.y < iVar1)) {
+        if (hit.bottom < (int)MousePos.y || (int)MousePos.y < hit.top) {
             SetPopUpOkCloseIconSprites();
         }
     }

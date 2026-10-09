@@ -5837,43 +5837,41 @@ int FUN_00411650(struct FlumeSlot *slot) {
 
 // FUNCTION: LEGOLAND 0x00411680
 int AdvanceFlumeMover(struct FlumeMover *mover) {
-    volatile int next_y;
     struct FlumeNode *node = mover->node;
     struct FlumeNode *next;
-    int rev;
-    int flag;
     struct FlumeShape *shape = NULL;
     struct FlumeDims r;
-    register TileId tile;
+    TileId tile;
     float f;
+    int flag;
+    int rev;
     int dir;
     int dx;
     int dy;
-    volatile int sub;
 
     flag = 0;
     rev = 0;
     f = mover->f18 + mover->f20;
     if (f > 1.0) {
-        f = f - 1.0f;
+        f -= 1.0f;
         node = (struct FlumeNode *)node->field_8;
         flag = 1;
     }
     next = (struct FlumeNode *)node->field_8;
-    if (NULL == next) {
+    if (next == NULL) {
         return 0;
     }
+    /* as in the original, dir is left unset when next is on the same tile (dx == dy == 0) */
     tile = next->tile;
     dx = tile.pos.x - node->tile.pos.x;
-    next_y = tile.pos.y;
-    dy = next_y - node->tile.pos.y;
-    if (0 > dx) {
+    dy = tile.pos.y - node->tile.pos.y;
+    if (dx < 0) {
         dir = 7;
     }
     if (dx > 0) {
         dir = 3;
     }
-    if (0 > dy) {
+    if (dy < 0) {
         dir = 1;
     }
     if (dy > 0) {
@@ -5881,14 +5879,13 @@ int AdvanceFlumeMover(struct FlumeMover *mover) {
     }
     switch (node->mode) {
     case 1:
-        sub = node->submode;
-        if (sub == 1) {
+        if (node->submode == 1) {
             shape = &DAT_004c2b00;
             if (dir == 3) {
                 rev = 1;
             }
         }
-        if (sub == 0) {
+        if (node->submode == 0) {
             shape = &DAT_004c2b58;
             if (dir == 1) {
                 rev = 1;
@@ -5896,26 +5893,25 @@ int AdvanceFlumeMover(struct FlumeMover *mover) {
         }
         break;
     case 2:
-        sub = node->submode;
-        if (sub == 3) {
+        if (node->submode == 3) {
             shape = &DAT_004c2c08;
-            if (7 == dir) {
+            if (dir == 7) {
                 rev = 1;
             }
         }
-        if (!sub) {
+        if (node->submode == 0) {
             shape = &DAT_004c2be8;
             if (dir == 1) {
                 rev = 1;
             }
         }
-        if (1 == sub) {
+        if (node->submode == 1) {
             shape = &DAT_004c2bc0;
             if (dir == 3) {
                 rev = 1;
             }
         }
-        if (sub == 2) {
+        if (node->submode == 2) {
             shape = &DAT_004c2c10;
             if (dir == 5) {
                 rev = 1;
@@ -5923,6 +5919,7 @@ int AdvanceFlumeMover(struct FlumeMover *mover) {
         }
         break;
     }
+    /* as in the original, r is left unset when no shape applies */
     if (shape != NULL) {
         r = FUN_004112f0(shape, f, rev);
     }
