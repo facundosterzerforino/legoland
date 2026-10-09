@@ -748,54 +748,51 @@ void FUN_00471d90(void) {
 
 // FUNCTION: LEGOLAND 0x00471f10
 void FUN_00471f10(void) {
-    int iVar1;
-    int iVar2;
-    int uVar3;
-    int uVar4;
-    int iVar5;
-    int iVar6;
-    int iVar7;
-    int local_1c;
+    int x;
+    int y;
+    int count;
+    int innerX;
+    int cx;
+    int cy;
+    int row;
+    int col;
     struct PrintCtx ctx;
 
-    iVar2 = PopUpInfoY;
-    iVar1 = PopUpInfoX;
     ctx.node = 0;
     ctx.flags = 1;
     ctx.field_8 = 0;
-    uVar4 = *(unsigned int *)&PopupInfoLineCount & 0xff;
-    PrintSprite(PuBgMainSprite, PopUpInfoX, PopUpInfoY, 0, (int *)&ctx);
-    iVar6 = iVar1 + 0xbc;
-    iVar7 = iVar6;
-    for (uVar3 = uVar4; uVar3 > 0; uVar3 = uVar3 - 1) {
-        PrintSprite(PuBgCentreTopSprite, iVar7, iVar2, 0, (int *)&ctx);
-        iVar7 = iVar7 + 0x20;
+    count = *(unsigned int *)&PopupInfoLineCount & 0xff;
+    x = PopUpInfoX;
+    y = PopUpInfoY;
+    PrintSprite(PuBgMainSprite, x, y, 0, (int *)&ctx);
+    innerX = x + 0xbc;
+    cx = innerX;
+    for (col = count; col > 0; col--) {
+        PrintSprite(PuBgCentreTopSprite, cx, y, 0, (int *)&ctx);
+        cx += 0x20;
     }
-    PrintSprite(PuBgRightTopSprite, iVar7, iVar2, 0, (int *)&ctx);
-    if (uVar4 != 0) {
-        iVar7 = iVar2 + 99;
-        local_1c = uVar4;
-        do {
-            PrintSprite(PuBgLeftMidSprite, iVar1, iVar7, 0, (int *)&ctx);
-            uVar3 = uVar4;
-            iVar5 = iVar6;
-            do {
-                PrintSprite(PuBgCentreMidSprite, iVar5, iVar7, 0, (int *)&ctx);
-                iVar5 = iVar5 + 0x20;
-                uVar3 = uVar3 - 1;
-            } while (uVar3 != 0);
-            PrintSprite(PuBgRightMidSprite, iVar5, iVar7, 0, (int *)&ctx);
-            iVar7 = iVar7 + 0x14;
-            local_1c = local_1c - 1;
-        } while (local_1c != 0);
+    PrintSprite(PuBgRightTopSprite, cx, y, 0, (int *)&ctx);
+    if (count != 0) {
+        cy = y + 99;
+        for (row = count; row > 0; row--) {
+            PrintSprite(PuBgLeftMidSprite, x, cy, 0, (int *)&ctx);
+            cx = innerX;
+            for (col = count; col > 0; col--) {
+                PrintSprite(PuBgCentreMidSprite, cx, cy, 0, (int *)&ctx);
+                cx += 0x20;
+            }
+            PrintSprite(PuBgRightMidSprite, cx, cy, 0, (int *)&ctx);
+            cy += 0x14;
+        }
     }
-    iVar7 = iVar2 + 99 + uVar4 * 0x14;
-    PrintSprite(PuBgRightBtmSprite, iVar1, iVar7, 0, (int *)&ctx);
-    for (; uVar4 > 0; uVar4 = uVar4 - 1) {
-        PrintSprite(PuBgCentreBtmSprite, iVar6, iVar7, 0, (int *)&ctx);
-        iVar6 = iVar6 + 0x20;
+    cy = y + 99 + count * 0x14;
+    PrintSprite(PuBgRightBtmSprite, x, cy, 0, (int *)&ctx);
+    cx = innerX;
+    for (col = count; col > 0; col--) {
+        PrintSprite(PuBgCentreBtmSprite, cx, cy, 0, (int *)&ctx);
+        cx += 0x20;
     }
-    PrintSprite(PuBgLeftBtmSprite, iVar6, iVar7, 0, (int *)&ctx);
+    PrintSprite(PuBgLeftBtmSprite, cx, cy, 0, (int *)&ctx);
 }
 
 // FUNCTION: LEGOLAND 0x00472090

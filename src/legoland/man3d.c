@@ -601,25 +601,24 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
     RECT bounds;
     RECT clip;
     struct VideoArg vid;
-    unsigned int ptr;
 
-    bounds.top = person->field_20;
-    person->field_10 = 0x3f800000;
-    person->field_14 = 0x3f800000;
-    person->field_18 = 0x3f800000;
-    bounds.left = person->field_1c;
+    person->scale.x = 1.0f;
+    person->scale.y = 1.0f;
+    person->scale.z = 1.0f;
+    /* 160x120 render box at the person's screen position */
+    bounds.left = person->screen.x;
+    bounds.top = person->screen.y;
     bounds.right = bounds.left + 0xa0;
     bounds.bottom = bounds.top + 0x78;
-    clip.left = SPRITE_ClipRect.left;
-    clip.top = SPRITE_ClipRect.top;
-    clip.right = SPRITE_ClipRect.right - 1;
-    clip.bottom = SPRITE_ClipRect.bottom - 1;
+    clip = SPRITE_ClipRect;
+    clip.right--;
+    clip.bottom--;
     if (IntersectRect(&clip, &bounds, &clip) != 0) {
-        OffsetRect(&clip, -(int)person->field_1c, -(int)person->field_20);
+        OffsetRect(&clip, -person->screen.x, -person->screen.y);
         if (GetVideoSurface(&vid) != 0) {
-            ptr = (unsigned int)vid.bits + person->field_20 * vid.pitch + person->field_1c * 2;
-            FUN_00485f30(ptr, vid.pitch, vid.width, vid.height);
-            FUN_00488700((unsigned int)vid.bits, &MousePos);
+            FUN_00485f30((unsigned int)vid.bits + person->screen.y * vid.pitch + person->screen.x * 2, vid.pitch,
+                vid.width, vid.height);
+            FUN_00488700((unsigned int)vid.bits, (struct RenderViewport *)&MousePos);
             Render_SetViewport(&clip);
             __asm { fstcw word ptr [DAT_00638358] }
             __asm {fldcw word ptr[DAT_004b7abc]} FUN_00440a30(person);
@@ -631,16 +630,15 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
                 switch (person->character) {
                 case 2:
                     Hover.type = 0x307;
-                    Hover.ptr = person->bloke;
-                    return;
+                    break;
                 case 3:
                     Hover.type = 0x308;
-                    Hover.ptr = person->bloke;
-                    return;
+                    break;
                 default:
                     Hover.type = 0x306;
-                    Hover.ptr = person->bloke;
+                    break;
                 }
+                Hover.ptr = person->bloke;
             }
         }
     }

@@ -704,83 +704,67 @@ LEGO_EXPORT void RenderView(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045bcd0
-LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
-    int iVar2;
-    int iVar1;
-    int iVar4;
-    register int iVar3;
-    volatile int iVar5;
-    int iVar6;
-    char cVar7;
-    int iVar8;
-    int iVar9;
+LEGO_EXPORT void PointToIsoPlane(int *pt, int *out) {
+    short tile_h;
+    short tile_w;
+    int half_w;
+    int half_h;
     int x;
-    int half9;
-    volatile int y;
-    short size;
+    int y;
+    int col;
+    int row;
+    int rem_x;
+    int rem_y;
+    int quadrant;
 
-    int y_raw;
-    volatile int sprite;
-    int y_in;
-    int out1;
-    int sprite_raw;
-    sprite_raw = TileSpriteArray[DAT_00667ca4];
-    sprite = sprite_raw;
-    size = ((struct TileSprite *)sprite)->size;
-    iVar8 = (short)(size * 2);
-    iVar4 = iVar8 + 1 >> 1;
-    iVar9 = (int)size;
-    x = *param_1;
-    y_in = param_1[1];
-    y_raw = y_in;
-    y = y_raw;
-    iVar1 = (x + iVar4) / iVar8;
-    half9 = iVar9 + 1 >> 1;
-    iVar5 = (x + iVar4) % iVar8;
-    iVar6 = y % iVar9;
-    iVar2 = y / iVar9;
-    iVar3 = iVar1 + iVar2;
-    iVar2 = iVar2 - iVar1;
-    *out = iVar3;
-    out[1] = iVar2;
-    if (iVar5 < 0) {
-        iVar5 = iVar5 + -2 + iVar8;
-        out[1] = iVar2 + 1;
-        *out = iVar3 + -1;
+    tile_h = (short)TileSpriteArray[DAT_00667ca4]->height;
+    tile_w = tile_h * 2;
+    half_w = (tile_w + 1) >> 1;
+    half_h = (tile_h + 1) >> 1;
+    x = pt[0] + half_w;
+    y = pt[1];
+    col = x / tile_w;
+    rem_x = x % tile_w;
+    row = y / tile_h;
+    rem_y = y % tile_h;
+    out[0] = row + col;
+    out[1] = row - col;
+    if (rem_x < 0) {
+        rem_x += tile_w - 2;
+        out[1] = row - col + 1;
+        out[0] = row + col - 1;
     }
-    if (0 > iVar6) {
-        iVar6 = iVar6 + -1 + iVar9;
-        out[1] = out[1] + -1;
-        *out = *out + -1;
+    if (rem_y < 0) {
+        out[1]--;
+        out[0]--;
+        rem_y += tile_h - 1;
     }
-    cVar7 = (iVar5 >= iVar4) + '\x01';
-    if (half9 < iVar6) {
-        cVar7 = (iVar4 <= iVar5) + '\x03';
+    /* which quarter of the tile rectangle the point is in */
+    quadrant = (rem_x >= half_w) + 1;
+    if (rem_y > half_h) {
+        quadrant += 2;
     }
-    switch (cVar7) {
-    case '\x01':
-        if (iVar5 < iVar4 + iVar6 * -2) {
-            *out = *out + -1;
-            return;
+    switch (quadrant) {
+    case 1:
+        if (rem_x < half_w - rem_y * 2) {
+            out[0]--;
         }
         break;
-    case '\x02':
-        if (iVar4 + iVar6 * 2 <= iVar5) {
-            out[1] = out[1] + -1;
-            return;
+    case 2:
+        if (rem_x >= half_w + rem_y * 2) {
+            out[1]--;
         }
         break;
-    case '\x03':
-        if (iVar5 < iVar4 + (iVar6 - iVar9) * 2) {
-            out1 = out[1];
-            out[1] = 1 + out1;
-            return;
+    case 3:
+        if (rem_x < half_w + (rem_y - tile_h) * 2) {
+            out[1]++;
         }
         break;
-    case '\x04':
-        if (iVar4 + (iVar9 - iVar6) * 2 <= iVar5) {
-            *out = *out + 1;
+    case 4:
+        if (rem_x >= half_w + (tile_h - rem_y) * 2) {
+            out[0]++;
         }
+        break;
     }
 }
 
