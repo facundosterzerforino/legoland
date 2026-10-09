@@ -554,7 +554,7 @@ void CoptersAddObject(Element *obj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00404630
-void CoptersPlaceRider(struct CopterNode *node, volatile int index) {
+void CoptersPlaceRider(struct CopterNode *node, int index) {
     struct Point p2;
     struct Point p3;
     struct Point p1;
@@ -564,11 +564,13 @@ void CoptersPlaceRider(struct CopterNode *node, volatile int index) {
     struct PosFrame *frame;
     struct Person *person;
     float scale;
+    int tmp; /* float bits in, 16.16 fixed point out */
+    int yoff;
     int layer;
     int s;
     int i;
     int j;
-    int r;
+    int r; /* matrix row */
 
     entry = &node->layer[index];
     base = GetScreenCoordsForObject((TileId *)node, ActiveCopterRide);
@@ -578,33 +580,33 @@ void CoptersPlaceRider(struct CopterNode *node, volatile int index) {
         switch (index) {
         case 0:
             layer = 0;
-            index = 0xeb;
+            yoff = 0xeb;
             break;
         case 1:
             layer = 1;
-            index = 0xe6;
+            yoff = 0xe6;
             break;
         case 2:
             layer = 2;
-            index = 0xe6;
+            yoff = 0xe6;
             break;
         case 3:
             layer = 3;
-            index = 0xd7;
+            yoff = 0xd7;
             break;
         case 4:
             layer = 4;
-            index = 0xe1;
+            yoff = 0xe1;
             break;
         }
         p1 = GetRenderOffsetForLayer(CopterModelLayers, s);
         sprite = GetSpriteForLayer(CopterModelLayers, s);
         AdjustOffsetForViewMode(&p1);
-        p2.y = (int)CoptersPos->entries[layer][entry->frame].pos[1] + index;
+        p2.y = (int)CoptersPos->entries[layer][entry->frame].pos[1] + yoff;
         AdjustOffsetForViewMode(&p2);
         p2.x = sprite->width >> 1;
-        p3.x = base.x + p1.x + p2.x;
-        p3.y = base.y + p1.y + p2.y;
+        p3.x = p1.x + base.x + p2.x;
+        p3.y = p1.y + base.y + p2.y;
         AdjustBlokePosition(&p3);
         person = entry->rider->person;
         SetPersonPosition(person, p3.x, p3.y);
@@ -616,13 +618,14 @@ void CoptersPlaceRider(struct CopterNode *node, volatile int index) {
         for (i = 0; i < 3; i++) {
             r = DAT_004b42a0[i];
             for (j = 0; j < 3; j++) {
-                *(float *)&index = CoptersPos->entries[layer][entry->frame].mat[r][DAT_004b42ac[j]];
+                /* float -> 16.16 fixed, rounded by fistp (inline asm in the original too) */
+                *(float *)&tmp = CoptersPos->entries[layer][entry->frame].mat[r][DAT_004b42ac[j]];
                 __asm {
-                fld dword ptr index
+                fld dword ptr tmp
                 fmul scale
-                fistp index
+                fistp tmp
                 }
-                person->m[j * 3 + i] = DAT_004b42b8[j] * DAT_004b42c4[r] * index;
+                person->m[j * 3 + i] = DAT_004b42b8[j] * DAT_004b42c4[r] * tmp;
             }
         }
     }

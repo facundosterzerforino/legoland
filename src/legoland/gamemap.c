@@ -660,17 +660,17 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
 
 // FUNCTION: LEGOLAND 0x0045a660
 void FUN_0045a660(void) {
-    unsigned short *out_coords;
-    struct MapCell *cell;
-    struct MapCell *src;
-    struct MapCellObjKind *tile;
+    unsigned short *link; /* where the next anchor tile of the chain is written */
+    MapElement *cell;
+    MapElement *origin;
+    struct Ride *ride;
     struct MapRenderOrderEntry *entry;
-    int sx;
-    int sy;
-    unsigned int roads;
-    struct Point pt;
+    int ox;
+    int oy;
+    Element *roads;
+    Point pt;
 
-    out_coords = &DAT_007febb8;
+    link = &DAT_007febb8;
     pt.x = 0;
     pt.y = 0;
     roads = ElemID("DRIVING SCHOOL ROADS");
@@ -678,34 +678,38 @@ void FUN_0045a660(void) {
     memset(MapRenderOrderList, 0, sizeof(MapRenderOrderList));
     while (pt.x < lpConfig->width) {
         if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
-            cell = (struct MapCell *)&GameMap[pt.y][pt.x];
+            cell = &GameMap[pt.y][pt.x];
         } else {
             cell = NULL;
         }
-        if ((cell->flags.word & 0xa0) == 0 && ((cell->flags.word & 8) == 0 || cell->obj != (struct MapCellObj *)roads)) {
+        if ((cell->flags & 0xa0) == 0 && ((cell->flags & 8) == 0 || cell->field_0 != roads)) {
             pt.y++;
         } else {
-            sx = cell->src.b.byte_4;
-            sy = cell->src.b.byte_5;
-            if (sx >= 0 && sx < lpConfig->width && sy >= 0 && sy < lpConfig->height) {
-                src = (struct MapCell *)&GameMap[sy][sx];
+            ox = cell->field_4;
+            oy = cell->field_5;
+            if (ox >= 0 && ox < lpConfig->width && oy >= 0 && oy < lpConfig->height) {
+                origin = &GameMap[oy][ox];
             } else {
-                src = NULL;
+                origin = NULL;
             }
-            tile = src->obj->ride;
+            ride = origin->field_0->ride;
             entry = &MapRenderOrderList[DAT_00801408];
             DAT_00801408++;
             if (DAT_00801408 == 0x1000) {
                 DAT_00801408 = 0;
             }
-            entry->coords = cell->src.coords;
+            entry->coords = cell->anchor.id;
             entry->x = (unsigned char)pt.x;
+            entry->height = ride->footprint.y1 + oy + 1;
             entry->flag = 1;
-            entry->height = tile->footprint_y1 + sy + 1;
-            if (pt.x == tile->footprint_x1 + sx || pt.x == lpConfig->width - 1) {
-                *out_coords = src->src.coords;
-                FUN_0045a430(cell->src.coords, &pt.x);
-                out_coords = &src->field_6;
+            if (pt.x == ride->footprint.x1 + ox) {
+                *link = origin->anchor.id;
+                link = &origin->next.id;
+                FUN_0045a430(cell->anchor.id, &pt.x);
+            } else if (pt.x == lpConfig->width - 1) {
+                *link = origin->anchor.id;
+                link = &origin->next.id;
+                FUN_0045a430(cell->anchor.id, &pt.x);
             } else {
                 pt.x++;
                 FUN_0045a3e0(&pt.x);
@@ -716,7 +720,7 @@ void FUN_0045a660(void) {
             FUN_0045a3e0(&pt.x);
         }
     }
-    *out_coords = 0;
+    *link = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0045a850
