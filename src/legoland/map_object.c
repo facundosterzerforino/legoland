@@ -2882,13 +2882,13 @@ void FUN_00462c60(void) {
     for (node = (struct Overlay *)OverlayList; node != 0; node = node->next) {
         if (node->field_10 & 0xff00) {
             if (BridgesData != 0) {
-                sample = *(int *)(*(int *)((int)BridgesData + 8) + (*(short *)&node->field_10 & 0xff) * 4);
+                sample = *(int *)(*(int *)((int)BridgesData + 8) + (*(volatile unsigned int *)&node->field_10 & 0xff) * 4);
             } else {
                 node->sprite = 0;
                 continue;
             }
         } else {
-            sample = *(int *)(*(int *)(OverlayILF + 8) + (*(short *)&node->field_10 & 0xff) * 4);
+            sample = *(int *)(*(int *)(OverlayILF + 8) + (*(volatile unsigned int *)&node->field_10 & 0xff) * 4);
         }
         node->sprite = sample;
         if (sample != 0) {
