@@ -48,7 +48,7 @@ void KillRestMaskSpritesAndMoneySFX();
 void LoadRestaurant2Resources(struct EateryObj *obj);
 void Restaurant2AddObject(unsigned int param_1, unsigned char *param_2);
 void Restaurant2RemoveObject(unsigned int arg1, TileId tile, unsigned int arg3, unsigned int arg4, unsigned int arg5);
-void Restaurant2Update(int param_1);
+void Restaurant2Update(Element *obj);
 void *GetRestaurant2SpriteInfo(struct EateryObj *obj, unsigned short a2);
 void RenderRestaurant2(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
 void UnloadRestaurant2Resources();

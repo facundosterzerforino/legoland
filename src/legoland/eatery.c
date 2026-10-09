@@ -1123,7 +1123,7 @@ void FUN_0042fa90(struct RideNode *node, int dir, int idx) {
 }
 
 // FUNCTION: LEGOLAND 0x0042fb00
-void FUN_0042fb00(unsigned int param_1) {
+void FUN_0042fb00(unsigned short param_1) {
     unsigned char *b = (unsigned char *)&param_1;
     struct SampleParams params;
     params.x = b[0];
@@ -1134,7 +1134,7 @@ void FUN_0042fb00(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042fb60
-void FUN_0042fb60(unsigned int param_1) {
+void FUN_0042fb60(unsigned short param_1) {
     unsigned char *b = (unsigned char *)&param_1;
     struct SampleParams params;
     params.field_0 = 2;
@@ -1145,15 +1145,21 @@ void FUN_0042fb60(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042fbb0
-void Restaurant2Update(int param_1) {
-    unsigned char *pos;
-    char cv;
-    int bloke;
-    unsigned int *node;
-    unsigned int *next;
+void Restaurant2Update(Element *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    TileId *tile;
     struct SaveBlock *st;
-    char f7;
-    unsigned char f8;
+    char dir;
+    int x;
+    int y;
+    /* per-tile restaurant state, copied out of the SaveBlock */
+    signed char f6;
+    signed char f7;
+    signed char f8;
+    signed char f9;
     int fc;
     unsigned char f10;
     unsigned char f11;
@@ -1165,18 +1171,19 @@ void Restaurant2Update(int param_1) {
     int f28;
     int f2c;
     int f30;
+    int f34;
     int f38;
     int f3c;
-    int x;
-    int y;
-    int ride = *(int *)(param_1 + 0xc);
-    int t;
-    node = *(unsigned int **)(ride + 0xcc);
+    int state;
+    int lift;
+
+    /* move the blokes queuing/eating in each restaurant */
+    node = ride->riders;
     while (node != NULL) {
-        next = (unsigned int *)*node;
-        bloke = node[2];
-        pos = (unsigned char *)(node + 3);
-        st = FindSaveBlock((unsigned short *)pos);
+        tile = &node->tile;
+        next = node->next;
+        bloke = node->rider;
+        st = FindSaveBlock(&tile->id);
         if (st == NULL) {
             return;
         }
@@ -1195,337 +1202,308 @@ void Restaurant2Update(int param_1) {
         f30 = st->field_30;
         f38 = st->field_38;
         f3c = st->field_3c;
-        x = *(int *)(ride + 0xc) + (unsigned int)*pos;
-        y = (unsigned int)*((unsigned char *)node + 0xd) + *(int *)(ride + 0x10);
-        if (*(short *)(bloke + 0xe) == 0) {
-            cv = *(char *)(bloke + 0x60);
-            switch (cv) {
+        x = ride->x + tile->pos.x;
+        y = ride->y + tile->pos.y;
+        if (bloke->low_level_action == 0) {
+            switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)(bloke + 0x62) |= 8;
-                *(int *)(bloke + 0x24) = x * 0x100 + 0x3c8;
-                y = (y + -2) * 0x100;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                fc = fc + 1;
-                *(int *)(bloke + 0x5c) = 300;
-                *(unsigned short *)(bloke + 0x44) = (unsigned short)*(unsigned char *)(bloke + 0x7f);
-                *(unsigned char *)(bloke + 0x7f) = 0x15;
-                *(char *)(bloke + 0x60) += 1;
+                bloke->flags |= 8;
+                bloke->dest.x = (x << 8) + 0x3c8;
+                bloke->dest.y = (y - 2) << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->field_5c = 300;
+                bloke->field_44 = bloke->speed;
+                bloke->speed = 0x15;
+                bloke->param_action++;
+                fc++;
                 break;
             case 1:
-                *(int *)(bloke + 0x24) = x * 0x100 + 0x3c8;
-                y = (y + -4) * 0x100 + fc * 100;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->dest.x = (x << 8) + 0x3c8;
+                bloke->dest.y = ((y - 4) << 8) + fc * 100;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 2:
                 if (f10 < 3 && f20 != 0) {
-                    x = x * 0x100 + 0x2ce;
-                    *(int *)(bloke + 0x28) = y * 0x100 + -0x39c;
-                    *(int *)(bloke + 0x24) = x;
-                    cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(short *)(bloke + 0xe) = 7;
-                    *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                    f10 = f10 + 1;
-                    *(char *)(bloke + 0x60) += 1;
+                    bloke->dest.y = (y << 8) - 0x39c;
+                    bloke->dest.x = (x << 8) + 0x2ce;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->low_level_action = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->param_action++;
+                    f10++;
                 }
                 break;
             case 3:
-                *(int *)(bloke + 0x24) = x * 0x100 + 0x16a;
-                y = y * 0x100 + -0x39c;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->dest.x = (x << 8) + 0x16a;
+                bloke->dest.y = (y << 8) - 0x39c;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 4:
-                *(int *)(bloke + 0x24) = x * 0x100 + 0x16a;
-                y = y * 0x100 + -0x532 + (unsigned int)f10 * 100;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                fc = fc + -1;
-                f14 = f14 + 1;
-                *(char *)(bloke + 0x60) += 1;
+                bloke->dest.x = (x << 8) + 0x16a;
+                bloke->dest.y = (y << 8) - 0x532 + f10 * 100;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                fc--;
+                f14++;
                 if (f10 == 3 || fc == 0) {
                     f20 = 0;
                     f14 = 3;
                 }
                 break;
             case 5:
-                if (2 < f14) {
+                if (f14 >= 3) {
                     f24 = 1;
                     f14 = 0;
                 }
-                SetPersonDirection(node[4], 5);
-                *(char *)(bloke + 0x60) += 1;
+                SetPersonDirection(node->person, 5);
+                bloke->param_action++;
                 break;
             case 6:
-                if (f18 == 2) {
-                    if (f28 == 0) {
-                        FUN_0042fa90((struct RideNode *)node, 1, (int)f7);
-                    } else {
-                        *(char *)(bloke + 0x60) = cv + 1;
-                    }
+                if (f18 == 2 && f28 == 0) {
+                    FUN_0042fa90(node, 1, f7);
                 } else if (f28 != 0) {
-                    *(char *)(bloke + 0x60) = cv + 1;
+                    bloke->param_action++;
                 }
                 break;
             case 7:
                 if (f2c != 0) {
-                    *(int *)(bloke + 0x24) = x * 0x100 + -0x79c;
-                    y = y * 0x100 + -0xc9c;
-                    *(int *)(bloke + 0x28) = y;
-                    cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(short *)(bloke + 0xe) = 7;
-                    *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                    *(char *)(bloke + 0x60) += 1;
+                    bloke->dest.x = (x << 8) - 0x79c;
+                    bloke->dest.y = (y << 8) - 0xc9c;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->low_level_action = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->param_action++;
                 }
                 break;
             case 8:
-                *(int *)(bloke + 0x24) = (x + -10) * 0x100;
-                y = y * 0x100 + -0xc9c;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->dest.x = (x - 10) << 8;
+                bloke->dest.y = (y << 8) - 0xc9c;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 9:
-                if (f10 == 0) {
+                if (f10-- == 0) {
                     f2c = 0;
                 }
-                *(char *)(bloke + 0x60) = cv + 1;
-                f10 = f10 - 1;
+                bloke->param_action++;
                 break;
             case 10:
-                t = *(int *)(bloke + 0x5c);
-                y = t + -1;
-                *(int *)(bloke + 0x5c) = y;
-                if (t < 0) {
-                    *(char *)(bloke + 0x60) = cv + 1;
-                } else if (y == 0xfa) {
-                    BuyItem(param_1, pos, 1);
+                if (bloke->field_5c-- < 0) {
+                    bloke->param_action++;
+                } else if (bloke->field_5c == 250) {
+                    BuyItem((struct BuyItemArg *)obj, tile, 1);
                 }
                 break;
             case 11:
-                if (f18 < 2 && f11 < 3) {
-                    *(int *)(bloke + 0x68) = x * 0x100 + -0xa9c;
-                    *(char *)(bloke + 0x60) = cv + 1;
-                    *(unsigned int *)(bloke + 0x6c) = y * 0x100 + -0xd2c + (unsigned int)f11 * 100;
-                    f11 = f11 + 1;
+                if (f18 <= 1 && f11 < 3) {
+                    bloke->pos.x = (x << 8) - 0xa9c;
+                    bloke->pos.y = (y << 8) - 0xd2c + f11 * 100;
+                    bloke->param_action++;
+                    f11++;
                 }
                 break;
             case 12:
-                if (f11 == 0 || f18 != 0) {
-                    if (f18 != 2) {
-                        if (f28 != 0) {
-                            *(char *)(bloke + 0x60) = cv + 1;
-                        }
-                    } else if (f28 == 0) {
-                        FUN_0042fa90((struct RideNode *)node, 2, (int)f7);
-                    } else {
-                        *(char *)(bloke + 0x60) = cv + 1;
-                    }
-                } else if (fc == 0 && 100 < f1c++) {
+                if (f11 != 0 && f18 == 0 && fc == 0 && f1c++ > 100) {
                     f18 = 2;
                     f7 = 0;
                     f38 = 0x143;
                     f3c = 0;
                     f2c = 0;
                     f28 = 0;
-                    FUN_0042fa90((struct RideNode *)node, 2, (int)f7);
+                }
+                if (f18 == 2 && f28 == 0) {
+                    FUN_0042fa90(node, 2, f7);
+                } else if (f28 != 0) {
+                    bloke->param_action++;
                 }
                 break;
             case 13:
                 if (f30 != 0) {
-                    *(int *)(bloke + 0x24) = (x + -2) * 0x100;
-                    y = y * 0x100 + -0x46a;
-                    *(int *)(bloke + 0x28) = y;
-                    cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(short *)(bloke + 0xe) = 7;
-                    *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                    *(char *)(bloke + 0x60) += 1;
+                    bloke->dest.x = (x - 2) << 8;
+                    bloke->dest.y = (y << 8) - 0x46a;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->low_level_action = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->param_action++;
                 }
                 break;
             case 14:
-                *(int *)(bloke + 0x24) = (x + -3) * 0x100;
-                y = y * 0x100 + -0x46a;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                f11 = f11 - 1;
-                *(unsigned char *)(bloke + 0x7f) = *(unsigned char *)(bloke + 0x44);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->dest.x = (x - 3) << 8;
+                bloke->dest.y = (y << 8) - 0x46a;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->speed = (unsigned char)bloke->field_44;
+                bloke->param_action++;
+                f11--;
                 break;
             case 15:
-                RemoveBlokeFromRide((void *)ride, node);
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+                RemoveBlokeFromRide(ride, node);
+                bloke->flags &= 0xfff7;
+                break;
             }
         }
-        st->field_8 = f8;
         st->field_7 = f7;
-        st->field_11 = f11;
+        st->field_8 = f8;
         st->field_c = fc;
-        st->field_1c = f1c;
         st->field_10 = f10;
+        st->field_11 = f11;
         st->field_14 = f14;
-        st->field_28 = f28;
         st->field_18 = f18;
+        st->field_1c = f1c;
         st->field_20 = f20;
-        st->field_38 = f38;
         st->field_24 = f24;
+        st->field_28 = f28;
         st->field_2c = f2c;
         st->field_30 = f30;
+        st->field_38 = f38;
         st->field_3c = f3c;
         node = next;
     }
-    {
-        struct SaveBlock *v = SaveBlockList;
-        unsigned char counter;
-        char vf6;
-        int vf18;
-        char vf9;
-        int vfc;
-        char v8;
-        char v11;
-        int prev_fc = 0;
-        while (v != NULL) {
-            counter = v->field_9;
-            v8 = v->field_8;
-            vfc = v->field_c;
-            vf18 = v->field_18;
-            v11 = v->field_11;
-            vf6 = v->field_6;
-            f7 = v->field_7;
-            vf9 = v->field_9;
-            (void)vf9;
-            f24 = v->field_24;
-            f2c = v->field_2c;
-            f1c = v->field_1c;
-            f30 = v->field_30;
-            f28 = v->field_28;
-            f38 = v->field_38;
-            f3c = v->field_3c;
-            switch (v->field_18) {
-            case 0:
-                if (vfc != 0) {
-                    if (counter < 9) {
-                        counter = counter + 1;
-                    } else {
-                        vf18 = 1;
-                        counter = 8;
-                        f28 = 1;
-                    }
-                }
-                break;
-            case 1:
-                if (f24 != 0) {
-                    f28 = 0;
-                    if ((char)counter < 0) {
-                        vf6 = 0;
-                        f24 = 0;
-                        vf18 = 2;
-                        f7 = 0;
-                        f38 = 0x143;
-                        f3c = 0;
-                        FUN_0042fb00(v->value);
-                    } else {
-                        counter = counter - 1;
-                    }
-                }
-                break;
-            case 2:
-                if (f7 < 0x21) {
-                    f7 = f7 + 1;
-                    f38 = f38 - (&DAT_004b685c)[f7];
-                    f3c = f3c + DAT_004b68e0[f7];
+
+    /* animate each restaurant's lift/doors state machine */
+    for (st = SaveBlockList; st != NULL; st = st->next) {
+        f9 = st->field_9;
+        f6 = st->field_6;
+        f7 = st->field_7;
+        f8 = st->field_8;
+        fc = st->field_c;
+        f10 = st->field_10;
+        f11 = st->field_11;
+        state = st->field_18;
+        f1c = st->field_1c;
+        f20 = st->field_20;
+        f24 = st->field_24;
+        lift = st->field_28;
+        f2c = st->field_2c;
+        f30 = st->field_30;
+        f34 = st->field_34;
+        f38 = st->field_38;
+        f3c = st->field_3c;
+        switch (state) {
+        case 0:
+            if (fc != 0) {
+                if (f8 <= 8) {
+                    f8++;
                 } else {
-                    f30 = 1;
-                    f1c = 0;
-                    vf18 = 4;
-                    vf6 = 0;
-                    FUN_0042fb60(v->value);
-                }
-                break;
-            case 3:
-                if (vfc != 0) {
-                    if (f7 < 0) {
-                        f30 = 0;
-                        vf18 = 0;
-                        vfc = 0;
-                        f7 = 0;
-                        counter = 0;
-                        vf6 = 0;
-                        FUN_0042fb60(v->value);
-                    } else {
-                        f30 = 0;
-                        f7 = f7 - 1;
-                    }
-                }
-                break;
-            case 4:
-                if (vf6 < 9) {
-                    vf6 = vf6 + 1;
-                } else {
-                    vf18 = 5;
-                    f2c = 1;
-                    f30 = 1;
-                    vf6 = 8;
-                }
-                break;
-            case 5:
-                if (v8 == 0 && v11 == 0) {
-                    f2c = 0;
-                    if (vf6 < 0) {
-                        vfc = 1;
-                        vf18 = 3;
-                        f7 = 0x20;
-                        FUN_0042fb00(v->value);
-                    } else {
-                        vf6 = vf6 - 1;
-                    }
+                    state = 1;
+                    f8 = 8;
+                    f20 = 1;
                 }
             }
-            counter = counter + 1;
-            if (0x1f < (char)counter) {
-                counter = 0;
+            break;
+        case 1:
+            if (f24 != 0) {
+                f20 = 0;
+                if (f8 >= 0) {
+                    f8--;
+                } else {
+                    f24 = 0;
+                    state = 2;
+                    f6 = 0;
+                    f7 = 0;
+                    f38 = 0x143;
+                    f3c = 0;
+                    FUN_0042fb00(st->value);
+                }
             }
-            v->field_7 = f7;
-            v->field_9 = counter;
-            v->field_8 = v8;
-            v->field_11 = v11;
-            v->field_1c = f1c;
-            v->field_30 = f30;
-            v->field_24 = f24;
-            v->field_2c = f2c;
-            v->field_6 = vf6;
-            v->field_18 = vf18;
-            v->field_28 = f28;
-            v->field_c = vfc;
-            v->field_38 = f38;
-            v->field_3c = f3c;
-            prev_fc = vfc;
-            (void)prev_fc;
-            v = v->next;
+            break;
+        case 2:
+            if (f7 <= 0x20) {
+                f7++;
+                f38 -= (&DAT_004b685c)[f7];
+                f3c += DAT_004b68e0[f7];
+            } else {
+                lift = 1;
+                f1c = 0;
+                state = 4;
+                f6 = 0;
+                FUN_0042fb60(st->value);
+            }
+            break;
+        case 4:
+            if (f6 <= 8) {
+                f6++;
+            } else {
+                state = 5;
+                f2c = 1;
+                f30 = 1;
+                f6 = 8;
+            }
+            break;
+        case 5:
+            if (f10 <= 0 && f11 <= 0) {
+                f30 = 0;
+                f2c = 0;
+                if (f6 >= 0) {
+                    f6--;
+                } else {
+                    f34 = 1;
+                    state = 3;
+                    f7 = 0x20;
+                    FUN_0042fb00(st->value);
+                }
+            }
+            break;
+        case 3:
+            if (f34 != 0) {
+                if (f7 >= 0) {
+                    lift = 0;
+                    f7--;
+                } else {
+                    lift = 0;
+                    state = 0;
+                    f6 = 0;
+                    f34 = 0;
+                    f7 = 0;
+                    f8 = 0;
+                    FUN_0042fb60(st->value);
+                }
+            }
+            break;
         }
+        f9++;
+        if (f9 > 0x1f) {
+            f9 = 0;
+        }
+        st->field_6 = f6;
+        st->field_7 = f7;
+        st->field_8 = f8;
+        st->field_9 = f9;
+        st->field_c = fc;
+        st->field_10 = f10;
+        st->field_11 = f11;
+        st->field_18 = state;
+        st->field_1c = f1c;
+        st->field_20 = f20;
+        st->field_24 = f24;
+        st->field_28 = lift;
+        st->field_2c = f2c;
+        st->field_30 = f30;
+        st->field_34 = f34;
+        st->field_38 = f38;
+        st->field_3c = f3c;
     }
 }
 

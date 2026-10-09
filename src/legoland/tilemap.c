@@ -355,33 +355,32 @@ LEGO_EXPORT void RenderView(void) {
     struct HitInfo hit_a;
     struct HitInfo hit_b;
     int bounds[4];
-    /* iVar1..iVar8 are scratch: tile metrics while scanning the map, strip maths while drawing. */
-    int b[6];
+    int b[4];
     struct Ride *rides;
     RECT rect;
-    int ya;
-    int savey;
-    int iVar5;
-    int iVar4;
-    int iVar3;
-    int xlim;
-    int q;
     int count;
     TileId uid;
     struct Point pt;
-    int rx;
-    int h;
-    int iVar1;
-    int iVar2;
-    int hw;
+    int w; /* tile width in pixels */
+    int h; /* tile height in pixels */
+    int hw; /* half width */
+    int hh; /* half height */
+    int q; /* scroll x in tiles */
+    int ty; /* scroll y in tiles */
+    int px; /* scroll position in pixels */
+    int py;
+    int rx; /* pixel offset inside the tile */
     int ry;
-    unsigned char sel;
-    int sx;
+    int sel; /* quadrant of (rx, ry) inside the tile */
+    int xlim;
+    int ylim;
+    int x;
+    int y;
+    int savex;
+    int savey;
+    int i;
     struct MapElement *tile;
     struct MapElement *anchor;
-    int i;
-    struct Ride *ride;
-    RideSpriteInfo *info;
 
     rect.left = lpConfig->view_x;
     rect.top = lpConfig->view_y;
@@ -404,59 +403,60 @@ LEGO_EXPORT void RenderView(void) {
 
     /* Scroll position -> first map tile of the view (same maths as FUN_0045ade0). */
     h = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
-    iVar1 = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
-    iVar2 = (h + 1) >> 1;
-    ry = (ScrollY >> 8) - iVar2;
-    q = (ScrollX >> 8) / iVar1;
-    hw = (iVar1 + 1) >> 1;
-    rx = (ScrollX >> 8) % iVar1;
-    pt.y = ry / h;
-    ry = ry % h;
-    pt.x = pt.y + -3 + q;
-    pt.y = pt.y - q;
-    sel = (rx >= hw) + '\x01';
-    if (ry > iVar2) {
-        sel = (rx >= hw) + '\x03';
+    w = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
+    px = ScrollX >> 8;
+    q = px / w;
+    hw = (w + 1) >> 1;
+    hh = (h + 1) >> 1;
+    py = (ScrollY >> 8) - hh;
+    rx = px % w;
+    ty = py / h;
+    ry = py % h;
+    pt.x = q + ty - 3;
+    pt.y = ty - q;
+    sel = (rx >= hw) + 1;
+    if (ry > hh) {
+        sel += 2;
     }
     switch (sel) {
     case 1:
-        if (rx < hw + ry * -2) {
-            pt.x = pt.x + -1;
-            rx = rx + hw;
-            ry = ry + iVar2;
+        if (rx < hw - ry * 2) {
+            pt.x--;
+            rx += hw;
+            ry += hh;
         }
         break;
     case 2:
-        if (hw + ry * 2 <= rx) {
-            rx = rx - hw;
-            pt.y = pt.y + -1;
-            ry = ry + iVar2;
+        if (rx >= hw + ry * 2) {
+            pt.y--;
+            rx -= hw;
+            ry += hh;
         }
         break;
     case 3:
-        if (hw + (ry - h) * 2 <= rx) {
-            break;
+        if (rx < hw + (ry - h) * 2) {
+            pt.y++;
+            rx += hw;
+            ry -= hh;
         }
-        pt.y = pt.y + 1;
-        rx = rx + hw;
-        ry = ry - iVar2;
         break;
     case 4:
-        if (rx < hw + (h - ry) * 2) {
-            break;
+        if (rx >= hw + (h - ry) * 2) {
+            pt.x++;
+            rx -= hw;
+            ry -= hh;
         }
-        pt.x = pt.x + 1;
-        rx = rx - hw;
-        ry = ry - iVar2;
+        break;
     }
 
-    /* Walk the visible tiles in diagonal rows; list each object once (0x400 marks it as listed). */
-    xlim = iVar1 * 2 + rect.right;
-    iVar3 = lpConfig->view_height + rect.bottom;
-    for (iVar5 = (rect.top - h * 2) - ry; iVar5 < iVar3; iVar5 += h) {
-        q = pt.x;
+    /* Walk the visible tiles in diagonal rows, two tiles per screen column (x+1, then y-1);
+       list each object once (0x400 marks it as listed). */
+    ylim = lpConfig->view_height + rect.bottom;
+    xlim = w * 2 + rect.right;
+    for (y = rect.top - h * 2 - ry; y < ylim; y += h) {
+        savex = pt.x;
         savey = pt.y;
-        for (sx = (rect.left - iVar1 * 2) - rx; sx < xlim; sx += iVar1) {
+        for (x = rect.left - w * 2 - rx; x < xlim; x += w) {
             tile = GetTile(pt.x, pt.y);
             if (tile != NULL) {
                 FUN_0045b170(&pt);
@@ -490,7 +490,7 @@ LEGO_EXPORT void RenderView(void) {
             }
             pt.y--;
         }
-        pt.x = q + 1;
+        pt.x = savex + 1;
         pt.y = savey + 1;
     }
 
@@ -503,161 +503,187 @@ LEGO_EXPORT void RenderView(void) {
 
     /* Draw every listed object, sliced into vertical strips for depth sorting. */
     list[count] = NULL;
-    if (count > 0) {
-        for (i = 0; i < count; i++) {
-            struct RenderSprite loc = {0};
-            int step;
-            int iVar6;
-            int iVar7;
-            int iVar8;
-            RECT *part;
-            RECT *prev;
-            unsigned int k;
+    for (i = 0; i < count; i++) {
+        struct RenderSprite loc = {0};
+        struct Ride *ride;
+        RideSpriteInfo *info;
+        unsigned short flags;
+        int color; /* strip code: twice the smaller corner offset; drawing: tint colour */
+        int step; /* depth key step between strips */
+        RECT *prev;
+        int left; /* screen x of the object's left corner */
+        int half;
+        int ya; /* depth key of the object's left corner */
+        int right; /* screen x of its right corner */
+        int yb; /* depth key of its right corner */
+        int dx_a;
+        int dx_b;
+        int key;
+        int quarter3;
+        RECT *part;
+        unsigned int k;
 
-            tile = list[i];
-            tile->flags &= 0xfbff;
-            if (tile->field_0 == NULL) {
-                continue;
-            }
-            ride = tile->field_0->ride;
-            ObjectPartCount = 0;
-            uid.id = tile->anchor.id;
+        tile = list[i];
+        tile->flags &= 0xfbff;
+        if (tile->field_0 == NULL) {
+            continue;
+        }
+        ride = tile->field_0->ride;
+        ObjectPartCount = 0;
+        pt.x = tile->field_4 + ride->footprint.x0;
+        uid = tile->anchor;
+        pt.y = tile->field_5 + ride->footprint.y1;
+        GetTileBounds(&pt, b);
+        left = b[0];
+        ya = ((b[1] + b[3]) >> 1) - lpConfig->view_y;
+        pt.x = tile->field_4 + ride->footprint.x1;
+        pt.y = tile->field_5 + ride->footprint.y0;
+        GetTileBounds(&pt, b);
+        right = b[2];
+        yb = ((b[1] + b[3]) >> 1) - lpConfig->view_y;
+        if (ya != yb) {
             pt.x = tile->field_4 + ride->footprint.x0;
-            pt.y = tile->field_5 + ride->footprint.y1;
-            GetTileBounds(&pt, b);
-            iVar1 = b[0];
-            ya = ((b[1] + b[3]) >> 1) - lpConfig->view_y;
-            pt.x = tile->field_4 + ride->footprint.x1;
             pt.y = tile->field_5 + ride->footprint.y0;
             GetTileBounds(&pt, b);
-            b[4] = b[2];
-            b[5] = ((b[1] + b[3]) >> 1) - lpConfig->view_y;
-            if (ya != b[5]) {
-                pt.x = tile->field_4 + ride->footprint.x0;
-                pt.y = tile->field_5 + ride->footprint.y0;
-                GetTileBounds(&pt, b);
-                iVar7 = (b[0] + b[2]) >> 1;
-                pt.x = tile->field_4 + ride->footprint.x1;
-                pt.y = tile->field_5 + ride->footprint.y1;
-                GetTileBounds(&pt, b);
-                iVar7 = iVar7 - iVar1;
-                iVar6 = ((b[0] + b[2]) >> 1) - iVar1;
-                if (iVar6 < iVar7) {
-                    iVar2 = iVar6 * 2;
-                    step = -(iVar2 / 4);
-                } else {
-                    iVar2 = iVar7 * 2;
-                    step = iVar2 / 4;
-                }
-                iVar3 = ya;
-                ObjectPartKey[ObjectPartCount] = iVar3;
-                iVar3 += step;
+            dx_a = (b[0] + b[2]) >> 1;
+            pt.x = tile->field_4 + ride->footprint.x1;
+            pt.y = tile->field_5 + ride->footprint.y1;
+            GetTileBounds(&pt, b);
+            dx_a -= left;
+            dx_b = ((b[0] + b[2]) >> 1) - left;
+            if (dx_b < dx_a) {
+                color = dx_b * 2;
+                step = -(color / 4);
+            } else {
+                color = dx_a * 2;
+                step = color / 4;
+            }
+            key = ya;
+            ObjectPartKey[ObjectPartCount] = key;
+            key += step;
+            part = &ObjectPartArray[ObjectPartCount++];
+            part->top = rect.top;
+            part->bottom = rect.bottom;
+            part->left = rect.left;
+            quarter3 = color * 3 / 4;
+            part->right = left + quarter3;
+            if (part->right + quarter3 < right) {
+                ObjectPartKey[ObjectPartCount] = key;
+                key += step;
                 part = &ObjectPartArray[ObjectPartCount++];
                 part->top = rect.top;
+                part->left = left + quarter3;
                 part->bottom = rect.bottom;
-                part->left = rect.left;
-                iVar8 = iVar2 * 3 / 4;
-                part->right = iVar1 + iVar8;
-                if (part->right + iVar8 < b[4]) {
-                    ObjectPartKey[ObjectPartCount] = iVar3;
-                    iVar3 += step;
+                part->right = color * 5 / 4 + left;
+            }
+            if (part->right + quarter3 < right) {
+                half = color / 2;
+                do {
+                    prev = part;
+                    ObjectPartKey[ObjectPartCount] = key;
+                    key += step;
                     part = &ObjectPartArray[ObjectPartCount++];
                     part->top = rect.top;
-                    part->left = iVar1 + iVar8;
                     part->bottom = rect.bottom;
-                    part->right = iVar2 * 5 / 4 + iVar1;
-                }
-                if (part->right + iVar8 < b[4]) {
-                    iVar2 = iVar2 / 2;
-                    do {
-                        prev = part;
-                        ObjectPartKey[ObjectPartCount] = iVar3;
-                        iVar3 += step;
-                        part = &ObjectPartArray[ObjectPartCount++];
-                        part->top = rect.top;
-                        part->bottom = rect.bottom;
-                        part->left = prev->left + iVar2;
-                        part->right = prev->right + iVar2;
-                    } while (part->right + iVar8 < b[4]);
-                }
-                ObjectPartKey[ObjectPartCount] = b[5];
-                prev = part;
-                part = &ObjectPartArray[ObjectPartCount++];
-                part->top = rect.top;
-                part->bottom = rect.bottom;
-                part->left = prev->right;
-                part->right = rect.right;
+                    part->left = prev->left + half;
+                    part->right = prev->right + half;
+                } while (part->right + quarter3 < right);
             }
-            if (ride->flags & 0x400) {
-                if (ride->cb_sprite == NULL) {
-                    continue;
-                }
-                info = ride->cb_sprite(ride->element, uid);
-                if (info == NULL) {
-                    continue;
-                }
-            } else {
-                loc.info.sprite = ride->layer;
-                loc.info.x = ride->field_14;
-                loc.info.y = ride->field_18;
-                loc.info.field_10 = 0;
-                info = &loc.info;
-            }
-            pt.x = tile->field_4;
-            pt.y = tile->field_5;
-            GetTileBounds(&pt, bounds);
-            if (tile->flags & 0x20) {
-                iVar1 = info->field_10;
-                hit_a.type = 0x104;
-                hit_a.element = tile->field_0;
-                hit_a.coords = tile->anchor.id;
-                if (ride->anim != NULL) {
-                    iVar4 = HALF(ride->anim_dx + info->x);
-                    iVar5 = HALF(ride->anim_dy + info->y);
-                    iVar4 = bounds[0] + iVar4;
-                    iVar5 = bounds[1] + iVar5;
-                    info->sprite = ride->anim;
-                    SetOverrideFrame(GetBuildAnimFrame(ride, uid));
-                } else {
-                    iVar4 = HALF(info->x);
-                    iVar5 = HALF(info->y);
-                    iVar4 = iVar4 + bounds[0];
-                    iVar5 = iVar5 + bounds[1];
-                    iVar1 = 0xff00;
-                }
-                if (ObjectPartCount != 0) {
-                    for (k = 0; k < ObjectPartCount; k++) {
-                        SortClippedSprite(info->sprite, iVar4, iVar5, ObjectPartKey[k], &ObjectPartArray[k], iVar1, &hit_a);
-                    }
-                } else {
-                    SortSprite(info->sprite, iVar4, iVar5, ya, iVar1, &hit_a);
-                }
-            } else {
-                iVar1 = info->field_10;
-                hit_b.type = 0x103;
-                hit_b.element = tile->field_0;
-                hit_b.coords = tile->anchor.id;
-                iVar4 = HALF(info->x);
-                iVar5 = HALF(info->y);
-                iVar4 = bounds[0] + iVar4;
-                iVar5 = bounds[1] + iVar5;
-                if ((tile->flags & 4) == 0) {
-                    if ((tile->flags & 0x200) && GetBlink()) {
-                        iVar1 = 0xff0000;
-                    } else if (MapStats.field_18c != 0 && (tile->flags & 0x100) && !GetBlink()) {
-                        iVar1 = 0xffff;
-                    }
-                }
-                if (ObjectPartCount != 0) {
-                    for (k = 0; k < ObjectPartCount; k++) {
-                        SortClippedSprite(info->sprite, iVar4, iVar5, ObjectPartKey[k], &ObjectPartArray[k], iVar1, &hit_b);
-                    }
-                } else {
-                    SortSprite(info->sprite, iVar4, iVar5, ya, iVar1, &hit_b);
-                }
-            }
-            ClearOverrideFrame();
+            ObjectPartKey[ObjectPartCount] = yb;
+            prev = part;
+            part = &ObjectPartArray[ObjectPartCount++];
+            part->top = rect.top;
+            part->bottom = rect.bottom;
+            part->left = prev->right;
+            part->right = rect.right;
         }
+        if (ride->flags & 0x400) {
+            if (ride->cb_sprite == NULL) {
+                continue;
+            }
+            info = ride->cb_sprite(ride->element, uid);
+            if (info == NULL) {
+                continue;
+            }
+        } else {
+            loc.info.sprite = ride->layer;
+            loc.info.x = ride->field_14;
+            loc.info.y = ride->field_18;
+            loc.info.field_10 = 0;
+            info = &loc.info;
+        }
+        pt.x = tile->field_4;
+        pt.y = tile->field_5;
+        GetTileBounds(&pt, bounds);
+        flags = tile->flags;
+        if (flags & 0x20) {
+            /* Under construction: building animation frame, green tint when idle. */
+            int sx;
+            int sy;
+            int hx; /* half the sprite offset */
+            int hy;
+
+            hit_a.element = tile->field_0;
+            color = info->field_10;
+            hit_a.coords = tile->anchor.id;
+            hit_a.type = 0x104;
+            if (ride->anim != NULL) {
+                hx = ride->anim_dx + info->x;
+                hy = ride->anim_dy + info->y;
+                hx = HALF(hx);
+                hy = HALF(hy);
+                sx = bounds[0] + hx;
+                sy = bounds[1] + hy;
+                info->sprite = ride->anim;
+                SetOverrideFrame(GetBuildAnimFrame(ride, uid));
+            } else {
+                sx = info->x;
+                sy = info->y;
+                sx = HALF(sx);
+                sy = HALF(sy);
+                sx += bounds[0];
+                sy += bounds[1];
+                color = 0xff00;
+            }
+            if (ObjectPartCount != 0) {
+                for (k = 0; k < ObjectPartCount; k++) {
+                    SortClippedSprite(info->sprite, sx, sy, ObjectPartKey[k], &ObjectPartArray[k], color, &hit_a);
+                }
+            } else {
+                SortSprite(info->sprite, sx, sy, ya, color, &hit_a);
+            }
+        } else {
+            int sx;
+            int sy;
+            int hx;
+            int hy;
+
+            color = info->field_10;
+            hit_b.element = tile->field_0;
+            hit_b.coords = tile->anchor.id;
+            hit_b.type = 0x103;
+            hx = info->x;
+            hy = info->y;
+            hx = HALF(hx);
+            hy = HALF(hy);
+            sx = bounds[0] + hx;
+            sy = hy + bounds[1];
+            if ((flags & 4) == 0) {
+                if ((flags & 0x200) && GetBlink()) {
+                    color = 0xff0000;
+                } else if (MapStats.field_18c != 0 && (tile->flags & 0x100) && !GetBlink()) {
+                    color = 0xffff;
+                }
+            }
+            if (ObjectPartCount != 0) {
+                for (k = 0; k < ObjectPartCount; k++) {
+                    SortClippedSprite(info->sprite, sx, sy, ObjectPartKey[k], &ObjectPartArray[k], color, &hit_b);
+                }
+            } else {
+                SortSprite(info->sprite, sx, sy, ya, color, &hit_b);
+            }
+        }
+        ClearOverrideFrame();
     }
     /* People and workers are sorted in with the objects. */
     RenderPeople();
@@ -666,7 +692,7 @@ LEGO_EXPORT void RenderView(void) {
     for (i = 0; i < count; i++) {
         tile = list[i];
         if (tile->field_0 != NULL && (tile->flags & 0x20)) {
-            uid.id = tile->anchor.id;
+            uid = tile->anchor;
             DoBuildEffects(tile->field_0->ride, uid);
         }
     }
