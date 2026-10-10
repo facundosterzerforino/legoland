@@ -786,8 +786,8 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     int x;
     int y;
     short s;
-    volatile int w;
-    volatile int h;
+    int w;
+    int h;
 
     int dir;
     dir = bloke->dir;
@@ -795,8 +795,10 @@ void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
     y = bloke->pos.y;
     x = bloke->pos.x;
     GetTileDimensions(&w, &h);
-    pt.x = (x - y) * w >> 9;
-    pt.y = (y + x) * h >> 9;
+    pt.x = (x - y) * w;
+    pt.y = (y + x) * h;
+    pt.x >>= 9;
+    pt.y >>= 9;
     s = (short)Get_XScroll();
     pt.x -= s;
     s = (short)Get_YScroll();
