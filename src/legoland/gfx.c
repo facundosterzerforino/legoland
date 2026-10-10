@@ -268,9 +268,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
 LEGO_EXPORT void LoadColourTable(void) {
     struct ResFile *file;
     PALETTEENTRY entries[256];
-    PALETTEENTRY *entry;
-    unsigned char *src;
-    unsigned short *lookup;
+    int i;
     LPDIRECTDRAW2 ddraw;
     LPDIRECTDRAWSURFACE surface;
 
@@ -279,20 +277,14 @@ LEGO_EXPORT void LoadColourTable(void) {
     RES_ReadFile(file, DAT_00813b20, 0x12);
     RES_ReadFile(file, DAT_00813b20, 0x300);
 
-    entry = entries;
-    lookup = DAT_00813e20;
-    src = &DAT_00813b20[1];
-    do {
-        unsigned char blue;
-        entry->peRed = src[1];
-        entry->peGreen = src[0];
-        blue = src[-1];
-        entry->peBlue = blue;
-        src += 3;
-        entry->peFlags = 4;
-        *lookup++ = (unsigned short)((((entry->peRed & 0xf8) << 5 | (entry->peGreen & 0xf8)) << 2) | (blue >> 3));
-        entry++;
-    } while ((int)src < (int)&DAT_00813b20[0x301]);
+    for (i = 0; i < 256; i++) {
+        entries[i].peRed = DAT_00813b20[i * 3 + 2];
+        entries[i].peGreen = DAT_00813b20[i * 3 + 1];
+        entries[i].peBlue = DAT_00813b20[i * 3];
+        DAT_00813e20[i] = (unsigned short)((((entries[i].peRed & 0xf8) << 5 | (entries[i].peGreen & 0xf8)) << 2) |
+            (entries[i].peBlue >> 3));
+        entries[i].peFlags = 4;
+    }
 
     RES_ReadFile(file, ColourLookupTable, 0x8000);
 

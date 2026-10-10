@@ -4986,10 +4986,10 @@ char CdDrivePath[4];
 unsigned int DAT_00813b08;
 
 // GLOBAL: LEGOLAND 0x00813b20
-unsigned char DAT_00813b20[0x300];
+unsigned char DAT_00813b20[0x300] = {0};
 
 // GLOBAL: LEGOLAND 0x00813e20
-unsigned short DAT_00813e20[256];
+unsigned short DAT_00813e20[256] = {0};
 
 // GLOBAL: LEGOLAND 0x00814020
 unsigned char ColourLookupTable[0x8000];
