@@ -89,6 +89,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
     // STRING: LEGOLAND 0x004b82ec
     is_bmp = _strcmpi(".lls", ext);
     if (is_bmp != 0) {
+        // STRING: LEGOLAND 0x004b82e4
         is_bmp = _strcmpi(".llz", ext);
     }
     if (is_bmp == 0) {
