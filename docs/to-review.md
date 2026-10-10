@@ -20,7 +20,10 @@ Each entry: where, what the trick is, why it is questionable, what would settle 
   The AdvanceFlumeMover lesson was to write the field read in each test, not cache it.
   If nothing works, decide whether volatile is acceptable and write the rule into CLAUDE.md.
 
-## 2. JoustRemoveObject — unnamed bit-field in a local struct (commit 7370049)
+## 2. JoustRemoveObject, LoadZoomer — unnamed bit-field in the sample source (commit 7370049)
+
+- **Update 2026-10-09:** now one shared type, `struct TileSampleSource` in `sound_music.h`, also used by LoadZoomer
+  (97.9% -> 100% with the same initialiser). It's no longer an ad-hoc anonymous struct.
 
 - **Trick:** the local `source` struct now has `unsigned int : 32;` for its second member, so the initialiser
   `{2, x, y}` skips it and the slot stays unwritten, like the original.

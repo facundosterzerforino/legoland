@@ -379,13 +379,6 @@ LEGO_EXPORT int SaveZoomer(void) {
     return 0;
 }
 
-struct ZoomerSampleParams {
-    int field_0;
-    unsigned char pad_4[4];
-    unsigned int field_8;
-    unsigned int field_c;
-};
-
 struct ZoomerTypeC {
     void *field_0;
     unsigned int field_4;
@@ -428,7 +421,6 @@ LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
     struct ZoomerCar *car;
     struct ZoomerData *data;
     struct ZoomerTypeC *tc;
-    struct ZoomerSampleParams params;
     unsigned int marker;
 
     if (!SaveGameRead(&marker, 4)) {
@@ -445,10 +437,10 @@ LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
         } else {
             PlaneRideNodeList = node;
         }
-        params.field_8 = ((unsigned char *)node)[0];
-        params.field_0 = 2;
-        params.field_c = ((unsigned char *)node)[1];
-        PauseSingleSample(PlayInstanceOfSample(*(void **)(DAT_004b79d0 + 8), 1, 1, &params));
+        {
+            struct TileSampleSource params = {2, ((unsigned char *)node)[0], ((unsigned char *)node)[1]};
+            PauseSingleSample(PlayInstanceOfSample(*(void **)(DAT_004b79d0 + 8), 1, 1, &params));
+        }
         prev = node;
         if (!SaveGameRead(&marker, 4)) {
             return 0;
