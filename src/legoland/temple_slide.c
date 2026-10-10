@@ -176,8 +176,8 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
             person = bloke->person;
             person->offset.x = bloke->screen_x;
             person->offset.y = bloke->screen_y;
-            person->offset.x += off1.x;
-            person->offset.y += off1.y;
+            person->offset.x += off2.x;
+            person->offset.y += off2.y;
             AdjustBlokePosition(&person->offset);
             person->screen.x = bloke->screen_x + off1.x + off2.x + pos.x;
             person->screen.y = bloke->screen_y + off1.y + off2.y + pos.y;
