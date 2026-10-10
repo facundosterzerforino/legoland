@@ -2881,13 +2881,7 @@ extern DDSURFACEDESC DAT_0066b5b0;
 // 0x0066b61c
 extern unsigned int DAT_0066b61c;
 // 0x0066b620
-extern int DAT_0066b620;
-// 0x0066b624
-extern int DAT_0066b624;
-// 0x0066b628
-extern int DAT_0066b628;
-// 0x0066b62c
-extern int DAT_0066b62c;
+extern RECT DAT_0066b620;
 // 0x0066b630
 extern void *DAT_0066b630;
 // 0x0066be40

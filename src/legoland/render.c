@@ -3182,10 +3182,6 @@ unsigned int FUN_00488820(unsigned int x, unsigned int y) {
 
 // FUNCTION: LEGOLAND 0x00488840
 LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, struct Sprite *param_2, int param_3, int param_4, int param_5) {
-    register unsigned int top;
-    register int left;
-    int right;
-    int left2;
     volatile int ptmp19;
     int w = (short)sprite->width;
     int h = (short)sprite->height;
@@ -3197,15 +3193,8 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     if (!DAT_00798590) {
         FUN_004887a0();
     }
-    right = DAT_00668108.right;
-    left2 = DAT_00668108.left;
-    left = left2;
+    DAT_0066b620 = DAT_00668108;
     DAT_0066b5b0 = CurrentSurfaceDesc;
-    DAT_0066b620 = left;
-    DAT_0066b62c = DAT_00668108.bottom;
-    DAT_0066b628 = right;
-    top = DAT_00668108.top;
-    DAT_0066b624 = top;
     CurrentSurfaceDesc.lpSurface = DAT_0066be54;
     CurrentSurfaceDesc.dwWidth = w;
     CurrentSurfaceDesc.dwHeight = h;
@@ -3243,11 +3232,8 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     DAT_0066be50->height = (short)h;
     DAT_00701e64->width = (short)w;
     DAT_00701e64->height = (short)h;
-    DAT_00668108.right = DAT_0066b628;
+    DAT_00668108 = DAT_0066b620;
     CurrentSurfaceDesc = DAT_0066b5b0;
-    DAT_00668108.top = DAT_0066b624;
-    DAT_00668108.left = DAT_0066b620;
-    DAT_00668108.bottom = DAT_0066b62c;
     return DAT_00701e64;
 }
 
