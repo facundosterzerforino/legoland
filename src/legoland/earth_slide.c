@@ -439,8 +439,8 @@ void EarthSlideRideUpdate(Element *obj) {
             return;
         }
         tx = tile->pos.x;
-        ty = tile->pos.y;
         x = ride->x + tx;
+        ty = tile->pos.y;
         y = ride->y + ty;
         exit.x = ride->field_24 + tx;
         exit.y = ride->field_25 + ty;

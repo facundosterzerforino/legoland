@@ -1126,8 +1126,8 @@ float FUN_0041df00(unsigned char *obj, float t) {
 
     /* bisection on t in [0, t]: t itself holds the midpoint being tried */
     lo = 0.0f;
-    hi = t;
     anim = *(struct AnimOut *)(obj + 0x20);
+    hi = t;
     s.p = 0.0f;
     s.q = anim.kind;
     while (hi - lo > DAT_004ab418) {

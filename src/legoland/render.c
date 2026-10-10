@@ -3193,8 +3193,8 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     if (!DAT_00798590) {
         FUN_004887a0();
     }
-    DAT_0066b620 = DAT_00668108;
     DAT_0066b5b0 = CurrentSurfaceDesc;
+    DAT_0066b620 = DAT_00668108;
     CurrentSurfaceDesc.lpSurface = DAT_0066be54;
     CurrentSurfaceDesc.dwWidth = w;
     CurrentSurfaceDesc.dwHeight = h;
@@ -3232,8 +3232,8 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     DAT_0066be50->height = (short)h;
     DAT_00701e64->width = (short)w;
     DAT_00701e64->height = (short)h;
-    DAT_00668108 = DAT_0066b620;
     CurrentSurfaceDesc = DAT_0066b5b0;
+    DAT_00668108 = DAT_0066b620;
     return DAT_00701e64;
 }
 

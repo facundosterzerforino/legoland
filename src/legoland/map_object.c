@@ -1712,9 +1712,9 @@ void DrawMapTiles(struct Point *pos, RECT *clip) {
     dy = pos->y - clip->top;
     SetClipping(clip);
     dbl = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
+    half_x = (dbl + 1) >> 1;
     size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     sx = pos->x / dbl;
-    half_x = (dbl + 1) >> 1;
     half_y = (size + 1) >> 1;
     mx = pos->x % dbl;
     row = (pos->y - half_y) / size;
@@ -1728,8 +1728,8 @@ void DrawMapTiles(struct Point *pos, RECT *clip) {
     switch (which) {
     case 1:
         if (mx < half_x - phase * 2) {
-            mx += half_x;
             cell[0]--;
+            mx += half_x;
             phase += half_y;
         }
         break;

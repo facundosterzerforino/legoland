@@ -568,8 +568,8 @@ void RemapTexCoordsToCell(struct CellContainer *param_1, int param_2, int param_
                     v0 = ((v0 - entry1->y) / entry1->field_5 * entry2->field_5 + entry2->y) / h;
                     u1 = ((u1 - entry1->x) / entry1->field_4 * entry2->field_4 + entry2->x) / w;
                     v1 = ((v1 - entry1->y) / entry1->field_5 * entry2->field_5 + entry2->y) / h;
-                    sv2 = ((sv2 - entry1->y) / entry1->field_5 * entry2->field_5 + entry2->y) / h;
                     u2 = ((u2 - entry1->x) / entry1->field_4 * entry2->field_4 + entry2->x) / w;
+                    sv2 = ((sv2 - entry1->y) / entry1->field_5 * entry2->field_5 + entry2->y) / h;
                     face->cell = entry2->field_0 + param_1->field_4;
                     face->uv[0] = u0;
                     face->uv[1] = v0;

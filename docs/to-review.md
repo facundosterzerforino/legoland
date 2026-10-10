@@ -47,6 +47,22 @@ Each entry: where, what the trick is, why it is questionable, what would settle 
   - run a full verify and diff per-function results against the run before each commit, to check nothing else
     dropped. (Done at the time for both commits: the only per-function change was the target function.)
 
+## 4. Permuter temporaries left in the source (`ptmpN`, often `volatile`)
+
+- **Where:** `grep -n 'ptmp[0-9]' src/legoland/*.c`. As of 2026-10-10 that finds castle.c (3 functions),
+  certificate.c, fort.c, gamemain.c and render.c (GenerateNewImageFromZBuffer `volatile int ptmp19`).
+- **Trick:** the permuter adds a temporary (`ptmp = expr; use(ptmp);`), sometimes `volatile` or `register`, to
+  force a separate load or a register choice. A few candidates were integrated with these still in.
+- **Why questionable:** they are dummy variables (the "no padding or dummy variables" rule) and `volatile` is a
+  hack. Nobody wrote them in the original.
+- **To settle:** for each one:
+  1. remove the temporary;
+  2. find the plain-C form that gives the same load (struct copy, reading the field in each use, statement
+     order);
+  3. failing that, accept the lower score.
+  In the 2026-10-10 permuter batch every candidate was cut down to its clean statement moves before
+  integrating. Most of the hacky gains turned out to come only from `volatile`.
+
 ## Also open (not tricks, just unfinished)
 
 - FUN_00412100 (ride_queue.c, 93.5%): only the final `start.x += dx` register choice differs.

@@ -1686,8 +1686,8 @@ void SubtractRectFromRectList(struct MapRect *param) {
                     slot->y1 = old.y1;
                 }
             }
-            i++;
             cur++;
+            i++;
         } while (i < DAT_00667d3c);
     }
 }
