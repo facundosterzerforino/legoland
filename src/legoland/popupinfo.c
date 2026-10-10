@@ -688,15 +688,12 @@ void FUN_00471d90(void) {
     int iVar5;
     int iVar6;
     RECT rc;
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {1};
     char local_14[20];
 
     iVar6 = PopUpInfoX;
     uVar4 = *(unsigned int *)&PopupInfoLineCount & 0xff;
     iVar5 = uVar4 * 0x14;
-    ctx.node = 0;
-    ctx.field_8 = 0;
-    ctx.flags = 1;
     iVar1 = PopUpInfoY + 0x48 + iVar5;
     PrintSprite(CBBGLeftSprite, PopUpInfoX, iVar1, 0, (int *)&ctx);
     iVar6 = iVar6 + 0x7a;
