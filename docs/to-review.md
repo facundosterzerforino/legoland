@@ -27,7 +27,8 @@ Each entry: where, what the trick is, why it is questionable, what would settle 
 - **Why questionable:** it's close to the "no padding or dummy variables" rule. On the other hand it models a
   real field (`SampleSource.bloke`, unused for type 2) and is commented.
 - **To settle:** check whether the shared `struct SampleSource` type can be used instead of the anonymous
-  struct, with field-by-field assignment that leaves `bloke` unset. If that matches, prefer it. Otherwise accept
+  struct, with field-by-field assignment that leaves `bloke` unset. (Tried 2026-10-09: SampleSource with field
+  stores in all three orders gives 92.5-95%; the stores never sink past the pushes. Only the initialiser does.) If that matches, prefer it. Otherwise accept
   the bit-field and say in CLAUDE.md that it's allowed.
 
 ## 3. Global definitions moved/initialised for layout (commits 9e94251, 693de2d)
@@ -41,7 +42,7 @@ Each entry: where, what the trick is, why it is questionable, what would settle 
 - **To settle:**
   - confirm the new order matches the original addresses;
   - run a full verify and diff per-function results against the run before each commit, to check nothing else
-    dropped.
+    dropped. (Done at the time for both commits: the only per-function change was the target function.)
 
 ## Also open (not tricks, just unfinished)
 

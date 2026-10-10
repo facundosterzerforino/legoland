@@ -363,8 +363,7 @@ unsigned char FUN_0048cc30(void *param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x0048cd50
 LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
-    int bx;
-    int by;
+    RECT rc;
 
     DeleteIcon->flags &= ~0x400;
     if (param_2 != 0) {
@@ -379,9 +378,11 @@ LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
         DeleteIcon->x = icon->x + 0xff;
     }
     SetIconSprite(DeleteIcon, RegDeleteSprite);
-    bx = DeleteIcon->x;
-    by = DeleteIcon->y;
-    if (MousePos.x < bx + 0x24 && bx < MousePos.x && MousePos.y < by + 0x1b && by < MousePos.y) {
+    rc.left = DeleteIcon->x;
+    rc.top = DeleteIcon->y;
+    rc.right = rc.left + 0x24;
+    rc.bottom = rc.top + 0x1b;
+    if (MousePos.x < rc.right && rc.left < MousePos.x && MousePos.y < rc.bottom && rc.top < MousePos.y) {
         SetIconSprite(DeleteIcon, RegDeleteOnSprite);
     }
 }
