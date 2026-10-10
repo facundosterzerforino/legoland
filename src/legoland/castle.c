@@ -11001,6 +11001,7 @@ float FUN_00429cf0(unsigned int x) {
     float v[3];
     float w[3];
     float *c;
+    float d;
 
     DAT_00615fcc++;
     FUN_00429a80(DAT_00615f84, 1, x, (struct Struct429a80B *)v);
@@ -11008,11 +11009,11 @@ float FUN_00429cf0(unsigned int x) {
     v[0] = v[0] - c[0];
     v[1] = v[1] - c[1];
     v[2] = v[2] - c[2];
-    if (v[2] * v[2] + v[1] * v[1] + v[0] * v[0] > DAT_00615fdc) {
+    if ((d = v[2] * v[2] + v[1] * v[1] + v[0] * v[0]) > DAT_00615fdc) {
         DAT_00615fe4++;
         return 1.0f;
     }
-    if (DAT_00615fd0 > DAT_00615fd4 && v[2] * v[2] + v[1] * v[1] + v[0] * v[0] < DAT_00615fe0) {
+    if (DAT_00615fd0 > DAT_00615fd4 && d < DAT_00615fe0) {
         return FLOAT_004ab468;
     }
     FUN_00429b90(DAT_00615f84, 1, x, (unsigned int)w);
