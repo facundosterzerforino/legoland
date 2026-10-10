@@ -389,10 +389,7 @@ LEGO_EXPORT void LightUpthisDeleteIcon(struct IconNode *icon, int param_2) {
 
 // FUNCTION: LEGOLAND 0x0048ce20
 LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
-    struct IconNode *a;
-    struct IconNode *b;
-    int x;
-    int y;
+    RECT rc;
 
     if (PopUpOkIcon) {
         SetIconSprite(PopUpOkIcon, PuOkSprite);
@@ -402,23 +399,25 @@ LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) {
     } else {
         SetIconSprite(PopUpCloseIcon, PopUpCloseSprite);
     }
-    a = PopUpOkIcon;
-    if (a) {
-        x = a->x;
-        y = a->y;
-        if (MousePos.x < x + 0x24 && x < MousePos.x && MousePos.y < y + 0x1b && y < MousePos.y) {
-            SetIconSprite(a, PuOkOnSprite);
+    if (PopUpOkIcon) {
+        rc.left = PopUpOkIcon->x;
+        rc.top = PopUpOkIcon->y;
+        rc.right = rc.left + 0x24;
+        rc.bottom = rc.top + 0x1b;
+        if (MousePos.x < rc.right && rc.left < MousePos.x && MousePos.y < rc.bottom && rc.top < MousePos.y) {
+            SetIconSprite(PopUpOkIcon, PuOkOnSprite);
         }
     }
-    b = PopUpCloseIcon;
-    x = b->x;
-    y = b->y;
-    if (MousePos.x < x + 0x24 && x < MousePos.x && MousePos.y < y + 0x1b && y < MousePos.y) {
+    rc.left = PopUpCloseIcon->x;
+    rc.top = PopUpCloseIcon->y;
+    rc.right = rc.left + 0x24;
+    rc.bottom = rc.top + 0x1b;
+    if (MousePos.x < rc.right && rc.left < MousePos.x && MousePos.y < rc.bottom && rc.top < MousePos.y) {
         if (NewProfilePopUpShown) {
-            SetIconSprite(b, ClosePopUpOnSprite);
+            SetIconSprite(PopUpCloseIcon, ClosePopUpOnSprite);
             return;
         }
-        SetIconSprite(b, PuCloseOnSprite);
+        SetIconSprite(PopUpCloseIcon, PuCloseOnSprite);
     }
 }
 
