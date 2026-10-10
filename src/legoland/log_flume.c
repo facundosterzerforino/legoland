@@ -1832,21 +1832,18 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
     struct Point pt;
     int top;
     float f;
-    int x0;
-    int y0;
-    int x1;
-    int y1;
+    RECT rc;
 
-    x0 = rect->var_0 + tile.pos.x;
-    x1 = rect->var_8 + tile.pos.x;
-    y1 = rect->var_c + tile.pos.y;
-    y0 = rect->var_4 + tile.pos.y;
-    pt.x = x0;
-    pt.y = y0;
+    rc.left = rect->var_0 + tile.pos.x;
+    rc.right = rect->var_8 + tile.pos.x;
+    rc.bottom = rect->var_c + tile.pos.y;
+    rc.top = rect->var_4 + tile.pos.y;
+    pt.x = rc.left;
+    pt.y = rc.top;
     GetTileBounds(&pt, bounds);
     top = bounds[1];
-    pt.x = x1;
-    pt.y = y1;
+    pt.x = rc.right;
+    pt.y = rc.bottom;
     GetTileBounds(&pt, bounds);
     f = (float)(y - top) / ((float)(bounds[3] - top + 1) * scale);
     if (f < FLOAT_004ab390) {
