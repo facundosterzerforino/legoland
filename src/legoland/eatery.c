@@ -2020,11 +2020,12 @@ void OctopusCafeUpdate(Element *obj) {
             continue;
         case 1:
         case 2:
-        case 3:
-        case 4:
             if (bloke->param_action == 2 && bloke->field_5c-- >= 0) {
                 continue;
             }
+            /* fall through */
+        case 3:
+        case 4:
             BuyItem((struct BuyItemArg *)obj, tile, 1);
             idx = DAT_004b6a34[bloke->param_action + (bloke->field_36 >> 1) * 4];
             if (idx == -1) {
