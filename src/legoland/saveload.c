@@ -187,8 +187,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
                     goto fail;
                 }
                 if (SaveGameWrite(elem->name, len) == 0) {
-                    // STRING: LEGOLAND 0x004bc9e8
                     {
+                        // STRING: LEGOLAND 0x004bc9e8
                         LogPrintf("Element name write failed %s", elem->name);
                         goto fail;
                     }
@@ -196,8 +196,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
                 SavedElementTable[k++] = elem;
                 flags = elem->flags & 0x3000e;
                 if (SaveGameWrite(&flags, 4) == 0) {
-                    // STRING: LEGOLAND 0x004bc9c4
                     {
+                        // STRING: LEGOLAND 0x004bc9c4
                         LogPrintf("Flags of interest write failed %s", elem->name);
                         goto fail;
                     }
@@ -215,15 +215,15 @@ LEGO_EXPORT int SaveGame(char *filename) {
             LLIDB_FindElementFromDataPtr(tab[i], (unsigned int *)&elem, 0);
             len = strlen(elem->name);
             if (SaveGameWrite(&len, 4) == 0) {
-                // STRING: LEGOLAND 0x004bc980
                 {
+                    // STRING: LEGOLAND 0x004bc980
                     LogPrintf("TSF element length write failed %s, %d", elem->name, len);
                     goto fail;
                 }
             }
             if (SaveGameWrite(elem->name, len) == 0) {
-                // STRING: LEGOLAND 0x004bc95c
                 {
+                    // STRING: LEGOLAND 0x004bc95c
                     LogPrintf("TSF Element name writer failed %s", elem->name);
                     goto fail;
                 }
@@ -254,8 +254,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
                 DrawWatchSprite();
                 if ((tile.flags & 0x8a8) != 0) {
                     if (FindeIneList((union SavedElement *)&tile) == 0) {
-                        // STRING: LEGOLAND 0x004bc8d8
                         {
+                            // STRING: LEGOLAND 0x004bc8d8
                             LogPrintf("Failed to locate Object instance at (%d,%d)", x, y);
                             goto fail;
                         }
@@ -280,8 +280,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
                     tile.field_a = 0;
                 }
                 if (SaveGameWrite(&tile, 0x14) == 0) {
-                    // STRING: LEGOLAND 0x004bc8ac
                     {
+                        // STRING: LEGOLAND 0x004bc8ac
                         LogPrintf("Failed to write mapinfo struct at (%d,%d)", x, y);
                         goto fail;
                     }
@@ -368,8 +368,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
             DrawWatchSprite();
             num = GetBlokeNum(bloke);
             if (SaveGameWrite(&num, 4) == 0) {
-                // STRING: LEGOLAND 0x004bc764
                 {
+                    // STRING: LEGOLAND 0x004bc764
                     LogPrintf("Bloke Num (d) Save Failed", num);
                     goto fail;
                 }
@@ -446,16 +446,16 @@ LEGO_EXPORT int SaveGame(char *filename) {
             BlokeSaveBuffer.prev_action = bloke->prev_action;
             BlokeSaveBuffer.field_30 = bloke->person->field_30;
             if (SaveGameWrite(&BlokeSaveBuffer, sizeof(BlokeSaveBuffer)) == 0) {
-                // STRING: LEGOLAND 0x004bc74c
                 {
+                    // STRING: LEGOLAND 0x004bc74c
                     LogPrintf("Bloke data failed (%d)", num);
                     goto fail;
                 }
             }
             if (BlokeSaveBuffer.block_34[8] != 0) {
                 if (SaveGameWrite((void *)BlokeSaveBuffer.block_34[8], 0x48) == 0) {
-                    // STRING: LEGOLAND 0x004bc730
                     {
+                        // STRING: LEGOLAND 0x004bc730
                         LogPrintf("Bloke BNV path data (%d)", num);
                         goto fail;
                     }
@@ -549,16 +549,16 @@ LEGO_EXPORT int SaveGame(char *filename) {
             SaveGameWrite(ride->element->name, 8);
             if (ride->type != 2 && ride->type != 0) {
                 if (SaveGameWrite(ride->counters, lpConfig->max_blokes) == 0) {
-                    // STRING: LEGOLAND 0x004bc5c4
                     {
+                        // STRING: LEGOLAND 0x004bc5c4
                         LogPrintf("BeenOn Flags for %s Save Failed", ride->element->name);
                         goto fail;
                     }
                 }
             }
             if (SaveGameWrite(&ride->field_8, 4) == 0) {
-                // STRING: LEGOLAND 0x004bc5b0
                 {
+                    // STRING: LEGOLAND 0x004bc5b0
                     LogPrintf("Count for Object %s", ride->element->name);
                     goto fail;
                 }
@@ -568,30 +568,30 @@ LEGO_EXPORT int SaveGame(char *filename) {
                 count++;
             }
             if (SaveGameWrite(&count, 4) == 0) {
-                // STRING: LEGOLAND 0x004bc598
                 {
+                    // STRING: LEGOLAND 0x004bc598
                     LogPrintf("Instance Count for %s", ride->element->name);
                     goto fail;
                 }
             }
             for (inst = ride->instances; inst != 0; inst = inst->next) {
                 if (SaveGameWrite(&inst->flags, 4) == 0) {
-                    // STRING: LEGOLAND 0x004bc57c
                     {
+                        // STRING: LEGOLAND 0x004bc57c
                         LogPrintf("Flags for instance of %s", ride->element->name);
                         goto fail;
                     }
                 }
                 if (SaveGameWrite(&inst->uid, 4) == 0) {
-                    // STRING: LEGOLAND 0x004bc560
                     {
+                        // STRING: LEGOLAND 0x004bc560
                         LogPrintf("Objuid for instance of %s", ride->element->name);
                         goto fail;
                     }
                 }
                 if (SaveGameWrite(&inst->field_10, 4) == 0) {
-                    // STRING: LEGOLAND 0x004bc540
                     {
+                        // STRING: LEGOLAND 0x004bc540
                         LogPrintf("TickCount for instance of %s", ride->element->name);
                         goto fail;
                     }
@@ -602,8 +602,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
                 count++;
             }
             if (SaveGameWrite(&count, 4) == 0) {
-                // STRING: LEGOLAND 0x004bc51c
                 {
+                    // STRING: LEGOLAND 0x004bc51c
                     LogPrintf("Num Blokes On Ride for object %s", ride->element->name);
                     goto fail;
                 }
@@ -612,15 +612,15 @@ LEGO_EXPORT int SaveGame(char *filename) {
                 int num;
                 num = GetBlokeNum(rnode->rider);
                 if (SaveGameWrite(&num, 4) == 0) {
-                    // STRING: LEGOLAND 0x004bc500
                     {
+                        // STRING: LEGOLAND 0x004bc500
                         LogPrintf("Bloke Num for bloke on %s", ride->element->name);
                         goto fail;
                     }
                 }
                 if (SaveGameWrite(&rnode->tile, 2) == 0) {
-                    // STRING: LEGOLAND 0x004bc4e8
                     {
+                        // STRING: LEGOLAND 0x004bc4e8
                         LogPrintf("Ride ID for bloke on %s", ride->element->name);
                         goto fail;
                     }
@@ -628,8 +628,8 @@ LEGO_EXPORT int SaveGame(char *filename) {
             }
             if (ride->save_hook != 0) {
                 if (ride->save_hook(ride->element) == 0) {
-                    // STRING: LEGOLAND 0x004bc4c8
                     {
+                        // STRING: LEGOLAND 0x004bc4c8
                         LogPrintf("Ride specific save data for %s", ride->element->name);
                         goto fail;
                     }
