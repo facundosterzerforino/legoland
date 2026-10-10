@@ -77,7 +77,7 @@ LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x0045aa50
-int FUN_0045aa50(struct FXSpriteList **out) {
+int CollectTileSpriteLists(struct FXSpriteList **out) {
     int count = 0;
     struct FXSpriteList *prev = NULL;
     struct FXSpriteList *src;
@@ -385,7 +385,7 @@ LEGO_EXPORT void RenderView(void) {
     BGFullUpdate = 1;
     DAT_00667cc4 = 0;
     GetClipping(&clip);
-    FUN_00460e00();
+    DrawViewMapTiles();
     PrintBackground(DAT_00667cd0, DAT_00667cd4);
     if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == PathControlObject)) {
         DAT_00667d40 = 1;
@@ -693,7 +693,7 @@ LEGO_EXPORT void RenderView(void) {
     if (DAT_00667d40 != 0) {
         PushRenderingStatusAndLockVideoSurface();
         FUN_00461220();
-        FUN_00461020();
+        DrawDeferredSprites();
         PopRenderingStatus();
     }
     RenderWorkerInterfaceGFX();
@@ -989,7 +989,7 @@ LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, 
 }
 
 // FUNCTION: LEGOLAND 0x0045c440
-unsigned char FUN_0045c440(int *param_1, char *param_2, char *param_3) {
+unsigned char GetPathNeighbours8(int *param_1, char *param_2, char *param_3) {
     int x;
     int y;
     int yp1;
@@ -1126,7 +1126,7 @@ LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
 
     tile = (struct MapTile *)((char *)GameMap[param_1[1]] + *param_1 * 0x14);
     tile->flags_10 = tile->flags_10 & 0xc3;
-    flags = FUN_0045c440(param_1, &dir, &local_1);
+    flags = GetPathNeighbours8(param_1, &dir, &local_1);
     if (dir == '\0') {
         tile->flags_10 = tile->flags_10 | 0x10;
         return;
@@ -1154,7 +1154,7 @@ LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c900
-int FUN_0045c900(struct MapRect *param_1) {
+int IsMapRectAllPath(struct MapRect *param_1) {
     int x;
     unsigned int y;
     struct MapTile tile;
@@ -1178,7 +1178,7 @@ int FUN_0045c900(struct MapRect *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c9c0
-unsigned int FUN_0045c9c0(int *param_1) {
+unsigned int GetPathMask5x5(int *param_1) {
     int y;
     int yend;
     unsigned int result;
@@ -1213,14 +1213,14 @@ unsigned int FUN_0045c9c0(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ca90
-int FUN_0045ca90(int *param_1, int *param_2) {
+int FindPathSquare3x3(int *param_1, int *param_2) {
     unsigned int mask;
     int i;
     struct Point pt;
 
     pt.x = *param_1 + -2;
     pt.y = param_1[1] + -2;
-    mask = FUN_0045c9c0((int *)&pt);
+    mask = GetPathMask5x5((int *)&pt);
     for (i = 0; i < 9; i++) {
         if ((DAT_004b9558[i] & mask) == DAT_004b9558[i]) {
             param_2[0] = DAT_004b957c[i] + param_1[0];
@@ -1234,7 +1234,7 @@ int FUN_0045ca90(int *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cb20
-void FUN_0045cb20(struct MapRect *param_1) {
+void PavePathRect(struct MapRect *param_1) {
     int x;
     int y;
 
@@ -1246,7 +1246,7 @@ void FUN_0045cb20(struct MapRect *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cb90
-void FUN_0045cb90(struct Point *param) {
+void UnpavePathTile(struct Point *param) {
     struct MapTile *tile;
     unsigned short value;
 
@@ -1256,7 +1256,7 @@ void FUN_0045cb90(struct Point *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cbc0
-int FUN_0045cbc0(int *param_1, int param_2) {
+int GrowPathRectSide(int *param_1, int param_2) {
     int result;
     struct MapRect r;
 
@@ -1265,7 +1265,7 @@ int FUN_0045cbc0(int *param_1, int param_2) {
         r.y0 = r.y1 = param_1[1] + -1;
         r.x0 = *param_1;
         r.x1 = param_1[2];
-        result = FUN_0045c900(&r);
+        result = IsMapRectAllPath(&r);
         if (result != 0) {
             param_1[1] = param_1[1] + -1;
             return 1;
@@ -1275,7 +1275,7 @@ int FUN_0045cbc0(int *param_1, int param_2) {
         r.y0 = r.y1 = param_1[3] + 1;
         r.x0 = *param_1;
         r.x1 = param_1[2];
-        result = FUN_0045c900(&r);
+        result = IsMapRectAllPath(&r);
         if (result != 0) {
             param_1[3] = param_1[3] + 1;
             return 1;
@@ -1286,7 +1286,7 @@ int FUN_0045cbc0(int *param_1, int param_2) {
         r.y1 = param_1[3];
         r.x1 = param_1[2] + 1;
         r.x0 = r.x1;
-        result = FUN_0045c900(&r);
+        result = IsMapRectAllPath(&r);
         if (result != 0) {
             param_1[2] = param_1[2] + 1;
             return 1;
@@ -1297,7 +1297,7 @@ int FUN_0045cbc0(int *param_1, int param_2) {
         r.y1 = param_1[3];
         r.x1 = *param_1 + -1;
         r.x0 = r.x1;
-        result = FUN_0045c900(&r);
+        result = IsMapRectAllPath(&r);
         if (result != 0) {
             *param_1 = *param_1 + -1;
             return 1;
@@ -1307,12 +1307,12 @@ int FUN_0045cbc0(int *param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cd00
-void FUN_0045cd00(int *buf) {
+void GrowPathRect(int *buf) {
     int zero_count = 0;
     int count = 0;
 
     do {
-        if (FUN_0045cbc0(buf, count) != 0) {
+        if (GrowPathRectSide(buf, count) != 0) {
             zero_count = 0;
         } else {
             zero_count++;
@@ -1323,17 +1323,17 @@ void FUN_0045cd00(int *buf) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cd30
-void FUN_0045cd30(int *arg) {
+void PavePathSquareAt(int *arg) {
     struct MapRect buf;
 
-    if (FUN_0045ca90(arg, (int *)&buf) != 0) {
-        FUN_0045cd00((int *)&buf);
-        FUN_0045cb20(&buf);
+    if (FindPathSquare3x3(arg, (int *)&buf) != 0) {
+        GrowPathRect((int *)&buf);
+        PavePathRect(&buf);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0045cd70
-void FUN_0045cd70(int *param_1) {
+void UnpaveNeighbourPathTiles(int *param_1) {
     struct Point pt;
     struct MapRect rect;
 
@@ -1341,9 +1341,9 @@ void FUN_0045cd70(int *param_1) {
     while (pt.x <= *param_1 + 2) {
         pt.y = param_1[1] - 2;
         while (pt.y <= param_1[1] + 2) {
-            if ((pt.x != *param_1 || pt.y != param_1[1]) && FUN_0045ce30((int *)&pt) != 0 &&
-                FUN_0045ca90((int *)&pt, (int *)&rect) == 0) {
-                FUN_0045cb90(&pt);
+            if ((pt.x != *param_1 || pt.y != param_1[1]) && IsPavedPathTile((int *)&pt) != 0 &&
+                FindPathSquare3x3((int *)&pt, (int *)&rect) == 0) {
+                UnpavePathTile(&pt);
             }
             pt.y++;
         }
@@ -1352,7 +1352,7 @@ void FUN_0045cd70(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ce10
-int FUN_0045ce10(struct MapTile *tile) {
+int IsPathTile(struct MapTile *tile) {
     if ((tile->flags_10 & 0x1) == 0) {
         if ((tile->flags_c & 0x10) != 0 && (tile->flags_10 & 0x2) == 0) {
             return 1;
@@ -1363,7 +1363,7 @@ int FUN_0045ce10(struct MapTile *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ce30
-int FUN_0045ce30(int *param_1) {
+int IsPavedPathTile(int *param_1) {
     int x;
     int y;
     struct MapTile *tile;
@@ -1372,7 +1372,7 @@ int FUN_0045ce30(int *param_1) {
     if (x >= 0 && x < (int)lpConfig->width && (y = param_1[1], y >= 0) &&
         y < (int)lpConfig->height &&
         (tile = (struct MapTile *)((char *)GameMap[y] + x * 0x14), tile != NULL)) {
-        if (FUN_0045ce10(tile) != 0) {
+        if (IsPathTile(tile) != 0) {
             tile = (struct MapTile *)((char *)GameMap[param_1[1]] + *param_1 * 0x14);
             return tile->tile != *(unsigned int *)PathSprite;
         }
@@ -1381,7 +1381,7 @@ int FUN_0045ce30(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ceb0
-unsigned char FUN_0045ceb0(int *coords) {
+unsigned char GetPathNeighbourMask(int *coords) {
     int x;
     int y;
     unsigned char local_15;
@@ -1397,7 +1397,7 @@ unsigned char FUN_0045ceb0(int *coords) {
     } else {
         tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
     }
-    if (FUN_0045ce10(&tile) != 0) {
+    if (IsPathTile(&tile) != 0) {
         local_15 = 1;
     }
     y = coords[1];
@@ -1409,7 +1409,7 @@ unsigned char FUN_0045ceb0(int *coords) {
     } else {
         tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
     }
-    if (FUN_0045ce10(&tile) != 0) {
+    if (IsPathTile(&tile) != 0) {
         local_15 = local_15 | 2;
     }
     x = *coords;
@@ -1421,7 +1421,7 @@ unsigned char FUN_0045ceb0(int *coords) {
     } else {
         tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
     }
-    if (FUN_0045ce10(&tile) != 0) {
+    if (IsPathTile(&tile) != 0) {
         local_15 = local_15 | 4;
     }
     x = *coords + -1;
@@ -1433,14 +1433,14 @@ unsigned char FUN_0045ceb0(int *coords) {
     } else {
         tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
     }
-    if (FUN_0045ce10(&tile) != 0) {
+    if (IsPathTile(&tile) != 0) {
         local_15 = local_15 | 8;
     }
     return local_15;
 }
 
 // FUNCTION: LEGOLAND 0x0045d080
-unsigned char FUN_0045d080(unsigned char flags, int *coords) {
+unsigned char GetPathDiagonalGaps(unsigned char flags, int *coords) {
     unsigned char result = 0;
     unsigned int tile_data[5];
     unsigned int *map_row;
@@ -1457,7 +1457,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
             *(unsigned short *)((unsigned char *)tile_data + 0xc) = 0x40;
             *(unsigned char *)((unsigned char *)tile_data + 0x10) = 0;
         }
-        if (!FUN_0045ce10((struct MapTile *)tile_data)) {
+        if (!IsPathTile((struct MapTile *)tile_data)) {
             result = 1;
         }
     }
@@ -1472,7 +1472,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
             *(unsigned short *)((unsigned char *)tile_data + 0xc) = 0x40;
             *(unsigned char *)((unsigned char *)tile_data + 0x10) = 0;
         }
-        if (!FUN_0045ce10((struct MapTile *)tile_data)) {
+        if (!IsPathTile((struct MapTile *)tile_data)) {
             result |= 2;
         }
     }
@@ -1498,7 +1498,7 @@ LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned short a) {
     if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
         AdjustTileRFFlags((int *)p);
     }
-    flags = (unsigned short *)FUN_0045ce10(&tile);
+    flags = (unsigned short *)IsPathTile(&tile);
     if (flags != NULL) {
         flags = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
         *flags = *flags & 0xfffc;
@@ -1507,7 +1507,7 @@ LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned short a) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d260
-void FUN_0045d260(struct Point *param) {
+void AdjustPathTileAndNeighbours(struct Point *param) {
     unsigned int edi = *(unsigned int *)PathSprite;
     struct Point point;
 
@@ -1553,9 +1553,9 @@ LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) {
     pb = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
     *pb |= 0x10;
     *(unsigned short *)((char *)GameMap[p->y] + 8 + p->x * 0x14) = param1;
-    FUN_0045d260(p);
+    AdjustPathTileAndNeighbours(p);
     if (MapStats.field_184 != 0) {
-        FUN_0045cd30((int *)p);
+        PavePathSquareAt((int *)p);
     }
 }
 
@@ -1578,7 +1578,7 @@ struct PathFootprint {
 };
 
 // FUNCTION: LEGOLAND 0x0045d3d0
-void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
+void ClearPathUnderFootprint(struct PathFootprint *param_1, int *param_2) {
     int x;
     int y;
     struct Point pt;
@@ -1591,7 +1591,7 @@ void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
                 GameMap[y][x].field_8 = GameMap[y][x].field_a;
                 pt.x = x;
                 pt.y = y;
-                FUN_0045d260(&pt);
+                AdjustPathTileAndNeighbours(&pt);
                 RemovePathSquare(&pt);
             }
         }
@@ -1602,7 +1602,7 @@ void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
                 GameMap[y][x].field_8 = GameMap[y][x].field_a;
                 pt.x = x;
                 pt.y = y;
-                FUN_0045d260(&pt);
+                AdjustPathTileAndNeighbours(&pt);
                 RemovePathSquare(&pt);
             }
         }
@@ -1610,7 +1610,7 @@ void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d560
-int FUN_0045d560(struct MapRect *out, struct MapRect *a, struct MapRect *b) {
+int IntersectMapRect(struct MapRect *out, struct MapRect *a, struct MapRect *b) {
     if (a->x0 > b->x0) {
         out->x0 = a->x0;
     } else {
@@ -1638,7 +1638,7 @@ int FUN_0045d560(struct MapRect *out, struct MapRect *a, struct MapRect *b) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d5d0
-void FUN_0045d5d0(struct MapRect *param) {
+void SubtractRectFromRectList(struct MapRect *param) {
     struct MapRect r;
     struct MapRect *cur;
     struct MapRect *slot;
@@ -1649,7 +1649,7 @@ void FUN_0045d5d0(struct MapRect *param) {
     if (i < DAT_00667d3c) {
         cur = DAT_00801a80;
         do {
-            if (FUN_0045d560(&r, param, cur) != 0) {
+            if (IntersectMapRect(&r, param, cur) != 0) {
                 old = *cur;
                 DAT_00667d3c--;
                 if (i < DAT_00667d3c) {
@@ -1693,11 +1693,11 @@ void FUN_0045d5d0(struct MapRect *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d730
-int FUN_0045d730(struct MapRect *param) {
+int AddRectToRectList(struct MapRect *param) {
     int idx;
     struct MapRect *cur;
 
-    FUN_0045d5d0(param);
+    SubtractRectFromRectList(param);
     idx = DAT_00667d3c;
     cur = &DAT_00801a80[idx];
     cur->x0 = param->x0;
@@ -1743,7 +1743,7 @@ void FUN_0045d770(struct Cursor *param_1) {
     rect.y0 = found->footprint.y0 + found->tile_y;
     rect.x1 = found->footprint.x1 + found->tile_x;
     rect.y1 = found->footprint.y1 + found->tile_y;
-    FUN_0045d730(&rect);
+    AddRectToRectList(&rect);
 
     /* cursors before the flagged one: collect their footprints */
     for (cur = param_1; cur != NULL; cur = cur->next) {
@@ -1755,13 +1755,13 @@ void FUN_0045d770(struct Cursor *param_1) {
         rect.y0 = cur->footprint.y0 + cur->tile_y;
         rect.x1 = cur->footprint.x1 + cur->tile_x;
         rect.y1 = cur->footprint.y1 + cur->tile_y;
-        FUN_0045d5d0(&rect);
+        SubtractRectFromRectList(&rect);
         for (item = &cur->footprint; item != NULL; item = item->next) {
             rect.x0 = item->x0 + cur->tile_x;
             rect.y0 = item->y0 + cur->tile_y;
             rect.x1 = item->x1 + cur->tile_x;
             rect.y1 = item->y1 + cur->tile_y;
-            FUN_0045d5d0(&rect);
+            SubtractRectFromRectList(&rect);
         }
     }
 
@@ -1833,6 +1833,6 @@ LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {
     AdjustPathTile(&local_8, param_2);
     RemovePathSquare((struct Point *)param_1);
     if (MapStats.field_184 != 0) {
-        FUN_0045cd70(param_1);
+        UnpaveNeighbourPathTiles(param_1);
     }
 }

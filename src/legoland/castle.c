@@ -6693,11 +6693,11 @@ void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3) {
         cursor->field_1414[1]++;
         cursor->field_1414[0]++;
     }
-    FUN_0045f460(&EditCursor);
+    ResetCursorBuildable(&EditCursor);
     ValidateCursor(&EditCursor, (unsigned int)param_1->data);
     if (DAT_00610a04 != 0) {
-        FUN_0045f480(&EditCursor, 0xf);
-        FUN_0045f4d0(&EditCursor);
+        SetCursorBlocked(&EditCursor, 0xf);
+        PropagateCursorBlocked(&EditCursor);
     }
 }
 
@@ -6746,7 +6746,7 @@ void FUN_00424440(unsigned int param_1, unsigned int param_2) {
     QueryCursor.tile_y = y;
     // STRING: LEGOLAND 0x004b5b7c
     if ((void *)QueryClass != ElemID("CASTLE_DUMMY")->data) {
-        FUN_0045f460(&QueryCursor);
+        ResetCursorBuildable(&QueryCursor);
         return;
     }
     QueryCursor.field_140c = 0;
@@ -9089,7 +9089,7 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
                 DAT_0081ce00[n].tile_y = DAT_00829ae0.field_b0[i][1];
                 DAT_0081ce00[n].footprint = *fp;
                 DAT_0081ce00[n].field_1828 = 0x2032;
-                FUN_0045f460(&DAT_0081ce00[n]);
+                ResetCursorBuildable(&DAT_0081ce00[n]);
                 n++;
             }
             bit <<= 1;
@@ -9104,7 +9104,7 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
                 DAT_0081ce00[n].tile_y = DAT_00829ae0.field_c8[i][1];
                 DAT_0081ce00[n].footprint = *fp;
                 DAT_0081ce00[n].field_1828 = 0x2032;
-                FUN_0045f460(&DAT_0081ce00[n]);
+                ResetCursorBuildable(&DAT_0081ce00[n]);
                 n++;
             }
             bit <<= 1;
@@ -9119,11 +9119,11 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
             }
             result = (struct LookupResult *)FUN_0041d3b0((const unsigned char *)key, (unsigned int)&pair);
             if (result->field_0 == 0) {
-                FUN_0045f480(&EditCursor, 0xe);
+                SetCursorBlocked(&EditCursor, 0xe);
             }
         }
-        if (FUN_0045f4b0(&EditCursor)) {
-            FUN_0045f480(&EditCursor, 0xe);
+        if (IsCursorBuildable(&EditCursor)) {
+            SetCursorBlocked(&EditCursor, 0xe);
             bit = 1;
             mask = &DAT_00829ae0.field_ac;
             c = DAT_0081ce00;
@@ -9134,7 +9134,7 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
                 }
                 if (bit & *mask) {
                     if (EditCursor.tile_x == c->tile_x && EditCursor.tile_y == c->tile_y) {
-                        FUN_0045f460(&EditCursor);
+                        ResetCursorBuildable(&EditCursor);
                         return;
                     }
                     c++;
@@ -9143,7 +9143,7 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
             }
         }
     } else {
-        FUN_0045f480(&EditCursor, 0xe);
+        SetCursorBlocked(&EditCursor, 0xe);
     }
 }
 
@@ -9183,10 +9183,10 @@ void FUN_00427970(Element *obj, const struct Struct427970Src *src) {
     pair.b = src->field_4;
     node = FUN_0041d100((struct HitHost *)&DAT_00829ae0, key, (short *)&pair);
     if (FUN_0041d7c0((unsigned int)node) == 0) {
-        FUN_0045f480(&QueryCursor, 1);
+        SetCursorBlocked(&QueryCursor, 1);
         DAT_0081cdec = 0;
     } else {
-        FUN_0045f460(&QueryCursor);
+        ResetCursorBuildable(&QueryCursor);
         DAT_0081cdec = node;
     }
 }
@@ -9282,9 +9282,9 @@ void FUN_00427b20(Element *obj, int x, unsigned int y) {
     tile.b = (unsigned short)EditCursor.tile_y;
     result = FUN_0041d3b0(DAT_004b5d20, (unsigned int)&tile);
     if (result->field_0 != 0) {
-        FUN_0045f460(&EditCursor);
+        ResetCursorBuildable(&EditCursor);
     } else {
-        FUN_0045f480(&EditCursor, 0xe);
+        SetCursorBlocked(&EditCursor, 0xe);
     }
 }
 
@@ -9389,7 +9389,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
             DAT_0081ce00[n].tile_y = DAT_00829ae0.field_b0[i][1];
             DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
-            FUN_0045f460(&DAT_0081ce00[n]);
+            ResetCursorBuildable(&DAT_0081ce00[n]);
             n++;
         }
         bit <<= 1;
@@ -9404,7 +9404,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
             DAT_0081ce00[n].tile_y = DAT_00829ae0.field_c8[i][1];
             DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
-            FUN_0045f460(&DAT_0081ce00[n]);
+            ResetCursorBuildable(&DAT_0081ce00[n]);
             n++;
         }
         bit <<= 1;
@@ -9417,9 +9417,9 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
     if (key != 0) {
         result = FUN_0041d3b0((const unsigned char *)key, (unsigned int)&pair);
         if (result->field_0 != 0) {
-            FUN_0045f460(&EditCursor);
+            ResetCursorBuildable(&EditCursor);
         } else {
-            FUN_0045f480(&EditCursor, 0xe);
+            SetCursorBlocked(&EditCursor, 0xe);
         }
     }
 }
@@ -9566,7 +9566,7 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
             DAT_0081ce00[n].tile_y = DAT_00829ae0.field_b0[i][1];
             DAT_0081ce00[n].footprint = *fp;
             DAT_0081ce00[n].field_1828 = 0x2032;
-            FUN_0045f460(&DAT_0081ce00[n]);
+            ResetCursorBuildable(&DAT_0081ce00[n]);
             n++;
         }
         bit <<= 1;
@@ -9581,7 +9581,7 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
             DAT_0081ce00[n].tile_y = DAT_00829ae0.field_c8[i][1];
             DAT_0081ce00[n].footprint = *fp;
             DAT_0081ce00[n].field_1828 = 0x2032;
-            FUN_0045f460(&DAT_0081ce00[n]);
+            ResetCursorBuildable(&DAT_0081ce00[n]);
             n++;
         }
         bit <<= 1;
@@ -9594,7 +9594,7 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
     if (key != 0) {
         result = FUN_0041d3b0((const unsigned char *)key, (unsigned int)&pair);
         if (result->field_0 == 0) {
-            FUN_0045f480(&EditCursor, 0xe);
+            SetCursorBlocked(&EditCursor, 0xe);
         } else {
             FUN_0041cf70(result->field_4, &a, &b);
             if (a >= 0) {
@@ -9604,9 +9604,9 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
                 total += b;
             }
             if (total >= 2) {
-                FUN_0045f480(&EditCursor, 0xb);
+                SetCursorBlocked(&EditCursor, 0xb);
             } else {
-                FUN_0045f460(&EditCursor);
+                ResetCursorBuildable(&EditCursor);
             }
         }
     }

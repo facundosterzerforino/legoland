@@ -172,7 +172,7 @@ void FUN_00452030(void) {
     if (validate) {
         ValidateCursor(&EditCursor, (unsigned int)EditMode.unk8);
     } else {
-        FUN_0045f460(&EditCursor);
+        ResetCursorBuildable(&EditCursor);
     }
 }
 

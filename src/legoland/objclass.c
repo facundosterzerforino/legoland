@@ -276,10 +276,10 @@ LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *para
         memcpy(buf, &map[QueryCursor.tile_y][QueryCursor.tile_x], 20);
     }
     if ((buf[3] & 0x40) != 0) {
-        FUN_0045f480(&QueryCursor, 1);
+        SetCursorBlocked(&QueryCursor, 1);
         return;
     }
-    FUN_0045f460(&QueryCursor);
+    ResetCursorBuildable(&QueryCursor);
 }
 
 // FUNCTION: LEGOLAND 0x00480cd0

@@ -1184,7 +1184,7 @@ void RunLevelScript(void) {
     prev = NULL;
     active = 0;
     changed = 0;
-    FUN_00471bf0();
+    ClearNewObjectsList();
     if (IsScriptStopped() != 0) {
         return;
     }
@@ -1226,7 +1226,7 @@ void RunLevelScript(void) {
         if (DAT_0066871c != 0) {
             UpdateMenu();
             DAT_0066871c = 0;
-            FUN_00471d40();
+            ShowNewObjectsInfo();
         }
         if (ScriptPurgePending != 0) {
             ScriptPurgePending = 0;
@@ -1276,7 +1276,7 @@ void RunLevelScript(void) {
             prev = NULL;
             active = 0;
             changed = 0;
-            FUN_00471bf0();
+            ClearNewObjectsList();
             if (IsScriptStopped() == 0) {
                 continue;
             }

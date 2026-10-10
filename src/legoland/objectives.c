@@ -1187,8 +1187,8 @@ int ScriptEventClear(struct MapRectArg *arg) {
                     QueryObj.pos.y = (unsigned char)point.y;
                     cls->method_94(cls->element, &point);
                     BuildCursorPtr(&QueryCursor, 0, 0);
-                    if (FUN_0045f4b0(&QueryCursor) != 0) {
-                        FUN_0045d3d0(QueryClass, &point.x);
+                    if (IsCursorBuildable(&QueryCursor) != 0) {
+                        ClearPathUnderFootprint(QueryClass, &point.x);
                         RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->element, QueryObj,
                             &QueryCursor);
                     }

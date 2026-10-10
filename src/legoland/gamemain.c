@@ -331,7 +331,7 @@ void FUN_004779d0(struct Point *p) {
         if (NULL != (unsigned)order) {
             FUN_0045e850((struct ObjNode *)order->element, &order->pos.x);
             ptmp63 = order->element->data;
-            FUN_0045d3d0((struct PathFootprint *)ptmp63, &order->pos.x);
+            ClearPathUnderFootprint((struct PathFootprint *)ptmp63, &order->pos.x);
             EraseGardenerOrder(order);
             return;
         }
@@ -341,7 +341,7 @@ void FUN_004779d0(struct Point *p) {
         if (order != NULL) {
             ptmp12 = order->element;
             FUN_0045e850((struct ObjNode *)ptmp12, &order->pos.x);
-            FUN_0045d3d0((struct PathFootprint *)order->element->data, &order->pos.x);
+            ClearPathUnderFootprint((struct PathFootprint *)order->element->data, &order->pos.x);
             EraseMechanicOrder(order);
             return;
         }

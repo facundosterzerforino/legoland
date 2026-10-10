@@ -108,7 +108,7 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
     }
 
     RenderHelpIcons();
-    FUN_00473660();
+    UpdateAdvicePriority();
 }
 
 // FUNCTION: LEGOLAND 0x0046cff0
@@ -220,14 +220,14 @@ void FUN_0046d230(unsigned int a1) {
             DAT_007fe920 = GetTickCount();
             DAT_006687a4 = 0;
             DAT_004b9f88 = 1;
-            FUN_004735b0();
+            ClearAdvicePriority();
         }
     }
     DAT_006687a8 = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046d280
-unsigned int FUN_0046d280(unsigned int a1) {
+unsigned int PlaySpeech(unsigned int a1) {
     if (SpeechIsPlaying() == 0) {
         if (a1 != 0xffffffff && a1 != DAT_004b9f8c) {
             DAT_004b9f8c = a1;
@@ -235,7 +235,7 @@ unsigned int FUN_0046d280(unsigned int a1) {
             DAT_006687a4 = 0;
             DAT_004b9f88 = 1;
             DAT_006687ac = 1;
-            FUN_004735b0();
+            ClearAdvicePriority();
             DAT_006687a8 = 1;
             UpdateSpeechPlayback();
             return 1;
