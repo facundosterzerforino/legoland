@@ -95,7 +95,6 @@ void FUN_00418f90(struct BoatRide *param_1) {
 
 // FUNCTION: LEGOLAND 0x00418fe0
 void FUN_00418fe0(int param_1) {
-    int ptmp349;
     struct BoatRide *ride;
     int tw;
     int th;
@@ -103,8 +102,7 @@ void FUN_00418fe0(int param_1) {
     int dx;
     int th2;
     int dy;
-    int bx;
-    int by;
+    struct Point b;
     int sx;
     int sy;
     int person;
@@ -119,23 +117,24 @@ void FUN_00418fe0(int param_1) {
             dy = ride->step_xy[BoatingSchoolAnimTick * 2 + 1];
             dx = ride->step_xy[BoatingSchoolAnimTick * 2];
             GetTileDimensions(&tw2, &th2);
-            bx = (dx - dy) * tw2 >> 9;
-            by = (dx + dy) * th2 >> 9;
+            b.x = (dx - dy) * tw2;
+            b.y = (dx + dy) * th2;
+            b.x >>= 9;
+            b.y >>= 9;
             sx = (ride->tile_x - ride->tile_y) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
             sy = (ride->tile_x + ride->tile_y) * (th >> 1) - (ScrollY >> 8);
             off.x = BoatingSchoolBoats->offset_x[ride->step_sprite[BoatingSchoolAnimTick] & 0xff] >> 1;
             off.y = BoatingSchoolBoats->offset_y[ride->step_sprite[BoatingSchoolAnimTick] & 0xff] >> 1;
             AdjustOffsetForViewMode(&off);
-            ptmp349 = off.y;
-            ride->screen_x = lpConfig->view_x + bx + off.x + sx;
-            ride->screen_y = lpConfig->view_y + by + ptmp349 + sy;
+            ride->screen_x = lpConfig->view_x + b.x + off.x + sx;
+            ride->screen_y = lpConfig->view_y + b.y + off.y + sy;
             PrintSprite(BoatingSchoolBoats->sprites[ride->step_sprite[BoatingSchoolAnimTick] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             if (ride->bloke != 0) {
                 person = (int)Find3DPersonFromBloke(ride->bloke);
                 *(float *)(person + 0x44) = ((float)(int)ride->step_sprite[BoatingSchoolAnimTick] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
                 SetPersonRotation((struct Person *)person, (float *)(person + 0x40));
-                off.x = lpConfig->view_x + bx + sx;
-                off.y = lpConfig->view_y + by + sy;
+                off.x = lpConfig->view_x + b.x + sx;
+                off.y = lpConfig->view_y + b.y + sy;
                 AdjustBlokePosition((struct Point *)&off);
                 seat.x = DAT_004b51d8[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2] + 0x44;
                 seat.y = DAT_004b51d8[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2 + 1] + 0x34;
