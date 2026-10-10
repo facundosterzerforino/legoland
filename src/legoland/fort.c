@@ -104,6 +104,7 @@ void RenderFort(Element *elem, unsigned int param_2, unsigned int param_3, TileI
 
 // FUNCTION: LEGOLAND 0x004064d0
 void FortWanderUpdate(RideNode *node, Bloke *bloke) {
+    TileId *tile = &node->tile;
     int h, r;
     float fx, fy;
     char dir;
@@ -119,8 +120,8 @@ void FortWanderUpdate(RideNode *node, Bloke *bloke) {
         h = (DAT_004b4580.bottom - DAT_004b4580.top) << 8;
         fx = (rand() & 0xff) * 0.003921569f;
         fy = (rand() & 0xff) * 0.003921569f;
-        bloke->dest.x = (int)(((node->tile.pos.x + DAT_004b4580.left) << 8) + r * fx);
-        bloke->dest.y = (int)(((node->tile.pos.y + DAT_004b4580.top) << 8) + h * fy);
+        bloke->dest.x = (int)(((tile->pos.x + DAT_004b4580.left) << 8) + r * fx);
+        bloke->dest.y = (int)(((tile->pos.y + DAT_004b4580.top) << 8) + h * fy);
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
         bloke->low_level_action = 7;
         bloke->field_73 = dir + 0x10;
