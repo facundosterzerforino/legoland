@@ -2952,7 +2952,7 @@ void FUN_0040ca30(void *a1, int a2) {
 // FUNCTION: LEGOLAND 0x0040ca60
 int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
     struct FlumeEntry *par = entry->parent;
-    int count = 0;
+    volatile int count = 0; /* volatile: the original re-reads this from its stack slot */
     int i;
     struct FlumeSlot *slot;
     double w;

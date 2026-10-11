@@ -34,6 +34,7 @@ LEGO_EXPORT struct Position *LoadPos(const char *path) {
     int j;
     int row;
     int col;
+    struct PosFrame *volatile frames; /* volatile: the original re-reads this from its stack slot */
 
     file = RES_OpenFile(path);
     pos = (struct Position *)malloc(0x28);
@@ -50,7 +51,8 @@ LEGO_EXPORT struct Position *LoadPos(const char *path) {
         do {
             pos->entries[i] = (struct PosFrame *)malloc(pos->count_inner * 0x30);
             j = 0;
-            f = pos->entries[i];
+            frames = pos->entries[i];
+            f = frames;
             if (pos->count_inner > 0) {
                 do {
                     RES_ReadFile(file, &f->pos[0], 4);

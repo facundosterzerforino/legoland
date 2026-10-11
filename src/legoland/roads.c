@@ -284,10 +284,8 @@ void UpdateQueuePathShape(unsigned short param_1, int param_2, int param_3) {
         flag = e->field_14 & 0x10;
     }
     FUN_00413520(param_2, param_3, &r);
-    if (r.field_0 != NULL) {
-        if (r.field_0->field_8 == id) {
-            mask = count = 1;
-        }
+    if (r.field_0 != NULL && r.field_0->field_8 == id) {
+        mask = count = 1;
     }
     if (r.field_8 != NULL && r.field_8->field_8 == id) {
         count++;

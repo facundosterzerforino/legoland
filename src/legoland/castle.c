@@ -955,18 +955,18 @@ void FUN_0041db90(unsigned char *obj, float *a, float *b) {
     float out[21];
     float *p;
     float sum;
-    float x;
+    volatile float x; /* volatile: the original re-reads this from its stack slot */
     int k;
 
     saved = ((struct RingHost *)obj)->elem_c;
-    savedval = ((struct RingHost *)obj)->field_24;
     DAT_004d83b4 = (struct RingHost *)obj;
+    savedval = ((struct RingHost *)obj)->field_24;
     *(struct Elem20 *)DAT_004d83a0 = ((struct RingHost *)obj)->elem_c;
     FUN_0041f4e0(FUN_0041db20, &DAT_004d8270, savedval, 0.1f, out);
     *b = out[1];
     *a = 0.0f;
-    node = &((struct RingHost *)obj)->head;
     p = out + 2;
+    node = &((struct RingHost *)obj)->head;
     do {
         sum = FLOAT_004ab390;
         for (k = 0; k < 3; k++) {

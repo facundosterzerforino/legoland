@@ -1183,7 +1183,7 @@ unsigned int GetPathMask5x5(int *param_1) {
     int yend;
     unsigned int result;
     unsigned int bit;
-    int x;
+    volatile int x; /* volatile: the original re-reads this from its stack slot */
     int xoff;
     int xi;
     struct MapTile tile;

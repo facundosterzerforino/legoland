@@ -1536,6 +1536,7 @@ void RenderEateryBaseLayers(unsigned short *param_1, int param_2, unsigned int p
     char c7;
     int sx;
     int sy;
+    volatile int coord_y; /* volatile: the original re-reads this from its stack slot */
     cfg.field_0 = 0x103;
     cfg.field_4 = *(int *)(param_2 + 0xc4);
     cfg.field_8 = *param_1;
@@ -1544,7 +1545,8 @@ void RenderEateryBaseLayers(unsigned short *param_1, int param_2, unsigned int p
         return;
     }
     coords = GetScreenCoordsForObject((unsigned char *)param_1, (void *)param_2);
-    sy = coords.y;
+    coord_y = coords.y;
+    sy = coord_y;
     sx = coords.x;
     c8 = state->field_8;
     c9 = state->field_9;
