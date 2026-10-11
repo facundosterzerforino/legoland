@@ -516,6 +516,7 @@ LEGO_EXPORT void RenderView(void) {
         int quarter3;
         RECT *part;
         unsigned int k;
+        struct Point corner;
 
         tile = list[i];
         tile->flags &= 0xfbff;
@@ -524,25 +525,25 @@ LEGO_EXPORT void RenderView(void) {
         }
         ride = tile->field_0->ride;
         ObjectPartCount = 0;
-        pt.x = tile->field_4 + ride->footprint.x0;
+        corner.x = tile->field_4 + ride->footprint.x0;
         uid = tile->anchor;
-        pt.y = tile->field_5 + ride->footprint.y1;
-        GetTileBounds(&pt, b);
+        corner.y = tile->field_5 + ride->footprint.y1;
+        GetTileBounds(&corner, b);
         left = b[0];
         ya = ((b[1] + b[3]) >> 1) - lpConfig->view_y;
-        pt.x = tile->field_4 + ride->footprint.x1;
-        pt.y = tile->field_5 + ride->footprint.y0;
-        GetTileBounds(&pt, b);
+        corner.x = tile->field_4 + ride->footprint.x1;
+        corner.y = tile->field_5 + ride->footprint.y0;
+        GetTileBounds(&corner, b);
         right = b[2];
         yb = ((b[1] + b[3]) >> 1) - lpConfig->view_y;
         if (ya != yb) {
-            pt.x = tile->field_4 + ride->footprint.x0;
-            pt.y = tile->field_5 + ride->footprint.y0;
-            GetTileBounds(&pt, b);
+            corner.x = tile->field_4 + ride->footprint.x0;
+            corner.y = tile->field_5 + ride->footprint.y0;
+            GetTileBounds(&corner, b);
             dx_a = (b[0] + b[2]) >> 1;
-            pt.x = tile->field_4 + ride->footprint.x1;
-            pt.y = tile->field_5 + ride->footprint.y1;
-            GetTileBounds(&pt, b);
+            corner.x = tile->field_4 + ride->footprint.x1;
+            corner.y = tile->field_5 + ride->footprint.y1;
+            GetTileBounds(&corner, b);
             dx_a -= left;
             dx_b = ((b[0] + b[2]) >> 1) - left;
             if (dx_b < dx_a) {
@@ -606,9 +607,9 @@ LEGO_EXPORT void RenderView(void) {
             loc.info.field_10 = 0;
             info = &loc.info;
         }
-        pt.x = tile->field_4;
-        pt.y = tile->field_5;
-        GetTileBounds(&pt, bounds);
+        corner.x = tile->field_4;
+        corner.y = tile->field_5;
+        GetTileBounds(&corner, bounds);
         flags = tile->flags;
         if (flags & 0x20) {
             /* Under construction: building animation frame, green tint when idle. */
