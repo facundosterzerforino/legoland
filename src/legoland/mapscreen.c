@@ -567,7 +567,7 @@ LEGO_EXPORT void RenderFullMap(void) {
                     struct Sprite *sub;
                     int sub_x;
                     int sub_y;
-                    int hx;
+                    volatile int hx; /* volatile: last resort, the natural forms tried are in docs/attempts */
                     int hy;
                     int ox;
                     int oy;

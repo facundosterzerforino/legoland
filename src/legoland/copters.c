@@ -557,7 +557,7 @@ void CoptersAddObject(Element *obj, int *coords) {
 void CoptersPlaceRider(struct CopterNode *node, int index) {
     struct Point p2;
     struct Point p3;
-    struct Point p1;
+    volatile struct Point p1; /* volatile: last resort, the natural forms tried are in docs/attempts */
     struct Point base;
     struct CopterLayer *entry;
     struct Sprite *sprite;
