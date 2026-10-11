@@ -460,11 +460,11 @@ void SpiderRideUpdate(Element *obj) {
                 off.y = (dx + dy) * h >> 9;
                 ox = lpConfig->view_x - (short)Get_XScroll() + off.x;
                 oy = off.y + (lpConfig->view_y - (short)Get_YScroll());
+                bloke->flags |= 0x80;
+                bloke->person->field_30 = 1;
                 coords[0] = (ox - DAT_0082c660.x / 2 - sc.x) * 2;
                 coords[1] = (oy - DAT_0082c660.y / 2 - sc.y) * 2;
-                bloke->flags |= 0x80;
                 bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
-                bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
@@ -545,10 +545,10 @@ void SpiderRideUpdate(Element *obj) {
                 UnAdjustBlokePosition(&bloke->person->screen);
                 ScreenToMapRef((int *)&bloke->person->screen, (int *)&bloke->pos, 0);
                 bloke->person->field_34 = 0;
-                bloke->dest.y = ey << 8;
                 bloke->pos.x <<= 8;
                 bloke->pos.y <<= 8;
                 bloke->dest.x = ex << 8;
+                bloke->dest.y = ey << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;

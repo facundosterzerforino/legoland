@@ -392,11 +392,11 @@ void LegoShop2Update(Element *obj) {
     int r;
 
     while (node != NULL) {
-        next = node->next;
         bloke = node->rider;
         tile = &node->tile;
         y = tile->pos.y + ride->y;
         x = tile->pos.x + ride->x;
+        next = node->next;
         if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:

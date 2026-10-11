@@ -579,8 +579,8 @@ void PlaneRideUpdate(struct Element *elem) {
                 node->f18 = 0xb4;
                 bloke->flags |= 8;
                 sc = GetScreenCoordsForObject(pos, ride);
-                y = bloke->pos.y;
                 x = bloke->pos.x;
+                y = bloke->pos.y;
                 GetTileDimensions(&tw, &th);
                 d = (x - y) * tw >> 9;
                 x = (x + y) * th >> 9;

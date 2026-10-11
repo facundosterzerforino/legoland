@@ -457,8 +457,8 @@ void SafariRideUpdate(Element *obj) {
                 x = (x + oy) * h >> 9;
                 ox = lpConfig->view_x - (short)Get_XScroll() + y;
                 x = x + (lpConfig->view_y - (short)Get_YScroll());
-                coords[0] = (ox - DAT_0082c670.x / 2 - sc.x) * 2;
                 coords[1] = (x - DAT_0082c670.y / 2 - sc.y) * 2;
+                coords[0] = (ox - DAT_0082c670.x / 2 - sc.x) * 2;
                 bloke->person->sprite = DAT_004cbf08;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);

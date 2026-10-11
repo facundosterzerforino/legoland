@@ -173,11 +173,11 @@ void FortUpdate(Element *elem) {
     node = ptmp785;
     if (node != NULL) {
         do {
-            next = node->next;
             bloke = node->rider;
             x = ride->x;
             tx = node->tile.pos.x;
             x = x + tx;
+            next = node->next;
             y = node->tile.pos.y + ride->y;
             if ((int)bloke->low_level_action == 0) {
                 switch (bloke->param_action) {

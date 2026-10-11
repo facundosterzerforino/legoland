@@ -1545,11 +1545,11 @@ void RenderEateryBaseLayers(unsigned short *param_1, int param_2, unsigned int p
         return;
     }
     coords = GetScreenCoordsForObject((unsigned char *)param_1, (void *)param_2);
+    sx = coords.x;
+    c9 = state->field_9;
     coord_y = coords.y;
     sy = coord_y;
-    sx = coords.x;
     c8 = state->field_8;
-    c9 = state->field_9;
     c6 = state->field_6;
     c7 = state->field_7;
     switch (state->field_18) {

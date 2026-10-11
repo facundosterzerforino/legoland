@@ -1138,8 +1138,8 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
                         pts->count++;
                     }
                     if (y == rect.y1 && (cursor->field_1828 & 0x80) == 0) {
-                        pts->xpts[pts->count] = ux;
                         pts->ypts[pts->count] = (unsigned short)(half + uy);
+                        pts->xpts[pts->count] = ux;
                         pts->fpts[pts->count] = 2 | fbits;
                         pts->count++;
                     }
@@ -2637,8 +2637,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
         int runlen;
         unsigned char *stream;
 
-        cury = 0;
         curx = 0;
+        cury = 0;
         phase = 0;
         RES_ReadFile(file, &blocklen, 4);
         stream = malloc(blocklen);

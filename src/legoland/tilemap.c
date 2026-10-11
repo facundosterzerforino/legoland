@@ -524,9 +524,9 @@ LEGO_EXPORT void RenderView(void) {
             continue;
         }
         ride = tile->field_0->ride;
+        uid = tile->anchor;
         ObjectPartCount = 0;
         corner.x = tile->field_4 + ride->footprint.x0;
-        uid = tile->anchor;
         corner.y = tile->field_5 + ride->footprint.y1;
         GetTileBounds(&corner, b);
         left = b[0];
@@ -618,8 +618,8 @@ LEGO_EXPORT void RenderView(void) {
             int hx; /* half the sprite offset */
             int hy;
 
-            hit_a.element = tile->field_0;
             color = info->field_10;
+            hit_a.element = tile->field_0;
             hit_a.coords = tile->anchor.id;
             hit_a.type = 0x104;
             if (ride->anim != NULL) {
@@ -1674,15 +1674,15 @@ void SubtractRectFromRectList(struct MapRect *param) {
                 }
                 if (r.x1 < old.x1) {
                     slot = &DAT_00801a80[DAT_00667d3c++];
-                    slot->x0 = r.x1 + 1;
                     slot->y0 = r.y0;
+                    slot->x0 = r.x1 + 1;
                     slot->x1 = old.x1;
                     slot->y1 = r.y1;
                 }
                 if (r.y1 < old.y1) {
                     slot = &DAT_00801a80[DAT_00667d3c++];
-                    slot->x0 = old.x0;
                     slot->y0 = r.y1 + 1;
+                    slot->x0 = old.x0;
                     slot->x1 = old.x1;
                     slot->y1 = old.y1;
                 }

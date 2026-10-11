@@ -687,9 +687,9 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
     } else {
         center_x = (right + left) >> 1;
     }
+    DAT_00798738 = (center_x - ((right + left) >> 1)) * 2;
     sprite_y = sprite->field_e;
     field_e = sprite_y;
-    DAT_00798738 = (center_x - ((right + left) >> 1)) * 2;
     top = field_e + 0x20;
     blink = "|";
     if (GetBlink() == 0) {

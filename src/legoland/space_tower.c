@@ -912,8 +912,8 @@ void SpaceTowerUpdate(struct SpaceTowerCtx *param_1) {
                 bloke->flags |= 8;
                 ride_x <<= 8;
                 ride_y = (ride_y + 1) << 8;
-                bloke->dest.y = ride_y;
                 bloke->dest.x = ride_x;
+                bloke->dest.y = ride_y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
                 bloke->field_73 = dir + 0x10;

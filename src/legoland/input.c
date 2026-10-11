@@ -158,9 +158,9 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
         return;
     }
     buffer->prev_x = buffer->x;
+    mode = buffer->mouse_accel;
     ptmp176 = buffer->y;
     buffer->prev_y = ptmp176;
-    mode = buffer->mouse_accel;
     dx = MouseState.lX;
     dy = MouseState.lY;
     if (0 != mode) {

@@ -323,8 +323,8 @@ void JoustUpdate(struct Element *elem) {
                 SetBlokePositionFromBNV(JoustRideBnv, b, name, (char)hb, -1617735.0f, -1617993.5f, 0);
                 if (f20 != 0 && (char)FUN_00407c20(hb) == b->field_44) {
                     b->dest.x = (x + 2) << 8;
-                    b->dest.y = (y << 8) - 0x100;
                     b->flags &= 0xff7f;
+                    b->dest.y = (y << 8) - 0x100;
                     b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                     b->low_level_action = 7;
                     b->person->field_2c = 0;
@@ -467,8 +467,8 @@ void JoustUpdate(struct Element *elem) {
         }
         jn->busy = busy;
         jn->x = count;
-        jn->sub12 = flags;
         jn->y = horses;
+        jn->sub12 = flags;
         jn->pair = h;
         jn->frame = hb;
         jn->field_1c = f1c;

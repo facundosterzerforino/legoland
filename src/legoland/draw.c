@@ -2140,8 +2140,8 @@ void FUN_00465850(struct AviFrame *frame) {
 
     dst = CurrentSurfaceDesc.lpSurface;
     height = frame->height;
-    width = frame->width;
     DAT_006681ec = (DAT_006681ec != dst) ? dst : 0;
+    width = frame->width;
     rest = lpConfig->screen_height;
     rest = rest - height * 2;
     half = rest / 2;
@@ -2156,8 +2156,8 @@ void FUN_00465850(struct AviFrame *frame) {
     for (; height != 0; height--) {
         next = dst + CurrentSurfaceDesc.lPitch;
         s = row;
-        p0 = (unsigned short *)dst;
         p1 = (unsigned short *)next;
+        p0 = (unsigned short *)dst;
         for (x = width; x > 0; x--) {
             v = *s;
             if (DisplayPixelFormat == 2) {
