@@ -750,10 +750,10 @@ int FUN_004092b0(struct FlumeHolder *holder) {
         if (mode > 2) {
             if (mode == 3) {
                 switch (e->submode) {
-                case 0:
-                    return 1;
                 case 1:
                     return 3;
+                case 0:
+                    return 1;
                 case 2:
                     return 5;
                 case 3:

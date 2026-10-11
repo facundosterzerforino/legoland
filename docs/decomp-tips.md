@@ -208,3 +208,11 @@ At /O2, MSVC6 omits the frame pointer. A frame in the original means one of:
   same bytes but point at the original's layout, not ours. `asm2naked.py` names every address it can and
   reports the rest.
 
+## Switch case order changes tail merging
+
+- MSVC6 merges identical `return N` blocks (cross-jumping), and which copies survive depends on the order the
+  `case` labels appear in the source, not on their values. If the original keeps a `return 3` as its own block
+  where ours jumps to a shared one (or the jump table points at a different copy), try every order of the
+  case blocks: FUN_004092b0 went 84.6% -> 100% with `case 1, case 0, case 2, case 3`.
+- Likewise a jump-table-only difference can mean the original split shared labels
+  (`case 1: case 2: ... /* fall through */ case 3: case 4:`), as in OctopusCafeUpdate.
