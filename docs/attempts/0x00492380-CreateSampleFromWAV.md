@@ -17,7 +17,7 @@
   `buffer->Release` / `free(data)` / `free(format)` / `RES_CloseFile(file)` / `return 0` (entering at
   different steps), and the success path (`sample != NULL`) is the last block of the function. That is the
   multi-label `goto` cleanup pattern; the project allows only one shared `goto fail`, so it cannot be
-  reproduced as written. Revisit only if multi-label cleanup gotos become acceptable.
+  reproduced as written. Multi-label cleanup ladders are allowed since 2026-10-11, so this is the next thing to try.
 
 ## Ideas not tried yet
 - Make the bottom `return NULL` differ from the early one so the compiler cannot merge them.
