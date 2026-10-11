@@ -353,17 +353,17 @@ void JoustUpdate(struct Element *elem) {
                 NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
                 b->param_action++;
                 break;
-            case 11:
+            case 12:
                 b->dest.x = (x << 8) - 0x364;
-                b->dest.y = (y - 3) << 8;
+                b->dest.y = (y << 8) + b->field_36 * 200 - 0x638;
                 b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
                 NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
                 b->param_action++;
                 break;
-            case 12:
+            case 11:
                 b->dest.x = (x << 8) - 0x364;
-                b->dest.y = (y << 8) + b->field_36 * 200 - 0x638;
+                b->dest.y = (y - 3) << 8;
                 b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
                 NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
