@@ -13,6 +13,11 @@
   pops and `ret`). Ours jumps to the shared bottom `return NULL` epilogue, because MSVC merges the two
   identical `return NULL` blocks.
 - Success path: ours duplicates `pop ebp; pop ebx; add esp; ret` after the `RES_CloseFile` tail.
+- (2026-10-11, Opus 5.5) The original's layout is a cleanup ladder: every failure path falls into
+  `buffer->Release` / `free(data)` / `free(format)` / `RES_CloseFile(file)` / `return 0` (entering at
+  different steps), and the success path (`sample != NULL`) is the last block of the function. That is the
+  multi-label `goto` cleanup pattern; the project allows only one shared `goto fail`, so it cannot be
+  reproduced as written. Revisit only if multi-label cleanup gotos become acceptable.
 
 ## Ideas not tried yet
 - Make the bottom `return NULL` differ from the early one so the compiler cannot merge them.
