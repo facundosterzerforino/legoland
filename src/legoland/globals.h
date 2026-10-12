@@ -1017,7 +1017,7 @@ extern struct FXItem DINO_SFX[5];
 // 0x004b87a8
 extern struct FXItem MONEY_SFX[2];
 // 0x004b8bbc
-extern unsigned char PercentSFormat[1];
+extern unsigned char PercentSFormat[4]; /* "%s" */
 // 0x004b90f8
 extern unsigned int BrickCount;
 // 0x004b90fc

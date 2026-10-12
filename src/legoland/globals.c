@@ -805,7 +805,7 @@ struct FXItem DINO_SFX[5];
 struct FXItem MONEY_SFX[2];
 
 // GLOBAL: LEGOLAND 0x004b8bbc
-unsigned char PercentSFormat[1];
+unsigned char PercentSFormat[4]; /* "%s" */
 
 // GLOBAL: LEGOLAND 0x004b90f8
 unsigned int BrickCount;
