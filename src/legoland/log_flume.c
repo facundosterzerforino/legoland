@@ -1667,10 +1667,10 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
         node = FUN_00409010();
         if (node != NULL) {
             node->mode = 3;
+            node->ride = LogFlumeTrackRide;
             node->submode = 2;
             node->flags10d |= 3;
             node->link28 = NULL;
-            node->ride = LogFlumeTrackRide;
             node->parent = entry;
             node->tile.pos.x = coords[0] - LogFlumeFootprint.x0;
             node->tile.pos.y = coords[1] - LogFlumeFootprint.y0;
