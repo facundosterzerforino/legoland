@@ -1648,7 +1648,7 @@ int GetPerformanceTime(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004766f0
-int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
+int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
     void *frame;
     int started;
     int frame_index;
@@ -1666,7 +1666,7 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
     if (handle->video_stream == NULL) {
         return 0;
     }
-    audio = FUN_00476910(handle);
+    audio = OpenMovieAudio(handle);
     DAT_004bb4e0.biBitCount = 0x10;
     DAT_004bb4e0.biWidth = handle->width;
     DAT_004bb4e0.biHeight = handle->height;
@@ -1738,7 +1738,7 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00476910
-int FUN_00476910(struct MovieHandle *handle) {
+int OpenMovieAudio(struct MovieHandle *handle) {
     struct AviStreamInfo info;
     WAVEFORMATEX *fmt;
     unsigned int *p;
@@ -2026,7 +2026,7 @@ int PlayMovie(char *filename, unsigned int param_2, int param_3) {
             FUN_0047f850();
             // STRING: LEGOLAND 0x004bb528
             DBPrintf("Starting Movie\n");
-            result = FUN_004766f0(handle, rect, param_2);
+            result = PlayMovieFrames(handle, rect, param_2);
             // STRING: LEGOLAND 0x004bb518
             DBPrintf("Stopping Movie\n");
             // STRING: LEGOLAND 0x004bb508
