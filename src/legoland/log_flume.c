@@ -1445,7 +1445,7 @@ void LogFlumeEntranceLoad(Element *elem) {
     // STRING: LEGOLAND 0x004b4998
     LogFlumeBarrelMatteSprite = LoadSprite("barrelmatte.lls", 1);
     if (LogFlumeBarrelSprite != NULL) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeBarrelSprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeBarrelSprite);
         if (lls != NULL) {
             LLSPlay(lls, (unsigned int)LogFlumeBarrelSprite->image);
         }
@@ -1966,11 +1966,11 @@ void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int dr
             struct LLS *lls;
 
             frame = 0;
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)spriteB);
+            lls = GetLLSForSprite((struct Sprite *)spriteB);
             if (lls != NULL) {
                 frame = lls->frame;
             }
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)spriteA);
+            lls = GetLLSForSprite((struct Sprite *)spriteA);
             if (lls != NULL) {
                 LLSSetFrame(lls, frame);
             }
@@ -2092,11 +2092,11 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     if (ok) {
         struct Point off;
         int frame;
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer(ride->layer, 0));
+        lls = GetLLSForSprite((struct Sprite *)GetSpriteForLayer(ride->layer, 0));
         if (lls != NULL) {
             frame = lls->frame;
         }
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeEnta3MSprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeEnta3MSprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -2141,13 +2141,13 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
         lls = NULL;
         sprite = GetSpriteForLayer(ride->layer, 2);
         if (sprite != NULL) {
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+            lls = GetLLSForSprite((struct Sprite *)sprite);
         }
         if (lls != NULL) {
             frame = lls->frame;
         }
         AdjustOffsetForViewMode(&off);
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeEntrance3Sprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeEntrance3Sprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -2173,13 +2173,13 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
         lls = NULL;
         sprite = GetSpriteForLayer(ride->layer, 2);
         if (sprite != NULL) {
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+            lls = GetLLSForSprite((struct Sprite *)sprite);
         }
         if (lls != NULL) {
             frame = lls->frame;
         }
         AdjustOffsetForViewMode(&off);
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeEntrance1Sprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeEntrance1Sprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -2202,13 +2202,13 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
         lls = NULL;
         sprite = GetSpriteForLayer(ride->layer, 2);
         if (sprite != NULL) {
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+            lls = GetLLSForSprite((struct Sprite *)sprite);
         }
         if (lls != NULL) {
             frame = lls->frame;
         }
         AdjustOffsetForViewMode(&off);
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeEntrance2Sprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeEntrance2Sprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -2235,12 +2235,12 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
         lls = NULL;
         sprite = GetSpriteForLayer(ride->layer, 2);
         if (sprite != NULL) {
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+            lls = GetLLSForSprite((struct Sprite *)sprite);
         }
         if (lls != NULL) {
             frame = lls->frame;
         }
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeSignSprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeSignSprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -2921,7 +2921,7 @@ struct RideSpriteInfo *GetLogFlumeTrackSpriteInfo(int unused, TileId tile) {
         DAT_004c74d8.x = LogFlumeImageList->offset_x[(unsigned char)idx] >> 1;
         DAT_004c74d8.y = LogFlumeImageList->offset_y[(unsigned char)idx] >> 1;
         DAT_004c74d8.field_10 = 0;
-        lls = GetLLSForSprite((struct SpriteLLS *)spr);
+        lls = GetLLSForSprite((struct Sprite *)spr);
         if (lls != 0) {
             LLSStop(lls);
             LLSSetFrame((struct LLS *)lls, entry->parent->submode);
@@ -4414,15 +4414,15 @@ void RenderLogFlumeSpecialCorner1(Element *elem, unsigned int param_2, unsigned 
 
     DAT_004c2af4 = 0;
     pos = GetScreenCoordsForObject(tile, ride);
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+    lls = GetLLSForSprite((struct Sprite *)ride->layer);
     if (lls != NULL) {
         frame = lls->frame;
     }
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeFc1M1Sprite);
+    lls = GetLLSForSprite((struct Sprite *)LogFlumeFc1M1Sprite);
     if (lls != NULL) {
         LLSSetFrame(lls, frame);
     }
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeFc1M2Sprite);
+    lls = GetLLSForSprite((struct Sprite *)LogFlumeFc1M2Sprite);
     if (lls != NULL) {
         LLSSetFrame(lls, frame);
     }
@@ -4446,11 +4446,11 @@ void RenderLogFlumeSpecialCorner2(Element *elem, unsigned int param_2, unsigned 
     entry = FindFlumeSubEntryByTile(tile);
     if (FUN_0040cdf0(tile)) {
         frame = 0;
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+        lls = GetLLSForSprite((struct Sprite *)ride->layer);
         if (lls != NULL) {
             frame = lls->frame;
         }
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeFc2M1Sprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeFc2M1Sprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -4472,15 +4472,15 @@ void RenderLogFlumeSpecialCorner3(Element *elem, unsigned int param_2, unsigned 
 
     DAT_004c2af4 = 2;
     frame = 0;
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+    lls = GetLLSForSprite((struct Sprite *)ride->layer);
     if (lls != NULL) {
         frame = lls->frame;
     }
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeFc3M1Sprite);
+    lls = GetLLSForSprite((struct Sprite *)LogFlumeFc3M1Sprite);
     if (lls != NULL) {
         LLSSetFrame(lls, frame);
     }
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeFc3M2Sprite);
+    lls = GetLLSForSprite((struct Sprite *)LogFlumeFc3M2Sprite);
     if (lls != NULL) {
         LLSSetFrame(lls, frame);
     }
@@ -4505,11 +4505,11 @@ void RenderLogFlumeSpecialCorner4(Element *elem, unsigned int param_2, unsigned 
     entry = FindFlumeSubEntryByTile(tile);
     if (FUN_0040cdf0(tile)) {
         frame = 0;
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+        lls = GetLLSForSprite((struct Sprite *)ride->layer);
         if (lls != NULL) {
             frame = lls->frame;
         }
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeFc4MSprite);
+        lls = GetLLSForSprite((struct Sprite *)LogFlumeFc4MSprite);
         if (lls != NULL) {
             LLSSetFrame(lls, frame);
         }
@@ -4652,9 +4652,9 @@ void RenderLogFlumeTunnel(Element *elem, unsigned int param_2, unsigned int para
     entry = FindFlumeSubEntryByTile(tile);
     if (FUN_0040cdf0(tile)) {
         if (LogFlumeTunelMSprite != NULL) {
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+            lls = GetLLSForSprite((struct Sprite *)ride->layer);
             frame = lls != NULL ? lls->frame : frame;
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeTunelMSprite);
+            lls = GetLLSForSprite((struct Sprite *)LogFlumeTunelMSprite);
             if (lls != NULL) {
                 LLSSetFrame(lls, frame);
             }
@@ -4810,11 +4810,11 @@ void RenderLogFlumeCsaw(Element *elem, unsigned int param_2, unsigned int param_
     entry = FindFlumeSubEntryByTile(tile);
     if (FUN_0040cdf0(tile)) {
         if (LogFlumeCsaw2MSprite != NULL) {
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer(ride->layer, 1));
+            lls = GetLLSForSprite((struct Sprite *)GetSpriteForLayer(ride->layer, 1));
             if (lls != NULL) {
                 frame = lls->frame;
             }
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeCsaw2MSprite);
+            lls = GetLLSForSprite((struct Sprite *)LogFlumeCsaw2MSprite);
             if (lls != NULL) {
                 LLSSetFrame(lls, frame);
             }
@@ -5021,16 +5021,16 @@ void RenderLogFlumeHoldUp(Element *elem, unsigned int param_2, unsigned int para
     frame = 0;
     sprite = GetSpriteForLayer(ride->layer, 1);
     if (sprite != NULL) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        lls = GetLLSForSprite((struct Sprite *)sprite);
         if (lls != NULL) {
             frame = lls->frame;
         }
     }
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeHup1M1Sprite);
+    lls = GetLLSForSprite((struct Sprite *)LogFlumeHup1M1Sprite);
     if (lls != NULL) {
         LLSSetFrame(lls, frame);
     }
-    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeHup1M2Sprite);
+    lls = GetLLSForSprite((struct Sprite *)LogFlumeHup1M2Sprite);
     if (lls != NULL) {
         LLSSetFrame(lls, frame);
     }
@@ -5221,23 +5221,23 @@ void RenderLogFlumeDrop(Element *elem, unsigned int param_2, unsigned int param_
             frame = 0;
             sprite = GetSpriteForLayer(ride->layer, 0);
             if (sprite != NULL) {
-                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+                lls = GetLLSForSprite((struct Sprite *)sprite);
                 if (lls != NULL) {
                     frame = lls->frame;
                 }
             }
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeDrop1MSprite);
+            lls = GetLLSForSprite((struct Sprite *)LogFlumeDrop1MSprite);
             if (lls != NULL) {
                 LLSSetFrame(lls, frame);
             }
             sprite = GetSpriteForLayer(ride->layer, 1);
             if (sprite != NULL) {
-                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+                lls = GetLLSForSprite((struct Sprite *)sprite);
                 if (lls != NULL) {
                     frame = lls->frame;
                 }
             }
-            lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeDrop2MSprite);
+            lls = GetLLSForSprite((struct Sprite *)LogFlumeDrop2MSprite);
             if (lls != NULL) {
                 LLSSetFrame(lls, frame);
             }
@@ -5261,9 +5261,9 @@ void RenderLogFlumeDrop(Element *elem, unsigned int param_2, unsigned int param_
             AdjustOffsetForViewMode(&off);
             if (LogFlumeSplashSprite != NULL) {
                 frame = entry->field_24->i24;
-                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeSplashSprite);
+                lls = GetLLSForSprite((struct Sprite *)LogFlumeSplashSprite);
                 if (lls != NULL) {
-                    LLSStop((unsigned int)lls);
+                    LLSStop((struct LLS *)lls);
                     LLSSetFrame(lls, frame);
                 }
                 PrintSprite(LogFlumeSplashSprite, pos.x + off.x, pos.y + off.y, clip, 0);
@@ -6013,7 +6013,7 @@ void FUN_00411810(struct FlumeMover *m) {
             if (owner != NULL && !(owner->flags & 2)) {
                 owner->flags |= 2;
                 owner->field_24 = 0;
-                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)LogFlumeSplashSprite);
+                lls = GetLLSForSprite((struct Sprite *)LogFlumeSplashSprite);
                 if (lls != NULL) {
                     owner->field_28 = lls->frame_count;
                 }

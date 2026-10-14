@@ -231,7 +231,7 @@ void LoadDrivingSchoolResources(struct DSHead *param_1) {
     // STRING: LEGOLAND 0x004b44d8
     DSCarSprite = LoadSprite("ds_car&m.lls", 1);
     if (DSCarSprite != NULL) {
-        lls = GetLLSForSprite((struct SpriteLLS *)DSCarSprite);
+        lls = GetLLSForSprite((struct Sprite *)DSCarSprite);
         if (lls != 0) {
             LLSStop(lls);
         }

@@ -377,7 +377,7 @@ void WaterWorksWaterBlockUpdate(Element *obj) {
             idx = node->block_index;
             lls = *(int *)(*(int *)((char *)WaterWorksImageListData + 8) + (unsigned char)idx * 4);
             if (lls != 0) {
-                lls = GetLLSForSprite((struct SpriteLLS *)lls);
+                lls = GetLLSForSprite((struct Sprite *)lls);
                 if (lls != 0) {
                     limit = *(short *)(lls + 0x10);
                 } else {
@@ -394,7 +394,7 @@ void WaterWorksWaterBlockUpdate(Element *obj) {
             }
         } else {
             lls = *(int *)(*(int *)((char *)WaterWorksImageListData + 8) + node->block_index * 4);
-            lls = GetLLSForSprite((struct SpriteLLS *)lls);
+            lls = GetLLSForSprite((struct Sprite *)lls);
             if (lls != 0) {
                 node->frame = 0;
             } else {
@@ -566,7 +566,7 @@ void WaterWorksShowerUpdate(void) {
         if (node->field_8 == 2) {
             limit = 0;
             node->frame++;
-            lls = GetLLSForSprite((struct SpriteLLS *)ShowerSprite);
+            lls = GetLLSForSprite((struct Sprite *)ShowerSprite);
             if (lls != 0) {
                 limit = *(short *)(lls + 0x10);
             }
@@ -602,7 +602,7 @@ void RenderShower(struct WaterRender *render, unsigned int p2, unsigned int p3, 
         offset.y = 0x14;
         AdjustOffsetForViewMode((struct Point *)&offset);
         sc = GetScreenCoordsForObject(coords, ctx);
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)ShowerSprite);
+        lls = GetLLSForSprite((struct Sprite *)ShowerSprite);
         LLSSetFrame(lls, node->frame);
         PrintSprite(ShowerSprite, sc.x + offset.x, sc.y + offset.y, p6, 0);
     }
@@ -755,7 +755,7 @@ void WaterWorksElephantFountainUpdate(void) {
     for (node = ElephantFountainList; node != NULL; node = node->next) {
         if (node->field_8 == 1) {
             limit = 0;
-            lls = GetLLSForSprite((struct SpriteLLS *)WwElsquirtSprite);
+            lls = GetLLSForSprite((struct Sprite *)WwElsquirtSprite);
             if (lls != 0) {
                 limit = *(short *)(lls + 0x10);
             }

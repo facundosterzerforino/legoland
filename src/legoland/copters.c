@@ -273,7 +273,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[1].flags = 0;
     handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 3);
     if (handle != 0) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
             frame = (char)lls->frame_count;
             node->layer[1].frame_count = frame;
@@ -287,7 +287,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[0].flags = 0;
     handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 1);
     if (handle != 0) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
             frame = (char)lls->frame_count;
             node->layer[0].frame_count = frame;
@@ -301,7 +301,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[2].flags = 0;
     handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 0xb);
     if (handle != 0) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
             frame = (char)lls->frame_count;
             node->layer[2].frame_count = frame;
@@ -315,7 +315,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[3].flags = 0;
     handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 6);
     if (handle != 0) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
             frame = (char)lls->frame_count;
             node->layer[3].frame_count = frame;
@@ -329,7 +329,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[4].flags = 0;
     handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 7);
     if (handle != 0) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
             frame = (char)lls->frame_count;
             node->layer[4].frame_count = frame;
@@ -396,17 +396,17 @@ void CoptersRenderLayer(struct CopterNode *node, int index, unsigned int param_3
     }
     lls = GetLLSForLayer(CopterModelLayers, layer->idle_layer);
     if (lls != NULL) {
-        LLSStop((unsigned int)lls);
+        LLSStop((struct LLS *)lls);
         LLSSetFrame(lls, 0);
     }
     lls = GetLLSForLayer(CopterModelLayers, layer->field_10);
     if (lls != NULL) {
-        LLSStop((unsigned int)lls);
+        LLSStop((struct LLS *)lls);
         LLSSetFrame(lls, 0);
     }
     lls = GetLLSForLayer(CopterModelLayers, layer->active_layer);
     if (lls != NULL) {
-        LLSStop((unsigned int)lls);
+        LLSStop((struct LLS *)lls);
         LLSSetFrame(lls, 0);
     }
     sc = GetScreenCoordsForObject((TileId *)node, (struct Ride *)ActiveCopterRide);
@@ -414,7 +414,7 @@ void CoptersRenderLayer(struct CopterNode *node, int index, unsigned int param_3
     AdjustOffsetForViewMode(&off);
     sprite = GetSpriteForLayer(((struct Ride *)ActiveCopterRide)->layer, b);
     if (sprite != NULL) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        lls = GetLLSForSprite((struct Sprite *)sprite);
         if (lls != NULL) {
             LLSSetFrame(lls, layer->frame);
         }
@@ -425,7 +425,7 @@ void CoptersRenderLayer(struct CopterNode *node, int index, unsigned int param_3
     }
     sprite = CopterModelSprites[a];
     if (sprite != NULL) {
-        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite);
+        lls = GetLLSForSprite((struct Sprite *)sprite);
         if (lls != NULL) {
             LLSSetFrame(lls, layer->frame);
         }

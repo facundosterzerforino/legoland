@@ -1008,7 +1008,7 @@ struct RideSpriteInfo *GetMonkeyFishSpriteInfo(Element *obj, short param_2) {
         node = node->next;
     }
 
-    lls = (short *)GetLLSForSprite((struct SpriteLLS *)ride->layer);
+    lls = (short *)GetLLSForSprite((struct Sprite *)ride->layer);
     if (node->field_4 != 0) {
         if (*lls == 0) {
             node->field_4 = 0;
@@ -1018,7 +1018,7 @@ struct RideSpriteInfo *GetMonkeyFishSpriteInfo(Element *obj, short param_2) {
     }
 
     if (node->field_4 != 0) {
-        fish_lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)MFish2Sprite);
+        fish_lls = GetLLSForSprite((struct Sprite *)MFish2Sprite);
         LLSSetFrame(fish_lls, *lls);
         RideSpriteInfoBuffer.sprite = MFish2Sprite;
     } else {
@@ -1100,7 +1100,7 @@ void LoadJungleCruiseResources(Element *obj) {
     }
     for (i = 0; i < JungleCruiseBoats->count; i++) {
         sprite = JungleCruiseBoats->sprites[(unsigned char)i];
-        LLSPlay((struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite), *(unsigned int *)((char *)sprite + 8));
+        LLSPlay(GetLLSForSprite((struct Sprite *)sprite), *(unsigned int *)((char *)sprite + 8));
     }
     // STRING: LEGOLAND 0x004b72b8
     JungMaskSprite = LoadSprite("jungmask.lls", 1);
@@ -1132,7 +1132,7 @@ void UnloadJungleCruiseResources(Element *obj) {
     }
     for (i = 0; i < JungleCruiseBoats->count; i++) {
         sprite = JungleCruiseBoats->sprites[(unsigned char)i];
-        LLSStop(GetLLSForSprite((struct SpriteLLS *)sprite));
+        LLSStop(GetLLSForSprite((struct Sprite *)sprite));
     }
     // STRING: LEGOLAND 0x004b72c8
     if (LLIDB_FindElement("JUNGLE CRUISE BOATS", &handle, 0) == 0) {
@@ -1571,8 +1571,8 @@ void RenderJungleCruise(int param_1, unsigned int param_2, unsigned int param_3,
         }
     }
     coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
-    lls1 = (short *)GetLLSForSprite((struct SpriteLLS *)JungleCruiseRide->layer);
-    lls2 = GetLLSForSprite((struct SpriteLLS *)JungMaskSprite);
+    lls1 = (short *)GetLLSForSprite((struct Sprite *)JungleCruiseRide->layer);
+    lls2 = GetLLSForSprite((struct Sprite *)JungMaskSprite);
     LLSSetFrame((struct LLS *)lls2, *lls1);
     PrintSprite(JungMaskSprite, coords.x, coords.y, param_6, 0);
 }
