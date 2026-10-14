@@ -99,7 +99,7 @@ struct MapElement;
 struct WaterContext;
 struct WaterSub;
 struct WaterNode;
-struct EateryFX;
+
 struct BrollyData;
 struct BrollyNode;
 struct BlokeNode;
@@ -1943,15 +1943,9 @@ extern struct Sprite *EntranceMatte4Sprite;
 // 0x0061610c
 extern struct Sprite *Booth1Sprite;
 // 0x00616118
-extern unsigned int EateryLayerOwner;
+extern struct Sprite *EateryLayerOwner;
 // 0x00616120
-extern unsigned int DAT_00616120;
-// 0x00616124
-extern unsigned int DAT_00616124;
-// 0x00616128
-extern unsigned int DAT_00616128;
-// 0x0061612c
-extern unsigned short DAT_0061612c;
+extern struct RideSpriteInfo DAT_00616120;
 // 0x0061613c
 extern unsigned int BrollyImagesHandle;
 // 0x00616140
@@ -3942,33 +3936,33 @@ extern void *DAT_0081cd04;
 // 0x0081cd08
 extern void *HedgeObjectClass;
 // 0x0081cd0c
-extern unsigned int CastleBBQRide;
+extern struct Ride *CastleBBQRide;
 // 0x0081cd10
-extern unsigned int CastleBBQLayer;
+extern struct Sprite *CastleBBQLayer;
 // 0x0081cd14
-extern unsigned int FoodcartDrinkRide;
+extern struct Ride *FoodcartDrinkRide;
 // 0x0081cd18
-extern struct EateryFX *SharkCafeRide;
+extern struct Ride *SharkCafeRide;
 // 0x0081cd1c
-extern struct EateryFX *OctopusCafeRide;
+extern struct Ride *OctopusCafeRide;
 // 0x0081cd20
 extern struct Sprite *R2TowermSprite;
 // 0x0081cd28
 extern struct Sprite *RestMaskMainSprite;
 // 0x0081cd2c
-extern unsigned int EateryFxInner;
+extern struct Sprite *EateryFxInner;
 // 0x0081cd30
-extern unsigned int Restaurant2Ride;
+extern struct Ride *Restaurant2Ride;
 // 0x0081cd34
 extern struct Sprite *R2FdoormSprite;
 // 0x0081cd38
-extern struct EateryFX *DAT_0081cd38;
+extern struct Ride *DAT_0081cd38;
 // 0x0081cd3c
-extern unsigned int FoodcartFoodRide;
+extern struct Ride *FoodcartFoodRide;
 // 0x0081cd40
-extern unsigned int Restaurant1Ride;
+extern struct Ride *Restaurant1Ride;
 // 0x0081cd44
-extern struct EateryFX *ChuckWagonRide;
+extern struct Ride *ChuckWagonRide;
 // 0x0081cd48
 extern struct Sprite *R2Fdoorm1Sprite;
 // 0x0081cd60
@@ -4032,7 +4026,7 @@ extern struct Sprite *OctTabHASprite;
 // 0x0081cddc
 extern struct Sprite *OctTabHBSprite;
 // 0x0081cde0
-extern struct EateryFX *FoodcartIcecreamRide;
+extern struct Ride *FoodcartIcecreamRide;
 // 0x0081cde4
 extern struct Ride *BalloonzRide;
 // 0x0081cde8

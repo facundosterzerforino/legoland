@@ -2236,19 +2236,10 @@ struct Sprite *EntranceMatte4Sprite;
 struct Sprite *Booth1Sprite;
 
 // GLOBAL: LEGOLAND 0x00616118
-unsigned int EateryLayerOwner;
+struct Sprite *EateryLayerOwner;
 
 // GLOBAL: LEGOLAND 0x00616120
-unsigned int DAT_00616120;
-
-// GLOBAL: LEGOLAND 0x00616124
-unsigned int DAT_00616124;
-
-// GLOBAL: LEGOLAND 0x00616128
-unsigned int DAT_00616128;
-
-// GLOBAL: LEGOLAND 0x0061612c
-unsigned short DAT_0061612c;
+struct RideSpriteInfo DAT_00616120;
 
 // GLOBAL: LEGOLAND 0x0061613c
 unsigned int BrollyImagesHandle;
@@ -5194,19 +5185,19 @@ void *DAT_0081cd04;
 void *HedgeObjectClass;
 
 // GLOBAL: LEGOLAND 0x0081cd0c
-unsigned int CastleBBQRide;
+struct Ride *CastleBBQRide;
 
 // GLOBAL: LEGOLAND 0x0081cd10
-unsigned int CastleBBQLayer;
+struct Sprite *CastleBBQLayer;
 
 // GLOBAL: LEGOLAND 0x0081cd14
-unsigned int FoodcartDrinkRide;
+struct Ride *FoodcartDrinkRide;
 
 // GLOBAL: LEGOLAND 0x0081cd18
-struct EateryFX *SharkCafeRide;
+struct Ride *SharkCafeRide;
 
 // GLOBAL: LEGOLAND 0x0081cd1c
-struct EateryFX *OctopusCafeRide;
+struct Ride *OctopusCafeRide;
 
 // GLOBAL: LEGOLAND 0x0081cd20
 struct Sprite *R2TowermSprite;
@@ -5215,25 +5206,25 @@ struct Sprite *R2TowermSprite;
 struct Sprite *RestMaskMainSprite;
 
 // GLOBAL: LEGOLAND 0x0081cd2c
-unsigned int EateryFxInner;
+struct Sprite *EateryFxInner;
 
 // GLOBAL: LEGOLAND 0x0081cd30
-unsigned int Restaurant2Ride;
+struct Ride *Restaurant2Ride;
 
 // GLOBAL: LEGOLAND 0x0081cd34
 struct Sprite *R2FdoormSprite;
 
 // GLOBAL: LEGOLAND 0x0081cd38
-struct EateryFX *DAT_0081cd38;
+struct Ride *DAT_0081cd38;
 
 // GLOBAL: LEGOLAND 0x0081cd3c
-unsigned int FoodcartFoodRide;
+struct Ride *FoodcartFoodRide;
 
 // GLOBAL: LEGOLAND 0x0081cd40
-unsigned int Restaurant1Ride;
+struct Ride *Restaurant1Ride;
 
 // GLOBAL: LEGOLAND 0x0081cd44
-struct EateryFX *ChuckWagonRide;
+struct Ride *ChuckWagonRide;
 
 // GLOBAL: LEGOLAND 0x0081cd48
 struct Sprite *R2Fdoorm1Sprite;
@@ -5329,7 +5320,7 @@ struct Sprite *OctTabHASprite;
 struct Sprite *OctTabHBSprite;
 
 // GLOBAL: LEGOLAND 0x0081cde0
-struct EateryFX *FoodcartIcecreamRide;
+struct Ride *FoodcartIcecreamRide;
 
 // GLOBAL: LEGOLAND 0x0081cde4
 struct Ride *BalloonzRide;
