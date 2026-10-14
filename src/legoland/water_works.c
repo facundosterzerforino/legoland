@@ -223,7 +223,7 @@ void WaterWorksEntranceAddObject(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00417c70
-void WaterWorksEntranceRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
+void WaterWorksEntranceRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
     RemoveSoundObject(a, b, c);
 }
 
@@ -482,7 +482,7 @@ void WaterBlockAddObject(struct EditObject *editObj, unsigned char *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418230
-void WaterBlockRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
+void WaterBlockRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -619,7 +619,7 @@ void ShowerAddObject(struct EditObject *editObj, unsigned char *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418510
-void ShowerRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
+void ShowerRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -793,7 +793,7 @@ void ElephantFountainAddObject(struct EditObject *editObj, unsigned char *coords
 }
 
 // FUNCTION: LEGOLAND 0x00418910
-void ElephantFountainRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
+void ElephantFountainRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -832,7 +832,7 @@ void CrocodileFountainAddObject(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418a10
-void CrocodileFountainRemoveObject(unsigned int a, unsigned int b, unsigned int c) {
+void CrocodileFountainRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
     RemoveSoundObject(a, b, c);
 }
 

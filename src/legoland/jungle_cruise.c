@@ -676,7 +676,7 @@ void MonkeyTreeSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00433d20
-void MonkeyTreeAddObject(unsigned int param_1, int *param_2) {
+void MonkeyTreeAddObject(struct Element *param_1, int *param_2) {
     struct JungleObj *obj;
     unsigned char temp[2];
     unsigned short coord;
@@ -692,7 +692,7 @@ void MonkeyTreeAddObject(unsigned int param_1, int *param_2) {
         obj->owner = (unsigned short)local_4;
         obj->next = DAT_00629c2c;
         DAT_00629c2c = obj;
-        AddBasicObject(param_1, (unsigned int)param_2);
+        AddBasicObject(param_1, (int *)param_2);
         FUN_00436130((unsigned short)local_4, 1);
     }
 }

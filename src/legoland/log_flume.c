@@ -2830,7 +2830,7 @@ void LogFlumeTrackDCalcCursor(int unused, struct Point *pt) {
 }
 
 // FUNCTION: LEGOLAND 0x0040c780
-void LogFlumeTrackAddObject(int unused, struct Point *pt) {
+void LogFlumeTrackAddObject(struct Element *unused, struct Point *pt) {
     TileId t;
     int coords[2];
     struct FlumeEntry *entry;
@@ -3631,8 +3631,8 @@ void FUN_0040da10(struct Context *a, struct LinkList *list) {
 }
 
 // FUNCTION: LEGOLAND 0x0040db00
-void FUN_0040db00(unsigned int param_1, unsigned int param_2, unsigned int param_3, FlumeCallback param_4) {
-    struct FlumeEntry *entry = FindFlumeSubEntryByTile((TileId *)&param_2);
+void FUN_0040db00(struct Element *param_1, TileId param_2, struct Cursor *param_3, FlumeCallback param_4) {
+    struct FlumeEntry *entry = FindFlumeSubEntryByTile(&param_2);
     struct Footprint *fp;
     TileId t;
     struct InputBuffer buf;
@@ -3641,8 +3641,8 @@ void FUN_0040db00(unsigned int param_1, unsigned int param_2, unsigned int param
     if (entry != NULL) {
         FUN_004119a0((struct ParticleEmitter *)entry->parent, -3);
         FUN_0040d090(entry, &fp, &t);
-        ((struct Cursor *)param_3)->footprint = *fp;
-        StandardRemoveObject((Element *)param_1, t, (struct Cursor *)param_3);
+        param_3->footprint = *fp;
+        StandardRemoveObject(param_1, t, param_3);
         param_4(*(struct FlumeXY *)&t, (unsigned int *)&buf);
         FUN_0040cf10(&buf, &list);
         FUN_0040da10((struct Context *)entry, (struct LinkList *)list);
@@ -4322,7 +4322,7 @@ void LogFlumeSpecialCorner4UnloadSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ead0
-void LogFlumeSpecialCorner1AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner1AddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4333,7 +4333,7 @@ void LogFlumeSpecialCorner1AddObject(unsigned int param_1, struct FlumeBytes *pa
 }
 
 // FUNCTION: LEGOLAND 0x0040eb40
-void LogFlumeSpecialCorner2AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner2AddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4344,7 +4344,7 @@ void LogFlumeSpecialCorner2AddObject(unsigned int param_1, struct FlumeBytes *pa
 }
 
 // FUNCTION: LEGOLAND 0x0040ebb0
-void LogFlumeSpecialCorner3AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner3AddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4355,7 +4355,7 @@ void LogFlumeSpecialCorner3AddObject(unsigned int param_1, struct FlumeBytes *pa
 }
 
 // FUNCTION: LEGOLAND 0x0040ec20
-void LogFlumeSpecialCorner4AddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeSpecialCorner4AddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     unsigned int local[5];
     *((unsigned char *)&packed) = param_2->b0;
@@ -4366,25 +4366,25 @@ void LogFlumeSpecialCorner4AddObject(unsigned int param_1, struct FlumeBytes *pa
 }
 
 // FUNCTION: LEGOLAND 0x0040ec90
-void LogFlumeSpecialCorner1RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeSpecialCorner1RemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
     DAT_004c2af4 = 0;
     FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
 
 // FUNCTION: LEGOLAND 0x0040ecc0
-unsigned int LogFlumeSpecialCorner2RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeSpecialCorner2RemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
     DAT_004c2af4 = 1;
-    return FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
+    FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
 
 // FUNCTION: LEGOLAND 0x0040ecf0
-unsigned int LogFlumeSpecialCorner3RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeSpecialCorner3RemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
     DAT_004c2af4 = 2;
-    return FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
+    FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
 
 // FUNCTION: LEGOLAND 0x0040ed20
-void LogFlumeSpecialCorner4RemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeSpecialCorner4RemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
     DAT_004c2af4 = 3;
     FUN_0040db00(param_1, param_2, param_3, FUN_0040e440);
 }
@@ -4678,7 +4678,7 @@ void LogFlumeTunnelCalcCursor(unsigned int param_1, unsigned int param_2, unsign
 }
 
 // FUNCTION: LEGOLAND 0x0040f540
-void LogFlumeTunnelAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeTunnelAddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -4686,7 +4686,7 @@ void LogFlumeTunnelAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f580
-void LogFlumeTunnelRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void LogFlumeTunnelRemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
     FUN_0040db00(param_1, param_2, param_3, FUN_0040f360);
 }
 
@@ -4846,7 +4846,7 @@ void LogFlumeCsawDCalcCursor(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040fa60
-void LogFlumeCsawAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeCsawAddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -4855,8 +4855,8 @@ void LogFlumeCsawAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040fab0
-unsigned int LogFlumeCsawRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    return FUN_0040db00(param_1, param_2, param_3, FUN_0040f830);
+void LogFlumeCsawRemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
+    FUN_0040db00(param_1, param_2, param_3, FUN_0040f830);
 }
 
 #define NEW_FLUME_NODE(node, parent, mode_, submode_, y_, x_) \
@@ -5064,7 +5064,7 @@ void LogFlumeHoldUpDCalcCursor(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410110
-void LogFlumeHoldUpAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeHoldUpAddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -5073,8 +5073,8 @@ void LogFlumeHoldUpAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410160
-unsigned int LogFlumeHoldUpRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    return FUN_0040db00(param_1, param_2, param_3, FUN_0040feb0);
+void LogFlumeHoldUpRemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
+    FUN_0040db00(param_1, param_2, param_3, FUN_0040feb0);
 }
 
 // FUNCTION: LEGOLAND 0x00410180
@@ -5290,7 +5290,7 @@ void LogFlumeDropDCalcCursor(unsigned int param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410740
-void LogFlumeDropAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
+void LogFlumeDropAddObject(struct Element *param_1, struct FlumeBytes *param_2) {
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
@@ -5299,8 +5299,8 @@ void LogFlumeDropAddObject(unsigned int param_1, struct FlumeBytes *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410790
-unsigned int LogFlumeDropRemoveObject(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    return FUN_0040db00(param_1, param_2, param_3, FUN_00410360);
+void LogFlumeDropRemoveObject(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
+    FUN_0040db00(param_1, param_2, param_3, FUN_00410360);
 }
 
 // FUNCTION: LEGOLAND 0x004107b0

@@ -298,7 +298,7 @@ void DrivingSchoolSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00405630
-void DrivingSchoolAddObject(unsigned int param_1, int *coords) {
+void DrivingSchoolAddObject(struct Element *param_1, int *coords) {
     TileId tile;
     struct CountNode *node;
     struct Cursor *cursor;
