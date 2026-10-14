@@ -527,9 +527,6 @@ struct PieceClass DAT_004b5d90;
 // GLOBAL: LEGOLAND 0x004b5dc8
 struct PieceClass DAT_004b5dc8;
 
-// GLOBAL: LEGOLAND 0x004b5df0
-unsigned int DAT_004b5df0[4] = {0x427ff0, 0x427f70, 1, 0};
-
 // GLOBAL: LEGOLAND 0x004b5e00
 float DAT_004b5e00[4][3] = {{1.0f, 0.0f, 0.0f}, {2.0f, 1.0f, 0.0f}, {1.0f, 2.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 

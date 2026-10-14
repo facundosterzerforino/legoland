@@ -832,8 +832,6 @@ extern struct PieceClass DAT_004b5d90;
 
 // 0x004b5dc8
 extern struct PieceClass DAT_004b5dc8;
-// 0x004b5df0
-extern unsigned int DAT_004b5df0[4];
 // 0x004b5e00
 extern float DAT_004b5e00[4][3];
 // 0x004b5e30
