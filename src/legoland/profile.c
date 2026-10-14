@@ -77,7 +77,7 @@ LEGO_EXPORT void InitListProfiles(void) {
     RegHardOffSprite = LoadSprite("Reg_Hard_Off.lls", 4);
 
     // STRING: LEGOLAND 0x004befa8
-    AcceptIcon = (unsigned int)LoadSpriteIcon("Accept_On_Reg.lls", 4, 0x1ef, 0x14f, 7);
+    AcceptIcon = LoadSpriteIcon("Accept_On_Reg.lls", 4, 0x1ef, 0x14f, 7);
     ((struct IconNode *)AcceptIcon)->string_id = 6;
     ((struct IconNode *)AcceptIcon)->string = GetString(6);
     ((struct IconNode *)AcceptIcon)->flags |= 0x2000;

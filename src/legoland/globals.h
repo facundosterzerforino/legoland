@@ -2940,7 +2940,7 @@ extern struct IconNode *PopUpOkIcon;
 // 0x007986dc
 extern struct IconNode *PopUpCloseIcon;
 // 0x007986e0
-extern unsigned int AcceptIcon;
+extern struct IconNode *AcceptIcon;
 // 0x007986e4
 extern unsigned int DeletePopUpShown;
 // 0x007986e8

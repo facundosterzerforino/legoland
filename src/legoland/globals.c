@@ -3710,7 +3710,7 @@ struct IconNode *PopUpOkIcon;
 struct IconNode *PopUpCloseIcon;
 
 // GLOBAL: LEGOLAND 0x007986e0
-unsigned int AcceptIcon;
+struct IconNode *AcceptIcon;
 
 // GLOBAL: LEGOLAND 0x007986e4
 unsigned int DeletePopUpShown;
