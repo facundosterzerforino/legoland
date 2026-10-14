@@ -377,7 +377,7 @@ float FUN_0041ddb0(struct Train *param_1, float param_2);
 void FUN_0041d950(void *obj, float val, void *tmp);
 void FUN_0041db20(float a, struct FloatArray *out);
 void FUN_0041da10(void *obj, float val, void *b);
-unsigned int FUN_0041e930(struct TrainCar *obj, unsigned int param);
+unsigned int FUN_0041e930(struct TrainCar *obj, float *param);
 void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out);
 float CurveArcLength(struct CurveWalker *a, unsigned int hi, struct CurveWalker *b, unsigned int lo, int idx, float c);
 void FUN_0041e7f0(unsigned char *obj, unsigned int *out);
