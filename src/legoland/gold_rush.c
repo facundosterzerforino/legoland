@@ -60,13 +60,6 @@ struct GoldBlokeRef {
     unsigned char field_c;
 };
 
-struct GoldNode {
-    unsigned short key;
-    unsigned char pad_2[0xa];
-    struct GoldNode *next;
-    unsigned char pad_10[0x1c];
-};
-
 struct GoldWalkItem {
     unsigned char pad_0[8];
     struct Bloke *bloke;
