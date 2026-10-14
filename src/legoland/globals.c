@@ -5541,7 +5541,7 @@ float FLOAT_004ab404;
 struct PlaneSet *DAT_004b55fc;
 
 // GLOBAL: LEGOLAND 0x004d83b4
-struct RingHost *DAT_004d83b4;
+struct Train *DAT_004d83b4;
 
 // GLOBAL: LEGOLAND 0x004d83a0
 unsigned int DAT_004d83a0[5];

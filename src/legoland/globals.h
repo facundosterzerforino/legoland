@@ -4197,7 +4197,7 @@ struct PlaneSet;
 extern struct PlaneSet *DAT_004b55fc;
 
 // 0x004d83b4
-extern struct RingHost *DAT_004d83b4;
+extern struct Train *DAT_004d83b4;
 
 // 0x004d83a0
 extern unsigned int DAT_004d83a0[5];
