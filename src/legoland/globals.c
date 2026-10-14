@@ -3455,7 +3455,7 @@ struct LibraryNode *ObjectLibraryHead;
 void *ClassRideList;
 
 // GLOBAL: LEGOLAND 0x0066924c
-unsigned int DAT_0066924c;
+struct InfoNode *DAT_0066924c;
 
 // GLOBAL: LEGOLAND 0x00669250
 int DAT_00669250;

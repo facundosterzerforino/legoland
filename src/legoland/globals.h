@@ -2768,7 +2768,7 @@ extern struct LibraryNode *ObjectLibraryHead;
 // 0x00669248
 extern void *ClassRideList;
 // 0x0066924c
-extern unsigned int DAT_0066924c;
+extern struct InfoNode *DAT_0066924c;
 // 0x00669250
 extern int DAT_00669250;
 // 0x00669254

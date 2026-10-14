@@ -195,7 +195,7 @@ int FUN_00478b20(char *arg) {
 
     if (obj != NULL) {
         if ((obj->flags & 4) == 0) {
-            if (LoadObjectClass(obj) == 0) {
+            if (LoadObjectClass(obj) == NULL) {
                 return 0;
             }
             obj->flags |= 4;
