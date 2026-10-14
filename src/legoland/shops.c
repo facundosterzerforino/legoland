@@ -98,7 +98,7 @@ void FUN_004392b0(struct PathArea *area, struct Point *origin) {
 void LegoShop1AddObject(struct Element *obj, void *param_2) {
     struct Ride *building = obj->ride;
     AddBasicObject(obj, param_2);
-    FUN_00439230((unsigned int)building, param_2);
+    FUN_00439230((struct PathArea *)building, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x00439350
@@ -485,7 +485,7 @@ void LoadLegMediaShopMaskSpritesAndMoneySFX(struct Element *obj) {
 void LegoMediaShopAddObject(struct Element *obj, void *param_2) {
     struct Ride *building = obj->ride;
     AddBasicObject(obj, param_2);
-    FUN_00439230((unsigned int)building, param_2);
+    FUN_00439230((struct PathArea *)building, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x00439c90
@@ -809,7 +809,7 @@ struct RideSpriteInfo *GetShopSpriteInfo(struct Element *obj, unsigned short par
 // FUNCTION: LEGOLAND 0x0043a3d0
 void RemoveObjectAndBlokes(struct Element *obj, TileId tile, void *param_3) {
     StandardRemoveObject(obj, tile, param_3);
-    RemoveAllBlokesFromRide((unsigned int)obj->ride, tile);
+    RemoveAllBlokesFromRide(obj->ride, tile);
 }
 
 // FUNCTION: LEGOLAND 0x0043a400

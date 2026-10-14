@@ -884,7 +884,7 @@ int ScriptCmdAppraisal(struct CommandArgs *arg, int argc) {
     if (argc >= 3) {
         strcat(buf, arg->arg3);
     }
-    ConfigureAppraisal(v, (unsigned int)buf);
+    ConfigureAppraisal(v, buf);
     return 1;
 }
 
