@@ -89,7 +89,7 @@ void QueueCoverSquaresHint(struct ObjectiveEvent *object, unsigned int param_2, 
 void QueuePathSceneryHint(struct ObjectiveEvent *object, int count);
 void QueueCustomObjectiveHintIfDue(struct ObjectiveEvent *object);
 void PostPendingObjectiveHints(void);
-void PlaceObjectAtTile(unsigned int a, void *b);
+void PlaceObjectAtTile(struct Element *a, void *b);
 int ScriptEventPlace(struct ObjectiveEvent *event);
 int ScriptEventGive(struct ObjectiveEvent *event);
 int FUN_00469b50(struct ObjectiveEvent *event);

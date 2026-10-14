@@ -500,7 +500,7 @@ unsigned int *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) 
         HideLayer(CopterModelLayers, 4);
     }
 
-    return (unsigned int *)(unsigned int *)&DAT_004c1170;
+    return (unsigned int *)&DAT_004c1170;
 }
 
 // FUNCTION: LEGOLAND 0x00404580

@@ -482,7 +482,7 @@ unsigned int *GetCatapultSpriteInfo(struct Element *arg1, unsigned short arg2) {
 
     sprite->layer->flags |= 0x2000;
 
-    return (unsigned int *)(unsigned int *)&DAT_004c1100;
+    return (unsigned int *)&DAT_004c1100;
 }
 
 // FUNCTION: LEGOLAND 0x00403a20

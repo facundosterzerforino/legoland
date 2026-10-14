@@ -556,7 +556,7 @@ void LoadBoatingSchoolResources(Element *obj) {
     }
     for (i = 0; i < BoatingSchoolBoats->count; i++) {
         sprite = BoatingSchoolBoats->sprites[i & 0xff];
-        LLSPlay(GetLLSForSprite((struct Sprite *)sprite), *(unsigned int *)((char *)sprite + 8));
+        LLSPlay(GetLLSForSprite((struct Sprite *)sprite), *(void **)((char *)sprite + 8));
     }
     // STRING: LEGOLAND 0x004b530c
     BoatingSchoolHullMaskSprite = LoadSprite("bs_hullmask.lls", 1);
@@ -691,7 +691,7 @@ void BoatingSchoolCalcCursor(struct Element *param_1, int *param_2, unsigned int
     PathCursor.field_1414[3] = EditCursor.field_1414[3];
     PathCursor.field_1828 = 0x1008;
     PathCursor.field_1830 = 0;
-    EditCursor.field_1830 = (unsigned int)&PathCursor;
+    EditCursor.next = &PathCursor;
     ResetCursorBuildable(&EditCursor);
     ResetCursorBuildable(&PathCursor);
     ValidateCursor(&EditCursor, cursor);
@@ -712,7 +712,7 @@ void BoatingSchoolDCalcCursor(void *param_1, struct Point *param_2) {
     PathCursor.field_1414[4] = 0;
     PathCursor.field_1828 = 0x1008;
     PathCursor.field_1830 = 0;
-    QueryCursor.field_1830 = (unsigned int)&PathCursor;
+    QueryCursor.next = &PathCursor;
     DAT_00810144 = 1;
     DefaultCursor(&DAT_0082ae20);
     *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b53c0;
@@ -1333,7 +1333,7 @@ void BoatingSchoolMermaidCalcCursor(Element *obj, int *param_2, unsigned int par
             c = &DAT_004cc090[1];
             n--;
             do {
-                c[-1].field_1830 = (unsigned int)c;
+                c[-1].next = c;
                 c++;
                 n--;
             } while (n != 0);
@@ -1577,7 +1577,7 @@ void BoatingSchoolWaterCalcCursor(Element *obj, int *param_2, unsigned int param
                             c = &DAT_004d2168[1];
                             n--;
                             do {
-                                c[-1].field_1830 = (unsigned int)c;
+                                c[-1].next = c;
                                 c++;
                                 n--;
                             } while (n != 0);

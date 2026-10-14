@@ -33,7 +33,7 @@ void NewScriptGiveEvent(unsigned int param_1, unsigned int param_2);
 void NewScriptTakeEvent(unsigned int param_1);
 void NewScriptAddBricksEvent(unsigned int param_1);
 void NewScriptCurrencyEvent(unsigned int param_1);
-void NewScriptPlaceEvent(unsigned int param_1, unsigned int *param_2, unsigned int param_3);
+void NewScriptPlaceEvent(struct Element *param_1, unsigned int *param_2, unsigned int param_3);
 void NewScriptClearEvent(struct Vec4 *param_1);
 void NewScriptUnglueEvent(struct Vec4 *param_1);
 void NewScriptGlueEvent(struct Vec4 *param_1);

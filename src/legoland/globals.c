@@ -2741,10 +2741,10 @@ unsigned int DAT_00667ca4;
 LEGO_EXPORT void *OverlayList;
 
 // GLOBAL: LEGOLAND 0x00667cac
-LEGO_EXPORT unsigned int OverlayILF;
+LEGO_EXPORT struct SpriteSet *OverlayILF;
 
 // GLOBAL: LEGOLAND 0x00667cb0
-void *BridgesData;
+struct SpriteSet *BridgesData;
 
 // GLOBAL: LEGOLAND 0x00667cb4
 LEGO_EXPORT int ScrollX;
@@ -4520,7 +4520,7 @@ unsigned short DAT_007febb8;
 LEGO_EXPORT struct Cursor EditCursor;
 
 // GLOBAL: LEGOLAND 0x008003f4
-int LevelMapHandle;
+struct Element *LevelMapHandle;
 
 // GLOBAL: LEGOLAND 0x008003f8
 unsigned int DAT_008003f8;
@@ -4538,7 +4538,7 @@ struct Element *BridgesHandle;
 unsigned int DAT_00801408;
 
 // GLOBAL: LEGOLAND 0x0080140c
-void *LevelTileMapHandle;
+struct Element *LevelTileMapHandle;
 
 // GLOBAL: LEGOLAND 0x00801410
 struct Element *OverlayILFHandle;
@@ -4553,13 +4553,13 @@ int DAT_00801a60;
 int DAT_00801a64;
 
 // GLOBAL: LEGOLAND 0x00801a68
-void *DAT_00801a68;
+struct Element **DAT_00801a68;
 
 // GLOBAL: LEGOLAND 0x00801a6c
 int *DAT_00801a6c;
 
 // GLOBAL: LEGOLAND 0x00801a70
-void *DAT_00801a70;
+struct MapTileSet **DAT_00801a70;
 
 // GLOBAL: LEGOLAND 0x00801a74
 int DAT_00801a74;

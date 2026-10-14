@@ -1466,11 +1466,11 @@ void NewScriptCurrencyEvent(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b880
-void NewScriptPlaceEvent(unsigned int param_1, unsigned int *param_2, unsigned int param_3) {
+void NewScriptPlaceEvent(struct Element *param_1, unsigned int *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
     node = AllocObjectiveEvent(7, 1);
-    node->field_4 = param_1;
+    node->element = param_1;
     node->field_20 = param_2[0];
     node->field_24 = param_2[1];
     node->field_18 = param_3;

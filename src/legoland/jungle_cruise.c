@@ -765,7 +765,7 @@ void JungleCruiseMonkeyTreeCalcCursor(Element *obj, int *param_2, unsigned int p
             c = &JungleCruiseCursors[1];
             n--;
             do {
-                c[-1].field_1830 = (unsigned int)c;
+                c[-1].next = c;
                 c++;
                 n--;
             } while (n != 0);
@@ -1100,7 +1100,7 @@ void LoadJungleCruiseResources(Element *obj) {
     }
     for (i = 0; i < JungleCruiseBoats->count; i++) {
         sprite = JungleCruiseBoats->sprites[(unsigned char)i];
-        LLSPlay(GetLLSForSprite((struct Sprite *)sprite), *(unsigned int *)((char *)sprite + 8));
+        LLSPlay(GetLLSForSprite((struct Sprite *)sprite), *(void **)((char *)sprite + 8));
     }
     // STRING: LEGOLAND 0x004b72b8
     JungMaskSprite = LoadSprite("jungmask.lls", 1);
@@ -1231,7 +1231,7 @@ void JungleCruiseCalcCursor(Element *obj, int *param_2, unsigned int param_3) {
     PathCursor.field_1828 = 0x1008;
     PathCursor.field_1830 = 0;
     ResetCursorBuildable(&PathCursor);
-    EditCursor.field_1830 = (unsigned int)&PathCursor;
+    EditCursor.next = &PathCursor;
     PathCursor.field_1830 = 0;
     ValidateCursor(&EditCursor, obj->ride);
 }
@@ -1861,7 +1861,7 @@ void JungleCruiseWaterCalcCursor(Element *obj, int *param_2, unsigned int param_
                             c = &DAT_00629c58[1];
                             n--;
                             do {
-                                c[-1].field_1830 = (unsigned int)c;
+                                c[-1].next = c;
                                 c++;
                                 n--;
                             } while (n != 0);

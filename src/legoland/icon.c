@@ -1258,7 +1258,7 @@ LEGO_EXPORT void RenderIcons(void) {
                 if (node->sprite) {
                     struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
                     if (anim->kind == 3 || anim->kind == 2) {
-                        LLSPlayOnce(anim->lls, (unsigned int)anim);
+                        LLSPlayOnce(anim->lls, anim);
                     }
                 }
                 if (node->flags & 0x8000) {
@@ -1293,7 +1293,7 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
             struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
             if (anim->kind == 3 || anim->kind == 2) {
-                LLSPlayOnce(anim->lls, (unsigned int)anim);
+                LLSPlayOnce(anim->lls, anim);
             }
         }
         node = node->next;
@@ -1328,7 +1328,7 @@ void FUN_0046f100(short param_1) {
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
             struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
             if (anim->kind == 3 || anim->kind == 2) {
-                LLSPlayOnce(anim->lls, (unsigned int)anim);
+                LLSPlayOnce(anim->lls, anim);
             }
         }
     }

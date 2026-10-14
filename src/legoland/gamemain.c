@@ -320,7 +320,7 @@ void FUN_004779d0(struct Point *p) {
                 RemoveObjectFromMap(t);
             }
         } else {
-            RemObjFromMap(QueryClass, (unsigned int)elem, t, &QueryCursor);
+            RemObjFromMap(QueryClass, elem, t, &QueryCursor);
         }
         memcpy(&QueryCursor, &saved, sizeof(struct Cursor));
         QueryClass = saved_class;

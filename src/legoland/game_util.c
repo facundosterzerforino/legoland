@@ -1289,7 +1289,7 @@ int ScriptCmdAddBricks(struct CommandArgs *arg, int argc) {
 
 // FUNCTION: LEGOLAND 0x0047a5a0
 int ScriptCmdPlace(struct CommandArgs *arg, int argc) {
-    unsigned int id;
+    struct Element *id;
     unsigned int coords[2];
     unsigned int v;
 

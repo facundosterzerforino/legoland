@@ -2282,9 +2282,9 @@ extern unsigned int DAT_00667ca4;
 // 0x00667ca8
 extern LEGO_EXPORT void *OverlayList;
 // 0x00667cac
-extern LEGO_EXPORT unsigned int OverlayILF;
+extern LEGO_EXPORT struct SpriteSet *OverlayILF;
 // 0x00667cb0
-extern void *BridgesData;
+extern struct SpriteSet *BridgesData;
 // 0x00667cb4
 extern LEGO_EXPORT int ScrollX;
 // 0x00667cb8
@@ -3494,7 +3494,7 @@ extern unsigned short DAT_007febb8;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
 // 0x008003f4
-extern int LevelMapHandle;
+extern struct Element *LevelMapHandle;
 // 0x008003f8
 extern unsigned int DAT_008003f8;
 // 0x00800400
@@ -3506,7 +3506,7 @@ extern struct Element *BridgesHandle;
 // 0x00801408
 extern unsigned int DAT_00801408;
 // 0x0080140c
-extern void *LevelTileMapHandle;
+extern struct Element *LevelTileMapHandle;
 // 0x00801410
 extern struct Element *OverlayILFHandle;
 // 0x00801420
@@ -3516,11 +3516,11 @@ extern int DAT_00801a60;
 // 0x00801a64
 extern int DAT_00801a64;
 // 0x00801a68
-extern void *DAT_00801a68;
+extern struct Element **DAT_00801a68; /* the level's object classes */
 // 0x00801a6c
 extern int *DAT_00801a6c;
 // 0x00801a70
-extern void *DAT_00801a70;
+extern struct MapTileSet **DAT_00801a70; /* the level's tile object sets */
 // 0x00801a74
 extern int DAT_00801a74;
 // 0x00801a80
