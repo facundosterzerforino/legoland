@@ -2406,7 +2406,7 @@ extern int DAT_00668164[32];
 // 0x006681e4
 extern int RenderingStatusStackDepth;
 // 0x006681e8
-extern unsigned int OverridePalette;
+extern unsigned short *OverridePalette;
 // 0x006681ec
 extern void *DAT_006681ec;
 // 0x006681f0
@@ -3474,7 +3474,7 @@ extern unsigned int DAT_007fe994;
 // 0x007fe998
 extern unsigned short DAT_007fe998;
 // 0x007fe9a8
-extern unsigned int DAT_007fe9a8;
+extern unsigned short *DAT_007fe9a8;
 // 0x007fe9c0
 extern struct Sprite *PointerSprites[9];
 // 0x007fea10

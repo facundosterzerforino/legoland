@@ -2912,7 +2912,7 @@ int DAT_00668164[32];
 int RenderingStatusStackDepth;
 
 // GLOBAL: LEGOLAND 0x006681e8
-unsigned int OverridePalette;
+unsigned short *OverridePalette;
 
 // GLOBAL: LEGOLAND 0x006681ec
 void *DAT_006681ec;
@@ -4487,7 +4487,7 @@ unsigned int DAT_007fe994;
 unsigned short DAT_007fe998;
 
 // GLOBAL: LEGOLAND 0x007fe9a8
-unsigned int DAT_007fe9a8;
+unsigned short *DAT_007fe9a8;
 
 // GLOBAL: LEGOLAND 0x007fe9c0
 struct Sprite *PointerSprites[9];
