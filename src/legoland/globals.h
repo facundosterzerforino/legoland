@@ -678,7 +678,7 @@ extern int DAT_004b4034[16];
 extern unsigned int DAT_004b40a4[4];
 extern int DAT_004b40b4[4];
 // 0x004b40c8
-extern unsigned char Catapult_SFX[0x70];
+extern struct FXItem Catapult_SFX[4]; /* their file names follow */
 // 0x004b4140
 extern unsigned char Helicopter_SFX[0x70];
 // 0x004b43f8
@@ -860,7 +860,7 @@ extern struct CastleFloatEnt DAT_004b61e0[8];
 // 0x004b62f0
 extern unsigned int DAT_004b62f0[4];
 // 0x004b6300
-extern unsigned int DAT_004b6300[12];
+extern struct LmsFile DAT_004b6300; /* a mesh header like DAT_004b6150 */
 // 0x004b6398
 extern float DAT_004b6398[4][3];
 // 0x004b63c8
@@ -886,7 +886,7 @@ extern int ENTRANCE_DEST_RIGHT[2];
 // 0x004b665c
 extern int ENTRANCE_DEST_LEFT[2];
 // 0x004b6668
-extern unsigned char ENTRANCE_SFX[0x1c];
+extern struct FXItem ENTRANCE_SFX[1]; /* its file name follows */
 // 0x004b66e8
 extern unsigned char RESTAURANT_SFX[0xc];
 // 0x004b66f4
@@ -1804,7 +1804,7 @@ extern int DAT_00615ff0;
 extern float DAT_00615ff4;
 extern struct CastleFloatEnt DAT_004b5f80[3][4];
 // 0x004b6150
-extern unsigned int DAT_004b6150[36];
+extern struct LmsFile DAT_004b6150; /* the castle cursor's mesh */
 extern struct CastleFloatEnt DAT_00612210[3][4];
 // 0x00615f90
 extern int DAT_00615f90;

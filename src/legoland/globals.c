@@ -252,7 +252,7 @@ unsigned int DAT_004b40a4[4];
 int DAT_004b40b4[4];
 
 // GLOBAL: LEGOLAND 0x004b40c8
-unsigned char Catapult_SFX[0x70];
+struct FXItem Catapult_SFX[4];
 
 // GLOBAL: LEGOLAND 0x004b4140
 unsigned char Helicopter_SFX[0x70];
@@ -555,7 +555,7 @@ unsigned int DAT_004b5f14[4][2] = {{0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc0
 unsigned char DAT_004b5f60[0x20];
 
 // GLOBAL: LEGOLAND 0x004b6150
-unsigned int DAT_004b6150[36] = {0};
+struct LmsFile DAT_004b6150 = {0};
 
 // GLOBAL: LEGOLAND 0x004b61e0
 struct CastleFloatEnt DAT_004b61e0[8] = {0};
@@ -564,7 +564,7 @@ struct CastleFloatEnt DAT_004b61e0[8] = {0};
 unsigned int DAT_004b62f0[4];
 
 // GLOBAL: LEGOLAND 0x004b6300
-unsigned int DAT_004b6300[12]; /* mesh header like DAT_004b6150: vertex count, vertices, faces */
+struct LmsFile DAT_004b6300;
 
 // GLOBAL: LEGOLAND 0x004b6398
 float DAT_004b6398[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 40.0f, 0.0f}, {0.0f, 20.0f, 0.0f}};
@@ -603,7 +603,7 @@ int ENTRANCE_DEST_RIGHT[2] = {0x978, 0xd78};
 int ENTRANCE_DEST_LEFT[2] = {0x878, 0xc78};
 
 // GLOBAL: LEGOLAND 0x004b6668
-unsigned char ENTRANCE_SFX[0x1c];
+struct FXItem ENTRANCE_SFX[1];
 
 // GLOBAL: LEGOLAND 0x004b66e8
 unsigned char RESTAURANT_SFX[0xc];

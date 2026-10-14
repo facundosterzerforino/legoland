@@ -24,7 +24,7 @@ void FUN_0042d970(TileId *tile, unsigned int arg) {
 
     config.field_0 = 1;
     config.field_4 = arg;
-    PlayInstanceOfSample(*(void **)(ENTRANCE_SFX + 8), 0, 1, &config);
+    PlayInstanceOfSample(ENTRANCE_SFX[0].sample, 0, 1, &config);
     if (MapStats.entrance_fee != 0) {
         PlayMoneySFX(tile, 1, 0);
     }

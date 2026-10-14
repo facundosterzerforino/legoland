@@ -479,7 +479,7 @@ LEGO_EXPORT unsigned short *LoadPalette(const char *path) {
                 RES_ReadFile(file, &g, 1);
                 RES_ReadFile(file, &b, 1);
                 if (DisplayPixelFormat == 2) {
-                    *out = ((((UINT_PTR)path & 0xf8) << 5 | (g & 0xfc)) << 3) | (b >> 3);
+                    *out = (unsigned short)(((((UINT_PTR)path & 0xf8) << 5 | (g & 0xfc)) << 3) | (b >> 3));
                 } else {
                     *out = (unsigned short)((((((unsigned char)(UINT_PTR)path & 0xf8) << 5) | (g & 0xf8)) << 2) | (b >> 3));
                 }

@@ -9730,12 +9730,12 @@ void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis) {
     ident[6] = 0.0f;
     ident[7] = 0.0f;
     ident[8] = 1.0f;
-    FUN_00420e90((struct LmsFile *)DAT_004b6150, (struct LmsRec *)DAT_00615f70, zero, ident, 1);
+    FUN_00420e90(&DAT_004b6150, (struct LmsRec *)DAT_00615f70, zero, ident, 1);
 }
 
 // FUNCTION: LEGOLAND 0x00429490
 void FUN_00429490(struct FVec3 *param_1, struct FVec3 *param_2) {
-    FUN_00420e90((struct LmsFile *)DAT_004b6300, (struct LmsRec *)DAT_004b62f0, param_1, param_2, 1);
+    FUN_00420e90(&DAT_004b6300, (struct LmsRec *)DAT_004b62f0, param_1, param_2, 1);
 }
 
 // FUNCTION: LEGOLAND 0x004294b0
