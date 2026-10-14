@@ -26,6 +26,8 @@ struct PieceClass {
     /* 0x24 */ unsigned int (*method_24)(struct PathSeg *self);
     /* 0x28 */ void (*method_28)(struct PathSeg *self);
     /* 0x2c */ void (*method_2c)(struct PathSeg *self);
+    /* 0x30 */ unsigned int field_30;
+    /* 0x34 */ unsigned int field_34;
 };
 
 /* one end of a piece: the direction it opens to, its height and the piece joined there */
