@@ -179,20 +179,35 @@ struct AnimOut {
     float f8; /* speed */
 };
 
-/* the integrator stepping a train's motion (Train.integ) */
-struct VecOps {
-    void (*m0)(struct VecOps *, unsigned int);
-    void (*m4)(struct VecOps *, unsigned int);
-    void (*m8)(struct VecOps *, float, unsigned int);
-    unsigned char pad_c[0xc];
-    void (*m18)(unsigned int, float);
-    unsigned char pad_1c[4];
-    void (*m20)(unsigned int, float, unsigned int, float, unsigned int);
-    void (*m24)(unsigned int, unsigned int);
-    void (*m28)(unsigned int, float, unsigned int);
-    unsigned int *(*alloc)(int);
-    void (*release)(unsigned int *, int);
-    unsigned int f34;
+/* a vector of the castle's numerical code: count floats (the pool's are 0x54 bytes) */
+struct FloatArray {
+    int count;
+    float data[20];
+};
+
+/* vector arithmetic on FloatArrays (DAT_004dcbd0 is the template; FUN_00421540 copies it with a dimension) */
+struct VecMath {
+    /* 0x00 */ void (*add)(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out);
+    /* 0x04 */ void (*sub)(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out);
+    /* 0x08 */ void (*copy)(struct FloatArray *src, struct FloatArray *dst);
+    /* 0x0c */ void (*scale)(struct FloatArray *arr, float f);
+    /* 0x10 */ float (*maxabs)(struct FloatArray *arr);
+    /* 0x14 */ void (*blend)(struct FloatArray *a, float s, struct FloatArray *b, float t, struct FloatArray *out);
+    /* 0x18 */ void (*zero)(struct FloatArray *buf, int size);
+    /* 0x1c */ void (*axpy)(struct FloatArray *a, float f, struct FloatArray *out);
+    /* 0x20 */ struct FloatArray **(*alloc)(unsigned int n); /* n work vectors from the pool */
+    /* 0x24 */ void (*release)(struct FloatArray **h, unsigned int n);
+    /* 0x28 */ unsigned int dim;
+};
+
+/* a Runge-Kutta stepper over a state vector (the train's: Train.integ, state = &motion) */
+struct Integrator {
+    /* 0x00 */ void (*store)(struct Integrator *self, struct FloatArray *v);
+    /* 0x04 */ unsigned int (*load)(struct Integrator *self, struct FloatArray *v);
+    /* 0x08 */ void (*deriv)(struct Integrator *self, float t, struct FloatArray *out);
+    /* 0x0c */ struct VecMath math;
+    /* 0x38 */ void *state;
+    /* 0x3c */ struct Train *owner;
 };
 
 /* the castle's coaster train (CastleState.field_d8) */
@@ -202,9 +217,7 @@ struct Train {
     /* 0x08 */ int field_8; /* game time the hold (flags & 0x40) ends */
     /* 0x0c */ struct CurveWalker walker;
     /* 0x20 */ struct AnimOut motion;
-    /* 0x2c */ struct VecOps integ;
-    /* 0x64 */ struct AnimOut *state; /* &motion */
-    /* 0x68 */ struct Train *owner; /* itself */
+    /* 0x2c */ struct Integrator integ; /* state &motion, owner itself */
     /* 0x6c */ struct CastleState *track;
     /* 0x70 */ struct TrainCar head;
 };
@@ -358,17 +371,17 @@ void FormatRollercoasterFileName(int value, char *buffer);
 void *LoadLtxFile(const char *name);
 int *LoadRollercoasterLpt(void);
 void FUN_0041f030(unsigned int param);
-int FUN_0041f4e0(void (*fn)(float, unsigned int), void *a, float b, float c, void *d);
+int FUN_0041f4e0(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d);
 int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes);
-void FUN_0041f790(float x, unsigned int out);
+void FUN_0041f790(float x, struct FloatArray *out);
 void FUN_00421470(void);
 int FUN_0041f720(double (*fn)(float), float p2, float p3, float *out);
-struct FitRes *FUN_0041f650(double (*fn)(float), int n, float a, float b);
+float **FUN_0041f650(double (*fn)(float), int n, float a, float b);
 double FUN_0041f7e0(float param);
-void FUN_0041f710(unsigned int param);
-float FUN_0041ddb0(unsigned char *param_1, float param_2);
+void FUN_0041f710(void *param);
+float FUN_0041ddb0(struct Train *param_1, float param_2);
 void FUN_0041d950(void *obj, float val, void *tmp);
-void FUN_0041db20(float a, float *out);
+void FUN_0041db20(float a, struct FloatArray *out);
 void FUN_0041da10(void *obj, float val, void *b);
 unsigned int FUN_0041e930(struct TrainCar *obj, unsigned int param);
 void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out);
@@ -379,7 +392,7 @@ struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
 void FUN_00429750(struct PathSeg *seg, struct PathSeg *end);
 void FUN_00424e60(struct CastleState *owner);
 struct VecOps;
-void FUN_00420310(struct VecOps *ar, float *p, float c);
+void FUN_00420310(struct Integrator *ar, float *p, float c);
 void FUN_0042a620(struct TrainWheel *param_1, struct CurveWalker *param_2, unsigned int param_5);
 void FUN_00424e70(struct CastleState *owner);
 void FUN_004299e0(struct PathSeg *n);
@@ -389,24 +402,24 @@ int FUN_0041d2e0(struct PieceClass *info, short *pos, struct SprEnt *ent);
 int FUN_0041d210(short *pos, struct SprEnt *ent, struct PieceClass *info);
 void FUN_0041edb0(struct Element *element, TileId tile, struct Cursor *cursor);
 void FUN_0041d760(struct PathSeg *obj);
-float FUN_0041dca0(unsigned char *param);
-void FUN_0041db90(unsigned char *obj, float *a, float *b);
+float FUN_0041dca0(struct Train *param);
+void FUN_0041db90(struct Train *obj, float *a, float *b);
 struct PathSeg *FUN_0041d100(struct CastleState *host, struct Ride *ride, short *pt);
 void FUN_0041e9e0(struct TrainCar *obj, float *out);
 void FUN_0041ef20(int a, int b, int c, int d);
 void FUN_0041f380(const int *r, struct PlaneSet *out);
-float FUN_0041dd00(unsigned char *param, float result);
-float FUN_0041dd50(unsigned char *param);
+float FUN_0041dd00(struct Train *param, float result);
+float FUN_0041dd50(struct Train *param);
 void FUN_0041e8f0(struct TrainCar *obj, struct CurveWalker *e, float t);
 void FUN_00429c60(struct CurveWalker *obj, int a, unsigned int b, float c, struct FVec3 *out);
 void FUN_0042a5e0(struct TrainBogie *o, struct CurveWalker *src, float param_5);
 void FUN_0041e820(struct TrainCar *obj, struct CurveWalker *e, float t);
-void FUN_00420410(void *param, unsigned int count);
+void FUN_00420410(struct Integrator *param, unsigned int count);
 struct LmsFile *GetLmsByName(const char *s);
 struct LmsRec *GetLfmByName(const char *s);
-void **FUN_004214f0(unsigned int param_1);
-void FUN_00421510(unsigned int param_1, unsigned int param_2);
-void FUN_00421540(void *dest, unsigned int value);
+struct FloatArray **FUN_004214f0(unsigned int param_1);
+void FUN_00421510(struct FloatArray **param_1, unsigned int param_2);
+void FUN_00421540(struct VecMath *dest, unsigned int value);
 unsigned int FUN_00422590(const char *s);
 unsigned int FUN_00422600(const char *param);
 void FUN_004220e0(float *obj, float t, float *out);
@@ -531,7 +544,7 @@ void FUN_00428860(void);
 extern void *DAT_004b5648[2];
 extern void *DAT_004b5658[2];
 extern void *DAT_004b5f50[2];
-float FUN_0041e000(unsigned char *obj, float total);
+float FUN_0041e000(struct Train *obj, float total);
 float FUN_0041e0e0(struct Train *self, float time_left);
 void FUN_0041e100(struct Train *self, unsigned int arg);
 void *FUN_0041ef60(void *verts, int *out, unsigned int code, int n);

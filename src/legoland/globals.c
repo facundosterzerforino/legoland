@@ -1856,7 +1856,7 @@ struct SprEnt DAT_004d8250;
 unsigned int DAT_004d8268;
 
 // GLOBAL: LEGOLAND 0x004d8270
-unsigned int DAT_004d8270;
+struct VecMath DAT_004d8270;
 
 // GLOBAL: LEGOLAND 0x004d829c
 float DAT_004d829c[64];
@@ -1898,13 +1898,10 @@ char DAT_004d8bb0[0x100];
 float DAT_004dcbb8[3];
 
 // GLOBAL: LEGOLAND 0x004dcbd0
-void *DAT_004dcbd0[10];
-
-// GLOBAL: LEGOLAND 0x004dcbf8
-unsigned int DAT_004dcbf8;
+struct VecMath DAT_004dcbd0;
 
 // GLOBAL: LEGOLAND 0x004dcc00
-unsigned char DAT_004dcc00[2520];
+struct FloatArray DAT_004dcc00[30];
 
 // GLOBAL: LEGOLAND 0x004dd5d8
 unsigned int DAT_004dd5d8;
@@ -2102,7 +2099,7 @@ int DAT_00615f90;
 float DAT_00615fd4;
 
 // GLOBAL: LEGOLAND 0x00615f98
-unsigned int DAT_00615f98;
+struct VecMath DAT_00615f98;
 
 // GLOBAL: LEGOLAND 0x00616000
 struct LmsFile *CoasterTrainWheelLms;
@@ -5410,7 +5407,7 @@ char *DAT_00829c54;
 void *DAT_00829c60[1024];
 
 // GLOBAL: LEGOLAND 0x0082ac60
-void *DAT_0082ac60[48];
+struct FloatArray *DAT_0082ac60[48];
 
 // GLOBAL: LEGOLAND 0x0082ad20
 struct DispatchRow CastleDispatchTable[6];
@@ -5544,7 +5541,7 @@ struct PlaneSet *DAT_004b55fc;
 struct Train *DAT_004d83b4;
 
 // GLOBAL: LEGOLAND 0x004d83a0
-unsigned int DAT_004d83a0[5];
+struct CurveWalker DAT_004d83a0;
 
 // GLOBAL: LEGOLAND 0x004b5634
 float FLOAT_004b5634;
@@ -5613,7 +5610,7 @@ int *DAT_004d87c4;
 int *DAT_004d884c[32];
 
 // GLOBAL: LEGOLAND 0x004d88cc
-unsigned int *DAT_004d88cc[5];
+struct FloatArray **DAT_004d88cc[5];
 
 // GLOBAL: LEGOLAND 0x004b5660
 float DAT_004b5660[4][2];

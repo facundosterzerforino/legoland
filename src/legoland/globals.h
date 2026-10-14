@@ -1699,7 +1699,7 @@ extern struct SprEnt DAT_004d8250;
 // 0x004d8268
 extern unsigned int DAT_004d8268;
 // 0x004d8270
-extern unsigned int DAT_004d8270;
+extern struct VecMath DAT_004d8270;
 extern float DAT_004d829c[64];
 extern unsigned int DAT_004d83c0;
 // 0x004d88f4
@@ -1725,11 +1725,9 @@ extern char DAT_004d8bb0[0x100];
 // 0x004dcbb8
 extern float DAT_004dcbb8[3];
 // 0x004dcbd0
-extern void *DAT_004dcbd0[10];
-// 0x004dcbf8
-extern unsigned int DAT_004dcbf8;
+extern struct VecMath DAT_004dcbd0; /* .dim was DAT_004dcbf8 */
 // 0x004dcc00
-extern unsigned char DAT_004dcc00[2520];
+extern struct FloatArray DAT_004dcc00[30];
 // 0x004dd5d8
 extern unsigned int DAT_004dd5d8;
 // 0x004dd5e0
@@ -1855,7 +1853,7 @@ extern int DAT_00615f90;
 // 0x00615fd4
 extern float DAT_00615fd4;
 // 0x00615f98
-extern unsigned int DAT_00615f98;
+extern struct VecMath DAT_00615f98;
 // 0x00616000
 extern struct LmsFile *CoasterTrainWheelLms;
 // 0x00616004
@@ -4090,7 +4088,7 @@ extern char *DAT_00829c54;
 // 0x00829c60
 extern void *DAT_00829c60[1024];
 // 0x0082ac60
-extern void *DAT_0082ac60[48];
+extern struct FloatArray *DAT_0082ac60[48];
 // 0x0082ad20
 /* castle.c: the castle parts' handlers (a row per part class; the table ends where DAT_0082adb0 starts) */
 struct DispatchRow {
@@ -4200,7 +4198,7 @@ extern struct PlaneSet *DAT_004b55fc;
 extern struct Train *DAT_004d83b4;
 
 // 0x004d83a0
-extern unsigned int DAT_004d83a0[5];
+extern struct CurveWalker DAT_004d83a0;
 
 // 0x004b5634
 extern float FLOAT_004b5634;
@@ -4258,7 +4256,7 @@ extern int *DAT_004d87c4;
 // 0x004d884c
 extern int *DAT_004d884c[32];
 // 0x004d88cc
-extern unsigned int *DAT_004d88cc[5];
+extern struct FloatArray **DAT_004d88cc[5];
 
 // 0x004b5660
 extern float DAT_004b5660[4][2];
