@@ -760,7 +760,7 @@ void JungleCruiseMonkeyTreeCalcCursor(Element *obj, int *param_2, unsigned int p
         n++;
     }
     if (n != 0) {
-        EditCursor.field_1830 = (unsigned int)&JungleCruiseCursors[0];
+        EditCursor.next = &JungleCruiseCursors[0];
         if (n > 1) {
             c = &JungleCruiseCursors[1];
             n--;
@@ -951,9 +951,9 @@ void JungleCruiseMonkeyFishCalcCursor(Element *obj, int *param_2, int *param_3) 
                 n++;
             }
             if (n != 0) {
-                EditCursor.field_1830 = (unsigned int)&DAT_00616180[0];
+                EditCursor.next = &DAT_00616180[0];
                 for (i = 1; i < n; i++) {
-                    DAT_00616180[i - 1].field_1830 = (unsigned int)&DAT_00616180[i];
+                    DAT_00616180[i - 1].next = &DAT_00616180[i];
                 }
             }
         }
@@ -1856,7 +1856,7 @@ void JungleCruiseWaterCalcCursor(Element *obj, int *param_2, unsigned int param_
                         n++;
                     }
                     if (n != 0) {
-                        EditCursor.field_1830 = (unsigned int)&DAT_00629c58[0];
+                        EditCursor.next = &DAT_00629c58[0];
                         if (n > 1) {
                             c = &DAT_00629c58[1];
                             n--;
