@@ -402,7 +402,7 @@ void CastleBBQAddObject(struct Element *param_1, unsigned int *param_2) {
     params.x = *param_2;
     params.y = param_2[1];
     params.field_0 = 2;
-    PlayInstanceOfSample(*(void **)(RESTAURANT_SFX + 8), 1, 1, &params);
+    PlayInstanceOfSample(RESTAURANT_SFX[0].sample, 1, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x0042ea10
@@ -1088,8 +1088,8 @@ void FUN_0042fb00(unsigned short param_1) {
     params.x = b[0];
     params.y = b[1];
     params.field_0 = 2;
-    PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 8), 0, 1, &params);
-    PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 0x14), 1, 1, &params);
+    PlayInstanceOfSample(OCTOPUS_SFX[0].sample, 0, 1, &params);
+    PlayInstanceOfSample(OCTOPUS_SFX[1].sample, 1, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x0042fb60
@@ -1100,7 +1100,7 @@ void FUN_0042fb60(unsigned short param_1) {
     params.x = b[0];
     params.y = b[1];
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
-    PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 0x20), 0, 1, &params);
+    PlayInstanceOfSample(OCTOPUS_SFX[2].sample, 0, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x0042fbb0

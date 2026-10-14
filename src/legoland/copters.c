@@ -46,16 +46,6 @@ struct CopterSfxNode {
     /* 0x18 */ struct CopterLayer layer[6];
 };
 
-// SFX list table (Helicopter_SFX); Load_FXList fills the sample-def slots.
-struct CopterFXList {
-    /* 0x00 */ unsigned char pad_0[8];
-    /* 0x08 */ void *field_8;
-    /* 0x0c */ unsigned char pad_c[0x14 - 0xc];
-    /* 0x14 */ void *field_14;
-    /* 0x18 */ unsigned char pad_18[0x20 - 0x18];
-    /* 0x20 */ void *field_20;
-};
-
 struct CopterChainNode {
     /* 0x00 */ struct CopterChainNode *next;
 };
@@ -638,7 +628,7 @@ unsigned int CoptersResumeSample(unsigned int param) {
 
 // FUNCTION: LEGOLAND 0x004048b0
 void FUN_004048b0(struct CopterSfxNode *node) {
-    struct CopterFXList *fx = (struct CopterFXList *)Helicopter_SFX;
+    struct FXItem *fx = Helicopter_SFX;
     struct SampleParams params;
     struct Sample *sample;
 
@@ -667,8 +657,8 @@ void FUN_004048b0(struct CopterSfxNode *node) {
     params.y = node->tile_y;
     params.field_0 = 2;
 
-    PlayInstanceOfSample(fx->field_8, 0, 1, &params);
-    sample = PlayInstanceOfSample(fx->field_14, 1, 1, &params);
+    PlayInstanceOfSample(fx[0].sample, 0, 1, &params);
+    sample = PlayInstanceOfSample(fx[1].sample, 1, 1, &params);
     PauseSingleSample(sample);
     AddSFX_Callback((struct CallbackEntry *)sample, 0xb54,
         (unsigned int (*)(struct CallbackEntry *))CoptersResumeSample);
@@ -676,7 +666,7 @@ void FUN_004048b0(struct CopterSfxNode *node) {
 
 // FUNCTION: LEGOLAND 0x004049a0
 void FUN_004049a0(struct CopterNode *node, int param) {
-    struct CopterFXList *fx = (struct CopterFXList *)Helicopter_SFX;
+    struct FXItem *fx = Helicopter_SFX;
     struct SampleParams params;
     struct CopterSfxNode *n = (struct CopterSfxNode *)node;
 
@@ -704,7 +694,7 @@ void FUN_004049a0(struct CopterNode *node, int param) {
         params.field_0 = 2;
         params.y = n->tile_y;
         UnSourceAndFadeAllSamplesFromSource(&params, -200);
-        PlayInstanceOfSample(fx->field_20, 0, 1, &params);
+        PlayInstanceOfSample(fx[2].sample, 0, 1, &params);
     }
 }
 

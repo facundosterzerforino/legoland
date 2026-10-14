@@ -515,9 +515,9 @@ void DrivingSchoolUpdate(Element *obj) {
                         if (0 == res) {
                             source.type = 1;
                             source.bloke = bloke;
-                            PlayInstanceOfSample(*(void **)(DRIVING_SCHOOL_SFX + 8), 0, 1, &source);
+                            PlayInstanceOfSample(DRIVING_SCHOOL_SFX[0].sample, 0, 1, &source);
                             r = rand() % 4 + 1;
-                            sample = PlayInstanceOfSample(((void **)(DRIVING_SCHOOL_SFX + 8))[r * 3], 1, 1, &source);
+                            sample = PlayInstanceOfSample(DRIVING_SCHOOL_SFX[r].sample, 1, 1, &source);
                             AdjustPSampleFreq(sample, 10);
                             BlokeSitAnim(bloke);
                             BlokeSetFrame(bloke, 0);

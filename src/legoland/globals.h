@@ -144,7 +144,7 @@ struct SpaceTowerCar;
 struct SpaceTowerLayout {
     /* 0x00 */ unsigned short field_0;
     /* 0x02 */ unsigned char pad_2[2];
-    /* 0x04 */ void *anim_layout;
+    /* 0x04 */ struct AnimLayout *anim_layout;
 };
 
 struct SpaceTowerSeatData {
@@ -680,9 +680,9 @@ extern int DAT_004b40b4[4];
 // 0x004b40c8
 extern struct FXItem Catapult_SFX[4]; /* their file names follow */
 // 0x004b4140
-extern unsigned char Helicopter_SFX[0x70];
+extern struct FXItem Helicopter_SFX[4]; /* their file names follow */
 // 0x004b43f8
-extern unsigned char DRIVING_SCHOOL_SFX[0xa8];
+extern struct FXItem DRIVING_SCHOOL_SFX[6]; /* their file names follow */
 // 0x004b4440
 extern unsigned int DAT_004b4440[5];
 // 0x004b4458
@@ -690,7 +690,7 @@ extern unsigned int DAT_004b4458[5];
 // 0x004b4470
 extern unsigned int DAT_004b4470[5];
 // 0x004b4688
-extern unsigned char JOUST_SFX[12];
+extern struct FXItem JOUST_SFX[1];
 // 0x004b4728 (20 bytes: copied whole into cursors and rides, including the NULL next)
 extern struct Footprint LogFlumeFootprint;
 // 0x004b473c
@@ -751,7 +751,7 @@ extern signed char DAT_004b4f18[4];
 // 0x004b4f1c
 extern signed char DAT_004b4f1c[4];
 // 0x004b4fa8
-extern unsigned char WATERWORKS_SFX[0x24];
+extern struct FXItem WATERWORKS_SFX[3];
 // 0x004b5118
 extern struct BoatDirStep BoatingSchoolDirSteps[4];
 // 0x004b5158
@@ -767,7 +767,7 @@ extern struct Footprint DAT_004b5278;
 // 0x004b5290
 extern struct Point DAT_004b5290[6];
 // 0x004b52c0
-extern unsigned char PTR_s_Boat_Noise_wav[0x18];
+extern struct FXItem PTR_s_Boat_Noise_wav[2];
 // 0x004b53c0
 extern struct Footprint DAT_004b53c0;
 // 0x004b53d4
@@ -888,7 +888,7 @@ extern int ENTRANCE_DEST_LEFT[2];
 // 0x004b6668
 extern struct FXItem ENTRANCE_SFX[1]; /* its file name follows */
 // 0x004b66e8
-extern unsigned char RESTAURANT_SFX[0xc];
+extern struct FXItem RESTAURANT_SFX[1];
 // 0x004b66f4
 extern int DAT_004b66f4[15 * 6];
 // 0x004b685c
@@ -898,7 +898,7 @@ extern int DAT_004b6860[0x20];
 // 0x004b68e0
 extern int DAT_004b68e0[0x22];
 // 0x004b6968
-extern unsigned char OCTOPUS_SFX[0x24];
+extern struct FXItem OCTOPUS_SFX[3];
 // 0x004b6990
 extern int DAT_004b6990[0x29];
 // 0x004b6a34
@@ -937,9 +937,9 @@ extern struct Footprint DAT_004b7478;
 // 0x004b7618
 extern struct FXItem SPACE_TOWER_SFX[1];
 // 0x004b76b8
-extern unsigned char DAT_004b76b8[16];
+extern struct AnimLayout DAT_004b76b8;
 // 0x004b7750
-extern unsigned char DAT_004b7750[16];
+extern struct AnimLayout DAT_004b7750;
 // 0x004b7758
 extern struct SpaceTowerLayout DAT_004b7758[8];
 // 0x004b7798
@@ -948,7 +948,7 @@ extern struct SpaceTowerSeatData DAT_004b7798[4];
 extern struct Point DAT_004b77e8[8];
 // 0x004b79d0
 extern char DAT_004b79bc[];
-extern unsigned char DAT_004b79d0[0x18];
+extern struct FXItem DAT_004b79d0[2];
 // 0x004b7abc
 extern unsigned short DAT_004b7abc;
 // 0x004b7ac0
@@ -1006,9 +1006,9 @@ extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
 // 0x004b85c4
 extern HANDLE DAT_004b85c4;
 // 0x004b8710
-extern unsigned char FountainSFX[0x40];
+extern struct FXItem FountainSFX[5]; /* their file names follow */
 // 0x004b8750
-extern unsigned char PowerStationSFX[0x18];
+extern struct FXItem PowerStationSFX[2];
 // 0x004b8768
 extern struct FXItem DINO_SFX[5];
 // 0x004b87a8

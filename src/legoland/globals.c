@@ -7,6 +7,7 @@
 #include "math.h"
 #include "objclass.h"
 #include "popupinfo.h"
+#include "space_tower.h"
 
 // GLOBAL: LEGOLAND 0x004ab444
 float FLOAT_004ab444;
@@ -255,7 +256,7 @@ int DAT_004b40b4[4];
 struct FXItem Catapult_SFX[4];
 
 // GLOBAL: LEGOLAND 0x004b4140
-unsigned char Helicopter_SFX[0x70];
+struct FXItem Helicopter_SFX[4];
 
 // GLOBAL: LEGOLAND 0x004b42a0
 int DAT_004b42a0[3] = {0, 1, 2};
@@ -270,7 +271,7 @@ int DAT_004b42b8[3] = {1, -1, -1};
 int DAT_004b42c4[3] = {-1, 1, 1};
 
 // GLOBAL: LEGOLAND 0x004b43f8
-unsigned char DRIVING_SCHOOL_SFX[0xa8];
+struct FXItem DRIVING_SCHOOL_SFX[6];
 
 // GLOBAL: LEGOLAND 0x004b4440
 unsigned int DAT_004b4440[5];
@@ -285,7 +286,7 @@ unsigned int DAT_004b4470[5];
 struct FortRect DAT_004b4580 = {-1, -3, 3, 3};
 
 // GLOBAL: LEGOLAND 0x004b4688
-unsigned char JOUST_SFX[12];
+struct FXItem JOUST_SFX[1];
 
 // GLOBAL: LEGOLAND 0x004b4728
 struct Footprint LogFlumeFootprint;
@@ -379,7 +380,7 @@ signed char DAT_004b4f18[4] = {0x40, 0x45, 0x3f, 0x3c};
 signed char DAT_004b4f1c[4] = {0x51, 0x53, 0x53, 0x50};
 
 // GLOBAL: LEGOLAND 0x004b4fa8
-unsigned char WATERWORKS_SFX[0x24];
+struct FXItem WATERWORKS_SFX[3];
 
 // GLOBAL: LEGOLAND 0x004b5118
 struct BoatDirStep BoatingSchoolDirSteps[4];
@@ -403,7 +404,7 @@ struct Footprint DAT_004b5278;
 struct Point DAT_004b5290[6];
 
 // GLOBAL: LEGOLAND 0x004b52c0
-unsigned char PTR_s_Boat_Noise_wav[0x18];
+struct FXItem PTR_s_Boat_Noise_wav[2];
 
 // GLOBAL: LEGOLAND 0x004b53c0
 struct Footprint DAT_004b53c0;
@@ -606,7 +607,7 @@ int ENTRANCE_DEST_LEFT[2] = {0x878, 0xc78};
 struct FXItem ENTRANCE_SFX[1];
 
 // GLOBAL: LEGOLAND 0x004b66e8
-unsigned char RESTAURANT_SFX[0xc];
+struct FXItem RESTAURANT_SFX[1];
 
 // GLOBAL: LEGOLAND 0x004b66f4
 int DAT_004b66f4[15 * 6];
@@ -621,7 +622,7 @@ int DAT_004b6860[0x20];
 int DAT_004b68e0[0x22];
 
 // GLOBAL: LEGOLAND 0x004b6968
-unsigned char OCTOPUS_SFX[0x24];
+struct FXItem OCTOPUS_SFX[3];
 
 // GLOBAL: LEGOLAND 0x004b6990
 int DAT_004b6990[0x29];
@@ -678,10 +679,10 @@ struct Footprint DAT_004b7478;
 struct FXItem SPACE_TOWER_SFX[1];
 
 // GLOBAL: LEGOLAND 0x004b76b8
-unsigned char DAT_004b76b8[16];
+struct AnimLayout DAT_004b76b8;
 
 // GLOBAL: LEGOLAND 0x004b7750
-unsigned char DAT_004b7750[16];
+struct AnimLayout DAT_004b7750;
 
 // GLOBAL: LEGOLAND 0x004b7758
 struct SpaceTowerLayout DAT_004b7758[8];
@@ -699,7 +700,7 @@ char BoxBlokeBnvName[] = "BoxBloke??";
 char DAT_004b79bc[] = "manbox??";
 
 // GLOBAL: LEGOLAND 0x004b79d0
-unsigned char DAT_004b79d0[0x18];
+struct FXItem DAT_004b79d0[2];
 
 // GLOBAL: LEGOLAND 0x004b7abc
 unsigned short DAT_004b7abc;
@@ -792,10 +793,10 @@ void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *) = {0};
 HANDLE DAT_004b85c4 = INVALID_HANDLE_VALUE;
 
 // GLOBAL: LEGOLAND 0x004b8710
-unsigned char FountainSFX[0x40];
+struct FXItem FountainSFX[5];
 
 // GLOBAL: LEGOLAND 0x004b8750
-unsigned char PowerStationSFX[0x18];
+struct FXItem PowerStationSFX[2];
 
 // GLOBAL: LEGOLAND 0x004b8768
 struct FXItem DINO_SFX[5];

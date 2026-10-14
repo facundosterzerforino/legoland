@@ -122,7 +122,7 @@ void FUN_0043d990(struct PlaneRideNode *node) {
     node->f10 = 0;
     cfg[2] = node->b0;
     cfg[3] = node->b1;
-    PlayInstanceOfSample(*(void **)(DAT_004b79d0 + 8), 1, 1, cfg);
+    PlayInstanceOfSample(DAT_004b79d0[0].sample, 1, 1, cfg);
 }
 
 // FUNCTION: LEGOLAND 0x0043d9f0
@@ -403,7 +403,7 @@ LEGO_EXPORT int LoadZoomer(struct Element *arg) {
         }
         {
             struct TileSampleSource params = {2, ((unsigned char *)node)[0], ((unsigned char *)node)[1]};
-            PauseSingleSample(PlayInstanceOfSample(*(void **)(DAT_004b79d0 + 8), 1, 1, &params));
+            PauseSingleSample(PlayInstanceOfSample(DAT_004b79d0[0].sample, 1, 1, &params));
         }
         prev = node;
         if (!SaveGameRead(&marker, 4)) {
