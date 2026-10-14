@@ -135,12 +135,6 @@ struct ObjClassAlias {
     const char *aliases;
 };
 
-struct ElemView {
-    /* 0x00 */ char *name;
-    /* 0x04 */ unsigned char pad_4[4];
-    /* 0x08 */ unsigned int flags;
-};
-
 // GLOBAL: LEGOLAND 0x004bcdcc
 static const struct ObjClassAlias ObjClassAliasTable[] = {
     {"CASTLE OBJ",
@@ -164,11 +158,11 @@ static const struct ObjClassAlias ObjClassAliasTable[] = {
 };
 
 // FUNCTION: LEGOLAND 0x004809d0
-void LoadObjectClassAliasElements(struct ElemView *cls) {
+void LoadObjectClassAliasElements(struct Element *cls) {
     const char *const *slot;
     char *token;
     char *semicolon;
-    struct ElemView *elem;
+    struct Element *elem;
     char buffer[256];
 
     slot = &ObjClassAliasTable[0].aliases;
@@ -179,7 +173,7 @@ void LoadObjectClassAliasElements(struct ElemView *cls) {
             semicolon = strchr(buffer, ';');
             while (semicolon != 0) {
                 *semicolon = '\0';
-                elem = (struct ElemView *)ElemID(token);
+                elem = (struct Element *)ElemID(token);
                 if (elem != 0 && (elem->flags & 4) == 0 && LLIDB_LoadData(elem) != 0) {
                     elem->flags |= 4;
                 }
@@ -221,7 +215,7 @@ void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
 }
 
 // FUNCTION: LEGOLAND 0x00480b40
-LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls) {
+LEGO_EXPORT unsigned int LoadObjectClass(struct Element *cls) {
     unsigned int result;
 
     result = (unsigned int)LLIDB_LoadData(cls);
@@ -240,11 +234,11 @@ void FUN_00480b70(struct ObjClassNames *param) {
     EditMode.unk0 = 1;
     EditMode.unk8 = value;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0
-LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *param_2) {
+LEGO_EXPORT void BasicObjectDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct MapElement **map;
     struct LegoConfig *config;
     int x;

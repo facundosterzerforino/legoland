@@ -171,12 +171,12 @@ void CastleLevelSetEditMode(void) {
 
 // FUNCTION: LEGOLAND 0x00403030
 void CastleLevelRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
-    StandardRemoveObject((Element *)obj, tile, cursor);
+    StandardRemoveObject(obj, tile, cursor);
     RemoveAllBlokesFromRide(obj->ride, tile);
 }
 
 // FUNCTION: LEGOLAND 0x00403060
-void CastleLevelAddObject(struct Element *param1, unsigned int param2) {
+void CastleLevelAddObject(struct Element *param1, int *param2) {
     AddBasicObject(param1, param2);
 }
 

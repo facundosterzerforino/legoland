@@ -232,7 +232,7 @@ void TempleSlideSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)DAT_004cbf80;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00417280
@@ -241,7 +241,7 @@ void RemoveSlideObject(struct SlideObject *obj, TileId tile, struct Cursor *curs
     if (node != NULL) {
         RemoveSlideNode(node);
     }
-    StandardRemoveObject((Element *)obj, tile, cursor);
+    StandardRemoveObject(obj, tile, cursor);
     RemoveAllBlokesFromRide((struct Ride *)obj->ride, tile);
 }
 

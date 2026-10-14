@@ -189,16 +189,16 @@ void TempleSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00416e00
-void TempleAddObject(struct Element *param_1, unsigned int param_2) {
+void TempleAddObject(struct Element *param_1, int *param_2) {
     AddBasicObject(param_1, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x00416e20
-void TempleRemoveObject(Element *a1, TileId tile, unsigned int a3) {
+void TempleRemoveObject(Element *a1, TileId tile, struct Cursor *a3) {
     StandardRemoveObject(a1, tile, a3);
     RemoveAllBlokesFromRide(a1->ride, tile);
 }

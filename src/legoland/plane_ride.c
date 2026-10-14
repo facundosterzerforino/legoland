@@ -301,7 +301,7 @@ void PlaneRideSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)PlaneRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0043df90
@@ -310,7 +310,7 @@ void PlaneRideRemoveObject(struct PlaneRideObject *a1, TileId a2, struct PlaneRi
     if (temp != 0) {
         RemovePlaneRideNode((void *)temp);
     }
-    StandardRemoveObject(a1, a2, (unsigned int)a3);
+    StandardRemoveObject(a1, a2, a3);
     RemoveAllBlokesFromRide(a1->ride, a2);
 }
 
@@ -668,7 +668,7 @@ void PlaneRideUpdate(struct Element *elem) {
                 bloke->person->sprite = NULL;
                 bloke->person->field_30 = 0;
                 UnAdjustBlokePosition(&bloke->person->screen);
-                ScreenToMapRef((int *)&bloke->person->screen, (int *)&bloke->pos, 0);
+                ScreenToMapRef(&bloke->person->screen, &bloke->pos, 0);
                 bloke->person->field_34 = 0;
                 bloke->pos.x <<= 8;
                 bloke->pos.y <<= 8;

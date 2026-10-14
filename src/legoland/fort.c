@@ -233,7 +233,7 @@ void FortSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406860
-unsigned int FortAddObject(struct Element *param1, unsigned int param2) {
+unsigned int FortAddObject(struct Element *param1, int *param2) {
     return AddBasicObject(param1, param2);
 }
 

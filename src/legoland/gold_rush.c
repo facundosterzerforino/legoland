@@ -555,7 +555,7 @@ void GoldRushAddObject(struct GoldEditObject *editObj, struct Point *pos) {
     id.pos.x = (unsigned char)pos->x;
     id.pos.y = (unsigned char)pos->y;
     ride = editObj->ride;
-    AddBasicObject((Element *)editObj, (int *)pos);
+    AddBasicObject(editObj, pos);
     AddGoldWashNode((struct GoldNode *)&id);
 
     p.x = pos->x + ride->x - 1;
@@ -585,7 +585,7 @@ void GoldRushRemoveObject(struct GoldEditObject *editObj, TileId coords, struct 
         RemoveGoldWashNode((struct GoldNode *)found);
     }
 
-    StandardRemoveObject((Element *)editObj, coords, cursor);
+    StandardRemoveObject(editObj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     p[0] = coords.pos.x + ride->x - 1;

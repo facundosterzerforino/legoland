@@ -61,7 +61,7 @@ struct ObjState {
 
 struct CursorObj {
     unsigned char pad_0[12];
-    unsigned int field_c;
+    void *field_c;
 };
 
 struct TileSprite {
@@ -1156,7 +1156,7 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
 }
 
 // FUNCTION: LEGOLAND 0x0045f810
-LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
+LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, void *param) {
     struct Cursor *first;
     struct FootprintNode *rect;
     struct MapElement *tile;
@@ -1249,7 +1249,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045fa80
-LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3) {
+LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, int *a2, unsigned int a3) {
     unsigned int v1;
 
     v1 = obj->field_c;
@@ -1634,7 +1634,7 @@ void FUN_00460560(int index) {
         if (ov->field_10 >> 8 == index + 1) {
             sc[0] = (lpConfig->view_x - (ScrollX >> 8)) + ov->x;
             sc[1] = (lpConfig->view_y - (ScrollY >> 8)) + ov->y;
-            ScreenToMapRef(sc, (int *)&pt, 0);
+            ScreenToMapRef(sc, &pt, 0);
             if ((char)ov->field_10 == 0) {
                 pt.x += 0xf;
                 for (outer = 10; outer != 0; outer--) {
@@ -2299,7 +2299,7 @@ void SetBridgeParamsByName(const char *param_1) {
 // FUNCTION: LEGOLAND 0x00461a50
 LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     struct ResFile *file;
-    int elem;
+    struct Element *elem;
     unsigned int len;
     struct TileMap *tilemap;
     int i;
@@ -2322,12 +2322,12 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     if (MapDataLoaded != 0) {
         return 0xffffffff;
     }
-    if (LLIDB_FindElement((const char *)param_1, (unsigned int *)&elem, 0) != 0) {
+    if (LLIDB_FindElement((const char *)param_1, &elem, 0) != 0) {
         return 0xfffffffe;
     }
     LevelMapHandle = elem;
     // STRING: LEGOLAND 0x004b9c30
-    sprintf(namebuf, ".\\LevelMaps\\%s", *(char **)(4 + elem));
+    sprintf(namebuf, ".\\LevelMaps\\%s", elem->path);
     file = RES_OpenFile(namebuf);
     if (!file) {
         return 0xfffffffd;
@@ -2339,14 +2339,14 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     RES_ReadFile(file, &len, 4);
     RES_ReadFile(file, namebuf, len);
     namebuf[len] = 0;
-    LLIDB_FindElement(namebuf, (unsigned int *)&elem, 0);
+    LLIDB_FindElement(namebuf, &elem, 0);
     LevelTileMapHandle = (void *)elem;
     tilemap = (struct TileMap *)LLIDB_LoadData((void *)elem);
     DAT_00667ca4 = *(unsigned int *)tilemap[0].tiles;
     RES_ReadFile(file, &len, 4);
     RES_ReadFile(file, namebuf, len);
     namebuf[len] = 0;
-    LLIDB_FindElement(namebuf, (unsigned int *)&elem, 0);
+    LLIDB_FindElement(namebuf, &elem, 0);
     OverlayILFHandle = (void *)elem;
     OverlayILF = (unsigned int)LLIDB_LoadData((void *)elem);
     RES_ReadFile(file, &lpConfig->width, 2);
@@ -2371,16 +2371,16 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
         RES_ReadFile(file, &len, 4);
         RES_ReadFile(file, strbuf, len);
         strbuf[len] = 0;
-        LLIDB_FindElement(strbuf, (unsigned int *)&elem, 0);
+        LLIDB_FindElement(strbuf, &elem, 0);
         *(int *)((int)DAT_00801a68 + i * 4) = elem;
         LLIDB_LoadData((void *)elem);
-        if (*(int *)(elem + 0xc) != 0) {
-            *(unsigned int *)(elem + 8) = *(unsigned int *)(elem + 8) | 4;
+        if (elem->data != 0) {
+            elem->flags = elem->flags | 4;
         }
     }
-    LLIDB_FindElement("PATH CONTROL", (unsigned int *)&elem, 0);
+    LLIDB_FindElement("PATH CONTROL", &elem, 0);
     LLIDB_LoadData((void *)elem);
-    PathControlObject = *(void **)(elem + 0xc);
+    PathControlObject = elem->data;
     RES_ReadFile(file, &n, 4);
     i = 0;
     while (i < n) {
@@ -2400,9 +2400,9 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
         RES_ReadFile(file, &len, 4);
         RES_ReadFile(file, strbuf, len);
         strbuf[len] = 0;
-        LLIDB_FindElement(strbuf, (unsigned int *)&elem, 0);
+        LLIDB_FindElement(strbuf, &elem, 0);
         LLIDB_LoadData((void *)elem);
-        *(int *)((int)DAT_00801a70 + i * 4) = *(int *)(0xc + elem);
+        *(int *)((int)DAT_00801a70 + i * 4) = (int)elem->data;
         obj = *(int *)(*(int *)((int)DAT_00801a70 + i * 4) + 0x14);
         if (obj != 0 && *(int *)(obj + 0xc) != 0) {
             *(unsigned int *)(obj + 8) = *(unsigned int *)(obj + 8) | 4;
@@ -2781,10 +2781,10 @@ unsigned int UnloadBaseMap(void) {
             row = row + 1;
         } while (row < (int)(unsigned int)lpConfig->height);
     }
-    LLIDB_UnLoadData((unsigned int)LevelTileMapHandle);
-    LLIDB_UnLoadData((unsigned int)OverlayILFHandle);
+    LLIDB_UnLoadData(LevelTileMapHandle);
+    LLIDB_UnLoadData(OverlayILFHandle);
     if (BridgesHandle != 0) {
-        LLIDB_UnLoadData((unsigned int)BridgesHandle);
+        LLIDB_UnLoadData(BridgesHandle);
         BridgesHandle = 0;
     }
     count = LLIDB_GetCount();
@@ -2793,7 +2793,7 @@ unsigned int UnloadBaseMap(void) {
         do {
             LLIDB_GetElement(i, &elem);
             if ((*(unsigned int *)((char *)elem + 8) & 0x10) != 0 && (*(unsigned int *)((char *)elem + 8) & 1) != 0) {
-                LLIDB_UnLoadData((unsigned int)elem);
+                LLIDB_UnLoadData(elem);
             }
             i = i + 1;
         } while (i < count);
@@ -2802,9 +2802,9 @@ unsigned int UnloadBaseMap(void) {
     i = 0;
     if (0 < DAT_00801a74) {
         do {
-            LLIDB_FindElementFromDataPtr(*(void **)((char *)DAT_00801a70 + i * 4), (unsigned int *)&elem2, 0);
+            LLIDB_FindElementFromDataPtr(*(void **)((char *)DAT_00801a70 + i * 4), &elem2, 0);
             *(unsigned int *)((char *)elem2 + 8) = *(unsigned int *)((char *)elem2 + 8) & 0xfffcfff1;
-            LLIDB_UnLoadData((unsigned int)elem2);
+            LLIDB_UnLoadData(elem2);
             i = i + 1;
         } while (i < DAT_00801a74);
     }

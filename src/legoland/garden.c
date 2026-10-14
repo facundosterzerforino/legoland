@@ -20,11 +20,6 @@ struct GardenInner {
     unsigned int field_1c;
 };
 
-struct EditTarget {
-    unsigned char pad_0[0x3c];
-    unsigned int field_3c;
-};
-
 struct GardenTable {
     unsigned char pad_0[8];
     int *a;
@@ -55,7 +50,7 @@ void FUN_004324d0(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditTarget *)EditMode.unk8)->field_3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00432510
@@ -185,7 +180,7 @@ void FlowersSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditTarget *)EditMode.unk8)->field_3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00432900

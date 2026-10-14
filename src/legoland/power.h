@@ -4,7 +4,7 @@
 
 struct Element;
 
-LEGO_EXPORT void RemoveSoundObject(struct Element *a, unsigned int b, unsigned int c);
+LEGO_EXPORT void RemoveSoundObject(struct Element *a, unsigned int b, struct Cursor *c);
 
 void LoadFountainSFX();
 void KillFountainSFX();

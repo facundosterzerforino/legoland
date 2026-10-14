@@ -262,7 +262,7 @@ void SafariSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = (void *)SafariRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 struct SafariEditObj {
@@ -271,7 +271,7 @@ struct SafariEditObj {
 };
 
 // FUNCTION: LEGOLAND 0x00414f40
-void SafariRemoveObject(struct SafariEditObj *obj, TileId key, unsigned int coords, unsigned int cursor) {
+void SafariRemoveObject(struct SafariEditObj *obj, TileId key, struct Cursor *coords, unsigned int cursor) {
     void *node = FUN_00414a80(&key);
     struct SampleSource src;
 
@@ -279,7 +279,7 @@ void SafariRemoveObject(struct SafariEditObj *obj, TileId key, unsigned int coor
         return;
     }
     RemoveSafariNode((struct SafariNode *)node);
-    StandardRemoveObject((Element *)obj, key, (struct Cursor *)coords);
+    StandardRemoveObject(obj, key, (struct Cursor *)coords);
     RemoveAllBlokesFromRide((struct Ride *)obj->ride, key);
 
     src.type = 2;
@@ -300,7 +300,7 @@ void SafariAddObject(struct Element *uid, struct SafariBasicObject *a1) {
 
     *(unsigned char *)&local = a1->field_0;
     *((unsigned char *)&local + 1) = a1->field_4;
-    AddBasicObject((Element *)uid, (int *)a1);
+    AddBasicObject(uid, a1);
     FUN_004149c0((struct SafariNode *)&local);
 }
 
@@ -534,7 +534,7 @@ void SafariRideUpdate(Element *obj) {
                 bloke->person->sprite = NULL;
                 bloke->person->field_30 = 0;
                 UnAdjustBlokePosition(&bloke->person->screen);
-                ScreenToMapRef((int *)&bloke->person->screen, (int *)&bloke->pos, 0);
+                ScreenToMapRef(&bloke->person->screen, &bloke->pos, 0);
                 bloke->person->field_34 = 0;
                 bloke->pos.x <<= 8;
                 bloke->pos.y <<= 8;

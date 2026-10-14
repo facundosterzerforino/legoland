@@ -97,7 +97,7 @@ int FUN_00457970(int dx, int dy) {
             if (elem == NULL) return 0;
             if (elem->flags & 0x8f8) return 0;
             if (elem->field_12 != 0) {
-                unsigned int idx;
+                struct Element *idx;
                 // STRING: LEGOLAND 0x004b8a70
                 LLIDB_FindElement("PATH CONTROL", &idx, 0);
                 if (EditMode.unk8->element != (struct Element *)idx) return 0;

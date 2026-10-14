@@ -143,7 +143,7 @@ void FUN_004392b0(struct PathArea *area, struct Point *origin) {
 // FUNCTION: LEGOLAND 0x00439320
 void LegoShop1AddObject(struct MapObject *obj, void *param_2) {
     struct Building *building = obj->building;
-    AddBasicObject((unsigned int)obj, (unsigned int)param_2);
+    AddBasicObject(obj, param_2);
     FUN_00439230((unsigned int)building, param_2);
 }
 
@@ -152,7 +152,7 @@ void LegoShop1RemoveObject(struct ShopRemoveObject *obj, TileId coords, void *cu
     void *ride = obj->ride;
     struct Point local;
 
-    StandardRemoveObject((Element *)obj, coords, (struct Cursor *)cursor);
+    StandardRemoveObject(obj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     local.x = coords.pos.x;
@@ -165,7 +165,7 @@ void LegoShop1SetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = LegoShop1Building;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x004393e0
@@ -306,7 +306,7 @@ void LegoShop2SetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = LegoShop2Building;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00439760
@@ -530,7 +530,7 @@ void LoadLegMediaShopMaskSpritesAndMoneySFX(struct MapObject *obj) {
 // FUNCTION: LEGOLAND 0x00439c60
 void LegoMediaShopAddObject(struct MapObject *obj, void *param_2) {
     struct Building *building = obj->building;
-    AddBasicObject((unsigned int)obj, (unsigned int)param_2);
+    AddBasicObject(obj, param_2);
     FUN_00439230((unsigned int)building, param_2);
 }
 
@@ -539,7 +539,7 @@ void LegoMediaShopRemoveObject(struct ShopRemoveObject *obj, TileId coords, void
     void *ride = obj->ride;
     struct Point local;
 
-    StandardRemoveObject((Element *)obj, coords, (struct Cursor *)cursor);
+    StandardRemoveObject(obj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     local.x = coords.pos.x;
@@ -559,7 +559,7 @@ void LegoMediaShopSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = LegoMediaShopBuilding;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00439d40
@@ -747,7 +747,7 @@ void ExplorersInstituteSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = ExplorersInstituteBuilding;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0043a180
@@ -854,7 +854,7 @@ unsigned int *GetShopSpriteInfo(struct ShopRideObject *obj, unsigned short param
 
 // FUNCTION: LEGOLAND 0x0043a3d0
 void RemoveObjectAndBlokes(struct ShopRideObject *obj, TileId tile, void *param_3) {
-    StandardRemoveObject(obj, tile, (unsigned int)param_3);
+    StandardRemoveObject(obj, tile, param_3);
     RemoveAllBlokesFromRide((unsigned int)obj->building, tile);
 }
 

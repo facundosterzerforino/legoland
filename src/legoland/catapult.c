@@ -474,7 +474,7 @@ void CatapultAddObject(struct EditObject *edit2, struct CatapultEdit *edit) {
 
     key.field_0 = edit->field_0;
     key.field_1 = edit->field_4;
-    AddBasicObject(edit2, (int *)edit);
+    AddBasicObject(edit2, edit);
     Catapult_AddNode((const unsigned short *)&key);
 }
 
@@ -482,7 +482,7 @@ void CatapultAddObject(struct EditObject *edit2, struct CatapultEdit *edit) {
 void CatapultRemoveObject(struct CatapultRemoveEdit *edit, TileId key, void *cursor, unsigned int param_4) {
     struct CatapultRideNode *node;
 
-    StandardRemoveObject((Element *)edit, key, (struct Cursor *)cursor);
+    StandardRemoveObject(edit, key, cursor);
     RemoveAllBlokesFromRide((struct Ride *)edit->ride, key);
     node = Catapult_FindNode(&key.id);
     if (node != NULL) {

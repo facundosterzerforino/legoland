@@ -41,7 +41,7 @@ struct SpriteManager {
     struct Sprite **sprites;
     int *data_c;
     int *data_10;
-    unsigned int data_14;
+    struct Element *data_14;
     void *data_18;
     void *data_1c;
     void *data_20;
@@ -94,8 +94,8 @@ struct ODFObject {
     struct ODFSprite *sprite_0;
     struct ODFSprite *sprite_1;
     struct ODFSprite *sprite_2;
-    unsigned int handle;
-    unsigned int data_74;
+    struct Element *handle;
+    struct SpriteManager *data_74; /* the sprites of its TSF (LLIDB_LoadTSFData) */
     void *data_78;
     void *data_7c;
     void *data_80;
@@ -205,7 +205,7 @@ LEGO_EXPORT int LLIDB_GetElement(unsigned int index, struct Element **output) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b330
-LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned int *index_out) {
+LEGO_EXPORT int LLIDB_FindElement(const char *name, struct Element **out, unsigned int *index_out) {
     unsigned int i;
 
     if (name == NULL) {
@@ -220,7 +220,7 @@ LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned 
         for (i = 0; i < LLIDB_ElementCount; i++) {
             if (_stricmp(name, LLIDB_ELEM(i)->name) == 0) {
                 if (out != NULL) {
-                    *out = (unsigned int)LLIDB_ELEM(i);
+                    *out = LLIDB_ELEM(i);
                 }
                 if (index_out != NULL) {
                     *index_out = i;
@@ -242,12 +242,12 @@ LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned 
 LEGO_EXPORT struct Element *ElemID(const char *name) {
     struct Element *element;
 
-    LLIDB_FindElement(name, (unsigned int *)&element, NULL);
+    LLIDB_FindElement(name, &element, NULL);
     return element;
 }
 
 // FUNCTION: LEGOLAND 0x0047b410
-LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsigned int *index_out) {
+LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, struct Element **out, unsigned int *index_out) {
     unsigned int i;
 
     if (data == NULL) {
@@ -262,7 +262,7 @@ LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsi
         for (i = 0; i < LLIDB_ElementCount; i++) {
             if (data == LLIDB_ELEM(i)->data) {
                 if (out != NULL) {
-                    *out = (unsigned int)LLIDB_ELEM(i);
+                    *out = LLIDB_ELEM(i);
                 }
                 if (index_out != NULL) {
                     *index_out = i;
@@ -347,7 +347,7 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const cha
     char *page_off;
     unsigned int slot_off;
     char *copy;
-    unsigned int found;
+    struct Element *found;
 
     if (param_1 == NULL || param_1[0] == '\0') {
         return (unsigned int)LLIDB_ERR_NOKEY;
@@ -671,7 +671,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
     char filename[0x100];
     char dllname[0x100];
     unsigned int size;
-    unsigned int element;
+    struct Element *element;
     int lang_count;
     struct ResFile *file;
     struct ODFObject *obj;
@@ -1042,7 +1042,7 @@ struct Sprite *FUN_0047c7f0(struct Element *elem, char **name2, int *key, char *
     RES_ReadFile(file, name, size);
     name[size] = '\0';
     if (name[0] != '\0') {
-        LLIDB_FindElement(name, (unsigned int *)&DAT_007cb3bc, 0);
+        LLIDB_FindElement(name, &DAT_007cb3bc, 0);
         RES_ReadFile(file, &size, 4);
         RES_ReadFile(file, name, size);
         RES_ReadFile(file, &size, 4);
@@ -1090,7 +1090,7 @@ LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
     unsigned int count;
     int len;
     int ret;
-    unsigned int element;
+    struct Element *element;
     unsigned int tile_base;
     struct ResFile *file;
     struct SpriteManager *si;
@@ -1152,8 +1152,8 @@ LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
             if (LLIDB_FindElement(name, &element, NULL) == 0) {
                 head->data = si;
                 si->data_14 = element;
-                LLIDB_LoadData((void *)element);
-                *(struct SpriteManager **)(*(int *)(0xc + element) + 0x74) = si;
+                LLIDB_LoadData(element);
+                ((struct ODFObject *)element->data)->data_74 = si;
             }
         }
     }
@@ -1194,7 +1194,7 @@ LEGO_EXPORT void *LLIDB_LoadTSMData(struct LLIDBHead *head) {
     char name[0x200];
     int count;
     int len;
-    unsigned int element;
+    struct Element *element;
     struct ResFile *file;
     unsigned int *entries;
     unsigned int *entry;
@@ -1388,7 +1388,7 @@ LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d3a0
-LEGO_EXPORT void *LLIDB_LoadData(void *handle) {
+LEGO_EXPORT void *LLIDB_LoadData(struct Element *handle) {
     struct LLIDBHead *head = (struct LLIDBHead *)handle;
     unsigned int flags = head->flags;
     void *data;
@@ -1433,7 +1433,7 @@ LEGO_EXPORT void *LLIDB_LoadData(void *handle) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d450
-LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) {
+LEGO_EXPORT void LLIDB_UnLoadData(struct Element *handle) {
     struct LLIDBHead *head = (struct LLIDBHead *)handle;
     unsigned int flags;
 

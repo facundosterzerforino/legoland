@@ -36,6 +36,6 @@ void DrivingSchoolRoadsAddObject(struct RoadEditArg *edit, struct RoadPlaceArg *
 void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor);
 void FUN_00414440(void);
 void ZebraCrossingSetEditMode();
-void ZebraCrossingCalcCursor(struct RoadEditArg *param_1, unsigned int param_2, unsigned int param_3);
+void ZebraCrossingCalcCursor(struct RoadEditArg *param_1, int *param_2, unsigned int param_3);
 void InitZebraCrossing(struct RoadEditArg *param_1);
 void ZebraCrossingAddObject(struct RoadEditArg *edit, struct RoadPlaceArg *place);

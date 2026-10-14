@@ -590,7 +590,7 @@ void SpaceTowerSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = SpaceTowerRideObj;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0043b460

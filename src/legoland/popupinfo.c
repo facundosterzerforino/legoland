@@ -553,7 +553,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
         if (t.ptr == NULL) {
             return;
         }
-        if (((unsigned int)t.ptr != PathControlHandle) && ((unsigned int)t.ptr != Entrance1Handle)) {
+        if (((struct Element *)t.ptr != PathControlHandle) && ((struct Element *)t.ptr != Entrance1Handle)) {
             DAT_007fdf7c = *(unsigned int *)((char *)t.ptr + 0xc);
             DAT_007fdf84 = iVar4;
             if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == PottingShedHandle) {

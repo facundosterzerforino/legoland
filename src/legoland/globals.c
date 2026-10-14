@@ -1334,13 +1334,13 @@ unsigned int DAT_004c2af4;
 void *DAT_004c2af8;
 
 // GLOBAL: LEGOLAND 0x004c2afc
-unsigned int LogFlumeImageListId;
+struct Element *LogFlumeImageListId;
 
 // GLOBAL: LEGOLAND 0x004c2b0c
 struct CursorSource *DAT_004c2b0c;
 
 // GLOBAL: LEGOLAND 0x004c2b10
-unsigned int LogFlumeTrackEndyListId;
+struct Element *LogFlumeTrackEndyListId;
 
 // GLOBAL: LEGOLAND 0x004c2b50
 void *DAT_004c2b50;
@@ -1754,7 +1754,7 @@ struct WaterSub *ShowerLayer;
 unsigned int DAT_004cbfe4;
 
 // GLOBAL: LEGOLAND 0x004cbfe8
-unsigned int WaterWorksImageListHandle;
+struct Element *WaterWorksImageListHandle;
 
 // GLOBAL: LEGOLAND 0x004cbfec
 unsigned int ElephantFountainLayer;
@@ -2237,7 +2237,7 @@ struct Sprite *EateryLayerOwner;
 struct RideSpriteInfo DAT_00616120;
 
 // GLOBAL: LEGOLAND 0x0061613c
-unsigned int BrollyImagesHandle;
+struct Element *BrollyImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616140
 struct BrollyData *BrollyImagesData;
@@ -2252,13 +2252,13 @@ struct SaveBlock *SaveBlockList;
 unsigned int HedgeImagesData;
 
 // GLOBAL: LEGOLAND 0x00616150
-unsigned int FlowerImagesHandle;
+struct Element *FlowerImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616158
 unsigned int FlowerImagesData;
 
 // GLOBAL: LEGOLAND 0x0061615c
-unsigned int HedgeImagesHandle;
+struct Element *HedgeImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616164
 struct JungleRide *JungleRideList;
@@ -4298,7 +4298,7 @@ unsigned int MidiOutHandle;
 struct ResVolume *ResourceVolumes[4];
 
 // GLOBAL: LEGOLAND 0x007fd660
-unsigned int DAT_007fd660[256];
+struct Element *DAT_007fd660[256];
 
 // GLOBAL: LEGOLAND 0x007fda60
 struct BlokeSave BlokeSaveBuffer;
@@ -4460,16 +4460,16 @@ unsigned int DAT_007fdfa8;
 unsigned char PopupInfoLineCount;
 
 // GLOBAL: LEGOLAND 0x007fdfb0
-unsigned int PottingShedHandle;
+struct Element *PottingShedHandle;
 
 // GLOBAL: LEGOLAND 0x007fdfb4
-unsigned int MechanicsHutHandle;
+struct Element *MechanicsHutHandle;
 
 // GLOBAL: LEGOLAND 0x007fdfb8
-unsigned int PathControlHandle;
+struct Element *PathControlHandle;
 
 // GLOBAL: LEGOLAND 0x007fdfbc
-unsigned int Entrance1Handle;
+struct Element *Entrance1Handle;
 
 // GLOBAL: LEGOLAND 0x007fdfc0
 struct IconNode *ClosePopUpIcon;
@@ -4625,7 +4625,7 @@ LEGO_EXPORT RECT ObjectPartArray[256];
 LEGO_EXPORT struct MapElement **GameMap;
 
 // GLOBAL: LEGOLAND 0x00801404
-void *BridgesHandle;
+struct Element *BridgesHandle;
 
 // GLOBAL: LEGOLAND 0x00801408
 unsigned int DAT_00801408;
@@ -4634,7 +4634,7 @@ unsigned int DAT_00801408;
 void *LevelTileMapHandle;
 
 // GLOBAL: LEGOLAND 0x00801410
-void *OverlayILFHandle;
+struct Element *OverlayILFHandle;
 
 // GLOBAL: LEGOLAND 0x00801420
 struct DeferredSprite DAT_00801420[100];

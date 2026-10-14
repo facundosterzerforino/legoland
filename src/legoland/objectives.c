@@ -39,7 +39,7 @@ struct ThemeQueryArg {
 
 struct ThemeData {
     unsigned char pad_0[0x5c];
-    unsigned int theme_id;
+    struct Element *theme_id;
 };
 
 struct RewardArg {
@@ -985,7 +985,7 @@ void GiveRewardObject(struct ObjectiveEvent *object, unsigned int a, unsigned in
 // FUNCTION: LEGOLAND 0x00469980
 void CountObjectTheme(struct ThemeQueryArg *arg) {
     struct ThemeData *theme;
-    unsigned int id;
+    struct Element *id;
 
     theme = arg->theme;
     // STRING: LEGOLAND 0x004ba748

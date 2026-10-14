@@ -412,7 +412,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
 
     if (DAT_00668ebc == 0) {
         DAT_00668ebc = 1;
-        LLIDB_FindElement("PATH CONTROL", (unsigned int *)&element, 0);
+        LLIDB_FindElement("PATH CONTROL", &element, 0);
         obj = element->obj;
         PathControlObject = obj;
         icon = InsertIcon((short)DAT_004bb04c[8], (short)DAT_004bb04c[9], 0x93, IfPathIconSprite);
@@ -932,10 +932,10 @@ LEGO_EXPORT unsigned int TestMenu(unsigned int *entry) {
 
 // FUNCTION: LEGOLAND 0x00475720
 LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
-    void *build_elem;
-    void *theme_elem;
-    void *param_elem;
-    void *menu_elem;
+    struct Element *build_elem;
+    struct Element *theme_elem;
+    struct Element *param_elem;
+    struct Element *menu_elem;
     struct LLDBElem *elem;
     struct BuildObject *obj;
     char *menu_name;
@@ -945,18 +945,18 @@ LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
 
     matched = 1;
     DelObjectList();
-    if (LLIDB_FindElement("BUILD MENU", (unsigned int *)&build_elem, 0) != 0) {
+    if (LLIDB_FindElement("BUILD MENU", &build_elem, 0) != 0) {
         exit(1);
     }
-    if (LLIDB_FindElement("COMMON THEME", (unsigned int *)&theme_elem, 0) != 0) {
+    if (LLIDB_FindElement("COMMON THEME", &theme_elem, 0) != 0) {
         exit(1);
     }
-    if (LLIDB_FindElement((const char *)entry, (unsigned int *)&param_elem, 0) != 0) {
+    if (LLIDB_FindElement((const char *)entry, &param_elem, 0) != 0) {
         exit(1);
     }
     count = LLIDB_GetCount();
     for (menu_name = DAT_004baffc[0]; (int)menu_name < (int)DAT_004bb04c; menu_name += 0x14) {
-        if (LLIDB_FindElement(menu_name, (unsigned int *)&menu_elem, 0) != 0) {
+        if (LLIDB_FindElement(menu_name, &menu_elem, 0) != 0) {
             exit(1);
         }
         for (i = 0; i < count; i++) {
@@ -1151,28 +1151,28 @@ char FUN_00475c90(int param_1, unsigned char param_2) {
 // FUNCTION: LEGOLAND 0x00475cd0
 LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
     struct LLDBElem *elem;
-    void *build_elem;
-    void *param_elem;
-    void *menu_elem;
-    void *theme_elem;
+    struct Element *build_elem;
+    struct Element *param_elem;
+    struct Element *menu_elem;
+    struct Element *theme_elem;
     struct BuildObject *obj;
     int count;
     int menu_index;
     int i;
 
     DelObjectList();
-    if (LLIDB_FindElement("BUILD MENU", (unsigned int *)&build_elem, 0) != 0) {
+    if (LLIDB_FindElement("BUILD MENU", &build_elem, 0) != 0) {
         exit(1);
     }
-    if (LLIDB_FindElement("COMMON THEME", (unsigned int *)&theme_elem, 0) != 0) {
+    if (LLIDB_FindElement("COMMON THEME", &theme_elem, 0) != 0) {
         exit(1);
     }
-    if (LLIDB_FindElement((const char *)entry, (unsigned int *)&param_elem, 0) != 0) {
+    if (LLIDB_FindElement((const char *)entry, &param_elem, 0) != 0) {
         exit(1);
     }
     count = LLIDB_GetCount();
     for (menu_index = 0; menu_index < 4; menu_index++) {
-        if (LLIDB_FindElement(DAT_004baffc[menu_index], (unsigned int *)&menu_elem, 0) != 0) {
+        if (LLIDB_FindElement(DAT_004baffc[menu_index], &menu_elem, 0) != 0) {
             exit(1);
         }
         for (i = 0; i < count; i++) {

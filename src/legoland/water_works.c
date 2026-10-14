@@ -278,14 +278,14 @@ void WaterBlockLoad(struct WaterArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417dd0
-void WaterWorksWaterBlockCalcCursor(struct WaterArg *arg, unsigned int a, unsigned int b) {
+void WaterWorksWaterBlockCalcCursor(struct WaterArg *arg, int *a, unsigned int b) {
     struct WaterContext *context;
 
     context = arg->ride;
     *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)&context->footprint_x0;
     EditCursor.field_1830 = 0;
     ScreenToMapRef(a, &EditCursor.tile_x, b);
-    ValidateCursor(&EditCursor, (unsigned int)context);
+    ValidateCursor(&EditCursor, context);
     if (FUN_00417c90() != 0) {
         return;
     }
@@ -473,7 +473,7 @@ void WaterBlockAddObject(struct EditObject *editObj, unsigned char *coords) {
 
     *(unsigned char *)&key = coords[0];
     *((unsigned char *)&key + 1) = coords[4];
-    AddBasicObject(editObj, (int *)coords);
+    AddBasicObject(editObj, coords);
     FUN_00417cb0(key);
     node = FUN_00417d10(&key);
     if (node != NULL) {
@@ -482,7 +482,7 @@ void WaterBlockAddObject(struct EditObject *editObj, unsigned char *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418230
-void WaterBlockRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
+void WaterBlockRemoveObject(struct Element *a, unsigned int b, struct Cursor *c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -614,12 +614,12 @@ void ShowerAddObject(struct EditObject *editObj, unsigned char *coords) {
 
     *(unsigned char *)&key = coords[0];
     *((unsigned char *)&key + 1) = coords[4];
-    AddBasicObject(editObj, (int *)coords);
+    AddBasicObject(editObj, coords);
     FUN_00418260(key);
 }
 
 // FUNCTION: LEGOLAND 0x00418510
-void ShowerRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
+void ShowerRemoveObject(struct Element *a, unsigned int b, struct Cursor *c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -652,14 +652,14 @@ unsigned int *GetWaterWorksShowerSpriteInfo(unsigned int *arg1, unsigned short a
 }
 
 // FUNCTION: LEGOLAND 0x004185c0
-void WaterWorksShowerCalcCursor(struct WaterArg *arg, unsigned int a, unsigned int b) {
+void WaterWorksShowerCalcCursor(struct WaterArg *arg, int *a, unsigned int b) {
     struct WaterContext *context;
 
     context = arg->ride;
     ScreenToMapRef(a, &EditCursor.tile_x, b);
     *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)&context->footprint_x0;
     EditCursor.field_1830 = 0;
-    ValidateCursor(&EditCursor, (unsigned int)context);
+    ValidateCursor(&EditCursor, context);
     if (FUN_00417c90() != 0) {
         return;
     }
@@ -787,13 +787,13 @@ void ElephantFountainAddObject(struct EditObject *editObj, unsigned char *coords
 
     *(unsigned char *)&key = coords[0];
     *((unsigned char *)&key + 1) = coords[4];
-    AddBasicObject(editObj, (int *)coords);
+    AddBasicObject(editObj, coords);
     FUN_00418630(key);
     FUN_00417af0((unsigned char *)&key, 2, 1);
 }
 
 // FUNCTION: LEGOLAND 0x00418910
-void ElephantFountainRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
+void ElephantFountainRemoveObject(struct Element *a, unsigned int b, struct Cursor *c) {
     struct WaterNode *node;
 
     StandardRemoveObject(a, *(TileId *)&b, c);
@@ -805,14 +805,14 @@ void ElephantFountainRemoveObject(struct Element *a, unsigned int b, unsigned in
 }
 
 // FUNCTION: LEGOLAND 0x00418950
-void WaterWorksElephantFountainCalcCursor(struct WaterArg *arg, unsigned int a, unsigned int b) {
+void WaterWorksElephantFountainCalcCursor(struct WaterArg *arg, int *a, unsigned int b) {
     struct WaterContext *context;
 
     context = arg->ride;
     *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)&context->footprint_x0;
     ScreenToMapRef(a, &EditCursor.tile_x, b);
     EditCursor.field_1830 = 0;
-    ValidateCursor(&EditCursor, (unsigned int)context);
+    ValidateCursor(&EditCursor, context);
     if (FUN_00417c90() != 0) {
         return;
     }
@@ -837,14 +837,14 @@ void CrocodileFountainRemoveObject(struct Element *a, unsigned int b, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00418a30
-void WaterWorksCrocodileFountainCalcCursor(struct CursorNode *arg, unsigned int a, unsigned int b) {
+void WaterWorksCrocodileFountainCalcCursor(struct CursorNode *arg, int *a, unsigned int b) {
     struct CursorData *data;
 
     data = arg->field_c;
     memcpy(EditCursor.field_1414, &data->field_3c, 5 * sizeof(unsigned int));
     EditCursor.field_1830 = 0;
     ScreenToMapRef(a, &EditCursor.tile_x, b);
-    ValidateCursor(&EditCursor, (unsigned int)data);
+    ValidateCursor(&EditCursor, data);
     if (FUN_00417c90() != 0) {
         return;
     }

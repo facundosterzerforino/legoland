@@ -552,7 +552,7 @@ void FUN_0041d760(struct PathSeg *obj) {
     pt.x = obj->x;
     tile.pos.y = (unsigned char)obj->y;
     pt.y = obj->y;
-    BasicObjectDCalcCursor((unsigned int)obj->ride->element, &pt);
+    BasicObjectDCalcCursor(obj->ride->element, &pt);
     FUN_0041edb0(obj->ride->element, tile, &QueryCursor);
 }
 
@@ -6085,12 +6085,12 @@ unsigned int FUN_00424240(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00424280
-void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3) {
+void FUN_00424280(struct Element *param_1, int *param_2, unsigned int param_3) {
     struct Cursor *cursor;
 
     FUN_00423de0();
     SetEditCursorFootPrint(&DAT_00829a80);
-    ScreenToMapRef((int *)param_2, (int *)&EditCursor.tile_x, param_3);
+    ScreenToMapRef((int *)param_2, &EditCursor.tile_x, param_3);
     EditCursor.field_1830 = 0;
     cursor = FUN_0045f540(&EditCursor);
     if (cursor != NULL) {
@@ -6098,7 +6098,7 @@ void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3) {
         cursor->field_1414[0]++;
     }
     ResetCursorBuildable(&EditCursor);
-    ValidateCursor(&EditCursor, (unsigned int)param_1->data);
+    ValidateCursor(&EditCursor, param_1->data);
     if (DAT_00610a04 != 0) {
         SetCursorBlocked(&EditCursor, 0xf);
         PropagateCursorBlocked(&EditCursor);
@@ -8278,7 +8278,7 @@ void FUN_004275b0(void) {}
 void FUN_004275c0(void) {}
 
 // FUNCTION: LEGOLAND 0x004275d0
-void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
+void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
     struct SprEnt *result;
     struct PieceClass *key;
     unsigned int bit;
@@ -8292,7 +8292,7 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
 
     EditCursor.footprint = *fp;
     EditCursor.field_1830 = 0;
-    ScreenToMapRef((int *)x, (int *)&EditCursor.tile_x, y);
+    ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
     if (DAT_00829ae0.flags != 2) {
         bit = 1;
         for (i = 0; i <= 3; i++) {
@@ -8316,7 +8316,7 @@ void SquareTrackCalcCursor(Element *obj, int x, unsigned int y) {
                 bit <<= 1;
             }
         }
-        ValidateCursor(&EditCursor, (unsigned int)ride);
+        ValidateCursor(&EditCursor, ride);
         bit = 1;
         for (i = 0; i <= 3; i++) {
             if (bit & DAT_00829ae0.pts_a.mask) {
@@ -8406,7 +8406,7 @@ void FUN_00427970(Element *obj, const struct Struct427970Src *src) {
     struct Int16Pair pair;
     struct PathSeg *node;
 
-    BasicObjectDCalcCursor((unsigned int)obj, (struct Point *)src);
+    BasicObjectDCalcCursor(obj, src);
     pair.x = src->field_0;
     pair.y = src->field_4;
     node = FUN_0041d100((struct CastleState *)&DAT_00829ae0, key, (short *)&pair);
@@ -8470,7 +8470,7 @@ void FUN_00427a80(struct Struct427a80 *param_1, float param_2) {
 
 // FUNCTION: LEGOLAND 0x00427aa0
 void CastleLoadBasicTiles(Element *obj) {
-    unsigned int handle;
+    struct Element *handle;
 
     DAT_00829c08 = obj->ride;
     DAT_00829c08->layer->flags |= 0x2000;
@@ -8484,7 +8484,7 @@ void CastleLoadBasicTiles(Element *obj) {
 
 // FUNCTION: LEGOLAND 0x00427af0
 void CastleUnloadBasicTiles(void) {
-    unsigned int handle;
+    struct Element *handle;
     unsigned int packed;
     // STRING: LEGOLAND 0x004b5f34
     if (LLIDB_FindElement("BASIC TILES 1", &handle, 0) == 0) {
@@ -8493,13 +8493,13 @@ void CastleUnloadBasicTiles(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00427b20
-void FUN_00427b20(Element *obj, int x, unsigned int y) {
+void FUN_00427b20(Element *obj, int *x, unsigned int y) {
     struct Int16Pair tile;
     struct SprEnt *result;
 
     SetEditCursorFootPrint(&obj->ride->footprint);
-    ScreenToMapRef((int *)x, (int *)&EditCursor.tile_x, y);
-    ValidateCursor(&EditCursor, (unsigned int)obj->data);
+    ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
+    ValidateCursor(&EditCursor, obj->data);
     EditCursor.field_1828 |= 8;
     tile.x = (unsigned short)EditCursor.tile_x;
     tile.y = (unsigned short)EditCursor.tile_y;
@@ -8584,7 +8584,7 @@ void FUN_00427c70(struct Struct427c70 *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00427c90
-void FUN_00427c90(Element *obj, int x, unsigned int y) {
+void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     struct Int16Pair pair;
     struct SprEnt *result;
     struct PieceClass *key;
@@ -8595,7 +8595,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
 
     SetEditCursorFootPrint(&ride->footprint);
     EditCursor.field_1830 = 0;
-    ScreenToMapRef((int *)x, (int *)&EditCursor.tile_x, y);
+    ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
     n = 0;
     bit = 1;
     for (i = 0; i <= 3; i++) {
@@ -8627,7 +8627,7 @@ void FUN_00427c90(Element *obj, int x, unsigned int y) {
         }
         bit <<= 1;
     }
-    ValidateCursor(&EditCursor, (unsigned int)obj->data);
+    ValidateCursor(&EditCursor, obj->data);
     pair.x = (unsigned short)EditCursor.tile_x;
     pair.y = (unsigned short)EditCursor.tile_y;
     EditCursor.field_1828 |= 8;
@@ -8741,7 +8741,7 @@ void SquareTrackHeightPathLoad(Element *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004280b0
-void FUN_004280b0(Element *obj, int x, unsigned int y) {
+void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     int total = 0;
     struct Int16Pair pair;
     int a;
@@ -8755,7 +8755,7 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
 
     SetEditCursorFootPrint(fp);
     EditCursor.field_1830 = 0;
-    ScreenToMapRef((int *)x, (int *)&EditCursor.tile_x, y);
+    ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
     n = 0;
     bit = 1;
     for (i = 0; i <= 3; i++) {
@@ -8787,7 +8787,7 @@ void FUN_004280b0(Element *obj, int x, unsigned int y) {
         }
         bit <<= 1;
     }
-    ValidateCursor(&EditCursor, (unsigned int)obj->data);
+    ValidateCursor(&EditCursor, obj->data);
     pair.x = (unsigned short)EditCursor.tile_x;
     pair.y = (unsigned short)EditCursor.tile_y;
     EditCursor.field_1828 |= 8;

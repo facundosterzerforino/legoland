@@ -1731,12 +1731,12 @@ void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_
     DAT_004c2c18.tile_x++;
     memcpy(DAT_004c2c18.footprint.v, DAT_004c8d78.footprint.v, 20);
     ResetCursorBuildable(&DAT_004c2c18);
-    ValidateCursor(&EditCursor, (unsigned int)ride);
+    ValidateCursor(&EditCursor, ride);
     PropagateCursorBlocked(&EditCursor);
 }
 
 // FUNCTION: LEGOLAND 0x0040aac0
-void LogFlumeEntranceDCalcCursor(unsigned int param_1, struct Point *param_2) {
+void LogFlumeEntranceDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct FlumeEntry *entry;
     struct FlumeEntry *cur;
 
@@ -1746,7 +1746,7 @@ void LogFlumeEntranceDCalcCursor(unsigned int param_1, struct Point *param_2) {
     if (entry != NULL) {
         for (cur = entry->sub; cur != NULL; cur = cur->next) {
             if (cur->field_28 != -1) {
-                FUN_0040d090(cur, &param_1, &param_2);
+                FUN_0040d090(cur, (struct Footprint **)&param_1, (TileId *)&param_2);
                 if (param_1 == 0) {
                     continue;
                 }
@@ -2748,7 +2748,7 @@ void LogFlumeTrackCalcCursor(Element *elem, int *param_2, unsigned int param_3) 
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
     ResetCursorBuildable(&EditCursor);
     EditCursor.next = NULL;
-    ValidateCursor(&EditCursor, (unsigned int)ride);
+    ValidateCursor(&EditCursor, ride);
     if (IsCursorBuildable(&EditCursor)) {
         rect.x0 = EditCursor.footprint.x0 + EditCursor.tile_x;
         rect.y0 = EditCursor.tile_y + EditCursor.footprint.y0;
@@ -3363,7 +3363,7 @@ unsigned int FUN_0040d3b0(void *param_1, unsigned int *param_2) {
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
-    SetEditCursorFootPrint((void *)param_2);
+    SetEditCursorFootPrint(param_2);
     DAT_004ca5b0.field_1828 = 0x2034;
     DAT_004c1260.field_1828 = 0x2034;
     DAT_004c4468.field_1828 = 0x2034;
@@ -3468,7 +3468,7 @@ void FUN_0040d520(struct FlumeEntry **list, struct Cursor *first) {
 }
 
 // FUNCTION: LEGOLAND 0x0040d6f0
-unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, FlumeCallback param_5, int (*param_6)(unsigned int *)) {
+unsigned int FUN_0040d6f0(struct CursorSource *param_1, int *param_2, unsigned int param_3, unsigned int *param_4, FlumeCallback param_5, int (*param_6)(unsigned int *)) {
     union {
         struct FlumeXY t;
         unsigned int *list;
@@ -3485,7 +3485,7 @@ unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, un
     ScreenToMapRef((int *)param_2, &EditCursor.tile_x, param_3);
     EditCursor.field_1830 = 0;
     ResetCursorBuildable(&EditCursor);
-    ValidateCursor(&EditCursor, (unsigned int)param_1);
+    ValidateCursor(&EditCursor, param_1);
     u.t.x = (unsigned char)EditCursor.tile_x;
     u.t.y = (unsigned char)EditCursor.tile_y;
     param_5(u.t, buf);
@@ -3538,7 +3538,7 @@ unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, un
 }
 
 // FUNCTION: LEGOLAND 0x0040d900
-void FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(), FlumeCallback param_5, void (*param_6)(struct EdgeNode *, int *)) {
+void FUN_0040d900(unsigned int param_1, unsigned int *param_2, Element *param_3, void (*param_4)(), FlumeCallback param_5, void (*param_6)(struct EdgeNode *, int *)) {
     struct FlumeEntry *entry = FUN_00409010();
     unsigned int buf[9];
     unsigned int *list;
@@ -5402,7 +5402,7 @@ struct FlumeNode *FUN_00410a50(struct FlumeEntry *owner, struct FlumeEntry *entr
     struct FlumeNode *prev = NULL;
     int marker = 1;
     int len;
-    unsigned int elem;
+    struct Element *elem;
     char name[0x200];
 
     SaveGameRead(&marker, 4);

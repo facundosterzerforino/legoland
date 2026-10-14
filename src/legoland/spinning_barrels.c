@@ -244,7 +244,7 @@ void SpinningBarrelsSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = SpinningBarrelsRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int *)((unsigned int)EditMode.unk8 + 0x3c));
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0043c4d0
