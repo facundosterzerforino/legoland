@@ -1864,7 +1864,7 @@ extern struct Sprite *DAT_006160c0;
 // 0x006160c4
 extern struct CarouselNode *CarouselNodeList;
 // 0x006160d0
-extern unsigned int EarthSlideRide;
+extern struct Ride *EarthSlideRide;
 // 0x006160d4
 extern struct RinData *EarthSlideRin;
 // 0x006160d8

@@ -2120,7 +2120,7 @@ unsigned int DAT_006160c8;
 unsigned int DAT_006160cc;
 
 // GLOBAL: LEGOLAND 0x006160d0
-unsigned int EarthSlideRide;
+struct Ride *EarthSlideRide;
 
 // GLOBAL: LEGOLAND 0x006160d4
 struct RinData *EarthSlideRin;

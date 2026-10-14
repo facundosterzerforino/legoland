@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "bloke.h"
 #include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
@@ -268,16 +269,16 @@ struct RenderContext {
 };
 
 // FUNCTION: LEGOLAND 0x00441b60
-LEGO_EXPORT void RenderBlokesNotInSeats(unsigned int a1, unsigned int a2) {
-    struct RenderContext *context = (struct RenderContext *)a1;
-    struct RenderBloke *bloke = (struct RenderBloke *)a2;
-    struct RenderNode *node = context->bloke_list;
+LEGO_EXPORT void RenderBlokesNotInSeats(struct Ride *a1, TileId *a2) {
+    struct Ride *context = a1;
+    TileId *bloke = a2;
+    struct RideNode *node = context->riders;
 
     while (node != NULL) {
-        if (bloke->id == node->id) {
-            struct RenderData *data = (struct RenderData *)node->data_ptr;
-            if ((data->flags & 0x80) == 0) {
-                IP_RenderBlokeIn3DNow((struct Bloke *)data);
+        if (bloke->id == node->tile.id) {
+            struct Bloke *data = node->rider;
+            if ((*(unsigned char *)&data->flags & 0x80) == 0) {
+                IP_RenderBlokeIn3DNow(data);
             }
         }
         node = node->next;
