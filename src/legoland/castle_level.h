@@ -8,6 +8,7 @@ struct Element;
 struct Cursor;
 struct ClassNode;
 
+struct Ride;
 void CastleLevel1_GetInterfaces(struct ClassNode *name, struct Ride *ci);
 void LoadCastleLevelMatteSprite(Element *obj);
 void KillCastleLevelMatteSprite(void);

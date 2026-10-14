@@ -25,6 +25,7 @@ struct Point FUN_0040cfd0(struct FlumeEntry *entry);
 
 int FUN_004119c0(Element *obj, int filter);
 
+struct Ride;
 void LogFlume_GetInterfaces(struct ClassNode *flume, struct Ride *vtbl);
 
 struct Cursor;

@@ -35,6 +35,7 @@ void UnloadCastleBBQResources();
 void EaterySetEditMode(struct EditArg *arg);
 void RenderCastleBBQ(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
 void CastleBBQAddObject(struct Element *param_1, unsigned int *param_2);
+struct Cursor;
 void CastleBBQRemoveObject(struct Element *param_1, unsigned int param_2, struct Cursor *param_3);
 void CastleBBQUpdate(Element *obj);
 void FoodcartDrinkUpdate(Element *obj);

@@ -4,6 +4,7 @@
 
 struct Element;
 
+struct Cursor;
 LEGO_EXPORT void RemoveSoundObject(struct Element *a, unsigned int b, struct Cursor *c);
 
 void LoadFountainSFX();

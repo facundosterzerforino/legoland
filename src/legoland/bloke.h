@@ -206,6 +206,7 @@ struct ActionState;
 struct BNVPerson;
 LEGO_EXPORT int NewDirForAction(Bloke *bloke, unsigned char dir);
 LEGO_EXPORT Bloke *GetBlokePtr(int index);
+struct MapRect;
 int CheckForPeople(struct MapRect *rect);
 LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient);
 LEGO_EXPORT BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);

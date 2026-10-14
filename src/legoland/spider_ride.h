@@ -18,6 +18,8 @@ void SpiderRideUpdate(Element *obj);
 LEGO_EXPORT int SaveSpider(void);
 LEGO_EXPORT int LoadSpider(void);
 
+struct Ride;
+struct ClassNode;
 void SpiderRide(struct ClassNode *head, struct Ride *iface);
 struct SlotOwner;
 struct SlotArray;
