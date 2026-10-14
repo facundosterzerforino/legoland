@@ -2244,7 +2244,7 @@ void *SpaceTowerLayers;
 struct Sprite *SpaceTowerSeatMatteSprites[4];
 
 // GLOBAL: LEGOLAND 0x0062fd74
-void *SpaceTowerRideObj;
+struct Ride *SpaceTowerRideObj;
 
 // GLOBAL: LEGOLAND 0x0062fd7c
 struct Sprite *SpaceTowerMatte2Sprite;

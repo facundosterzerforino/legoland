@@ -1952,7 +1952,7 @@ extern void *SpaceTowerLayers;
 // 0x0062fd64
 extern struct Sprite *SpaceTowerSeatMatteSprites[4];
 // 0x0062fd74
-extern void *SpaceTowerRideObj;
+extern struct Ride *SpaceTowerRideObj;
 // 0x0062fd7c
 extern struct Sprite *SpaceTowerMatte2Sprite;
 // 0x0062fd80
