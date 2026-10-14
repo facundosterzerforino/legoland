@@ -3073,7 +3073,7 @@ unsigned int DAT_0066872c[0x15];
 unsigned int DAT_00668780;
 
 // GLOBAL: LEGOLAND 0x00668784
-void *ScriptEventList;
+struct ObjectiveEvent *ScriptEventList;
 
 // GLOBAL: LEGOLAND 0x00668788
 unsigned int ScriptPurgePending;
@@ -3088,10 +3088,10 @@ unsigned int ScriptSectionStarted;
 unsigned int ScriptEvalTime;
 
 // GLOBAL: LEGOLAND 0x00668798
-void *ScriptSectionList;
+struct NerpsListNode *ScriptSectionList;
 
 // GLOBAL: LEGOLAND 0x0066879c
-unsigned int CurrentScriptSection;
+struct NerpsListNode *CurrentScriptSection;
 
 // GLOBAL: LEGOLAND 0x006687a0
 unsigned int ScriptLoadErrorCount;
@@ -4570,7 +4570,7 @@ unsigned char CastleThemeCount;
 unsigned char AdventurersThemeCount;
 
 // GLOBAL: LEGOLAND 0x007fe120
-unsigned int ScriptStringTable[512];
+char *ScriptStringTable[512];
 
 // GLOBAL: LEGOLAND 0x007fe920
 unsigned int DAT_007fe920;

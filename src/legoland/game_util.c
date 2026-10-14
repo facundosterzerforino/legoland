@@ -41,7 +41,7 @@ int IsStringEmpty(char **pp_str) {
 void FUN_004787d0(void) {
     if (CurrentScriptSection != 0) {
         /* TODO: fold into struct SortNode/NerpsListNode views of CurrentScriptSection */
-        InsertScriptSection((struct SortNode *)CurrentScriptSection);
+        InsertScriptSection(CurrentScriptSection);
     }
     CurrentScriptSection = 0;
 }
@@ -242,7 +242,7 @@ unsigned int ScriptCmdEnable(unsigned int param_1, unsigned int param_2, unsigne
     if (DAT_00669054 == 1) {
         name = FUN_004787a0(param_1, param_2);
         if (FUN_00478b20(name) != 0) {
-            GiveRewardObject((struct NerpsArg *)ElemID((const char *)name), 0, 1);
+            GiveRewardObject((struct ObjectiveEvent *)ElemID((const char *)name), 0, 1);
         }
         return 1;
     }
@@ -458,7 +458,7 @@ int ScriptCmdIntro(struct CommandArgs *arg, int argc) {
             return 0;
         }
         if (CurrentScriptSection != 0) {
-            FUN_0046b650(arg->arg1, (struct StringHolder *)CurrentScriptSection);
+            FUN_0046b650(arg->arg1, CurrentScriptSection);
         }
     }
     return 1;

@@ -33,6 +33,8 @@ struct CtrlBuffer;
 // layout comes from gamemap.h, used by the EditCursor / QueryCursor instances.)
 // ---------------------------------------------------------------------------
 struct Sprite;
+struct NerpsListNode;
+struct ObjectiveEvent;
 struct SampleDef;
 /* One entry of the game's sound-effect list (GameFX), loaded by Load_FXList. */
 struct FXItem {
@@ -2509,7 +2511,7 @@ extern unsigned int DAT_0066872c[0x15];
 // 0x00668780
 extern unsigned int DAT_00668780;
 // 0x00668784
-extern void *ScriptEventList;
+extern struct ObjectiveEvent *ScriptEventList;
 // 0x00668788
 extern unsigned int ScriptPurgePending;
 // 0x0066878c
@@ -2519,9 +2521,9 @@ extern unsigned int ScriptSectionStarted;
 // 0x00668794
 extern unsigned int ScriptEvalTime;
 // 0x00668798
-extern void *ScriptSectionList;
+extern struct NerpsListNode *ScriptSectionList;
 // 0x0066879c
-extern unsigned int CurrentScriptSection;
+extern struct NerpsListNode *CurrentScriptSection;
 // 0x006687a0
 extern unsigned int ScriptLoadErrorCount;
 // 0x006687a4
@@ -3523,7 +3525,7 @@ extern unsigned char CastleThemeCount;
 // 0x007fe117
 extern unsigned char AdventurersThemeCount;
 // 0x007fe120
-extern unsigned int ScriptStringTable[512];
+extern char *ScriptStringTable[512];
 // 0x007fe920
 extern unsigned int DAT_007fe920;
 // 0x007fe930
