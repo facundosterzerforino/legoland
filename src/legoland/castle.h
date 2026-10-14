@@ -4,6 +4,8 @@
 
 struct PathSeg;
 struct CastleObj;
+struct CurveVt;
+struct FVec3;
 struct AreaNode;
 struct Cursor;
 
@@ -23,7 +25,7 @@ struct PieceClass {
     /* 0x14 */ struct PieceDoor door_b;
     /* 0x1c */ void (*method_1c)(struct PathSeg *self);
     /* 0x20 */ unsigned int (*method_20)(struct PathSeg *self, float height);
-    /* 0x24 */ unsigned int (*method_24)(struct PathSeg *self);
+    /* 0x24 */ struct SegBlob *(*method_24)(struct PathSeg *self);
     /* 0x28 */ void (*method_28)(struct PathSeg *self);
     /* 0x2c */ void (*method_2c)(struct PathSeg *self);
     /* 0x30 */ unsigned int field_30;
@@ -69,15 +71,11 @@ struct PieceHead {
     };
 };
 
-struct Vec12 {
-    unsigned int v[3];
-};
-
-struct SegBlob {
-    /* 0x00 */ unsigned int v[17];
-    /* 0x44 */ float t0;
-    /* 0x48 */ float t1;
-    /* 0x4c */ unsigned int w[3];
+/* walks the curve stretches along the pieces */
+struct CurveWalker {
+    /* 0x00 */ struct PathSeg *piece;
+    /* 0x04 */ struct SegBlob *node;
+    /* 0x08 */ struct FVec3 pos; /* the piece's position (FUN_0041cff0) */
 };
 
 /* a castle piece (0xa4 bytes) */
@@ -85,7 +83,7 @@ struct PathSeg {
     struct PieceHead; /* MS extension: the header's fields are the piece's own */
     /* 0x2c */ struct Footprint fp; /* the piece's link of the castle cursor's footprint chain */
     /* 0x40 */ union {
-        struct Vec12 vec;
+        struct FVec3 vec;
         struct {
             unsigned int field_40;
             unsigned int field_44;
@@ -252,9 +250,8 @@ void FUN_0041d950(void *obj, float val, void *tmp);
 void FUN_0041db20(float a, float *out);
 void FUN_0041da10(void *obj, float val, void *b);
 unsigned int FUN_0041e930(struct ObjAt40 *obj, unsigned int param);
-struct Struct42a110;
-void FindPathPosAtRangeBehind(float *center, float r, struct Struct42a110 *src, float hi, float x, struct Struct42a110 *dst, float *out);
-float CurveArcLength(struct Struct42a110 *a, unsigned int hi, struct Struct42a110 *b, unsigned int lo, int idx, float c);
+void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out);
+float CurveArcLength(struct CurveWalker *a, unsigned int hi, struct CurveWalker *b, unsigned int lo, int idx, float c);
 void FUN_0041e7f0(unsigned char *obj, unsigned int *out);
 int FUN_004298a0(struct PieceClass *info, struct CastleState *owner, struct PathSeg **a, struct PathSeg **b);
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
@@ -329,7 +326,7 @@ void LoadCoasterTrainWheelModel(void);
 void FUN_004273d0(unsigned int param_1, void *param_2);
 unsigned int FUN_004273e0(void *obj);
 void FUN_00428700(void *node);
-void FUN_004294f0(unsigned int a, unsigned int *b, unsigned int c, unsigned int d);
+void FUN_004294f0(struct SegBlob *a, unsigned int *b, unsigned int c, unsigned int d);
 void FUN_00428f00(void);
 void FUN_00429270(void);
 float FUN_0042a150(unsigned int b);
@@ -417,7 +414,7 @@ float FUN_0041e000(unsigned char *obj, float total);
 unsigned int FUN_0041e0e0(struct Dispatcher *self, unsigned int arg);
 void FUN_0041e100(struct Hooked *self, unsigned int arg);
 void *FUN_0041ef60(void *verts, int *out, unsigned int code, int n);
-unsigned int FUN_0041f850(struct AnimWalker *cursor);
+struct SegBlob *FUN_0041f850(struct CurveWalker *cursor);
 void FUN_00420810(void);
 void FUN_00420a20(void);
 void FUN_00420c40(void);

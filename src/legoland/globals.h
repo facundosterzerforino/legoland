@@ -355,14 +355,22 @@ struct LSub {
 };
 
 /* 0x6102f8: three 0x58-byte ride-path objects (doubly linked via next/prev) */
-struct CastlePathObj {
-    unsigned int f0[0x10];
-    float f40;
-    float f44;
-    float f48;
-    void **f4c;
-    struct CastlePathObj *next;
-    struct CastlePathObj *prev;
+/* a stretch of the castle track's curve: a piece's own (PathSeg.blob), one its class makes (method_24), or a
+   template (DAT_006102f8) */
+struct SegBlob {
+    /* 0x00 */ unsigned int v[16];
+    /* 0x40 */ float f40;
+    /* 0x44 */ union {
+        float start;
+        unsigned int start_bits; /* passed on as raw bits by the curve integrators */
+    };
+    /* 0x48 */ union {
+        float end;
+        unsigned int end_bits;
+    };
+    /* 0x4c */ struct CurveVt *vt;
+    /* 0x50 */ struct SegBlob *next;
+    /* 0x54 */ struct SegBlob *prev;
 };
 
 /* 0x7fded4: newly unlocked objects shown by the "new objects" popup */
@@ -1753,7 +1761,7 @@ extern char DAT_004e3870[];
 // 0x0060f914
 extern struct LSub DAT_0060f914[20];
 // 0x006102f8
-extern struct CastlePathObj DAT_006102f8[3];
+extern struct SegBlob DAT_006102f8[3];
 // 0x00610a04
 extern unsigned int DAT_00610a04;
 // 0x00610a08
