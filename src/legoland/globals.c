@@ -2300,16 +2300,7 @@ struct JailCell *JailCellList;
 void *DAT_0062fd40;
 
 // GLOBAL: LEGOLAND 0x0062fd48
-unsigned int DAT_0062fd48;
-
-// GLOBAL: LEGOLAND 0x0062fd4c
-unsigned int DAT_0062fd4c;
-
-// GLOBAL: LEGOLAND 0x0062fd50
-unsigned int DAT_0062fd50;
-
-// GLOBAL: LEGOLAND 0x0062fd54
-unsigned short DAT_0062fd54;
+struct RideSpriteInfo DAT_0062fd48;
 
 // GLOBAL: LEGOLAND 0x0062fd60
 void *SpaceTowerLayers;

@@ -160,7 +160,7 @@ void FUN_0043d9f0(struct PlaneRideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043da60
-void RenderPlaneRide(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderPlaneRide(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, void *param_5, unsigned int param_6) {
     struct Ride *ride;
     struct RideNode *r;
     register struct Point coords;

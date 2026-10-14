@@ -32,7 +32,7 @@ void DrivingSchoolRoadsSetEditMode();
 void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param_3);
 struct Cursor;
 struct RoadTile *FUN_00413e30(struct Cursor *cur);
-void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param);
+void FUN_00413fa0(struct Element *dummy, struct RoadPlaceArg *param);
 void DrivingSchoolRoadsAddObject(struct RoadEditArg *edit, struct RoadPlaceArg *place);
 void FUN_00414220(Element *edit, TileId tile, struct Cursor *cursor);
 void FUN_00414440(void);

@@ -118,7 +118,7 @@ void JungleCruiseAddObject(struct EditObject *obj, int *coords);
 void JungleCruiseCalcCursor(Element *obj, int *param_2, unsigned int param_3);
 void JungleCruiseDCalcCursor(struct Element *param_1, struct Point *param_2);
 void JungleCruiseUpdate();
-void RenderJungleCruise(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
+void RenderJungleCruise(struct Element *param_1, unsigned int param_2, unsigned int param_3, short *param_4, void *param_5, unsigned int param_6);
 int FUN_00436160(Element *obj, int param_2);
 void InitJungleCruiseWater(Element *obj);
 void JungleCruiseWaterSetEditMode();

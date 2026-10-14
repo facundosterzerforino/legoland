@@ -177,7 +177,7 @@ void UnloadLegoShop1MatteSpriteAndMoneySFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00439400
-void RenderLegoShop1(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, unsigned int param5, unsigned int param1) {
+void RenderLegoShop1(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, void *param5, unsigned int param1) {
     struct ShopBuilding *building = obj->building;
     struct BlokeNode *node = building->blokes;
     int count = 0;
@@ -310,7 +310,7 @@ void LegoShop2SetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00439760
-void RenderLegoShop2(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void RenderLegoShop2(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6) {
     struct Ride *shop = obj->ride;
     struct RideNode *node = shop->riders;
     struct Bloke *blokes[10] = {0};
@@ -563,7 +563,7 @@ void LegoMediaShopSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00439d40
-void RenderLegoMediaShop(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, unsigned int param5, unsigned int param1) {
+void RenderLegoMediaShop(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, void *param5, unsigned int param1) {
     struct ShopBuilding *building = obj->building;
     char count = 0;
     char i;
@@ -751,7 +751,7 @@ void ExplorersInstituteSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a180
-void RenderExplorersInstitute(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, unsigned int param5, unsigned int param1) {
+void RenderExplorersInstitute(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, void *param5, unsigned int param1) {
     struct ShopBuilding *building = obj->building;
     struct BlokeNode *node = building->blokes;
     int count = 0;

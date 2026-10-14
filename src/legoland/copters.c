@@ -434,7 +434,7 @@ void CoptersRenderLayer(struct CopterNode *node, int index, unsigned int param_3
 }
 
 // FUNCTION: LEGOLAND 0x00404290
-void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, int unused3, unsigned int clip) {
+void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, void *unused3, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct CopterNode *node;
     struct Point pos;

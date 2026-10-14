@@ -1993,13 +1993,7 @@ extern struct JailCell *JailCellList;
 // 0x0062fd40
 extern void *DAT_0062fd40;
 // 0x0062fd48
-extern unsigned int DAT_0062fd48;
-// 0x0062fd4c
-extern unsigned int DAT_0062fd4c;
-// 0x0062fd50
-extern unsigned int DAT_0062fd50;
-// 0x0062fd54
-extern unsigned short DAT_0062fd54;
+extern struct RideSpriteInfo DAT_0062fd48; /* the space tower's sprite to draw */
 // 0x0062fd60
 extern void *SpaceTowerLayers;
 // 0x0062fd64

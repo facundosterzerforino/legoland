@@ -163,7 +163,7 @@ void FUN_00414b10(struct SafariNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00414b80
-void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct SafariNode *sn;

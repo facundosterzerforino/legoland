@@ -145,7 +145,7 @@ void HedgeRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x00432810
-struct RideSpriteInfo *GetHedgeSpriteInfo(int unused, TileId tile) {
+struct RideSpriteInfo *GetHedgeSpriteInfo(struct Element *unused, TileId tile) {
     struct GardenTable *t;
     int i;
 
@@ -196,7 +196,7 @@ void FlowersAddObject(struct Element *param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00432960
-struct RideSpriteInfo *GetFlowerSpriteInfo(int unused, TileId tile) {
+struct RideSpriteInfo *GetFlowerSpriteInfo(struct Element *unused, TileId tile) {
     struct GardenTable *t;
     int i;
 

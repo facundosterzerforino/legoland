@@ -481,7 +481,7 @@ struct PieceClass *FUN_00427c00(struct Element *element);
 void FUN_00427940(struct Element *param_1);
 void FUN_00427970(struct Element *obj, const struct Struct427970Src *src);
 void FUN_004279f0(void);
-void RenderSquareTrack(unsigned int unused0, unsigned int unused1, unsigned int unused2, const unsigned char *src);
+void RenderSquareTrack(struct Element *unused0, unsigned int unused1, unsigned int unused2, const unsigned char *src);
 void CastleLoadBasicTiles(struct Element *obj);
 void CastleUnloadBasicTiles(void);
 void FUN_00427b20(struct Element *obj, int *x, unsigned int y);

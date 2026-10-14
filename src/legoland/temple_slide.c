@@ -144,7 +144,7 @@ void FUN_00416f90(struct TempleRide *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00416fa0
-void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point pos;

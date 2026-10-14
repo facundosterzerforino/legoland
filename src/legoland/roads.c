@@ -619,7 +619,7 @@ struct RoadTile *FUN_00413e30(struct Cursor *cur) {
 }
 
 // FUNCTION: LEGOLAND 0x00413fa0
-void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param) {
+void FUN_00413fa0(struct Element *dummy, struct RoadPlaceArg *param) {
     struct RoadTile *tile = FindQueueEntryAtTile(param->x, param->y);
     unsigned int *src;
     unsigned int *dst;

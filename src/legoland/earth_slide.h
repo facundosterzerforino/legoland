@@ -58,7 +58,7 @@ unsigned int CountEarthBlokeElemsUntil(struct EarthBlokeElem *param_1, struct Ea
 struct EarthBlokeElem *GetNthNextEarthBlokeElem(struct EarthBlokeElem *param_1, unsigned int param_2);
 void FUN_0042d5f0(void);
 
-void RenderEarthSlide(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6);
+void RenderEarthSlide(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, void *param_5, unsigned int param_6);
 void LoadEarthSlideResources(struct EarthRideObj *param_1);
 void UnloadEarthSlideResources(struct EarthRideObj *arg1);
 void EarthSlideSetEditMode();

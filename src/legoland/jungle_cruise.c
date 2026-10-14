@@ -1557,20 +1557,20 @@ void JungleCruiseUpdate(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00435bd0
-void RenderJungleCruise(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
-    int ride = *(int *)(param_1 + 0xc);
-    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+void RenderJungleCruise(struct Element *param_1, unsigned int param_2, unsigned int param_3, short *param_4, void *param_5, unsigned int param_6) {
+    struct Ride *ride = param_1->ride;
+    struct RideNode *node = ride->riders;
     short *lls1;
     unsigned int lls2;
     struct Point coords;
 
     DrawJungleCruiseBoats(1);
-    for (; node != NULL; node = (unsigned int *)*node) {
-        if (*param_4 == *(short *)(node + 3) && *(char *)(node[2] + 0x60) != '\x02') {
-            IP_RenderBlokeIn3DNow((struct Bloke *)node[2]);
+    for (; node != NULL; node = node->next) {
+        if (*param_4 == *(short *)&node->tile && *((char *)node->rider + 0x60) != '\x02') {
+            IP_RenderBlokeIn3DNow(node->rider);
         }
     }
-    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
+    coords = GetScreenCoordsForObject((TileId *)param_4, ride);
     lls1 = (short *)GetLLSForSprite((struct Sprite *)JungleCruiseRide->layer);
     lls2 = GetLLSForSprite((struct Sprite *)JungMaskSprite);
     LLSSetFrame((struct LLS *)lls2, *lls1);

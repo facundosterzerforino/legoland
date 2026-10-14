@@ -193,7 +193,7 @@ void CatapultFreeNodesAndKillSfx(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403270
-void RenderCatapult(struct Element *obj, int unused, int unused2, TileId *tile, int unused3, int arg5) {
+void RenderCatapult(struct Element *obj, int unused, int unused2, TileId *tile, void *unused3, int arg5) {
     struct CatapultItem *item;
     struct Ride *ride = obj->ride;
     struct ChainNode *chain;

@@ -548,7 +548,7 @@ void JoustUpdate(struct Element *elem) {
 }
 
 // FUNCTION: LEGOLAND 0x00408580
-void RenderJoust(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderJoust(struct Element *element, unsigned int param_2, unsigned int param_3, TileId *tile, void *param_5, unsigned int param_6) {
     struct Ride *ride;
     struct RideNode *r;
     struct JoustNode *node;

@@ -489,7 +489,7 @@ void RenderSpaceTowerSeat(struct SpaceTowerCar *param_1, int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x0043af50
-void RenderSpaceTower(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+void RenderSpaceTower(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, void *param_5, unsigned int param_6) {
     struct SpaceTowerRide *ride;
     struct SpaceTowerRideNode *node;
     struct SpaceTowerCar *car;
@@ -617,15 +617,15 @@ void SpaceTowerAddObject(struct EditObject *param_1, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b4e0
-void *GetSpaceTowerRideSpriteInfo(int param_1, unsigned short param_2) {
-    int ride;
+void *GetSpaceTowerRideSpriteInfo(struct Element *param_1, unsigned short param_2) {
+    struct Ride *ride;
 
-    ride = *(int *)(param_1 + 0xc);
-    DAT_0062fd48 = *(unsigned int *)(ride + 0x64);
-    DAT_0062fd4c = *(unsigned int *)(ride + 0x14);
-    DAT_0062fd50 = *(unsigned int *)(ride + 0x18);
-    DAT_0062fd54 = param_2;
-    *(unsigned int *)(*(int *)(ride + 0x64) + 0x10) |= 0x2000;
+    ride = param_1->ride;
+    DAT_0062fd48.sprite = ride->layer;
+    DAT_0062fd48.x = ride->field_14;
+    DAT_0062fd48.y = ride->field_18;
+    DAT_0062fd48.id = param_2;
+    ride->layer->flags |= 0x2000;
     HideLayer(SpaceTowerLayers, 6);
     HideLayer(SpaceTowerLayers, 4);
     HideLayer(SpaceTowerLayers, 0);

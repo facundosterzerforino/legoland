@@ -223,7 +223,7 @@ void WaterWorksEntranceAddObject(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00417c70
-void WaterWorksEntranceRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
+void WaterWorksEntranceRemoveObject(struct Element *a, unsigned int b, struct Cursor *c) {
     RemoveSoundObject(a, b, c);
 }
 
@@ -588,7 +588,7 @@ void WaterWorksShowerUpdate(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418450
-void RenderShower(struct WaterRender *render, unsigned int p2, unsigned int p3, unsigned char *coords, unsigned int p5, unsigned int p6) {
+void RenderShower(struct WaterRender *render, unsigned int p2, unsigned int p3, unsigned char *coords, void *p5, unsigned int p6) {
     struct WaterNode *node;
     void *ctx;
     struct AdjustOffset offset;
@@ -832,7 +832,7 @@ void CrocodileFountainAddObject(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418a10
-void CrocodileFountainRemoveObject(struct Element *a, unsigned int b, unsigned int c) {
+void CrocodileFountainRemoveObject(struct Element *a, unsigned int b, struct Cursor *c) {
     RemoveSoundObject(a, b, c);
 }
 

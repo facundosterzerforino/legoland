@@ -169,7 +169,7 @@ int FUN_00415a90(struct SpiderNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00415ae0
-void RenderSpider(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderSpider(Element *obj, void *param_2, void *param_3, TileId *tile, void *param_5, unsigned int param_6) {
     Ride *ride = obj->ride;
     RideNode *elem = ride->riders;
     char count = 0;

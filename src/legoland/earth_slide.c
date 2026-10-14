@@ -179,7 +179,7 @@ void FUN_0042d040(struct EarthNode *list) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d070
-void RenderEarthSlide(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6) {
+void RenderEarthSlide(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, void *param_5, unsigned int param_6) {
     struct Cursor *ride = param_1->ride;
     struct EarthNode *node = FUN_0042ce20((unsigned short *)param_4);
     struct Point coords;

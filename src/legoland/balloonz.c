@@ -464,7 +464,7 @@ RideSpriteInfo *GetBalloonzSpriteInfo(Element *obj, unsigned short id) {
 }
 
 // FUNCTION: LEGOLAND 0x0042b2e0
-void RenderBalloonz(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void RenderBalloonz(Element *obj, void *param_2, void *param_3, TileId *tile, void *param_5, unsigned int param_6) {
     Ride *ride = obj->ride;
     RideNode *elem;
     RideNode *riders;
