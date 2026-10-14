@@ -914,11 +914,12 @@ float FUN_0041e0e0(struct Train *self, float time_left) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e100
-void FUN_0041e100(struct Train *self, unsigned int arg) {
+float FUN_0041e100(struct Train *self, float time_left) {
     void (*saved)(struct Integrator *, float, struct FloatArray *) = self->integ.deriv;
+    float used = self->track->method_114(self, time_left);
 
-    self->track->method_114(self, arg);
     self->integ.deriv = saved;
+    return used;
 }
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
@@ -6310,32 +6311,25 @@ void FUN_004248b0(struct Integrator *obj, float unused, struct FloatArray *out) 
 }
 
 // FUNCTION: LEGOLAND 0x00424960
-int FUN_00424960(int *param_1) {
-    if (param_1[4] != (int)&DAT_006102f8[2]) {
+int FUN_00424960(struct Train *param_1) {
+    if (param_1->walker.node != &DAT_006102f8[2]) {
         return 0;
     }
-    if (*(float *)((unsigned char *)param_1 + 0x24) > FLOAT_004ab454) {
+    if (param_1->motion.f4 > FLOAT_004ab454) {
         return 1;
     }
     return 0;
 }
 
-struct CastleActor {
-    unsigned char pad_0[0x34];
-    unsigned int field_34;
-    unsigned char pad_38[0x6c - 0x38];
-    struct CastleState *field_6c;
-};
-
 // FUNCTION: LEGOLAND 0x00424990
-float FUN_00424990(struct CastleActor *self, float value) {
-    if (FUN_00424960((int *)self) != 0) {
-        FUN_00424ab0(self->field_6c);
-        self->field_6c->field_e0 = GetGameTimer();
+float FUN_00424990(struct Train *self, float value) {
+    if (FUN_00424960(self) != 0) {
+        FUN_00424ab0(self->track);
+        self->track->field_e0 = GetGameTimer();
         return value;
     }
-    self->field_34 = (unsigned int)FUN_004248b0;
-    return FUN_0041e000((unsigned char *)self, value);
+    self->integ.deriv = FUN_004248b0;
+    return FUN_0041e000(self, value);
 }
 
 // FUNCTION: LEGOLAND 0x004249e0

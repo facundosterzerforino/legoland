@@ -1727,6 +1727,12 @@ extern float DAT_004dcbb8[3];
 // 0x004dcbd0
 extern struct VecMath DAT_004dcbd0; /* .dim was DAT_004dcbf8 */
 // 0x004dcc00
+/* a vector of the castle's numerical code: count floats (the pool's are 0x54 bytes) */
+struct FloatArray {
+    int count;
+    float data[20];
+};
+
 extern struct FloatArray DAT_004dcc00[30];
 // 0x004dd5d8
 extern unsigned int DAT_004dd5d8;

@@ -179,12 +179,6 @@ struct AnimOut {
     float f8; /* speed */
 };
 
-/* a vector of the castle's numerical code: count floats (the pool's are 0x54 bytes) */
-struct FloatArray {
-    int count;
-    float data[20];
-};
-
 /* vector arithmetic on FloatArrays (DAT_004dcbd0 is the template; FUN_00421540 copies it with a dimension) */
 struct VecMath {
     /* 0x00 */ void (*add)(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out);
@@ -280,7 +274,7 @@ struct CastleState {
     /* 0xe4 */ struct CastleVisitor visitors;
     /* 0x10c */ void (*method_10c)(struct CastleState *self, struct SegBlob **node, float *t, struct FVec3 *pos);
     /* 0x110 */ float (*method_110)(struct Train *self, float time_left); /* FUN_00424890 */
-    /* 0x114 */ void (*method_114)(struct Train *self, unsigned int arg); /* FUN_00424990 */
+    /* 0x114 */ float (*method_114)(struct Train *self, float time_left); /* FUN_00424990 */
 };
 
 struct Point;
@@ -432,8 +426,7 @@ void FUN_00424620(struct Int16Pair *pos);
 void FUN_00424800(void);
 void FUN_00424850(void);
 float FUN_00424890(struct Train *param_1, float param_2);
-struct CastleActor;
-float FUN_00424990(struct CastleActor *self, float value);
+float FUN_00424990(struct Train *self, float value);
 void FUN_00424a50(struct CastleState *param_1);
 void FUN_00424a00(struct CastleState *param_1);
 void FUN_00424ab0(struct CastleState *this);
@@ -546,7 +539,7 @@ extern void *DAT_004b5658[2];
 extern void *DAT_004b5f50[2];
 float FUN_0041e000(struct Train *obj, float total);
 float FUN_0041e0e0(struct Train *self, float time_left);
-void FUN_0041e100(struct Train *self, unsigned int arg);
+float FUN_0041e100(struct Train *self, float time_left);
 void *FUN_0041ef60(void *verts, int *out, unsigned int code, int n);
 struct SegBlob *FUN_0041f850(struct CurveWalker *cursor);
 void FUN_00420810(void);
