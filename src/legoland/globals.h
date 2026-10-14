@@ -98,6 +98,7 @@ struct ResVolume;
 struct RideQueueEntry;
 struct ObjectiveEvent;
 struct MapElement;
+struct RenderItemNode;
 struct WaterNode;
 
 struct BrollyData;
@@ -120,7 +121,6 @@ struct CatapultNode;
 struct Position;
 struct RinData;
 struct CopterNode;
-struct RenderItemNode;
 struct GoldNode;
 struct CarouselNode;
 struct EarthNode;
@@ -166,6 +166,7 @@ struct BuildObj {
 typedef struct BuildObj BuildObj;
 
 typedef struct MapElement MapElement;
+
 struct MapElement {
     /* 0x00 */ struct Element *field_0; /* class of the object on this tile */
     /* 0x04 */ union {
@@ -1081,7 +1082,7 @@ extern int DAT_004b9f78[4];
 // 0x004b9f88
 extern unsigned int DAT_004b9f88;
 // 0x004b9f8c
-extern const char *DAT_004b9f8c;
+extern UINT_PTR DAT_004b9f8c; /* the speech playing: a text number or a name */
 // 0x004ba87c
 extern void *PTR_some_list_head_004ba87c;
 // 0x004ba880
@@ -1526,7 +1527,7 @@ extern void *SpiderOffBinV;
 // 0x004cbf1c
 extern struct Sprite *SpiderHutMask2Sprite;
 // 0x004cbf20
-extern unsigned int DAT_004cbf20;
+extern struct Ride *DAT_004cbf20;
 // 0x004cbf24
 extern void *SpiderOnBinV;
 // 0x004cbf28
@@ -2026,20 +2027,17 @@ extern int DAT_0062feb8[1];
 extern void *ManMeshes[6];
 // 0x0062fed4
 extern void *WomanMeshes[6];
+
 // 0x0062feec
-extern unsigned int DAT_0062feec[1];
+extern struct RenderItemNode *DAT_0062feec[1]; /* the render item pool's next node */
 // 0x0062fef0
-extern unsigned int DAT_0062fef0;
+extern struct RenderItemNode *DAT_0062fef0; /* the second pool's next node */
 // 0x0062fef4
 extern void *TracyWalkMesh;
 // 0x0062fef8
 extern int *DAT_0062fef8;
 // 0x00630100
 extern void *AltManFileData;
-// 0x00630108
-extern unsigned int DAT_00630108[0x2000];
-// 0x00638218
-extern unsigned int DAT_00638218[80];
 // 0x00638358
 extern unsigned short DAT_00638358;
 // 0x0064cd8c

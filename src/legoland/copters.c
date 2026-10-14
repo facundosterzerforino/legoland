@@ -452,14 +452,14 @@ void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, void *un
         }
         CoptersRenderLayer(node, 0, clip);
         CoptersRenderLayer(node, 2, clip);
-        RenderBlokeList((struct BlokeListHead *)DAT_004c1164);
-        RenderBlokeList((struct BlokeListHead *)DAT_004c1190);
+        RenderBlokeList((struct RenderItemNode **)DAT_004c1164);
+        RenderBlokeList((struct RenderItemNode **)DAT_004c1190);
         CoptersRenderLayer(node, 3, clip);
         CoptersRenderLayer(node, 4, clip);
-        RenderBlokeList((struct BlokeListHead *)DAT_004c1168);
-        RenderBlokeList((struct BlokeListHead *)DAT_004c1188);
+        RenderBlokeList((struct RenderItemNode **)DAT_004c1168);
+        RenderBlokeList((struct RenderItemNode **)DAT_004c1188);
         CoptersRenderLayer(node, 1, clip);
-        RenderBlokeList((struct BlokeListHead *)DAT_004c1194);
+        RenderBlokeList((struct RenderItemNode **)DAT_004c1194);
     }
     pos = GetScreenCoordsForObject(tile, ride);
     {

@@ -916,7 +916,7 @@ int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
 unsigned int DAT_004b9f88;
 
 // GLOBAL: LEGOLAND 0x004b9f8c
-const char *DAT_004b9f8c = (const char *)-1; /* no tooltip shown yet */
+UINT_PTR DAT_004b9f8c = (UINT_PTR)-1; /* nothing spoken yet */
 
 // GLOBAL: LEGOLAND 0x004ba87c
 void *PTR_some_list_head_004ba87c;
@@ -1610,7 +1610,7 @@ void *SpiderOffBinV;
 struct Sprite *SpiderHutMask2Sprite;
 
 // GLOBAL: LEGOLAND 0x004cbf20
-unsigned int DAT_004cbf20;
+struct Ride *DAT_004cbf20;
 
 // GLOBAL: LEGOLAND 0x004cbf24
 void *SpiderOnBinV;
@@ -2357,10 +2357,10 @@ void *ManMeshes[6];
 void *WomanMeshes[6];
 
 // GLOBAL: LEGOLAND 0x0062feec
-unsigned int DAT_0062feec[1];
+struct RenderItemNode *DAT_0062feec[1];
 
 // GLOBAL: LEGOLAND 0x0062fef0
-unsigned int DAT_0062fef0;
+struct RenderItemNode *DAT_0062fef0;
 
 // GLOBAL: LEGOLAND 0x0062fef4
 void *TracyWalkMesh;
@@ -2370,12 +2370,6 @@ int *DAT_0062fef8;
 
 // GLOBAL: LEGOLAND 0x00630100
 void *AltManFileData;
-
-// GLOBAL: LEGOLAND 0x00630108
-unsigned int DAT_00630108[0x2000];
-
-// GLOBAL: LEGOLAND 0x00638218
-unsigned int DAT_00638218[80];
 
 // GLOBAL: LEGOLAND 0x00638358
 unsigned short DAT_00638358;

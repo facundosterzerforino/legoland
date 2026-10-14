@@ -6630,7 +6630,7 @@ void RenderCastleObj(Element *obj, unsigned int param_2, unsigned int param_3, T
         }
         walk = walk->next;
     }
-    RenderBlokeList((struct BlokeListHead *)&DAT_00610a18);
+    RenderBlokeList((struct RenderItemNode **)&DAT_00610a18);
     if (CastleMatteSprite != NULL) {
         pos = GetScreenCoordsForObject(tile, r);
         off = GetRenderOffsetForLayer(r->layer, 2);
