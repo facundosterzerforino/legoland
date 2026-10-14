@@ -1191,7 +1191,7 @@ extern unsigned int MusicState;
 // 0x004bff28
 extern const int DAT_004bff28[12][2];
 // 0x004c10d4
-extern void *DAT_004c10d4;
+extern struct NewBloke *DAT_004c10d4;
 // 0x004c10dc
 extern struct Ride *CastleLevelRide;
 // 0x004c10e4
@@ -1243,7 +1243,7 @@ extern struct RenderItemNode *DAT_004c11b0;
 // 0x004c11b4
 extern struct CopterNode *CopterNodeList;
 // 0x004c11bc
-extern void *DrivingSchoolCountList;
+extern struct CountNode *DrivingSchoolCountList;
 // 0x004c11c0
 extern int DAT_004c11c0;
 // 0x004c11c4
@@ -1447,7 +1447,7 @@ extern struct Sprite *LogFlumeEntrance1Sprite;
 // 0x004cbe9c
 extern unsigned int DrivingSchoolPumpsRide;
 // 0x004cbea4
-extern void *PumpList;
+extern struct PumpNode *PumpList;
 // 0x004cbeac
 extern struct RideQueueEntry *DAT_004cbeac;
 // 0x004cbeb0

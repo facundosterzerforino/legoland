@@ -1110,7 +1110,7 @@ const int DAT_004bff28[12][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {0, 2}, {0, -
     {2, 0}, {-2, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
 // GLOBAL: LEGOLAND 0x004c10d4
-void *DAT_004c10d4;
+struct NewBloke *DAT_004c10d4;
 
 // GLOBAL: LEGOLAND 0x004c10dc
 struct Ride *CastleLevelRide;
@@ -1188,7 +1188,7 @@ struct RenderItemNode *DAT_004c11b0;
 struct CopterNode *CopterNodeList;
 
 // GLOBAL: LEGOLAND 0x004c11bc
-void *DrivingSchoolCountList;
+struct CountNode *DrivingSchoolCountList;
 
 // GLOBAL: LEGOLAND 0x004c11c0
 int DAT_004c11c0;
@@ -1491,7 +1491,7 @@ struct Sprite *LogFlumeEntrance1Sprite;
 unsigned int DrivingSchoolPumpsRide;
 
 // GLOBAL: LEGOLAND 0x004cbea4
-void *PumpList;
+struct PumpNode *PumpList;
 
 // GLOBAL: LEGOLAND 0x004cbeac
 struct RideQueueEntry *DAT_004cbeac;

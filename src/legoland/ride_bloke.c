@@ -16,16 +16,6 @@
 #include "ride_queue.h"
 #include "sound_music.h"
 
-struct CountNode {
-    struct CountNode *next;
-    unsigned short var_4;
-};
-
-struct RideFX {
-    unsigned char pad_0[0x60];
-    unsigned char refcount;
-};
-
 struct RideMover {
     unsigned char pad_0[0x10];
     int x;
@@ -43,63 +33,6 @@ struct RideMover {
     unsigned char moving;
     unsigned char pad_bc[0xc8 - 0xbc];
     unsigned short speed;
-};
-
-struct NewBloke {
-    struct NewBloke *next;
-    unsigned short id;
-    unsigned char pad_6[0x8 - 0x6];
-    int sx;
-    int sy;
-    union {
-        struct Point f;
-        struct {
-            int fx;
-            int fy;
-        };
-    };
-    union {
-        struct Point p;
-        struct {
-            int px;
-            int py;
-        };
-    };
-    union {
-        struct Point t;
-        struct PathPair tp;
-        struct {
-            int tx;
-            int ty;
-        };
-    };
-    int velX;
-    int velY;
-    struct Point wp[17];
-    unsigned char f_b8;
-    unsigned char f_b9;
-    unsigned char f_ba;
-    unsigned char f_bb;
-    short f_bc;
-    unsigned short f_be;
-    unsigned short f_c0;
-    unsigned char f_c2;
-    unsigned char f_c3;
-    unsigned char f_c4;
-    unsigned char pad_c5;
-    unsigned short f_c6;
-    unsigned short f_c8;
-    unsigned char pad_ca[2];
-    union {
-        int owner;
-        struct Bloke *bloke;
-    };
-};
-
-struct RideBloke {
-    struct RideBloke *next;
-    unsigned char pad_4[0xcc - 0x4];
-    struct RideFX *fx;
 };
 
 struct DrivingBloke {
@@ -612,11 +545,11 @@ int FUN_00401ae0(unsigned short id, struct Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00401c40
 unsigned int FUN_00401c40(unsigned short arg0) {
-    struct CountNode *current = (struct CountNode *)DAT_004c10d4;
+    struct NewBloke *current = DAT_004c10d4;
     unsigned int count = 0;
 
     while (current != NULL) {
-        if (current->var_4 == arg0) {
+        if (current->id == arg0) {
             count++;
         }
         current = current->next;
@@ -626,23 +559,23 @@ unsigned int FUN_00401c40(unsigned short arg0) {
 }
 
 // FUNCTION: LEGOLAND 0x00401c60
-void FUN_00401c60(struct RideBloke *b) {
+void FUN_00401c60(struct NewBloke *b) {
     struct SampleSource ss;
-    struct RideBloke *next;
-    struct RideBloke *cur;
+    struct NewBloke *next;
+    struct NewBloke *cur;
 
     if (b != 0) {
         next = b->next;
         ss.type = 1;
-        b->fx->refcount++;
-        ss.bloke = b->fx;
+        b->bloke->param_action++;
+        ss.bloke = b->bloke;
         KillAllSamplesFromSource(&ss);
         free(b);
 
-        if (b == (struct RideBloke *)DAT_004c10d4) {
+        if (b == DAT_004c10d4) {
             DAT_004c10d4 = next;
         } else {
-            cur = (struct RideBloke *)DAT_004c10d4;
+            cur = DAT_004c10d4;
             while (cur->next != b) {
                 cur = cur->next;
             }
@@ -1159,7 +1092,7 @@ void FUN_00402c10(void) {
         tile = (struct RideQueueEntry *)FindQueueEntryAtTile(cur->px, cur->py);
 
         if ((tile == 0 && cur->field_c2 == 0) || cur->field_be == 0) {
-            FUN_00401c60((struct RideBloke *)cur);
+            FUN_00401c60((struct NewBloke *)cur);
             if (tile != 0) {
                 tile->field_1c--;
             }

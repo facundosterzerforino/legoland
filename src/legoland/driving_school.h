@@ -4,6 +4,13 @@
 
 #include "obj_instance.h"
 
+struct CountNode {
+    TileId tile;
+    unsigned char pad_2[2];
+    int field_4;
+    struct CountNode *next;
+};
+
 void FUN_00405310(TileId tile);
 void FUN_00406020(unsigned short arg1, unsigned int arg2);
 void LoadDrivingSchoolResources(struct Element *param_1);
