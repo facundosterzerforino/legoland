@@ -56,7 +56,7 @@ struct GameListNode {
     unsigned char pad_4[0x14];
     unsigned char field_18;
     unsigned char pad_19[3];
-    unsigned int field_1c;
+    char *field_1c; /* the icon's object name */
 };
 
 // LLIDB element fields read by InitFreePlayScreen (real Element is opaque).
@@ -171,7 +171,7 @@ void FUN_0048ab60(void) {
         DrawWatchSprite();
         if (node->field_18 == 1) {
             if (FUN_00478b20(node->field_1c) != 0) {
-                GiveRewardObject((struct ObjectiveEvent *)ElemID((const char *)node->field_1c), 0, 1);
+                GiveRewardObject((struct ObjectiveEvent *)ElemID(node->field_1c), 0, 1);
             }
         }
         node = node->next;

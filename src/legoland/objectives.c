@@ -254,16 +254,16 @@ void InsertObjectiveMessageSorted(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00468b40
-void SetObjectiveEventText(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) {
+void SetObjectiveEventText(struct ObjectiveEvent *node, char *param_2, unsigned int param_3) {
     char *buffer;
 
     if (param_3 != 0) {
-        buffer = (char *)malloc(strlen((char *)param_2) + 1);
-        node->field_8 = (unsigned int)buffer;
-        strcpy(buffer, (char *)param_2);
+        buffer = (char *)malloc(strlen(param_2) + 1);
+        node->text = buffer;
+        strcpy(buffer, param_2);
         node->flags_10 |= 0x20;
     } else {
-        node->field_8 = param_2;
+        node->text = param_2;
         node->flags_10 &= 0xdf;
     }
 }
@@ -277,7 +277,7 @@ struct ObjectiveEvent *PostObjectiveMessage(const char *format, ...) {
     if (event != NULL) {
         va_start(args, format);
         vsprintf(DAT_0066820c, format, args);
-        SetObjectiveEventText(event, (unsigned int)DAT_0066820c, 1);
+        SetObjectiveEventText(event, (char *)DAT_0066820c, 1);
         InsertObjectiveMessageSorted(event);
     }
     return event;

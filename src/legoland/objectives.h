@@ -60,7 +60,7 @@ void FreeObjectiveEventList(struct ObjectiveEvent *node);
 void FreeScriptStrings(void);
 unsigned int AddScriptString(char *param_1, char *param_2, int param_3);
 void InsertObjectiveMessageSorted(struct ObjectiveEvent *node);
-void SetObjectiveEventText(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3);
+void SetObjectiveEventText(struct ObjectiveEvent *node, char *param_2, unsigned int param_3);
 struct ObjectiveEvent *PostObjectiveMessage(const char *format, ...);
 void ShowNextObjectiveMessage(void);
 void ResetObjectiveHintTimer(void);

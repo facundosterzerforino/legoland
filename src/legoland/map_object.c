@@ -2266,7 +2266,7 @@ void SetBridgeParamsByName(const char *param_1) {
 
 #define TILE_REF(tm, hi, lo) (*(tm)[(unsigned char)(((((hi) << 8) - 1) | (lo)) >> 8)].tiles + (unsigned short)(lo))
 // FUNCTION: LEGOLAND 0x00461a50
-LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
+LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
     struct ResFile *file;
     struct Element *elem;
     unsigned int len;
@@ -2291,7 +2291,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
     if (MapDataLoaded != 0) {
         return 0xffffffff;
     }
-    if (LLIDB_FindElement((const char *)param_1, &elem, 0) != 0) {
+    if (LLIDB_FindElement(param_1, &elem, 0) != 0) {
         return 0xfffffffe;
     }
     LevelMapHandle = elem;
