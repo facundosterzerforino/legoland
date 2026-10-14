@@ -2146,7 +2146,7 @@ struct Sprite *BZBlueCarM1Sprite;
 struct BalloonNode *BalloonNodeList;
 
 // GLOBAL: LEGOLAND 0x00616068
-void *CarouselLayer;
+struct Sprite *CarouselLayer;
 
 // GLOBAL: LEGOLAND 0x0061606c
 struct Sprite *CarouselEntranceMatteSprite;
@@ -2176,7 +2176,7 @@ void *DAT_00616090[3]; /* carousel BinVs (on, ride, off), indexed by the saved p
 struct Sprite *ZCarouselSprite;
 
 // GLOBAL: LEGOLAND 0x006160bc
-struct CarouselRide *DAT_006160bc;
+struct Ride *DAT_006160bc;
 
 // GLOBAL: LEGOLAND 0x006160c0
 struct Sprite *DAT_006160c0;

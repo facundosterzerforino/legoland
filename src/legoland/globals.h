@@ -125,7 +125,6 @@ struct CopterNode;
 struct RenderItemNode;
 struct GoldNode;
 struct CarouselNode;
-struct CarouselRide;
 struct EarthNode;
 struct JoustNode;
 struct InterfaceIconNode;
@@ -1883,7 +1882,7 @@ extern struct Sprite *BZBlueCarM1Sprite;
 // 0x00616060
 extern struct BalloonNode *BalloonNodeList;
 // 0x00616068
-extern void *CarouselLayer;
+extern struct Sprite *CarouselLayer;
 // 0x0061606c
 extern struct Sprite *CarouselEntranceMatteSprite;
 // 0x00616070
@@ -1903,7 +1902,7 @@ extern void *DAT_00616090[3];
 // 0x006160b8
 extern struct Sprite *ZCarouselSprite;
 // 0x006160bc
-extern struct CarouselRide *DAT_006160bc;
+extern struct Ride *DAT_006160bc;
 // 0x006160c0
 extern struct Sprite *DAT_006160c0;
 // 0x006160c4
