@@ -1164,7 +1164,7 @@ struct RenderItemNode **DAT_004c1190;
 struct RenderItemNode **DAT_004c1194;
 
 // GLOBAL: LEGOLAND 0x004c1198
-void *ActiveCopterRide;
+struct Ride *ActiveCopterRide;
 
 // GLOBAL: LEGOLAND 0x004c119c
 struct RenderItemNode *DAT_004c119c;

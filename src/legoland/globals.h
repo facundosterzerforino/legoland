@@ -1227,7 +1227,7 @@ extern struct RenderItemNode **DAT_004c1190;
 // 0x004c1194
 extern struct RenderItemNode **DAT_004c1194;
 // 0x004c1198
-extern void *ActiveCopterRide;
+extern struct Ride *ActiveCopterRide;
 // 0x004c119c
 extern struct RenderItemNode *DAT_004c119c;
 // 0x004c11a0
