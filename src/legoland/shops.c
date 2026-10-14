@@ -796,7 +796,7 @@ void ExplorersInstituteUpdate(struct Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a390
-unsigned int *GetShopSpriteInfo(struct Element *obj, unsigned short param_2) {
+struct RideSpriteInfo *GetShopSpriteInfo(struct Element *obj, unsigned short param_2) {
     struct Ride *building = obj->ride;
     RideSpriteInfoBuffer.sprite = building->layer;
     RideSpriteInfoBuffer.x = building->field_14;

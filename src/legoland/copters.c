@@ -478,7 +478,7 @@ void CoptersSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00404490
-unsigned int *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) {
+struct RideSpriteInfo *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) {
     struct Ride *ride = editobj->ride;
 
     DAT_004c1170.sprite = ride->layer;
@@ -500,7 +500,7 @@ unsigned int *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) 
         HideLayer(CopterModelLayers, 4);
     }
 
-    return (unsigned int *)&DAT_004c1170;
+    return &DAT_004c1170;
 }
 
 // FUNCTION: LEGOLAND 0x00404580

@@ -98,7 +98,6 @@ struct ResVolume;
 struct RideQueueEntry;
 struct ObjectiveEvent;
 struct MapElement;
-struct WaterSub;
 struct WaterNode;
 
 struct BrollyData;
@@ -1583,13 +1582,13 @@ extern struct Sprite *TopwaterSprite;
 // 0x004cbfdc
 extern struct Ride *ElephantFountainRide;
 // 0x004cbfe0
-extern struct WaterSub *ShowerLayer;
+extern struct Sprite *ShowerLayer;
 // 0x004cbfe4
-extern unsigned int DAT_004cbfe4;
+extern struct Element *DAT_004cbfe4;
 // 0x004cbfe8
 extern struct Element *WaterWorksImageListHandle;
 // 0x004cbfec
-extern unsigned int ElephantFountainLayer;
+extern struct Sprite *ElephantFountainLayer;
 // 0x004cbff0
 extern struct RideSpriteInfo DAT_004cbff0;
 // 0x004cc008
@@ -1597,9 +1596,9 @@ extern struct Ride *WaterBlockRide;
 // 0x004cc014
 extern struct Sprite *ShowerSprite;
 // 0x004cc018
-extern void *WaterWorksImageListData;
+extern struct SpriteSet *WaterWorksImageListData;
 // 0x004cc01c
-extern unsigned int DAT_004cc01c;
+extern struct Ride *DAT_004cc01c;
 // 0x004cc020
 extern struct Sprite *WwElsquirtSprite;
 // 0x004cc024

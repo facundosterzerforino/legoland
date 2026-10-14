@@ -1694,16 +1694,16 @@ struct Sprite *TopwaterSprite;
 struct Ride *ElephantFountainRide;
 
 // GLOBAL: LEGOLAND 0x004cbfe0
-struct WaterSub *ShowerLayer;
+struct Sprite *ShowerLayer;
 
 // GLOBAL: LEGOLAND 0x004cbfe4
-unsigned int DAT_004cbfe4;
+struct Element *DAT_004cbfe4;
 
 // GLOBAL: LEGOLAND 0x004cbfe8
 struct Element *WaterWorksImageListHandle;
 
 // GLOBAL: LEGOLAND 0x004cbfec
-unsigned int ElephantFountainLayer;
+struct Sprite *ElephantFountainLayer;
 
 // GLOBAL: LEGOLAND 0x004cbff0
 struct RideSpriteInfo DAT_004cbff0;
@@ -1715,10 +1715,10 @@ struct Ride *WaterBlockRide;
 struct Sprite *ShowerSprite;
 
 // GLOBAL: LEGOLAND 0x004cc018
-void *WaterWorksImageListData;
+struct SpriteSet *WaterWorksImageListData;
 
 // GLOBAL: LEGOLAND 0x004cc01c
-unsigned int DAT_004cc01c;
+struct Ride *DAT_004cc01c;
 
 // GLOBAL: LEGOLAND 0x004cc020
 struct Sprite *WwElsquirtSprite;
