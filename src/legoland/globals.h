@@ -4092,9 +4092,18 @@ extern void *DAT_00829c60[1024];
 // 0x0082ac60
 extern void *DAT_0082ac60[48];
 // 0x0082ad20
-extern unsigned char CastleDispatchTable[0x90];
+/* castle.c: the castle parts' handlers (a row per part class; the table ends where DAT_0082adb0 starts) */
+struct DispatchRow {
+    /* 0x00 */ struct Element *element;
+    /* 0x04 */ void (*fn_4)(); /* select (edit mode) */
+    /* 0x08 */ void (*fn_8)(); /* calc cursor */
+    /* 0x0c */ void (*fn_c)(); /* add object */
+    /* 0x10 */ void (*fn_10)(); /* dcalc cursor */
+    /* 0x14 */ void (*fn_14)(); /* remove object */
+};
+extern struct DispatchRow CastleDispatchTable[6];
 // 0x0082adb0
-extern unsigned int DAT_0082adb0[6];
+extern struct Element *DAT_0082adb0[6];
 // 0x0082add0
 extern unsigned int CoasterTrainCarLms[3];
 // 0x0082ade0

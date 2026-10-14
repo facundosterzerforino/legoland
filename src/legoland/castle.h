@@ -4,6 +4,8 @@
 
 struct PathSeg;
 struct CastleObj;
+struct Bloke;
+struct Point;
 struct CurveVt;
 struct FVec3;
 struct AreaNode;
@@ -109,13 +111,15 @@ struct DirPoints {
 /* a visitor queueing for the castle (CastleState.visitors is the queue's sentinel) */
 struct CastleVisitor {
     /* 0x00 */ unsigned int flags; /* 1, 2 or 4 */
-    /* 0x04 */ unsigned char pad_4[4];
-    /* 0x08 */ void *field_8;
-    /* 0x0c */ unsigned char pad_c[4];
+    /* 0x04 */ void *lms; /* sitting pose */
+    /* 0x08 */ void *field_8; /* the visitor's 3D figure (freed unless flags & 1) */
+    /* 0x0c */ struct Bloke *bloke;
     /* 0x10 */ struct CastleVisitor *prev;
     /* 0x14 */ struct CastleVisitor *next;
     /* 0x18 */ unsigned int field_18;
     /* 0x1c */ unsigned int time;
+    /* 0x20 */ void *field_20; /* FUN_00421560 */
+    /* 0x24 */ void (*unlink)(struct CastleVisitor *self); /* FUN_00421980 */
 };
 
 /* DAT_00829ae0: the castle */
@@ -131,7 +135,6 @@ struct CastleState {
     /* 0xdc */ unsigned char pad_dc[4];
     /* 0xe0 */ unsigned int field_e0;
     /* 0xe4 */ struct CastleVisitor visitors;
-    /* 0x104 */ unsigned char pad_104[0x10c - 0x104];
     /* 0x10c */ void *method_10c; /* FUN_00424850: called through it by FUN_0041e500 */
     /* 0x110 */ void *method_110; /* FUN_00424890: FUN_0041e0e0 */
     /* 0x114 */ void *method_114; /* FUN_00424990: FUN_0041e100 */
@@ -293,7 +296,7 @@ void FUN_00422e10(int param1, int index);
 void FUN_00422e40(int param1, char *entry);
 void CastleObjLoad(struct Element *param_1);
 void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3);
-void FUN_004244b0(unsigned int param_1, TileId param_2, unsigned int param_3);
+void FUN_004244b0(struct Element *param_1, TileId param_2, struct Cursor *param_3);
 void FUN_00424620(struct Int16Pair *pos);
 void FUN_00424800(void);
 void FUN_00424850(void);
@@ -351,7 +354,7 @@ void RenderSquareTrack(unsigned int unused0, unsigned int unused1, unsigned int 
 void CastleLoadBasicTiles(struct Element *obj);
 void CastleUnloadBasicTiles(void);
 void FUN_00427b20(struct Element *obj, int x, unsigned int y);
-void FUN_00427bc0(unsigned int unused, const struct Struct427bc0Src *src);
+void FUN_00427bc0(struct Element *unused, const struct Struct427bc0Src *src);
 void FUN_00427c90(struct Element *obj, int x, unsigned int y);
 void FUN_00427ea0(struct Element *obj, const struct Struct427bc0Src *src);
 void SquareTrackHeightLoad(struct Element *param_1);

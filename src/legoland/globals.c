@@ -5413,10 +5413,10 @@ void *DAT_00829c60[1024];
 void *DAT_0082ac60[48];
 
 // GLOBAL: LEGOLAND 0x0082ad20
-unsigned char CastleDispatchTable[0x90];
+struct DispatchRow CastleDispatchTable[6];
 
 // GLOBAL: LEGOLAND 0x0082adb0
-unsigned int DAT_0082adb0[6];
+struct Element *DAT_0082adb0[6];
 
 // GLOBAL: LEGOLAND 0x0082add0
 unsigned int CoasterTrainCarLms[3]; /* head, mid, tail; indexed by car type */
