@@ -10,16 +10,6 @@
 
 #pragma intrinsic(strcmp)
 
-struct GardenLayer {
-    unsigned char pad_0[0xc];
-    struct GardenInner *field_c;
-};
-
-struct GardenInner {
-    unsigned char pad_0[0x1c];
-    unsigned int field_1c;
-};
-
 struct GardenTable {
     unsigned char pad_0[8];
     int *a;
@@ -28,10 +18,10 @@ struct GardenTable {
 };
 
 // FUNCTION: LEGOLAND 0x00432480
-void LoadHedgeImages(struct GardenLayer *arg0) {
-    struct GardenInner *temp = arg0->field_c;
+void LoadHedgeImages(struct Element *arg0) {
+    struct Ride *temp = arg0->ride;
     HedgeObjectClass = temp;
-    temp->field_1c |= 0x404;
+    temp->flags |= 0x404;
     // STRING: LEGOLAND 0x004b7114
     if (LLIDB_FindElement("HEDGE IMAGES", &HedgeImagesHandle, 0) != 0) {
         return;
@@ -158,10 +148,10 @@ struct RideSpriteInfo *GetHedgeSpriteInfo(struct Element *unused, TileId tile) {
 }
 
 // FUNCTION: LEGOLAND 0x00432870
-void LoadFlowerImages(struct GardenLayer *param) {
-    struct GardenInner *temp = param->field_c;
+void LoadFlowerImages(struct Element *param) {
+    struct Ride *temp = param->ride;
     DAT_0081cd04 = temp;
-    temp->field_1c |= 0x404;
+    temp->flags |= 0x404;
     // STRING: LEGOLAND 0x004b7124
     if (LLIDB_FindElement("FLOWERS 1", &FlowerImagesHandle, 0) != 0) {
         return;

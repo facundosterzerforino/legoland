@@ -1532,7 +1532,7 @@ int DAT_004cbeb4;
 unsigned int DAT_004cbeb8;
 
 // GLOBAL: LEGOLAND 0x004cbec4
-struct SafariOwner *SafariRide;
+struct Ride *SafariRide;
 
 // GLOBAL: LEGOLAND 0x004cbed0
 unsigned int DAT_004cbed0;
@@ -1694,13 +1694,13 @@ struct Sprite *TempleMatte2Sprite;
 struct RenderItemNode *DAT_004cbf70;
 
 // GLOBAL: LEGOLAND 0x004cbf7c
-struct SlideCar *DAT_004cbf7c;
+struct Sprite *DAT_004cbf7c;
 
 // GLOBAL: LEGOLAND 0x004cbf78
 struct Sprite *TempSlideMatteSprite;
 
 // GLOBAL: LEGOLAND 0x004cbf80
-struct SlideTrack *DAT_004cbf80;
+struct Ride *DAT_004cbf80;
 
 // GLOBAL: LEGOLAND 0x004cbf98
 unsigned int DAT_004cbf98;
@@ -1745,7 +1745,7 @@ struct SlideNode *SlideNodeList;
 struct Sprite *TopwaterSprite;
 
 // GLOBAL: LEGOLAND 0x004cbfdc
-struct WaterContext *ElephantFountainRide;
+struct Ride *ElephantFountainRide;
 
 // GLOBAL: LEGOLAND 0x004cbfe0
 struct WaterSub *ShowerLayer;
@@ -1775,7 +1775,7 @@ unsigned short DAT_004cbffc;
 unsigned int DAT_004cc000;
 
 // GLOBAL: LEGOLAND 0x004cc008
-struct WaterContext *WaterBlockRide;
+struct Ride *WaterBlockRide;
 
 // GLOBAL: LEGOLAND 0x004cc014
 struct Sprite *ShowerSprite;
@@ -1790,7 +1790,7 @@ unsigned int DAT_004cc01c;
 struct Sprite *WwElsquirtSprite;
 
 // GLOBAL: LEGOLAND 0x004cc024
-struct WaterContext *ShowerRide;
+struct Ride *ShowerRide;
 
 // GLOBAL: LEGOLAND 0x004cc028
 unsigned int WaterWorksSfxRefCount;
@@ -2324,16 +2324,7 @@ struct Point DAT_0062fd88[4];
 struct SpaceTowerCar *SpaceTowerCarList;
 
 // GLOBAL: LEGOLAND 0x0062fdb0
-unsigned int DAT_0062fdb0;
-
-// GLOBAL: LEGOLAND 0x0062fdb4
-unsigned int DAT_0062fdb4;
-
-// GLOBAL: LEGOLAND 0x0062fdb8
-unsigned int DAT_0062fdb8;
-
-// GLOBAL: LEGOLAND 0x0062fdbc
-unsigned short DAT_0062fdbc;
+struct RideSpriteInfo DAT_0062fdb0;
 
 // GLOBAL: LEGOLAND 0x0062fdc8
 void *BoxBlokesOffBNV;
@@ -5464,7 +5455,7 @@ void *DAT_0082c688;
 unsigned short *DSchoolRedPalette;
 
 // GLOBAL: LEGOLAND 0x0082c694
-struct DSCursorSource *DrivingSchoolRide;
+struct Ride *DrivingSchoolRide;
 
 // GLOBAL: LEGOLAND 0x0082c6b8
 unsigned short *DSchoolYellowPalette;

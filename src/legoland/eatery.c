@@ -18,21 +18,12 @@
 
 #include "image_sprite.h"
 
-struct BlokeNode;
-
 struct BrollyData {
     /* 0x00 */ unsigned char pad_0[4];
     /* 0x04 */ int count_4;
     /* 0x08 */ int *table_8;
     /* 0x0c */ int *table_c;
     /* 0x10 */ int *table_10;
-};
-
-struct BlokeNode {
-    struct BlokeNode *next;
-    unsigned char pad_4[4];
-    unsigned int field_8;
-    unsigned short field_c;
 };
 
 struct Seats {
@@ -44,16 +35,6 @@ struct BrollyNode {
     /* 0x04 */ unsigned short value;
     /* 0x06 */ struct Seats seats;
     /* 0x09 */ unsigned char field_9;
-};
-
-struct BlokeOwner {
-    unsigned char pad_0[0xcc];
-    struct BlokeNode *head_cc;
-};
-
-struct BlokeArg {
-    unsigned char pad_0[0xc];
-    struct BlokeOwner *owner_c;
 };
 
 struct EditArg {
@@ -106,13 +87,13 @@ void LoadChuckWagonResources(struct Element *obj) {
 void UnloadChuckWagonResources(void) { KillMoneySFX(); }
 
 // FUNCTION: LEGOLAND 0x0042e260
-void RenderChuckWagon(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
-    struct BlokeOwner *owner = arg->owner_c;
-    struct BlokeNode *node = owner->head_cc;
+void RenderChuckWagon(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
+    struct Ride *owner = arg->ride;
+    struct RideNode *node = owner->riders;
     if (node != NULL) {
         while (node != NULL) {
-            if (*value == node->field_c) {
-                IP_RenderBlokeIn3DNow((struct Bloke *)node->field_8);
+            if (*value == node->tile.id) {
+                IP_RenderBlokeIn3DNow((struct Bloke *)node->rider);
                 GetScreenCoordsForObject((unsigned char *)value, owner);
                 break;
             }
@@ -354,15 +335,15 @@ void LoadFoodcartFoodResources(struct Element *obj) {
 void UnloadFoodcartFoodResources(void) { KillMoneySFX(); }
 
 // FUNCTION: LEGOLAND 0x0042e830
-void FUN_0042e830(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
-    struct BlokeOwner *owner = arg->owner_c;
-    struct BlokeNode *node = owner->head_cc;
+void FUN_0042e830(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
+    struct Ride *owner = arg->ride;
+    struct RideNode *node = owner->riders;
     if (node == NULL) {
         return;
     }
     while (node != NULL) {
-        if (*value == node->field_c) {
-            IP_RenderBlokeIn3DNow((struct Bloke *)node->field_8);
+        if (*value == node->tile.id) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)node->rider);
         }
         node = node->next;
     }

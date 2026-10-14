@@ -42,24 +42,6 @@ struct PlaneRideObject {
     unsigned int ride;
 };
 
-struct PlaneRideBlockData {
-    unsigned char pad_0[0x10];
-    unsigned int field_10;
-};
-
-struct PlaneRideBlock {
-    unsigned char pad_0[0x14];
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned char pad_1c[0x48];
-    struct PlaneRideBlockData *layer;
-};
-
-struct PlaneRideRoot {
-    unsigned char pad_0[0xc];
-    struct PlaneRideBlock *field_c;
-};
-
 #include "image_sprite.h"
 #include "objclass.h"
 
@@ -325,14 +307,14 @@ void PlaneRideAddObject(Element *a, int *p) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e010
-unsigned int *GetPlaneRideSpriteInfo(struct PlaneRideRoot *param1, unsigned short param2) {
-    struct PlaneRideBlock *block = param1->field_c;
+unsigned int *GetPlaneRideSpriteInfo(struct Element *param1, unsigned short param2) {
+    struct Ride *block = param1->ride;
 
     DAT_0062fe60 = (unsigned int)block->layer;
     DAT_0062fe64 = block->field_14;
     DAT_0062fe68 = block->field_18;
     DAT_0062fe6c = param2;
-    block->layer->field_10 |= 0x2000;
+    block->layer->flags |= 0x2000;
 
     return &DAT_0062fe60;
 }
@@ -395,29 +377,11 @@ struct ZoomerCar {
     unsigned int field_30;
 };
 
-struct ZoomerListNode {
-    struct ZoomerListNode *next;
-    unsigned char pad_4[4];
-    struct ZoomerData *rider;
-    unsigned char pad_c[4];
-    struct ZoomerCar *person;
-};
-
-struct ZoomerGameObject {
-    unsigned char pad_0[0xcc];
-    struct ZoomerListNode *riders;
-};
-
-struct ZoomerLoadArg {
-    unsigned char pad_0[0xc];
-    struct ZoomerGameObject *field_c;
-};
-
 // FUNCTION: LEGOLAND 0x0043e110
-LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
-    struct ZoomerGameObject *obj = arg->field_c;
+LEGO_EXPORT int LoadZoomer(struct Element *arg) {
+    struct Ride *obj = arg->ride;
     struct PlaneRideNode *prev = NULL;
-    struct ZoomerListNode *list;
+    struct RideNode *list;
     struct ZoomerCar *car;
     struct ZoomerData *data;
     struct ZoomerTypeC *tc;

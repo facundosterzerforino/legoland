@@ -25,15 +25,10 @@ struct Sprite;
 
 #include "image_sprite.h"
 
-struct EmitNode {
-    unsigned char pad_0[0xc];
-    struct EmitNode *next;
-};
-
 struct Particle {
     int x;
     int y;
-    struct EmitNode *node;
+    struct Element *node;
     float scale;
     int z;
     float w;
@@ -44,7 +39,7 @@ struct Particle {
 
 struct ParticleEmitter {
     unsigned char pad_0[8];
-    struct EmitNode *head;
+    struct Element *head;
     unsigned char pad_c[0x30];
     unsigned int var_3c;
     unsigned char pad_40[0xd0 - 0x40];
@@ -66,11 +61,6 @@ struct FlumeOut {
     int f_20;
 };
 
-struct Obj {
-    unsigned char pad_0[0xc];
-    void *ride;
-};
-
 struct ResA {
     unsigned char pad_0[0x1c];
     unsigned int flags_1c;
@@ -87,19 +77,6 @@ struct WalkNode {
     struct WalkNode *var_0;
     unsigned int var_4;
     struct WalkNode *var_8;
-};
-
-struct FlumeRideSrc {
-    unsigned char pad_0[0x14];
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned char pad_1c[0x64 - 0x1c];
-    void *field_64;
-};
-
-struct FlumeRideArg {
-    unsigned char pad_0[0xc];
-    struct FlumeRideSrc *field_c;
 };
 
 struct PairHolder {
@@ -1536,7 +1513,7 @@ void LogFlumeEntranceSetEditMode(void) {
 void FUN_0040a580(struct ParticleEmitter *param) {
     int i;
     struct Particle *p;
-    struct EmitNode *node;
+    struct Element *node;
     struct FlumeDims d;
 
     node = param->head;
@@ -1553,7 +1530,7 @@ void FUN_0040a580(struct ParticleEmitter *param) {
             p->w = 0.1f;
             p[-1].a = 0;
             p[-1].b = 0;
-            node = node->next;
+            node = node->ride;
             i++;
             p++;
         } while (i < (int)param->var_3c);
@@ -4188,11 +4165,11 @@ void LogFlumeSpecialCorner4DCalcCursor(struct Element *param_1, struct Point *pa
 }
 
 // FUNCTION: LEGOLAND 0x0040e8b0
-void LogFlumeSpecialCorner1LoadSprites(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner1LoadSprites(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c445c = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c445c = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c445c;
     resA->flags_1c |= 0x400;
 
@@ -4216,11 +4193,11 @@ void LogFlumeSpecialCorner1LoadSprites(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e920
-void LogFlumeSpecialCorner2LoadSprites(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner2LoadSprites(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2aa0 = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c2aa0 = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c2aa0;
     resA->flags_1c |= 0x400;
 
@@ -4238,11 +4215,11 @@ void LogFlumeSpecialCorner2LoadSprites(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e970
-void LogFlumeSpecialCorner3LoadSprites(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner3LoadSprites(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2b0c = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c2b0c = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c2b0c;
     resA->flags_1c |= 0x400;
 
@@ -4266,11 +4243,11 @@ void LogFlumeSpecialCorner3LoadSprites(struct Obj *obj_ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e9e0
-void LogFlumeSpecialCorner4LoadSprites(struct Obj *obj_ptr) {
+void LogFlumeSpecialCorner4LoadSprites(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c74d4 = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c74d4 = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c74d4;
     resA->flags_1c |= 0x400;
     DAT_004c2ba0 = obj_ptr;
@@ -4390,13 +4367,13 @@ void LogFlumeSpecialCorner4RemoveObject(struct Element *param_1, TileId param_2,
 }
 
 // FUNCTION: LEGOLAND 0x0040ed50
-struct RideSpriteInfo *FUN_0040ed50(struct FlumeRideArg *arg1, TileId arg2) {
-    struct FlumeRideSrc *src = arg1->field_c;
+struct RideSpriteInfo *FUN_0040ed50(struct Element *arg1, TileId arg2) {
+    struct Ride *src = arg1->ride;
     struct FlumeEntry *entry = FindFlumeSubEntryByTile(&arg2);
     if (entry != NULL) {
         FUN_0040cd70((struct PairHolder *)entry, 0);
         DAT_004cbe58.id = arg2.id;
-        DAT_004cbe58.sprite = src->field_64;
+        DAT_004cbe58.sprite = src->layer;
         DAT_004cbe58.x = src->field_14;
         DAT_004cbe58.y = src->field_18;
         DAT_004cbe58.field_10 = 0;
@@ -4613,11 +4590,11 @@ void FUN_0040f360(struct FlumeXY p, unsigned int *result) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f3e0
-void LogFlumeTunnelLoadSprites(struct Obj *obj_ptr) {
+void LogFlumeTunnelLoadSprites(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004cbe18 = (struct CursorSource *)obj_ptr->ride;
+    DAT_004cbe18 = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004cbe18;
     resA->flags_1c |= 0x400;
     DAT_004cbe48 = obj_ptr;
@@ -4769,11 +4746,11 @@ void FUN_0040f830(struct FlumeXY p, unsigned int *result) {
 }
 
 // FUNCTION: LEGOLAND 0x0040f8b0
-struct Sprite *FUN_0040f8b0(struct Obj *obj_ptr) {
+struct Sprite *FUN_0040f8b0(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2bf0 = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c2bf0 = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c2bf0;
     resA->flags_1c |= 0x400;
     DAT_004c4460 = obj_ptr;
@@ -4973,11 +4950,11 @@ void FUN_0040feb0(TileId pos, struct FlumeOut *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ff30
-void LogFlumeHoldUpLoadSprites(struct Obj *obj_ptr) {
+void LogFlumeHoldUpLoadSprites(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c2b60 = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c2b60 = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c2b60;
     resA->flags_1c |= 0x400;
 
@@ -5162,11 +5139,11 @@ void FUN_00410360(struct FlumeXY p, unsigned int *result) {
 }
 
 // FUNCTION: LEGOLAND 0x004103e0
-struct Sprite *FUN_004103e0(struct Obj *obj_ptr) {
+struct Sprite *FUN_004103e0(struct Element *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
-    DAT_004c8d6c = (struct CursorSource *)obj_ptr->ride;
+    DAT_004c8d6c = (struct CursorSource *)obj_ptr->data;
     resA = (struct ResA *)DAT_004c8d6c;
     resA->flags_1c |= 0x400;
 

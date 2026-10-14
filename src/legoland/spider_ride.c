@@ -622,29 +622,11 @@ struct SpiderCar2 {
     unsigned int field_30;
 };
 
-struct SpiderListNode {
-    struct SpiderListNode *next;
-    unsigned char pad_4[4];
-    struct SpiderData *rider;
-    unsigned char pad_c[4];
-    struct SpiderCar2 *person;
-};
-
-struct SpiderGameObject {
-    unsigned char pad_0[0xcc];
-    struct SpiderListNode *riders;
-};
-
-struct SpiderLoadArg {
-    unsigned char pad_0[0xc];
-    struct SpiderGameObject *ride;
-};
-
 // FUNCTION: LEGOLAND 0x004168f0
-LEGO_EXPORT int LoadSpider(struct SpiderLoadArg *arg) {
-    struct SpiderGameObject *obj = arg->ride;
+LEGO_EXPORT int LoadSpider(struct Element *arg) {
+    struct Ride *obj = arg->ride;
     struct SpiderNode *prev = NULL;
-    struct SpiderListNode *list;
+    struct RideNode *list;
     struct SpiderCar2 *car;
     struct SpiderData *data;
     struct SpiderTypeC *tc;

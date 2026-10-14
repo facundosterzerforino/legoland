@@ -31,25 +31,6 @@ struct CopterSub {
     int field_50;
 };
 
-struct CopterModel {
-    unsigned char pad_0[0x10];
-    unsigned int field_10;
-};
-
-struct CopterRide {
-    unsigned char pad_0[0x14];
-    int field_14;
-    int field_18;
-    unsigned int field_1c;
-    unsigned char pad_20[0x64 - 0x20];
-    struct CopterModel *layer;
-};
-
-struct CopterEditObject {
-    unsigned char pad_0[0xc];
-    struct CopterRide *field_c;
-};
-
 // Same object as CopterNode, viewed with the two id bytes split apart.
 struct CopterSfxNode {
     /* 0x00 */ unsigned char tile_x;
@@ -231,15 +212,15 @@ void CoptersIndexToQueueTable(struct CopterItem *item) {
 }
 
 // FUNCTION: LEGOLAND 0x00403d90
-void CoptersLoad(struct CopterEditObject *param_1) {
-    struct CopterRide *ride;
+void CoptersLoad(struct Element *param_1) {
+    struct Ride *ride;
     int i;
 
-    ride = param_1->field_c;
+    ride = param_1->ride;
     ActiveCopterRide = ride;
-    ride->field_1c |= 0x420;
-    CopterModelLayers = ((struct CopterRide *)ActiveCopterRide)->layer;
-    ((struct CopterModel *)CopterModelLayers)->field_10 |= 0x2000;
+    ride->flags |= 0x420;
+    CopterModelLayers = ((struct Ride *)ActiveCopterRide)->layer;
+    ((struct Sprite *)CopterModelLayers)->flags |= 0x2000;
     for (i = 0; i < 10; i++) {
         CopterModelSprites[i] = LoadSprite(Copters_LLSNames[i], 1);
     }
@@ -497,14 +478,14 @@ void CoptersSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00404490
-unsigned int *GetCoptersSpriteInfo(struct CopterEditObject *editobj, unsigned short uid) {
-    struct CopterRide *ride = editobj->field_c;
+unsigned int *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) {
+    struct Ride *ride = editobj->ride;
 
     DAT_004c1170 = (int)ride->layer;
     DAT_004c1174 = ride->field_14;
     DAT_004c1178 = ride->field_18;
     DAT_004c117c = uid;
-    ride->layer->field_10 |= 0x2000;
+    ride->layer->flags |= 0x2000;
 
     if (CoptersFindNode((struct CopterSource *)&uid) != 0) {
         HideLayer(CopterModelLayers, 1);

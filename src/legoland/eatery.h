@@ -2,7 +2,6 @@
 
 #include "llidb.h"
 
-struct BlokeArg;
 struct RideNode;
 struct Element;
 struct EditArg;
@@ -13,7 +12,7 @@ struct SaveBlock *FindSaveBlock(unsigned short *param);
 
 void LoadChuckWagonResources(struct Element *obj);
 void UnloadChuckWagonResources();
-void RenderChuckWagon(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value);
+void RenderChuckWagon(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value);
 void ChuckWagonUpdate(Element *obj);
 void LoadBrollyImages(struct Element *obj);
 void UnloadBrollyImages();
@@ -29,7 +28,7 @@ void LoadFoodcartIcecreamResources(struct Element *obj);
 void UnloadFoodcartIcecreamResources();
 void LoadFoodcartFoodResources(struct Element *obj);
 void UnloadFoodcartFoodResources();
-void FUN_0042e830(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value);
+void FUN_0042e830(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value);
 void LoadCastleBBQResources(struct Element *obj);
 void UnloadCastleBBQResources();
 void EaterySetEditMode(struct EditArg *arg);
