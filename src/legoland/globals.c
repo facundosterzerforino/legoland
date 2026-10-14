@@ -1,6 +1,7 @@
 #include "globals.h"
 #include <dinput.h> /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, MouseState) */
 #include "bloke.h"
+#include "castle.h"
 #include "icon.h"
 #include "interface.h"
 #include "math.h"
@@ -5385,7 +5386,7 @@ struct Element *DAT_00829abc;
 struct CastleState DAT_00829ae0;
 
 // GLOBAL: LEGOLAND 0x004b5b48
-struct CastleClass DAT_004b5b48;
+struct PieceClass DAT_004b5b48;
 
 // GLOBAL: LEGOLAND 0x00829bf8
 unsigned int DAT_00829bf8;
