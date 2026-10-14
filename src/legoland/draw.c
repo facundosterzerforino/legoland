@@ -403,7 +403,7 @@ LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
     arg->width = lpConfig->screen_width;
     arg->height = lpConfig->screen_height;
     arg->bits = CurrentSurfaceDesc.lpSurface;
-    arg->field_14 = 2;
+    arg->format = 2;
     return 1;
 }
 

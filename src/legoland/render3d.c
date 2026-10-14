@@ -458,7 +458,7 @@ LEGO_EXPORT void StopLayerPlaying(struct Sprite *sprite, unsigned int index) {
 #pragma intrinsic(memset)
 
 // FUNCTION: LEGOLAND 0x00441f20
-LEGO_EXPORT unsigned short *LoadPalette(unsigned int path) {
+LEGO_EXPORT unsigned short *LoadPalette(const char *path) {
     unsigned short *palette;
     unsigned short *out;
     struct ResFile *file;
@@ -470,18 +470,18 @@ LEGO_EXPORT unsigned short *LoadPalette(unsigned int path) {
     palette = (unsigned short *)malloc(0x200);
     if (palette != NULL) {
         memset(palette, 0, 0x200);
-        file = RES_OpenFile((const char *)path);
+        file = RES_OpenFile(path);
         if (file != NULL) {
             RES_ReadFile(file, header, 8);
             out = palette;
             for (i = 0x100; i != 0; i--) {
-                RES_ReadFile(file, &path, 1);
+                RES_ReadFile(file, (void *)&path, 1); /* the red byte goes into the dead parameter */
                 RES_ReadFile(file, &g, 1);
                 RES_ReadFile(file, &b, 1);
                 if (DisplayPixelFormat == 2) {
-                    *out = (((path & 0xf8) << 5 | (g & 0xfc)) << 3) | (b >> 3);
+                    *out = ((((UINT_PTR)path & 0xf8) << 5 | (g & 0xfc)) << 3) | (b >> 3);
                 } else {
-                    *out = (unsigned short)((((((unsigned char)path & 0xf8) << 5) | (g & 0xf8)) << 2) | (b >> 3));
+                    *out = (unsigned short)((((((unsigned char)(UINT_PTR)path & 0xf8) << 5) | (g & 0xf8)) << 2) | (b >> 3));
                 }
                 out++;
             }

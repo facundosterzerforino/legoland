@@ -47,7 +47,7 @@ LEGO_EXPORT void RenderBlokesNotInSeats(struct Ride *a1, TileId *a2);
 LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct ViewportEntry *param_3, unsigned char *param_4);
 LEGO_EXPORT struct RinData *LoadRin(const char *path, const char *dir);
 LEGO_EXPORT void UnLoadRin(struct RinData *rin);
-LEGO_EXPORT unsigned short *LoadPalette(unsigned int path);
+LEGO_EXPORT unsigned short *LoadPalette(const char *path);
 LEGO_EXPORT struct LLS *GetLLSForSprite(struct Sprite *sprite);
 LEGO_EXPORT void RenderItems2_New(void);
 LEGO_EXPORT void RenderItem2_AddItem(struct RenderItemNode **head, void *param_2, int key);

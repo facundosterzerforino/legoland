@@ -562,7 +562,7 @@ void FUN_004019c0(struct RideMover *m) {
 }
 
 // FUNCTION: LEGOLAND 0x00401ae0
-int FUN_00401ae0(unsigned short id, int bloke) {
+int FUN_00401ae0(unsigned short id, struct Bloke *bloke) {
     struct RideQueueEntry *e;
     struct NewBloke *b;
     int t;
@@ -573,7 +573,7 @@ int FUN_00401ae0(unsigned short id, int bloke) {
         return -1;
     }
     b->id = id;
-    b->owner = bloke;
+    b->bloke = bloke;
     if (DAT_004c11c0 != 0) {
         b->px = e->x;
         b->fx = e->x << 16;
@@ -1025,7 +1025,7 @@ void FUN_00402780(struct NewBloke *b) {
     struct Person *person;
 
     hit.type = 0x306;
-    hit.field_4 = b->owner;
+    hit.ptr = b->bloke;
     hit.field_8 = 0;
     /* car position on the playfield (x in the low dword, y in the high dword) */
     *(__int64 *)&pos = MapToPlayfieldInl(b->fx >> 8, b->fy >> 8);

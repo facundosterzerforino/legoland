@@ -5692,29 +5692,22 @@ void DrawDottedLine(void *a, void *b, short c) {
 
 // FUNCTION: LEGOLAND 0x004238a0
 void PlotClippedPoints(int *points, int count, short c) {
-    struct {
-        int pitch;
-        unsigned int f4;
-        unsigned int f8;
-        unsigned short *bits;
-        unsigned int f10;
-        unsigned int f14;
-    } surf;
+    struct VideoArg surf;
     int x;
     int y;
 
-    if (GetSprite((unsigned int *)&surf, NULL)) {
+    if (GetSprite(&surf, NULL)) {
         while (count-- > 0) {
             x = points[0];
             if (x > DAT_008299ac[0] && x < DAT_008299ac[2]) {
                 y = points[1];
                 if (y > DAT_008299ac[1] && y < DAT_008299ac[3]) {
-                    surf.bits[x + (surf.pitch >> 1) * y] = c;
+                    ((unsigned short *)surf.bits)[x + (surf.pitch >> 1) * y] = c;
                 }
             }
             points += 4;
         }
-        ReleaseSprite((struct Sprite *)&surf);
+        ReleaseSprite(&surf);
     }
 }
 
