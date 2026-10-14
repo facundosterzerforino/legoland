@@ -1125,7 +1125,7 @@ struct RenderItemNode *DAT_004c10e8;
 void *DAT_004c10f0;
 
 // GLOBAL: LEGOLAND 0x004c10f4
-void *ActiveCatapultRide;
+struct Ride *ActiveCatapultRide;
 
 // GLOBAL: LEGOLAND 0x004c1100
 struct RideSpriteInfo DAT_004c1100;

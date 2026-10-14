@@ -1201,7 +1201,7 @@ extern struct RenderItemNode *DAT_004c10e8;
 // 0x004c10f0
 extern void *DAT_004c10f0;
 // 0x004c10f4
-extern void *ActiveCatapultRide;
+extern struct Ride *ActiveCatapultRide;
 // 0x004c1100
 extern struct RideSpriteInfo DAT_004c1100;
 // 0x004c1118

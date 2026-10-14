@@ -464,7 +464,7 @@ void CoptersSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = ActiveCopterRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00404490

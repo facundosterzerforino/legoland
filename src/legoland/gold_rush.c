@@ -508,7 +508,7 @@ void GoldRushSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = GoldRushRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x004075f0
