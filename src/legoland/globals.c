@@ -5366,7 +5366,7 @@ void (*DAT_00829a5c)(void);
 float DAT_00829a60;
 
 // GLOBAL: LEGOLAND 0x00829a64
-unsigned int DAT_00829a64;
+struct Ride *DAT_00829a64;
 
 // GLOBAL: LEGOLAND 0x00829a80
 struct Footprint DAT_00829a80;
@@ -5386,7 +5386,7 @@ struct PieceClass DAT_004b5b48;
 struct Ride *DAT_00829bf8;
 
 // GLOBAL: LEGOLAND 0x00829bfc
-unsigned int DAT_00829bfc;
+struct Ride *DAT_00829bfc;
 
 // GLOBAL: LEGOLAND 0x00829c00
 struct Element *DAT_00829c00;
@@ -5398,7 +5398,7 @@ struct Sprite *CastleMatteSprite;
 struct Ride *DAT_00829c08;
 
 // GLOBAL: LEGOLAND 0x00829c34
-int DAT_00829c34;
+struct Ride *DAT_00829c34;
 
 // GLOBAL: LEGOLAND 0x00829c54
 char *DAT_00829c54;

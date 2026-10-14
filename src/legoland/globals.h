@@ -4064,7 +4064,7 @@ extern void (*DAT_00829a5c)(void);
 // 0x00829a60
 extern float DAT_00829a60;
 // 0x00829a64
-extern unsigned int DAT_00829a64;
+extern struct Ride *DAT_00829a64;
 
 // 0x00829a80
 extern struct Footprint DAT_00829a80;
@@ -4078,7 +4078,7 @@ extern struct PieceClass DAT_004b5b48;
 // 0x00829bf8
 extern struct Ride *DAT_00829bf8;
 // 0x00829bfc
-extern unsigned int DAT_00829bfc;
+extern struct Ride *DAT_00829bfc;
 
 // 0x00829c00
 extern struct Element *DAT_00829c00;
@@ -4088,7 +4088,7 @@ extern struct Sprite *CastleMatteSprite;
 extern struct Ride *DAT_00829c08;
 
 // 0x00829c34
-extern int DAT_00829c34;
+extern struct Ride *DAT_00829c34;
 // 0x00829c54
 extern char *DAT_00829c54;
 // 0x00829c60

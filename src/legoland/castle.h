@@ -243,6 +243,7 @@ struct LmsFile {
     /* 0x24 */ int field_24;
     /* 0x28 */ struct LmsRef *field_28; /* field_2c of them */
     /* 0x2c */ int field_2c;
+    /* 0x30 */ struct FVec3 box[8]; /* the bounding box's corners */
 };
 
 /* a visitor queueing for the castle (CastleState.visitors is the queue's sentinel) */
@@ -313,7 +314,7 @@ void FUN_00425bd0(void);
 void FUN_00426740(void);
 void FUN_00425d50(float *v);
 float lego_sqrtf(float x);
-unsigned int FUN_00420fb0(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
+unsigned int FUN_00420fb0(struct LmsFile *param_1, unsigned int *param_2, unsigned int *param_3, struct RectI *param_4);
 void FUN_00426700(struct RectI *dst, struct RectI *src);
 float lego_invsqrtf(float x);
 float Vec3Dot(struct FVec3 *param_1, struct FVec3 *param_2);
@@ -323,17 +324,17 @@ void FUN_00423ec0(struct CastleState *castle);
 void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis);
 struct PathSeg;
 unsigned int FUN_00429990(struct PathSeg *n, struct PathSeg **out);
-void FUN_00429490(unsigned int param_1, unsigned int param_2);
+void FUN_00429490(struct FVec3 *param_1, struct FVec3 *param_2);
 
 struct Struct42a5e0Obj;
 struct Struct42a5e0Data;
 struct LmsFile;
 
-unsigned int FUN_0041e720(struct TrainCar *host, unsigned int arg);
+unsigned int FUN_0041e720(struct TrainCar *host, void *arg);
 struct TrainSeat *FUN_0041e760(struct TrainCar *host);
 struct CastleVisitor *FUN_0041e790(struct TrainCar *host);
 struct TrainCar *FUN_0041eb30(unsigned int arg);
-void FUN_0041eb60(unsigned int param_1);
+void FUN_0041eb60(void *param_1);
 void FUN_0041ed90(struct Element *element, int *pos);
 
 unsigned int FUN_0041d1d0(struct PathSeg *obj, struct PieceDoor *door, struct DirPoints *pts);
@@ -424,7 +425,7 @@ void FUN_00424280(struct Element *param_1, int param_2, unsigned int param_3);
 void FUN_004244b0(struct Element *param_1, TileId param_2, struct Cursor *param_3);
 void FUN_00424620(struct Int16Pair *pos);
 void FUN_00424800(void);
-void FUN_00424850(void);
+void FUN_00424850(struct CastleState *p1, struct SegBlob **p2, float *p3, struct FVec3 *p4);
 float FUN_00424890(struct Train *param_1, float param_2);
 float FUN_00424990(struct Train *self, float value);
 void FUN_00424a50(struct CastleState *param_1);
@@ -442,7 +443,7 @@ unsigned int FUN_00426250(float in[][3], int out[][4], float *m, unsigned int st
 unsigned int FUN_00426650(void);
 void FUN_004266b0(struct ListLink *param_1);
 void UnlinkListLink(struct ListLink *param_1);
-unsigned int FUN_00426750(void *ptr, unsigned int a, unsigned int b, unsigned int c);
+unsigned int FUN_00426750(void *ptr, unsigned int *a, unsigned int *b, struct RectI *c);
 unsigned int FUN_00427130(struct CastleState *main);
 unsigned int FUN_00427150(struct CastleState *arg);
 void FUN_00428b70(void);
@@ -453,7 +454,7 @@ void LoadCoasterTrainWheelModel(void);
 void FUN_004273d0(struct TrainSeat *param_1, void *param_2);
 struct CastleVisitor *FUN_004273e0(struct TrainSeat *self);
 void FUN_00428700(void *node);
-void FUN_004294f0(struct SegBlob *a, unsigned int *b, unsigned int c, unsigned int d);
+void FUN_004294f0(struct SegBlob *a, struct FVec3 *b, unsigned int c, unsigned int d);
 void FUN_00428f00(void);
 void FUN_00429270(void);
 float FUN_0042a150(unsigned int b);
