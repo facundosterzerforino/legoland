@@ -861,7 +861,7 @@ LEGO_EXPORT unsigned int AddBasicObject(Element *editObj, int *coords) {
         if (obj->type != 2) {
             id.pos.x = (unsigned char)coords[0];
             id.pos.y = (unsigned char)coords[1];
-            instance = CreateObjectInstance((unsigned int)obj, &id.id);
+            instance = CreateObjectInstance(obj, &id.id);
             if (instance != 0) {
                 AddInstanceToList((struct InstanceNode *)instance);
             }
@@ -3003,7 +3003,7 @@ LEGO_EXPORT void DoMapAI(void) {
                         if (tx == MapStats.scan_x && (ty = tile->field_5) == MapStats.scan_y) {
                             id.pos.x = tx;
                             id.pos.y = ty;
-                            if (FUN_0044f360((unsigned int)obj, (unsigned char *)&id) != 0) {
+                            if (FUN_0044f360(obj, (TileId *)&id) != 0) {
                                 MapStats.classes[obj->type].scan_built++;
                                 MapStats.classes[obj->type].scan_salvage +=
                                     GetObjSalvageValue(obj, tile->durability_level);

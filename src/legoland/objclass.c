@@ -764,14 +764,14 @@ LEGO_EXPORT void ResetBestPtr(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004816a0
-LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
+LEGO_EXPORT struct ObjInstance *CreateObjectInstance(struct Ride *param_1, unsigned short *param_2) {
     struct ObjInstance *obj;
 
     obj = malloc(sizeof(struct ObjInstance));
     if (obj != 0) {
         memset(obj, 0, sizeof(struct ObjInstance));
         obj->uid = *param_2;
-        obj->field_8 = param_1;
+        obj->ride = param_1;
     }
     return obj;
 }
