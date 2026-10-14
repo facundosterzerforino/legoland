@@ -281,7 +281,7 @@ void BuildTextureNodeFromImage(struct Image *param_1, struct TextureNode *param_
     param_2->data_8 = (unsigned char *)malloc(param_1->height * param_1->width);
     if (param_1 != NULL) {
         dst = (unsigned int *)malloc(0x404);
-        param_2->data_c = dst;
+        param_2->data_c = (void **)dst;
         for (x = 0x101; x != 0; x--) {
             *dst = 0;
             dst++;

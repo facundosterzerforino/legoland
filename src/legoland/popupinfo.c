@@ -1,12 +1,14 @@
 #include "popupinfo.h"
 #include <windows.h>
 #include <ddraw.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
 #include "icon.h"
 #include "legoland.h"
+#include "man3d.h"
 #include "math.h"
 #include "text.h"
 #include "worker_mouse.h"
@@ -523,7 +525,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     int y;
     unsigned int uVar3;
     unsigned char *iVar4;
-    int iVar5;
+    INT_PTR iVar5;
 
     uVar3 = t.data.value & 0xffff;
     x = uVar3 & 0xff;
@@ -554,9 +556,9 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
             return;
         }
         if (((struct Element *)t.ptr != PathControlHandle) && ((struct Element *)t.ptr != Entrance1Handle)) {
-            DAT_007fdf7c = *(unsigned int *)((char *)t.ptr + 0xc);
+            DAT_007fdf7c = ((struct Element *)t.ptr)->ride;
             DAT_007fdf84 = iVar4;
-            if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == PottingShedHandle) {
+            if (DAT_007fdf7c->element == PottingShedHandle) {
                 DAT_007fdfa0 = 0;
                 DAT_007fdf9c = 10;
                 param_4 = iVar4[4];
@@ -567,7 +569,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
                 GenerateGardener((int *)&param_4, 1);
                 return;
             }
-            if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == MechanicsHutHandle) {
+            if (DAT_007fdf7c->element == MechanicsHutHandle) {
                 DAT_007fdfa0 = 0;
                 DAT_007fdf9c = 0x14;
                 param_4 = iVar4[4];
@@ -585,8 +587,8 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     case 0x306:
         DAT_007fdf9c = t.type;
         DAT_007fdf8c = t.ptr;
-        DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x1c);
-        DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)t.ptr + 4) + 0x20);
+        DAT_007fdf90 = t.ptr->person->field_1c;
+        DAT_007fdf94 = t.ptr->person->field_20;
         return;
     case 0x308:
         if (t.ptr->action != 5) {
@@ -598,9 +600,9 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
                     (iVar2 >= (int)(unsigned int)lpConfig->height)) {
                     iVar5 = 0;
                 } else {
-                    iVar5 = (int)GameMap[iVar2] + iVar5 * 0x14;
+                    iVar5 = (INT_PTR)GameMap[iVar2] + iVar5 * sizeof(struct MapElement);
                 }
-                *(unsigned short *)(iVar5 + 0xc) = *(unsigned short *)(iVar5 + 0xc) & 0xbfff;
+                *(unsigned short *)(iVar5 + offsetof(struct MapElement, flags)) = *(unsigned short *)(iVar5 + offsetof(struct MapElement, flags)) & 0xbfff;
                 FreeMechanicWorkOrder((WorkOrder *)iVar4);
             }
             PlayInstanceOfSample(GameFX[FX_MECHANIC_LIFT].sample, 0, 1, 0);
@@ -1130,7 +1132,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             if (entry_index >= 0x100) {
                 return;
             }
-            frac = (float)BuildObjArray[entry_index].elapsed / GetBuildTime((struct Ride *)DAT_007fdf7c);
+            frac = (float)BuildObjArray[entry_index].elapsed / GetBuildTime(DAT_007fdf7c);
             if (frac == 1.0f) {
                 DAT_007fdec0.type = 0x103;
                 PopUpInfoSetUp(DAT_007fdec0, PopUpInfoX, PopUpInfoY);

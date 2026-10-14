@@ -3367,7 +3367,7 @@ extern int PopUpInfoY;
 // 0x007fded4
 extern struct NewObjTable NewObjects;
 // 0x007fdf7c
-extern unsigned int DAT_007fdf7c;
+extern struct Ride *DAT_007fdf7c;
 // 0x007fdf80
 extern struct InfoObjData *DAT_007fdf80;
 // 0x007fdf84

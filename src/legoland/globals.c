@@ -4328,7 +4328,7 @@ int PopUpInfoY;
 struct NewObjTable NewObjects;
 
 // GLOBAL: LEGOLAND 0x007fdf7c
-unsigned int DAT_007fdf7c;
+struct Ride *DAT_007fdf7c;
 
 // GLOBAL: LEGOLAND 0x007fdf80
 struct InfoObjData *DAT_007fdf80;

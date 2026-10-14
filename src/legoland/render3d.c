@@ -620,7 +620,7 @@ void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, struct C
                     entry->b0 = param_4->b0;
                     param_5 = *(int *)param_4;
                 }
-                entry->field_8 = FUN_00486280(0x40, &param_5);
+                entry->field_8 = (unsigned int)(UINT_PTR)FUN_00486280(0x40, &param_5); /* 32-bit slot of the mesh file data */
                 count = param_6;
             }
             entry = (struct TexEntry *)((char *)entry + 0x24);
