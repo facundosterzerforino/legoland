@@ -222,15 +222,15 @@ unsigned int *GetTempleSlideSpriteInfo(struct Element *ctx, unsigned short param
     struct Ride *track = ctx->ride;
     struct Sprite *car = track->layer;
 
-    DAT_004cbf98 = (unsigned int)car;
-    DAT_004cbf9c = track->field_14;
-    DAT_004cbfa0 = track->field_18;
-    DAT_004cbfa4 = param;
+    DAT_004cbf98.sprite = car;
+    DAT_004cbf98.x = track->field_14;
+    DAT_004cbf98.y = track->field_18;
+    DAT_004cbf98.id = param;
 
     car = track->layer;
     car->flags |= 0x2000;
 
-    return &DAT_004cbf98;
+    return (unsigned int *)&DAT_004cbf98;
 }
 
 // FUNCTION: LEGOLAND 0x00417340

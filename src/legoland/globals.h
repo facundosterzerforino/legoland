@@ -1203,19 +1203,13 @@ extern void *DAT_004c10f0;
 // 0x004c10f4
 extern void *ActiveCatapultRide;
 // 0x004c1100
-extern void *DAT_004c1100;
-// 0x004c1104
-extern unsigned int DAT_004c1104;
-// 0x004c1108
-extern unsigned int DAT_004c1108;
-// 0x004c110c
-extern unsigned short DAT_004c110c;
+extern struct RideSpriteInfo DAT_004c1100;
 // 0x004c1118
 extern struct CatapultNode *CatapultNodeList;
 // 0x004c1120
 extern struct Sprite *CopterBaseMatteSprite;
 // 0x004c1124
-extern int CopterQueueTables[5];
+extern struct QueueTable *CopterQueueTables[5];
 // 0x004c1138
 extern void *CopterModelLayers;
 // 0x004c113c
@@ -1225,13 +1219,7 @@ extern struct RenderItemNode **DAT_004c1164;
 // 0x004c1168
 extern struct RenderItemNode **DAT_004c1168;
 // 0x004c1170
-extern int DAT_004c1170;
-// 0x004c1174
-extern int DAT_004c1174;
-// 0x004c1178
-extern int DAT_004c1178;
-// 0x004c117c
-extern unsigned short DAT_004c117c;
+extern struct RideSpriteInfo DAT_004c1170;
 // 0x004c1188
 extern struct RenderItemNode **DAT_004c1188;
 // 0x004c1190
@@ -1297,13 +1285,7 @@ extern void *JoustRideBnv;
 // 0x004c121c
 extern unsigned int JoustRide;
 // 0x004c1228
-extern unsigned int DAT_004c1228;
-// 0x004c122c
-extern unsigned int DAT_004c122c;
-// 0x004c1230
-extern unsigned int DAT_004c1230;
-// 0x004c1234
-extern unsigned short DAT_004c1234;
+extern struct RideSpriteInfo DAT_004c1228;
 // 0x004c123c
 extern void *DAT_004c123c[2];
 // 0x004c1244
@@ -1331,7 +1313,7 @@ extern struct Sprite *LogFlumeTrackSprites[10];
 // 0x004c2ae4
 extern struct Sprite *DAT_004c2ae4;
 // 0x004c2ae8
-extern void *DAT_004c2ae8;
+extern struct QueueTable *DAT_004c2ae8;
 // 0x004c2aec
 extern struct Sprite *LogFlumeDrop2MSprite;
 // 0x004c2af0
@@ -1339,7 +1321,7 @@ extern struct Sprite *LogFlumeDrop1MSprite;
 // 0x004c2af4
 extern unsigned int DAT_004c2af4;
 // 0x004c2af8
-extern void *DAT_004c2af8;
+extern struct QueueTable *DAT_004c2af8;
 // 0x004c2afc
 extern struct Element *LogFlumeImageListId;
 // 0x004c2b0c
@@ -1347,7 +1329,7 @@ extern struct CursorSource *DAT_004c2b0c;
 // 0x004c2b10
 extern struct Element *LogFlumeTrackEndyListId;
 // 0x004c2b50
-extern void *DAT_004c2b50;
+extern struct Element *DAT_004c2b50;
 // 0x004c2b60
 extern struct CursorSource *DAT_004c2b60;
 // 0x004c2b64
@@ -1359,11 +1341,11 @@ extern struct Sprite *LogFlumeFc1M1Sprite;
 // 0x004c2b70
 extern struct Sprite *LogFlumeFc1M2Sprite;
 // 0x004c2b98
-extern unsigned int DAT_004c2b98;
+extern struct Element *DAT_004c2b98;
 // 0x004c2b9c
 extern struct Ride *LogFlumeEntranceRide;
 // 0x004c2ba0
-extern void *DAT_004c2ba0;
+extern struct Element *DAT_004c2ba0;
 // 0x004c2c18
 extern struct Cursor DAT_004c2c18;
 // 0x004c2bf0
@@ -1371,7 +1353,7 @@ extern struct CursorSource *DAT_004c2bf0;
 // 0x004c445c
 extern struct CursorSource *DAT_004c445c;
 // 0x004c4460
-extern void *DAT_004c4460;
+extern struct Element *DAT_004c4460;
 // 0x004c5c90
 extern unsigned int DAT_004c5c90;
 // 0x004c74c8
@@ -1393,9 +1375,9 @@ extern struct Sprite *LogFlumeFc2M1Sprite;
 // 0x004c8d38
 extern struct Footprint DAT_004c8d38;
 // 0x004c8d4c
-extern void *DAT_004c8d4c;
+extern struct Element *DAT_004c8d4c;
 // 0x004c8d50
-extern unsigned int DAT_004c8d50;
+extern struct Element *DAT_004c8d50;
 // 0x004c8d54
 extern struct Sprite *LogFlumeEntranceLayer;
 // 0x004c8d68
@@ -1415,7 +1397,7 @@ extern struct Sprite *LogFlumeFc3M2Sprite;
 // 0x004cbe0c
 extern struct Sprite *LogFlumeFc3M1Sprite;
 // 0x004cbe10
-extern void *DAT_004cbe10;
+extern struct Element *DAT_004cbe10;
 // 0x004cbe14
 extern struct Sprite *LogFlumeCsaw2MSprite;
 // 0x004cbe18
@@ -1423,17 +1405,17 @@ extern struct CursorSource *DAT_004cbe18;
 // 0x004cbe1c
 extern struct Sprite *LogFlumeFc1M3Sprite;
 // 0x004cbe20
-extern unsigned int DAT_004cbe20;
+extern struct FlumeEntry *DAT_004cbe20;
 // 0x004cbe24
-extern unsigned int DAT_004cbe24;
+extern struct FlumeEntry *DAT_004cbe24;
 // 0x004cbe28
-extern unsigned int DAT_004cbe28;
+extern struct FlumeEntry *DAT_004cbe28;
 // 0x004cbe2c
-extern unsigned int DAT_004cbe2c;
+extern struct FlumeEntry *DAT_004cbe2c;
 // 0x004cbe30
 extern struct Ride *LogFlumeTrackRide;
 // 0x004cbe48
-extern void *DAT_004cbe48;
+extern struct Element *DAT_004cbe48;
 // 0x004cbe4c
 extern struct Sprite *LogFlumeEnta3MSprite;
 // 0x004cbe70
@@ -1476,20 +1458,14 @@ extern int DAT_004cbeb4;
 extern unsigned int DAT_004cbeb8;
 // 0x004cbec4
 extern struct Ride *SafariRide;
-// 0x004cbed0
-extern unsigned int DAT_004cbed0;
-// 0x004cbed4
-extern unsigned int DAT_004cbed4;
-// 0x004cbed8
-extern unsigned int DAT_004cbed8;
-// 0x004cbedc
-extern unsigned short DAT_004cbedc;
 // 0x004cbec0
 extern void *SafariOffBNV;
 // 0x004cbec8
 extern struct Sprite *SafariLayer;
 // 0x004cbecc
 extern struct RenderItemNode *DAT_004cbecc;
+// 0x004cbed0
+extern struct RideSpriteInfo DAT_004cbed0;
 // 0x004cbee8
 extern int DAT_004cbee8;
 // 0x004cbeec
@@ -1563,13 +1539,7 @@ extern void *DAT_004cbf30[2];
 // 0x004cbf38
 extern void *DAT_004cbf38[2];
 // 0x004cbf40
-extern unsigned int DAT_004cbf40;
-// 0x004cbf44
-extern unsigned int DAT_004cbf44;
-// 0x004cbf48
-extern unsigned int DAT_004cbf48;
-// 0x004cbf4c
-extern unsigned short DAT_004cbf4c;
+extern struct RideSpriteInfo DAT_004cbf40;
 // 0x004cbf58
 extern struct SpiderNode *SpiderNodeList;
 // 0x004cbf5c
@@ -1595,13 +1565,7 @@ extern unsigned int DAT_004cbf88;
 // 0x004cbf8c
 extern unsigned int DAT_004cbf8c;
 // 0x004cbf98
-extern unsigned int DAT_004cbf98;
-// 0x004cbf9c
-extern unsigned int DAT_004cbf9c;
-// 0x004cbfa0
-extern unsigned int DAT_004cbfa0;
-// 0x004cbfa4
-extern unsigned short DAT_004cbfa4;
+extern struct RideSpriteInfo DAT_004cbf98;
 // 0x004cbfb8
 extern unsigned int DAT_004cbfb8[3];
 // 0x004cbfc4
@@ -1627,15 +1591,7 @@ extern struct Element *WaterWorksImageListHandle;
 // 0x004cbfec
 extern unsigned int ElephantFountainLayer;
 // 0x004cbff0
-extern unsigned int DAT_004cbff0;
-// 0x004cbff4
-extern unsigned int DAT_004cbff4;
-// 0x004cbff8
-extern unsigned int DAT_004cbff8;
-// 0x004cbffc
-extern unsigned short DAT_004cbffc;
-// 0x004cc000
-extern unsigned int DAT_004cc000;
+extern struct RideSpriteInfo DAT_004cbff0;
 // 0x004cc008
 extern struct Ride *WaterBlockRide;
 // 0x004cc014
@@ -2040,13 +1996,7 @@ extern struct Sprite *MechHutMaskSprite;
 // 0x0062fe58
 extern struct Ride *PlaneRide;
 // 0x0062fe60
-extern unsigned int DAT_0062fe60;
-// 0x0062fe64
-extern unsigned int DAT_0062fe64;
-// 0x0062fe68
-extern unsigned int DAT_0062fe68;
-// 0x0062fe6c
-extern unsigned short DAT_0062fe6c;
+extern struct RideSpriteInfo DAT_0062fe60;
 // 0x0062fe78
 extern void *Zoomer0ffBinV;
 // 0x0062fe7c

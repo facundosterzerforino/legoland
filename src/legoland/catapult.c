@@ -475,14 +475,14 @@ void CatapultRemoveObject(struct CatapultRemoveEdit *edit, TileId key, void *cur
 unsigned int *GetCatapultSpriteInfo(struct Element *arg1, unsigned short arg2) {
     struct Ride *sprite = arg1->ride;
 
-    DAT_004c1100 = sprite->layer;
-    DAT_004c1104 = sprite->field_14;
-    DAT_004c1108 = sprite->field_18;
-    DAT_004c110c = arg2;
+    DAT_004c1100.sprite = sprite->layer;
+    DAT_004c1100.x = sprite->field_14;
+    DAT_004c1100.y = sprite->field_18;
+    DAT_004c1100.id = arg2;
 
     sprite->layer->flags |= 0x2000;
 
-    return (unsigned int *)&DAT_004c1100;
+    return (unsigned int *)(unsigned int *)&DAT_004c1100;
 }
 
 // FUNCTION: LEGOLAND 0x00403a20

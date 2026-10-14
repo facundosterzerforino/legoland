@@ -310,13 +310,13 @@ void PlaneRideAddObject(Element *a, int *p) {
 unsigned int *GetPlaneRideSpriteInfo(struct Element *param1, unsigned short param2) {
     struct Ride *block = param1->ride;
 
-    DAT_0062fe60 = (unsigned int)block->layer;
-    DAT_0062fe64 = block->field_14;
-    DAT_0062fe68 = block->field_18;
-    DAT_0062fe6c = param2;
+    DAT_0062fe60.sprite = block->layer;
+    DAT_0062fe60.x = block->field_14;
+    DAT_0062fe60.y = block->field_18;
+    DAT_0062fe60.id = param2;
     block->layer->flags |= 0x2000;
 
-    return &DAT_0062fe60;
+    return (unsigned int *)&DAT_0062fe60;
 }
 
 // FUNCTION: LEGOLAND 0x0043e050

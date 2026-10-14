@@ -201,7 +201,6 @@ void FUN_004848e0(Bloke *bloke);
 void FUN_00483d90(Bloke *bloke);
 void FUN_00484350(Bloke *bloke);
 
-struct OverTile;
 struct ActionState;
 struct BNVPerson;
 LEGO_EXPORT int NewDirForAction(Bloke *bloke, unsigned char dir);
@@ -215,7 +214,7 @@ LEGO_EXPORT int BNVPath_GetDFrame(BNVPath *path);
 LEGO_EXPORT void BNVPath_SetDFrame(Bloke *bloke, BNVPath *path, int frame);
 Point GetOffsetInDir(unsigned char dir, short dist);
 LEGO_EXPORT Point GetTileInDir(Point pos, unsigned char dir);
-LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
+LEGO_EXPORT int OverNewTile(Bloke *bloke, unsigned int x, unsigned int y);
 void ResetPathUpdateTimer(void);
 void UpdatePathLinks(int force);
 int FUN_00482b60(Point *pos);

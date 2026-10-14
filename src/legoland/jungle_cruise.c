@@ -1748,7 +1748,7 @@ int JungleCruise_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x00436130
-void FUN_00436130(unsigned short param_1, unsigned int param_2) {
+void FUN_00436130(unsigned short param_1, int param_2) {
     struct JungleScore *node = JungleScoreList;
     while (node != NULL) {
         if (node->tile.id == param_1) {

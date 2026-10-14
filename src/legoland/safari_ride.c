@@ -273,12 +273,12 @@ void SafariAddObject(struct Element *uid, struct SafariBasicObject *a1) {
 // FUNCTION: LEGOLAND 0x00414ff0
 unsigned int *GetSafariRideSpriteInfo(struct Element *p1, unsigned short arg2) {
     struct Ride *pB = p1->ride;
-    DAT_004cbed0 = (unsigned int)pB->layer;
-    DAT_004cbed4 = pB->field_14;
-    DAT_004cbed8 = pB->field_18;
-    DAT_004cbedc = arg2;
+    DAT_004cbed0.sprite = pB->layer;
+    DAT_004cbed0.x = pB->field_14;
+    DAT_004cbed0.y = pB->field_18;
+    DAT_004cbed0.id = arg2;
     pB->layer->flags |= 0x2000;
-    return &DAT_004cbed0;
+    return (unsigned int *)&DAT_004cbed0;
 }
 
 // FUNCTION: LEGOLAND 0x00415030

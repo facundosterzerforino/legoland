@@ -3659,7 +3659,7 @@ L420e5f:
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420e90
-__declspec(naked) unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsigned int e) {
+__declspec(naked) unsigned int FUN_00420e90(struct LmsFile *a, struct LmsRec *b, void *c, void *d, unsigned int e) {
     __asm {
         push ebp
         mov ebp, esp

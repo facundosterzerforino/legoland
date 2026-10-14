@@ -28,7 +28,7 @@ struct CopterItem {
 
 struct CopterSub {
     unsigned char pad_0[0x50];
-    int field_50;
+    struct QueueTable *field_50; /* the queue table; its index in a save */
 };
 
 // Same object as CopterNode, viewed with the two id bytes split apart.
@@ -179,7 +179,7 @@ struct CopterNode *CoptersFindNode(struct CopterSource *src) {
 // FUNCTION: LEGOLAND 0x00403d30
 int CoptersQueueTableToIndex(struct CopterItem *item) {
     struct CopterSub *sub = item->field_8;
-    int *ptr = &CopterQueueTables[0];
+    struct QueueTable **ptr = &CopterQueueTables[0];
     int index = 0;
 
     while (1) {
@@ -188,24 +188,24 @@ int CoptersQueueTableToIndex(struct CopterItem *item) {
         }
         ptr++;
         index++;
-        if ((int)ptr < (int)&CopterModelSprites) {
+        if ((INT_PTR)ptr < (INT_PTR)&CopterModelSprites) {
             continue;
         }
         index = -1;
         break;
     }
 
-    sub->field_50 = index;
+    sub->field_50 = (struct QueueTable *)(INT_PTR)index;
     return index;
 }
 
 // FUNCTION: LEGOLAND 0x00403d60
 void CoptersIndexToQueueTable(struct CopterItem *item) {
     struct CopterSub *sub = item->field_8;
-    int index = sub->field_50;
+    int index = (int)(INT_PTR)sub->field_50;
 
     if (index < 0 || index >= 6) {
-        sub->field_50 = 0;
+        sub->field_50 = NULL;
     } else {
         sub->field_50 = CopterQueueTables[index];
     }
@@ -243,7 +243,7 @@ void CoptersLoad(struct Element *param_1) {
 
 // FUNCTION: LEGOLAND 0x00403e90
 void CoptersInitNode(struct CopterNode *node) {
-    unsigned int handle;
+    struct Sprite *handle;
     struct LLS *lls;
     char frame;
 
@@ -481,10 +481,10 @@ void CoptersSetEditMode(void) {
 unsigned int *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) {
     struct Ride *ride = editobj->ride;
 
-    DAT_004c1170 = (int)ride->layer;
-    DAT_004c1174 = ride->field_14;
-    DAT_004c1178 = ride->field_18;
-    DAT_004c117c = uid;
+    DAT_004c1170.sprite = ride->layer;
+    DAT_004c1170.x = ride->field_14;
+    DAT_004c1170.y = ride->field_18;
+    DAT_004c1170.id = uid;
     ride->layer->flags |= 0x2000;
 
     if (CoptersFindNode((struct CopterSource *)&uid) != 0) {
@@ -500,7 +500,7 @@ unsigned int *GetCoptersSpriteInfo(struct Element *editobj, unsigned short uid) 
         HideLayer(CopterModelLayers, 4);
     }
 
-    return (unsigned int *)&DAT_004c1170;
+    return (unsigned int *)(unsigned int *)&DAT_004c1170;
 }
 
 // FUNCTION: LEGOLAND 0x00404580
@@ -775,8 +775,8 @@ void CoptersUpdate(struct Element *elem) {
     struct RideNode *node;
     TileId *tile;
     struct RideNode *cur;
-    int spr;
-    int spr2;
+    struct QueueTable *spr;
+    struct QueueTable *spr2;
     int qi;
 
     CoptersUpdateNodes();
