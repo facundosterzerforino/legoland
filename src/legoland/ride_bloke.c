@@ -142,14 +142,6 @@ struct PairArg {
     unsigned int var_4;
 };
 
-struct TileInfo {
-    unsigned char pad_0[0x14];
-    unsigned char var_14;
-    unsigned char pad_15[0x1c - 0x15];
-    unsigned char var_1c;
-    unsigned char var_1d;
-};
-
 struct BlokeSprite {
     unsigned char pad_0[8];
     unsigned int var_8;
@@ -888,20 +880,20 @@ int FUN_00402390(unsigned char *param_1) {
 
 // FUNCTION: LEGOLAND 0x00402430
 int FUN_00402430(struct PairArg *a, struct PairArg *b) {
-    struct TileInfo *p1 = FindQueueEntryAtTile(a->var_0, a->var_4);
-    struct TileInfo *p2 = FindQueueEntryAtTile(b->var_0, b->var_4);
+    struct RideQueueEntry *p1 = FindQueueEntryAtTile(a->var_0, a->var_4);
+    struct RideQueueEntry *p2 = FindQueueEntryAtTile(b->var_0, b->var_4);
 
     if (p2 != p1) {
         if (p1 != 0) {
-            if ((p1->var_14 & 0x10) && p1->var_1c == 0 && p1->var_1d != 0) {
+            if ((p1->field_14 & 0x10) && p1->field_1c == 0 && p1->field_1d != 0) {
                 return 0;
             }
 
-            if (p2 != 0 && p2->var_1c != 0) {
-                p2->var_1c--;
+            if (p2 != 0 && p2->field_1c != 0) {
+                p2->field_1c--;
             }
 
-            p1->var_1c++;
+            p1->field_1c++;
         }
     }
 
@@ -1152,7 +1144,7 @@ void FUN_00402780(struct NewBloke *b) {
 void FUN_00402c10(void) {
     struct DrivingBloke *cur = (struct DrivingBloke *)DAT_004c10d4;
     struct DrivingBloke *next;
-    struct TileInfo *tile;
+    struct RideQueueEntry *tile;
 
     while (cur != 0) {
         next = cur->next;
@@ -1164,12 +1156,12 @@ void FUN_00402c10(void) {
             cur->field_c0--;
         }
 
-        tile = (struct TileInfo *)FindQueueEntryAtTile(cur->px, cur->py);
+        tile = (struct RideQueueEntry *)FindQueueEntryAtTile(cur->px, cur->py);
 
         if ((tile == 0 && cur->field_c2 == 0) || cur->field_be == 0) {
             FUN_00401c60((struct RideBloke *)cur);
             if (tile != 0) {
-                tile->var_1c--;
+                tile->field_1c--;
             }
         } else {
             FUN_00402780((struct NewBloke *)cur);

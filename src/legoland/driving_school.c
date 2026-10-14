@@ -594,7 +594,7 @@ int DrivingSchool_Save(struct Element *element) {
     queue = DAT_004cbeac;
     SaveGameWrite(&count, 4);
     while (count--) {
-        SaveGameWrite(queue, 0x20);
+        SaveGameWrite(queue, sizeof(struct RideQueueEntry));
         queue = queue->next;
     }
 
@@ -689,14 +689,14 @@ int DrivingSchool_Load(struct Element *element) {
     SaveGameRead(&count, 4);
     while (count--) {
         if (queuePrev == NULL) {
-            DAT_004cbeac = (struct RideQueueEntry *)malloc(0x20);
+            DAT_004cbeac = (struct RideQueueEntry *)malloc(sizeof(struct RideQueueEntry));
             queuePrev = DAT_004cbeac;
         } else {
-            queueNode = (struct RideQueueEntry *)malloc(0x20);
+            queueNode = (struct RideQueueEntry *)malloc(sizeof(struct RideQueueEntry));
             queuePrev->next = queueNode;
             queuePrev = queueNode;
         }
-        SaveGameRead(queuePrev, 0x20);
+        SaveGameRead(queuePrev, sizeof(struct RideQueueEntry));
     }
 
     PumpList = NULL;
