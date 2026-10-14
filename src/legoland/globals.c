@@ -916,7 +916,7 @@ int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
 unsigned int DAT_004b9f88;
 
 // GLOBAL: LEGOLAND 0x004b9f8c
-const char *DAT_004b9f8c;
+const char *DAT_004b9f8c = (const char *)-1; /* no tooltip shown yet */
 
 // GLOBAL: LEGOLAND 0x004ba87c
 void *PTR_some_list_head_004ba87c;
