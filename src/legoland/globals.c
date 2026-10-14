@@ -412,7 +412,7 @@ struct Footprint DAT_004b53c0;
 unsigned char DAT_004b53d4[0x190];
 
 // GLOBAL: LEGOLAND 0x004b5570
-unsigned int DAT_004b5570[5] = {0, 0, 2, 2, 0};
+struct AreaNode DAT_004b5570;
 
 // GLOBAL: LEGOLAND 0x004b5584
 short DAT_004b5584[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
@@ -516,16 +516,16 @@ unsigned int DAT_004b5cc8;
 char RollerCoasterSavePath[32] = "RollerCoaster\\RollerCoaster.sav";
 
 // GLOBAL: LEGOLAND 0x004b5d20
-const unsigned char DAT_004b5d20[1];
+struct PieceClass DAT_004b5d20;
 
 // GLOBAL: LEGOLAND 0x004b5d58
-const unsigned char DAT_004b5d58[1];
+struct PieceClass DAT_004b5d58;
 
 // GLOBAL: LEGOLAND 0x004b5d90
-const unsigned char DAT_004b5d90[1];
+struct PieceClass DAT_004b5d90;
 
 // GLOBAL: LEGOLAND 0x004b5dc8
-const unsigned char DAT_004b5dc8[1];
+struct PieceClass DAT_004b5dc8;
 
 // GLOBAL: LEGOLAND 0x004b5df0
 unsigned int DAT_004b5df0[4] = {0x427ff0, 0x427f70, 1, 0};
@@ -5375,7 +5375,7 @@ float DAT_00829a60;
 unsigned int DAT_00829a64;
 
 // GLOBAL: LEGOLAND 0x00829a80
-struct EditFootPrint DAT_00829a80;
+struct Footprint DAT_00829a80;
 
 // GLOBAL: LEGOLAND 0x00829abc
 struct Element *DAT_00829abc;
@@ -5389,19 +5389,19 @@ struct CastleState DAT_00829ae0;
 struct PieceClass DAT_004b5b48;
 
 // GLOBAL: LEGOLAND 0x00829bf8
-unsigned int DAT_00829bf8;
+struct Ride *DAT_00829bf8;
 
 // GLOBAL: LEGOLAND 0x00829bfc
 unsigned int DAT_00829bfc;
 
 // GLOBAL: LEGOLAND 0x00829c00
-int DAT_00829c00;
+struct Element *DAT_00829c00;
 
 // GLOBAL: LEGOLAND 0x00829c04
 struct Sprite *CastleMatteSprite;
 
 // GLOBAL: LEGOLAND 0x00829c08
-unsigned int DAT_00829c08;
+struct Ride *DAT_00829c08;
 
 // GLOBAL: LEGOLAND 0x00829c34
 int DAT_00829c34;

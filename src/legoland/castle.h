@@ -4,6 +4,8 @@
 
 struct PathSeg;
 struct CastleObj;
+struct AreaNode;
+struct Cursor;
 
 /* a piece's opening: the direction mask and where it is relative to the piece */
 struct PieceDoor {
@@ -44,7 +46,7 @@ struct PieceHead {
         };
         unsigned int xy; /* both coordinates at once, as a search key */
     };
-    /* 0x08 */ struct SprShape *shape;
+    /* 0x08 */ struct Ride *ride;
     /* 0x0c */ struct PieceClass *cls;
     /* 0x10 */ struct CastleState *owner;
     /* 0x14 */ union {
@@ -65,11 +67,6 @@ struct PieceHead {
     };
 };
 
-struct SprShape {
-    /* 0x00 */ unsigned char pad_0[0x3c];
-    /* 0x3c */ int rect[4];
-};
-
 struct Vec12 {
     unsigned int v[3];
 };
@@ -84,8 +81,7 @@ struct SegBlob {
 /* a castle piece (0xa4 bytes) */
 struct PathSeg {
     struct PieceHead; /* MS extension: the header's fields are the piece's own */
-    /* 0x2c */ int rect[4];
-    /* 0x3c */ int f3c;
+    /* 0x2c */ struct Footprint fp; /* the piece's link of the castle cursor's footprint chain */
     /* 0x40 */ union {
         struct Vec12 vec;
         struct {
@@ -95,6 +91,14 @@ struct PathSeg {
         };
     };
     /* 0x4c */ struct SegBlob blob;
+};
+
+struct AreaNode {
+    int x;
+    int y;
+    int w;
+    int h;
+    struct AreaNode *next;
 };
 
 struct DirPoints {
@@ -185,7 +189,7 @@ float lego_invsqrtf(float x);
 float Vec3Dot(struct FVec3 *param_1, struct FVec3 *param_2);
 void DrawDottedLine(void *a, void *b, short c);
 void PlotClippedPoints(int *points, int count, short c);
-void FUN_00423ec0(char *param1);
+void FUN_00423ec0(struct CastleState *castle);
 void FUN_004292f0(struct FVec3 *pos, struct FVec3 *basis);
 struct PathSeg;
 unsigned int FUN_00429990(struct PathSeg *n, struct PathSeg **out);
@@ -202,7 +206,7 @@ struct Slot *FUN_0041e760(struct SlotHost *host);
 unsigned int FUN_0041e790(struct SlotHost *host);
 void *FUN_0041eb30(unsigned int arg);
 void FUN_0041eb60(unsigned int param_1);
-void FUN_0041ed90(unsigned int param1, unsigned int param2);
+void FUN_0041ed90(struct Element *element, int *pos);
 
 unsigned int FUN_0041d1d0(struct PathSeg *obj, struct PieceDoor *door, struct DirPoints *pts);
 float FUN_0041e7e0(unsigned char *obj);
@@ -214,7 +218,7 @@ void FUN_0041e950(struct ObjAtC8 *obj);
 void FUN_0041e970(int param_1);
 void FUN_0041e990(unsigned char *obj);
 unsigned int FUN_0041eaf0(unsigned int a, unsigned int b);
-unsigned int FUN_0041ee40(unsigned int a, unsigned int b);
+unsigned int FUN_0041ee40(short *pos, struct AreaNode *area);
 void FUN_0041ea70(unsigned int a);
 void FUN_0042a680(unsigned char *p);
 unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsigned int e);
@@ -250,7 +254,7 @@ struct Struct42a110;
 void FindPathPosAtRangeBehind(float *center, float r, struct Struct42a110 *src, float hi, float x, struct Struct42a110 *dst, float *out);
 float CurveArcLength(struct Struct42a110 *a, unsigned int hi, struct Struct42a110 *b, unsigned int lo, int idx, float c);
 void FUN_0041e7f0(unsigned char *obj, unsigned int *out);
-int FUN_004298a0(struct PieceClass *info, struct CastleState *owner, unsigned int *a, unsigned int *b);
+int FUN_004298a0(struct PieceClass *info, struct CastleState *owner, struct PathSeg **a, struct PathSeg **b);
 struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
 void FUN_00429750(struct PathSeg *seg, struct PathSeg *end);
 void FUN_00424e60(struct CastleState *owner);
@@ -263,11 +267,11 @@ void FUN_00429a30(struct PathSeg *n);
 int FUN_0041d350(struct PieceClass *info, short *pos, struct SprEnt *ent);
 int FUN_0041d2e0(struct PieceClass *info, short *pos, struct SprEnt *ent);
 int FUN_0041d210(short *pos, struct SprEnt *ent, struct PieceClass *info);
-void FUN_0041edb0(unsigned int param1, TileId param2, unsigned int param3);
-void FUN_0041d760(unsigned char *obj);
+void FUN_0041edb0(struct Element *element, TileId tile, struct Cursor *cursor);
+void FUN_0041d760(struct PathSeg *obj);
 float FUN_0041dca0(unsigned char *param);
 void FUN_0041db90(unsigned char *obj, float *a, float *b);
-struct PathSeg *FUN_0041d100(struct CastleState *host, unsigned int key, short *pt);
+struct PathSeg *FUN_0041d100(struct CastleState *host, struct Ride *ride, short *pt);
 void FUN_0041e9e0(unsigned char *obj, float *out);
 void FUN_0041ef20(int a, int b, int c, int d);
 void FUN_0041f380(const int *r, struct PlaneSet *out);
@@ -328,21 +332,20 @@ void FUN_00428f00(void);
 void FUN_00429270(void);
 float FUN_0042a150(unsigned int b);
 void FUN_004294b0(void);
-unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
+unsigned int FUN_00429910(struct PieceClass *s, unsigned int v, unsigned int c);
 unsigned int FUN_00429940(struct PathSeg *n, struct PathSeg **out);
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
 
 void CastleGetInterfaces(struct ClassNode *head, struct CallbackTable *iface);
 struct Element;
-struct Struct427940;
 struct Struct427970Src;
 struct Struct427bc0Src;
 struct CastleRideObj;
 int CastleObj_Load(void);
 int CastleObj_Save(void);
 void SquareTrackCalcCursor(struct Element *obj, int x, unsigned int y);
-unsigned int FUN_00427c00(unsigned int key);
-void FUN_00427940(struct Struct427940 *param_1);
+struct PieceClass *FUN_00427c00(struct Element *element);
+void FUN_00427940(struct Element *param_1);
 void FUN_00427970(struct Element *obj, const struct Struct427970Src *src);
 void FUN_004279f0(void);
 void RenderSquareTrack(unsigned int unused0, unsigned int unused1, unsigned int unused2, const unsigned char *src);
@@ -352,9 +355,9 @@ void FUN_00427b20(struct Element *obj, int x, unsigned int y);
 void FUN_00427bc0(unsigned int unused, const struct Struct427bc0Src *src);
 void FUN_00427c90(struct Element *obj, int x, unsigned int y);
 void FUN_00427ea0(struct Element *obj, const struct Struct427bc0Src *src);
-void SquareTrackHeightLoad(struct CastleRideObj *param_1);
-void SquareTrackHeight0Load(struct CastleRideObj *param_1);
-void SquareTrackHeightPathLoad(struct CastleRideObj *param_1);
+void SquareTrackHeightLoad(struct Element *param_1);
+void SquareTrackHeight0Load(struct Element *param_1);
+void SquareTrackHeightPathLoad(struct Element *param_1);
 void FUN_004280b0(struct Element *obj, int x, unsigned int y);
 void FUN_00428300(struct Element *obj, const struct Struct427bc0Src *src);
 void FUN_00425e20(void);
