@@ -170,7 +170,7 @@ void FUN_0046d3c0(struct IconNode *node) {
     if (FocussedIconPtr == node) {
         FocussedIconPtr = NULL;
     }
-    if (Hover.type == 2 && Hover.ptr == (unsigned int)node) {
+    if (Hover.type == 2 && Hover.ptr == (struct Bloke *)node) {
         Hover.ptr = 0;
         Hover.type = 0x100;
     }

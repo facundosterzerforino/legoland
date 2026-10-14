@@ -159,9 +159,9 @@ void JoustRemoveObject(Element *editObj, TileId coords, struct Cursor *cursor) {
 // FUNCTION: LEGOLAND 0x00407b50
 void JoustLoadResources(struct Element *root) {
     Load_FXList(JOUST_SFX, 1);
-    JoustRide = (unsigned int)root->ride;
+    JoustRide = root->ride;
     ((struct Ride *)JoustRide)->flags |= 0x420;
-    JoustLayer = (unsigned int)((struct Ride *)JoustRide)->layer;
+    JoustLayer = ((struct Ride *)JoustRide)->layer;
     ((struct Sprite *)JoustLayer)->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b46f4
     JoustFMaskSprite = LoadSprite("Joust_fmask.lls", 1);

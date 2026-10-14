@@ -1241,13 +1241,13 @@ struct RenderItemNode *GoldRushBlokeRenderList;
 struct Sprite *ZJoustSprite;
 
 // GLOBAL: LEGOLAND 0x004c1214
-unsigned int JoustLayer;
+struct Sprite *JoustLayer;
 
 // GLOBAL: LEGOLAND 0x004c1218
 void *JoustRideBnv;
 
 // GLOBAL: LEGOLAND 0x004c121c
-unsigned int JoustRide;
+struct Ride *JoustRide;
 
 // GLOBAL: LEGOLAND 0x004c1228
 struct RideSpriteInfo DAT_004c1228;
@@ -2183,13 +2183,13 @@ struct BrollyNode *DAT_00616144;
 struct SaveBlock *SaveBlockList;
 
 // GLOBAL: LEGOLAND 0x0061614c
-unsigned int HedgeImagesData;
+struct SpriteSet *HedgeImagesData;
 
 // GLOBAL: LEGOLAND 0x00616150
 struct Element *FlowerImagesHandle;
 
 // GLOBAL: LEGOLAND 0x00616158
-unsigned int FlowerImagesData;
+struct SpriteSet *FlowerImagesData;
 
 // GLOBAL: LEGOLAND 0x0061615c
 struct Element *HedgeImagesHandle;

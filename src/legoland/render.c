@@ -3100,7 +3100,7 @@ void FUN_004886a0(void) {
             *slot = 0;
         }
         slot++;
-    } while ((int)slot < (int)&DAT_00798590);
+    } while ((INT_PTR)slot < (INT_PTR)&DAT_00798590);
 }
 
 // FUNCTION: LEGOLAND 0x004886e0

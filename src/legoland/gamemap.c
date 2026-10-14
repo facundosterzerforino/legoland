@@ -552,7 +552,7 @@ void FUN_0045a3e0(int *param) {
     struct MapRenderOrderEntry *entry;
     int i;
 
-    for (i = 0, entry = MapRenderOrderList; (int)&entry->x < (int)((char *)&CastleObjElem + 2); entry++, i++) {
+    for (i = 0, entry = MapRenderOrderList; (INT_PTR)&entry->x < (int)((char *)&CastleObjElem + 2); entry++, i++) {
         if (entry->flag != 0 && (unsigned int)entry->x == *param) {
             param[1] = MapRenderOrderList[i].height;
             MapRenderOrderList[i].flag = 0;
@@ -567,7 +567,7 @@ void FUN_0045a430(short param_1, int *param_2) {
     struct MapRenderOrderEntry *entry;
     int i;
 
-    for (i = 0, entry = MapRenderOrderList; (int)&entry->coords < (int)&CastleObjElem; entry++, i++) {
+    for (i = 0, entry = MapRenderOrderList; (INT_PTR)&entry->coords < (INT_PTR)&CastleObjElem; entry++, i++) {
         if (entry->flag != 0 && (short)entry->coords == param_1) {
             *param_2 = MapRenderOrderList[i].x;
             param_2[1] = MapRenderOrderList[i].height;

@@ -195,7 +195,7 @@ void LoadTutorialSprites(void) {
         e->sprite0 = LoadSprite(e->name0, 4);
         e->sprite1 = LoadSprite(e->name1, 4);
         e++;
-    } while ((int)&e->sprite0 < (int)&DAT_004bed40);
+    } while ((INT_PTR)&e->sprite0 < (INT_PTR)&DAT_004bed40);
 }
 // FUNCTION: LEGOLAND 0x0048bd40
 void FUN_0048bd40(void) {
@@ -206,7 +206,7 @@ void FUN_0048bd40(void) {
         ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
-    } while ((int)esi < (int)&DAT_004bed44);
+    } while ((INT_PTR)esi < (INT_PTR)&DAT_004bed44);
 }
 // FUNCTION: LEGOLAND 0x0048bd70
 void FUN_0048bd70(void) {
@@ -215,7 +215,7 @@ void FUN_0048bd70(void) {
     RemoveIconGroup(0x1c);
     RemoveIconGroup(0x23);
     slot = (struct FreePlaySpriteSlot *)&ProgressScreenTables.tutorials[0].sprite0;
-    while ((int)slot < (int)&DAT_004bed40) {
+    while ((INT_PTR)slot < (INT_PTR)&DAT_004bed40) {
         while (KillSprite(slot->sprite0) == 0) {
         }
         while (KillSprite(slot->sprite1) == 0) {
@@ -285,7 +285,7 @@ void FUN_0048bde0(void) {
         i++;
         mapping++;
         entry++;
-    } while ((int)mapping < (int)&DAT_007cb394);
+    } while ((INT_PTR)mapping < (INT_PTR)&DAT_007cb394);
 }
 
 // FUNCTION: LEGOLAND 0x0048bf90
@@ -386,6 +386,6 @@ void FUN_0048c100(void) {
             i++;
             entry += 7;
             mapping++;
-        } while ((int)entry < (int)&ProgressScreenTables.tail[12]);
+        } while ((INT_PTR)entry < (INT_PTR)&ProgressScreenTables.tail[12]);
     }
 }

@@ -1278,11 +1278,11 @@ extern struct RenderItemNode *GoldRushBlokeRenderList;
 // 0x004c1210
 extern struct Sprite *ZJoustSprite;
 // 0x004c1214
-extern unsigned int JoustLayer;
+extern struct Sprite *JoustLayer;
 // 0x004c1218
 extern void *JoustRideBnv;
 // 0x004c121c
-extern unsigned int JoustRide;
+extern struct Ride *JoustRide;
 // 0x004c1228
 extern struct RideSpriteInfo DAT_004c1228;
 // 0x004c123c
@@ -1910,11 +1910,11 @@ extern struct BrollyNode *DAT_00616144;
 // 0x00616148
 extern struct SaveBlock *SaveBlockList;
 // 0x0061614c
-extern unsigned int HedgeImagesData;
+extern struct SpriteSet *HedgeImagesData;
 // 0x00616150
 extern struct Element *FlowerImagesHandle;
 // 0x00616158
-extern unsigned int FlowerImagesData;
+extern struct SpriteSet *FlowerImagesData;
 // 0x0061615c
 extern struct Element *HedgeImagesHandle;
 // 0x00616164

@@ -329,7 +329,7 @@ void CoptersUnload(void) {
     }
 
     current = CopterModelSprites;
-    while ((int)current < (int)&DAT_004c1164) {
+    while ((INT_PTR)current < (INT_PTR)&DAT_004c1164) {
         if (*current != NULL) {
             KillSprite(*current);
         }

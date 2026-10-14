@@ -2210,7 +2210,7 @@ LEGO_EXPORT void SetMapFlags(int x, int y, short value) {
 }
 
 // FUNCTION: LEGOLAND 0x00461850
-LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *out) {
+LEGO_EXPORT void *GetObjectClassAndInstance(int *coords, unsigned short *out) {
     struct MapElement local;
 
     if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
@@ -2219,7 +2219,7 @@ LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *
             *out = *(unsigned short *)&local.field_4;
         }
         if ((local.flags & 0x88) != 0 && local.field_0 != 0) {
-            return (unsigned int)local.field_0->data;
+            return local.field_0->data;
         }
     }
     return 0;

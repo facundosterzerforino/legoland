@@ -272,7 +272,7 @@ int ScriptCmdHappinessEnv(char **argv, int argc) {
                 *out = atoi(*argv);
                 argv++;
                 out++;
-            } while ((int)out < (int)MapStats.mood_delta);
+            } while ((INT_PTR)out < (INT_PTR)MapStats.mood_delta);
         }
     }
     return 1;

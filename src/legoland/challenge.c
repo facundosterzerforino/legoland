@@ -995,7 +995,7 @@ void LoadAppraisalSprites(void) {
         slot[5] = LoadSprite(buffer, 4);
         slot++;
         i++;
-    } while ((int)slot < (int)AppBulletSprites);
+    } while ((INT_PTR)slot < (INT_PTR)AppBulletSprites);
     // STRING: LEGOLAND 0x004b80dc
     AppBarMarkerSprite = LoadSprite("App_barmarker.lls", 4);
     // STRING: LEGOLAND 0x004b80d0
@@ -1285,7 +1285,7 @@ void KillAppraisalSprites(void) {
     unsigned int val3;
 
     current = (unsigned int)&AppCrossSprites;
-    while ((int)current < (int)&AppBulletSprites) {
+    while ((int)current < (INT_PTR)&AppBulletSprites) {
         val1 = *(unsigned int *)(current - 0x14);
         if (val1 != 0) {
             KillSprite((struct Sprite *)val1);

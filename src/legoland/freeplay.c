@@ -271,7 +271,7 @@ LEGO_EXPORT void InitFreePlayLists(void) {
             continue;
         }
         idx = 0;
-        for (entry = DAT_004bdeb8; (int)entry < (int)&DAT_004bdeb8[0x86]; entry++, idx++) {
+        for (entry = DAT_004bdeb8; (INT_PTR)entry < (int)&DAT_004bdeb8[0x86]; entry++, idx++) {
             if (entry->id == i && LLIDB_FindElement(entry->name, &t1, 0) == 0) {
                 break;
             }
@@ -659,7 +659,7 @@ void FUN_0048b740(void) {
         ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
-    } while ((long)esi < (long)&ProgressScreenTables.levels[10].sprite1);
+    } while ((INT_PTR)esi < (INT_PTR)&ProgressScreenTables.levels[10].sprite1);
 }
 
 // FUNCTION: LEGOLAND 0x0048b770
@@ -669,7 +669,7 @@ void FUN_0048b770(void) {
     RemoveIconGroup(0x1c);
     RemoveIconGroup(0x23);
     slot = (struct FreePlaySpriteSlot *)&ProgressScreenTables.levels[0].sprite0;
-    while ((int)slot < (int)&ProgressScreenTables.levels[10].sprite0) {
+    while ((INT_PTR)slot < (INT_PTR)&ProgressScreenTables.levels[10].sprite0) {
         while (KillSprite(slot->sprite0) == 0) {
         }
         while (KillSprite(slot->sprite1) == 0) {

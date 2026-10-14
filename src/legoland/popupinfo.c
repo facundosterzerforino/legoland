@@ -1120,7 +1120,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             target = DAT_007fdec0.data.tile;
             entry_index = 0;
             for (entry = BuildObjArray;; entry++, entry_index++) {
-                if ((int)&entry->coords >= (int)&ButtonRepeatDelay) {
+                if ((INT_PTR)&entry->coords >= (INT_PTR)&ButtonRepeatDelay) {
                     return;
                 }
                 if (entry->coords.id == target.id) {
