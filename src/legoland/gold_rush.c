@@ -578,7 +578,7 @@ void GoldRushRemoveObject(struct Element *editObj, TileId coords, struct Cursor 
 }
 
 // FUNCTION: LEGOLAND 0x00407800
-LEGO_EXPORT int SaveGoldWash(void) {
+LEGO_EXPORT int SaveGoldWash(struct Element *element) {
     struct GoldNode *node;
     unsigned int one;
     unsigned int zero;
@@ -599,7 +599,7 @@ LEGO_EXPORT int SaveGoldWash(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00407870
-LEGO_EXPORT int LoadGoldWash(void) {
+LEGO_EXPORT int LoadGoldWash(struct Element *element) {
     unsigned int count;
     struct GoldNode *node;
     struct GoldNode *prev = NULL;

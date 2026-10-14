@@ -987,7 +987,7 @@ void RenderBoatingSchool(Element *obj, unsigned int param_2, unsigned int param_
 }
 
 // FUNCTION: LEGOLAND 0x0041acf0
-int BoatingSchool_Save(void) {
+int BoatingSchool_Save(struct Element *element) {
     struct BoatRideNode *score;
     struct BoatRideNode *scoreCur;
     struct PathNode *path;
@@ -1051,7 +1051,7 @@ int BoatingSchool_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041aee0
-int BoatingSchool_Load(void) {
+int BoatingSchool_Load(struct Element *element) {
     struct BoatRideNode *score;
     struct BoatRideNode *prevScore;
     struct PathNode *path;

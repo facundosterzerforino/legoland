@@ -1578,7 +1578,7 @@ void RenderJungleCruise(struct Element *param_1, unsigned int param_2, unsigned 
 }
 
 // FUNCTION: LEGOLAND 0x00435c70
-int JungleCruise_Save(void) {
+int JungleCruise_Save(struct Element *element) {
     struct JungleScore *score;
     struct JungleScore *scoreCur;
     struct JunglePath *path;
@@ -1656,7 +1656,7 @@ int JungleCruise_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00435ec0
-int JungleCruise_Load(void) {
+int JungleCruise_Load(struct Element *element) {
     struct JungleScore *score;
     struct JungleScore *prevScore;
     struct JunglePath *path;

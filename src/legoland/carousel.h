@@ -42,6 +42,6 @@ void CarouselSetEditMode();
 void CarouselRemoveObject(struct Element *param_1, TileId tile, struct Cursor *param_3);
 void CarouselAddObject(struct Element *param_1, unsigned char *param_2);
 struct RideSpriteInfo *GetCarouselSpriteInfo(struct Element *param1, unsigned short param2);
-int Carousel_Save(void);
+int Carousel_Save(struct Element *element);
 int Carousel_Load(struct Element *param_1);
 void CarouselUpdate(struct Element *param_1);

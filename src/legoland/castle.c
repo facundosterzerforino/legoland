@@ -7817,7 +7817,7 @@ struct SaveRec {
 };
 
 // FUNCTION: LEGOLAND 0x00426c20
-int CastleObj_Load(void) {
+int CastleObj_Load(struct Element *element) {
     struct SaveRec *rec = ReadSaveRec();
     void *obj;
     int i;
@@ -7848,7 +7848,7 @@ int CastleObj_Load(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00426ce0
-int CastleObj_Save(void) {
+int CastleObj_Save(struct Element *element) {
     struct Struct426d80X info;
     unsigned int zero;
     struct SaveRec *rec;

@@ -462,7 +462,7 @@ void TempleSlideUpdate(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x004178c0
-LEGO_EXPORT int SaveTempleSlide(void) {
+LEGO_EXPORT int SaveTempleSlide(struct Element *element) {
     int one = 1;
     int zero = 0;
     struct SlideNode *p;

@@ -792,7 +792,7 @@ void JailCellUpdate(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00438780
-LEGO_EXPORT unsigned int SaveJailCells(void) {
+LEGO_EXPORT int SaveJailCells(struct Element *element) {
     struct JailCell *cell = JailCellList;
     unsigned int marker = 1;
     unsigned int terminator = 0;
@@ -810,7 +810,7 @@ LEGO_EXPORT unsigned int SaveJailCells(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004387f0
-LEGO_EXPORT unsigned int LoadJailCells(void) {
+LEGO_EXPORT int LoadJailCells(struct Element *element) {
     unsigned int marker;
     struct JailCell *prev = NULL;
 

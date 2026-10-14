@@ -19,6 +19,6 @@ void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3
 struct RideSpriteInfo *GetDrivingSchoolSpriteInfo(struct Element *arg1, unsigned short arg2);
 void RenderDrivingSchool(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip);
 void DrivingSchoolUpdate(Element *obj);
-int DrivingSchool_Save(void);
+int DrivingSchool_Save(struct Element *element);
 int FUN_00406050(void);
-int DrivingSchool_Load(void);
+int DrivingSchool_Load(struct Element *element);

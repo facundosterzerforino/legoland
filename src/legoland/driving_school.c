@@ -564,7 +564,7 @@ void DrivingSchoolUpdate(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00405e70
-int DrivingSchool_Save(void) {
+int DrivingSchool_Save(struct Element *element) {
     struct CountNode *countNode;
     struct RideQueueEntry *queue;
     struct PumpNode *pump;
@@ -655,7 +655,7 @@ int FUN_00406050(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406070
-int DrivingSchool_Load(void) {
+int DrivingSchool_Load(struct Element *element) {
     struct CountNode *countPrev;
     struct CountNode *countNode;
     struct RideQueueEntry *queuePrev;

@@ -549,7 +549,7 @@ int FUN_00415760(struct RideNode *node, unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x004157b0
-LEGO_EXPORT int SaveSafariRide(void) {
+LEGO_EXPORT int SaveSafariRide(struct Element *element) {
     struct SafariNode *current = SafariNodeList;
     unsigned int value1 = 1;
     unsigned int value0 = 0;

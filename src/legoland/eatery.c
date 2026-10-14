@@ -2233,7 +2233,7 @@ void RenderOctopusCafe(struct Element *param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x004322a0
-int Restaurant1_Save(void) {
+int Restaurant1_Save(struct Element *element) {
     unsigned int one = 1;
     unsigned int zero = 0;
     struct BrollyNode *node = DAT_00616144;
@@ -2250,7 +2250,7 @@ int Restaurant1_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432310
-int Restaurant1_Load(void) {
+int Restaurant1_Load(struct Element *element) {
     unsigned int count;
     struct BrollyNode *prev = NULL;
     struct BrollyNode *node;
@@ -2280,7 +2280,7 @@ int Restaurant1_Load(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432390
-int Restaurant2_Save(void) {
+int Restaurant2_Save(struct Element *element) {
     unsigned int one = 1;
     unsigned int zero = 0;
     struct SaveBlock *node = SaveBlockList;
@@ -2297,7 +2297,7 @@ int Restaurant2_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432400
-int Restaurant2_Load(void) {
+int Restaurant2_Load(struct Element *element) {
     unsigned int count;
     struct SaveBlock *current;
     struct SaveBlock *prev = NULL;

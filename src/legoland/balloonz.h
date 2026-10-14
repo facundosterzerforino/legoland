@@ -40,5 +40,5 @@ RideSpriteInfo *GetBalloonzSpriteInfo(Element *obj, unsigned short id);
 void RenderBalloonz(Element *obj, void *param_2, void *param_3, TileId *tile, void *param_5, unsigned int param_6);
 void UnloadBalloonzResources(void);
 void BalloonzSetEditMode(void);
-unsigned int SaveBalloonNodes(void);
-unsigned int Balloonz_Load(Element *obj);
+int SaveBalloonNodes(struct Element *element);
+int Balloonz_Load(Element *obj);

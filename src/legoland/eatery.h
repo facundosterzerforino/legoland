@@ -59,7 +59,7 @@ void OctopusCafeAddObject(struct Element *param_1, struct UserFlagsArg *param_2)
 void UnloadOctopusCafeResources();
 void OctopusCafeUpdate(Element *obj);
 void RenderOctopusCafe(struct Element *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, void *param_5, unsigned int param_6);
-int Restaurant1_Save(void);
-int Restaurant1_Load(void);
-int Restaurant2_Save(void);
-int Restaurant2_Load(void);
+int Restaurant1_Save(struct Element *element);
+int Restaurant1_Load(struct Element *element);
+int Restaurant2_Save(struct Element *element);
+int Restaurant2_Load(struct Element *element);

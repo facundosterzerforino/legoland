@@ -292,7 +292,7 @@ void SpinningBarrelsRideUnload(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c620
-LEGO_EXPORT int SaveSBarrel(void) {
+LEGO_EXPORT int SaveSBarrel(struct Element *element) {
     struct BarrelNode *node = SpinningBarrelList;
     unsigned int marker = 1;
     unsigned int terminator = 0;

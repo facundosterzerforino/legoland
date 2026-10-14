@@ -90,8 +90,8 @@ void FUN_004367b0(int param_1, int param_2, unsigned short *param_3);
 void MonkeyTreeRemoveObject(void *param_1, TileId tile, struct Cursor *param_3);
 void MonkeyFishRemoveObject(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3);
-int JungleCruise_Save(void);
-int JungleCruise_Load(void);
+int JungleCruise_Save(struct Element *element);
+int JungleCruise_Load(struct Element *element);
 void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor);
 
 void LoadBrijMaskSprite(Element *obj);

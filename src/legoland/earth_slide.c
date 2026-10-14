@@ -272,7 +272,7 @@ void EarthSlideAddObject(struct Element *param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0042d2f0
-int EarthSlideRide_Save(void) {
+int EarthSlideRide_Save(struct Element *element) {
     struct EarthNode *node;
     struct EarthQueue *q;
     int count;
@@ -318,7 +318,7 @@ unsigned int CountEarthBlokeElemsUntil(struct EarthBlokeElem *param_1, struct Ea
 }
 
 // FUNCTION: LEGOLAND 0x0042d400
-int EarthSlideRide_Load(void) {
+int EarthSlideRide_Load(struct Element *element) {
     struct EarthNode *node = NULL;
     struct EarthNode *next;
     struct EarthQueue *q;

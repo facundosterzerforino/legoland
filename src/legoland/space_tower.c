@@ -646,7 +646,7 @@ void SpaceTowerRideUnload(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b5d0
-LEGO_EXPORT int SpaceTower_Save(void) {
+LEGO_EXPORT int SpaceTower_Save(struct Element *element) {
     struct SpaceTowerCar *car;
     struct SpaceTowerRideNode **field;
     struct SpaceTowerRideNode *cur;
@@ -692,7 +692,7 @@ LEGO_EXPORT int SpaceTower_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b6a0
-LEGO_EXPORT int SpaceTower_Load(void) {
+LEGO_EXPORT int SpaceTower_Load(struct Element *element) {
     struct SpaceTowerCar *node;
     struct SpaceTowerCar *prev;
     struct SpaceTowerRideNode **field;

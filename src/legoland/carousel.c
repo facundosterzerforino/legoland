@@ -215,7 +215,7 @@ struct RideSpriteInfo *GetCarouselSpriteInfo(struct Element *param1, unsigned sh
 }
 
 // FUNCTION: LEGOLAND 0x0042c590
-int Carousel_Save(void) {
+int Carousel_Save(struct Element *element) {
     struct CarouselNode *current = CarouselNodeList;
     unsigned int flag = 1;
     unsigned int terminator = 0;

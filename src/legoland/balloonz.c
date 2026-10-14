@@ -663,7 +663,7 @@ void BalloonzSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042ba80
-unsigned int SaveBalloonNodes(void) {
+int SaveBalloonNodes(struct Element *element) {
     unsigned int marker;
     unsigned int terminator;
     BalloonNode *node;
@@ -687,7 +687,7 @@ unsigned int SaveBalloonNodes(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042baf0
-unsigned int Balloonz_Load(Element *obj) {
+int Balloonz_Load(Element *obj) {
     Ride *ride = obj->ride;
     BalloonNode *node;
     BalloonNode *prev;

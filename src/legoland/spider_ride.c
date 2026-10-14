@@ -589,7 +589,7 @@ int FUN_00416830(struct SlotOwner *owner, struct SlotArray *arr, signed char cou
 }
 
 // FUNCTION: LEGOLAND 0x00416880
-LEGO_EXPORT int SaveSpider(void) {
+LEGO_EXPORT int SaveSpider(struct Element *element) {
     struct SpiderNode *node = SpiderNodeList;
     unsigned int one = 1;
     unsigned int zero = 0;

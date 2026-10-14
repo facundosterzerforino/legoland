@@ -486,7 +486,7 @@ unsigned int *GetCatapultSpriteInfo(struct Element *arg1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00403a20
-LEGO_EXPORT int Catapult_Save(void) {
+LEGO_EXPORT int Catapult_Save(struct Element *element) {
     struct CatapultSaveBuf {
         unsigned int data[15];
     };
@@ -540,7 +540,7 @@ LEGO_EXPORT int Catapult_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403af0
-LEGO_EXPORT int Catapult_Load(void) {
+LEGO_EXPORT int Catapult_Load(struct Element *element) {
     unsigned int header;
     struct CatapultLoadNode *prev = NULL;
     struct CatapultLoadNode *node;

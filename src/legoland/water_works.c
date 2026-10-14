@@ -824,7 +824,7 @@ void WaterWorksCrocodileFountainCalcCursor(struct Element *arg, int *a, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x00418aa0
-LEGO_EXPORT int Save_WaterBlock(void) {
+LEGO_EXPORT int Save_WaterBlock(struct Element *element) {
     struct WaterListItem *current;
     unsigned int one;
     unsigned int zero;
@@ -845,7 +845,7 @@ LEGO_EXPORT int Save_WaterBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418b10
-LEGO_EXPORT int Load_WaterBlock(void) {
+LEGO_EXPORT int Load_WaterBlock(struct Element *element) {
     struct WaterNode *node;
     struct WaterNode *prev;
     unsigned int count;
@@ -874,7 +874,7 @@ LEGO_EXPORT int Load_WaterBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418b90
-LEGO_EXPORT int Save_ElephantF(void) {
+LEGO_EXPORT int Save_ElephantF(struct Element *element) {
     struct WaterListItem *current;
     unsigned int one;
     unsigned int zero;
@@ -895,7 +895,7 @@ LEGO_EXPORT int Save_ElephantF(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418c00
-LEGO_EXPORT int Load_ElephantF(void) {
+LEGO_EXPORT int Load_ElephantF(struct Element *element) {
     struct WaterNode *node;
     struct WaterNode *prev;
     unsigned int count;

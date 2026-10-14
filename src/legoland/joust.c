@@ -743,7 +743,7 @@ unsigned int *GetJoustSpriteInfo(struct Element *param1, unsigned short param2) 
 }
 
 // FUNCTION: LEGOLAND 0x00408c90
-LEGO_EXPORT int SaveJoust(void) {
+LEGO_EXPORT int SaveJoust(struct Element *element) {
     struct JoustNode *current = JoustNodeList;
     unsigned int flag = 1;
     unsigned int terminator = 0;

@@ -917,7 +917,7 @@ unsigned int CoptersFindChainIndex(struct CopterChainNode *node, struct CopterSo
 }
 
 // FUNCTION: LEGOLAND 0x00404f60
-LEGO_EXPORT int Copters_Save(void) {
+LEGO_EXPORT int Copters_Save(struct Element *element) {
     struct CopterNode *node;
     struct RideNode *cur;
     struct RideNode *rider;
@@ -964,7 +964,7 @@ LEGO_EXPORT int Copters_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00405050
-LEGO_EXPORT int Copters_Load(void) {
+LEGO_EXPORT int Copters_Load(struct Element *element) {
     int count;
     struct CopterLoadNode *prev = NULL;
     struct CopterLoadNode *node;

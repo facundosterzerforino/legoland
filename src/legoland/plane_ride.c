@@ -340,7 +340,7 @@ unsigned int FUN_0043e050(struct RideNode *rn, struct PlaneRideNode *node, signe
 }
 
 // FUNCTION: LEGOLAND 0x0043e0a0
-LEGO_EXPORT int SaveZoomer(void) {
+LEGO_EXPORT int SaveZoomer(struct Element *element) {
     struct PlaneRideNode *current = PlaneRideNodeList;
     unsigned int flag = 1;
     unsigned int terminator = 0;

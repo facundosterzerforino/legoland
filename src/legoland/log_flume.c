@@ -5343,7 +5343,7 @@ int FUN_00410910(struct FlumeEntry *entry) {
 }
 
 // FUNCTION: LEGOLAND 0x00410930
-int LogFlumeEntrance_Save(void) {
+int LogFlumeEntrance_Save(struct Element *element) {
     struct FlumeEntry *entry = FlumeEntryList;
     int marker = 1;
     int end = 0;
@@ -5465,7 +5465,7 @@ void FUN_00410bb0(void *arg0, struct FlumeNode *arg1) {
 }
 
 // FUNCTION: LEGOLAND 0x00410c10
-int LogFlumeEntrance_Load(void) {
+int LogFlumeEntrance_Load(struct Element *element) {
     struct FlumeEntry *cur = NULL;
     struct FlumeNode *head;
     struct Queue queue;
