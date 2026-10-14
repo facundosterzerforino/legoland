@@ -112,7 +112,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     icon->string = GetString(0x26);
     icon->flags |= 0x6002;
     icon->event_handler = (void *)FUN_0048fb80;
-    DAT_006687c0 = (unsigned int)FUN_0048fb80;
+    DAT_006687c0 = FUN_0048fb80;
 
     // STRING: LEGOLAND 0x004bea70
     icon = LoadSpriteIcon("Accept_On_FreePlay.lls", 4, 0x1e4, 0x14b, 7);
@@ -120,7 +120,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     icon->string = GetString(0x32);
     icon->flags |= 0x6002;
     icon->event_handler = (void *)FUN_0048ac60;
-    DAT_006687bc = (unsigned int)FUN_0048ac60;
+    DAT_006687bc = FUN_0048ac60;
     icon->flags |= 0x400;
     DAT_0079864c = icon;
 
@@ -503,7 +503,7 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
         list = list->next;
         y += 0x42;
     } while (list != NULL);
-    AddFullScreenIcon((void *)(a + 6));
+    AddFullScreenIcon(a + 6);
     group->field_14 = b;
     group->content_bottom = y;
     icon = FindIcon(a + 4);

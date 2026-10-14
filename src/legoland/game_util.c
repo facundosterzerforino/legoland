@@ -279,17 +279,19 @@ int ScriptCmdHappinessEnv(char **argv, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00478d30
-int ScriptCmdLookAt(int param_1, int param_2) {
+int ScriptCmdLookAt(struct CommandArgs *param_1, int param_2) {
     int local[2];
     char **args;
     int a;
     int b;
+    int w;
+    int h;
 
     if (ScriptConditionActive == 0) {
         return 1;
     }
     args = (char **)param_1;
-    if (FUN_004786c0((int)args, param_2, 5, 2) == 0) {
+    if (FUN_004786c0(args, param_2, 5, 2) == 0) {
         return 0;
     }
     ParseIntPair(local, args, 1);
@@ -298,9 +300,9 @@ int ScriptCmdLookAt(int param_1, int param_2) {
     if (DAT_00669054 == 1) {
         b = local[1];
         a = local[0];
-        GetTileDimensions(&param_2, &param_1);
-        local[0] = ((a - b) * param_2) >> 9;
-        local[1] = ((a + b) * param_1) >> 9;
+        GetTileDimensions(&w, &h);
+        local[0] = ((a - b) * w) >> 9;
+        local[1] = ((a + b) * h) >> 9;
         ScrollX = (local[0] - (lpConfig->screen_width >> 1)) << 8;
         ScrollY = (local[1] - (lpConfig->screen_height >> 1)) << 8;
         return 1;

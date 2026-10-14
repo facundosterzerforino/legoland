@@ -2657,10 +2657,10 @@ int MapWorldWidth;
 int MapCenterOffsetY;
 
 // GLOBAL: LEGOLAND 0x00667c10
-unsigned int DAT_00667c10;
+void *DAT_00667c10;
 
 // GLOBAL: LEGOLAND 0x00667c28
-unsigned int DAT_00667c28;
+void *DAT_00667c28;
 
 // GLOBAL: LEGOLAND 0x00667c2c
 struct Sprite *FullMapSprite;
@@ -3014,10 +3014,10 @@ unsigned int DAT_006687b0;
 unsigned int DAT_006687b4;
 
 // GLOBAL: LEGOLAND 0x006687bc
-unsigned int DAT_006687bc;
+void *DAT_006687bc;
 
 // GLOBAL: LEGOLAND 0x006687c0
-unsigned int DAT_006687c0;
+void *DAT_006687c0;
 
 // GLOBAL: LEGOLAND 0x006687c8
 struct IconNode *IconListHead;
@@ -3287,13 +3287,13 @@ struct Sprite *ScriptEndSprite;
 unsigned int DAT_00668ea4;
 
 // GLOBAL: LEGOLAND 0x00668eb0
-unsigned int SelectedThemeIcon;
+struct IconNode *SelectedThemeIcon;
 
 // GLOBAL: LEGOLAND 0x00668eb4
 unsigned int DAT_00668eb4;
 
 // GLOBAL: LEGOLAND 0x00668eb8
-unsigned int ScriptEndIcon;
+struct IconNode *ScriptEndIcon;
 
 // GLOBAL: LEGOLAND 0x00668ebc
 unsigned int DAT_00668ebc;
@@ -3308,7 +3308,7 @@ struct InterfaceResearchNode *ResearchList;
 int DAT_00668ee0;
 
 // GLOBAL: LEGOLAND 0x00668ee8
-unsigned int AviAcmStreamHeader[0x15];
+struct AcmHeader AviAcmStreamHeader;
 
 // GLOBAL: LEGOLAND 0x00668f3c
 unsigned int AviSoundBytesPerFrame;
@@ -3722,10 +3722,10 @@ unsigned int NewProfilePopUpShown;
 unsigned int DAT_007986f0;
 
 // GLOBAL: LEGOLAND 0x007986f4
-unsigned int DAT_007986f4;
+void *DAT_007986f4;
 
 // GLOBAL: LEGOLAND 0x007986f8
-unsigned int DAT_007986f8;
+void *DAT_007986f8;
 
 // GLOBAL: LEGOLAND 0x00798700
 unsigned int DAT_00798700;
@@ -3773,10 +3773,10 @@ void *SavedGameList;
 int DAT_00798738;
 
 // GLOBAL: LEGOLAND 0x0079873c
-unsigned int DAT_0079873c;
+void *DAT_0079873c;
 
 // GLOBAL: LEGOLAND 0x00798740
-unsigned int DAT_00798740;
+void *DAT_00798740;
 
 // GLOBAL: LEGOLAND 0x00798748
 struct IconNode *SpeechVolumeMarkerIcon;
