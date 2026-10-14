@@ -1711,15 +1711,15 @@ extern unsigned int DAT_004d89b4[4];
 // 0x004d89c4
 extern void *DAT_004d89c4;
 // 0x004d89c8
-extern unsigned int LtxFileTable[30];
+extern void *LtxFileTable[30];
 // 0x004d8a40
-extern unsigned int LmsFileTable[31];
+extern struct LmsFile *LmsFileTable[31];
 // 0x004d8abc
-extern unsigned int LfmFileTable[30];
+extern struct LmsRec *LfmFileTable[30];
 // 0x004d8b34
 extern unsigned int LfmFileSizes[30];
 // 0x004d8bac
-extern unsigned int RollercoasterLpt;
+extern int *RollercoasterLpt;
 // 0x004d8bb0
 extern char DAT_004d8bb0[0x100];
 // 0x004dcbb8
@@ -1738,7 +1738,7 @@ extern void *DAT_004dd5e0[24];
 /* A text file read whole: its bytes and their count (CountTextLines and FindLineStart read both through the
  * address). */
 struct CoasterTextFile {
-    unsigned int data;
+    unsigned char *data;
     unsigned int size;
 };
 extern struct CoasterTextFile CoasterTxtFile;
@@ -1829,7 +1829,7 @@ extern unsigned int DAT_00615f6c;
 // 0x00615f70
 extern unsigned int DAT_00615f70[4];
 // 0x00615f84
-extern void *DAT_00615f84;
+extern struct CurveWalker *DAT_00615f84;
 extern int DAT_00615fc4;
 extern int DAT_00615fc8;
 extern int DAT_00615fcc;
@@ -1843,7 +1843,7 @@ extern int DAT_00615fec;
 extern float *DAT_00615f8c;
 extern int (*DAT_004b63fc)(float (*fn)(unsigned int), float lo, float hi, float *out);
 
-extern void *DAT_00615f80;
+extern struct CurveWalker *DAT_00615f80;
 extern int DAT_00615ff0;
 extern float DAT_00615ff4;
 extern struct CastleFloatEnt DAT_004b5f80[3][4];
@@ -1857,9 +1857,9 @@ extern float DAT_00615fd4;
 // 0x00615f98
 extern unsigned int DAT_00615f98;
 // 0x00616000
-extern unsigned int CoasterTrainWheelLms;
+extern struct LmsFile *CoasterTrainWheelLms;
 // 0x00616004
-extern unsigned int CoasterTrainWheelLfm;
+extern struct LmsRec *CoasterTrainWheelLfm;
 // 0x00616010
 extern struct BinVFile *BalloonzBinV;
 // 0x00616018
@@ -4105,11 +4105,11 @@ extern struct DispatchRow CastleDispatchTable[6];
 // 0x0082adb0
 extern struct Element *DAT_0082adb0[6];
 // 0x0082add0
-extern unsigned int CoasterTrainCarLms[3];
+extern struct LmsFile *CoasterTrainCarLms[3];
 // 0x0082ade0
-extern unsigned int CoasterTrainCarLfm[3];
+extern struct LmsRec *CoasterTrainCarLfm[3];
 // 0x0082adec
-extern unsigned int DAT_0082adec;
+extern struct PathSeg *DAT_0082adec;
 // 0x0082adf0
 extern struct Ride *BoatingSchoolWaterRide;
 // 0x0082adf4

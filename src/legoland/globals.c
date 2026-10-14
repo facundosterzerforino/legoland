@@ -1877,19 +1877,19 @@ unsigned int DAT_004d89b4[4];
 void *DAT_004d89c4;
 
 // GLOBAL: LEGOLAND 0x004d89c8
-unsigned int LtxFileTable[30];
+void *LtxFileTable[30];
 
 // GLOBAL: LEGOLAND 0x004d8a40
-unsigned int LmsFileTable[31];
+struct LmsFile *LmsFileTable[31];
 
 // GLOBAL: LEGOLAND 0x004d8abc
-unsigned int LfmFileTable[30];
+struct LmsRec *LfmFileTable[30];
 
 // GLOBAL: LEGOLAND 0x004d8b34
 unsigned int LfmFileSizes[30];
 
 // GLOBAL: LEGOLAND 0x004d8bac
-unsigned int RollercoasterLpt;
+int *RollercoasterLpt;
 
 // GLOBAL: LEGOLAND 0x004d8bb0
 char DAT_004d8bb0[0x100];
@@ -2039,7 +2039,7 @@ unsigned int DAT_00615f6c;
 unsigned int DAT_00615f70[4];
 
 // GLOBAL: LEGOLAND 0x00615f80
-void *DAT_00615f80;
+struct CurveWalker *DAT_00615f80;
 
 // GLOBAL: LEGOLAND 0x00615ff0
 int DAT_00615ff0;
@@ -2093,7 +2093,7 @@ float *DAT_00615f8c;
 int (*DAT_004b63fc)(float (*fn)(unsigned int), float lo, float hi, float *out);
 
 // GLOBAL: LEGOLAND 0x00615f84
-void *DAT_00615f84;
+struct CurveWalker *DAT_00615f84;
 
 // GLOBAL: LEGOLAND 0x00615f90
 int DAT_00615f90;
@@ -2105,10 +2105,10 @@ float DAT_00615fd4;
 unsigned int DAT_00615f98;
 
 // GLOBAL: LEGOLAND 0x00616000
-unsigned int CoasterTrainWheelLms;
+struct LmsFile *CoasterTrainWheelLms;
 
 // GLOBAL: LEGOLAND 0x00616004
-unsigned int CoasterTrainWheelLfm;
+struct LmsRec *CoasterTrainWheelLfm;
 
 // GLOBAL: LEGOLAND 0x00616010
 struct BinVFile *BalloonzBinV;
@@ -5419,13 +5419,13 @@ struct DispatchRow CastleDispatchTable[6];
 struct Element *DAT_0082adb0[6];
 
 // GLOBAL: LEGOLAND 0x0082add0
-unsigned int CoasterTrainCarLms[3]; /* head, mid, tail; indexed by car type */
+struct LmsFile *CoasterTrainCarLms[3]; /* head, mid, tail; indexed by car type */
 
 // GLOBAL: LEGOLAND 0x0082ade0
-unsigned int CoasterTrainCarLfm[3]; /* head, mid, tail; indexed by car type */
+struct LmsRec *CoasterTrainCarLfm[3]; /* head, mid, tail; indexed by car type */
 
 // GLOBAL: LEGOLAND 0x0082adec
-unsigned int DAT_0082adec;
+struct PathSeg *DAT_0082adec;
 
 // GLOBAL: LEGOLAND 0x0082adf0
 struct Ride *BoatingSchoolWaterRide;
