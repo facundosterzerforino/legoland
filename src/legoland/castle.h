@@ -463,7 +463,7 @@ unsigned int FUN_00429910(struct PieceClass *s, unsigned int v, unsigned int c);
 unsigned int FUN_00429940(struct PathSeg *n, struct PathSeg **out);
 unsigned int FUN_0042a640(struct TrainWheel *ptr, unsigned int a, float *b);
 
-void CastleGetInterfaces(struct ClassNode *head, struct CallbackTable *iface);
+void CastleGetInterfaces(struct ClassNode *head, struct Ride *iface);
 struct Element;
 struct Struct427970Src;
 struct Struct427bc0Src;

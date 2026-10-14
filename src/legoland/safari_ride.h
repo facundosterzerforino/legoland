@@ -19,7 +19,7 @@ struct SafariLoadArg;
 
 void *FUN_00414a80(struct SafariKey *key);
 void FUN_00414b10(struct SafariNode *node);
-void SafariRideGetInterfaces(struct ClassNode *name, struct CallbackTable *interfaces);
+void SafariRideGetInterfaces(struct ClassNode *name, struct Ride *interfaces);
 void SafariRideUpdate(struct Element *obj);
 int FUN_00415760(struct SafariListEntry *node, unsigned short *key);
 struct SafariSample;

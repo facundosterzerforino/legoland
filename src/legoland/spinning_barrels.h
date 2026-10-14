@@ -1,6 +1,5 @@
 #pragma once
 
-struct CallbackTable;
 struct ClassNode;
 struct Element;
 struct RideNode;
@@ -27,4 +26,4 @@ void FUN_0043c2f0(struct BarrelNode *node);
 void SpinningBarrelsUpdate(struct Element *elem);
 unsigned int PickBarrelSeat(struct RideNode *rn, struct BarrelNode *node, signed char n);
 
-void SpinningBarrelsGetInterfaces(struct ClassNode *str, struct CallbackTable *ride);
+void SpinningBarrelsGetInterfaces(struct ClassNode *str, struct Ride *ride);

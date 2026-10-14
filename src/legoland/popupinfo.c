@@ -871,7 +871,7 @@ int FUN_004723f0(void) {
     unsigned int local_8[2];
     struct Cursor local_cursor;
     void *saved_class;
-    struct ObjClass *cls;
+    struct Ride *cls;
     unsigned int v;
 
     saved_class = QueryClass;
@@ -879,11 +879,11 @@ int FUN_004723f0(void) {
     memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
     local_8[0] = v & 0xff;
     local_8[1] = v >> 8;
-    cls = *(struct ObjClass **)((char *)DAT_007fdec0.ptr + 0xc);
+    cls = *(struct Ride **)((char *)DAT_007fdec0.ptr + 0xc);
     QueryCursor.tile_y = v >> 8;
     QueryClass = cls;
     QueryCursor.tile_x = v & 0xff;
-    cls->method_94(cls->element, local_8);
+    cls->cb_94(cls->element, local_8);
     BuildCursorPtr(&QueryCursor, 0, 0);
     result = IsCursorBuildable(&QueryCursor);
     memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
@@ -1264,7 +1264,7 @@ unsigned char PopUpOkEventHandler(void *param_1, unsigned char flags) {
     unsigned int local_8[2];
     struct Cursor local_cursor;
     void *saved_class;
-    struct ObjClass *cls;
+    struct Ride *cls;
     unsigned int v;
 
     SetPopUpOkCloseIconSprites();
@@ -1275,13 +1275,13 @@ unsigned char PopUpOkEventHandler(void *param_1, unsigned char flags) {
         memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
         local_8[0] = v & 0xff;
         local_8[1] = v >> 8;
-        cls = *(struct ObjClass **)((char *)DAT_007fdec0.ptr + 0xc);
+        cls = *(struct Ride **)((char *)DAT_007fdec0.ptr + 0xc);
         QueryCursor.tile_y = local_8[1];
         QueryObj.pos.y = (unsigned char)local_8[1];
         QueryClass = cls;
         QueryCursor.tile_x = local_8[0];
         QueryObj.pos.x = (unsigned char)local_8[0];
-        cls->method_94(cls->element, local_8);
+        cls->cb_94(cls->element, local_8);
         BuildCursorPtr(&QueryCursor, 0, 0);
         if ((int)IsCursorBuildable(&QueryCursor) != 0) {
             ClearPathUnderFootprint(QueryClass, local_8);

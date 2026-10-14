@@ -209,14 +209,14 @@ struct RideSpriteInfo *GetFlowerSpriteInfo(int unused, TileId tile) {
 }
 
 // FUNCTION: LEGOLAND 0x004329c0
-void GardenGetInterfaces(struct ClassNode *head, struct CallbackTable *iface) {
+void GardenGetInterfaces(struct ClassNode *head, struct Ride *iface) {
     // STRING: LEGOLAND 0x004b7138
     if (strcmp(head->name, "HEDGE") == 0) {
         iface->cb_a4 = LoadHedgeImages;
         iface->cb_8c = FUN_004324d0;
         iface->cb_98 = HedgeAddObject;
         iface->cb_9c = HedgeRemoveObject;
-        iface->cb_a0 = GetHedgeSpriteInfo;
+        iface->cb_sprite = GetHedgeSpriteInfo;
         iface->cb_ac = UnloadHedgeImages;
         return;
     }
@@ -225,7 +225,7 @@ void GardenGetInterfaces(struct ClassNode *head, struct CallbackTable *iface) {
         iface->cb_a4 = LoadFlowerImages;
         iface->cb_8c = FlowersSetEditMode;
         iface->cb_98 = FlowersAddObject;
-        iface->cb_a0 = GetFlowerSpriteInfo;
+        iface->cb_sprite = GetFlowerSpriteInfo;
         iface->cb_ac = UnloadFlowerImages;
     }
 }

@@ -6733,7 +6733,7 @@ void CastleObjUpdate(Element *obj) {
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004254d0
-void CastleGetInterfaces(struct ClassNode *head, struct CallbackTable *obj) {
+void CastleGetInterfaces(struct ClassNode *head, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b5c0c
     if (_stricmp("CASTLE OBJ", head->name) == 0) {
         obj->cb_8c = CastleDispatchSetEditMode;
@@ -6743,10 +6743,10 @@ void CastleGetInterfaces(struct ClassNode *head, struct CallbackTable *obj) {
         obj->cb_9c = CastleDispatchRemoveObject;
         obj->cb_a4 = CastleObjLoad;
         obj->cb_ac = CastleObjUnload;
-        obj->cb_a8 = CastleObjUpdate;
+        obj->cb_pre_render = CastleObjUpdate;
         obj->cb_b0 = RenderCastleObj;
-        obj->cb_bc = CastleObj_Save;
-        obj->cb_b8 = CastleObj_Load;
+        obj->save_hook = CastleObj_Save;
+        obj->load_hook = CastleObj_Load;
         obj->cb_c0 = FUN_004246e0;
         CastleDispatchTable[0].element = head;
         CastleDispatchTable[0].fn_4 = (void (*)())FUN_00424240;

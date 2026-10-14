@@ -859,14 +859,14 @@ void RemoveObjectAndBlokes(struct ShopRideObject *obj, TileId tile, void *param_
 }
 
 // FUNCTION: LEGOLAND 0x0043a400
-void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
+void ShopsGetInterfaces(struct ClassNode *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b75fc
     if (_stricmp("GENERAL STORE", name->name) == 0) {
         ci->cb_a4 = LoadGStoreMatteSpritesAndMoneySFX;
         ci->cb_ac = KillGStoreMatteSpritesAndMoneySFX;
         ci->cb_8c = GeneralStoreSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = GeneralStoreUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = GeneralStoreUpdate;
         ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = RenderGeneralStore;
         return;
@@ -876,8 +876,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = LoadSherifshutMatteSpriteAndMoneySFX;
         ci->cb_ac = KillSherifshutMatteSpriteAndMoneySFX;
         ci->cb_8c = SheriffSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = SheriffUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = SheriffUpdate;
         ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = RenderSheriff;
         return;
@@ -887,13 +887,13 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = JailCellLoad;
         ci->cb_ac = JailCellUnload;
         ci->cb_8c = JailCellSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = JailCellUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = JailCellUpdate;
         ci->cb_98 = JailCellAddObject;
         ci->cb_9c = JailCellRemoveObject;
         ci->cb_b0 = RenderJailCell;
-        ci->cb_b8 = LoadJailCells;
-        ci->cb_bc = SaveJailCells;
+        ci->load_hook = LoadJailCells;
+        ci->save_hook = SaveJailCells;
         return;
     }
     // STRING: LEGOLAND 0x004b75e0
@@ -901,8 +901,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = LoadBankMatteSpriteAndMoneySFX;
         ci->cb_ac = KillBankMatteSpriteAndMoneySFX;
         ci->cb_8c = BankSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = BankUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = BankUpdate;
         ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = RenderBank;
         return;
@@ -912,8 +912,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = LoadSaloonMatteSpritesAndMoneySFX;
         ci->cb_ac = KillSaloonMatteSpritesAndMoneySFX;
         ci->cb_8c = SaloonSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = SaloonUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = SaloonUpdate;
         ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = RenderSaloon;
         return;
@@ -923,8 +923,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = LoadExplorersInstituteMatteSpriteAndMoneySFX;
         ci->cb_ac = UnloadExplorersInstituteMatteSpriteAndMoneySFX;
         ci->cb_8c = ExplorersInstituteSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = ExplorersInstituteUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = ExplorersInstituteUpdate;
         ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = RenderExplorersInstitute;
         return;
@@ -936,8 +936,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_9c = LegoShop1RemoveObject;
         ci->cb_ac = UnloadLegoShop1MatteSpriteAndMoneySFX;
         ci->cb_8c = LegoShop1SetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = LegoShop1Update;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = LegoShop1Update;
         ci->cb_b0 = RenderLegoShop1;
         return;
     }
@@ -946,8 +946,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = LoadLegoShop2MatteSpriteAndMoneySFX;
         ci->cb_ac = UnloadLegoShop2MatteSpriteAndMoneySFX;
         ci->cb_8c = LegoShop2SetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = LegoShop2Update;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = LegoShop2Update;
         ci->cb_9c = RemoveObjectAndBlokes;
         ci->cb_b0 = RenderLegoShop2;
         return;
@@ -959,8 +959,8 @@ void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_9c = LegoMediaShopRemoveObject;
         ci->cb_ac = UnloadLegMediaShopMaskSpritesAndMoneySFX;
         ci->cb_8c = LegoMediaShopSetEditMode;
-        ci->cb_a0 = GetShopSpriteInfo;
-        ci->cb_a8 = LegoMediaShopUpdate;
+        ci->cb_sprite = GetShopSpriteInfo;
+        ci->cb_pre_render = LegoMediaShopUpdate;
         ci->cb_b0 = RenderLegoMediaShop;
     }
 }

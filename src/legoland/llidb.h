@@ -28,7 +28,7 @@ struct Element {
     /* 0x0c */ union {
         void *data;
         struct Ride *ride;
-        struct MapObject *obj; /* map_object.c's view of the class */
+        struct Ride *obj; /* the class, as map_object.c names it */
     };
     /* 0x10 */ unsigned int field_10;
 };

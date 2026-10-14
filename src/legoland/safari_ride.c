@@ -316,19 +316,19 @@ unsigned int *GetSafariRideSpriteInfo(struct SafariRoot *p1, unsigned short arg2
 }
 
 // FUNCTION: LEGOLAND 0x00415030
-void SafariRideGetInterfaces(struct ClassNode *name, struct CallbackTable *interfaces) {
+void SafariRideGetInterfaces(struct ClassNode *name, struct Ride *interfaces) {
     // STRING: LEGOLAND 0x004b4d74
     if (_stricmp("SAFARI RIDE", name->name) == 0) {
         interfaces->cb_a4 = SafariRideLoad;
         interfaces->cb_ac = SafariRideUnload;
         interfaces->cb_8c = SafariSetEditMode;
-        interfaces->cb_a8 = SafariRideUpdate;
+        interfaces->cb_pre_render = SafariRideUpdate;
         interfaces->cb_b0 = RenderSafari;
         interfaces->cb_9c = SafariRemoveObject;
         interfaces->cb_98 = SafariAddObject;
-        interfaces->cb_a0 = GetSafariRideSpriteInfo;
-        interfaces->cb_bc = SaveSafariRide;
-        interfaces->cb_b8 = LoadSafariRide;
+        interfaces->cb_sprite = GetSafariRideSpriteInfo;
+        interfaces->save_hook = SaveSafariRide;
+        interfaces->load_hook = LoadSafariRide;
     }
 }
 

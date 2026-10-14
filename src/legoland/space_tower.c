@@ -742,19 +742,19 @@ LEGO_EXPORT int SpaceTower_Load(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b780
-void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
+void SpaceTowerRide(struct ClassNode *name, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b789c
     if (_stricmp("SPACE TOWER RIDE", name->name) == 0) {
         obj->cb_a4 = SpaceTowerRideLoad;
         obj->cb_8c = SpaceTowerSetEditMode;
-        obj->cb_a8 = SpaceTowerUpdate;
-        obj->cb_a0 = GetSpaceTowerRideSpriteInfo;
+        obj->cb_pre_render = SpaceTowerUpdate;
+        obj->cb_sprite = GetSpaceTowerRideSpriteInfo;
         obj->cb_b0 = RenderSpaceTower;
         obj->cb_9c = SpaceTowerRemoveObject;
         obj->cb_98 = SpaceTowerAddObject;
         obj->cb_ac = SpaceTowerRideUnload;
-        obj->cb_bc = SpaceTower_Save;
-        obj->cb_b8 = SpaceTower_Load;
+        obj->save_hook = SpaceTower_Save;
+        obj->load_hook = SpaceTower_Load;
     }
 }
 

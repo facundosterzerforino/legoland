@@ -13,7 +13,7 @@
 #include "tilemap.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
-LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) {
+LEGO_EXPORT int AddObjectToBuildList(struct Ride *obj, TileId coords) {
     int i;
 
     if (BuildObjCount >= 256) {
@@ -75,10 +75,10 @@ LEGO_EXPORT void ProcessBuildingTimes(void) {
             BuildObjArray[i].elapsed++;
             if (BuildObjArray[i].elapsed >= GetBuildTime(BuildObjArray[i].ride)) {
                 BuildObjCount--;
-                ObjectIsBuilt((struct ObjClass *)BuildObjArray[i].ride, BuildObjArray[i].coords);
+                ObjectIsBuilt((struct Ride *)BuildObjArray[i].ride, BuildObjArray[i].coords);
                 BuildObjArray[i].ride = NULL;
             } else {
-                ObjectIsBuilding((struct ObjClass *)BuildObjArray[i].ride, BuildObjArray[i].coords);
+                ObjectIsBuilding((struct Ride *)BuildObjArray[i].ride, BuildObjArray[i].coords);
             }
         }
     }

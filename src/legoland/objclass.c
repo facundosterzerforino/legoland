@@ -70,14 +70,6 @@ struct RideStats {
     /* 0x38 */ short rating;
 };
 
-struct FootprintNode {
-    /* 0x00 */ int x_min;
-    /* 0x04 */ unsigned char pad_4[4];
-    /* 0x08 */ int x_max;
-    /* 0x0c */ unsigned char pad_c[4];
-    /* 0x10 */ struct FootprintNode *next;
-};
-
 struct ClassObjNode {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ int field_c;
@@ -277,7 +269,7 @@ LEGO_EXPORT void BasicObjectDCalcCursor(struct Element *param_1, struct Point *p
 }
 
 // FUNCTION: LEGOLAND 0x00480cd0
-LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table) {
+LEGO_EXPORT void SetStandardCallbacks(struct Ride *table) {
     table->cb_8c = FUN_00480b70;
     table->cb_90 = CalcBasicObjectCursor;
     table->cb_94 = BasicObjectDCalcCursor;
@@ -406,14 +398,14 @@ LEGO_EXPORT int GetBlokeCounter(struct Ride *cls, int index) {
 
 // FUNCTION: LEGOLAND 0x00480f00
 LEGO_EXPORT int LoadObjectLibrary(void *object, const char *name) {
-    struct CallbackTable *obj;
+    struct Ride *obj;
     struct LibraryNode *node;
     struct LibraryNode *staging;
     int results[14];
     char fname[256];
     char path[260];
 
-    obj = (struct CallbackTable *)object;
+    obj = (struct Ride *)object;
     _splitpath(name, 0, 0, fname, 0);
     NewObjectPtr = &DAT_007fd610;
     // STRING: LEGOLAND 0x004bcea4
@@ -445,7 +437,7 @@ LEGO_EXPORT int LoadObjectLibrary(void *object, const char *name) {
     node = ObjectLibraryHead;
 loaded:
     memset(results, 0, sizeof(results));
-    node->init(obj->context, results);
+    node->init(obj->element, results);
     if (results[0] != 0) {
         obj->cb_8c = (RideCallback)results[0];
     }
@@ -462,10 +454,10 @@ loaded:
         obj->cb_9c = (RideCallback)results[4];
     }
     if (results[5] != 0) {
-        obj->cb_a0 = (RidePtrCallback)results[5];
+        obj->cb_sprite = (RidePtrCallback)results[5];
     }
     if (results[6] != 0) {
-        obj->cb_a8 = (RideCallback)results[6];
+        obj->cb_pre_render = (RideCallback)results[6];
     }
     if (results[8] != 0) {
         obj->cb_ac = (RideCallback)results[8];
@@ -474,24 +466,24 @@ loaded:
         obj->cb_c0 = (RideIntCallback)results[13];
     }
     obj->cb_b4 = (RideCallback)results[10];
-    obj->cb_b8 = (RideIntCallback)results[11];
-    obj->cb_bc = (RideIntCallback)results[12];
+    obj->load_hook = (RideIntCallback)results[11];
+    obj->save_hook = (RideIntCallback)results[12];
     if (results[9] != 0) {
         obj->cb_b0 = (RideCallback)results[9];
     }
     if (results[7] != 0) {
-        ((void (*)(void *))results[7])(obj->context);
+        ((void (*)(void *))results[7])(obj->element);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x004810f0
 LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
-    struct CallbackTable *obj;
+    struct Ride *obj;
     struct LibraryNode *node;
     struct LibraryNode *prev;
 
-    obj = (struct CallbackTable *)object;
+    obj = (struct Ride *)object;
     if (obj->library->refcount == 0) {
         return;
     }
@@ -550,7 +542,7 @@ LEGO_EXPORT void BuildObjInfoList(void) {
     struct MapElement *origin;
     struct ObjClassInfo *cls;
     struct InfoNode *node;
-    struct FootprintNode *fp;
+    struct Footprint *fp;
     struct ClassObjNode *obj;
     TileId tile;
     struct Point pos;
@@ -604,11 +596,11 @@ LEGO_EXPORT void BuildObjInfoList(void) {
                 }
                 origin->flags |= 0x400;
             }
-            fp = (struct FootprintNode *)&cls->footprint_base;
-            while (pos.x < fp->x_min + at.x || pos.x > fp->x_max + at.x) {
+            fp = (struct Footprint *)&cls->footprint_base;
+            while (pos.x < fp->x0 + at.x || pos.x > fp->x1 + at.x) {
                 fp = fp->next;
             }
-            pos.x = fp->x_max + at.x;
+            pos.x = fp->x1 + at.x;
             best = cls->field_48;
             for (obj = cls->objlist; obj != NULL; obj = obj->next) {
                 if (obj->field_c > best) {

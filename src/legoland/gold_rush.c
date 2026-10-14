@@ -655,17 +655,17 @@ LEGO_EXPORT int LoadGoldWash(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004078f0
-void GoldRush_GetInterfaces(struct ClassNode *str, struct CallbackTable *module) {
+void GoldRush_GetInterfaces(struct ClassNode *str, struct Ride *module) {
     // STRING: LEGOLAND 0x004b4670
     if (_stricmp("GOLD RUSH", str->name) == 0) {
         module->cb_a4 = GoldRushLoad;
         module->cb_ac = GoldRushUnload;
         module->cb_8c = GoldRushSetEditMode;
-        module->cb_a8 = GoldRushUpdate;
+        module->cb_pre_render = GoldRushUpdate;
         module->cb_b0 = RenderGoldRush;
         module->cb_98 = GoldRushAddObject;
         module->cb_9c = GoldRushRemoveObject;
-        module->cb_b8 = LoadGoldWash;
-        module->cb_bc = SaveGoldWash;
+        module->load_hook = LoadGoldWash;
+        module->save_hook = SaveGoldWash;
     }
 }

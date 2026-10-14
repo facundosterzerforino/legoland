@@ -916,7 +916,7 @@ int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
 unsigned int DAT_004b9f88;
 
 // GLOBAL: LEGOLAND 0x004b9f8c
-unsigned int DAT_004b9f8c;
+const char *DAT_004b9f8c;
 
 // GLOBAL: LEGOLAND 0x004ba87c
 void *PTR_some_list_head_004ba87c;
@@ -2780,7 +2780,7 @@ int DAT_00667c4c;
 LEGO_EXPORT TileId QueryObj;
 
 // GLOBAL: LEGOLAND 0x00667c58
-LEGO_EXPORT struct ObjClass *QueryClass;
+LEGO_EXPORT struct Ride *QueryClass;
 
 // GLOBAL: LEGOLAND 0x00667c5c
 unsigned int DAT_00667c5c;

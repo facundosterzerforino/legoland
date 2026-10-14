@@ -178,7 +178,7 @@ void FUN_00452030(void) {
 
 // FUNCTION: LEGOLAND 0x00452390
 void FUN_00452390(void) {
-    struct ObjClass *cls;
+    struct Ride *cls;
 
     if (EditMode.unk0 == 2 && QueryClass != NULL) {
         cls = QueryClass;

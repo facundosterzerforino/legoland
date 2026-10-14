@@ -953,7 +953,7 @@ LEGO_EXPORT int Load_ElephantF(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418c80
-void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
+void WaterWorksGetInterfaces(struct ClassNode *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b50f4
     if (_stricmp("WATER WORKS ENTRANCE", name->name) == 0) {
         ci->cb_a4 = WaterWorksEntranceLoad;
@@ -967,13 +967,13 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_a4 = WaterBlockLoad;
         ci->cb_98 = WaterBlockAddObject;
         ci->cb_9c = WaterBlockRemoveObject;
-        ci->cb_a8 = WaterWorksWaterBlockUpdate;
+        ci->cb_pre_render = WaterWorksWaterBlockUpdate;
         ci->cb_ac = WaterBlockUnload;
-        ci->cb_a0 = GetWaterWorksWaterBlockSpriteInfo;
+        ci->cb_sprite = GetWaterWorksWaterBlockSpriteInfo;
         ci->cb_b0 = RenderWaterBlock;
         ci->cb_90 = WaterWorksWaterBlockCalcCursor;
-        ci->cb_bc = Save_WaterBlock;
-        ci->cb_b8 = Load_WaterBlock;
+        ci->save_hook = Save_WaterBlock;
+        ci->load_hook = Load_WaterBlock;
         return;
     }
     // STRING: LEGOLAND 0x004b50c8
@@ -982,9 +982,9 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_98 = ShowerAddObject;
         ci->cb_9c = ShowerRemoveObject;
         ci->cb_ac = ShowerUnload;
-        ci->cb_a0 = GetWaterWorksShowerSpriteInfo;
+        ci->cb_sprite = GetWaterWorksShowerSpriteInfo;
         ci->cb_b0 = RenderShower;
-        ci->cb_a8 = WaterWorksShowerUpdate;
+        ci->cb_pre_render = WaterWorksShowerUpdate;
         ci->cb_90 = WaterWorksShowerCalcCursor;
         return;
     }
@@ -995,10 +995,10 @@ void WaterWorksGetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
         ci->cb_9c = ElephantFountainRemoveObject;
         ci->cb_ac = ElephantFountainUnload;
         ci->cb_b0 = RenderWaterWorksElephantFountain;
-        ci->cb_a8 = WaterWorksElephantFountainUpdate;
+        ci->cb_pre_render = WaterWorksElephantFountainUpdate;
         ci->cb_90 = WaterWorksElephantFountainCalcCursor;
-        ci->cb_bc = Save_ElephantF;
-        ci->cb_b8 = Load_ElephantF;
+        ci->save_hook = Save_ElephantF;
+        ci->load_hook = Load_ElephantF;
         return;
     }
     // STRING: LEGOLAND 0x004b5088

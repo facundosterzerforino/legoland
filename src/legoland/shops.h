@@ -3,8 +3,7 @@
 #include "legoland.h"
 
 struct ClassNode;
-struct CallbackTable;
 
-void ShopsGetInterfaces(struct ClassNode *name, struct CallbackTable *ci);
+void ShopsGetInterfaces(struct ClassNode *name, struct Ride *ci);
 
 void LegoShop2Update(struct Element *obj);

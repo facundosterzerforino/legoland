@@ -467,19 +467,19 @@ LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e220
-void PlaneRide_GetInterfaces(struct ClassNode *name, struct CallbackTable *iface) {
+void PlaneRide_GetInterfaces(struct ClassNode *name, struct Ride *iface) {
     // STRING: LEGOLAND 0x004b7a6c
     if (_stricmp("PLANE RIDE", name->name) == 0) {
         iface->cb_a4 = PlaneRideLoad;
         iface->cb_ac = PlaneRideUnload;
         iface->cb_8c = PlaneRideSetEditMode;
-        iface->cb_a8 = PlaneRideUpdate;
+        iface->cb_pre_render = PlaneRideUpdate;
         iface->cb_b0 = RenderPlaneRide;
         iface->cb_9c = PlaneRideRemoveObject;
         iface->cb_98 = PlaneRideAddObject;
-        iface->cb_a0 = GetPlaneRideSpriteInfo;
-        iface->cb_b8 = LoadZoomer;
-        iface->cb_bc = SaveZoomer;
+        iface->cb_sprite = GetPlaneRideSpriteInfo;
+        iface->load_hook = LoadZoomer;
+        iface->save_hook = SaveZoomer;
     }
 }
 

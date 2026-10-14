@@ -204,13 +204,13 @@ void TempleRemoveObject(Element *a1, TileId tile, struct Cursor *a3) {
 }
 
 // FUNCTION: LEGOLAND 0x00416e50
-void Temple_GetInterfaces(struct ClassNode *str, struct CallbackTable *obj) {
+void Temple_GetInterfaces(struct ClassNode *str, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b4ef0
     if (_stricmp("TEMPLE", str->name) == 0) {
         obj->cb_a4 = LoadTempleMatteSprites;
         obj->cb_ac = KillTempleMatteSprites;
         obj->cb_8c = TempleSetEditMode;
-        obj->cb_a8 = TempleUpdate;
+        obj->cb_pre_render = TempleUpdate;
         obj->cb_b0 = RenderTemple;
         obj->cb_9c = TempleRemoveObject;
         obj->cb_98 = TempleAddObject;

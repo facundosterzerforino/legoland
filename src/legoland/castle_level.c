@@ -181,7 +181,7 @@ void CastleLevelAddObject(struct Element *param1, int *param2) {
 }
 
 // FUNCTION: LEGOLAND 0x00403080
-void CastleLevel1_GetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
+void CastleLevel1_GetInterfaces(struct ClassNode *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b408c
     if (_stricmp("CASTLE LEVEL 1", name->name) == 0) {
         ci->cb_a4 = LoadCastleLevelMatteSprite;
@@ -189,7 +189,7 @@ void CastleLevel1_GetInterfaces(struct ClassNode *name, struct CallbackTable *ci
         ci->cb_8c = CastleLevelSetEditMode;
         ci->cb_98 = CastleLevelAddObject;
         ci->cb_9c = CastleLevelRemoveObject;
-        ci->cb_a8 = CastleLevel1Update;
+        ci->cb_pre_render = CastleLevel1Update;
         ci->cb_b0 = RenderCastleLevel;
     }
 }

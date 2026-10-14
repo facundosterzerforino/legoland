@@ -607,18 +607,18 @@ LEGO_EXPORT int Catapult_Load(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403bb0
-void Catapult_GetInterfaces(struct ClassNode *name, struct CallbackTable *ci) {
+void Catapult_GetInterfaces(struct ClassNode *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b412c
     if (_stricmp("CATAPULT", name->name) == 0) {
         ci->cb_a4 = LoadCatapultResources;
         ci->cb_ac = CatapultFreeNodesAndKillSfx;
         ci->cb_8c = CatapultSetEditMode;
-        ci->cb_a8 = CatapultUpdate;
+        ci->cb_pre_render = CatapultUpdate;
         ci->cb_b0 = RenderCatapult;
         ci->cb_9c = CatapultRemoveObject;
         ci->cb_98 = CatapultAddObject;
-        ci->cb_a0 = GetCatapultSpriteInfo;
-        ci->cb_bc = Catapult_Save;
-        ci->cb_b8 = Catapult_Load;
+        ci->cb_sprite = GetCatapultSpriteInfo;
+        ci->save_hook = Catapult_Save;
+        ci->load_hook = Catapult_Load;
     }
 }

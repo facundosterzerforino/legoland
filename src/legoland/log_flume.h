@@ -1,6 +1,5 @@
 #pragma once
 
-struct CallbackTable;
 struct ClassNode;
 struct FlumeEntry;
 struct FlumeDims;
@@ -26,7 +25,7 @@ struct Point FUN_0040cfd0(struct FlumeEntry *entry);
 
 int FUN_004119c0(Element *obj, int filter);
 
-void LogFlume_GetInterfaces(struct ClassNode *flume, struct CallbackTable *vtbl);
+void LogFlume_GetInterfaces(struct ClassNode *flume, struct Ride *vtbl);
 
 struct Cursor;
 void FUN_0040d520(struct FlumeEntry **list, struct Cursor *first);
