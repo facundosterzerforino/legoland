@@ -985,16 +985,9 @@ struct Cursor *FUN_0045f540(struct Cursor *cursor) {
     return &PathCursor;
 }
 
-struct CursorPts {
-    /* 0x0000 */ unsigned short count;
-    /* 0x0002 */ unsigned short xpts[0x400];
-    /* 0x0802 */ unsigned short ypts[0x400];
-    /* 0x1002 */ unsigned char fpts[0x400];
-};
-
 // FUNCTION: LEGOLAND 0x0045f5f0
 LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int param_3) {
-    struct CursorPts *pts;
+    struct Cursor *pts;
     struct Sprite *sprite;
     short size;
     int fbits;
@@ -1013,7 +1006,7 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
         }
         sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
         size = sprite->height;
-        pts = (struct CursorPts *)cursor;
+        pts = (struct Cursor *)cursor;
         pts->count = 0;
         built = IsCursorBuildable(cursor);
         flag = (built != 0) + 1;
@@ -1365,7 +1358,7 @@ void FUN_0045fca0(struct VideoArg *surface, int dir, int px, int py, unsigned ch
 
 // FUNCTION: LEGOLAND 0x0045ff00
 LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
-    struct CursorPts *pts;
+    struct Cursor *pts;
     struct Footprint *nextp;
     struct Footprint rect;
     struct MapElement *tile;
@@ -1423,7 +1416,7 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     if (GetVideoSurface(&surf) == 0) {
         return;
     }
-    pts = (struct CursorPts *)cursor;
+    pts = (struct Cursor *)cursor;
     size = ((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height;
     for (i = 0; i < (int)pts->count; i++) {
         GetTileBounds((struct Point *)&cursor->tile_x, screen);
