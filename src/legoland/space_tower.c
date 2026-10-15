@@ -516,7 +516,7 @@ void SpaceTowerRemoveObject(struct Element *param_1, TileId tile, struct Cursor 
         RemoveSpaceTowerCar(node);
     }
     StandardRemoveObject(param_1, tile, param_3);
-    RemoveAllBlokesFromRide(*(struct Ride **)((char *)param_1 + 0xc), tile);
+    RemoveAllBlokesFromRide(param_1->ride, tile);
     FUN_0043aa50(&tile.pos.x);
 }
 
