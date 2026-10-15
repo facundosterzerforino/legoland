@@ -224,16 +224,6 @@ struct FlumeBytes {
     unsigned char b4;
 };
 
-struct FlumeCounter {
-    unsigned char pad_0[0x60];
-    unsigned char count;
-};
-
-struct FlumeStatHolder {
-    unsigned char pad_0[8];
-    struct FlumeCounter *counter;
-};
-
 struct FlumeQueueItem {
     unsigned char pad_0[8];
     struct FlumeSlot *slot;
@@ -1827,7 +1817,7 @@ void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int dr
             struct RideNode *node;
 
             PrintSprite(spriteB, p.x + q.x, p.y + q.y, 0, 0);
-            node = (struct RideNode *)slot->busy;
+            node = slot->busy;
             if (node != NULL && (node->rider->flags & 0x80)) {
                 struct Person *person = node->person;
 
@@ -1839,7 +1829,7 @@ void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int dr
                     AdjustBlokePosition(&bp);
                     SetPersonPosition(person, bp.x + q.x, bp.y + q.y);
                     SetPersonDirection(person, FUN_004092b0((struct FlumeHolder *)slot));
-                    IP_RenderBlokeIn3DNow(((struct RideNode *)slot->busy)->rider);
+                    IP_RenderBlokeIn3DNow((slot->busy)->rider);
                 }
             }
         }
@@ -2222,7 +2212,7 @@ void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
                         }
                         if (slot->owner == set->field_c->parent8) {
                             if (slot->busy != NULL) {
-                                slot->busy->counter->count++;
+                                slot->busy->rider->param_action++;
                                 slot->busy = NULL;
                                 slot->timer = 0x32;
                                 slot->flags &= ~1;
@@ -2246,7 +2236,7 @@ void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
                                 slot->owner = slot->owner->parent8;
                                 if (slot->owner == set->field_c->parent8) {
                                     if (slot->busy != NULL) {
-                                        slot->busy->counter->count++;
+                                        slot->busy->rider->param_action++;
                                         slot->busy = NULL;
                                         slot->timer = 0x32;
                                         slot->flags &= ~1;
@@ -2274,7 +2264,7 @@ void FUN_0040bd40(struct FlumeSlotSet *set, int index) {
         if (slot->flags & 1) {
             if (slot->owner == set->field_c) {
                 if (slot->busy != NULL) {
-                    slot->busy->counter->count++;
+                    slot->busy->rider->param_action++;
                     slot->busy = NULL;
                 }
             }
@@ -2330,7 +2320,7 @@ void FUN_0040be00(struct FlumeSlotSet *set) {
                         if (FUN_00411ea0((struct Queue *)set->queue)) {
                             set->flags |= 1;
                             FUN_00412060((struct Queue *)set->queue, (struct QueueItemMid **)&item);
-                            slot->busy = (struct FlumeStatHolder *)item;
+                            slot->busy = (struct RideNode *)item;
                         }
                     }
                 }
@@ -5267,7 +5257,7 @@ int LogFlumeEntrance_Save(struct Element *element) {
             SaveQueue((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, &buf.queue);
             for (i = 0; i < 4; i++) {
                 buf.slots[i].owner = (struct FlumeEntry *)(INT_PTR)FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)buf.slots[i].owner);
-                buf.slots[i].busy = (struct FlumeStatHolder *)(UINT_PTR)FUN_004123a0((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, (struct QueueNode *)buf.slots[i].busy);
+                buf.slots[i].busy = (struct RideNode *)(UINT_PTR)FUN_004123a0((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, (struct QueueNode *)buf.slots[i].busy);
             }
             SaveGameWrite(&buf, sizeof(buf));
             entry = entry->next;
@@ -5401,7 +5391,7 @@ int LogFlumeEntrance_Load(struct Element *element) {
         slot = cur->slots;
         for (i = 4; i != 0; i--) {
             slot->owner = IndexToFlumeNode(cur->sub, (unsigned int)(UINT_PTR)slot->owner);
-            slot->busy = (struct FlumeStatHolder *)GetNthNextQueueNode((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, (int)(INT_PTR)slot->busy);
+            slot->busy = (struct RideNode *)GetNthNextQueueNode((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, (int)(INT_PTR)slot->busy);
             slot++;
         }
         SaveGameRead(&marker, 4);

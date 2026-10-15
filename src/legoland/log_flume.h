@@ -23,7 +23,7 @@ struct FlumeNode {
 struct FlumeSlot {
     int timer;
     unsigned int flags;
-    struct FlumeStatHolder *busy;
+    struct RideNode *busy; /* the rider in the slot */
     int x;
     int y;
     struct FlumeEntry *owner; /* the track piece the slot is on */
