@@ -33,7 +33,7 @@ LEGO_EXPORT int InitHostSystemGPU(void) {
     }
     if (DirectDrawCreate(NULL, &DDRAWENV.ddraw, NULL) == 0) {
         ddraw = DDRAWENV.ddraw;
-        if (IDirectDraw_QueryInterface(ddraw, &IID_IDirectDraw2_Guid, &DDRAWENV.ddraw2) != 0) {
+        if (IDirectDraw_QueryInterface(ddraw, &IID_IDirectDraw2_Guid, (LPVOID *)&DDRAWENV.ddraw2) != 0) {
             IDirectDraw_Release(DDRAWENV.ddraw);
             // STRING: LEGOLAND 0x004b9cd0
             DBPrintf("Can't Create DDCOM");
@@ -2852,7 +2852,7 @@ void DrawWatchSprite(void) {
             surface = PrimarySurface;
             if (IDirectDrawSurface_Blt(surface, &cursor.rect, OffscreenSurface, &WatchRect, 0x1000000, NULL) == 0x887601c2) {
                 IDirectDrawSurface_Restore(PrimarySurface);
-                IDirectDrawSurface_Blt(PrimarySurface, &cursor, OffscreenSurface, NULL, 0x1000000, NULL);
+                IDirectDrawSurface_Blt(PrimarySurface, (LPRECT)&cursor, OffscreenSurface, NULL, 0x1000000, NULL);
             }
         }
     }
