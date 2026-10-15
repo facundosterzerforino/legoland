@@ -56,13 +56,6 @@ struct NearBloke {
     float fy;
 };
 
-struct SPHandlers {
-    unsigned char pad_0[0x18];
-    unsigned int (*get_rf_flags)(int x, int y);
-    void (*sp_enter)(unsigned int x, unsigned int y);
-    void (*sp_leave)(unsigned int x, unsigned int y);
-};
-
 struct TimerStruct {
     unsigned char pad_0[0x30];
     unsigned int var_30[34];
@@ -357,7 +350,7 @@ LEGO_EXPORT unsigned int IsSemiPermiable(int param_1, int param_2) {
 
 // FUNCTION: LEGOLAND 0x00401820
 LEGO_EXPORT unsigned char SPGetRFFlags(int param_1, int param_2) {
-    struct SPHandlers *src;
+    struct FXSpriteList *src;
     INT_PTR tile_ptr;
     int tx, ty;
     unsigned int tile_id;
@@ -371,16 +364,17 @@ LEGO_EXPORT unsigned char SPGetRFFlags(int param_1, int param_2) {
         tile_ptr = (INT_PTR)GameMap[ty] + tx * sizeof(struct MapElement);
     }
     tile_id = *(unsigned short *)(tile_ptr + offsetof(struct MapElement, field_8));
-    src = (struct SPHandlers *)TileSpriteInfo[tile_id].src;
+    src = TileSpriteInfo[tile_id].src;
     if (src->get_rf_flags != 0) {
-        return src->get_rf_flags(param_1, param_2);
+        /* the handlers return the flags in the whole register; this caller reads all of it */
+        return ((unsigned int (*)(int, int))src->get_rf_flags)(param_1, param_2);
     }
     return 2;
 }
 
 // FUNCTION: LEGOLAND 0x00401890
 LEGO_EXPORT void SPEnter(unsigned int param_1, unsigned int param_2) {
-    struct SPHandlers *src;
+    struct FXSpriteList *src;
     INT_PTR tile_ptr;
     int tx, ty;
     unsigned int tile_id;
@@ -394,15 +388,19 @@ LEGO_EXPORT void SPEnter(unsigned int param_1, unsigned int param_2) {
         tile_ptr = (INT_PTR)GameMap[ty] + tx * sizeof(struct MapElement);
     }
     tile_id = *(unsigned short *)(tile_ptr + offsetof(struct MapElement, field_8));
-    src = (struct SPHandlers *)TileSpriteInfo[tile_id].src;
-    if (src->sp_enter != 0) {
-        src->sp_enter(param_1, param_2);
+    src = TileSpriteInfo[tile_id].src;
+    if (src->on_enter != 0) {
+        struct Point pos;
+
+        pos.x = param_1;
+        pos.y = param_2;
+        src->on_enter(pos);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00401900
 LEGO_EXPORT void SPLeave(unsigned int param_1, unsigned int param_2) {
-    struct SPHandlers *src;
+    struct FXSpriteList *src;
     INT_PTR tile_ptr;
     int tx, ty;
     unsigned int tile_id;
@@ -416,9 +414,9 @@ LEGO_EXPORT void SPLeave(unsigned int param_1, unsigned int param_2) {
         tile_ptr = (INT_PTR)GameMap[ty] + tx * sizeof(struct MapElement);
     }
     tile_id = *(unsigned short *)(tile_ptr + offsetof(struct MapElement, field_8));
-    src = (struct SPHandlers *)TileSpriteInfo[tile_id].src;
-    if (src->sp_enter != 0) {
-        src->sp_leave(param_1, param_2);
+    src = TileSpriteInfo[tile_id].src;
+    if (src->on_enter != 0) { /* the original tests the enter handler */
+        src->on_leave(param_1, param_2);
     }
 }
 
