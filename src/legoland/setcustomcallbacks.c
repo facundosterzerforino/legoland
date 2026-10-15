@@ -129,7 +129,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     } else if (_stricmp("POTTING SHED", head->name) == 0) {
         iface->cb_a4 = LoadGShedMatteSprite;
         iface->cb_8c = PottingShedSetEditMode;
-        iface->cb_98 = PottingShedAddObject;
+        iface->cb_98 = (void (*)())PottingShedAddObject;
         iface->cb_9c = PottingShedRemoveObject;
         iface->cb_pre_render = PottingShedUpdate;
         iface->cb_b0 = RenderPottingShed;
@@ -138,7 +138,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     } else if (_stricmp("MECHANICS HUT", head->name) == 0) {
         iface->cb_a4 = LoadMechHutMaskSprite;
         iface->cb_8c = MechanicsHutSetEditMode;
-        iface->cb_98 = MechanicsHutAddObject;
+        iface->cb_98 = (void (*)())MechanicsHutAddObject;
         iface->cb_9c = MechanicsHutRemoveObject;
         iface->cb_pre_render = MechanicsHutUpdate;
         iface->cb_b0 = RenderMechanicsHut;
@@ -306,7 +306,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_a4 = InitBoatingSchoolMermaid;
         iface->cb_8c = BoatingSchoolMermaidSetEditMode;
         iface->cb_90 = BoatingSchoolMermaidCalcCursor;
-        iface->cb_94 = BoatingSchoolMermaidDCalcCursor;
+        iface->cb_94 = (void (*)())BoatingSchoolMermaidDCalcCursor;
         iface->cb_98 = BoatingSchoolMermaidAddObject;
         iface->cb_9c = BoatingSchoolMermaidRemoveObject;
     }
@@ -338,7 +338,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_ac = KillBrijMaskSprite;
         iface->cb_8c = MonkeyTreeSetEditMode;
         iface->cb_90 = JungleCruiseMonkeyTreeCalcCursor;
-        iface->cb_94 = JungleCruiseMonkeyTreeDCalcCursor;
+        iface->cb_94 = (void (*)())JungleCruiseMonkeyTreeDCalcCursor;
         iface->cb_98 = MonkeyTreeAddObject;
         iface->cb_9c = MonkeyTreeRemoveObject;
         iface->cb_sprite = GetMonkeyTreeSpriteInfo;
@@ -349,7 +349,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_ac = KillMFish2Sprite;
         iface->cb_8c = MonkeyFishSetEditMode;
         iface->cb_90 = JungleCruiseMonkeyFishCalcCursor;
-        iface->cb_94 = JungleCruiseMonkeyFishDCalcCursor;
+        iface->cb_94 = (void (*)())JungleCruiseMonkeyFishDCalcCursor;
         iface->cb_98 = MonkeyFishAddObject;
         iface->cb_9c = MonkeyFishRemoveObject;
         iface->cb_sprite = GetMonkeyFishSpriteInfo;
