@@ -30,7 +30,7 @@ void FUN_00488700(unsigned char *base, struct RenderViewport *vp);
 int FUN_00486540(void);
 void FUN_00488670(struct Image *image, unsigned int index);
 void FUN_004886a0(void);
-void FUN_004864e0(unsigned int param_1);
+void FUN_004864e0(void *param_1);
 void FUN_00486590(void);
 void FUN_00486c70(void);
 void FUN_004877b0(void);
