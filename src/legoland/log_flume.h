@@ -26,7 +26,7 @@ struct FlumeSlot {
     struct FlumeStatHolder *busy;
     int x;
     int y;
-    struct FlumeWeighted *owner;
+    struct FlumeEntry *owner; /* the track piece the slot is on */
     float weight;
     int field_1c;
     unsigned char pad_20[4];

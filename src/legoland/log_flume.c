@@ -224,15 +224,6 @@ struct FlumeBytes {
     unsigned char b4;
 };
 
-struct FlumeWeighted {
-    unsigned char pad_0[8];
-    struct FlumeWeighted *a;
-    struct FlumeWeighted *b;
-    unsigned char pad_10[4];
-    struct FlumeWeighted *link;
-    float weight;
-};
-
 struct FlumeCounter {
     unsigned char pad_0[0x60];
     unsigned char count;
@@ -252,10 +243,10 @@ struct FlumeSlotSet {
     unsigned char pad_0[4];
     unsigned int flags;
     union {
-        struct FlumeWeighted *inner;
+        struct FlumeEntry *inner;
         struct FlumeInner *inner3;
     };
-    struct FlumeWeighted *field_c;
+    struct FlumeEntry *field_c;
     unsigned char pad_10[4];
     TileId tile;
     unsigned char pad_16[6];
@@ -1749,7 +1740,7 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
 void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int drawBarrel) {
     /* Draws one log-flume barrel (and its rider, if any). The clip rect is narrowed to the
        edge of the neighbouring track tile `other` so the barrel is hidden behind it. */
-    struct FlumeEntry *owner = (struct FlumeEntry *)slot->owner;
+    struct FlumeEntry *owner = slot->owner;
     struct Sprite *spriteA;
     struct Sprite *spriteB;
     RECT saved;
@@ -1872,15 +1863,15 @@ void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int dr
 }
 
 // FUNCTION: LEGOLAND 0x0040b210
-int FUN_0040b210(struct FlumeWeighted *self, struct FlumeWeighted *other) {
-    struct FlumeWeighted *link = self->link;
+int FUN_0040b210(struct FlumeSlot *self, struct FlumeEntry *other) {
+    struct FlumeEntry *link = self->owner;
     if (link == other) {
         return 1;
     }
-    if (self->weight >= DOUBLE_004ab398 && link->a == other) {
+    if (self->weight >= DOUBLE_004ab398 && link->parent8 == other) {
         return 1;
     }
-    if (self->weight < DOUBLE_004ab398 && link->b == other) {
+    if (self->weight < DOUBLE_004ab398 && link->field_c == other) {
         return 1;
     }
     return 0;
@@ -1910,7 +1901,7 @@ void FUN_0040b290(struct FlumeEntry *entry, int x, int y, struct FlumeStageList 
         off = 0;
         do {
             for (j = 0; j < set->count; j++) {
-                if (FUN_0040b210((struct FlumeWeighted *)&set->slots[j], (struct FlumeWeighted *)node)) {
+                if (FUN_0040b210(&set->slots[j], (struct FlumeEntry *)node)) {
                     DrawLogFlumeBarrel(&set->slots[j], node, 1);
                 }
             }
@@ -1945,14 +1936,14 @@ int FUN_0040b390(struct FlumeEntry *entry) {
         node = entry->sub2;
         if (node != NULL) {
             do {
-                if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)node)) {
+                if (FUN_0040b210(&set->slots[i], (struct FlumeEntry *)node)) {
                     DrawLogFlumeBarrel(&set->slots[i], node, 1);
                     matched++;
                 }
                 node = node->next;
             } while (node != NULL);
         } else {
-            if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)entry)) {
+            if (FUN_0040b210(&set->slots[i], (struct FlumeEntry *)entry)) {
                 DrawLogFlumeBarrel(&set->slots[i], entry, 1);
                 matched++;
             }
@@ -2164,22 +2155,22 @@ int FUN_0040ba80(struct Node *arg) {
 int FUN_0040bab0(struct FlumeSlotSet *set, int index) {
     struct FlumeSlot *slot = &set->slots[index];
     struct FlumeSlot *other;
-    struct FlumeWeighted *link;
+    struct FlumeEntry *link;
     float weight;
     float f;
     int i;
 
     if (slot != NULL) {
         link = slot->owner;
-        if (slot->owner->a != NULL) {
+        if (slot->owner->parent8 != NULL) {
             weight = slot->weight;
             for (i = 0, other = set->slots; i < set->count; i++, other++) {
                 if (i != index) {
-                    if (other->owner == link || other->owner == link->a) {
+                    if (other->owner == link || other->owner == link->parent8) {
                         if (other->owner == link) {
                             f = other->weight - weight;
                         }
-                        if (other->owner == link->a) {
+                        if (other->owner == link->parent8) {
                             f = (float)(other->weight + 1.0 - weight);
                         }
                         if (f > FLOAT_004ab390 && f < 0.8) {
@@ -2202,7 +2193,7 @@ int FUN_0040bb50(struct FlumeSlotSet *set, struct FlumeSlot **out) {
 
     for (i = 0; i < count; i++) {
         slot = &set->slots[i];
-        if (slot->owner == set->inner->a && slot->busy == 0 && !(slot->flags & 1)) {
+        if (slot->owner == set->inner->parent8 && slot->busy == 0 && !(slot->flags & 1)) {
             *out = slot;
             return 1;
         }
@@ -2221,15 +2212,15 @@ void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
             return;
         }
         if (slot->flags & 1) {
-            if (slot->owner->a != NULL) {
+            if (slot->owner->parent8 != NULL) {
                 if (FUN_0040bab0(set, index)) {
                     if (AdvanceFlumeMover((struct FlumeMover *)slot)) {
-                        slot->owner = slot->owner->a;
+                        slot->owner = slot->owner->parent8;
                         if (FUN_00411650(slot)) {
                             slot->flags |= 2;
                             return;
                         }
-                        if (slot->owner == set->field_c->a) {
+                        if (slot->owner == set->field_c->parent8) {
                             if (slot->busy != NULL) {
                                 slot->busy->counter->count++;
                                 slot->busy = NULL;
@@ -2237,7 +2228,7 @@ void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
                                 slot->flags &= ~1;
                             }
                         }
-                        if (slot->owner == set->inner->a) {
+                        if (slot->owner == set->inner->parent8) {
                             slot->timer = 0x32;
                             slot->flags &= ~1;
                         }
@@ -2248,12 +2239,12 @@ void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
             slot->timer--;
             if (slot->timer < 0) {
                 if (!(set->flags & 1)) {
-                    if (slot->owner->a != NULL) {
+                    if (slot->owner->parent8 != NULL) {
                         if (FUN_0040bab0(set, index)) {
                             slot->flags |= 1;
                             if (AdvanceFlumeMover((struct FlumeMover *)slot)) {
-                                slot->owner = slot->owner->a;
-                                if (slot->owner == set->field_c->a) {
+                                slot->owner = slot->owner->parent8;
+                                if (slot->owner == set->field_c->parent8) {
                                     if (slot->busy != NULL) {
                                         slot->busy->counter->count++;
                                         slot->busy = NULL;
@@ -2261,7 +2252,7 @@ void FUN_0040bbb0(struct FlumeSlotSet *set, int index) {
                                         slot->flags &= ~1;
                                     }
                                 }
-                                if (slot->owner == set->inner->a) {
+                                if (slot->owner == set->inner->parent8) {
                                     slot->timer = 0x32;
                                     slot->flags &= ~1;
                                 }
@@ -2290,19 +2281,19 @@ void FUN_0040bd40(struct FlumeSlotSet *set, int index) {
             if (slot->owner == set->inner) {
                 slot->timer = 0x32;
                 slot->flags &= ~1;
-            } else if (slot->owner->a != NULL) {
+            } else if (slot->owner->parent8 != NULL) {
                 if (FUN_0040bab0(set, index)) {
-                    slot->owner = slot->owner->a;
+                    slot->owner = slot->owner->parent8;
                 }
             }
         } else {
             slot->timer--;
             if (slot->timer < 0) {
                 if (!(set->flags & 1)) {
-                    if (slot->owner->a != NULL) {
+                    if (slot->owner->parent8 != NULL) {
                         if (FUN_0040bab0(set, index)) {
                             slot->flags |= 1;
-                            slot->owner = slot->owner->a;
+                            slot->owner = slot->owner->parent8;
                         }
                     }
                 }
@@ -2530,7 +2521,7 @@ int FUN_0040c250(struct FlumeEntry *entry) {
                 continue;
             }
         }
-        set->slots[i].owner = (struct FlumeWeighted *)target;
+        set->slots[i].owner = (struct FlumeEntry *)target;
     }
     return 1;
 }
@@ -2555,12 +2546,12 @@ int FUN_0040c2e0(struct FlumeChainOwner *owner) {
     for (i = 0; i < set->count; i++) {
         node = owner->chain;
         if (node == NULL) {
-            if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)owner)) {
+            if (FUN_0040b210(&set->slots[i], (struct FlumeEntry *)owner)) {
                 return 1;
             }
         } else {
             do {
-                if (FUN_0040b210((struct FlumeWeighted *)&set->slots[i], (struct FlumeWeighted *)node)) {
+                if (FUN_0040b210(&set->slots[i], (struct FlumeEntry *)node)) {
                     return 1;
                 }
                 node = node->next;
@@ -2859,9 +2850,9 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
     /* sort the slots at this corner into the lists drawn before / after the corner sprite */
     for (i = 0; i < par->count; i++) {
         slot = &par->slots[i];
-        if (FUN_0040b210((struct FlumeWeighted *)slot, (struct FlumeWeighted *)entry)) {
+        if (FUN_0040b210(slot, (struct FlumeEntry *)entry)) {
             w = slot->weight;
-            if ((struct FlumeEntry *)slot->owner != entry) {
+            if (slot->owner != entry) {
                 if (entry->field_c == slot->owner) {
                     w = slot->weight - 1.0;
                 }
@@ -5275,7 +5266,7 @@ int LogFlumeEntrance_Save(struct Element *element) {
             buf.target = (void *)(INT_PTR)FUN_00410910(entry);
             SaveQueue((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, &buf.queue);
             for (i = 0; i < 4; i++) {
-                buf.slots[i].owner = (struct FlumeWeighted *)(INT_PTR)FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)buf.slots[i].owner);
+                buf.slots[i].owner = (struct FlumeEntry *)(INT_PTR)FUN_004107b0((struct FlumeNode *)buf.sub, (struct FlumeNode *)buf.slots[i].owner);
                 buf.slots[i].busy = (struct FlumeStatHolder *)(UINT_PTR)FUN_004123a0((struct QueueNode *)((struct Ride *)LogFlumeEntranceRide)->riders, (struct QueueNode *)buf.slots[i].busy);
             }
             SaveGameWrite(&buf, sizeof(buf));
