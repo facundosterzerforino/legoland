@@ -1576,7 +1576,7 @@ void UnloadGBarSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f9a0
-int FUN_0046f9a0(int id, int kind, int param_3, int param_4, unsigned int flags, int param_6) {
+int FUN_0046f9a0(int id, struct Element *kind, int param_3, int param_4, unsigned int flags, int param_6) {
     int found;
     int i;
     int total;
@@ -1603,7 +1603,7 @@ int FUN_0046f9a0(int id, int kind, int param_3, int param_4, unsigned int flags,
     total = LLIDB_GetCount();
     for (i = 0; i < total; i++) {
         LLIDB_GetElement(i, &elem);
-        if ((elem->flags & 0x10) && ((int *)elem->data)[0x16] == kind) {
+        if ((elem->flags & 0x10) && elem->ride->parent_element == kind) {
             found++;
             AddGBarClassIcon(group, elem->data, x, y, id, (short)i);
             /* bit 0: vertical bar */
