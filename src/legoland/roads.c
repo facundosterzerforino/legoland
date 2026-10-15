@@ -851,7 +851,7 @@ void ZebraCrossingAddObject(struct Element *edit, struct RoadPlaceArg *place) {
     if (tile != NULL) {
         FUN_004135d0(place->x, place->y, &r);
         tile->field_14 |= 0x10;
-        UpdateQueuePathShape(*(short *)((char *)tile + 8), place->x, place->y);
+        UpdateQueuePathShape((short)tile->id, place->x, place->y);
         tile->field_1d = 0;
         tile->field_1c = 0;
         IncrementObjectCount((struct ObjectCount *)edit->data);
