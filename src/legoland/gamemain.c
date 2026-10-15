@@ -293,7 +293,7 @@ void FUN_004779d0(struct Point *p) {
             if (QueryClass->flags & 0x200000) {
                 RemoveObjectFromBuildList(t);
                 FUN_0045e850((struct Element *)elem, &pos.x);
-                IncrementObjectCount((struct ObjectCount *)QueryClass);
+                IncrementObjectCount((struct Ride *)QueryClass);
                 RemoveObjectFromMap(t);
             }
         } else {
@@ -308,7 +308,7 @@ void FUN_004779d0(struct Point *p) {
         if (NULL != order) {
             FUN_0045e850((struct Element *)order->element, &order->pos.x);
             ptmp63 = order->element->data;
-            ClearPathUnderFootprint((struct PathFootprint *)ptmp63, &order->pos.x);
+            ClearPathUnderFootprint((struct Ride *)ptmp63, &order->pos.x);
             EraseGardenerOrder(order);
             return;
         }
@@ -318,7 +318,7 @@ void FUN_004779d0(struct Point *p) {
         if (order != NULL) {
             ptmp12 = order->element;
             FUN_0045e850((struct Element *)ptmp12, &order->pos.x);
-            ClearPathUnderFootprint((struct PathFootprint *)order->element->data, &order->pos.x);
+            ClearPathUnderFootprint((struct Ride *)order->element->data, &order->pos.x);
             EraseMechanicOrder(order);
             return;
         }

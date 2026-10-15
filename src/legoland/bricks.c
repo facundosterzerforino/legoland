@@ -263,10 +263,10 @@ void FUN_00457a70(void) {
             } else if (IsCursorBuildable(&QueryCursor)) {
                 if (Hover.type == 0x10c) {
                     FUN_0045e850((struct Element *)((WorkOrder *)Hover.ptr)->element, &((WorkOrder *)Hover.ptr)->pos.x);
-                    ClearPathUnderFootprint((struct PathFootprint *)((WorkOrder *)Hover.ptr)->element->ride, &((WorkOrder *)Hover.ptr)->pos.x);
+                    ClearPathUnderFootprint((struct Ride *)((WorkOrder *)Hover.ptr)->element->ride, &((WorkOrder *)Hover.ptr)->pos.x);
                     EraseMechanicOrder((WorkOrder *)Hover.ptr);
                 } else if (Hover.type == 0x10b) {
-                    ClearPathUnderFootprint((struct PathFootprint *)((WorkOrder *)Hover.ptr)->element->ride, &((WorkOrder *)Hover.ptr)->pos.x);
+                    ClearPathUnderFootprint((struct Ride *)((WorkOrder *)Hover.ptr)->element->ride, &((WorkOrder *)Hover.ptr)->pos.x);
                     EraseGardenerOrder((WorkOrder *)Hover.ptr);
                 } else {
                     pt.x = *(unsigned int *)&QueryObj & 0xff;
@@ -278,7 +278,7 @@ void FUN_00457a70(void) {
                     }
                     QueryClass = (struct Ride *)tile->field_0->ride;
                     if (DAT_00810144 == 0) {
-                        ClearPathUnderFootprint((struct PathFootprint *)QueryClass, &pt.x);
+                        ClearPathUnderFootprint((struct Ride *)QueryClass, &pt.x);
                     }
                     RemObjFromMap(QueryClass, QueryClass->element, QueryObj, &QueryCursor);
                 }
