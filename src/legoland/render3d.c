@@ -85,7 +85,7 @@ struct RenderListNode *FUN_004418c0(int param_1, struct ViewportEntry *param_2, 
 }
 
 // FUNCTION: LEGOLAND 0x00441910
-void RidePointToScreen(int *param_1, float *param_2, int *param_3) {
+void RidePointToScreen(struct Position *param_1, float *param_2, int *param_3) {
     float v[3];
     v[0] = param_2[0];
     v[1] = param_2[1];
@@ -93,13 +93,13 @@ void RidePointToScreen(int *param_1, float *param_2, int *param_3) {
     v[1] -= DAT_004ab4bc;
     param_3[0] = (int)v[0] / 2;
     param_3[1] = (int)v[1] / 2;
-    param_3[0] += param_1[7];
-    param_3[1] += param_1[8];
+    param_3[0] += param_1->x;
+    param_3[1] += param_1->y;
 }
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00441980
-__declspec(naked) void Put3DBlokeOnRide(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+__declspec(naked) void Put3DBlokeOnRide(struct Position *param_1, int param_2, int param_3, struct Person *param_4, int param_5, int param_6) {
     __asm {
         push ebp
         mov ebp, esp
@@ -189,56 +189,44 @@ L4419f3:
     }
 }
 
-struct BlokeRideInner {
-    unsigned char pad_0[0x62];
-    unsigned char flags;
-};
-
-struct BlokeRideNode {
-    unsigned char pad_0[8];
-    struct BlokeRideInner *inner;
-    unsigned char pad_c[4];
-    unsigned int field_10;
-};
-
 // FUNCTION: LEGOLAND 0x00441a60
-LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4) {
+LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, struct Position *param_4) {
     struct Point coords;
     int i;
 
     coords = GetScreenCoordsForObject(param_2, param_1);
     i = 0;
-    if (param_4[1] > 0) {
+    if (param_4->count > 0) {
         do {
-            struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_004418c0(i, param_1, (short *)param_2);
-            if (node != NULL && (node->inner->flags & 0x80) != 0) {
-                Put3DBlokeOnRide(param_4, i, param_3, node->field_10, coords.x, coords.y);
+            struct RideNode *node = (struct RideNode *)FUN_004418c0(i, param_1, (short *)param_2);
+            if (node != NULL && (node->rider->flags & 0x80) != 0) {
+                Put3DBlokeOnRide(param_4, i, param_3, node->person, coords.x, coords.y);
             }
             i = i + 1;
-        } while (i < param_4[1]);
+        } while (i < param_4->count);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00441ad0
 LEGO_EXPORT void Put3DBlokesOnRide2(Element *ride, Element *obj) {
-    struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_00441870((struct ViewportEntry *)ride, (short *)obj);
+    struct RideNode *node = (struct RideNode *)FUN_00441870((struct ViewportEntry *)ride, (short *)obj);
     if (node != NULL) {
-        while ((node->inner->flags & 0x80) != 0) {
-            node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
+        while ((node->rider->flags & 0x80) != 0) {
+            node = (struct RideNode *)FUN_00441890(ride, (short *)obj);
             if (node == NULL) {
                 return;
             }
         }
         while (node != NULL) {
-            if (node->field_10 != 0) {
-                FUN_004401b0((struct Person *)node->field_10, (struct Bloke *)node->inner);
+            if (node->person != 0) {
+                FUN_004401b0((struct Person *)node->person, (struct Bloke *)node->rider);
             }
-            node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
+            node = (struct RideNode *)FUN_00441890(ride, (short *)obj);
             if (node == NULL) {
                 return;
             }
-            while ((node->inner->flags & 0x80) != 0) {
-                node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
+            while ((node->rider->flags & 0x80) != 0) {
+                node = (struct RideNode *)FUN_00441890(ride, (short *)obj);
                 if (node == NULL) {
                     return;
                 }
@@ -393,16 +381,16 @@ LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct V
     base = param_1->frame_array[idx];
     for (i = param_1->loop_count - 1; i >= 0; i--) {
         int sprite_id = ((int *)base)[i];
-        struct BlokeRideNode *node;
+        struct RideNode *node;
         int *frame;
         if (param_1->data_table == NULL) {
-            node = (struct BlokeRideNode *)FUN_004418c0(sprite_id, param_3, (short *)param_4);
+            node = (struct RideNode *)FUN_004418c0(sprite_id, param_3, (short *)param_4);
         } else {
             remap = param_1->remap_table[sprite_id];
-            node = (struct BlokeRideNode *)FUN_004418c0(param_1->data_table[remap], param_3, (short *)param_4);
+            node = (struct RideNode *)FUN_004418c0(param_1->data_table[remap], param_3, (short *)param_4);
         }
-        if (node != NULL && (node->inner->flags & 0x80) != 0) {
-            IP_RenderBlokeIn3DNow((struct Bloke *)node->inner);
+        if (node != NULL && (node->rider->flags & 0x80) != 0) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)node->rider);
         }
         frame = (int *)param_1->index_array[sprite_id];
         if (frame != NULL) {
