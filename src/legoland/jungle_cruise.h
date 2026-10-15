@@ -106,15 +106,15 @@ struct RideSpriteInfo *GetMonkeyTreeSpriteInfo(Element *obj, unsigned short para
 void LoadMFish2Sprite(Element *obj);
 void KillMFish2Sprite();
 void MonkeyFishSetEditMode();
-struct EditObject;
-void MonkeyFishAddObject(struct EditObject *obj, int *coords);
+struct Ride;
+void MonkeyFishAddObject(struct Ride *obj, int *coords);
 void JungleCruiseMonkeyFishCalcCursor(Element *obj, int *param_2, unsigned int param_3);
 unsigned int JungleCruiseMonkeyFishDCalcCursor(struct Element *param_1, struct Point *param_2);
 struct RideSpriteInfo *GetMonkeyFishSpriteInfo(Element *obj, unsigned short param_2);
 void LoadJungleCruiseResources(Element *obj);
 void UnloadJungleCruiseResources(Element *obj);
 void JungleCruiseSetEditMode();
-void JungleCruiseAddObject(struct EditObject *obj, int *coords);
+void JungleCruiseAddObject(struct Ride *obj, int *coords);
 void JungleCruiseCalcCursor(Element *obj, int *param_2, unsigned int param_3);
 void JungleCruiseDCalcCursor(struct Element *param_1, struct Point *param_2);
 void JungleCruiseUpdate();
