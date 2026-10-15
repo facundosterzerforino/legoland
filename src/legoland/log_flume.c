@@ -28,7 +28,7 @@ struct Sprite;
 struct Particle {
     int x;
     int y;
-    struct Element *node;
+    struct FlumeEntry *node; /* the slot owner: the next piece of the chain */
     float scale;
     int z;
     float w;
@@ -1293,7 +1293,7 @@ void LogFlumeEntranceSetEditMode(void) {
 void FUN_0040a580(struct FlumeEntry *param) {
     int i;
     struct Particle *p;
-    struct Element *node;
+    struct FlumeEntry *node;
     struct FlumeDims d;
 
     node = param->field_8;
@@ -1311,7 +1311,7 @@ void FUN_0040a580(struct FlumeEntry *param) {
             p->w = 0.1f;
             p[-1].a = 0;
             p[-1].b = 0;
-            node = node->ride;
+            node = node->field_c;
             i++;
             p++;
         } while (i < (int)param->count);
