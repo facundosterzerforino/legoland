@@ -537,24 +537,14 @@ LEGO_EXPORT int SaveSafariRide(struct Element *element) {
     return 1;
 }
 
-struct SafariTypeC {
-    void *field_0;
-    unsigned int field_4;
-};
-
-struct SafariData {
-    unsigned char pad_0[0x54];
-    struct SafariTypeC *bnv;
-};
-
 // FUNCTION: LEGOLAND 0x00415820
 LEGO_EXPORT int LoadSafariRide(struct Element *arg) {
     struct Ride *obj = arg->ride;
     struct SafariNode *prev = NULL;
     struct RideNode *list;
     struct Person *car;
-    struct SafariData *data;
-    struct SafariTypeC *tc;
+    struct Bloke *data;
+    struct BNVRef *tc;
     unsigned int marker;
 
     if (!SaveGameRead(&marker, 4)) {
@@ -589,7 +579,7 @@ LEGO_EXPORT int LoadSafariRide(struct Element *arg) {
         data = list->rider;
         tc = data->bnv;
         if (tc != NULL) {
-            tc->field_0 = (&DAT_004cbef8)[tc->field_4];
+            tc->file = (&DAT_004cbef8)[tc->index];
         }
         list = list->next;
     }
