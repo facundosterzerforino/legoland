@@ -6594,10 +6594,10 @@ void RenderCastleObj(Element *obj, unsigned int param_2, unsigned int param_3, T
         if (tile->id == walk->tile.id) {
             rider = walk->rider;
             if (rider->param_action < 0x10) {
-                AddBlokeToRenderList(&DAT_00610a18, (struct BlokeRenderSrc *)walk, walk->person->field_20);
+                AddBlokeToRenderList(&DAT_00610a18, walk, walk->person->field_20);
             }
             if (rider->param_action >= 0x21) {
-                AddBlokeToRenderList(&DAT_00610a18, (struct BlokeRenderSrc *)walk, walk->person->field_20);
+                AddBlokeToRenderList(&DAT_00610a18, walk, walk->person->field_20);
             }
         }
         walk = walk->next;

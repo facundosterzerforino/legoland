@@ -53,7 +53,7 @@ void RenderTemple(Element *obj, unsigned int param_2, unsigned int param_3, unsi
     DAT_004cbf70 = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*coords == node->tile.id) {
-            AddBlokeToRenderList(&DAT_004cbf70, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&DAT_004cbf70, node, node->person->field_20);
         }
     }
     RenderBlokeList((struct RenderItemNode **)&DAT_004cbf70);

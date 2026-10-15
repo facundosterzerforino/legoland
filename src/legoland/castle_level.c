@@ -49,7 +49,7 @@ void RenderCastleLevel(Element *obj, unsigned int param_2, unsigned int param_3,
     DAT_004c10e8 = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id) {
-            AddBlokeToRenderList(&DAT_004c10e8, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&DAT_004c10e8, node, node->person->field_20);
         }
     }
     RenderBlokeList((struct RenderItemNode **)&DAT_004c10e8);

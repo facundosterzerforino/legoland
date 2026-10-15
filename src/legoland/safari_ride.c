@@ -159,7 +159,7 @@ void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                         person->screen.y = bloke->screen_y + (off2.y + off1.y) + pos.y;
                         AdjustBlokePosition(&person->screen);
                     }
-                    AddBlokeToRenderList(&DAT_004cbecc, (struct BlokeRenderSrc *)node, node->person->field_20);
+                    AddBlokeToRenderList(&DAT_004cbecc, node, node->person->field_20);
                 }
             }
         } else {

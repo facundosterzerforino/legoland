@@ -1902,7 +1902,7 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     DAT_004cbe70 = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x <= (base.x << 8) - 0x280) {
-            AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
         }
     }
     RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
@@ -1911,7 +1911,7 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     DAT_004cbe70 = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280 && (node->rider->pos.y >> 8) <= base.y - 9) {
-            AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
         }
     }
     RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
@@ -1942,7 +1942,7 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280) {
             int y = node->rider->pos.y >> 8;
             if (y == base.y - 6 || y == base.y - 7 || y == base.y - 8) {
-                AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+                AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
             }
         }
     }
@@ -1972,7 +1972,7 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     DAT_004cbe70 = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280 && (node->rider->pos.y >> 8) == base.y - 3) {
-            AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
         }
     }
     RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
@@ -2003,7 +2003,7 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280) {
             int y = node->rider->pos.y >> 8;
             if (y == base.y - 2 || y == base.y - 1 || y == base.y) {
-                AddBlokeToRenderList(&DAT_004cbe70, (struct BlokeRenderSrc *)node, node->person->field_20);
+                AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
             }
         }
     }

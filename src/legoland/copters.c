@@ -397,13 +397,13 @@ void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, void *un
                 key = rn->person->field_20;
                 d = base.y - (rn->rider->pos.y >> 8);
                 if (d >= 5) {
-                    AddBlokeToRenderList(DAT_004c1190, (struct BlokeRenderSrc *)rn, key);
+                    AddBlokeToRenderList(DAT_004c1190, rn, key);
                 }
                 if (d >= 3 && d <= 4) {
-                    AddBlokeToRenderList(DAT_004c1168, (struct BlokeRenderSrc *)rn, key);
+                    AddBlokeToRenderList(DAT_004c1168, rn, key);
                 }
                 if (d >= 0 && d <= 2) {
-                    AddBlokeToRenderList(DAT_004c1194, (struct BlokeRenderSrc *)rn, key);
+                    AddBlokeToRenderList(DAT_004c1194, rn, key);
                 }
             }
         }
