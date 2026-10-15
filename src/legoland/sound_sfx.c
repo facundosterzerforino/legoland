@@ -433,8 +433,9 @@ LEGO_EXPORT int SetSampleFrequency(struct Sample *sample, int frequency) {
 }
 
 // FUNCTION: LEGOLAND 0x00492a60
-struct Sample *GetSampleFrequency(struct Sample *sample) {
+unsigned int GetSampleFrequency(struct Sample *sample) {
     struct SampleBuffer *buffer;
+    DWORD frequency;
 
     if (SoundAvailable == 0) {
         return 0;
@@ -447,7 +448,7 @@ struct Sample *GetSampleFrequency(struct Sample *sample) {
     }
 
     buffer = sample->buffer;
-    return buffer->vtable->method_0x20(buffer, &sample) == 0 ? sample : 0;
+    return buffer->vtable->method_0x20(buffer, &frequency) == 0 ? frequency : 0;
 }
 
 // FUNCTION: LEGOLAND 0x00492aa0

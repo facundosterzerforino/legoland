@@ -154,7 +154,7 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
     int ptmp175;
     unsigned int cur_x;
     volatile int ptmp176;
-    if (buffer == (unsigned)NULL) {
+    if (buffer == NULL) {
         return;
     }
     buffer->prev_x = buffer->x;

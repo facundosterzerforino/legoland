@@ -711,7 +711,7 @@ void FUN_00490ea0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00490fa0
-void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) {
+void FUN_00490fa0(char *text, int font, RECT rc, INT_PTR color_flag) {
     HRGN region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
     HDC hdc;
     HGDIOBJ old_region;
@@ -723,7 +723,7 @@ void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) {
         SetTextColor(hdc, 0xffffff);
     }
     old_region = SelectObject(hdc, region);
-    color_flag = (int)SelectFont(hdc, font);
+    color_flag = (INT_PTR)SelectFont(hdc, font); /* the old font */
     DrawTextA(hdc, text, strlen(text), &rc, 0x24);
     SelectObject(hdc, (HGDIOBJ)color_flag);
     SelectObject(hdc, old_region);

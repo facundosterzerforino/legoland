@@ -466,8 +466,8 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
     struct NeighborResult r;
     unsigned short type;
     int ptmp553;
-    int ptmp236;
-    volatile int ptmp237;
+    struct Ride *ptmp236;
+    unsigned int *volatile ptmp237;
     register volatile unsigned int ptmp554;
     struct RideQueueEntry **q = (struct RideQueueEntry **)&r;
     int result;
@@ -514,7 +514,7 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
                     } else if (q[6] != NULL) {
                         type = q[6]->id;
                     } else {
-                        type = (unsigned short)(unsigned int)t;
+                        type = (unsigned short)(UINT_PTR)t;
                     }
                     FUN_004135d0(EditCursor.tile_x, EditCursor.tile_y, &r);
                     FUN_00413450(EditCursor.tile_x, EditCursor.tile_y, (struct RideQueueEntry **)&r);

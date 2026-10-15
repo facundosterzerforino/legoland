@@ -237,7 +237,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
                 out = (unsigned short *)image->data + (image->height - 1) * image->width;
                 src = pixels;
                 for (i = 0; i < image->height; i++) {
-                    src = (unsigned char *)(((unsigned int)src + 3) & ~3);
+                    src = (unsigned char *)(((UINT_PTR)src + 3) & ~(UINT_PTR)3);
                     dst = out;
                     out -= image->width;
                     for (j = 0; j < image->width; j++, dst++, src += 3) {
@@ -250,7 +250,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
                 out = (unsigned short *)image->data + (image->height - 1) * image->width;
                 src = pixels;
                 for (i = 0; i < image->height; i++) {
-                    src = (unsigned char *)(((unsigned int)src + 3) & ~3);
+                    src = (unsigned char *)(((UINT_PTR)src + 3) & ~(UINT_PTR)3);
                     dst = out;
                     out -= image->width;
                     for (j = 0; j < image->width; j++, dst++, src += 3) {
