@@ -2227,7 +2227,7 @@ void *DAT_0062fd40;
 struct RideSpriteInfo DAT_0062fd48;
 
 // GLOBAL: LEGOLAND 0x0062fd60
-void *SpaceTowerLayers;
+struct Sprite *SpaceTowerLayers;
 
 // GLOBAL: LEGOLAND 0x0062fd64
 struct Sprite *SpaceTowerSeatMatteSprites[4];

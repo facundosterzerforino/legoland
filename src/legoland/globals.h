@@ -1939,7 +1939,7 @@ extern void *DAT_0062fd40;
 // 0x0062fd48
 extern struct RideSpriteInfo DAT_0062fd48; /* the space tower's sprite to draw */
 // 0x0062fd60
-extern void *SpaceTowerLayers;
+extern struct Sprite *SpaceTowerLayers;
 // 0x0062fd64
 extern struct Sprite *SpaceTowerSeatMatteSprites[4];
 // 0x0062fd74
