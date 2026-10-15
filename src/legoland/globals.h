@@ -324,7 +324,8 @@ struct DeferredSprite {
 };
 
 struct ListLink {
-    unsigned char pad_0[0x14];
+    unsigned char pad_0[0x10];
+    /* 0x10 */ int kind;
     struct ListLink *var_14;
     struct ListLink *var_18;
 };

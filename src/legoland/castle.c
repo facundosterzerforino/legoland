@@ -58,13 +58,6 @@ struct EdgeSet {
     struct EdgePair *pairs;
 };
 
-struct FlagNode {
-    unsigned char pad_0[0x10];
-    int kind;
-    unsigned int pad_14;
-    struct FlagNode *next;
-};
-
 #include "image_sprite.h"
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int GetOppositeDirection(unsigned int dir) {
@@ -4292,8 +4285,8 @@ struct Obj421ab0 {
     unsigned int field_44;
     float field_48;
     void **field_4c;
-    unsigned int field_50;
-    unsigned int field_54;
+    struct SegBlob *field_50; /* next */
+    struct SegBlob *field_54; /* prev */
 };
 
 // FUNCTION: LEGOLAND 0x00421ab0
@@ -4313,8 +4306,8 @@ void FUN_00421ab0(struct Obj421ab0 *obj, float *a, float *b, struct Words3 *c) {
     obj->field_4c = &DAT_004dd5e0[8];
     obj->field_44 = 0;
     obj->field_48 = 1.0f;
-    obj->field_50 = 0;
-    obj->field_54 = 0;
+    obj->field_50 = NULL;
+    obj->field_54 = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00421b40
@@ -4399,8 +4392,8 @@ struct Obj421ce0 {
     unsigned int field_44;
     float field_48;
     void **field_4c;
-    unsigned int field_50;
-    unsigned int field_54;
+    struct SegBlob *field_50; /* next */
+    struct SegBlob *field_54; /* prev */
 };
 
 // FUNCTION: LEGOLAND 0x00421ce0
@@ -4413,8 +4406,8 @@ void FUN_00421ce0(struct Words3 *a, struct Words3 *b, struct Words3 *c, struct O
     obj->field_28 = e;
     obj->field_44 = 0;
     obj->field_48 = 1.5707950592041016f;
-    obj->field_50 = 0;
-    obj->field_54 = 0;
+    obj->field_50 = NULL;
+    obj->field_54 = NULL;
 }
 
 struct Struct1d60 {
@@ -6514,23 +6507,13 @@ void FUN_00424d80(struct CastleState *list) {
     }
 }
 
-struct DcLink {
-    unsigned char pad_0[0x60];
-    unsigned char field_60;
-};
-
-struct DcNode {
-    unsigned char pad_0[0xc];
-    struct DcLink *field_c;
-};
-
 // FUNCTION: LEGOLAND 0x00424dc0
 void FUN_00424dc0(struct CastleState *arg) {
-    struct DcNode *current = FUN_00424b90(arg);
+    struct CastleVisitor *current = FUN_00424b90(arg);
     if (current != NULL) {
         while (current != NULL) {
-            struct DcLink *next = current->field_c;
-            next->field_60 = 33;
+            struct Bloke *next = current->bloke;
+            next->param_action = 33;
             FUN_00421980((struct CastleVisitor *)current);
             current = FUN_00424b90(arg);
         }
@@ -7500,13 +7483,13 @@ int FUN_004265d0(struct RectI *a, struct RectI *b) {
 
 // FUNCTION: LEGOLAND 0x00426650
 unsigned int FUN_00426650(void) {
-    struct FlagNode *n = (struct FlagNode *)DAT_00829a3c.var_18;
+    struct ListLink *n = (struct ListLink *)DAT_00829a3c.var_18;
 
-    while (n != (struct FlagNode *)&DAT_00829a3c) {
+    while (n != (struct ListLink *)&DAT_00829a3c) {
         if (n->kind == 0xf) {
             return 1;
         }
-        n = n->next;
+        n = n->var_18;
     }
     return 0;
 }
