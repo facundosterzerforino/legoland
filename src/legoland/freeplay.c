@@ -51,14 +51,6 @@ struct FreePlayGroup {
     int clip_bottom;
 };
 
-struct GameListNode {
-    struct GameListNode *next;
-    unsigned char pad_4[0x14];
-    unsigned char field_18;
-    unsigned char pad_19[3];
-    char *field_1c; /* the icon's object name */
-};
-
 // LLIDB element fields read by InitFreePlayScreen (real Element is opaque).
 
 #include "image_sprite.h"
@@ -155,9 +147,9 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
 
 // FUNCTION: LEGOLAND 0x0048ab60
 void FUN_0048ab60(void) {
-    struct GameListNode *node;
+    struct IconNode *node;
 
-    node = (struct GameListNode *)IconListHead;
+    node = (struct IconNode *)IconListHead;
     if (node == 0) {
         return;
     }

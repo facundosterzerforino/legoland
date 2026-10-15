@@ -19,17 +19,6 @@
 
 struct Sprite;
 
-struct IconAnim {
-    /* 0x00 */ struct LLS *lls;
-    /* 0x04 */ unsigned char pad_4[0x14 - 0x4];
-    /* 0x14 */ int kind;
-};
-
-struct IconSprite {
-    /* 0x00 */ unsigned char pad_0[8];
-    /* 0x08 */ struct IconAnim *anim;
-};
-
 struct Rect32 {
     int left;
     int top;
@@ -1230,8 +1219,8 @@ LEGO_EXPORT void RenderIcons(void) {
             }
             if (node == (struct IconNode *)FocussedIconPtr) {
                 if (node->sprite) {
-                    struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
-                    if (anim->kind == 3 || anim->kind == 2) {
+                    struct SpriteAnim *anim = ((struct Sprite *)node->sprite)->anim;
+                    if (anim->type == 3 || anim->type == 2) {
                         LLSPlayOnce(anim->lls, anim);
                     }
                 }
@@ -1265,8 +1254,8 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
             }
         }
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
-            struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
-            if (anim->kind == 3 || anim->kind == 2) {
+            struct SpriteAnim *anim = ((struct Sprite *)node->sprite)->anim;
+            if (anim->type == 3 || anim->type == 2) {
                 LLSPlayOnce(anim->lls, anim);
             }
         }
@@ -1300,8 +1289,8 @@ void FUN_0046f100(short param_1) {
             }
         }
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
-            struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
-            if (anim->kind == 3 || anim->kind == 2) {
+            struct SpriteAnim *anim = ((struct Sprite *)node->sprite)->anim;
+            if (anim->type == 3 || anim->type == 2) {
                 LLSPlayOnce(anim->lls, anim);
             }
         }

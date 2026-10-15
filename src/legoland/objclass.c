@@ -15,11 +15,6 @@
 #include "obj_instance.h"
 #include "objclass.h"
 
-struct ObjCountWrap {
-    unsigned char pad_0[0xc];
-    struct Ride *inner;
-};
-
 struct ClassRideNode {
     struct ClassRideNode *next;
     void *ride;
@@ -253,11 +248,11 @@ LEGO_EXPORT void ClearObjectCounters(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480d30
-LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap) {
+LEGO_EXPORT unsigned int ObjCount(struct Element *wrap) {
     if (wrap == 0) {
         return 0;
     }
-    return wrap->inner->field_8;
+    return wrap->ride->field_8;
 }
 
 // FUNCTION: LEGOLAND 0x00480d40
