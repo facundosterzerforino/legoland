@@ -113,7 +113,6 @@ struct PathNode;
 struct BoatRideNode;
 struct MermaidNode;
 struct Ride;
-struct RideLayer;
 struct CatapultNode;
 struct Position;
 struct RinData;
@@ -128,7 +127,6 @@ struct InterfaceListNode;
 struct MoviePool;
 struct TrackElemPair;
 struct PanelNode;
-struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
 struct InfoObjData;
@@ -1985,11 +1983,11 @@ extern void *DAT_0062fe00[2];
 // 0x0062fe08
 extern struct BarrelNode *SpinningBarrelList;
 // 0x0062fe48
-extern struct RideLayer *PottingShedLayer;
+extern struct Sprite *PottingShedLayer;
 // 0x0062fe4c
 extern struct Sprite *GShedMatteSprite;
 // 0x0062fe50
-extern struct RideLayer *MechanicsHutLayer;
+extern struct Sprite *MechanicsHutLayer;
 // 0x0062fe54
 extern struct Sprite *MechHutMaskSprite;
 // 0x0062fe58
@@ -2714,7 +2712,7 @@ extern struct MoviePool *DAT_00668fb8;
 // 0x00668fc0
 extern void *DAT_00668fc0;
 // 0x00668fc4
-extern struct InterfaceQueryNode *DAT_00668fc4;
+extern struct GameMainNode *DAT_00668fc4;
 // 0x00668fcc
 extern int DAT_00668fcc;
 // 0x00668fd0

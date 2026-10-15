@@ -597,7 +597,7 @@ unsigned int ScriptEventLoopComposite(struct ObjectiveEvent *arg) {
 // FUNCTION: LEGOLAND 0x0046abc0
 int ScriptEventTechLevel(struct ObjectiveEvent *param_1) {
     /* param_1 is a RewardArg* carried as unsigned int (table callback ABI) */
-    return ProcessUnimplementedReward((struct RewardArg *)param_1);
+    return ProcessUnimplementedReward((struct ObjectiveEvent *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046abd0
@@ -738,7 +738,7 @@ unsigned int FUN_0046ae20(void) {
 
 // FUNCTION: LEGOLAND 0x0046ae30
 int ScriptEventStudArea(struct ObjectiveEvent *param_1) {
-    return ProcessUnimplementedReward((struct RewardArg *)param_1);
+    return ProcessUnimplementedReward((struct ObjectiveEvent *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046ae40
@@ -947,7 +947,7 @@ unsigned int ScriptEventSelectMode(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046b1e0
 int FUN_0046b1e0(struct ObjectiveEvent *param_1) {
-    return ProcessUnimplementedObjective((struct RewardArg *)param_1);
+    return ProcessUnimplementedObjective((struct ObjectiveEvent *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046b1f0

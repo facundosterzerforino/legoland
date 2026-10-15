@@ -209,7 +209,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[1].field_10 = 2;
     node->layer[1].field_14 = 7;
     node->layer[1].flags = 0;
-    handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 3);
+    handle = GetSpriteForLayer((struct Sprite *)CopterModelLayers, 3);
     if (handle != 0) {
         lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
@@ -223,7 +223,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[0].field_10 = 0;
     node->layer[0].field_14 = 6;
     node->layer[0].flags = 0;
-    handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 1);
+    handle = GetSpriteForLayer((struct Sprite *)CopterModelLayers, 1);
     if (handle != 0) {
         lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
@@ -237,7 +237,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[2].field_10 = 4;
     node->layer[2].field_14 = 8;
     node->layer[2].flags = 0;
-    handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 0xb);
+    handle = GetSpriteForLayer((struct Sprite *)CopterModelLayers, 0xb);
     if (handle != 0) {
         lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
@@ -251,7 +251,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[3].field_10 = 3;
     node->layer[3].field_14 = 5;
     node->layer[3].flags = 0;
-    handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 6);
+    handle = GetSpriteForLayer((struct Sprite *)CopterModelLayers, 6);
     if (handle != 0) {
         lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {
@@ -265,7 +265,7 @@ void CoptersInitNode(struct CopterNode *node) {
     node->layer[4].field_10 = 1;
     node->layer[4].field_14 = 9;
     node->layer[4].flags = 0;
-    handle = GetSpriteForLayer((struct LayerContainer *)CopterModelLayers, 7);
+    handle = GetSpriteForLayer((struct Sprite *)CopterModelLayers, 7);
     if (handle != 0) {
         lls = GetLLSForSprite((struct Sprite *)handle);
         if (lls != NULL) {

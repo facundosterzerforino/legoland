@@ -55,7 +55,7 @@ void RenderCastleLevel(Element *obj, unsigned int param_2, unsigned int param_3,
     RenderBlokeList((struct RenderItemNode **)&DAT_004c10e8);
     if (CastleLevelMatteSprite != NULL) {
         pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
-        offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)ride->layer, 2);
+        offset = GetRenderOffsetForLayer((struct Sprite *)ride->layer, 2);
         AdjustOffsetForViewMode(&offset);
         PrintSprite(CastleLevelMatteSprite, pos.x + offset.x, pos.y + offset.y, clip, 0);
     }

@@ -32,8 +32,6 @@ struct LLS;
 struct Ride;
 
 struct RinData;
-struct LayerContainer;
-struct LayerOffsetHolder;
 struct Matrix3x3;
 struct tagRECT;
 struct Person;

@@ -1743,7 +1743,6 @@ struct WaterNode *ElephantFountainList;
 
 struct InterfaceIconNode;
 struct InterfaceListNode;
-struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
 
@@ -2294,13 +2293,13 @@ void *DAT_0062fe00[2]; /* rider sprite by field_30: [1] is ZSpinningBarrelsSprit
 struct BarrelNode *SpinningBarrelList;
 
 // GLOBAL: LEGOLAND 0x0062fe48
-struct RideLayer *PottingShedLayer;
+struct Sprite *PottingShedLayer;
 
 // GLOBAL: LEGOLAND 0x0062fe4c
 struct Sprite *GShedMatteSprite;
 
 // GLOBAL: LEGOLAND 0x0062fe50
-struct RideLayer *MechanicsHutLayer;
+struct Sprite *MechanicsHutLayer;
 
 // GLOBAL: LEGOLAND 0x0062fe54
 struct Sprite *MechHutMaskSprite;
@@ -3377,7 +3376,7 @@ struct MoviePool *DAT_00668fb8;
 void *DAT_00668fc0;
 
 // GLOBAL: LEGOLAND 0x00668fc4
-struct InterfaceQueryNode *DAT_00668fc4;
+struct GameMainNode *DAT_00668fc4;
 
 // GLOBAL: LEGOLAND 0x00668fcc
 int DAT_00668fcc;

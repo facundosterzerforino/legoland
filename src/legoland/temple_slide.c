@@ -121,7 +121,7 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
             person->screen.x = bloke->screen_x + off1.x + off2.x + pos.x;
             person->screen.y = bloke->screen_y + off1.y + off2.y + pos.y;
             AdjustBlokePosition(&person->screen);
-            AddBlokeToRenderList(&DAT_004cbf84, (struct PersonSrc *)node, node->person->field_20);
+            AddBlokeToRenderList(&DAT_004cbf84, (struct BlokeRenderSrc *)node, node->person->field_20);
         }
     }
     RenderBlokeList((struct RenderItemNode **)&DAT_004cbf84);

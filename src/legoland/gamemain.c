@@ -57,8 +57,8 @@ int IsInMapBounds(int a, int b) {
 
 // FUNCTION: LEGOLAND 0x004776c0
 void FUN_004776c0(struct GameMainNode *node) {
-    node->next = (struct GameMainNode *)DAT_00668fc4;
-    DAT_00668fc4 = (struct InterfaceQueryNode *)node;
+    node->next = DAT_00668fc4;
+    DAT_00668fc4 = node;
 }
 
 // FUNCTION: LEGOLAND 0x004776e0
@@ -93,7 +93,7 @@ void InsertOpenListSorted(struct GameMainNode *node) {
 struct GameMainNode *FUN_00477730(struct Point *ctx) {
     struct GameMainNode *node;
 
-    node = (struct GameMainNode *)DAT_00668fc4;
+    node = DAT_00668fc4;
     if (node == NULL) {
         return NULL;
     }
@@ -112,7 +112,7 @@ void RemoveQueryNode(struct GameMainNode *ctx) {
     struct GameMainNode *node;
 
     prev = NULL;
-    node = (struct GameMainNode *)DAT_00668fc4;
+    node = DAT_00668fc4;
     while (node != NULL) {
         if (node == ctx) {
             break;
@@ -123,7 +123,7 @@ void RemoveQueryNode(struct GameMainNode *ctx) {
     if (prev != NULL) {
         prev->next = node->next;
     } else {
-        DAT_00668fc4 = (struct InterfaceQueryNode *)node->next;
+        DAT_00668fc4 = node->next;
     }
 }
 
@@ -504,7 +504,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
         nb = nb->parent;
     }
     while (DAT_00668fc4 != NULL) {
-        RemoveQueryNode((struct GameMainNode *)DAT_00668fc4);
+        RemoveQueryNode(DAT_00668fc4);
     }
 }
 
