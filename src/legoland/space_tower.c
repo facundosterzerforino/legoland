@@ -656,7 +656,7 @@ LEGO_EXPORT int SpaceTower_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b780
-void SpaceTowerRide(struct ClassNode *name, struct Ride *obj) {
+void SpaceTowerRide(struct Element *name, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b789c
     if (_stricmp("SPACE TOWER RIDE", name->name) == 0) {
         obj->cb_a4 = SpaceTowerRideLoad;

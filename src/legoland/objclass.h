@@ -19,12 +19,6 @@ typedef void (*RideCallback)();
 typedef int (*RideIntCallback)();
 typedef struct RideSpriteInfo *(*RidePtrCallback)(struct Element *element, unsigned short id);
 
-struct ClassNode {
-    /* 0x00 */ char *name;
-    /* 0x04 */ unsigned char pad_4[8];
-    /* 0x0c */ struct Ride *iface;
-};
-
 struct LibraryNode {
     /* 0x00 */ struct LibraryNode *next;
     /* 0x04 */ void *module;

@@ -577,7 +577,7 @@ LEGO_EXPORT int LoadGoldWash(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x004078f0
-void GoldRush_GetInterfaces(struct ClassNode *str, struct Ride *module) {
+void GoldRush_GetInterfaces(struct Element *str, struct Ride *module) {
     // STRING: LEGOLAND 0x004b4670
     if (_stricmp("GOLD RUSH", str->name) == 0) {
         module->cb_a4 = GoldRushLoad;

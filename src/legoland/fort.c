@@ -244,7 +244,7 @@ void FortRemoveObject(Element *elem, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x004068b0
-void FortGetInterfaces(struct ClassNode *name, struct Ride *ci) {
+void FortGetInterfaces(struct Element *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b45a0
     if (_stricmp("FORT", name->name) != 0) {
         return;

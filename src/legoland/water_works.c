@@ -872,7 +872,7 @@ LEGO_EXPORT int Load_ElephantF(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x00418c80
-void WaterWorksGetInterfaces(struct ClassNode *name, struct Ride *ci) {
+void WaterWorksGetInterfaces(struct Element *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b50f4
     if (_stricmp("WATER WORKS ENTRANCE", name->name) == 0) {
         ci->cb_a4 = (void (*)())WaterWorksEntranceLoad;

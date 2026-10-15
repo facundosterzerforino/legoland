@@ -320,7 +320,7 @@ struct RideSpriteInfo *GetSpiderRideSpriteInfo(struct Element *a1, unsigned shor
 }
 
 // FUNCTION: LEGOLAND 0x00416160
-void SpiderRide(struct ClassNode *name_ptr, struct Ride *obj) {
+void SpiderRide(struct Element *name_ptr, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b4eb8
     if (_stricmp("SPIDER RIDE", name_ptr->name) == 0) {
         obj->cb_a4 = SpiderRideLoad;

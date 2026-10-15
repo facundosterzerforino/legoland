@@ -204,7 +204,7 @@ void TempleRemoveObject(Element *a1, TileId tile, struct Cursor *a3) {
 }
 
 // FUNCTION: LEGOLAND 0x00416e50
-void Temple_GetInterfaces(struct ClassNode *str, struct Ride *obj) {
+void Temple_GetInterfaces(struct Element *str, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b4ef0
     if (_stricmp("TEMPLE", str->name) == 0) {
         obj->cb_a4 = LoadTempleMatteSprites;

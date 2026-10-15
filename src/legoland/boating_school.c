@@ -1167,7 +1167,7 @@ int FUN_0041b100(struct Element *dummy, int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b150
-LEGO_EXPORT void GetInterface(struct ClassNode *head, struct Ride *iface) {
+LEGO_EXPORT void GetInterface(struct Element *head, struct Ride *iface) {
     void **cb = (void **)iface;
     // STRING: LEGOLAND 0x004b537c
     if (_stricmp("BOATING SCHOOL WATER", head->name) == 0) {

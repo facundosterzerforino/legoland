@@ -968,7 +968,7 @@ LEGO_EXPORT int Copters_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x00405110
-void CoptersRide(struct ClassNode *name, struct Ride *interfaces) {
+void CoptersRide(struct Element *name, struct Ride *interfaces) {
     // STRING: LEGOLAND 0x004b43e4
     if (_stricmp("COPTERS", name->name) == 0) {
         interfaces->cb_a4 = CoptersLoad;

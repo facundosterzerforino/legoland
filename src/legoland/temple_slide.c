@@ -507,7 +507,7 @@ LEGO_EXPORT int LoadTempleSlide(struct Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00417a00
-LEGO_EXPORT void TempleSlide_GetInterfaces(struct ClassNode *ctx, struct Ride *interfaces) {
+LEGO_EXPORT void TempleSlide_GetInterfaces(struct Element *ctx, struct Ride *interfaces) {
     // STRING: LEGOLAND 0x004b4f8c
     if (_stricmp("TEMPLE SLIDE", ctx->name) == 0) {
         interfaces->cb_a4 = TempleSlideLoad;

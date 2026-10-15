@@ -263,7 +263,7 @@ struct RideSpriteInfo *GetSafariRideSpriteInfo(struct Element *p1, unsigned shor
 }
 
 // FUNCTION: LEGOLAND 0x00415030
-void SafariRideGetInterfaces(struct ClassNode *name, struct Ride *interfaces) {
+void SafariRideGetInterfaces(struct Element *name, struct Ride *interfaces) {
     // STRING: LEGOLAND 0x004b4d74
     if (_stricmp("SAFARI RIDE", name->name) == 0) {
         interfaces->cb_a4 = SafariRideLoad;

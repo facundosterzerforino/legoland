@@ -374,7 +374,7 @@ LEGO_EXPORT int LoadSBarrel(struct Element *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c760
-void SpinningBarrelsGetInterfaces(struct ClassNode *str, struct Ride *ride) {
+void SpinningBarrelsGetInterfaces(struct Element *str, struct Ride *ride) {
     // STRING: LEGOLAND 0x004b7978
     if (_stricmp("SPINNING BARRELS RIDE", str->name) == 0) {
         ride->cb_a4 = SpinningBarrelsRideLoad;

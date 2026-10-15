@@ -5310,7 +5310,7 @@ int LogFlumeEntrance_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x00410d60
-void LogFlume_GetInterfaces(struct ClassNode *flume, struct Ride *vtbl) {
+void LogFlume_GetInterfaces(struct Element *flume, struct Ride *vtbl) {
     // STRING: LEGOLAND 0x004b4bb4
     if (_stricmp("LOG FLUME ENTRANCE", flume->name) == 0) {
         vtbl->cb_a4 = LogFlumeEntranceLoad;
@@ -5329,7 +5329,7 @@ void LogFlume_GetInterfaces(struct ClassNode *flume, struct Ride *vtbl) {
     }
     // STRING: LEGOLAND 0x004b4ba4
     if (_stricmp("LOG FLUME TRACK", flume->name) == 0) {
-        DAT_0082c688 = flume->iface;
+        DAT_0082c688 = flume->ride;
         vtbl->cb_a4 = LogFlumeTrackLoad;
         vtbl->cb_8c = LogFlumeTrackSetEditMode;
         vtbl->cb_sprite = (struct RideSpriteInfo * (*)(struct Element *, unsigned short)) GetLogFlumeTrackSpriteInfo; /* takes the tile id as a TileId */

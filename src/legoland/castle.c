@@ -6705,7 +6705,7 @@ void CastleObjUpdate(Element *obj) {
 
 #pragma optimize("", off)
 // FUNCTION: LEGOLAND 0x004254d0
-void CastleGetInterfaces(struct ClassNode *head, struct Ride *obj) {
+void CastleGetInterfaces(struct Element *head, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b5c0c
     if (_stricmp("CASTLE OBJ", head->name) == 0) {
         obj->cb_8c = CastleDispatchSetEditMode;

@@ -522,7 +522,7 @@ LEGO_EXPORT int Catapult_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x00403bb0
-void Catapult_GetInterfaces(struct ClassNode *name, struct Ride *ci) {
+void Catapult_GetInterfaces(struct Element *name, struct Ride *ci) {
     // STRING: LEGOLAND 0x004b412c
     if (_stricmp("CATAPULT", name->name) == 0) {
         ci->cb_a4 = LoadCatapultResources;
