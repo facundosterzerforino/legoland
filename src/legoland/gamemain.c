@@ -292,7 +292,7 @@ void FUN_004779d0(struct Point *p) {
         if (tile->flags & 0x20) {
             if (QueryClass->flags & 0x200000) {
                 RemoveObjectFromBuildList(t);
-                FUN_0045e850((struct ObjNode *)elem, &pos.x);
+                FUN_0045e850((struct Element *)elem, &pos.x);
                 IncrementObjectCount((struct ObjectCount *)QueryClass);
                 RemoveObjectFromMap(t);
             }
@@ -306,7 +306,7 @@ void FUN_004779d0(struct Point *p) {
     if (tile->flags & 0x800) {
         order = GetGardenerWorkOrderAt(p->x, p->y);
         if (NULL != order) {
-            FUN_0045e850((struct ObjNode *)order->element, &order->pos.x);
+            FUN_0045e850((struct Element *)order->element, &order->pos.x);
             ptmp63 = order->element->data;
             ClearPathUnderFootprint((struct PathFootprint *)ptmp63, &order->pos.x);
             EraseGardenerOrder(order);
@@ -317,7 +317,7 @@ void FUN_004779d0(struct Point *p) {
         order = GetMechanicWorkOrderAt(ptmp62, ptmp184);
         if (order != NULL) {
             ptmp12 = order->element;
-            FUN_0045e850((struct ObjNode *)ptmp12, &order->pos.x);
+            FUN_0045e850((struct Element *)ptmp12, &order->pos.x);
             ClearPathUnderFootprint((struct PathFootprint *)order->element->data, &order->pos.x);
             EraseMechanicOrder(order);
             return;
