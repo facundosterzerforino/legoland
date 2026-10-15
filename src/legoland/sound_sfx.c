@@ -503,7 +503,7 @@ LEGO_EXPORT void KillPlayableSample(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00492b90
-LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1) {
+LEGO_EXPORT void DeletePlayableSamples(struct SampleDef *param_1) {
     struct Sample *current;
     struct Sample *previous;
     struct Sample *next;
@@ -535,7 +535,7 @@ LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def) {
     if (def == 0) {
         return;
     }
-    DeletePlayableSamples((unsigned int)def);
+    DeletePlayableSamples(def);
     free(def->block_30);
     free(def->block_34);
     ((struct SampleDefVtbl *)def->buffer->vtable)->func_8(def->buffer);

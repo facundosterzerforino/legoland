@@ -1437,7 +1437,7 @@ void UpdateAdvicePriority(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473680
-void FUN_00473680(int param_1, int param_2, char *param_3, unsigned int param_4, unsigned int param_5) {
+void FUN_00473680(int param_1, int param_2, char *param_3, void *param_4, void *param_5) {
     strcpy(DAT_00668968, param_3);
     DAT_007fe010 = param_1;
     DAT_007fe014 = param_2;

@@ -12,7 +12,7 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2);
 unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2);
 unsigned char FUN_0048ff70(unsigned int param_1, unsigned int param_2);
 unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2);
-unsigned int FUN_00490350(void);
+struct Sprite *FUN_00490350(void);
 void FUN_00490150(void);
 void FUN_00490410(void);
 void FUN_00490c70(void);

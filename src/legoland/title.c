@@ -284,7 +284,7 @@ unsigned char FUN_00490300(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00490350
-unsigned int FUN_00490350(void) {
+struct Sprite *FUN_00490350(void) {
     struct IconNode *icon;
     struct Sprite *result;
 
@@ -311,7 +311,7 @@ unsigned int FUN_00490350(void) {
     PrintInfoSprite = result;
     CertificatePrintResultTimer = 0;
     DAT_0079876c = 0;
-    return (unsigned int)result;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x00490410

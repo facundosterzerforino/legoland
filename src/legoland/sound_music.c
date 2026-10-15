@@ -905,7 +905,7 @@ void FUN_00496d10(struct Sample *sample) {
 LEGO_EXPORT struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config) {
     struct Sample *sample;
 
-    sample = CreatePlayableSample((unsigned int)def);
+    sample = CreatePlayableSample(def);
     if (sample == 0) {
         return 0;
     }

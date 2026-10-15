@@ -882,7 +882,7 @@ void MonkeyFishAddObject(struct EditObject *obj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00434330
-void JungleCruiseMonkeyFishCalcCursor(Element *obj, int *param_2, int *param_3) {
+void JungleCruiseMonkeyFishCalcCursor(Element *obj, int *param_2, unsigned int param_3) {
     struct Ride *ride;
     TileId owners[2];
     struct Footprint fp;

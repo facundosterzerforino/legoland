@@ -211,7 +211,7 @@ LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned
 LEGO_EXPORT int PauseSingleSample(struct Sample *sample);
 void PauseAllSamples(void);
 void ResumeAllSamples(void);
-LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1);
+LEGO_EXPORT void DeletePlayableSamples(struct SampleDef *param_1);
 LEGO_EXPORT int UpdateSoundVols(void);
 LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample);
 void FUN_00492980(void);
