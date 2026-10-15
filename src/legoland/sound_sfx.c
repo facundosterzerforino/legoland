@@ -15,11 +15,6 @@
 
 struct DirectSoundObj;
 
-struct SampleCounter {
-    unsigned char pad_0[4];
-    int count;
-};
-
 struct SampleDefVtbl {
     void *func_0;
     void *func_4;
@@ -478,7 +473,7 @@ LEGO_EXPORT int SetSampleFade(struct Sample *sample, unsigned int fade) {
 void FreeSample(struct Sample *sample) {
     if (sample != 0) {
         ((struct SampleDefVtbl *)sample->buffer->vtable)->func_8(sample->buffer);
-        ((struct SampleCounter *)sample->active)->count--;
+        ((struct Sample *)sample->active)->refcount--;
         free(sample);
     }
 }
