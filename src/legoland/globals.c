@@ -1428,16 +1428,7 @@ struct Ride *DAT_004cbe18;
 struct Sprite *LogFlumeFc1M3Sprite;
 
 // GLOBAL: LEGOLAND 0x004cbe20
-struct FlumeEntry *DAT_004cbe20;
-
-// GLOBAL: LEGOLAND 0x004cbe24
-struct FlumeEntry *DAT_004cbe24;
-
-// GLOBAL: LEGOLAND 0x004cbe28
-struct FlumeEntry *DAT_004cbe28;
-
-// GLOBAL: LEGOLAND 0x004cbe2c
-struct FlumeEntry *DAT_004cbe2c;
+struct FlumeEntry *DAT_004cbe20[4]; /* the 4 neighbours of a log flume tile (up, right, down, left) */
 
 // GLOBAL: LEGOLAND 0x004cbe30
 struct Ride *LogFlumeTrackRide;

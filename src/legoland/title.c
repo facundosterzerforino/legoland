@@ -817,8 +817,8 @@ unsigned int FUN_00491240(const char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00491290
-LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile) {
-    struct IconNode *icon = (struct IconNode *)profile;
+LEGO_EXPORT void InitNewProfilePoPUp(struct IconNode *profile) {
+    struct IconNode *icon = profile;
     struct IconNode *popup;
 
     // STRING: LEGOLAND 0x004bf6e4

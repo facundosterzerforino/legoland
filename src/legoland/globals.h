@@ -1402,13 +1402,7 @@ extern struct Ride *DAT_004cbe18;
 // 0x004cbe1c
 extern struct Sprite *LogFlumeFc1M3Sprite;
 // 0x004cbe20
-extern struct FlumeEntry *DAT_004cbe20;
-// 0x004cbe24
-extern struct FlumeEntry *DAT_004cbe24;
-// 0x004cbe28
-extern struct FlumeEntry *DAT_004cbe28;
-// 0x004cbe2c
-extern struct FlumeEntry *DAT_004cbe2c;
+extern struct FlumeEntry *DAT_004cbe20[4]; /* the 4 neighbours of a log flume tile (up, right, down, left) */
 // 0x004cbe30
 extern struct Ride *LogFlumeTrackRide;
 // 0x004cbe48
