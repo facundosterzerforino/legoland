@@ -4069,13 +4069,13 @@ struct IconNode *DAT_007cb2e0;
 struct IconNode *DAT_007cb2e4;
 
 // GLOBAL: LEGOLAND 0x007cb2f0
-char DAT_007cb2f0[0x10];
+struct EditState DAT_007cb2f0; /* EditMode saved by FUN_0048f9f0 */
 
 // GLOBAL: LEGOLAND 0x007cb300
-char DAT_007cb300[0xc];
+struct ScreenMode DAT_007cb300; /* DAT_0080ff80 saved */
 
 // GLOBAL: LEGOLAND 0x007cb30c
-char DAT_007cb30c[4];
+unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
 
 // GLOBAL: LEGOLAND 0x007cb310
 unsigned int DAT_007cb310;
