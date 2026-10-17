@@ -30,7 +30,7 @@
 // memory DC and the bitmap selected into it are never drawn with, and the LocalAlloc'd
 // LOGFONT is not checked for NULL.
 // FUNCTION: LEGOLAND 0x00451740
-int PrintCertificate(char *param_1, char *param_2, char *param_3) {
+int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
     DEVMODEA dm;
     BYTE printers[0xa80];
     DOCINFOA di;
@@ -68,7 +68,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
     hDC = CreateDCA(NULL, ((char **)printers)[1], NULL, &dm);
     if (!hDC)
         return 0;
-    fd = _open(param_1, _O_RDONLY | _O_BINARY, _S_IREAD);
+    fd = _open(bitmap_path, _O_RDONLY | _O_BINARY, _S_IREAD);
     if ((int)fd >= 0) {
         _read(fd, &bmfh, 14);
         _read(fd, &bmih, 40);
@@ -203,7 +203,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                 hOldFont = (HFONT)SelectObject(hDC, hFont);
                 SetBkMode(hDC, TRANSPARENT);
                 SetTextAlign(hDC, TA_CENTER | TA_TOP);
-                TextOutA(hDC, hres / 2, vres * 678 / pInfo->bmiHeader.biHeight, param_2, strlen(param_2));
+                TextOutA(hDC, hres / 2, vres * 678 / pInfo->bmiHeader.biHeight, player_name, strlen(player_name));
                 plf->lfHeight = -MulDiv(8, GetDeviceCaps(hDC, LOGPIXELSY), 72);
                 plf->lfWeight = 300;
                 lstrcpyA(plf->lfFaceName, "Lego");
@@ -220,7 +220,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                 SelectObject(hDC, hFont);
                 SetBkMode(hDC, TRANSPARENT);
                 SetTextAlign(hDC, TA_LEFT);
-                TextOutA(hDC, 0, 0, param_3, strlen(param_3));
+                TextOutA(hDC, 0, 0, date_text, strlen(date_text));
                 LocalFree(plf);
                 SelectObject(hDC, hOldFont);
                 DeleteObject(hFont);
