@@ -1002,8 +1002,9 @@ extern char DAT_004b8344;
 extern char *PTR_DAT_004b8348[8];
 // 0x004b8368
 extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
+// Persistent Windows 95 VWIN32 device handle used by the CD ejection path.
 // 0x004b85c4
-extern HANDLE DAT_004b85c4;
+extern HANDLE VWin32DeviceHandle;
 // 0x004b8710
 extern struct FXItem FountainSFX[5]; /* their file names follow */
 // 0x004b8750
@@ -3721,6 +3722,7 @@ extern int DAT_00813af8;
 extern int DAT_00813afc;
 // 0x00813b00
 extern LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
+// Root of the last CDFS volume found by FindCdDriveWithVolume (four bytes, including NUL).
 // 0x00813b04
 extern char CdDrivePath[4];
 // 0x00813b08

@@ -792,8 +792,9 @@ char *PTR_DAT_004b8348[8] = {0};
 // GLOBAL: LEGOLAND 0x004b8368
 void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *) = {0};
 
+// Persistent VWIN32 handle for EjectCdDrive; invalid until opened and invalidated after closing.
 // GLOBAL: LEGOLAND 0x004b85c4
-HANDLE DAT_004b85c4 = INVALID_HANDLE_VALUE;
+HANDLE VWin32DeviceHandle = INVALID_HANDLE_VALUE;
 
 // GLOBAL: LEGOLAND 0x004b8710
 struct FXItem FountainSFX[5];
@@ -4854,6 +4855,7 @@ int DAT_00813afc;
 // GLOBAL: LEGOLAND 0x00813b00
 LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 
+// Last matching CD-ROM root, including its trailing backslash and NUL terminator.
 // GLOBAL: LEGOLAND 0x00813b04
 char CdDrivePath[4];
 
