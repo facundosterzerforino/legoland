@@ -1025,6 +1025,9 @@ unsigned int DAT_004bb6d4;
 // GLOBAL: LEGOLAND 0x004bb6f8
 struct ScriptCommand DAT_004bb6f8[0x5d];
 
+// GLOBAL: LEGOLAND 0x004b86e0
+const char LegoFontName[] = "Lego";
+
 // GLOBAL: LEGOLAND 0x004bb49c
 const char BuildMenuName[] = "BUILD MENU";
 

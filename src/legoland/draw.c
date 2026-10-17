@@ -131,8 +131,7 @@ LEGO_EXPORT int InitScreen(void) {
     font.lfClipPrecision = 0;
     font.lfQuality = 2;
     font.lfPitchAndFamily = 0;
-    // STRING: LEGOLAND 0x004b86e0
-    strcpy(font.lfFaceName, "Lego");
+    memcpy(font.lfFaceName, LegoFontName, sizeof(LegoFontName));
     LegoFont24Bold = CreateFontIndirectA(&font);
 
     font.lfWeight = 0x190;
@@ -146,7 +145,7 @@ LEGO_EXPORT int InitScreen(void) {
     font.lfWeight = 0x258;
     font.lfHeight = 0x12;
     font.lfWidth = 0;
-    strcpy(font.lfFaceName, "Lego");
+    memcpy(font.lfFaceName, LegoFontName, sizeof(LegoFontName));
     LegoFont18SemiBold = CreateFontIndirectA(&font);
 
     if (WinDebugMode == 0) {

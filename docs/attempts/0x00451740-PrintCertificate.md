@@ -1,6 +1,6 @@
 # PrintCertificate (0x00451740, `src/legoland/certificate.c`)
 
-**Best: 89.11%** (2026-10-17). Kind: C.
+**100% (2026-10-17) with documented naked asm**; best C 89.11%. Kind: C + asm.
 
 ## What still differs
 
@@ -48,3 +48,11 @@
 - Find the 4-byte hole the original leaves at `esp+0x2c`. Something the original declares is either in a block or not spilled at all; try block scope for `needed`/`returned` (for example a `{ }` around the `EnumPrintersA` check).
 - Write the first failure path as the original does (a full copy of the cleanup and `return 0`), so the tail is not merged.
 - Swap `fd` and the zero register by changing which of `_open`'s result or `needed=0` is assigned first.
+
+## 2026-10-17: 100% with documented asm
+
+The MSVC6 build uses a naked __asm transcription commented block by block; the #else branch is
+the plain C (no volatile temporaries). The strings became named arrays so the asm can push them:
+CertificateDocName (local) and LegoFontName (globals.c, shared with InitScreen in draw.c, which now
+copies it with memcpy(..., sizeof(LegoFontName)): MSVC6 inlines that exactly like the original's
+inlined strcpy of the literal; a plain strcpy from the array is not inlined, 71%).

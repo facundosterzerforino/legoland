@@ -120,7 +120,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0044e010 | [__BMPLoader](0x0044e010-__BMPLoader.md) | gfx.c | 39.57% |
 | 0x0044e580 | [LoadColourTable](0x0044e580-LoadColourTable.md) | gfx.c | 83.78% |
 | 0x0044fe80 | [FUN_0044fe80](0x0044fe80-FUN_0044fe80.md) | bloke_ai.c | 94.89% |
-| 0x00451740 | [PrintCertificate](0x00451740-PrintCertificate.md) | certificate.c | 81.20% |
+| 0x00451740 | [PrintCertificate](0x00451740-PrintCertificate.md) | certificate.c | 100% (asm) |
 | 0x00451e70 | [SetupControllers](0x00451e70-SetupControllers.md) | controller.c | 91.89% |
 | 0x00452030 | [FUN_00452030](0x00452030-FUN_00452030.md) | controller.c | 57.36% |
 | 0x00453d10 | [WinMain](0x00453d10-WinMain.md) | main.c | 100% |
