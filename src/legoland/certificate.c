@@ -23,9 +23,9 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
     void *pBits;
     DWORD returned;
     BITMAPINFO *pInfo;
-    register HGLOBAL hInfo;
+    HGLOBAL hInfo;
     HGLOBAL hBits;
-    register HBITMAP hBitmap;
+    HBITMAP hBitmap;
     HFONT hFont;
     HFONT hOldFont;
     LOGFONTA *plf;
@@ -33,15 +33,10 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
     HDC hDC;
     int vres;
     int fd;
+    /* volatile: both only steer MSVC6's register choice (zero in ebp, fd in ebx); see docs/attempts */
     volatile int ncolors;
-
-    volatile int ptmp10;
-    returned;
+    volatile LONG x_pels_per_meter;
     needed = 0;
-    pInfo;
-    pInfo;
-    pInfo;
-    returned;
     pInfo = NULL;
     returned = 0;
     if (EnumPrintersA(1, NULL, 2, printers, 0x540, &needed, &returned) <= 0)
@@ -69,7 +64,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
             if (NULL == pInfo) {
                 GlobalFree(hInfo);
             } else {
-                ptmp10 = bmih.biXPelsPerMeter;
+                x_pels_per_meter = bmih.biXPelsPerMeter;
                 pInfo->bmiHeader.biSize = bmih.biSize;
                 pInfo->bmiHeader.biWidth = bmih.biWidth;
                 pInfo->bmiHeader.biHeight = bmih.biHeight;
@@ -77,7 +72,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                 pInfo->bmiHeader.biBitCount = bmih.biBitCount;
                 pInfo->bmiHeader.biCompression = bmih.biCompression;
                 pInfo->bmiHeader.biSizeImage = bmih.biSizeImage;
-                pInfo->bmiHeader.biXPelsPerMeter = ptmp10;
+                pInfo->bmiHeader.biXPelsPerMeter = x_pels_per_meter;
                 pInfo->bmiHeader.biYPelsPerMeter = bmih.biYPelsPerMeter;
                 pInfo->bmiHeader.biClrUsed = bmih.biClrUsed;
                 pInfo->bmiHeader.biClrImportant = bmih.biClrImportant;
@@ -125,7 +120,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                 // STRING: LEGOLAND 0x004b86e8
                 di.lpszDocName = "Lego certificate";
                 di.lpszOutput = NULL;
-                { di.lpszDatatype = NULL; }
+                di.lpszDatatype = NULL;
                 di.fwType = 0;
                 if (StartDocA(hDC, &di) == -1) {
                     GlobalFree(hInfo);
@@ -190,7 +185,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                 hOldFont = (HFONT)SelectObject(hDC, hFont);
                 SetBkMode(hDC, TRANSPARENT);
                 SetTextAlign(hDC, TA_CENTER | TA_TOP);
-                TextOutA(hDC, hres / 2, vres * 678 / bmih.biHeight, param_2, strlen(param_2));
+                TextOutA(hDC, hres / 2, vres * 678 / pInfo->bmiHeader.biHeight, param_2, strlen(param_2));
                 plf->lfHeight = -MulDiv(8, GetDeviceCaps(hDC, LOGPIXELSY), 72);
                 plf->lfWeight = 300;
                 lstrcpyA(plf->lfFaceName, "Lego");
@@ -216,7 +211,7 @@ int PrintCertificate(char *param_1, char *param_2, char *param_3) {
                     GlobalFree(hInfo);
                     GlobalFree(hBits);
                     DeleteObject(hBitmap);
-                    { EndDoc(hDC); }
+                    EndDoc(hDC);
                     DeleteDC(hDC);
                     return 0;
                 }

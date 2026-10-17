@@ -1,6 +1,6 @@
 # PrintCertificate (0x00451740, `src/legoland/certificate.c`)
 
-**Best: 81.20%** (start value, no change yet). Kind: C.
+**Best: 89.11%** (2026-10-17). Kind: C.
 
 ## What still differs
 
@@ -20,6 +20,28 @@
 ## Best
 
 81.20%, the version currently in the file (unchanged from the start).
+
+
+## 2026-10-17 findings (Opus 5.5)
+
+- **Real source difference found:** the first `TextOutA` y is `vres * 678 / pInfo->bmiHeader.biHeight` (the original
+  loads `pInfo` from its slot and divides by `[ecx+8]`), not `bmih.biHeight`. That read keeps `pInfo` live into the
+  font code, so it no longer shares a slot with `hFont`/`hOldFont`. 87.26 -> 89.11.
+- With that fix and **all** artifacts removed (no volatile, no ptmp10, `ncolors` as the ternary inside GlobalAlloc),
+  the frame layout is exactly the original's (`/FAs` listing: fd/hres 0x10, hFont/hOldFont 0x14, hBitmap 0x18,
+  hBits 0x1c, hInfo 0x20, pInfo 0x24, returned 0x28, pBits 0x2c, needed 0x30, hMemDC 0x34), but the score is 84.83:
+  the zero constant gets ebx and fd ebp (original: zero in ebp, fd in ebx), so ours caches GlobalAlloc in ebx and
+  the error tails merge differently (ours merges the hBits/pBits fails into the shared _close tail and RASTERCAPS
+  into StartDoc's block; the original merges only font2 into font1).
+- The two volatile temporaries (`volatile int ncolors`, `ptmp10`) are what steer the register choice (they add uses);
+  removing either costs 5-6 points. The bare `returned;`/`pInfo;` statements, `register` and the extra braces had no
+  effect and were removed.
+- Tried without gain on the clean version: DOCINFO field order (name last: +0.16), memset(&di), `hFont = NULL` /
+  `hOldFont = NULL` / other handle inits (dead stores, dropped before slot assignment), `pInfo = NULL` removed,
+  `returned`/`needed` init order, `register int fd`, unsigned fd, `fd >= 0` without cast, RASTERCAPS test as `== 0` /
+  `!= RC_BITBLT`, `register` hInfo/hBitmap.
+- Tool: `/FAs` listing of the TU gives the named slot map (scratchpad codslots.sh); the original's map via push-depth
+  tracking of the disassembly (espdepth.py).
 
 ## Ideas not tried yet
 
