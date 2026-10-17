@@ -172,7 +172,7 @@ unsigned int ScriptEventDegrade(struct ObjectiveEvent *arg) {
         }
         if (tile->durability_level > threshold) {
             tile->durability_level = threshold;
-            FUN_00463460(tile, &pt);
+            DegradeObject(tile, &pt);
             ScriptDirtyCategories |= 0x200;
         }
         node = node->next;
@@ -271,7 +271,7 @@ unsigned int ScriptEventHintsFile(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046a4c0
 unsigned int FUN_0046a4c0(struct ObjectiveEvent *arg) {
-    FUN_00476070(arg->field_1c, arg->field_14);
+    SetButtonFlashMask(arg->field_1c, arg->field_14);
     return 1;
 }
 
@@ -956,7 +956,7 @@ unsigned int IsScriptEventDue(struct ObjectiveEvent *event) {
 // FUNCTION: LEGOLAND 0x0046b240
 void SetScriptStopped(unsigned int param_1) {
     MapStats.script_stopped = param_1;
-    FUN_004748a0((void *)1);
+    UpdateScriptEndIcon((void *)1);
     if (param_1 != 0) {
         FUN_00458be0();
         if (MapStats.field_3a8 != 0) {
@@ -2225,7 +2225,7 @@ unsigned int SaveScripts(void) {
 
     ScriptLoadErrorCount = 0;
     DAT_007fe994 = GetGameTimer();
-    if (FUN_00474920() == 0) {
+    if (SaveObjectiveIcons() == 0) {
         return 0;
     }
     if (SaveGameWrite(DAT_0066861c, 0x80) == 0) {
@@ -2311,7 +2311,7 @@ unsigned int LoadScripts(void) {
     if (ScriptLoadErrorCount != 0) {
         return 0;
     }
-    if (FUN_00474970() == 0) {
+    if (LoadObjectiveIcons() == 0) {
         return 0;
     }
     if (SaveGameRead(DAT_0066861c, 0x80) == 0) {
@@ -2334,7 +2334,7 @@ unsigned int LoadScripts(void) {
     }
     DAT_00668780 = DAT_007fe994 + base;
     DAT_00668614 = 0;
-    FUN_004748a0((void *)1);
+    UpdateScriptEndIcon((void *)1);
     if (SaveGameRead(&i, 4) == 0) {
         return 0;
     }

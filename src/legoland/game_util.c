@@ -1388,7 +1388,7 @@ int ScriptCmdFmv(struct CommandArgs *arg, int argc) {
     if (DAT_00669054 == 4) {
         NewScriptFmvEvent(arg->arg1);
     } else {
-        FUN_00490610(arg->arg1);
+        SetPendingMovie(arg->arg1);
     }
     return 1;
 }
@@ -1667,7 +1667,7 @@ int ScriptCmdFlashButton(char **argv, int argc) {
             }
         }
         if (DAT_00669054 == 1) {
-            FUN_00476070(mask, 1);
+            SetButtonFlashMask(mask, 1);
         } else {
             FUN_0046bd70(mask, 1);
         }
@@ -1698,7 +1698,7 @@ int ScriptCmdFlashButtonOff(char **argv, int argc) {
             }
         }
         if (DAT_00669054 == 1) {
-            FUN_00476070(mask, 0);
+            SetButtonFlashMask(mask, 0);
         } else {
             FUN_0046bd70(mask, 0);
         }

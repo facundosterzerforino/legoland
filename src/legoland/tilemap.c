@@ -678,7 +678,7 @@ LEGO_EXPORT void RenderView(void) {
     }
     if (DAT_00667d40 != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        FUN_00461220();
+        DrawViewPathTiles();
         DrawDeferredSprites();
         PopRenderingStatus();
     }

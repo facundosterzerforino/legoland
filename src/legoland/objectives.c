@@ -64,7 +64,7 @@ void SetObjectiveCounter(int index, signed char value) {
     if (index < 10) {
         ObjectiveCounters[index] = value;
         if (index < 4) {
-            FUN_00476140(index, value);
+            SetObjectiveIconShown(index, value);
         }
     }
 }
@@ -1211,7 +1211,7 @@ int ScriptEventInterval(struct ObjectiveEvent *arg) {
     int retries;
 
     FUN_00490600(0);
-    if (FUN_004907a0(arg->text) != 0) {
+    if (LoadIntervalReport(arg->text) != 0) {
         EditMode.unk4 = 2;
         DAT_00668e38 = 1;
         DAT_0080ff80.unk4 = 0xffffffff;

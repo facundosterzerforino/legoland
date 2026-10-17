@@ -1113,7 +1113,7 @@ void FUN_0046ec50(char param) {
                         break;
                     }
                     diff = diff + 0x7a;
-                    FUN_00461290((lpConfig->view_width - diff) * 0x100, lpConfig->view_height << 8, diff * 0x100, 0);
+                    ClampScrollPosition((lpConfig->view_width - diff) * 0x100, lpConfig->view_height << 8, diff * 0x100, 0);
                 }
                 node->x = (short)node->x - (short)param;
             }

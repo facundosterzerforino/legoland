@@ -4842,7 +4842,7 @@ advice:
     KillAppraisalSprites();
     PopRenderingStatus();
     SpeechCloseFile();
-    FUN_00474880();
+    SetDefaultMouseHandlers();
     /* passed if no check failed */
     for (shown = 0; shown < i; shown++) {
         if (recs[shown].type == 0) {

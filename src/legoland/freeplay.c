@@ -171,7 +171,7 @@ void FUN_0048abb0(void) {
     UpdateMenu();
     UnloadWatchSprite();
     FUN_00490600(1);
-    FUN_004911c0(DAT_0066861c, 0);
+    ShowIntervalScreen(DAT_0066861c, 0);
     SetMapLoaded(1);
     ResumeGameTimer();
     UpdateSoundVols();
@@ -195,7 +195,7 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
         RemoveIconGroup(0x7);
         EditMode.unk4 = 0x3;
         InitGameInterface(0x1);
-        FUN_00474880();
+        SetDefaultMouseHandlers();
         CurrentProfile.field_45 = 2;
     }
     return 1;

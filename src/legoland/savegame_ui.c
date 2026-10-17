@@ -242,7 +242,7 @@ unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3,
     }
     KillTitleScreenSprites();
     EditMode.unk4 = 3;
-    FUN_00474880();
+    SetDefaultMouseHandlers();
     ResumeGameTimer();
     DAT_004bef9c = 1;
     return 1;
@@ -676,7 +676,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct IconNode *sprite) {
         rc.top = top;
         rc.right = center_x + 100;
         rc.bottom = bottom;
-        FUN_00490fa0(cursor_str, 2, rc, 1);
+        DrawClippedText(cursor_str, 2, rc, 1);
     }
     TempProfile.name_len = count;
     focus = (struct IconNode *)PopUpOkIcon;

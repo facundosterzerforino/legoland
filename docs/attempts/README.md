@@ -153,10 +153,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0045fad0 | [FUN_0045fad0](0x0045fad0-FUN_0045fad0.md) | map_object.c | 93.59% |
 | 0x0045fca0 | [FUN_0045fca0](0x0045fca0-FUN_0045fca0.md) | map_object.c | 94.76% |
 | 0x0045ff00 | [RenderCursor](0x0045ff00-RenderCursor.md) | map_object.c | 95.48% |
-| 0x004610f0 | [FUN_004610f0](0x004610f0-FUN_004610f0.md) | map_object.c | 89.95% |
-| 0x00461290 | [FUN_00461290](0x00461290-FUN_00461290.md) | map_object.c | 43.92% |
+| 0x004610f0 | [DrawPathTilesInRect](0x004610f0-DrawPathTilesInRect.md) | map_object.c | 89.95% |
+| 0x00461290 | [ClampScrollPosition](0x00461290-ClampScrollPosition.md) | map_object.c | 43.92% |
 | 0x00461a50 | [LoadBaseMap](0x00461a50-LoadBaseMap.md) | map_object.c | 84.15% |
-| 0x00462c60 | [FUN_00462c60](0x00462c60-FUN_00462c60.md) | map_object.c | 95.35% |
+| 0x00462c60 | [StartOverlayAnims](0x00462c60-StartOverlayAnims.md) | map_object.c | 95.35% |
 | 0x00462ef0 | [DoMapAI](0x00462ef0-DoMapAI.md) | map_object.c | 93.43% |
 | 0x00465850 | [FUN_00465850](0x00465850-FUN_00465850.md) | draw.c | 34.23% |
 | 0x00465ee0 | [FUN_00465ee0](0x00465ee0-FUN_00465ee0.md) | draw.c | 84.56% |

@@ -292,7 +292,7 @@ void FUN_004779d0(struct Point *p) {
         if (tile->flags & 0x20) {
             if (QueryClass->flags & 0x200000) {
                 RemoveObjectFromBuildList(t);
-                FUN_0045e850((struct Element *)elem, &pos.x);
+                ClearObjectEntrances((struct Element *)elem, &pos.x);
                 IncrementObjectCount((struct Ride *)QueryClass);
                 RemoveObjectFromMap(t);
             }
@@ -306,7 +306,7 @@ void FUN_004779d0(struct Point *p) {
     if (tile->flags & 0x800) {
         order = GetGardenerWorkOrderAt(p->x, p->y);
         if (NULL != order) {
-            FUN_0045e850((struct Element *)order->element, &order->pos.x);
+            ClearObjectEntrances((struct Element *)order->element, &order->pos.x);
             ptmp63 = order->element->data;
             ClearPathUnderFootprint((struct Ride *)ptmp63, &order->pos.x);
             EraseGardenerOrder(order);
@@ -317,7 +317,7 @@ void FUN_004779d0(struct Point *p) {
         order = GetMechanicWorkOrderAt(ptmp62, ptmp184);
         if (order != NULL) {
             ptmp12 = order->element;
-            FUN_0045e850((struct Element *)ptmp12, &order->pos.x);
+            ClearObjectEntrances((struct Element *)ptmp12, &order->pos.x);
             ClearPathUnderFootprint((struct Ride *)order->element->data, &order->pos.x);
             EraseMechanicOrder(order);
             return;
@@ -667,11 +667,11 @@ void FUN_004784c0(void) {
     ConfigureAppraisal(0, 0);
     ClearBriefingAndHintsFileNames();
     FUN_00482d70();
-    FUN_00462e90();
+    SetDefaultClassLimits();
     FUN_00476000();
     ClearButtonFlashStates();
-    FUN_00490610(DAT_004d8bb0);
-    FUN_00463560();
+    SetPendingMovie(DAT_004d8bb0);
+    ResetDamageTimer();
     ResetPathUpdateTimer();
     FUN_00459960();
 

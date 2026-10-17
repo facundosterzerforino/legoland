@@ -855,7 +855,7 @@ LEGO_EXPORT int LoadGame(char *path) {
     EditMode.unk4 = 3;
     EditMode.unk8 = 0;
     FUN_004741c0();
-    FUN_00474880();
+    SetDefaultMouseHandlers();
     DrawWatchSprite();
     if (LoadScripts() == 0) {
         goto fail;

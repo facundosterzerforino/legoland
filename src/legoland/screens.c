@@ -125,13 +125,13 @@ LEGO_EXPORT void InitScreens(unsigned char param_1) {
         case 7:
             SamplesPaused = 1;
             PauseAllSamples();
-            FUN_00490c70();
+            InitIntervalScreen();
             break;
         case 8:
-            FUN_00490350();
+            InitCertificateScreen();
             break;
         case 9:
-            FUN_00490150();
+            InitAdvertScreen();
             break;
         default:
             break;
@@ -168,10 +168,10 @@ void RenderFrontEndScreen(unsigned char param_1) {
         PrintExitCheckBox();
         break;
     case 7:
-        FUN_004910f0();
+        RenderIntervalScreen();
         break;
     case 8:
-        FUN_00490410();
+        RenderCertificateScreen();
         break;
     case 6:
         FUN_0048c100();
@@ -239,7 +239,7 @@ int _ftol() {
 void FUN_00458940(void) {
     EditMode.unk0 = 0;
     EditMode.unk4 = 3;
-    FUN_00474880();
+    SetDefaultMouseHandlers();
     EditMode.unk8 = 0;
     DefaultCursor(&EditCursor);
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
@@ -287,7 +287,7 @@ void FUN_00458a50(void) {
         MapStats.level_end = 0;
         UpdateMenu();
         FUN_00490600(1);
-        FUN_004911c0(DAT_0066861c, 0);
+        ShowIntervalScreen(DAT_0066861c, 0);
         MapLoaded = 1;
         ResumeGameTimer();
         FUN_0048a800();
@@ -312,7 +312,7 @@ void UnloadMap(void) {
         ResetInfoStruct();
         ClearBuildObjList();
         FUN_0049cfc0();
-        FUN_00474ed0();
+        UnloadGameInterface();
         SetBricksLimited(1);
         GamePad = (GamePad & 0xffff00ff) | (((GamePad >> 8) & 0xeb) << 8);
         MapLoaded = 0;
@@ -361,7 +361,7 @@ int FUN_00458c00(void) {
         GamePad = GamePad | 0x20;
         DAT_006687c0 = 0;
         KillMapScreen();
-        FUN_00474880();
+        SetDefaultMouseHandlers();
         EnableSidePanelIcons();
         DAT_0080ff70 = 0;
         ResumeGameTimer();
@@ -382,7 +382,7 @@ int FUN_00458c00(void) {
             DAT_00667c80 = 0;
             UnloadWatchSprite();
             InitGameInterface(0);
-            FUN_00474880();
+            SetDefaultMouseHandlers();
         } else {
             FUN_0046c5c0();
             FUN_00458a50();
@@ -391,7 +391,7 @@ int FUN_00458c00(void) {
         DAT_00667c64 = 0;
         MapStats.level_end = 0;
         EditMode.unk4 = 3;
-        FUN_00474880();
+        SetDefaultMouseHandlers();
         ResumeGameTimer();
     }
 
@@ -769,7 +769,7 @@ void FUN_00459710(char *s) {
         }
     }
     FUN_00490600(0);
-    if (FUN_004907a0(buffer) != 0) {
+    if (LoadIntervalReport(buffer) != 0) {
         DAT_00668e38 = 1;
         EditMode.unk4 = 2;
         DAT_0080ff80.unk4 = 0xffffffff;

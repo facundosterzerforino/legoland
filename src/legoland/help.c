@@ -23,7 +23,7 @@
 void ClearAdvisorHelp(void) {
     if ((DAT_007fe040 & 0x3) != 0) {
         free((void *)AdvisorHelpText);
-        FUN_004748a0((void *)1);
+        UpdateScriptEndIcon((void *)1);
     }
     DAT_007fe040 &= ~0x3;
     FUN_00476000();
@@ -41,7 +41,7 @@ LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned
     strcpy(AdvisorHelpText, param_1);
     AdvisorHelpStartTime = GetGameTimer();
     DAT_007fe044 = param_2;
-    FUN_004748a0((void *)0);
+    UpdateScriptEndIcon((void *)0);
     return 1;
 }
 

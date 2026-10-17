@@ -201,7 +201,7 @@ unsigned char OptionsAcceptIconHandler(unsigned int param_1, unsigned int param_
         RemoveIconGroup(7);
         KillTitleScreenSprites();
         EditMode.unk4 = 3;
-        FUN_00474880();
+        SetDefaultMouseHandlers();
         UpDateCurrentProfile();
         ResumeGameTimer();
     }
@@ -329,7 +329,7 @@ unsigned char FUN_0048f440(unsigned int param_1, unsigned int param_2) {
         KillTitleScreenSprites();
         EditMode.unk4 = 3;
         FUN_0048eb40();
-        FUN_00474880();
+        SetDefaultMouseHandlers();
     }
     return 1;
 }

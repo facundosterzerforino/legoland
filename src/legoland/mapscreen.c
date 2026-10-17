@@ -131,7 +131,7 @@ LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point) {
                           MapViewWidth -
                       MapViewHeight / 2 + DAT_00667c04)
             << 8;
-        FUN_00461290(lpConfig->view_width << 8, lpConfig->view_height << 8, 0, 0);
+        ClampScrollPosition(lpConfig->view_width << 8, lpConfig->view_height << 8, 0, 0);
     }
 }
 

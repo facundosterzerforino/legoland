@@ -167,7 +167,7 @@ unsigned char FUN_0048bc20(unsigned char *arg0, unsigned int arg1, unsigned int 
                 DAT_00668e38 = 0;
                 InitGameInterface(1);
                 EditMode.unk4 = 3;
-                FUN_00474880();
+                SetDefaultMouseHandlers();
                 FUN_00458a50();
                 UnloadWatchSprite();
                 DAT_00798660 = 0;
@@ -301,7 +301,7 @@ unsigned char FUN_0048bf90(unsigned char *arg0, unsigned int arg1, unsigned int 
         DAT_00668e38 = 0;
         InitGameInterface(1);
         EditMode.unk4 = 3;
-        FUN_00474880();
+        SetDefaultMouseHandlers();
         FUN_00458a50();
         UnloadWatchSprite();
         DAT_00798660 = 0;
