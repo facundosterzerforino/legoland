@@ -366,7 +366,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
 
     if (DAT_00668ebc == 0) {
         DAT_00668ebc = 1;
-        LLIDB_FindElement("PATH CONTROL", &element, 0);
+        LLIDB_FindElement(PathControlName, &element, 0);
         obj = element->obj;
         PathControlObject = obj;
         icon = InsertIcon((short)DAT_004bb04c[8], (short)DAT_004bb04c[9], 0x93, IfPathIconSprite);

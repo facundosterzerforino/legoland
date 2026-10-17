@@ -101,8 +101,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     bar->flags |= 0x400a;
 
     count = LLIDB_GetCount();
-    // STRING: LEGOLAND 0x004b8a70
-    LLIDB_FindElement("PATH CONTROL", &path_idx, 0);
+    LLIDB_FindElement(PathControlName, &path_idx, 0);
 
     for (i = 0; (int)i < (int)count; i++) {
         LLIDB_GetElement(i, (struct Element **)&elem);

@@ -131,7 +131,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x004557c0 | [HTBubbleHelp](0x004557c0-HTBubbleHelp.md) | text.c | 76.47% |
 | 0x00455fc0 | [FUN_00455fc0](0x00455fc0-FUN_00455fc0.md) | text.c | 77.60% |
 | 0x004567a0 | [RenderFullMap](0x004567a0-RenderFullMap.md) | mapscreen.c | 81.85% |
-| 0x00457970 | [FUN_00457970](0x00457970-FUN_00457970.md) | bricks.c | 87.80% |
+| 0x00457970 | [IsFootprintClear](0x00457970-IsFootprintClear.md) | bricks.c | 87.80% |
 | 0x00457a70 | [FUN_00457a70](0x00457a70-FUN_00457a70.md) | bricks.c | 100% effective match (reccmp), bytes still differ |
 | 0x00459970 | [FUN_00459970](0x00459970-FUN_00459970.md) | gamemap.c | 94.83% |
 | 0x0045a4a0 | [CalculateMapRenderOrder](0x0045a4a0-CalculateMapRenderOrder.md) | gamemap.c | 62.28% |

@@ -1027,6 +1027,9 @@ struct ScriptCommand DAT_004bb6f8[0x5d];
 // GLOBAL: LEGOLAND 0x004bb49c
 const char BuildMenuName[] = "BUILD MENU";
 
+// GLOBAL: LEGOLAND 0x004b8a70
+const char PathControlName[] = "PATH CONTROL";
+
 // GLOBAL: LEGOLAND 0x004bcba4
 const char *ResourceFileNames[3] = {
     // STRING: LEGOLAND 0x004bcc18
