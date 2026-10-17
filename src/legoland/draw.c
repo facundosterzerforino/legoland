@@ -273,7 +273,7 @@ int SetDisplayModeAndDetectPixelFormat(void) {
             }
         }
     }
-    desc.dwSize = 0x6c;
+    desc.dwSize = sizeof(desc);
     ddraw2 = DDRAWENV.ddraw2;
     IDirectDraw2_GetDisplayMode(ddraw2, &desc);
     if (desc.ddpfPixelFormat.dwRGBBitCount != 8) {
@@ -301,7 +301,7 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
         local.top = value;
         local.right = lpConfig->screen_width - 1;
         local.bottom = lpConfig->screen_height - 1;
-        CurrentSurfaceDesc.dwSize = 0x6c;
+        CurrentSurfaceDesc.dwSize = sizeof(CurrentSurfaceDesc);
         IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
         surface = renderEngine;
         if (IDirectDrawSurface_Lock(surface, NULL, &CurrentSurfaceDesc, 0x21, NULL) == 0x887601c2) {
@@ -349,7 +349,7 @@ void FUN_004640f0(void) {
             IDirectDrawSurface_Unlock(renderEngine, CurrentSurfaceDesc.lpSurface);
         }
     }
-    CurrentSurfaceDesc.dwSize = 0x6c;
+    CurrentSurfaceDesc.dwSize = sizeof(CurrentSurfaceDesc);
     IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
     surface = renderEngine;
     if (IDirectDrawSurface_Lock(surface, NULL, &CurrentSurfaceDesc, 0x21, NULL) == 0x887601c2) {
@@ -372,7 +372,7 @@ LEGO_EXPORT void PopRenderingStatus(void) {
             local.top = 0;
             local.right = lpConfig->screen_width - 1;
             local.bottom = lpConfig->screen_height - 1;
-            CurrentSurfaceDesc.dwSize = 0x6c;
+            CurrentSurfaceDesc.dwSize = sizeof(CurrentSurfaceDesc);
             IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
             surface = renderEngine;
             if (IDirectDrawSurface_Lock(surface, NULL, &CurrentSurfaceDesc, 0x21, NULL) == 0x887601c2) {
@@ -2941,7 +2941,7 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
     LPDIRECTDRAW2 ddraw2;
     LPDIRECTDRAWSURFACE surface;
 
-    desc.dwSize = 0x6c;
+    desc.dwSize = sizeof(desc);
     desc.dwWidth = (short)sprite->width;
     desc.dwFlags = 7;
     desc.ddsCaps.dwCaps = 0x40;
@@ -2955,7 +2955,7 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
         }
         desc.dwWidth = (short)sprite->width;
         desc.dwHeight = (short)sprite->height;
-        desc.dwSize = 0x6c;
+        desc.dwSize = sizeof(desc);
         desc.dwFlags = 7;
         desc.ddsCaps.dwCaps = 0x840;
         ddraw2 = DDRAWENV.ddraw2;
