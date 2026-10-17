@@ -697,7 +697,7 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
             if (node->field_8 != NULL) {
                 // STRING: LEGOLAND 0x004b8a80
                 sprintf(buf, "%d", cost);
-                FUN_00455e50(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
+                PrintTextBox(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
             }
             switch (node->field_20b) {
             case 1:
@@ -901,7 +901,7 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     }
     // STRING: LEGOLAND 0x004ba890
     sprintf(buf, "%5d", bricks);
-    FUN_00455e50(buf, node->x + 10 + node->width, node->y - 3, 200, node->height, 0, 0, 0xff0000, 0xffffff);
+    PrintTextBox(buf, node->x + 10 + node->width, node->y - 3, 200, node->height, 0, 0, 0xff0000, 0xffffff);
     return 0;
 }
 
