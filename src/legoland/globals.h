@@ -527,6 +527,8 @@ extern GUID NullGuid;
 // 0x004b4580
 extern struct FortRect DAT_004b4580;
 
+// 0x004ab384: gold-rush slot weight to map units
+extern const float GoldSlotWeightScale;
 // 0x004ab390
 extern float FLOAT_004ab390;
 extern float FLOAT_004ab468;
@@ -2762,13 +2764,13 @@ extern struct InfoNode *DAT_0066924c;
 // 0x00669250
 extern int DAT_00669250;
 // 0x00669254
-extern unsigned int DAT_00669254;
+extern unsigned int AdjacentNodeCount;
 // 0x004bcec0
 extern struct Point DAT_004bcec0;
 // 0x00669258
 extern unsigned int DAT_00669258[1152];
 // 0x0066a45c
-extern void *DAT_0066a45c[1020];
+extern void *AdjacentNodes[1020];
 // 0x0066b44c
 extern void *DAT_0066b44c;
 // 0x0066b450

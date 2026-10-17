@@ -90,6 +90,9 @@ struct ColorLutEntry ColorLut[256];
 // GLOBAL: LEGOLAND 0x004ab468
 float FLOAT_004ab468;
 
+// GLOBAL: LEGOLAND 0x004ab384
+const float GoldSlotWeightScale = 512.0f;
+
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
 
@@ -3448,13 +3451,13 @@ struct InfoNode *DAT_0066924c;
 int DAT_00669250;
 
 // GLOBAL: LEGOLAND 0x00669254
-unsigned int DAT_00669254;
+unsigned int AdjacentNodeCount;
 
 // GLOBAL: LEGOLAND 0x00669258
 unsigned int DAT_00669258[1152];
 
 // GLOBAL: LEGOLAND 0x0066a45c
-void *DAT_0066a45c[1020];
+void *AdjacentNodes[1020];
 
 // GLOBAL: LEGOLAND 0x0066b44c
 void *DAT_0066b44c;
