@@ -11,6 +11,24 @@
 #include "globals.h"
 #include "imports.h"
 
+// Prints the end-of-game certificate: bitmap_path (EGC.bmp) stretched over a landscape page,
+// player_name centred on the certificate's name line and date_text in the top-left corner.
+// Returns 1 if the page was printed, 0 if any step failed (each failure frees what it made).
+//  1. Take the FIRST local printer from EnumPrintersA (not necessarily the default; no dialog).
+//  2. Create a printer DC in landscape orientation.
+//  3. Read the BMP by hand (file header, info header, palette for <= 8 bpp, pixels) and build
+//     a device bitmap with CreateDIBitmap.
+//  4. Give up if the printer cannot print bitmaps (RASTERCAPS & RC_BITBLT).
+//  5. StartDoc("Lego certificate") / StartPage.
+//  6. StretchDIBits the image over the page, with margins of 1/8 of the width left and right
+//     and 1/64 of the height top and bottom.
+//  7. Print the name with the 20 pt "Lego" font, centred, at page height * 678 / image height
+//     (row 678 of the bitmap is the certificate's name line).
+//  8. Print the date with the 8 pt light "Lego" font, left-aligned at (0, 0).
+//  9. EndPage / EndDoc and free everything.
+// Quirks kept from the original: the first font is never deleted (only the second), the
+// memory DC and the bitmap selected into it are never drawn with, and the LocalAlloc'd
+// LOGFONT is not checked for NULL.
 // FUNCTION: LEGOLAND 0x00451740
 int PrintCertificate(char *param_1, char *param_2, char *param_3) {
     DEVMODEA dm;
