@@ -39,7 +39,6 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00402dc0 | [CastleLevel1Update](0x00402dc0-CastleLevel1Update.md) | castle_level.c | 85.88% |
 | 0x00404630 | [CoptersPlaceRider](0x00404630-CoptersPlaceRider.md) | copters.c | 54.39% |
 | 0x00405bd0 | [DrivingSchoolUpdate](0x00405bd0-DrivingSchoolUpdate.md) | driving_school.c | 80.18% |
-| 0x00406660 | [FortUpdate](0x00406660-FortUpdate.md) | fort.c | 77.12% |
 | 0x00407ad0 | [JoustRemoveObject](0x00407ad0-JoustRemoveObject.md) | joust.c | 95.00% |
 | 0x00408f90 | [FUN_00408f90](0x00408f90-FUN_00408f90.md) | log_flume.c | 40.96% |
 | 0x004092b0 | [FUN_004092b0](0x004092b0-FUN_004092b0.md) | log_flume.c | 84.62% |
