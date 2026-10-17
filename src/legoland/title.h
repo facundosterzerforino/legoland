@@ -7,7 +7,7 @@
 struct IconNode;
 
 LEGO_EXPORT void InitTitleScreen(void);
-unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2);
+unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2);
 unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2);
 unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2);
 unsigned char FUN_0048ff70(unsigned int param_1, unsigned int param_2);

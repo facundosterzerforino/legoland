@@ -1132,7 +1132,7 @@ unsigned int FUN_0049b0d0(MapElement *tile, Ride *ride) {
         if (result > 0) {
             MapStats.power_supply += result;
             if (MapStats.unpowered_demand) {
-                FUN_0045a060();
+                RestorePowerToObjects();
             }
         }
     }

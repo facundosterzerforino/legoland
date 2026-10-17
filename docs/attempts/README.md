@@ -163,7 +163,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00466560 | [PushSetTarget](0x00466560-PushSetTarget.md) | draw.c | 85.71% |
 | 0x00466770 | [FUN_00466770](0x00466770-FUN_00466770.md) | draw.c | 75.06% |
 | 0x00469c80 | [ScriptEventClear](0x00469c80-ScriptEventClear.md) | objectives.c | 94.32% |
-| 0x0046a140 | [FUN_0046a140](0x0046a140-FUN_0046a140.md) | nerps.c | 100% |
+| 0x0046a140 | [CallReportHandler](0x0046a140-CallReportHandler.md) | nerps.c | 100% |
 | 0x0046a5b0 | [ScriptEventNeedIn](0x0046a5b0-ScriptEventNeedIn.md) | nerps.c | 74.32% |
 | 0x0046b2d0 | [RunLevelScript](0x0046b2d0-RunLevelScript.md) | nerps.c | 100% |
 | 0x0046c7e0 | [LoadObjectiveEventList](0x0046c7e0-LoadObjectiveEventList.md) | nerps.c | 98.29% |
@@ -195,7 +195,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0048e550 | [EnterSaveGameDetails](0x0048e550-EnterSaveGameDetails.md) | savegame_ui.c | 84.10% |
 | 0x004921c0 | [ConvertWaveToPcm16](0x004921c0-ConvertWaveToPcm16.md) | sound_sfx.c | 92.26% |
 | 0x00492380 | [CreateSampleFromWAV](0x00492380-CreateSampleFromWAV.md) | sound_sfx.c | 97.49% |
-| 0x004966a0 | [FUN_004966a0](0x004966a0-FUN_004966a0.md) | sound_music.c | 64.15% |
+| 0x004966a0 | [UpdateSampleVolume](0x004966a0-UpdateSampleVolume.md) | sound_music.c | 64.15% |
 | 0x00498420 | [SpeechParseWavHeader](0x00498420-SpeechParseWavHeader.md) | stream.c | 93.19% |
 | 0x0049a7f0 | [Mechanic_Build](0x0049a7f0-Mechanic_Build.md) | worker.c | 96.15% |
 | 0x0049b350 | [FUN_0049b350](0x0049b350-FUN_0049b350.md) | worker.c | 100% |

@@ -465,7 +465,7 @@ void FUN_0041d440(struct PathSeg *obj, struct SprEnt *ent) {
 
 // FUNCTION: LEGOLAND 0x0041d5b0
 struct PathSeg *FUN_0041d5b0(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos, struct SprEnt *ent) {
-    struct PathSeg *obj = FUN_004775b0(sizeof(struct PathSeg), 0, 0, 0);
+    struct PathSeg *obj = MemAlloc(sizeof(struct PathSeg), 0, 0, 0);
 
     if (obj == NULL) {
         return 0;
@@ -485,7 +485,7 @@ struct PathSeg *FUN_0041d5b0(struct Ride *ride, struct PieceClass *cls, struct I
 
 // FUNCTION: LEGOLAND 0x0041d630
 struct PathSeg *FUN_0041d630(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos, struct SprEnt *ent) {
-    struct PathSeg *obj = FUN_004775b0(sizeof(struct PathSeg), 0, 0, 0);
+    struct PathSeg *obj = MemAlloc(sizeof(struct PathSeg), 0, 0, 0);
 
     if (obj == NULL) {
         return 0;
@@ -598,7 +598,7 @@ void FUN_0041d7f0(void *arg) {
         FUN_0041d1c0(&DAT_00829ae0.pts_a.mask);
         FUN_0041d1c0(&DAT_00829ae0.pts_b.mask);
         ((struct PieceClass *)obj->cls)->method_2c(obj);
-        FUN_004775d0(obj);
+        MemFree(obj);
     }
 }
 
@@ -1197,7 +1197,7 @@ void FUN_0041e500(struct Train *obj) {
 
 // FUNCTION: LEGOLAND 0x0041e570
 struct Train *FUN_0041e570(struct CastleState *arg) {
-    struct Train *self = FUN_004775b0(sizeof(struct Train), 0, 0, 0);
+    struct Train *self = MemAlloc(sizeof(struct Train), 0, 0, 0);
     if (self == NULL) {
         return NULL;
     }
@@ -1224,7 +1224,7 @@ void FUN_0041e5d0(struct Train **param_1) {
         FUN_0041e460(node, host);
         node = next;
     } while (next != &host->head);
-    FUN_004775d0(*param_1);
+    MemFree(*param_1);
     *param_1 = NULL;
 }
 
@@ -1453,7 +1453,7 @@ unsigned int FUN_0041eaf0(struct TrainCar *a, struct PathSeg *b) {
 
 // FUNCTION: LEGOLAND 0x0041eb30
 struct TrainCar *FUN_0041eb30(unsigned int arg) {
-    struct TrainCar *obj = FUN_004775b0(sizeof(struct TrainCar), 0, 0, 0);
+    struct TrainCar *obj = MemAlloc(sizeof(struct TrainCar), 0, 0, 0);
     if (obj == NULL) {
         return NULL;
     }
@@ -1463,7 +1463,7 @@ struct TrainCar *FUN_0041eb30(unsigned int arg) {
 
 // FUNCTION: LEGOLAND 0x0041eb60
 void FUN_0041eb60(void *param_1) {
-    FUN_004775d0(param_1);
+    MemFree(param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0041eb70
@@ -1909,7 +1909,7 @@ float **FUN_0041f650(double (*fn)(float), int n, float a, float b) {
     int k;
 
     /* the rows' pointers, then the triangle of cnt * (cnt + 1) / 2 floats */
-    t = (float **)FUN_004775b0(((cnt + 1) * cnt >> 1) * sizeof(float) + cnt * sizeof(float *), 0, 0, 0);
+    t = (float **)MemAlloc(((cnt + 1) * cnt >> 1) * sizeof(float) + cnt * sizeof(float *), 0, 0, 0);
     if (t == NULL) {
         return NULL;
     }
@@ -1933,7 +1933,7 @@ float **FUN_0041f650(double (*fn)(float), int n, float a, float b) {
 
 // FUNCTION: LEGOLAND 0x0041f710
 void FUN_0041f710(void *param) {
-    FUN_004775d0(param);
+    MemFree(param);
 }
 
 // FUNCTION: LEGOLAND 0x0041f720
@@ -2989,7 +2989,7 @@ void *LoadCreatedDataFile(const char *fileName, unsigned int *sizeOut) {
     }
 
     fileSize = GetFileSize(hFile, 0);
-    buffer = FUN_004775b0(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
+    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
     if (buffer == 0) {
         CloseHandle(hFile);
         SetCurrentDirectoryIfNotNull("..\\..\\..");
@@ -2998,7 +2998,7 @@ void *LoadCreatedDataFile(const char *fileName, unsigned int *sizeOut) {
 
     ReadFile(hFile, buffer, fileSize, &bytesRead, 0);
     if (bytesRead != fileSize) {
-        FUN_004775d0(buffer);
+        MemFree(buffer);
         CloseHandle(hFile);
         SetCurrentDirectoryIfNotNull("..\\..\\..");
         return 0;
@@ -4040,7 +4040,7 @@ void FUN_004215b0(struct CastleVisitor *param_1) {
 
 // FUNCTION: LEGOLAND 0x004215d0
 struct CastleVisitor *FUN_004215d0(struct BlokeInfo *a1) {
-    struct CastleVisitor *self = FUN_004775b0(sizeof(struct CastleVisitor), 0, 0, 0);
+    struct CastleVisitor *self = MemAlloc(sizeof(struct CastleVisitor), 0, 0, 0);
     if (self == NULL) {
         return NULL;
     }
@@ -4091,7 +4091,7 @@ struct LmsRec *FUN_00421660(struct BlokeInfo *p) {
         names = DAT_004b597c;
         colours = DAT_004b5974;
     }
-    dst = FUN_004775b0(size, 0, 0, 0);
+    dst = MemAlloc(size, 0, 0, 0);
     if (dst == NULL) {
         return 0;
     }
@@ -4183,10 +4183,10 @@ void FUN_00421980(struct CastleVisitor *p) {
     p->next->prev = p->prev;
 
     if ((p->flags & 1U) == 0U) {
-        FUN_004775d0(p->field_8);
+        MemFree(p->field_8);
     }
 
-    FUN_004775d0(p);
+    MemFree(p);
 }
 
 struct Vec5 {
@@ -4753,7 +4753,7 @@ void *ReadFileToBuffer(const char *fileName, unsigned int *bytesReadPtr) {
     }
 
     fileSize = GetFileSize(hFile, 0);
-    buffer = FUN_004775b0(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
+    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
     if (buffer == 0) {
         CloseHandle(hFile);
         return 0;
@@ -4761,7 +4761,7 @@ void *ReadFileToBuffer(const char *fileName, unsigned int *bytesReadPtr) {
 
     ReadFile(hFile, buffer, fileSize, &bytesRead, 0);
     if (bytesRead != fileSize) {
-        FUN_004775d0(buffer);
+        MemFree(buffer);
         CloseHandle(hFile);
         return 0;
     }
@@ -4816,7 +4816,7 @@ int LoadObjAndTxtFiles(const char *name) {
     wsprintfA(buffer, "%s.txt", name);
     CoasterTxtFile.data = ReadFileToBuffer(buffer, &CoasterTxtFile.size);
     if (CoasterTxtFile.data == 0) {
-        FUN_004775d0(CoasterObjFile.data);
+        MemFree(CoasterObjFile.data);
         return 0;
     }
     DAT_004dd868 = CountTextLines(&CoasterObjFile);
@@ -4827,8 +4827,8 @@ int LoadObjAndTxtFiles(const char *name) {
 
 // FUNCTION: LEGOLAND 0x004227a0
 void FreeObjAndTxtFiles(void) {
-    FUN_004775d0(CoasterTxtFile.data);
-    FUN_004775d0(CoasterObjFile.data);
+    MemFree(CoasterTxtFile.data);
+    MemFree(CoasterObjFile.data);
 }
 
 struct MVert {
@@ -5098,7 +5098,7 @@ void FUN_00422fe0(void) {
     int i;
 
     DAT_0060f904 = n;
-    DAT_00829c54 = FUN_004775b0(n << 7, 0, 0, 0);
+    DAT_00829c54 = MemAlloc(n << 7, 0, 0, 0);
     if (DAT_00829c54 == NULL) {
         FUN_00422e40(0xffffff, DAT_00579878);
         for (i = 0; i < 1024; i++) {
@@ -7805,7 +7805,7 @@ int CastleObj_Load(struct Element *element) {
     if (rec->recs != 0) {
         FUN_00427100(rec->recs, rec->recCount, obj);
     }
-    FUN_004775d0(rec);
+    MemFree(rec);
     FUN_0041ed80(1);
     return 1;
 }
@@ -7819,7 +7819,7 @@ int CastleObj_Save(struct Element *element) {
 
     if (obj != 0) {
         FUN_00426d80(obj, &info);
-        rec = FUN_004775b0(info.field_4, 0, 0, 0);
+        rec = MemAlloc(info.field_4, 0, 0, 0);
         if (rec == 0) {
             return 0;
         }
@@ -7828,7 +7828,7 @@ int CastleObj_Save(struct Element *element) {
         FUN_00426bc0((UINT_PTR *)&rec->timer, (UINT_PTR)rec);
         FUN_00426bc0((UINT_PTR *)&rec->recs, (UINT_PTR)rec);
         WriteSaveRec((unsigned int *)rec);
-        FUN_004775d0(rec);
+        MemFree(rec);
         return 1;
     }
     zero = 0;
@@ -8105,7 +8105,7 @@ struct SaveRec *ReadSaveRec(void) {
     if (size == 0) {
         return (struct SaveRec *)-1;
     }
-    rec = FUN_004775b0(size, 0, 0, 0);
+    rec = MemAlloc(size, 0, 0, 0);
     if (rec == 0) {
         return rec;
     }
@@ -8150,14 +8150,14 @@ void *LoadRollerCoasterFile(void) {
         return 0;
     }
     fileSize = GetFileSize(hFile, 0);
-    buffer = FUN_004775b0(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
+    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
     if (buffer == 0) {
         CloseHandle(hFile);
         return 0;
     }
     ReadFile(hFile, buffer, fileSize, &bytesRead, 0);
     if (bytesRead != fileSize) {
-        FUN_004775d0(buffer);
+        MemFree(buffer);
         CloseHandle(hFile);
         return 0;
     }

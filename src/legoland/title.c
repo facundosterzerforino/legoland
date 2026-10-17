@@ -73,15 +73,15 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string_id = 1000;
     icon->string = GetString(1000);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048f0a0;
-    DAT_006687c0 = FUN_0048f0a0;
+    icon->event_handler = OptionsExitIconHandler;
+    DAT_006687c0 = OptionsExitIconHandler;
 
     // STRING: LEGOLAND 0x004bf4f8
     icon = LoadSpriteIcon("Load_on_Title.lls", 4, 0x19, 0x118, 7);
     icon->string_id = 9;
     icon->string = GetString(9);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048fe20;
+    icon->event_handler = TitleLoadGameHandler;
 
     // STRING: LEGOLAND 0x004bf4e0
     icon = LoadSpriteIcon("MovieOn_On_Title.lls", 4, 0x10e, 0xa1, 7);
@@ -93,7 +93,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048fe20
-unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
+unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         LoadMode = 1;
@@ -153,7 +153,7 @@ void KillTitleScreenBkSpriteAndRemoveIconGroup7(void) {
 unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        FUN_0048f9f0(&DAT_007cb30c, &DAT_007cb300, &DAT_007cb2f0);
+        SaveScreenState(&DAT_007cb30c, &DAT_007cb300, &DAT_007cb2f0);
         EditMode.unk4 = 2;
         DAT_0080ff80.unk4 = 0xffffffff;
         DAT_0080ff80.unk8 = 9;
@@ -167,7 +167,7 @@ unsigned char AdvertGoBackHandler(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillTitleScreenBkSpriteAndRemoveIconGroup7();
-        FUN_0048fa40(&DAT_007cb30c, &DAT_007cb300, &DAT_007cb2f0);
+        RestoreScreenState(&DAT_007cb30c, &DAT_007cb300, &DAT_007cb2f0);
     }
     return 1;
 }
@@ -526,7 +526,7 @@ unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char par
         ResumeGameTimer();
         ResumeAllSamples();
         ClearAdvisorHelp();
-        FUN_0046b760();
+        RepostScriptIntro();
     }
     return 1;
 }

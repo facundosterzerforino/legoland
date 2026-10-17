@@ -1202,7 +1202,7 @@ int ScriptEventFmv(struct ObjectiveEvent *arg) {
     PlayMovie(arg->text, 1, 1);
     ResumeGameTimer();
     ClearAdvisorHelp();
-    FUN_0046b760();
+    RepostScriptIntro();
     return 1;
 }
 

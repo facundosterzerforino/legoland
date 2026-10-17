@@ -3189,7 +3189,7 @@ extern struct IconNode *DAT_007cb2e0;
 // 0x007cb2e4
 extern struct IconNode *DAT_007cb2e4;
 // 0x007cb2f0
-extern struct EditState DAT_007cb2f0; /* EditMode saved by FUN_0048f9f0 */
+extern struct EditState DAT_007cb2f0; /* EditMode saved by SaveScreenState */
 // 0x007cb300
 extern struct ScreenMode DAT_007cb300; /* DAT_0080ff80 saved */
 // 0x007cb30c

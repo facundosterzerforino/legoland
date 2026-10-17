@@ -4060,7 +4060,7 @@ struct IconNode *DAT_007cb2e0;
 struct IconNode *DAT_007cb2e4;
 
 // GLOBAL: LEGOLAND 0x007cb2f0
-struct EditState DAT_007cb2f0; /* EditMode saved by FUN_0048f9f0 */
+struct EditState DAT_007cb2f0; /* EditMode saved by SaveScreenState */
 
 // GLOBAL: LEGOLAND 0x007cb300
 struct ScreenMode DAT_007cb300; /* DAT_0080ff80 saved */

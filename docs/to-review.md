@@ -70,6 +70,6 @@ Each entry: where, what the trick is, why it is questionable, what would settle 
 
 ## Also open (not tricks, just unfinished)
 
-- FUN_00412100 (ride_queue.c, 93.5%): only the final `start.x += dx` register choice differs.
+- BuildQueueTable (ride_queue.c, 93.5%): only the final `start.x += dx` register choice differs.
 - PickQueueTurn 0x401f30 (71.4%): the original frame has 8 unexplained bytes. A dummy variable would be needed,
   which is not allowed.

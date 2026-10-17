@@ -90,8 +90,8 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     icon->string_id = 0x32;
     icon->string = GetString(0x32);
     icon->flags |= 0x6002;
-    icon->event_handler = (void *)FUN_0048ac60;
-    DAT_006687bc = FUN_0048ac60;
+    icon->event_handler = (void *)FreePlayStartIconHandler;
+    DAT_006687bc = FreePlayStartIconHandler;
     icon->flags |= 0x400;
     DAT_0079864c = icon;
 
@@ -150,7 +150,7 @@ void FUN_0048ab60(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048abb0
-void FUN_0048abb0(void) {
+void StartFreePlayGame(void) {
     char buf[0x34];
 
     QueryClass = 0;
@@ -165,7 +165,7 @@ void FUN_0048abb0(void) {
     SetBricksLimited(0);
     FUN_0048ab60();
     AllocBlokeCounters(lpConfig->max_blokes);
-    FUN_00458940();
+    ResetEditState();
     MapStats.level_end = 0;
     FUN_00489ee0();
     UpdateMenu();
@@ -178,7 +178,7 @@ void FUN_0048abb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ac60
-unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
+unsigned char FreePlayStartIconHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_0079864c != 0 && (DAT_0079864c->flags & 0x400) != 0) {
         return 0;
     }
@@ -189,7 +189,7 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
         SpeechCloseFile();
         DAT_006687b0 = 0x4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        FUN_0048abb0();
+        StartFreePlayGame();
         CleanUpFreePlay();
         KillTitleScreenSprites();
         RemoveIconGroup(0x7);
@@ -612,7 +612,7 @@ struct FreePlayLoadSlot {
 };
 
 // FUNCTION: LEGOLAND 0x0048b700
-void FUN_0048b700(void) {
+void LoadProgressScreenSprites(void) {
     int i;
 
     for (i = 0; i < 10; i++) {
@@ -634,7 +634,7 @@ void FUN_0048b740(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048b770
-void FUN_0048b770(void) {
+void KillProgressScreenSprites(void) {
     struct FreePlaySpriteSlot *slot;
 
     RemoveIconGroup(0x1c);

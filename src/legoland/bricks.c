@@ -329,7 +329,7 @@ void FUN_00457a70(void) {
                                     tile = NULL;
                                 }
                                 if (tile != NULL && (tile->flags & 0x8a0) && (tile->field_0->ride->flags & 0x200000)) {
-                                    FUN_004779d0(&pt);
+                                    RemoveObjectAtPoint(&pt);
                                 }
                             }
                         }

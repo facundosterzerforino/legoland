@@ -169,7 +169,7 @@ void LoadTextureBitmaps(struct LocFile *param_1, const char *param_2) {
             // STRING: LEGOLAND 0x004b7d3c
             DBPrintf("Failed to load texture %s", filename);
         } else {
-            FUN_00488670(image, DAT_00665e8c);
+            LoadTextureNode(image, DAT_00665e8c);
             DAT_0081c0c0[DAT_00665e8c * 2] = image->width;
             DAT_0081c0c0[DAT_00665e8c * 2 + 1] = image->height;
             KillImage(image);

@@ -183,7 +183,7 @@ void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
                                 tile = 0;
                             }
                             if (tile != 0) {
-                                FUN_004779d0(&coord);
+                                RemoveObjectAtPoint(&coord);
                             }
                         }
                     }
@@ -2679,7 +2679,7 @@ unsigned int UnloadBaseMap(void) {
     }
     free(DAT_00801a70);
     ClearOverlays();
-    FUN_004828f0();
+    FreeBestNodeList();
     MapDataLoaded = 0;
     return 1;
 }
@@ -3056,7 +3056,7 @@ void DegradeObject(struct MapElement *tile, struct Point *pos) {
                 if (power > 0) {
                     MapStats.power_supply -= power;
                     if (MapStats.power_demand - (int)MapStats.unpowered_demand > MapStats.power_supply) {
-                        FUN_0045a0d0();
+                        CutPowerToObjects();
                     }
                 }
             }

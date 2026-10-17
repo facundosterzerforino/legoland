@@ -109,7 +109,7 @@ void GoldRushLoad(struct Element *obj) {
         }
     }
 
-    DAT_004c11e4 = (struct Sprite *)FUN_00412100(&DAT_004b4608);
+    DAT_004c11e4 = (struct Sprite *)BuildQueueTable(&DAT_004b4608);
     // STRING: LEGOLAND 0x004b465c
     GoldWashMatte1Sprite = LoadSprite("goldwashmatte1.lls", 1);
     // STRING: LEGOLAND 0x004b464c
@@ -388,10 +388,10 @@ void GoldRushUpdate(struct Element *elem) {
                 b->flags |= 8;
                 FUN_00406ec0((struct RideNode *)node, t);
                 FUN_00406f30(t);
-                FUN_004122d0((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
+                StartQueueTableForward((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
                 break;
             case 1:
-                FUN_00412300((struct QueueTable *)DAT_004c11e4, x, y, b);
+                MoveBlokeAlongQueueTable((struct QueueTable *)DAT_004c11e4, x, y, b);
                 if ((b->pos.x >> 8) == t[0] + 5 && (b->pos.y >> 8) == t[1] - 3) {
                     BlokeWalkWithPan(b);
                 }
@@ -434,10 +434,10 @@ void GoldRushUpdate(struct Element *elem) {
                 b->param_action++;
                 break;
             case 10:
-                FUN_004122a0((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
+                StartQueueTableBackward((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
                 break;
             case 11:
-                FUN_00412300((struct QueueTable *)DAT_004c11e4, x, y, b);
+                MoveBlokeAlongQueueTable((struct QueueTable *)DAT_004c11e4, x, y, b);
                 if ((b->pos.x >> 8) == t[0] + 5 && (b->pos.y >> 8) == t[1] - 3) {
                     BlokeWalkAnim(b);
                 }

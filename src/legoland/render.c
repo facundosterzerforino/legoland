@@ -80,7 +80,7 @@ void FUN_004860f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00486190
-void *FUN_00486190(struct CursorKey *key) {
+void *FindCursorCacheEntry(struct CursorKey *key) {
     struct CursorCacheNode *node;
 
     if (DAT_00797e6c != 0) {
@@ -96,7 +96,7 @@ void *FUN_00486190(struct CursorKey *key) {
 }
 
 // FUNCTION: LEGOLAND 0x004861d0
-struct CursorCacheNode *FUN_004861d0(void *value, const unsigned char *key) {
+struct CursorCacheNode *AddCursorCacheEntry(void *value, const unsigned char *key) {
     struct CursorCacheNode *node = (struct CursorCacheNode *)malloc(sizeof(struct CursorCacheNode));
     if (node != 0) {
         memset(node, 0, sizeof(struct CursorCacheNode));
@@ -113,7 +113,7 @@ struct CursorCacheNode *FUN_004861d0(void *value, const unsigned char *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00486220
-void FUN_00486220(void *param) {
+void FreeCursorBitmap(void *param) {
     struct CursorBitmap *bmp = (struct CursorBitmap *)param;
     if (bmp != 0) {
         if (bmp->pixels != 0) {
@@ -124,11 +124,11 @@ void FUN_00486220(void *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00486250
-void FUN_00486250(void) {
+void FreeCursorCache(void) {
     struct CursorCacheNode *node = DAT_00797e6c;
     while (node != 0) {
         struct CursorCacheNode *next = node->next;
-        FUN_00486220(node->value);
+        FreeCursorBitmap(node->value);
         free(node);
         node = next;
     }
@@ -144,7 +144,7 @@ void *FUN_00486280(int param_1, void *param_2) {
     float ab, ag, ar;
     int i;
 
-    cached = FUN_00486190(key);
+    cached = FindCursorCacheEntry(key);
     if (cached != 0) {
         return cached;
     }
@@ -187,7 +187,7 @@ void *FUN_00486280(int param_1, void *param_2) {
             } while (--param_1 != 0);
         }
     }
-    FUN_004861d0(frame, (unsigned char *)key);
+    AddCursorCacheEntry(frame, (unsigned char *)key);
     return frame;
 }
 
@@ -3081,7 +3081,7 @@ L488664:
 }
 
 // FUNCTION: LEGOLAND 0x00488670
-void FUN_00488670(struct Image *image, unsigned int index) {
+void LoadTextureNode(struct Image *image, unsigned int index) {
     struct TextureNode *ptr = (struct TextureNode *)malloc(sizeof(struct TextureNode));
     if (ptr != 0) {
         BuildTextureNodeFromImage(image, ptr);
@@ -3090,7 +3090,7 @@ void FUN_00488670(struct Image *image, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004886a0
-void FUN_004886a0(void) {
+void FreeTextureNodes(void) {
     struct TextureNode **slot = (struct TextureNode **)&DAT_00798190;
     do {
         if (*slot != 0) {

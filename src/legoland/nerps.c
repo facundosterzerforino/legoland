@@ -101,7 +101,7 @@ void (*PTR_FUN_004b7e38[25])(unsigned int, unsigned int) = {
 };
 
 // FUNCTION: LEGOLAND 0x0046a140
-void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3) {
+void CallReportHandler(int index, unsigned int param_2, unsigned int param_3) {
     if (index >= 0 && index < 0x19) {
         PTR_FUN_004b7e38[index](param_3, param_2);
     }
@@ -109,7 +109,7 @@ void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3) {
 
 // FUNCTION: LEGOLAND 0x0046a170
 unsigned int ScriptEventReport(struct ObjectiveEvent *arg) {
-    FUN_0046a140(arg->field_18, arg->field_1c, arg->field_14);
+    CallReportHandler(arg->field_18, arg->field_1c, arg->field_14);
     return 1;
 }
 
@@ -182,7 +182,7 @@ unsigned int ScriptEventDegrade(struct ObjectiveEvent *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a300
-unsigned int FUN_0046a300(struct ObjectiveEvent *arg) {
+unsigned int ApplyCapacityEvent(struct ObjectiveEvent *arg) {
     if (arg->field_14 != 0) {
         MapStats.capacity_max = arg->field_1c;
     } else {
@@ -270,7 +270,7 @@ unsigned int ScriptEventHintsFile(struct ObjectiveEvent *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a4c0
-unsigned int FUN_0046a4c0(struct ObjectiveEvent *arg) {
+unsigned int ApplyFlashButtonEvent(struct ObjectiveEvent *arg) {
     SetButtonFlashMask(arg->field_1c, arg->field_14);
     return 1;
 }
@@ -371,7 +371,7 @@ unsigned int ScriptEventConnect(struct ObjectiveEvent *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a730
-unsigned int FUN_0046a730(struct Ride *arg) {
+unsigned int IsLinkableRideType(struct Ride *arg) {
     int value;
 
     value = arg->type;
@@ -422,7 +422,7 @@ unsigned int ScriptEventLink(struct ObjectiveEvent *arg) {
         }
         do {
             group = robj->field_0->ride;
-            if (FUN_0046a730(group) != 0) {
+            if (IsLinkableRideType(group) != 0) {
                 ox = robj->field_4;
                 oy = robj->field_5;
                 pt.x = group->x + ox;
@@ -1018,7 +1018,7 @@ EventHandler ScriptEventHandlers[70] = {
     (EventHandler)GenerateWorkers,
     (EventHandler)ScriptEventWorkers,
     (EventHandler)ScriptEventDegrade,
-    (EventHandler)FUN_0046a300,
+    (EventHandler)ApplyCapacityEvent,
     (EventHandler)ScriptEventCapacityScale,
     (EventHandler)ScriptEventCapacityCap,
     (EventHandler)NerpsSetEntranceFee,
@@ -1029,7 +1029,7 @@ EventHandler ScriptEventHandlers[70] = {
     (EventHandler)ScriptEventBridges,
     (EventHandler)ScriptEventBriefingFile,
     (EventHandler)ScriptEventHintsFile,
-    (EventHandler)FUN_0046a4c0,
+    (EventHandler)ApplyFlashButtonEvent,
     (EventHandler)ScriptEventPurge,
     (EventHandler)ScriptEventEndLevel,
     (EventHandler)ScriptEventNeed,
@@ -1134,7 +1134,7 @@ void RunLevelScript(void) {
         if (ScriptSectionStarted != 0) {
             ScriptSectionStarted = 0;
             if (active != 0) {
-                FUN_0046b6b0(CurrentScriptSection, 1);
+                PostScriptSectionIntro(CurrentScriptSection, 1);
                 ResetObjectiveHintTimer();
             }
         }
@@ -1159,7 +1159,7 @@ void RunLevelScript(void) {
             if (CurrentScriptSection != 0) {
                 AppendSectionRewards(CurrentScriptSection);
                 RemoveScriptSection(CurrentScriptSection);
-                FUN_0046b520(CurrentScriptSection);
+                FreeScriptSection(CurrentScriptSection);
                 changed = 1;
             }
             CurrentScriptSection = ScriptSectionList;
@@ -1187,7 +1187,7 @@ void RunLevelScript(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b4f0
-struct NerpsListNode *FUN_0046b4f0(unsigned int param_1) {
+struct NerpsListNode *AllocScriptSection(unsigned int param_1) {
     struct NerpsListNode *node;
 
     node = (struct NerpsListNode *)malloc(sizeof(struct NerpsListNode));
@@ -1202,7 +1202,7 @@ struct NerpsListNode *FUN_0046b4f0(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b520
-void FUN_0046b520(struct NerpsListNode *node) {
+void FreeScriptSection(struct NerpsListNode *node) {
     if (node->field_c != NULL) {
         FreeObjectiveEventList(node->field_c);
     }
@@ -1216,12 +1216,12 @@ void FUN_0046b520(struct NerpsListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b560
-void FUN_0046b560(struct NerpsListNode *node) {
+void FreeScriptSectionList(struct NerpsListNode *node) {
     if (node != NULL) {
         if (node->next != NULL) {
-            FUN_0046b560(node->next);
+            FreeScriptSectionList(node->next);
         }
-        FUN_0046b520(node);
+        FreeScriptSection(node);
     }
 }
 
@@ -1270,7 +1270,7 @@ int RemoveScriptSection(struct NerpsListNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b610
-void FUN_0046b610(struct ObjectiveEvent *node, struct NerpsListNode *list) {
+void AddScriptEvent(struct ObjectiveEvent *node, struct NerpsListNode *list) {
     node->field_40 = DAT_007fdca4;
     if (list->field_c != NULL) {
         node->next = list->field_c;
@@ -1290,7 +1290,7 @@ void InsertObjectiveEventAtHead(struct ObjectiveEvent *node, struct NerpsListNod
 }
 
 // FUNCTION: LEGOLAND 0x0046b650
-void FUN_0046b650(const char *src, struct NerpsListNode *holder) {
+void SetScriptSectionIntro(const char *src, struct NerpsListNode *holder) {
     char *dst;
 
     if (holder->field_8 != NULL) {
@@ -1302,7 +1302,7 @@ void FUN_0046b650(const char *src, struct NerpsListNode *holder) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b6b0
-void FUN_0046b6b0(struct NerpsListNode *ctx, unsigned int param_2) {
+void PostScriptSectionIntro(struct NerpsListNode *ctx, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     if (ctx->field_8 != 0) {
@@ -1325,7 +1325,7 @@ unsigned int FUN_0046b700(void) {
             DAT_00668618 = 1;
             return 1;
         }
-        FUN_0046b6b0(CurrentScriptSection, 1);
+        PostScriptSectionIntro(CurrentScriptSection, 1);
         ResetObjectiveHintTimer();
         return 1;
     }
@@ -1333,10 +1333,10 @@ unsigned int FUN_0046b700(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b760
-unsigned int FUN_0046b760(void) {
+unsigned int RepostScriptIntro(void) {
     if (IsScriptStopped() == 0) {
         if (CurrentScriptSection != 0) {
-            FUN_0046b6b0(CurrentScriptSection, 1);
+            PostScriptSectionIntro(CurrentScriptSection, 1);
             ResetObjectiveHintTimer();
             return 1;
         }
@@ -1490,7 +1490,7 @@ void NewScriptReportEvent(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x0046bad0
-void FUN_0046bad0(unsigned int param_1, unsigned int param_2, unsigned int *param_3) {
+void NewScriptWorkerEvent(unsigned int param_1, unsigned int param_2, unsigned int *param_3) {
     struct ObjectiveEvent *node;
 
     node = AllocObjectiveEvent(0x10, 1);
@@ -1526,7 +1526,7 @@ void NewScriptDegradeEvent(struct Element *param_1, unsigned int param_2, unsign
 }
 
 // FUNCTION: LEGOLAND 0x0046bb80
-void FUN_0046bb80(unsigned int param_1, unsigned int param_2) {
+void NewScriptCapacityEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     node = AllocObjectiveEvent(0x13, 1);
@@ -1638,7 +1638,7 @@ void NewScriptHintsFileEvent(char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0046bd70
-void FUN_0046bd70(unsigned int param_1, unsigned int param_2) {
+void NewScriptFlashButtonEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     node = AllocObjectiveEvent(0x1e, 1);
@@ -1667,7 +1667,7 @@ void NewScriptNeedEvent(unsigned char param_1, struct Element *param_2, unsigned
     node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046be00
@@ -1679,7 +1679,7 @@ void NewScriptNeedAtEvent(unsigned char param_1, struct Element *param_2, unsign
     node->field_20 = param_3[0];
     node->field_24 = param_3[1];
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046be40
@@ -1691,7 +1691,7 @@ void NewScriptNeedInEvent(unsigned char param_1, struct Element *param_2, unsign
     node->field_1c = param_3;
     node->vec_28 = *param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046be90
@@ -1701,7 +1701,7 @@ void NewScriptConnectEvent(unsigned char param_1, struct Element *param_2) {
     node = AllocObjectiveEvent(0x24, 1);
     node->element = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bec0
@@ -1711,7 +1711,7 @@ void NewScriptLinkEvent(unsigned char param_1, struct Element *param_2) {
     node = AllocObjectiveEvent(0x25, 1);
     node->element = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bef0
@@ -1723,7 +1723,7 @@ void NewScriptRangeEvent(unsigned char param_1, struct Element *param_2, unsigne
     node->field_1c = param_3;
     node->field_14 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bf30
@@ -1734,7 +1734,7 @@ void NewScriptClearAreaEvent(unsigned char param_1, struct Vec4 *param_2, unsign
     node->vec_28 = *param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bf80
@@ -1745,7 +1745,7 @@ void NewScriptRemoveEvent(unsigned char param_1, struct Element *param_2, unsign
     node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bfb0
@@ -1757,7 +1757,7 @@ void NewScriptRemoveRangeEvent(unsigned char param_1, struct Element *param_2, u
     node->field_1c = param_3;
     node->field_14 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bff0
@@ -1769,7 +1769,7 @@ void NewScriptCompositeEvent(unsigned char param_1, struct Element *param_2, uns
     node->field_1c = param_3;
     node->field_14 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c030
@@ -1780,7 +1780,7 @@ void NewScriptLoopCompositeEvent(unsigned char param_1, struct Element *param_2,
     node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c060
@@ -1791,7 +1791,7 @@ void NewScriptTechLevelEvent(unsigned char param_1, struct Element *param_2, uns
     node->element = param_2;
     node->field_18 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c090
@@ -1801,7 +1801,7 @@ void NewScriptParkVisitorsEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x2d, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c0c0
@@ -1812,7 +1812,7 @@ void NewScriptRideVisitorsEvent(unsigned char param_1, struct Element *param_2, 
     node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c0f0
@@ -1823,7 +1823,7 @@ void NewScriptRidersEvent(unsigned char param_1, struct Element *param_2, unsign
     node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c120
@@ -1833,7 +1833,7 @@ void NewScriptSceneryCoverageEvent(unsigned char param_1, unsigned int param_2) 
     node = AllocObjectiveEvent(0x30, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c150
@@ -1843,7 +1843,7 @@ void NewScriptPathSceneryEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x31, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c180
@@ -1853,7 +1853,7 @@ void NewScriptRideCoverageEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x32, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c1b0
@@ -1863,7 +1863,7 @@ void NewScriptShopCoverageEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x33, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c1e0
@@ -1873,7 +1873,7 @@ void NewScriptFoodCoverageEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x34, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c210
@@ -1883,7 +1883,7 @@ void NewScriptTotalCoverageEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x35, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c240
@@ -1894,7 +1894,7 @@ void NewScriptStudAreaEvent(unsigned char param_1, struct Vec4 *param_2, unsigne
     node->vec_28 = *param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c290
@@ -1904,7 +1904,7 @@ void NewScriptSaveEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x38, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c2c0
@@ -1915,7 +1915,7 @@ void NewScriptHappinessEvent(unsigned char param_1, unsigned int param_2, unsign
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c2f0
@@ -1925,7 +1925,7 @@ void NewScriptNeedGardenersEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x3a, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c320
@@ -1935,7 +1935,7 @@ void NewScriptNeedMechanicsEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x3b, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c350
@@ -1947,7 +1947,7 @@ void NewScriptHungerEvent(unsigned char param_1, unsigned int param_2, unsigned 
     node->field_1c = param_2;
     node->field_18 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c390
@@ -1958,7 +1958,7 @@ void NewScriptFixRidesEvent(unsigned char param_1, unsigned int param_2, unsigne
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c3c0
@@ -1968,7 +1968,7 @@ void NewScriptPowerRidesEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x3e, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c3f0
@@ -1979,7 +1979,7 @@ void NewScriptZoningEvent(unsigned char param_1, unsigned int param_2, unsigned 
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c420
@@ -1990,7 +1990,7 @@ void NewScriptCheckFlagEvent(unsigned char param_1, unsigned int param_2, unsign
     node->field_1c = param_3;
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c450
@@ -2000,7 +2000,7 @@ void NewScriptSelectThemeEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x41, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c480
@@ -2010,7 +2010,7 @@ void NewScriptSelectTabEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x42, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c4b0
@@ -2020,7 +2020,7 @@ void NewScriptSelectModeEvent(unsigned char param_1, unsigned int param_2) {
     node = AllocObjectiveEvent(0x43, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c510
@@ -2029,7 +2029,7 @@ void NewScriptForeverEvent(unsigned char param_1) {
 
     node = AllocObjectiveEvent(0x45, 1);
     node->flags_10 = param_1;
-    FUN_0046b610((struct ObjectiveEvent *)node, CurrentScriptSection);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c540
@@ -2074,7 +2074,7 @@ void FUN_0046c5c0(void) {
     DAT_00668724 = NULL;
     FreeObjectiveEventList(ScriptEventList);
     ScriptEventList = NULL;
-    FUN_0046b560((struct NerpsListNode *)ScriptSectionList);
+    FreeScriptSectionList((struct NerpsListNode *)ScriptSectionList);
     ScriptSectionList = NULL;
     CurrentScriptSection = 0;
 }
@@ -2363,7 +2363,7 @@ unsigned int LoadScripts(void) {
         return 0;
     }
     while (marker != -1) {
-        node = FUN_0046b4f0(marker);
+        node = AllocScriptSection(marker);
         if (node == NULL) {
             return 0;
         }

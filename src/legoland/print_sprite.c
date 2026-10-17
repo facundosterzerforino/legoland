@@ -524,7 +524,7 @@ void FUN_00485f20(void *ptr) {
 }
 
 // FUNCTION: LEGOLAND 0x00485f30
-void FUN_00485f30(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void SetRender3DTarget(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     DAT_00797e68 = param_1;
     DAT_00701e58 = param_2;
     DAT_00701e60 = param_3;
@@ -532,7 +532,7 @@ void FUN_00485f30(unsigned char *param_1, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x00485f60
-void FUN_00485f60(void) {
+void AllocZBuffer(void) {
     DAT_0066be40 = 0x80;
     DAT_0066be44 = 0x78;
     DAT_00701e5c = malloc(0xf000);
@@ -540,7 +540,7 @@ void FUN_00485f60(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00485fa0
-void FUN_00485fa0(void) {
+void FreeZBuffer(void) {
     if (DAT_00701e5c != NULL) {
         free(DAT_00701e5c);
     }
@@ -550,7 +550,7 @@ void FUN_00485fa0(void) {
 void FUN_00485fc0(unsigned int param_1) {
     *(unsigned int *)&DAT_007cb5e0 = param_1;
     FUN_004860f0();
-    FUN_00485f60();
+    AllocZBuffer();
     FUN_00486540();
 }
 

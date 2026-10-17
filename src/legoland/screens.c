@@ -179,7 +179,7 @@ void RenderFrontEndScreen(unsigned char param_1) {
     default:
         break;
     }
-    FUN_0048fc00();
+    PlayPendingFrontEndSpeech();
     ProcessFrontEndHelp();
     UpdateFocussedIconPtr();
     PopRenderingStatus();
@@ -236,7 +236,7 @@ int _ftol() {
 }
 
 // FUNCTION: LEGOLAND 0x00458940
-void FUN_00458940(void) {
+void ResetEditState(void) {
     EditMode.unk0 = 0;
     EditMode.unk4 = 3;
     SetDefaultMouseHandlers();
@@ -266,7 +266,7 @@ void InitMouse(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458a50
-void FUN_00458a50(void) {
+void StartLevelGame(void) {
     char buf[0x34];
 
     if (MapLoaded == 0) {
@@ -282,7 +282,7 @@ void FUN_00458a50(void) {
         DAT_00667c4c = FUN_0047afb0(buf);
         SetBricksLimited(1);
         AllocBlokeCounters(lpConfig->max_blokes);
-        FUN_00458940();
+        ResetEditState();
         FUN_00489ee0();
         MapStats.level_end = 0;
         UpdateMenu();
@@ -385,7 +385,7 @@ int FUN_00458c00(void) {
             SetDefaultMouseHandlers();
         } else {
             FUN_0046c5c0();
-            FUN_00458a50();
+            StartLevelGame();
         }
         UpdateSoundVols();
         DAT_00667c64 = 0;
