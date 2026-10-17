@@ -527,8 +527,6 @@ extern GUID NullGuid;
 // 0x004b4580
 extern struct FortRect DAT_004b4580;
 
-// 0x004ab384: gold-rush slot weight to map units
-extern const float GoldSlotWeightScale;
 // 0x004ab390
 extern float FLOAT_004ab390;
 extern float FLOAT_004ab468;
@@ -1157,9 +1155,6 @@ extern unsigned int DAT_004bb6d4;
 // 0x004bb6f8
 extern struct ScriptCommand DAT_004bb6f8[0x5d];
 // 0x004bcba4
-extern const char BuildMenuName[];
-extern const char LegoFontName[5]; /* "Lego" */
-extern const char PathControlName[];
 extern const char *ResourceFileNames[3];
 // 0x004bcbf4
 extern LEGO_EXPORT struct LegoConfig *lpConfig;
@@ -4319,3 +4314,17 @@ extern int DAT_004b42ac[3];
 extern int DAT_004b42b8[3];
 // 0x004b42c4
 extern int DAT_004b42c4[3];
+
+// Constants the original pools (strings and a float) that the documented __asm versions use by name:
+// inline asm cannot take a literal's address. Keep these at the END of this file: MSVC6 /O2's
+// register allocation depends on the order of the declarations it has seen, and declaring them
+// earlier turned MusicThreadProc (sound_sfx.c, 11 KB) from 100% into 99.89% without any change
+// to the function itself.
+// 0x004ab384: gold-rush slot weight to map units
+extern const float GoldSlotWeightScale;
+// 0x004b86e0
+extern const char LegoFontName[5]; /* "Lego" */
+// 0x004b8a70
+extern const char PathControlName[];
+// 0x004bb49c
+extern const char BuildMenuName[];
