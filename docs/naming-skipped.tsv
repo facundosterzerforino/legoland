@@ -138,7 +138,7 @@ FUN_0044eb10	skipped-no-evidence
 FUN_00450a40	skipped-no-evidence		
 FUN_00450b10	named	LoadBuildObjArray	
 FUN_004511e0	skipped-no-evidence		
-FUN_00451390	skipped-no-evidence		
+FUN_00451390	named	LockMedia	VWIN32 DOS IOCTL 0x440d/0x0848 with parameter-block operation 0 locks media in the drive; operation and lock-count bytes documented at https://www.delorie.com/djgpp/doc/rbinter/it/67/15.html.
 FUN_00451550	named	UnlockLogicalVolume	
 FUN_004594f0	named	InitDefaultProfile	
 FUN_004598d0	skipped-no-evidence		

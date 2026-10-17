@@ -150,20 +150,20 @@ int UnlockMedia(HANDLE h, int drive) {
 }
 
 // FUNCTION: LEGOLAND 0x00451390
-int FUN_00451390(HANDLE h, int drive) {
+int LockMedia(HANDLE h, unsigned char drive) {
     DIOC_REGISTERS regs = {0};
-    char buf[2];
+    char lock_params[2];
+    DWORD bytes_returned;
+    int result;
 
-    regs.reg_EBX = drive & 0xff;
-    buf[1] = 0;
-    buf[0] = 0;
+    lock_params[1] = 0;
+    lock_params[0] = 0;
     regs.reg_EAX = 0x440d;
+    regs.reg_EBX = drive;
     regs.reg_ECX = 0x848;
-    regs.reg_EDX = (DWORD)(UINT_PTR)buf; /* VWIN32 (Windows 9x) registers are 32 bits */
-    if (DeviceIoControl(h, 1, &regs, sizeof(regs), &regs, sizeof(regs), (LPDWORD)&drive, NULL) && !(regs.reg_Flags & 1)) {
-        return 1;
-    }
-    return 0;
+    regs.reg_EDX = (DWORD)(UINT_PTR)lock_params; /* VWIN32 (Windows 9x) registers are 32 bits */
+    result = DeviceIoControl(h, 1, &regs, sizeof(regs), &regs, sizeof(regs), &bytes_returned, NULL);
+    return result && !(regs.reg_Flags & 1);
 }
 
 // FUNCTION: LEGOLAND 0x00451410
