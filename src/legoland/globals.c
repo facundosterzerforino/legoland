@@ -2630,19 +2630,19 @@ struct TextCell TextCells[50];
 int MapWorldMinX;
 
 // GLOBAL: LEGOLAND 0x00667c04
-int DAT_00667c04;
+int MapWorldMinY;
 
 // GLOBAL: LEGOLAND 0x00667c08
-int DAT_00667c08;
+int MapWorldMaxX;
 
 // GLOBAL: LEGOLAND 0x00667c0c
-int DAT_00667c0c;
+int MapWorldMaxY;
 
 // GLOBAL: LEGOLAND 0x00667c14
-short DAT_00667c14;
+short MapDrawHeight;
 
 // GLOBAL: LEGOLAND 0x00667c16
-short DAT_00667c16;
+short MapDrawWidth;
 
 // GLOBAL: LEGOLAND 0x00667c18
 int MapWorldHeight;
@@ -2663,7 +2663,7 @@ void *DAT_00667c28;
 struct Sprite *FullMapSprite;
 
 // GLOBAL: LEGOLAND 0x00667c30
-unsigned int DAT_00667c30;
+unsigned int FullMapRendered;
 
 // GLOBAL: LEGOLAND 0x00667c34
 struct Sprite *MapSpannerSprite;
@@ -2882,7 +2882,7 @@ HFONT LegoFont28Normal;
 DDSURFACEDESC CurrentSurfaceDesc;
 
 // GLOBAL: LEGOLAND 0x00668108
-RECT DAT_00668108;
+RECT SoftPrintClip;
 
 // GLOBAL: LEGOLAND 0x00668118
 int renderEngineTargetIdx;
@@ -3572,16 +3572,16 @@ void *DAT_00798190[256];
 void *DAT_00798590;
 
 // GLOBAL: LEGOLAND 0x00798598
-DDSURFACEDESC DAT_00798598;
+DDSURFACEDESC SavedSurfaceDesc;
 
 // GLOBAL: LEGOLAND 0x00798608
-RECT DAT_00798608;
+RECT SavedSoftPrintClip;
 
 // GLOBAL: LEGOLAND 0x0079861c
-LPDIRECTDRAWSURFACE DAT_0079861c;
+LPDIRECTDRAWSURFACE ScaledSpriteScratch;
 
 // GLOBAL: LEGOLAND 0x00798620
-int DAT_00798620;
+int ScaledSpriteScratchMade;
 
 // GLOBAL: LEGOLAND 0x00798624
 void *MasterDirList;
@@ -4655,10 +4655,10 @@ LEGO_EXPORT unsigned short NEWFLC_Repeat;
 LEGO_EXPORT struct EditState EditMode;
 
 // GLOBAL: LEGOLAND 0x008119bc
-unsigned int DAT_008119bc;
+unsigned int MapScreenOpenPending;
 
 // GLOBAL: LEGOLAND 0x008119c0
-struct MapMarker DAT_008119c0[32][32]; /* one table: its last row is DAT_008138c0 (globals.h) */
+struct MapMarker MapSpannerMarks[32][32]; /* one table: its last row is MapSpannerMarksLastRow (globals.h) */
 
 // GLOBAL: LEGOLAND 0x008139c0
 int MapViewHeight;

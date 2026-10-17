@@ -2206,15 +2206,15 @@ extern struct TextCell TextCells[50];
 // 0x00667c00
 extern int MapWorldMinX;
 // 0x00667c04
-extern int DAT_00667c04;
+extern int MapWorldMinY;
 // 0x00667c08
-extern int DAT_00667c08;
+extern int MapWorldMaxX;
 // 0x00667c0c
-extern int DAT_00667c0c;
+extern int MapWorldMaxY;
 // 0x00667c14
-extern short DAT_00667c14;
+extern short MapDrawHeight;
 // 0x00667c16
-extern short DAT_00667c16;
+extern short MapDrawWidth;
 // 0x00667c18
 extern int MapWorldHeight;
 // 0x00667c1c
@@ -2228,7 +2228,7 @@ extern void *DAT_00667c28;
 // 0x00667c2c
 extern struct Sprite *FullMapSprite;
 // 0x00667c30
-extern unsigned int DAT_00667c30;
+extern unsigned int FullMapRendered;
 // 0x00667c34
 extern struct Sprite *MapSpannerSprite;
 // 0x00667c3c
@@ -2382,7 +2382,7 @@ extern HFONT LegoFont28Normal;
 // 0x0066809c
 extern DDSURFACEDESC CurrentSurfaceDesc;
 // 0x00668108
-extern RECT DAT_00668108;
+extern RECT SoftPrintClip;
 // 0x00668118
 extern int renderEngineTargetIdx;
 // 0x0066811c
@@ -2845,13 +2845,13 @@ extern void *DAT_00798190[256];
 // 0x00798590
 extern void *DAT_00798590;
 // 0x00798598
-extern DDSURFACEDESC DAT_00798598;
+extern DDSURFACEDESC SavedSurfaceDesc;
 // 0x00798608
-extern RECT DAT_00798608;
+extern RECT SavedSoftPrintClip;
 // 0x0079861c
-extern LPDIRECTDRAWSURFACE DAT_0079861c;
+extern LPDIRECTDRAWSURFACE ScaledSpriteScratch;
 // 0x00798620
-extern int DAT_00798620;
+extern int ScaledSpriteScratchMade;
 // 0x00798624
 extern void *MasterDirList;
 // 0x00798628
@@ -3581,16 +3581,16 @@ extern LEGO_EXPORT unsigned short NEWFLC_Repeat;
 // 0x008119b0
 extern LEGO_EXPORT struct EditState EditMode;
 // 0x008119bc
-extern unsigned int DAT_008119bc;
+extern unsigned int MapScreenOpenPending;
 struct MapMarker {
     unsigned int x, y;
 };
 // 0x008119c0: the map screen's markers, 32 rows of 32. The code takes the last row for the table's end (the loop
 // over the rows), clears the 32 rows at once, and writes to row 31: one array, or another linker than MSVC's puts
 // the last row elsewhere (the map screen walked through other globals and hung, in the web build).
-extern struct MapMarker DAT_008119c0[32][32];
+extern struct MapMarker MapSpannerMarks[32][32];
 // 0x008138c0
-#define DAT_008138c0 (DAT_008119c0[31])
+#define MapSpannerMarksLastRow (MapSpannerMarks[31])
 // 0x008139c0
 extern int MapViewHeight;
 // 0x008139c4

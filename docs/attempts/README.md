@@ -185,7 +185,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |
 | 0x00488840 | [GenerateNewImageFromZBuffer](0x00488840-GenerateNewImageFromZBuffer.md) | render.c | 76.27% |
-| 0x00488c80 | [FUN_00488c80](0x00488c80-FUN_00488c80.md) | render.c | 91.54% |
+| 0x00488c80 | [RenderScaledSpriteOffset](0x00488c80-RenderScaledSpriteOffset.md) | render.c | 91.54% |
 | 0x00489750 | [RES_OpenVolume](0x00489750-RES_OpenVolume.md) | resource.c | 96.75% |
 | 0x0048ad00 | [InitFreePlayLists](0x0048ad00-InitFreePlayLists.md) | freeplay.c | 100% |
 | 0x0048b2a0 | [FreePlayObjectList](0x0048b2a0-FreePlayObjectList.md) | freeplay.c | 82.76% |

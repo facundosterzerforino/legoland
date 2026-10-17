@@ -54,7 +54,7 @@ unsigned char LegolandThemeIconHandler(struct IconNode *param_1, unsigned char f
 unsigned char AdventurersThemeIconHandler(struct IconNode *param_1, unsigned char flags);
 unsigned char CastleThemeIconHandler(struct IconNode *param_1, unsigned char flags);
 unsigned char WesternThemeIconHandler(struct IconNode *param_1, unsigned char flags);
-unsigned char FUN_00475080(unsigned int a, unsigned char flags);
+unsigned char ToggleMapScreen(unsigned int a, unsigned char flags);
 unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, unsigned int d);
 LEGO_EXPORT void DelObjectList(void);
 LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int param_4);

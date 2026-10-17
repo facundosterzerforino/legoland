@@ -402,7 +402,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string_id = 0x5c;
         icon->string = GetString(0x5c);
         icon->flags |= 0x6002;
-        icon->event_handler = (void *)FUN_00475080;
+        icon->event_handler = (void *)ToggleMapScreen;
         icon->field_18 = 4;
         icon->field_1c = IfMapIconPressedSprite;
         icon->field_20p = IfMapiconSprite;
@@ -598,7 +598,7 @@ unsigned char FUN_00475040(unsigned int a, unsigned int flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00475080
-unsigned char FUN_00475080(unsigned int a, unsigned char flags) {
+unsigned char ToggleMapScreen(unsigned int a, unsigned char flags) {
     if ((flags & 2) != 0) {
         do {
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
@@ -607,14 +607,14 @@ unsigned char FUN_00475080(unsigned int a, unsigned char flags) {
                 PreMapScreenMode = EditMode.unk4;
                 EditMode.unk4 = 1;
                 GamePad = GamePad & 0xffffebff;
-                DAT_008119bc = 1;
+                MapScreenOpenPending = 1;
                 DAT_006687b0 = 4;
                 EditMode.unk0 = 0;
             } else {
                 MapScreenClosePending = 1;
                 EditMode.unk4 = PreMapScreenMode;
                 PreMapScreenMode = 1;
-                FUN_004562e0();
+                RestoreMouseHandlers();
             }
         } while (0);
     }

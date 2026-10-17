@@ -345,7 +345,7 @@ int FUN_00458c00(void) {
     char path[256];
 
     SpeechStreamUpdate();
-    if (DAT_008119bc != 0) {
+    if (MapScreenOpenPending != 0) {
         PauseGameTimer();
         PauseAllSamples();
         DAT_006687bc = 0;
@@ -354,7 +354,7 @@ int FUN_00458c00(void) {
         InitMapScreen();
         DisableInfoPopUPIcons();
         DisableSidePanelIcons();
-        DAT_008119bc = 0;
+        MapScreenOpenPending = 0;
     } else if (MapScreenClosePending != 0) {
         ResumeAllSamples();
         DAT_006687bc = 0;
