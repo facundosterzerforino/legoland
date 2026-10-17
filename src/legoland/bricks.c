@@ -332,7 +332,7 @@ void FUN_00457a70(void) {
                 QueryCursor.tile_y = MouseTileY;
                 DAT_00667c5c = 0;
                 GamePad &= ~0x400;
-                if (!(DAT_00813ac4 & 2)) {
+                if (!(MouseClickFlags & 2)) {
                     DAT_0080ff6c = NULL;
                 }
             }
@@ -350,7 +350,7 @@ void FUN_00457a70(void) {
         } else {
             SetPointer(1);
         }
-        if (DAT_00813ac4 & 0x11) {
+        if (MouseClickFlags & 0x11) {
             if (DAT_0080ff6c != NULL && (((struct Ride *)DAT_0080ff6c)->flags & 0x2000000)) {
                 DAT_00667cd8 = 1;
                 DAT_00667cdc = 0;
@@ -433,7 +433,7 @@ void FUN_00457a70(void) {
             EditMode.unk8->cb_90(EditMode.unk8->element, &MousePos, 0x8f8);
         }
         BuildCursorPtr(&EditCursor, 0x8f8, FUN_0045ead0(EditMode.unk8));
-        if (DAT_00813ac4 & 0x11) {
+        if (MouseClickFlags & 0x11) {
             if (IsCursorBuildable(&EditCursor)) {
                 if (EditMode.unk8->flags & 0x2000000) {
                     DAT_00667cd8 = 1;
@@ -506,7 +506,7 @@ void FUN_00457a70(void) {
             QueryCursor.tile_y = MouseTileY;
             DAT_00667c5c = 0;
             GamePad &= ~0x400;
-            if (!(DAT_00813ac4 & 2)) {
+            if (!(MouseClickFlags & 2)) {
                 DAT_0080ff6c = NULL;
             }
             break;

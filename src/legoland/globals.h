@@ -2238,13 +2238,13 @@ extern LEGO_EXPORT struct Ride *QueryClass;
 // 0x00667c5c
 extern unsigned int DAT_00667c5c;
 // 0x00667c60
-extern unsigned int DAT_00667c60;
+extern unsigned int PreMapScreenMode;
 // 0x00667c68
-extern unsigned int DAT_00667c68;
+extern unsigned int LastMapClickTicks;
 // 0x00667c70
-extern long DAT_00667c70;
+extern long LastMapClickX;
 // 0x00667c74
-extern long DAT_00667c74;
+extern long LastMapClickY;
 // 0x00667c64
 extern const char *DAT_00667c40;
 // 0x00667c48
@@ -3547,7 +3547,7 @@ extern struct Element *CastleObjElem;
 extern unsigned int DAT_0080ff68;
 // 0x0080ff6c
 extern void *DAT_0080ff6c;
-extern unsigned int DAT_0080ff70;
+extern unsigned int MapScreenClosePending;
 // 0x0080ff74
 extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // 0x0080ff78
@@ -3696,7 +3696,7 @@ extern unsigned int DAT_00813abc;
 // 0x00813ac0
 extern unsigned int DAT_00813ac0;
 // 0x00813ac4
-extern unsigned int DAT_00813ac4;
+extern unsigned int MouseClickFlags;
 // 0x00813ac8
 extern unsigned int DAT_00813ac8;
 // 0x00813acc

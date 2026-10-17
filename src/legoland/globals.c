@@ -2686,16 +2686,16 @@ LEGO_EXPORT struct Ride *QueryClass;
 unsigned int DAT_00667c5c;
 
 // GLOBAL: LEGOLAND 0x00667c60
-unsigned int DAT_00667c60;
+unsigned int PreMapScreenMode;
 
 // GLOBAL: LEGOLAND 0x00667c68
-unsigned int DAT_00667c68;
+unsigned int LastMapClickTicks;
 
 // GLOBAL: LEGOLAND 0x00667c70
-long DAT_00667c70;
+long LastMapClickX;
 
 // GLOBAL: LEGOLAND 0x00667c74
-long DAT_00667c74;
+long LastMapClickY;
 
 // GLOBAL: LEGOLAND 0x00667c64
 unsigned int DAT_00667c64;
@@ -4603,7 +4603,7 @@ unsigned int DAT_0080ff68;
 void *DAT_0080ff6c;
 
 // GLOBAL: LEGOLAND 0x0080ff70
-unsigned int DAT_0080ff70;
+unsigned int MapScreenClosePending;
 
 // GLOBAL: LEGOLAND 0x0080ff74
 LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
@@ -4816,7 +4816,7 @@ unsigned int DAT_00813abc;
 unsigned int DAT_00813ac0;
 
 // GLOBAL: LEGOLAND 0x00813ac4
-unsigned int DAT_00813ac4;
+unsigned int MouseClickFlags;
 
 // GLOBAL: LEGOLAND 0x00813ac8
 unsigned int DAT_00813ac8;

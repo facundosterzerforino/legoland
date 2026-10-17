@@ -1382,7 +1382,7 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
                 return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
                     icon, DAT_00813adc, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
             }
-            buttons = DAT_00813ac4;
+            buttons = MouseClickFlags;
             DAT_00667c48 = 1;
             return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
                 icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
@@ -1390,7 +1390,7 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
         {
             unsigned int buttons = DAT_00813adc;
             if ((DAT_00813adc & 7) == 0 || DAT_00668954 != 0) {
-                buttons = DAT_00813ac4;
+                buttons = MouseClickFlags;
                 DAT_00667c48 = 1;
             }
             return FUN_0046f2e0(icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);

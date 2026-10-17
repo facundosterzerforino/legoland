@@ -604,16 +604,16 @@ unsigned char FUN_00475080(unsigned int a, unsigned char flags) {
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
             if (EditMode.unk4 != 1) {
                 SpeechCloseFile();
-                DAT_00667c60 = EditMode.unk4;
+                PreMapScreenMode = EditMode.unk4;
                 EditMode.unk4 = 1;
                 GamePad = GamePad & 0xffffebff;
                 DAT_008119bc = 1;
                 DAT_006687b0 = 4;
                 EditMode.unk0 = 0;
             } else {
-                DAT_0080ff70 = 1;
-                EditMode.unk4 = DAT_00667c60;
-                DAT_00667c60 = 1;
+                MapScreenClosePending = 1;
+                EditMode.unk4 = PreMapScreenMode;
+                PreMapScreenMode = 1;
                 FUN_004562e0();
             }
         } while (0);
@@ -1632,7 +1632,7 @@ int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
                 break;
             }
             ReadGameButtons();
-            if ((DAT_00813ac4 & 1) != 0) {
+            if ((MouseClickFlags & 1) != 0) {
                 break;
             }
             if ((DAT_00813ad4 & 7) != 0) {
@@ -1685,7 +1685,7 @@ int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
     do {
         ProcessSystemEvents();
         ReadGameButtons();
-    } while ((DAT_00813ac4 & 6) != 0);
+    } while ((MouseClickFlags & 6) != 0);
     AVIStreamGetFrameClose(handle->frame);
     handle->frame = NULL;
     return 1;

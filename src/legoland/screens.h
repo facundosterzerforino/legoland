@@ -14,4 +14,4 @@ void FUN_004597e0(int param0, const char *param1);
 void EndLevel(unsigned int a1);
 void RenderFrontEndScreen(unsigned char param_1);
 void GameProc(void);
-void FUN_00459360(void);
+void RenderMapScreenFrame(void);

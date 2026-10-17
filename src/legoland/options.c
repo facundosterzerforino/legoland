@@ -403,7 +403,7 @@ unsigned char OptionsUpIconHandler(struct IconNode *param_1, unsigned int param_
             } else {
                 sample = 0;
             }
-            while ((DAT_00813ac4 & 4) != 0) {
+            while ((MouseClickFlags & 4) != 0) {
                 if (GetIconAtPos(&MousePos, &pos) != param_1) {
                     break;
                 }
@@ -463,7 +463,7 @@ unsigned char OptionsDownIconHandler(struct IconNode *param_1, unsigned int para
             } else {
                 sample = 0;
             }
-            while ((DAT_00813ac4 & 4) != 0) {
+            while ((MouseClickFlags & 4) != 0) {
                 if (GetIconAtPos(&MousePos, &pos) != param_1) {
                     break;
                 }
@@ -521,7 +521,7 @@ unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *param_1, unsigned 
             sample = 0;
         }
         initial_offset = MousePos.x - param_1->x;
-        while ((DAT_00813ac4 & 4) != 0) {
+        while ((MouseClickFlags & 4) != 0) {
             short min = 0x7c;
             x = MousePos.x - initial_offset;
             param_1->x = (short)x;
