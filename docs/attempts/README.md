@@ -38,7 +38,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00402780 | [FUN_00402780](0x00402780-FUN_00402780.md) | ride_bloke.c | 75.00% |
 | 0x00402dc0 | [CastleLevel1Update](0x00402dc0-CastleLevel1Update.md) | castle_level.c | 85.88% |
 | 0x00404630 | [CoptersPlaceRider](0x00404630-CoptersPlaceRider.md) | copters.c | 54.39% |
-| 0x00405bd0 | [DrivingSchoolUpdate](0x00405bd0-DrivingSchoolUpdate.md) | driving_school.c | 80.18% |
+| 0x00405bd0 | [DrivingSchoolUpdate](0x00405bd0-DrivingSchoolUpdate.md) | driving_school.c | 84.09% |
 | 0x00407ad0 | [JoustRemoveObject](0x00407ad0-JoustRemoveObject.md) | joust.c | 95.00% |
 | 0x00408f90 | [FUN_00408f90](0x00408f90-FUN_00408f90.md) | log_flume.c | 40.96% |
 | 0x004092b0 | [FUN_004092b0](0x004092b0-FUN_004092b0.md) | log_flume.c | 84.62% |
@@ -82,6 +82,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00424700 | [RenderCastleDummy](0x00424700-RenderCastleDummy.md) | castle.c | 88.41% |
 | 0x00425e20 | [FUN_00425e20](0x00425e20-FUN_00425e20.md) | castle.c | 90.70% |
 | 0x004269e0 | [lego_sqrtf_init](0x004269e0-lego_sqrtf_init.md) | castle.c | 100% |
+| 0x004280b0 | [FUN_004280b0](0x004280b0-FUN_004280b0.md) | castle.c | 96.97% |
 | 0x004284d0 | [FUN_004284d0](0x004284d0-FUN_004284d0.md) | castle.c | 71.38% |
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
 | 0x0042aa90 | [BalloonzUpdate](0x0042aa90-BalloonzUpdate.md) | balloonz.c | 94.65% |
@@ -180,6 +181,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0047d8e0 | [SaveGame](0x0047d8e0-SaveGame.md) | saveload.c | 91.55% |
 | 0x0047e980 | [LoadGame](0x0047e980-LoadGame.md) | saveload.c | 81.34% |
 | 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
+| 0x00484790 | [FUN_00484790](0x00484790-FUN_00484790.md) | bloke.c | 97.62% |
 | 0x00484920 | [DoLowLevelAI](0x00484920-DoLowLevelAI.md) | bloke.c | 100% |
 | 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
 | 0x004856a0 | [PrintSpriteEx](0x004856a0-PrintSpriteEx.md) | print_sprite.c | 96.64% |

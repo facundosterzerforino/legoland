@@ -491,7 +491,8 @@ void DrivingSchoolUpdate(Element *obj) {
                 if (!bloke->field_58) {
                     tile_id = node->tile.id;
                     count = FUN_00401c40(tile_id);
-                    if (5 * count < (int)FUN_00413970(node->tile.id)) {
+                    /* The original compares the weighted rider count as a signed value (jge). */
+                    if ((int)(5 * count) < (int)FUN_00413970(node->tile.id)) {
                         res = FUN_00401ae0(node->tile.id, bloke);
                         if (0 == res) {
                             source.type = 1;
@@ -502,8 +503,10 @@ void DrivingSchoolUpdate(Element *obj) {
                             AdjustPSampleFreq(sample, 10);
                             BlokeSitAnim(bloke);
                             BlokeSetFrame(bloke, 0);
-                            bloke->flags = bloke->flags | 0x80;
+                            /* Advance the state before setting flag 0x80: MSVC6 then
+                             * schedules this load/increment and flag update as in the original. */
                             bloke->param_action++;
+                            bloke->flags = bloke->flags | 0x80;
                         } else if (res == -1) {
                             bloke->param_action = 3;
                         } else if (res == -2) {
