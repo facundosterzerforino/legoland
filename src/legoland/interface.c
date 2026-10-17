@@ -899,7 +899,7 @@ LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
 
     matched = 1;
     DelObjectList();
-    if (LLIDB_FindElement("BUILD MENU", &build_elem, 0) != 0) {
+    if (LLIDB_FindElement(BuildMenuName, &build_elem, 0) != 0) {
         exit(1);
     }
     if (LLIDB_FindElement("COMMON THEME", &theme_elem, 0) != 0) {
@@ -1115,7 +1115,7 @@ LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
     int i;
 
     DelObjectList();
-    if (LLIDB_FindElement("BUILD MENU", &build_elem, 0) != 0) {
+    if (LLIDB_FindElement(BuildMenuName, &build_elem, 0) != 0) {
         exit(1);
     }
     if (LLIDB_FindElement("COMMON THEME", &theme_elem, 0) != 0) {

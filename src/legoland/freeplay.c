@@ -219,7 +219,7 @@ LEGO_EXPORT void InitFreePlayLists(void) {
     struct Sprite *sprite;
     struct ClipQueryResult *entry;
 
-    if (LLIDB_FindElement("BUILD MENU", &build, 0) != 0) {
+    if (LLIDB_FindElement(BuildMenuName, &build, 0) != 0) {
         exit(1);
     }
     if (LLIDB_FindElement("COMMON THEME", &common, 0) != 0) {
@@ -277,8 +277,7 @@ unsigned int FUN_0048aef0(const char *arg1, struct Element *arg2) {
     result = FUN_0048a840(arg1, 0);
     if ((int)(DAT_007cb3a0 + result) <= 0x4e20) {
         if (arg2) {
-            // STRING: LEGOLAND 0x004bb49c
-            elem = ElemID("BUILD MENU");
+            elem = ElemID(BuildMenuName);
             if (arg2 != elem) {
                 if ((arg2->flags & 0x4) == 0) {
                     return 0;

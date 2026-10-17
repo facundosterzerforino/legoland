@@ -1154,6 +1154,7 @@ extern unsigned int DAT_004bb6d4;
 // 0x004bb6f8
 extern struct ScriptCommand DAT_004bb6f8[0x5d];
 // 0x004bcba4
+extern const char BuildMenuName[];
 extern const char *ResourceFileNames[3];
 // 0x004bcbf4
 extern LEGO_EXPORT struct LegoConfig *lpConfig;
