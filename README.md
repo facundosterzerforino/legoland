@@ -1,5 +1,9 @@
 # legoland
 
+[![Functions](https://bytematch.dev/facundosterzerforino/legoland.svg?label=Functions&measure=matched_functions)](https://bytematch.dev/facundosterzerforino/legoland)
+[![Code](https://bytematch.dev/facundosterzerforino/legoland.svg?label=Code&measure=matched_code_percent)](https://bytematch.dev/facundosterzerforino/legoland)
+[![Fuzzy](https://bytematch.dev/facundosterzerforino/legoland.svg?label=Fuzzy&measure=fuzzy_match_percent)](https://bytematch.dev/facundosterzerforino/legoland)
+
 A **matching decompilation** of `legoland.exe` (x86 Windows, built with Microsoft Visual C++ 6.0),
 in the style of the [LEGO Island decompilation](https://github.com/isledecomp/isle): ordinary C is
 compiled with the *original* MSVC6 toolchain and verified **function-by-function** against the
