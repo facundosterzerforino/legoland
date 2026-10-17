@@ -666,7 +666,7 @@ void FUN_004784c0(void) {
     FUN_004688e0();
     ConfigureAppraisal(0, 0);
     ClearBriefingAndHintsFileNames();
-    FUN_00482d70();
+    SetDefaultMoodDeltas();
     SetDefaultClassLimits();
     FUN_00476000();
     ClearButtonFlashStates();

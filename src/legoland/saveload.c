@@ -1002,7 +1002,7 @@ LEGO_EXPORT int LoadGame(char *path) {
     if (SkipSaveGameDword() == 0) {
         goto fail;
     }
-    FUN_0049ce00();
+    LoadMechanicWorkOrders();
     DrawWatchSprite();
     if (SkipSaveGameDword() == 0) {
         goto fail;

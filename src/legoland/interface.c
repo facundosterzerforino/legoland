@@ -459,7 +459,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_18p = BriefIconSprite;
         icon->flags |= 0x600a;
         icon->event_handler = (void *)FUN_00474f40;
-        icon->render_func = (void *)FUN_0046e040;
+        icon->render_func = (void *)RenderFocusableIcon;
         DAT_00668e9c = icon;
         icon->flags |= 0x400;
         HasIntervalReport(DAT_0066861c);
@@ -1005,7 +1005,7 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     panel->clip_bottom = icon->height + icon->y;
     panel->field_4 = 1;
     panel->group = (short)param_1;
-    SetNewGroup_Callbacks(0, (void *)RenderBuildObjectIcon, (void *)FUN_00470000);
+    SetNewGroup_Callbacks(0, (void *)RenderBuildObjectIcon, (void *)ObjectListIconHandler);
     while (node != NULL) {
         if (node->flag != 0) {
             AddGBarClassIcon(panel, (struct InfoSource *)node->data, x, y, param_1, 1);
