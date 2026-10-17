@@ -1112,3 +1112,4 @@ FUN_0043c950	named	SpinningBarrelsUpdate
 FUN_004316f0	named	OctopusCafeUpdate	
 FUN_0042fbb0	named	Restaurant2Update	
 FUN_00407c30	named	JoustUpdate	
+FUN_00451280	named	UnlockMedia	VWIN32 DOS IOCTL 0x440d/0x0848: query operation 2, release operation 1 for each media lock; matches Microsoft KB Q168180 UnlockMedia example (https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/168180).

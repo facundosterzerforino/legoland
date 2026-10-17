@@ -102,7 +102,7 @@ void FUN_00451210(int param_1) {
     FUN_004511f0(param_1);
     if (DAT_004b85c4 != INVALID_HANDLE_VALUE) {
         *(char *)&drive = (char)toupper((char)param_1) - 0x40;
-        FUN_00451280(DAT_004b85c4, drive);
+        UnlockMedia(DAT_004b85c4, drive);
         FUN_00451410(DAT_004b85c4, drive);
         UnlockLogicalVolume(DAT_004b85c4, drive);
         CloseDeviceHandle(DAT_004b85c4);
@@ -111,7 +111,7 @@ void FUN_00451210(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00451280
-int FUN_00451280(HANDLE h, int drive) {
+int UnlockMedia(HANDLE h, int drive) {
     DIOC_REGISTERS regs = {0};
     unsigned char buf[8];
     int result;
@@ -120,41 +120,33 @@ int FUN_00451280(HANDLE h, int drive) {
 
     buf[1] = 0;
     drv = drive & 0xff;
-    regs.reg_EBX = drv;
     regs.reg_EDX = (DWORD)(UINT_PTR)buf; /* VWIN32 (Windows 9x) registers are 32 bits */
     buf[0] = 2;
     regs.reg_EAX = 0x440d;
+    regs.reg_EBX = drv;
     regs.reg_ECX = 0x848;
     result = DeviceIoControl(h, 1, &regs, sizeof(regs), &regs, sizeof(regs), (LPDWORD)&drive, NULL);
-    if (!result) {
-        goto fail;
-    }
-    if (regs.reg_Flags & 1) {
-        if (regs.reg_EAX != 0xb0 && regs.reg_EAX != 1) {
-            goto fail;
+    if (result) {
+        if (regs.reg_Flags & 1) {
+            result = regs.reg_EAX == 0xb0 || regs.reg_EAX == 1;
         }
-        result = 1;
     }
-    i = 0;
-    while (buf[1] > 0) {
-        regs.reg_EBX = drv;
+    if (!result) {
+        return 0;
+    }
+    for (i = 0; i < buf[1]; i++) {
         regs.reg_EDX = (DWORD)(UINT_PTR)buf; /* VWIN32 (Windows 9x) registers are 32 bits */
         buf[0] = 1;
         regs.reg_EAX = 0x440d;
+        regs.reg_EBX = drv;
         regs.reg_ECX = 0x848;
-        if (!DeviceIoControl(h, 1, &regs, sizeof(regs), &regs, sizeof(regs), (LPDWORD)&drive, NULL) || (regs.reg_Flags & 1)) {
-            result = 0;
-            break;
-        }
-        i++;
-        result = 1;
-        if (i >= buf[1]) {
+        result = DeviceIoControl(h, 1, &regs, sizeof(regs), &regs, sizeof(regs), (LPDWORD)&drive, NULL);
+        result = result && !(regs.reg_Flags & 1);
+        if (!result) {
             break;
         }
     }
     return result;
-fail:
-    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00451390
