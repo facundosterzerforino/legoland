@@ -39,6 +39,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
   `if`/`else` tree can change MSVC6's shared argument/call tails. This matched `UpdateQueuePathShape`
   (98.43 -> 100%); a single return after the tree produced a different layout. Argument-side flag
   assignments, narrow flag casts and changing the mask type did not match.
+- **Token lifetimes:** initializing a token pointer before a buffer copy and restoring a delimiter
+  before advancing the token can keep the token and resolved object in separate saved registers.
+  This improved `LoadObjectClassAliasElements` (73.10 -> 98.63%) without redundant increments;
+  advancing immediately after lookup left a scheduling difference.
 
 ## Index
 
@@ -97,6 +101,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
 | 0x0042aa90 | [BalloonzUpdate](0x0042aa90-BalloonzUpdate.md) | balloonz.c | 94.65% |
 | 0x0042bcf0 | [RenderCarousel](0x0042bcf0-RenderCarousel.md) | carousel.c | 42.80% |
+| 0x0042c820 | [CarouselUpdate](0x0042c820-CarouselUpdate.md) | carousel.c | 85.71% |
 | 0x0042f0f0 | [FUN_0042f0f0](0x0042f0f0-FUN_0042f0f0.md) | eatery.c | 88.29% |
 | 0x0042fbb0 | [Restaurant2Update](0x0042fbb0-Restaurant2Update.md) | eatery.c | 41.89% |
 | 0x004304e0 | [RenderEateryBaseLayers](0x004304e0-RenderEateryBaseLayers.md) | eatery.c | 87.10% |
@@ -191,6 +196,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0047d8e0 | [SaveGame](0x0047d8e0-SaveGame.md) | saveload.c | 91.55% |
 | 0x0047e980 | [LoadGame](0x0047e980-LoadGame.md) | saveload.c | 81.34% |
 | 0x0047f880 | [GameMain](0x0047f880-GameMain.md) | debug.c | 99.62% |
+| 0x004809d0 | [LoadObjectClassAliasElements](0x004809d0-LoadObjectClassAliasElements.md) | objclass.c | 98.63% |
 | 0x00484790 | [FUN_00484790](0x00484790-FUN_00484790.md) | bloke.c | 97.62% |
 | 0x00484920 | [DoLowLevelAI](0x00484920-DoLowLevelAI.md) | bloke.c | 100% |
 | 0x00484a70 | [SetBlokePositionFromBNV](0x00484a70-SetBlokePositionFromBNV.md) | bloke.c | 95.12% |
