@@ -2138,34 +2138,39 @@ void FUN_0040bd40(struct FlumeEntry *set, int index) {
     }
 }
 
+/* Per-entry update used by LogFlumeEntranceUpdate: advance its boat slots, hand
+   over queued riders, and update the queue's admission flag and walking positions. */
 // FUNCTION: LEGOLAND 0x0040be00
-void FUN_0040be00(struct FlumeEntry *set) {
+void UpdateLogFlumeEntranceEntry(struct FlumeEntry *set) {
     struct FlumeSlot *slot;
-    struct RideNode *item; /* the rider the queue hands over */
-    int i;
+    struct RideNode *rider_node; /* the rider the queue hands over */
+    int slot_index;
 
+    /* Flag 2 expires after the entry's configured tick limit. */
     if (set->flags & 2) {
         if (++set->ticks >= set->field_28) {
             set->flags &= ~2;
         }
     }
+    /* Only circulate boats on connected track; service the slots every third update. */
     if (FUN_0040ba80((struct FlumeEntry *)set)) {
         set->timer--;
         if (set->timer < 0) {
             set->timer = 2;
-            for (i = 0; i < set->count; i++) {
-                FUN_0040bbb0(set, i);
+            for (slot_index = 0; slot_index < set->count; slot_index++) {
+                FUN_0040bbb0(set, slot_index);
             }
             if (!(set->flags & 1)) {
                 slot = NULL;
                 if (FUN_0040bb50(set, &slot)) {
-                    item = NULL;
+                    /* Transfer the next ready queued rider to an available boarding slot. */
+                    rider_node = NULL;
                     set->target = slot;
                     if (QueueHasNodes(&set->queue)) {
                         if (FUN_00411ea0(&set->queue)) {
                             set->flags |= 1;
-                            FUN_00412060(&set->queue, (struct RideNode **)&item);
-                            slot->busy = item;
+                            FUN_00412060(&set->queue, (struct RideNode **)&rider_node);
+                            slot->busy = rider_node;
                         }
                     }
                 }
@@ -2174,12 +2179,21 @@ void FUN_0040be00(struct FlumeEntry *set) {
     } else {
         FUN_0040a580((struct FlumeEntry *)set);
     }
-    FUN_004120a0(&set->queue, LogFlumeEntranceRide->x + set->tile.pos.x, LogFlumeEntranceRide->y + set->tile.pos.y);
+    {
+        /* Calculate both world coordinates before the queue call. The Point preserves
+           MSVC6's original register allocation; a cached ride pointer does not. */
+        Point queue_position;
+        queue_position.x = LogFlumeEntranceRide->x + set->tile.pos.x;
+        queue_position.y = LogFlumeEntranceRide->y + set->tile.pos.y;
+        FUN_004120a0(&set->queue, queue_position.x, queue_position.y);
+    }
+    /* Prevent new arrivals while the entrance queue is full. */
     if (FUN_00411e60(&set->queue)) {
         Ride_SetFlagToNotLetAnyoneOn(&set->tile);
     } else {
         Ride_ClearFlagToNotLetAnyoneOn(&set->tile);
     }
+    /* Advance the entry's phase modulo 16. */
     set->submode = (set->submode + 1) & 0xf;
 }
 
@@ -2187,7 +2201,7 @@ void FUN_0040be00(struct FlumeEntry *set) {
 void FUN_0040bf50(void) {
     struct FlumeEntry *current = FlumeEntryList;
     while (current != NULL) {
-        FUN_0040be00((struct FlumeEntry *)current);
+        UpdateLogFlumeEntranceEntry((struct FlumeEntry *)current);
         current = current->next;
     }
 }

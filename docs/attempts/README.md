@@ -31,6 +31,11 @@ still differs" when they change. When a function reaches 100%, delete its file.
 - **Endpoint sums:** when a loop's final coordinate additions use different registers, calculate both
   coordinates in a `Point end` before updating the running origin. This matched `BuildQueueTable`
   (93.48 -> 100%); reversing addition operands or chaining assignments did not help.
+  A paired `Point` also matched `UpdateLogFlumeEntranceEntry` (`FUN_0040be00`,
+  90.61 -> 100%): calculate x and y from the global ride before passing them to the
+  queue update. Caching the ride pointer, using scalar x/y locals, or introducing a
+  TileId pointer did not match. All 14 alternative forms were compared before retaining
+  the Point with direct global accesses; no assembly or volatile access was needed.
 - **Branch-local field updates:** assigning a direction byte in each turn branch, then masking the
   field after the join, can preserve two original stores without volatile access. Updating a local
   and assigning the field twice instead let MSVC6 eliminate the first store. This matched
@@ -67,7 +72,6 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x0040abf0 | [LogFlumeEntranceRemoveObject](0x0040abf0-LogFlumeEntranceRemoveObject.md) | log_flume.c | 95.10% |
 | 0x0040ae90 | [FUN_0040ae90](0x0040ae90-FUN_0040ae90.md) | log_flume.c | 45.11% |
 | 0x0040bab0 | [FUN_0040bab0](0x0040bab0-FUN_0040bab0.md) | log_flume.c | 44.09% |
-| 0x0040be00 | [FUN_0040be00](0x0040be00-FUN_0040be00.md) | log_flume.c | 90.61% |
 | 0x0040bf70 | [LogFlumeEntranceUpdate](0x0040bf70-LogFlumeEntranceUpdate.md) | log_flume.c | 82.05% |
 | 0x0040c250 | [FUN_0040c250](0x0040c250-FUN_0040c250.md) | log_flume.c | 42.86% |
 | 0x0040c8d0 | [LogFlumeTrackRemoveObject](0x0040c8d0-LogFlumeTrackRemoveObject.md) | log_flume.c | 92.59% |
