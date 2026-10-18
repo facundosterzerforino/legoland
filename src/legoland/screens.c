@@ -532,7 +532,7 @@ void GameProc(void) {
                 SetPointer(8);
                 break;
             case 0x306:
-                FUN_00455fc0(&help_rect, GetVisitorName(Hover.ptr), 2, FUN_00482cb0(Hover.ptr));
+                HTBubbleHelpWithMood(&help_rect, GetVisitorName(Hover.ptr), 2, FUN_00482cb0(Hover.ptr));
                 SetPointer(8);
                 FUN_00450a40(Hover.ptr);
                 break;

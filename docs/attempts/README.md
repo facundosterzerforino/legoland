@@ -43,6 +43,12 @@ still differs" when they change. When a function reaches 100%, delete its file.
   before advancing the token can keep the token and resolved object in separate saved registers.
   This improved `LoadObjectClassAliasElements` (73.10 -> 98.63%) without redundant increments;
   advancing immediately after lookup left a scheduling difference.
+- **Rectangle intermediates:** `HTBubbleHelpWithMood` (`FUN_00455fc0`, 82.35 -> 100%) needs
+  its unpadded right edge stored in the RECT before the clipping branch; add the icon allowance
+  in the edge test. Correcting that state, the center comparison order and RECT initialization
+  allowed all five volatile qualifiers and every permuter temporary to be removed. Qualifier
+  removal and initialization changes alone did not recover the match (64 standalone trials,
+  65.09-83.96% against an 83.24% harness baseline); the natural rectangle form reached 100%.
 
 ## Index
 
@@ -143,7 +149,6 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00454380 | [WriteModuleInfo](0x00454380-WriteModuleInfo.md) | exceptlog.c | 100% |
 | 0x00455370 | [BubbleHelp](0x00455370-BubbleHelp.md) | text.c | 24.23% |
 | 0x004557c0 | [HTBubbleHelp](0x004557c0-HTBubbleHelp.md) | text.c | 76.47% |
-| 0x00455fc0 | [FUN_00455fc0](0x00455fc0-FUN_00455fc0.md) | text.c | 77.60% |
 | 0x004567a0 | [RenderFullMap](0x004567a0-RenderFullMap.md) | mapscreen.c | 81.85% |
 | 0x00457970 | [IsFootprintClear](0x00457970-IsFootprintClear.md) | bricks.c | 87.80% |
 | 0x00457a70 | [FUN_00457a70](0x00457a70-FUN_00457a70.md) | bricks.c | 100% effective match (reccmp), bytes still differ |
