@@ -233,6 +233,8 @@ int FUN_004135d0(int x, int y, struct NeighborResult *out) {
     return count;
 }
 
+/* Choose a path tile's shape and rotation from neighboring entries with matching IDs.
+ * Shapes that remove an existing zebra crossing refund its cost through the final path. */
 // FUNCTION: LEGOLAND 0x00413650
 void UpdateQueuePathShape(unsigned short param_1, int param_2, int param_3) {
     struct NeighborResult r;
@@ -314,33 +316,43 @@ void UpdateQueuePathShape(unsigned short param_1, int param_2, int param_3) {
         if (r.field_1c != NULL && r.field_1c->id == id) {
             bits |= 0x80;
         }
+        /* These choices preserve the crossing flag and finish without a refund. Keep a
+         * return at each call: MSVC6 then shares the original argument/call tails; joining
+         * the branches at one final return changes the generated tail layout. */
         m = bits;
         if ((m & 0x11) != 0) {
             if ((m & 0x83) == 0x83) {
                 if ((m & 0x38) == 0x38) {
                     FUN_00412680(param_2, param_3, flag | 7, 0);
+                    return;
                 } else {
                     FUN_00412680(param_2, param_3, flag | 1, 0);
+                    return;
                 }
             } else {
                 if ((m & 0x38) == 0x38) {
                     FUN_00412680(param_2, param_3, flag | 1, 2);
+                    return;
                 } else {
                     FUN_00412680(param_2, param_3, flag, 0);
+                    return;
                 }
             }
         } else if ((m & 0xe0) == 0xe0) {
             if ((m & 0xe) == 0xe) {
                 FUN_00412680(param_2, param_3, flag | 7, 1);
+                return;
             } else {
                 FUN_00412680(param_2, param_3, flag | 1, 3);
+                return;
             }
         } else if ((m & 0xe) == 0xe) {
             FUN_00412680(param_2, param_3, flag | 1, 1);
+            return;
         } else {
             FUN_00412680(param_2, param_3, flag, 1);
+            return;
         }
-        return;
     case 3:
         switch (mask) {
         case 11:

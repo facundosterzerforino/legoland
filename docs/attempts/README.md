@@ -35,6 +35,10 @@ still differs" when they change. When a function reaches 100%, delete its file.
   field after the join, can preserve two original stores without volatile access. Updating a local
   and assigning the field twice instead let MSVC6 eliminate the first store. This matched
   `UpdateDrivingSchoolCarVelocity` (94.29 -> 100%).
+- **Terminal shape-selection branches:** returning immediately after every call in a complete
+  `if`/`else` tree can change MSVC6's shared argument/call tails. This matched `UpdateQueuePathShape`
+  (98.43 -> 100%); a single return after the tree produced a different layout. Argument-side flag
+  assignments, narrow flag casts and changing the mask type did not match.
 
 ## Index
 
@@ -64,7 +68,6 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00411680 | [AdvanceFlumeMover](0x00411680-AdvanceFlumeMover.md) | log_flume.c | 63.04% |
 | 0x00411fa0 | [FUN_00411fa0](0x00411fa0-FUN_00411fa0.md) | ride_queue.c | 87.74% |
 | 0x00413450 | [FUN_00413450](0x00413450-FUN_00413450.md) | roads.c | 90.00% |
-| 0x00413650 | [UpdateQueuePathShape](0x00413650-UpdateQueuePathShape.md) | roads.c | 97.18% |
 | 0x00415220 | [SafariRideUpdate](0x00415220-SafariRideUpdate.md) | safari_ride.c | 75.56% |
 | 0x00415ae0 | [RenderSpider](0x00415ae0-RenderSpider.md) | spider_ride.c | 98.62% |
 | 0x00416fa0 | [RenderTempleSlide](0x00416fa0-RenderTempleSlide.md) | temple_slide.c | 95.00% |
