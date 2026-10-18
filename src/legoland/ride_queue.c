@@ -186,6 +186,8 @@ void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_
     }
 }
 
+/* Build the queue's sampled positions from its segment offsets. Each segment contributes
+ * its Euclidean length rounded down, and its endpoint becomes the next segment's origin. */
 // FUNCTION: LEGOLAND 0x00412100
 struct QueueTable *BuildQueueTable(struct PathTable *param_1) {
     int px;
@@ -201,6 +203,7 @@ struct QueueTable *BuildQueueTable(struct PathTable *param_1) {
     int cx;
     int cy;
     int total;
+    Point end;
 
     total = 0;
     for (i = 0; i < param_1->count; i++) {
@@ -236,8 +239,12 @@ struct QueueTable *BuildQueueTable(struct PathTable *param_1) {
                 py += dy;
             }
         }
-        start.x += dx;
-        start.y += dy;
+        /* Form both endpoint coordinates before updating the origin. MSVC6 then keeps
+         * the sums in the original segment registers through the loop's final stores. */
+        end.x = dx + start.x;
+        end.y = dy + start.y;
+        start.x = end.x;
+        start.y = end.y;
     }
     return table;
 }

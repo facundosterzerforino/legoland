@@ -8703,9 +8703,11 @@ void SquareTrackHeightPathLoad(Element *param_1) {
     DAT_00611958++;
 }
 
+/* Placement-cursor callback for SQUARE_TRACK_HEIGHT_PATH. Add cursors for the enabled
+ * points in both point sets, then validate the footprint and the selected track piece. */
 // FUNCTION: LEGOLAND 0x004280b0
 void FUN_004280b0(Element *obj, int *x, unsigned int y) {
-    int total = 0;
+    int total;
     struct Int16Pair pair;
     int a;
     int b;
@@ -8713,11 +8715,17 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     struct PieceClass *key;
     unsigned int bit;
     int n;
-    struct Footprint *fp = &obj->ride->footprint;
+    struct Ride *ride;
+    struct Footprint *fp;
     int i;
 
-    SetEditCursorFootPrint(fp);
+    /* Capture the ride before clearing the cursor chain, and calculate the footprint
+     * address afterward. This order reproduces MSVC6's original setup instructions. */
+    ride = obj->ride;
+    total = 0;
     EditCursor.field_1830 = 0;
+    fp = &ride->footprint;
+    SetEditCursorFootPrint(fp);
     ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
     n = 0;
     bit = 1;

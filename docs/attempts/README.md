@@ -28,6 +28,9 @@ still differs" when they change. When a function reaches 100%, delete its file.
   instructions as raw bytes with `_emit` (RenderTransSprite).
 - **reccmp false positives:** a constant that falls inside a data symbol's range in only one of the two
   images shows as a diff on a byte-identical line (`decomp-tips.md`).
+- **Endpoint sums:** when a loop's final coordinate additions use different registers, calculate both
+  coordinates in a `Point end` before updating the running origin. This matched `BuildQueueTable`
+  (93.48 -> 100%); reversing addition operands or chaining assignments did not help.
 
 ## Index
 
@@ -82,7 +85,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00424700 | [RenderCastleDummy](0x00424700-RenderCastleDummy.md) | castle.c | 88.41% |
 | 0x00425e20 | [FUN_00425e20](0x00425e20-FUN_00425e20.md) | castle.c | 90.70% |
 | 0x004269e0 | [lego_sqrtf_init](0x004269e0-lego_sqrtf_init.md) | castle.c | 100% |
-| 0x004280b0 | [FUN_004280b0](0x004280b0-FUN_004280b0.md) | castle.c | 96.97% |
+| 0x004280b0 | [FUN_004280b0](0x004280b0-FUN_004280b0.md) | castle.c | 99.39% (effective) |
 | 0x004284d0 | [FUN_004284d0](0x004284d0-FUN_004284d0.md) | castle.c | 71.38% |
 | 0x00429cf0 | [FUN_00429cf0](0x00429cf0-FUN_00429cf0.md) | castle.c | 97.27% |
 | 0x0042aa90 | [BalloonzUpdate](0x0042aa90-BalloonzUpdate.md) | balloonz.c | 94.65% |
