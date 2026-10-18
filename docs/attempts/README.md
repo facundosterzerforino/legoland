@@ -68,6 +68,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00411680 | [AdvanceFlumeMover](0x00411680-AdvanceFlumeMover.md) | log_flume.c | 63.04% |
 | 0x00411fa0 | [FUN_00411fa0](0x00411fa0-FUN_00411fa0.md) | ride_queue.c | 87.74% |
 | 0x00413450 | [FUN_00413450](0x00413450-FUN_00413450.md) | roads.c | 90.00% |
+| 0x00413b50 | [DrivingSchoolRoadsCalcCursor](0x00413b50-DrivingSchoolRoadsCalcCursor.md) | roads.c | 94.67% |
 | 0x00415220 | [SafariRideUpdate](0x00415220-SafariRideUpdate.md) | safari_ride.c | 75.56% |
 | 0x00415ae0 | [RenderSpider](0x00415ae0-RenderSpider.md) | spider_ride.c | 98.62% |
 | 0x00416fa0 | [RenderTempleSlide](0x00416fa0-RenderTempleSlide.md) | temple_slide.c | 95.00% |
