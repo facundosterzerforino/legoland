@@ -31,12 +31,15 @@ still differs" when they change. When a function reaches 100%, delete its file.
 - **Endpoint sums:** when a loop's final coordinate additions use different registers, calculate both
   coordinates in a `Point end` before updating the running origin. This matched `BuildQueueTable`
   (93.48 -> 100%); reversing addition operands or chaining assignments did not help.
+- **Branch-local field updates:** assigning a direction byte in each turn branch, then masking the
+  field after the join, can preserve two original stores without volatile access. Updating a local
+  and assigning the field twice instead let MSVC6 eliminate the first store. This matched
+  `UpdateDrivingSchoolCarVelocity` (94.29 -> 100%).
 
 ## Index
 
 | Address | Function | File | Best |
 |---|---|---|---|
-| 0x004019c0 | [FUN_004019c0](0x004019c0-FUN_004019c0.md) | ride_bloke.c | 92.08% |
 | 0x00401f30 | [PickQueueTurn](0x00401f30-PickQueueTurn.md) | ride_bloke.c | 70.73% |
 | 0x00402780 | [FUN_00402780](0x00402780-FUN_00402780.md) | ride_bloke.c | 75.00% |
 | 0x00402dc0 | [CastleLevel1Update](0x00402dc0-CastleLevel1Update.md) | castle_level.c | 85.88% |

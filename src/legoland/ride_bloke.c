@@ -380,47 +380,52 @@ int *FUN_00401970(int *param_1, int param_2, int param_3) {
     return 0;
 }
 
+/* Compute velocity toward the next waypoint and ease large turns in the 16-way heading.
+ * Used at driving-school car creation and before each position integration. */
 // FUNCTION: LEGOLAND 0x004019c0
-void FUN_004019c0(struct NewBloke *m) {
-    unsigned char oldDir = m->f_b8;
-    volatile unsigned char moving = m->f_bb;
-    int dy, dx, dist, diff, vx, vy;
-    unsigned char newDir;
+void UpdateDrivingSchoolCarVelocity(struct NewBloke *car) {
+    /* Zero-extend the saved byte before comparing headings, as in the original. */
+    unsigned int old_heading = car->f_b8;
+    unsigned char waypoint_count = car->f_bb;
+    int dy, dx, dist, heading_diff, vx, vy;
+    unsigned char target_heading;
 
-    if (!moving) {
-        m->velX = 0;
-        m->velY = 0;
+    if (!waypoint_count) {
+        car->velX = 0;
+        car->velY = 0;
     } else {
         do {
-            dx = m->dest.x - m->fx;
-            dy = m->dest.y - m->fy;
+            dx = car->dest.x - car->fx;
+            dy = car->dest.y - car->fy;
             dist = (int)sqrt((float)dx * (float)dx + (float)dy * (float)dy);
             if (dist != 0) {
-                m->dirX = (float)dx / dist;
-                m->dirY = (float)dy / dist;
-                newDir = (ArcTan256(dx, dy) + 8) >> 4 & 15;
-                m->f_b8 = newDir;
-                diff = (newDir - oldDir) & 15;
-                if (diff & 8)
-                    diff |= -16;
-                if (diff < -2 || (unsigned)diff > 2) {
-                    if (diff & 8)
-                        oldDir--;
+                car->dirX = (float)dx / dist;
+                car->dirY = (float)dy / dist;
+                target_heading = (ArcTan256(dx, dy) + 8) >> 4 & 15;
+                car->f_b8 = target_heading;
+                heading_diff = (target_heading - old_heading) & 15;
+                if (heading_diff & 8)
+                    heading_diff |= -16;
+                /* Interpret the wrapped difference as signed: -1 and -2 are small turns too. */
+                if (heading_diff < -2 || heading_diff > 2) {
+                    if (heading_diff & 8)
+                        car->f_b8 = old_heading - 1;
                     else
-                        oldDir++;
-                    m->f_b8 = oldDir;
-                    m->f_b8 = oldDir & 15;
+                        car->f_b8 = old_heading + 1;
+                    /* Keep the turn in the field before wrapping it. MSVC6 preserves the
+                     * original unmasked/masked byte stores with this branch structure. */
+                    car->f_b8 &= 15;
                 }
-                vx = m->f_c8 * dx / dist;
-                vy = m->f_c8 * dy / dist;
+                vx = car->f_c8 * dx / dist;
+                vy = car->f_c8 * dy / dist;
             } else {
                 vx = 0;
-                m->dirX = 0;
-                m->dirY = 0;
+                car->dirX = 0;
+                car->dirY = 0;
                 vy = 0;
             }
-            m->velX = vx;
-            m->velY = vy;
+            car->velX = vx;
+            car->velY = vy;
         } while (0);
     }
 }
@@ -478,7 +483,7 @@ int FUN_00401ae0(unsigned short id, struct Bloke *bloke) {
     b->f_be = 9000;
     b->f_c0 = 1200;
     FUN_00401080(b);
-    FUN_004019c0((struct NewBloke *)b);
+    UpdateDrivingSchoolCarVelocity((struct NewBloke *)b);
     return 0;
 }
 
@@ -945,7 +950,7 @@ void FUN_00402780(struct NewBloke *b) {
         if (b->f_c8 < b->f_c6) {
             b->f_c8 += 0x40;
         }
-        FUN_004019c0((struct NewBloke *)b);
+        UpdateDrivingSchoolCarVelocity((struct NewBloke *)b);
         b->fx += b->velX;
         b->fy += b->velY;
         b->px = (b->fx + 0x10000) >> 16;
