@@ -516,23 +516,23 @@ void CoptersPlaceRider(struct CopterNode *node, int index) {
         s = entry->active_layer;
         layer = 1;
         switch (index) {
-        case 0:
+        case 1:
             layer = 0;
             yoff = 0xeb;
             break;
-        case 1:
+        case 3:
             layer = 1;
             yoff = 0xe6;
             break;
-        case 2:
+        case 4:
             layer = 2;
             yoff = 0xe6;
             break;
-        case 3:
+        case 0:
             layer = 3;
             yoff = 0xd7;
             break;
-        case 4:
+        case 2:
             layer = 4;
             yoff = 0xe1;
             break;
