@@ -2237,7 +2237,7 @@ extern unsigned int DAT_00667c5c;
 // 0x00667c60
 extern unsigned int PreMapScreenMode;
 // 0x00667c68
-extern unsigned int LastMapClickTicks;
+extern int LastMapClickTicks;
 // 0x00667c70
 extern long LastMapClickX;
 // 0x00667c74

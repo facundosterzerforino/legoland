@@ -2693,7 +2693,7 @@ unsigned int DAT_00667c5c;
 unsigned int PreMapScreenMode;
 
 // GLOBAL: LEGOLAND 0x00667c68
-unsigned int LastMapClickTicks;
+int LastMapClickTicks;
 
 // GLOBAL: LEGOLAND 0x00667c70
 long LastMapClickX;

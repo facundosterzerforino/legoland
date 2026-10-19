@@ -595,17 +595,15 @@ void GameProc(void) {
 // and 5 pixels): MapScreenClosePending = 1 and the edit mode saved on entry is restored.
 // FUNCTION: LEGOLAND 0x00459360
 void RenderMapScreenFrame(void) {
-    struct HitInfo hit_info;
+    struct HoverInfo hit = {1};
     RECT saved_clip;
     int ticks;
 
-    hit_info.type = 0;
-    hit_info.field_4 = 0;
     ResetHitInfo();
     PushRenderingStatusAndLockVideoSurface();
     DrawMapScreen();
     SetPointer(5);
-    PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit_info.type);
+    PrintSprite(InterfaceBgSprite, 0, 0, 0, (int *)&hit);
     FUN_0046ee00();
     RenderIcons();
     CheckFocussedIcon();
