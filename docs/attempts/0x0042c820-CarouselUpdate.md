@@ -27,3 +27,20 @@ variants to that baseline rather than to the full reccmp score of 85.71%.
 
 - Identify the original projected-x spill's lifetime and relationship to the other
   stack locals before changing the boarding projection again.
+
+
+## 2026-10-19 Opus 5.5 (no change, 86.66% harness)
+
+Where the extra original slot is: in the boarding case the original stores the projected x
+(`(x - y) * tile_w >> 9`, in ebp) to `[esp+0x14]` with 16 bytes pushed. That is `tile`'s home slot (tile is
+dead in that case after GetScreenCoordsForObject), so the projected x is a variable with its own home that shares
+tile's slot. The original also loads pos.x into ebx and pos.y into edi (ours the other way round).
+
+| Change | Harness exact |
+|---|---|
+| `int sx, sy` (function scope) instead of `struct Point screen` | 86.66 |
+| the same with pos.x loaded before pos.y | 86.66 |
+| `int sx, sy` block-scoped in case 1 | 86.66 |
+| separate `vx, vy` for the view positions instead of reusing x/y | 86.66 |
+| keep the view position in `screen` (`screen.x = ... + screen.x`, or `screen.x += ...`) | 55.56 |
+| `screen = bloke->pos` (struct copy), project from screen.x/.y | 57.67 |
