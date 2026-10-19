@@ -1299,11 +1299,15 @@ LEGO_EXPORT void RenderHelpIcons(void) {
 // FUN_0046f2e0: the icons' default event handler: 2 if the event has button 1 or 4 (bits 0x1 / 0x4), else 1.
 // FUNCTION: LEGOLAND 0x0046f2e0
 unsigned char FUN_0046f2e0(struct IconNode *node, unsigned char buttons, short dx, short dy) {
+    /* buttons: 1 left, 2 right, 4 middle (UpdateControllerFromMouseData) */
     if (buttons & 1) {
         return 2;
     }
     if (buttons & 4) {
         return 2;
+    }
+    if (buttons & 2) {
+        return 1;
     }
     return 1;
 }
