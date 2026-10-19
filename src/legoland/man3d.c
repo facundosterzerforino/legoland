@@ -35,7 +35,9 @@ LEGO_EXPORT struct Position *LoadPos(const char *path) {
     float tmp[3][3];
     int i;
     int j;
-    int k;
+    int row;
+    int col;
+    struct PosFrame *volatile frames; /* volatile: the original re-reads this from its stack slot */
 
     file = RES_OpenFile(path);
     pos = (struct Position *)malloc(sizeof(struct Position));
@@ -47,21 +49,38 @@ LEGO_EXPORT struct Position *LoadPos(const char *path) {
     RES_ReadFile(file, &pos->count_inner, 4);
     RES_ReadFile(file, &pos->count, 4);
     pos->entries = (struct PosFrame **)malloc(pos->count * sizeof(struct PosFrame *));
-    for (i = 0; i < pos->count; i++) {
-        pos->entries[i] = (struct PosFrame *)malloc(pos->count_inner * sizeof(struct PosFrame));
-        f = pos->entries[i];
-        for (j = 0; j < pos->count_inner; j++, f++) {
-            RES_ReadFile(file, &f->pos[0], 4);
-            RES_ReadFile(file, &f->pos[1], 4);
-            RES_ReadFile(file, &f->pos[2], 4);
-            walk = &f->mat[0][0];
-            for (k = 0; k < 9; k++) {
-                RES_ReadFile(file, walk++, 4);
+    i = 0;
+    if (pos->count > 0) {
+        do {
+            pos->entries[i] = (struct PosFrame *)malloc(pos->count_inner * sizeof(struct PosFrame));
+            j = 0;
+            frames = pos->entries[i];
+            f = frames;
+            if (pos->count_inner > 0) {
+                do {
+                    RES_ReadFile(file, &f->pos[0], 4);
+                    RES_ReadFile(file, &f->pos[1], 4);
+                    RES_ReadFile(file, &f->pos[2], 4);
+                    row = 3;
+                    walk = &f->mat[0][0];
+                    do {
+                        col = 3;
+                        do {
+                            RES_ReadFile(file, walk, 4);
+                            walk++;
+                            col--;
+                        } while (col != 0);
+                        row--;
+                    } while (row != 0);
+                    BuildYRotationMatrix(1.5707963f, &rot[0][0]);
+                    MatrixMultiply(&rot[0][0], &f->mat[0][0], &tmp[0][0]);
+                    CopyMatrix((struct Matrix3x3 *)&tmp[0][0], (struct Matrix3x3 *)&f->mat[0][0]);
+                    j++;
+                    f++;
+                } while (j < pos->count_inner);
             }
-            BuildYRotationMatrix(1.5707963f, &rot[0][0]);
-            MatrixMultiply(&rot[0][0], &f->mat[0][0], &tmp[0][0]);
-            CopyMatrix((struct Matrix3x3 *)&tmp[0][0], (struct Matrix3x3 *)&f->mat[0][0]);
-        }
+            i++;
+        } while (i < pos->count);
     }
     RES_CloseFile(file);
     return pos;

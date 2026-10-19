@@ -1,6 +1,6 @@
 # RestoreBaseMap (0x0045da60, `src/legoland/tilemap.c`)
 
-**Current: 70.59%** (plain C; the documented naked __asm version was removed on 2026-10-19). Kind: C.
+**Current: 95.65%** (C; see 2026-10-19 below). Kind: C.
 
 ## What still differs
 
@@ -36,3 +36,5 @@ comment about the discarded read.
 
 The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
 The function is the plain C that was the `#else` branch again: 70.59%. Matching has to come from C now.
+Then the best C from before the asm version was put back (it is better than the plain `#else` C; its `volatile`
+or extra local is commented in the source): 95.65%.

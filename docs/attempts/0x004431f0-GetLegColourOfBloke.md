@@ -1,6 +1,6 @@
 # GetLegColourOfBloke (0x004431f0, `src/legoland/render3d.c`)
 
-**Current: 25.00%** (plain C; the documented naked __asm version was removed on 2026-10-19). Kind: C.
+**Current: 27.78%** (C; see 2026-10-19 below). Kind: C.
 
 ## What still differs
 
@@ -41,3 +41,5 @@ fields (`[eax]BlokeSex1.field_8c`); inline asm can't see struct tags and `field_
 
 The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
 The function is the plain C that was the `#else` branch again: 25.00%. Matching has to come from C now.
+Then the best C from before the asm version was put back (it is better than the plain `#else` C; its `volatile`
+or extra local is commented in the source): 27.78%.

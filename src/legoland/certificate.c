@@ -55,8 +55,11 @@ int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
     HDC hDC;
     int vres;
     int fd;
-
+    /* volatile: both only steer MSVC6's register choice (zero in ebp, fd in ebx); see docs/attempts */
+    volatile int ncolors;
+    volatile LONG x_pels_per_meter;
     needed = 0;
+    pInfo = NULL;
     returned = 0;
     if (EnumPrintersA(1, NULL, 2, printers, 0x540, &needed, &returned) <= 0)
         return 0;
@@ -70,17 +73,32 @@ int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
     if (!hDC)
         return 0;
     fd = _open(bitmap_path, _O_RDONLY | _O_BINARY, _S_IREAD);
-    if (fd >= 0) {
+    if ((int)fd >= 0) {
         _read(fd, &bmfh, 14);
         _read(fd, &bmih, 40);
-        hInfo = GlobalAlloc(GHND, (bmih.biBitCount > 8 ? 0 : 1 << bmih.biBitCount) * 4 + 40);
+        if (8 < bmih.biBitCount)
+            ncolors = 0;
+        else
+            ncolors = 1 << bmih.biBitCount;
+        hInfo = GlobalAlloc(GHND, ncolors * 4 + 40);
         if (hInfo != NULL) {
             pInfo = (BITMAPINFO *)GlobalLock(hInfo);
-            if (pInfo == NULL) {
+            if (NULL == pInfo) {
                 GlobalFree(hInfo);
             } else {
-                pInfo->bmiHeader = bmih;
-                if (pInfo->bmiHeader.biBitCount < 9)
+                x_pels_per_meter = bmih.biXPelsPerMeter;
+                pInfo->bmiHeader.biSize = bmih.biSize;
+                pInfo->bmiHeader.biWidth = bmih.biWidth;
+                pInfo->bmiHeader.biHeight = bmih.biHeight;
+                pInfo->bmiHeader.biPlanes = bmih.biPlanes;
+                pInfo->bmiHeader.biBitCount = bmih.biBitCount;
+                pInfo->bmiHeader.biCompression = bmih.biCompression;
+                pInfo->bmiHeader.biSizeImage = bmih.biSizeImage;
+                pInfo->bmiHeader.biXPelsPerMeter = x_pels_per_meter;
+                pInfo->bmiHeader.biYPelsPerMeter = bmih.biYPelsPerMeter;
+                pInfo->bmiHeader.biClrUsed = bmih.biClrUsed;
+                pInfo->bmiHeader.biClrImportant = bmih.biClrImportant;
+                if (9 > pInfo->bmiHeader.biBitCount)
                     _read(fd, pInfo->bmiColors, (1 << bmih.biBitCount) * 4);
                 hBits = GlobalAlloc(GHND, bmfh.bfSize - bmfh.bfOffBits);
                 if (hBits == NULL) {
@@ -91,7 +109,7 @@ int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
                     return 0;
                 }
                 pBits = GlobalLock(hBits);
-                if (pBits == NULL) {
+                if ((UINT_PTR)pBits == (INT_PTR)NULL) {
                     GlobalUnlock(hInfo);
                     GlobalFree(hInfo);
                     GlobalFree(hBits);
@@ -121,10 +139,10 @@ int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
                     return 0;
                 }
                 di.cbSize = sizeof(DOCINFOA);
+                di.lpszDocName = CertificateDocName;
                 di.lpszOutput = NULL;
                 di.lpszDatatype = NULL;
                 di.fwType = 0;
-                di.lpszDocName = CertificateDocName;
                 if (StartDocA(hDC, &di) == -1) {
                     GlobalFree(hInfo);
                     GlobalFree(hBits);
@@ -141,7 +159,16 @@ int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
                     return 0;
                 }
                 hMemDC = CreateCompatibleDC(hDC);
-                if (hMemDC == NULL || SelectObject(hMemDC, hBitmap) == NULL) {
+                if (hMemDC == NULL) {
+                    GlobalFree(hInfo);
+                    GlobalFree(hBits);
+                    DeleteObject(hBitmap);
+                    EndPage(hDC);
+                    EndDoc(hDC);
+                    DeleteDC(hDC);
+                    return 0;
+                }
+                if (SelectObject(hMemDC, hBitmap) == NULL) {
                     GlobalFree(hInfo);
                     GlobalFree(hBits);
                     DeleteObject(hBitmap);
@@ -183,7 +210,7 @@ int PrintCertificate(char *bitmap_path, char *player_name, char *date_text) {
                 plf->lfWeight = 300;
                 lstrcpyA(plf->lfFaceName, LegoFontName);
                 hFont = CreateFontIndirectA(plf);
-                if (hFont == NULL) {
+                if (NULL == hFont) {
                     GlobalFree(hInfo);
                     GlobalFree(hBits);
                     DeleteObject(hBitmap);

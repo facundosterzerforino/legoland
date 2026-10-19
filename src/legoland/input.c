@@ -151,21 +151,29 @@ LEGO_EXPORT void KillInputSystem(void) {
 // FUNCTION: LEGOLAND 0x00473b00
 LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
     int dx;
-    int dy;
+    register int dy;
+    unsigned int mode;
+    int flags;
 
+    int ptmp175;
+    unsigned int cur_x;
+    volatile int ptmp176;
     if (buffer == NULL) {
         return;
     }
     buffer->prev_x = buffer->x;
-    buffer->prev_y = buffer->y;
+    mode = buffer->mouse_accel;
+    ptmp176 = buffer->y;
+    buffer->prev_y = ptmp176;
     dx = MouseState.lX;
     dy = MouseState.lY;
-    if (buffer->mouse_accel != 0) {
-        if (abs(dx) > buffer->mouse_threshold1 || abs(dy) > buffer->mouse_threshold1) {
+    if (0 != mode) {
+        if (abs(dx) > ((volatile struct CtrlBuffer *)buffer)->mouse_threshold1 ||
+            abs(dy) > ((volatile struct CtrlBuffer *)buffer)->mouse_threshold1) {
             dx += dx;
             dy += dy;
         }
-        if (buffer->mouse_accel == 2) {
+        if (mode == 2) {
             if (abs(dx) > buffer->mouse_threshold2 || abs(dy) > buffer->mouse_threshold2) {
                 dx <<= 1;
                 dy <<= 1;
@@ -186,17 +194,20 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
     if (buffer->y < 0) {
         buffer->y = 0;
     }
-    buffer->delta_x = buffer->x - buffer->prev_x;
+    cur_x = buffer->x;
+    buffer->delta_x = cur_x - buffer->prev_x;
     buffer->delta_y = buffer->y - buffer->prev_y;
-    buffer->buttons &= 0xfffffff8;
+    flags = buffer->buttons & 0xfffffff8;
+    buffer->buttons = flags;
     if ((MouseState.rgbButtons[0] & 0x80) != 0) {
-        buffer->buttons |= 1;
+        buffer->buttons = flags | 1;
     }
     if ((MouseState.rgbButtons[2] & 0x80) != 0) {
-        buffer->buttons |= 4;
+        buffer->buttons = buffer->buttons | 4;
     }
     if ((MouseState.rgbButtons[1] & 0x80) != 0) {
-        buffer->buttons |= 2;
+        ptmp175 = buffer->buttons;
+        buffer->buttons = 2 | ptmp175;
     }
 }
 
