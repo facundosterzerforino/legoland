@@ -651,7 +651,7 @@ int LoadBestNodeList(void) {
 void MarkConnectedNodes(struct BestNode *node) {
     int count;
     struct BestNode **copy;
-    struct BestNode **p;
+    int i;
 
     node->field_20 |= 2;
     CollectAdjacentNodes((int *)&node->x_min);
@@ -660,12 +660,10 @@ void MarkConnectedNodes(struct BestNode *node) {
         copy = (struct BestNode **)malloc(count * sizeof(struct BestNode *));
         if (copy != NULL) {
             memcpy(copy, AdjacentNodes, count * 4);
-            p = copy;
-            for (; count > 0; count--) {
-                if (!((*p)->field_20 & 2)) {
-                    MarkConnectedNodes(*p);
+            for (i = 0; i < count; i++) {
+                if (!(copy[i]->field_20 & 2)) {
+                    MarkConnectedNodes(copy[i]);
                 }
-                p++;
             }
             free(copy);
         }
