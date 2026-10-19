@@ -3660,14 +3660,6 @@ extern int DAT_00813a78;
 extern int DAT_00813a7c;
 // 0x00813a80
 extern int DAT_00813a80;
-// 0x00813a84
-extern int DAT_00813a84;
-// 0x00813a88
-extern int DAT_00813a88;
-// 0x00813a8c
-extern int DAT_00813a8c;
-// 0x00813a90
-extern int DAT_00813a90;
 // 0x00813a94
 extern unsigned int DAT_00813a94;
 // 0x00813a98

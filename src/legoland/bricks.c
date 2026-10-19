@@ -337,7 +337,7 @@ void FUN_00457a70(void) {
                 }
             }
         } else {
-            FUN_00452030();
+            UpdateEditSelection();
             QueryCursor = EditCursor;
         }
         if (DAT_00810144 == 0) {
@@ -354,8 +354,8 @@ void FUN_00457a70(void) {
             if (DAT_0080ff6c != NULL && (((struct Ride *)DAT_0080ff6c)->flags & 0x2000000)) {
                 DAT_00667cd8 = 1;
                 DAT_00667cdc = 0;
-                for (y = DAT_00813a88; y <= DAT_00813a90; y += DAT_00813a3c) {
-                    for (x = DAT_00813a84; x <= DAT_00813a8c; x += DAT_00813a38) {
+                for (y = SelectionRect.y0; y <= SelectionRect.y1; y += DAT_00813a3c) {
+                    for (x = SelectionRect.x0; x <= SelectionRect.x1; x += DAT_00813a38) {
                         QueryCursor.field_1414[4] = 0;
                         QueryCursor.tile_x = x;
                         QueryCursor.tile_y = y;
@@ -439,8 +439,8 @@ void FUN_00457a70(void) {
                     DAT_00667cd8 = 1;
                     DAT_00667cdc = 0;
                     if (EditMode.unk8 == PathControlObject) {
-                        for (y = DAT_00813a88; y <= DAT_00813a90; y += FootprintHeight) {
-                            for (x = DAT_00813a84; x <= DAT_00813a8c; x += FootprintWidth) {
+                        for (y = SelectionRect.y0; y <= SelectionRect.y1; y += FootprintHeight) {
+                            for (x = SelectionRect.x0; x <= SelectionRect.x1; x += FootprintWidth) {
                                 pt.x = x - EditMode.unk8->footprint.x0;
                                 pt.y = y - EditMode.unk8->footprint.y0;
                                 if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
@@ -454,8 +454,8 @@ void FUN_00457a70(void) {
                             }
                         }
                     }
-                    for (y = DAT_00813a88; y <= DAT_00813a90; y += FootprintHeight) {
-                        for (x = DAT_00813a84; x <= DAT_00813a8c; x += FootprintWidth) {
+                    for (y = SelectionRect.y0; y <= SelectionRect.y1; y += FootprintHeight) {
+                        for (x = SelectionRect.x0; x <= SelectionRect.x1; x += FootprintWidth) {
                             pt.x = x - EditMode.unk8->footprint.x0;
                             pt.y = y - EditMode.unk8->footprint.y0;
                             if (IsFootprintClear(pt.x, pt.y)) {
