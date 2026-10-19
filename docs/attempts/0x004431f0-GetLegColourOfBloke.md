@@ -43,3 +43,8 @@ The rule that allowed a documented naked `__asm` transcription for compiler choi
 The function is the plain C that was the `#else` branch again: 25.00%. Matching has to come from C now.
 Then the best C from before the asm version was put back (it is better than the plain `#else` C; its `volatile`
 or extra local is commented in the source): 27.78%.
+
+## 2026-10-19 Opus 5.5 (plain C, no change)
+
+A `static __inline` helper that builds the colour (by index, by entry pointer, from the bloke, with locals, as
+`MAKEWORD`, as int): all 25.00, the same ecx/edx swap. GetArmColourOfBloke (0x00443220) is the same.

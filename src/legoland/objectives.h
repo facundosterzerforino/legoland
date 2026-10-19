@@ -34,8 +34,8 @@ struct ObjectiveEvent {
     union {
         struct Vec4 vec_28;
         struct {
-            unsigned int field_28;
-            unsigned int field_2c;
+            int field_28;
+            int field_2c;
             int field_30;
             int field_34;
         };
