@@ -4307,8 +4307,8 @@ extern int DAT_004b42b8[3];
 // 0x004b42c4
 extern int DAT_004b42c4[3];
 
-// Constants the original pools (strings and a float) that the documented __asm versions use by name:
-// inline asm cannot take a literal's address. Keep these at the END of this file: MSVC6 /O2's
+// Constants the original pools (strings and a float), shared by name between several functions.
+// Keep these at the END of this file: MSVC6 /O2's
 // register allocation depends on the order of the declarations it has seen, and declaring them
 // earlier turned MusicThreadProc (sound_sfx.c, 11 KB) from 100% into 99.89% without any change
 // to the function itself.

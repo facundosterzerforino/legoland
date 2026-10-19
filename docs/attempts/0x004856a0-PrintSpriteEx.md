@@ -24,3 +24,8 @@
   genuinely live across the branch (needs a restructure; check the non-group asm stays identical).
 - Use a signed/unsigned change on `result` or the count comparison to influence which register is used for
   the count load.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 96.64%. Matching has to come from C now.

@@ -17,3 +17,8 @@ is reloaded from memory after the call. Ours reloads `dest.y` after the x update
 ## Ideas not tried yet
 
 - a local for dest.y across the last three statements
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 79.31%. Matching has to come from C now.

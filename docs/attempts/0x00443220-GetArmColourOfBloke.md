@@ -1,6 +1,6 @@
 # GetArmColourOfBloke (0x00443220, `src/legoland/render3d.c`)
 
-**Best: 100%** (documented naked __asm since 2026-10-19; the C in the `#else` branch is 25%). Kind: C.
+**Current: 25.00%** (plain C; the documented naked __asm version was removed on 2026-10-19). Kind: C.
 
 ## What still differs
 
@@ -23,3 +23,8 @@
 
 Same register swap as GetLegColourOfBloke (see its note for the forms tried on 2026-10-19). Transcribed as naked
 asm next to it; the `#else` branch has the plain C without the volatile.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 25.00%. Matching has to come from C now.

@@ -1,6 +1,6 @@
 # RES_OpenVolume (0x00489750, `src/legoland/resource.c`)
 
-**Best: 100%** (documented naked __asm since 2026-10-19; the C in the `#else` branch is 92.14%). Kind: C.
+**Current: 92.37%** (plain C; the documented naked __asm version was removed on 2026-10-19). Kind: C.
 
 ## What still differs
 
@@ -44,3 +44,8 @@ Kept: an exact naked transcription (tools/asm2naked.py output, labels named, eve
 with the plain C in the `#else` branch. The strings became named `static const char` arrays with `// GLOBAL:`
 tags (used by both branches). A `typedef struct ResVolume ResVolume;` lets the asm name the fields
 (`[esi]ResVolume.handle`): MSVC6 inline asm does not see struct tags, and `name`/`next` are ambiguous member names.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 92.37%. Matching has to come from C now.

@@ -19,3 +19,8 @@
 ## Ideas not tried yet
 
 - Reorder the `element` use so the original's `eax`/`edx` split comes out (e.g. read `*(int *)(element + 0xc)` into a local before the `head->data` store).
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 94.46%. Matching has to come from C now.

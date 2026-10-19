@@ -1297,35 +1297,7 @@ LEGO_EXPORT void RenderHelpIcons(void) {
 }
 
 // FUN_0046f2e0: the icons' default event handler: 2 if the event has button 1 or 4 (bits 0x1 / 0x4), else 1.
-//
-// MSVC6 build: exact naked __asm transcription; the C in the #else branch is the same function. Why asm: the
-// original's second test is a branchy select (`test al,4; mov al,2; jne; mov al,1`) that reuses the buttons byte's
-// al; every C form gives `setne al; inc eax` (if/else, ternaries, early returns) or moves `mov al,2` above the first
-// test, and an int result gets the branch shape but in eax/cl (docs/attempts/0x0046f2e0-FUN_0046f2e0.md, 70.59% in C).
-// clang-format off
-#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
 // FUNCTION: LEGOLAND 0x0046f2e0
-__declspec(naked) unsigned char FUN_0046f2e0(struct IconNode *node, unsigned char buttons, short dx, short dy) {
-    __asm {
-        // if (buttons & 1) return 2;
-        mov al, byte ptr [esp + 8]
-        test al, 1
-        je no_button_1
-        mov al, 2
-        ret
-    no_button_1:
-        // if (buttons & 4) return 2;
-        // return 1;
-        test al, 4
-        mov al, 2
-        jne done
-        mov al, 1
-    done:
-        ret
-    }
-}
-// clang-format on
-#else
 unsigned char FUN_0046f2e0(struct IconNode *node, unsigned char buttons, short dx, short dy) {
     if (buttons & 1) {
         return 2;
@@ -1335,7 +1307,6 @@ unsigned char FUN_0046f2e0(struct IconNode *node, unsigned char buttons, short d
     }
     return 1;
 }
-#endif
 
 // FUNCTION: LEGOLAND 0x0046f300
 int PointInBBox(struct Point *point, struct Bbox *bbox) {

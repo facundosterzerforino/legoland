@@ -1762,45 +1762,13 @@ void FUN_0045d770(struct Cursor *param_1) {
 }
 
 // RestoreBaseMap: puts the tile's base sprite (field_a) back as its current sprite (field_8).
-//
-// MSVC6 build: exact naked __asm transcription; the C in the #else branch is the same function. Why asm: the
-// original also loads TileSpriteInfo[id].sprite and ends with a dead `and dx, 0x20` (the remains of a flag test
-// whose branch was optimised away). MSVC6 drops a dead load and `and` in every C form tried: a volatile read keeps
-// the load but not the `and` (95.65%), and the if/else, switch, ?:, `== 0x20` and dead-local forms either remove
-// both or keep a byte `test` (docs/attempts/0x0045da60-RestoreBaseMap.md).
-// clang-format off
-#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
 // FUNCTION: LEGOLAND 0x0045da60
-__declspec(naked) LEGO_EXPORT void RestoreBaseMap(int tile_x, int row_y) {
-    __asm {
-        // tile = &GameMap[row_y][tile_x];   (eax; struct MapElement is 0x14 bytes)
-        mov eax, dword ptr [esp + 4]
-        mov ecx, dword ptr [esp + 8]
-        mov edx, dword ptr [GameMap]
-        lea eax, [eax + eax * 4]
-        mov ecx, dword ptr [edx + ecx * 4]
-        lea eax, [ecx + eax * 4]
-        // id = tile->field_a;   (cx)
-        // (TileSpriteInfo[id].sprite & 0x20): read and discarded   (TileSpriteInfo entries are 8 bytes, sprite at +4)
-        mov cx, word ptr [eax]MapElement.field_a
-        mov edx, ecx
-        and edx, 0xffff
-        mov dx, word ptr TileSpriteInfo[edx * 8 + 4]
-        // tile->field_8 = id;
-        mov word ptr [eax]MapElement.field_8, cx
-        and dx, 0x20
-        ret
-    }
-}
-// clang-format on
-#else
 LEGO_EXPORT void RestoreBaseMap(int tile_x, int row_y) {
     struct MapElement *tile = &GameMap[row_y][tile_x];
 
     /* the original also reads TileSpriteInfo[tile->field_a].sprite & 0x20 here and discards the result */
     tile->field_8 = tile->field_a;
 }
-#endif
 
 // FUNCTION: LEGOLAND 0x0045daa0
 LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {

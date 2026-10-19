@@ -20,3 +20,8 @@
 
 - Keep `short` locals but read the byte fields straight into `point.y` / `point.x` (int) before the `rect` block, so the zero-extend lands in a 32-bit register.
 - Split the `rect` computation so the footprint adds use the same register as the tile loads.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 94.89%. Matching has to come from C now.

@@ -1,6 +1,6 @@
 # RestoreBaseMap (0x0045da60, `src/legoland/tilemap.c`)
 
-**Best: 100%** (documented naked __asm since 2026-10-19; the plain C in the `#else` branch is lower). Kind: C.
+**Current: 70.59%** (plain C; the documented naked __asm version was removed on 2026-10-19). Kind: C.
 
 ## What still differs
 
@@ -31,3 +31,8 @@ the function listing stops one instruction early because the size comes from our
 leftover of a flag test whose branch MSVC6 removed late. None of the C forms above keep it, so the function is
 now an exact naked transcription. The `#else` branch has the plain C (`tile->field_8 = tile->field_a;`) with a
 comment about the discarded read.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 70.59%. Matching has to come from C now.

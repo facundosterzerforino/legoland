@@ -24,3 +24,8 @@
 
 - Make the `else` branch's `list = b` use a value the compiler cannot hoist, without adding a local.
 - Try swapping the `sprite` / `sprite2` assignment order inside the branches to change which register takes `sprite2`.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 81.50%. Matching has to come from C now.

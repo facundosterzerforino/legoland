@@ -1,6 +1,6 @@
 # GetLegColourOfBloke (0x004431f0, `src/legoland/render3d.c`)
 
-**Best: 100%** (documented naked __asm since 2026-10-19; the C in the `#else` branch is 25%). Kind: C.
+**Current: 25.00%** (plain C; the documented naked __asm version was removed on 2026-10-19). Kind: C.
 
 ## What still differs
 
@@ -36,3 +36,8 @@ index local and with a pointer to the entry), `MAKELONG(MAKEWORD(b, g), r)` (22.
 an exact naked transcription with the plain C (no volatile) in the `#else` branch. GetArmColourOfBloke
 (0x00443220) got the same treatment. `typedef struct BlokeSex0 BlokeSex0;` / `BlokeSex1` let the asm name the
 fields (`[eax]BlokeSex1.field_8c`); inline asm can't see struct tags and `field_4`/`field_8c` are ambiguous.
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 25.00%. Matching has to come from C now.

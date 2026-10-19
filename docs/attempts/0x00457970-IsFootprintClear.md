@@ -25,3 +25,8 @@
 
 - Find a source form that makes MSVC keep a fresh frame slot instead of reusing the `dx` parameter slot (e.g. take the
   address of a value that is still live in the original, or compute `dx`/`dy` into the loop bounds differently).
+
+## 2026-10-19: back to C
+
+The rule that allowed a documented naked `__asm` transcription for compiler choices C cannot reach was withdrawn.
+The function is the plain C that was the `#else` branch again: 87.80%. Matching has to come from C now.
