@@ -1174,6 +1174,10 @@ struct BlokeSex1 {
     unsigned int field_8c;
     unsigned int field_90;
 };
+/* The __asm versions of GetLegColourOfBloke/GetArmColourOfBloke name the fields through these typedefs (inline asm
+   can't see struct tags). */
+typedef struct BlokeSex0 BlokeSex0;
+typedef struct BlokeSex1 BlokeSex1;
 
 // FUNCTION: LEGOLAND 0x00443140
 LEGO_EXPORT unsigned int GetSexOfBloke(struct BlokeSex0 *param_1) {
@@ -1219,24 +1223,79 @@ LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1) {
     return "chest girly2";
 }
 
+// GetLegColourOfBloke: the bloke's leg colour as 0xRRGGBB, from the BlokeColours entry (3 bytes: R, G, B) its
+// person's field_8c selects.
+//
+// MSVC6 build: exact naked __asm transcription; the C in the #else branch is the same function. Why asm: the C is
+// one register swap away (the original builds R:G in ecx and B in edx, ours the other way round, and loads the
+// person pointer into ecx instead of reusing eax), and every form tried keeps the swap: shifts, one accumulator,
+// MAKEWORD/MAKELONG/RGB, a pointer to the entry, int/char locals in every load order, a single expression, the
+// permuter (docs/attempts/0x004431f0-GetLegColourOfBloke.md; the best C needed a volatile index, 27.78%).
+// clang-format off
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
 // FUNCTION: LEGOLAND 0x004431f0
-LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
-    volatile unsigned int idx = param_1->field_4->field_8c;
-    unsigned int g = BlokeColours[idx * 3 + 1];
-    unsigned int b = BlokeColours[idx * 3 + 2];
-    unsigned int r = BlokeColours[idx * 3];
-    return (((r << 8) | g) << 8) | b;
+__declspec(naked) LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
+    __asm {
+        // idx = param_1->field_4->field_8c;   (eax)
+        mov eax, dword ptr [esp + 4]
+        xor ecx, ecx
+        xor edx, edx
+        mov eax, dword ptr [eax]BlokeSex0.field_4
+        mov eax, dword ptr [eax]BlokeSex1.field_8c
+        // ch = BlokeColours[idx * 3] (R), dl = BlokeColours[idx * 3 + 2] (B), cl = BlokeColours[idx * 3 + 1] (G)
+        mov ch, byte ptr BlokeColours[eax + eax * 2]
+        mov dl, byte ptr BlokeColours[eax + eax * 2 + 2]
+        mov cl, byte ptr BlokeColours[eax + eax * 2 + 1]
+        // return (R << 8 | G) << 8 | B;
+        shl ecx, 8
+        or ecx, edx
+        mov eax, ecx
+        ret
+    }
 }
+// clang-format on
+#else
+LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
+    unsigned int idx = param_1->field_4->field_8c;
 
+    return (BlokeColours[idx * 3] << 16) | (BlokeColours[idx * 3 + 1] << 8) | BlokeColours[idx * 3 + 2];
+}
+#endif
+
+// GetArmColourOfBloke: the same as GetLegColourOfBloke for the arm colour (the entry field_90 selects).
+//
+// MSVC6 build: exact naked __asm transcription, for the same register swap as GetLegColourOfBloke (the best C needed
+// a volatile, 30.30%; docs/attempts/0x00443220-GetArmColourOfBloke.md).
+// clang-format off
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
 // FUNCTION: LEGOLAND 0x00443220
+__declspec(naked) LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1) {
+    __asm {
+        // idx = param_1->field_4->field_90;   (eax)
+        mov eax, dword ptr [esp + 4]
+        xor ecx, ecx
+        xor edx, edx
+        mov eax, dword ptr [eax]BlokeSex0.field_4
+        mov eax, dword ptr [eax]BlokeSex1.field_90
+        // ch = BlokeColours[idx * 3] (R), dl = BlokeColours[idx * 3 + 2] (B), cl = BlokeColours[idx * 3 + 1] (G)
+        mov ch, byte ptr BlokeColours[eax + eax * 2]
+        mov dl, byte ptr BlokeColours[eax + eax * 2 + 2]
+        mov cl, byte ptr BlokeColours[eax + eax * 2 + 1]
+        // return (R << 8 | G) << 8 | B;
+        shl ecx, 8
+        or ecx, edx
+        mov eax, ecx
+        ret
+    }
+}
+// clang-format on
+#else
 LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1) {
     unsigned int idx = param_1->field_4->field_90;
-    unsigned int g = BlokeColours[idx * 3 + 1];
-    unsigned int b = BlokeColours[idx * 3 + 2];
-    volatile int r;
-    r = BlokeColours[3 * idx];
-    return (((r << 8) | g) << 8) | b;
+
+    return (BlokeColours[idx * 3] << 16) | (BlokeColours[idx * 3 + 1] << 8) | BlokeColours[idx * 3 + 2];
 }
+#endif
 
 // FUNCTION: LEGOLAND 0x00443250
 float SinFloat(float param_1) {
