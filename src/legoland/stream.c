@@ -304,7 +304,10 @@ int SpeechParseWavHeader(void) {
     if (size <= 0x12) {
         *(short *)((char *)SpeechSourceFormat + 0x10) = 0;
     }
-    while (_read(SpeechFileHandle, &tag, 4) == 4) {
+    do {
+        if (_read(SpeechFileHandle, &tag, 4) != 4) {
+            return 0;
+        }
         if (tag == 0x61746164) {
             break;
         }
@@ -317,10 +320,7 @@ int SpeechParseWavHeader(void) {
             return 0;
         }
         free(p);
-    }
-    if (tag != 0x61746164) {
-        return 0;
-    }
+    } while (1);
     if (_read(SpeechFileHandle, &SpeechDataSize, 4) != 4) {
         return 0;
     }
