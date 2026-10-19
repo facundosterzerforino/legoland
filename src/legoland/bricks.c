@@ -83,15 +83,15 @@ int LoadCurrency(void) {
 // must be on the map, carry none of the blocking flags 0x8f8, and if it holds an object
 // (field_12), the object being placed must be the PATH CONTROL element. Returns 1 if so, else 0.
 // FUNCTION: LEGOLAND 0x00457970
-int IsFootprintClear(int dx, int dy) {
+int IsFootprintClear(struct Point off) {
     struct Ride *ride = EditMode.unk8;
     int x, y;
     struct MapElement *elem;
 
-    dx += ride->footprint.x0;
-    dy += ride->footprint.y0;
-    for (y = dy; y < dy + FootprintHeight; y++) {
-        for (x = dx; x < dx + FootprintWidth; x++) {
+    off.x += ride->footprint.x0;
+    off.y += ride->footprint.y0;
+    for (y = off.y; y < off.y + FootprintHeight; y++) {
+        for (x = off.x; x < off.x + FootprintWidth; x++) {
             if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 elem = &GameMap[y][x];
             } else {
@@ -340,7 +340,7 @@ void FUN_00457a70(void) {
                         for (x = SelectionRect.x0; x <= SelectionRect.x1; x += FootprintWidth) {
                             pt.x = x - EditMode.unk8->footprint.x0;
                             pt.y = y - EditMode.unk8->footprint.y0;
-                            if (IsFootprintClear(pt.x, pt.y)) {
+                            if (IsFootprintClear(pt)) {
                                 if (WorkOrderBuildObject(EditMode.unk8->element, &pt)) {
                                     ScriptDirtyCategories |= 0x10;
                                 }
