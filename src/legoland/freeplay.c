@@ -449,8 +449,6 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
         sprite = FreePlayDown4Sprite;
         sprite2 = FreePlayUp4Sprite;
         list = DAT_007cb39c;
-    } else {
-        list = (struct PanelNode *)(INT_PTR)b;
     }
     if (list == NULL) {
         InsertIcon(b - 3, 0x15, 7, FreePlayCoverSprite);
