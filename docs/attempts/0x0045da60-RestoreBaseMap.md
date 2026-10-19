@@ -1,6 +1,6 @@
 # RestoreBaseMap (0x0045da60, `src/legoland/tilemap.c`)
 
-**Best: 95.65%**. Kind: C.
+**Best: 100%** (documented naked __asm since 2026-10-19; the plain C in the `#else` branch is lower). Kind: C.
 
 ## What still differs
 
@@ -23,3 +23,11 @@
 
 - Find a construct MSVC6 keeps as a dead `and` on a 16-bit register (for example a `volatile` store of a
   flag-derived value to a stack local whose slot is later reused).
+
+## 2026-10-19 Opus 5.5: 95.65% -> 100% (documented naked __asm)
+
+The original really ends `mov word ptr [eax+8],cx; and dx,0x20; ret` (raw bytes `66 83 e2 20 c3` at 0x45da8f;
+the function listing stops one instruction early because the size comes from ours). That dead `and` is the
+leftover of a flag test whose branch MSVC6 removed late. None of the C forms above keep it, so the function is
+now an exact naked transcription. The `#else` branch has the plain C (`tile->field_8 = tile->field_a;`) with a
+comment about the discarded read.
