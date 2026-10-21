@@ -48,3 +48,7 @@ or extra local is commented in the source): 27.78%.
 
 A `static __inline` helper that builds the colour (by index, by entry pointer, from the bloke, with locals, as
 `MAKEWORD`, as int): all 25.00, the same ecx/edx swap. GetArmColourOfBloke (0x00443220) is the same.
+
+## 2026-10-21 (Opus 5.5): still 27.78
+10 more forms (+ instead of |, *256 nesting, b first, uint accumulator, unsigned short rg, long, entry pointer via a
+bloke local): 23.08-25.00, same ecx/edx swap.
