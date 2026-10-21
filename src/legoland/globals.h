@@ -1643,7 +1643,7 @@ extern struct SprEnt CoasterPlacement;
 // 0x004d8268
 extern unsigned int CoasterPieceCount;
 // 0x004d8270
-extern struct VecMath DAT_004d8270;
+extern struct VecMath TrainVecMath;
 extern float DAT_004d829c[64];
 extern unsigned int DAT_004d83c0;
 // 0x004d88f4
@@ -1803,7 +1803,7 @@ extern int DAT_00615f90;
 // 0x00615fd4
 extern float DAT_00615fd4;
 // 0x00615f98
-extern struct VecMath DAT_00615f98;
+extern struct VecMath CurveVecMath;
 // 0x00616000
 extern struct LmsFile *CoasterTrainWheelLms;
 // 0x00616004
@@ -3974,9 +3974,9 @@ extern struct FMat4 DAT_008299bc;
 // 0x008299fc
 extern struct FMat4 DAT_008299fc;
 // 0x008299ac
-extern int DAT_008299ac[4];
+extern int CastleViewRect[4];
 // 0x00829a3c
-extern struct ListLink DAT_00829a3c;
+extern struct ListLink CastleLinkList;
 // 0x00829a58
 extern void (*DAT_00829a58)(void);
 // 0x00829a5c

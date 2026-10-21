@@ -1793,7 +1793,7 @@ struct SprEnt CoasterPlacement;
 unsigned int CoasterPieceCount;
 
 // GLOBAL: LEGOLAND 0x004d8270
-struct VecMath DAT_004d8270;
+struct VecMath TrainVecMath;
 
 // GLOBAL: LEGOLAND 0x004d829c
 float DAT_004d829c[64];
@@ -2030,7 +2030,7 @@ int DAT_00615f90;
 float DAT_00615fd4;
 
 // GLOBAL: LEGOLAND 0x00615f98
-struct VecMath DAT_00615f98;
+struct VecMath CurveVecMath;
 
 // GLOBAL: LEGOLAND 0x00616000
 struct LmsFile *CoasterTrainWheelLms;
@@ -5238,10 +5238,10 @@ struct FMat4 DAT_008299bc;
 struct FMat4 DAT_008299fc;
 
 // GLOBAL: LEGOLAND 0x008299ac
-int DAT_008299ac[4]; /* view rect: left, top, right, bottom */
+int CastleViewRect[4]; /* view rect: left, top, right, bottom */
 
 // GLOBAL: LEGOLAND 0x00829a3c
-struct ListLink DAT_00829a3c;
+struct ListLink CastleLinkList;
 
 // GLOBAL: LEGOLAND 0x00829a58
 void (*DAT_00829a58)(void);
