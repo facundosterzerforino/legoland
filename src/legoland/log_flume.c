@@ -2209,25 +2209,23 @@ void UpdateAllLogFlumeEntrances(void) {
 // FUNCTION: LEGOLAND 0x0040bf70
 void LogFlumeEntranceUpdate(Element *obj) {
     int target_dir;
-    RideNode *ptmp375;
     Ride *ride = obj->ride;
     RideNode *elem;
-    register Bloke *bloke;
+    Bloke *bloke;
     RideNode *next;
-    register TileId *tile;
+    TileId *tile;
     struct FlumeEntry *entry;
     unsigned int x;
     char dir;
     unsigned int y;
     int v;
-    ptmp375 = ride->riders;
-    elem = ptmp375;
+    elem = ride->riders;
 
     UpdateAllLogFlumeEntrances();
     while (NULL != elem) {
+        bloke = elem->rider;
         tile = &elem->tile;
         x = ride->field_24 + tile->pos.x;
-        bloke = elem->rider;
         next = elem->next;
         y = ride->field_25 + tile->pos.y;
         if (bloke->low_level_action == 0) {
