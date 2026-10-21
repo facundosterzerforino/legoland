@@ -535,7 +535,7 @@ unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, con
         if (flags & 2) {
             EditMode.unk0 = 0;
             FUN_00490600(1);
-            ShowIntervalScreen(BriefingFileName, DAT_0066869c);
+            ShowIntervalScreen(BriefingFileName, HintsFileName);
         }
     }
     return 1;

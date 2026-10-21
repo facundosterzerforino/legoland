@@ -111,7 +111,7 @@ void GoldRushLoad(struct Element *obj) {
         }
     }
 
-    DAT_004c11e4 = (struct Sprite *)BuildQueueTable(&DAT_004b4608);
+    GoldRushQueueTable = (struct Sprite *)BuildQueueTable(&DAT_004b4608);
     // STRING: LEGOLAND 0x004b465c
     GoldWashMatte1Sprite = LoadSprite("goldwashmatte1.lls", 1);
     // STRING: LEGOLAND 0x004b464c
@@ -136,8 +136,8 @@ void GoldRushUnload(void) {
     if (GoldMaskSprite != NULL) {
         KillSprite(GoldMaskSprite);
     }
-    if (DAT_004c11e4 != NULL) {
-        FreeIfNotNull(DAT_004c11e4);
+    if (GoldRushQueueTable != NULL) {
+        FreeIfNotNull(GoldRushQueueTable);
     }
     FreeGoldWashList();
 }
@@ -392,10 +392,10 @@ void GoldRushUpdate(struct Element *elem) {
                 b->flags |= 8;
                 TakeGoldWashSlot((struct RideNode *)node, t);
                 UpdateGoldWashAvailability(t);
-                StartQueueTableForward((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
+                StartQueueTableForward((struct QueueTable *)GoldRushQueueTable, (struct Bloke *)b);
                 break;
             case 1:
-                MoveBlokeAlongQueueTable((struct QueueTable *)DAT_004c11e4, x, y, b);
+                MoveBlokeAlongQueueTable((struct QueueTable *)GoldRushQueueTable, x, y, b);
                 if ((b->pos.x >> 8) == t[0] + 5 && (b->pos.y >> 8) == t[1] - 3) {
                     BlokeWalkWithPan(b);
                 }
@@ -438,10 +438,10 @@ void GoldRushUpdate(struct Element *elem) {
                 b->param_action++;
                 break;
             case 10:
-                StartQueueTableBackward((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
+                StartQueueTableBackward((struct QueueTable *)GoldRushQueueTable, (struct Bloke *)b);
                 break;
             case 11:
-                MoveBlokeAlongQueueTable((struct QueueTable *)DAT_004c11e4, x, y, b);
+                MoveBlokeAlongQueueTable((struct QueueTable *)GoldRushQueueTable, x, y, b);
                 if ((b->pos.x >> 8) == t[0] + 5 && (b->pos.y >> 8) == t[1] - 3) {
                     BlokeWalkAnim(b);
                 }

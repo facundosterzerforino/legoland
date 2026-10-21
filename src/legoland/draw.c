@@ -84,7 +84,7 @@ LEGO_EXPORT void KillHostSystemGPU(void) {
 LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
     unsigned int old = DAT_0066814c;
     DAT_0066814c = param_1;
-    DAT_00668148 = PointerSprites[param_1];
+    CurrentPointerSprite = PointerSprites[param_1];
     return old;
 }
 
@@ -293,7 +293,7 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
     int value;
 
     value = VideoSurfaceLocked;
-    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusLockedStack[RenderingStatusStackDepth] = VideoSurfaceLocked;
     RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (value == 0) {
         local.left = value;
@@ -316,7 +316,7 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
 LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) {
     LPDIRECTDRAWSURFACE surface;
 
-    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusLockedStack[RenderingStatusStackDepth] = VideoSurfaceLocked;
     RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (VideoSurfaceLocked != 0) {
         surface = renderEngine;
@@ -339,7 +339,7 @@ void FUN_004640f0(void) {
     local.top = 0;
     local.right = lpConfig->screen_width - 1;
     local.bottom = lpConfig->screen_height - 1;
-    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusLockedStack[RenderingStatusStackDepth] = VideoSurfaceLocked;
     RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (wasLocked != 0) {
         surface = renderEngine;
@@ -365,7 +365,7 @@ LEGO_EXPORT void PopRenderingStatus(void) {
     LPDIRECTDRAWSURFACE surface;
 
     RenderingStatusStackDepth = RenderingStatusStackDepth - 1;
-    if (DAT_00668164[RenderingStatusStackDepth] != 0) {
+    if (RenderingStatusLockedStack[RenderingStatusStackDepth] != 0) {
         if (VideoSurfaceLocked == 0) {
             local.left = 0;
             local.top = 0;
@@ -2698,9 +2698,9 @@ int FlipFrame(void) {
     LPDIRECTDRAWSURFACE back;
 
     LLSAuto();
-    if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
+    if (lpConfig->field_1e != 0 && CurrentPointerSprite != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        PrintSprite(DAT_00668148, MousePos.x, MousePos.y, 0, 0);
+        PrintSprite(CurrentPointerSprite, MousePos.x, MousePos.y, 0, 0);
         PopRenderingStatus();
     }
     tick = GetTickCount();
@@ -2755,9 +2755,9 @@ int BlitFrameToWindow(void) {
     dst.right = 0x280;
     dst.bottom = 0x1e0;
     LLSAuto();
-    if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
+    if (lpConfig->field_1e != 0 && CurrentPointerSprite != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        PrintSprite(DAT_00668148, MousePos.x, MousePos.y, 0, 0);
+        PrintSprite(CurrentPointerSprite, MousePos.x, MousePos.y, 0, 0);
         PopRenderingStatus();
     }
     tick = GetTickCount();
@@ -2896,7 +2896,7 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     LPDIRECTDRAWSURFACE *slot;
 
     locked = VideoSurfaceLocked;
-    DAT_00668164[RenderingStatusStackDepth] = VideoSurfaceLocked;
+    RenderingStatusLockedStack[RenderingStatusStackDepth] = VideoSurfaceLocked;
     RenderingStatusStackDepth = RenderingStatusStackDepth + 1;
     if (locked != 0) {
         surface = renderEngine;

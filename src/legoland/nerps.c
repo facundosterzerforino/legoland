@@ -2231,7 +2231,7 @@ unsigned int SaveScripts(void) {
     if (SaveGameWrite(BriefingFileName, 0x80) == 0) {
         return 0;
     }
-    if (SaveGameWrite(DAT_0066869c, 0x80) == 0) {
+    if (SaveGameWrite(HintsFileName, 0x80) == 0) {
         return 0;
     }
     if (SaveGameWrite(&ScriptStringCount, 4) == 0) {
@@ -2317,7 +2317,7 @@ unsigned int LoadScripts(void) {
     if (SaveGameRead(BriefingFileName, 0x80) == 0) {
         return 0;
     }
-    if (SaveGameRead(DAT_0066869c, 0x80) == 0) {
+    if (SaveGameRead(HintsFileName, 0x80) == 0) {
         return 0;
     }
     if (SaveGameRead(&ScriptStringCount, 4) == 0) {

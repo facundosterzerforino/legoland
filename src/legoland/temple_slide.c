@@ -135,17 +135,17 @@ void FUN_00417130(struct TempleRide *arg) {
 
 // FUNCTION: LEGOLAND 0x00417150
 void TempleSlideLoad(struct Element *arg) {
-    DAT_004cbf80 = arg->ride;
-    DAT_004cbf80->flags |= 0x20;
-    DAT_004cbf7c = DAT_004cbf80->layer;
-    DAT_004cbf7c->flags |= 0x2000;
+    ActiveTempleSlideRide = arg->ride;
+    ActiveTempleSlideRide->flags |= 0x20;
+    TempleSlideLayer = ActiveTempleSlideRide->layer;
+    TempleSlideLayer->flags |= 0x2000;
     ZTempSlideSprite = LoadSprite(
         // STRING: LEGOLAND 0x004b4f7c
         "z_tempslide.lls", 1);
     TempSlideBinV = LoadBinV(
         // STRING: LEGOLAND 0x004b4f64
         "Zbuffers\\tempslide.bnv");
-    GetLLSForSprite((struct Sprite *)DAT_004cbf80->layer);
+    GetLLSForSprite((struct Sprite *)ActiveTempleSlideRide->layer);
     DAT_004cbfc8 = 0;
     DAT_004cbfcc[0] = 1;
     DAT_004cbf88 = 13;
@@ -158,7 +158,7 @@ void TempleSlideLoad(struct Element *arg) {
 
 // FUNCTION: LEGOLAND 0x00417200
 void TempleSlideUnload(struct Element *arg) {
-    DAT_004cbf80 = arg->ride;
+    ActiveTempleSlideRide = arg->ride;
     if (TempSlideMatteSprite != 0) {
         KillSprite(TempSlideMatteSprite);
     }
@@ -169,7 +169,7 @@ void TempleSlideUnload(struct Element *arg) {
 // FUNCTION: LEGOLAND 0x00417240
 void TempleSlideSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = (void *)DAT_004cbf80;
+    EditMode.unk8 = (void *)ActiveTempleSlideRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }

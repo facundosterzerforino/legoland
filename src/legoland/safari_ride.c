@@ -324,8 +324,8 @@ void FUN_004150c0(struct SafariNode *node) {
     for (; r != NULL; r = r->next) {
         if (s->tile_id == r->tile.id && r->rider->field_35 == 1) {
             // STRING: LEGOLAND 0x004b4704
-            sprintf(DAT_004b4cac + 6, "%02d", r->rider->field_36 + 1);
-            SetBlokePositionFromBNV(SafariRunBNV, r->rider, DAT_004b4cac, s->frame, -1617787.0f, -1618006.0f, 0);
+            sprintf(SafariManboxName + 6, "%02d", r->rider->field_36 + 1);
+            SetBlokePositionFromBNV(SafariRunBNV, r->rider, SafariManboxName, s->frame, -1617787.0f, -1618006.0f, 0);
         }
     }
     *(short *)*ZSafariSprite->lls = (short)s->frame;
@@ -397,8 +397,8 @@ void SafariRideUpdate(Element *obj) {
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
                 node->rider->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
-                sprintf(DAT_004b4cac + 6, "%02d", (GetSafariRiderIndex((struct RideNode *)node, &node->tile.id) >> 1) + 1);
-                node->rider->path = NewBNVPath(DAT_004cbefc, 1, DAT_004b4cac, -1617787.0f, -1618006.0f, coords);
+                sprintf(SafariManboxName + 6, "%02d", (GetSafariRiderIndex((struct RideNode *)node, &node->tile.id) >> 1) + 1);
+                node->rider->path = NewBNVPath(DAT_004cbefc, 1, SafariManboxName, -1617787.0f, -1618006.0f, coords);
                 UpdateBlokeFromBNVPath(bloke, node->rider->path);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 bloke->param_action++;
@@ -441,8 +441,8 @@ void SafariRideUpdate(Element *obj) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
                 bloke->field_35 = 2;
-                sprintf(DAT_004b4cac + 6, "%02d", (bloke->field_36 >> 1) + 1);
-                node->rider->path = NewBNVPath(DAT_004cbf00, 2, DAT_004b4cac, -1617787.0f, -1618006.0f, coords2);
+                sprintf(SafariManboxName + 6, "%02d", (bloke->field_36 >> 1) + 1);
+                node->rider->path = NewBNVPath(DAT_004cbf00, 2, SafariManboxName, -1617787.0f, -1618006.0f, coords2);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;

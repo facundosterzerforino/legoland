@@ -42,13 +42,13 @@ struct SweepInstance {
 
 // FUNCTION: LEGOLAND 0x00468810
 void SetHintsFileName(char *name) {
-    strncpy(DAT_0066869c, name, 0x80);
-    DAT_0066869c[0x7f] = 0;
+    strncpy(HintsFileName, name, 0x80);
+    HintsFileName[0x7f] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468830
 void ClearBriefingAndHintsFileNames(void) {
-    DAT_0066869c[0] = 0;
+    HintsFileName[0] = 0;
     BriefingFileName[0] = 0;
 }
 

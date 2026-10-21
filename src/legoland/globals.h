@@ -944,7 +944,7 @@ extern struct SpaceTowerSeatData DAT_004b7798[4];
 // 0x004b77e8
 extern struct Point DAT_004b77e8[8];
 // 0x004b79d0
-extern char DAT_004b79bc[];
+extern char PlaneRideManboxName[];
 extern struct FXItem DAT_004b79d0[2];
 // 0x004b7abc
 extern unsigned short DAT_004b7abc;
@@ -989,7 +989,7 @@ extern char *ModelsPath;
 // 0x004b8318
 extern struct Point DAT_004b8318;
 // 0x004b8320
-extern struct Point DAT_004b8320;
+extern struct Point ParkExitPos;
 // 0x004b8328
 extern struct Point DAT_004b8328;
 // 0x004b8334
@@ -1201,7 +1201,7 @@ extern void *CatapultLayer;
 // 0x004c10f4
 extern struct Ride *ActiveCatapultRide;
 // 0x004c1100
-extern struct RideSpriteInfo DAT_004c1100;
+extern struct RideSpriteInfo CatapultSpriteInfo;
 // 0x004c1118
 extern struct CatapultNode *CatapultNodeList;
 // 0x004c1120
@@ -1217,7 +1217,7 @@ extern struct RenderItemNode **DAT_004c1164;
 // 0x004c1168
 extern struct RenderItemNode **DAT_004c1168;
 // 0x004c1170
-extern struct RideSpriteInfo DAT_004c1170;
+extern struct RideSpriteInfo CoptersSpriteInfo;
 // 0x004c1188
 extern struct RenderItemNode **DAT_004c1188;
 // 0x004c1190
@@ -1255,9 +1255,9 @@ extern struct Sprite *FortLayer;
 // 0x004c11dc
 extern struct Ride *FortRide;
 // 0x004c11e0
-extern struct RenderItemNode *DAT_004c11e0;
+extern struct RenderItemNode *FortRiderRenderList;
 // 0x004c11e4
-extern struct Sprite *DAT_004c11e4;
+extern struct Sprite *GoldRushQueueTable;
 // 0x004c11e8
 extern struct Sprite *GoldRushLayer;
 // 0x004c11f0
@@ -1473,9 +1473,9 @@ extern struct DirectMusicSegment *MusicLoopSegments[5];
 // 0x00799258
 extern struct DirectMusicSegment *MusicTransitionSegments[5][5];
 // 0x00799c1c
-extern unsigned char *DAT_00799c1c[35];
+extern unsigned char *MusicFileData[35];
 // 0x0079a608
-extern int DAT_0079a608[35];
+extern int MusicFileSizes[35];
 // 0x0079a69c
 extern void *DMusicNotificationEvent;
 // 0x0079a6b0
@@ -1545,11 +1545,11 @@ extern struct Sprite *TempleMatte2Sprite;
 // 0x004cbf70
 extern struct RenderItemNode *DAT_004cbf70;
 // 0x004cbf7c
-extern struct Sprite *DAT_004cbf7c;
+extern struct Sprite *TempleSlideLayer;
 // 0x004cbf78
 extern struct Sprite *TempSlideMatteSprite;
 // 0x004cbf80
-extern struct Ride *DAT_004cbf80;
+extern struct Ride *ActiveTempleSlideRide;
 // 0x004cbf84
 extern struct RenderItemNode *DAT_004cbf84;
 // 0x004cbf88
@@ -1715,7 +1715,7 @@ extern unsigned int CastleCoasterPlaced;
 // 0x00610a08
 extern unsigned int DAT_00610a08;
 // 0x00610a18
-extern struct RenderItemNode *DAT_00610a18;
+extern struct RenderItemNode *CastleRiderRenderList;
 // 0x00610a20 — sqrtf lookup table (64 entries: {intercept, slope} pairs)
 extern float sqrtf_table[128];
 // 0x00610c40 — invsqrtf lookup table (64 entries: {intercept, slope} pairs)
@@ -1853,7 +1853,7 @@ extern struct Sprite *ZCarouselSprite;
 // 0x006160bc
 extern struct Ride *ActiveCarouselRide;
 // 0x006160c0
-extern struct Sprite *DAT_006160c0;
+extern struct Sprite *CarouselRiderSprite;
 // 0x006160c4
 extern struct CarouselNode *CarouselNodeList;
 // 0x006160d0
@@ -1893,7 +1893,7 @@ extern struct Sprite *Booth1Sprite;
 // 0x00616118
 extern struct Sprite *EateryLayerOwner;
 // 0x00616120
-extern struct RideSpriteInfo DAT_00616120;
+extern struct RideSpriteInfo EaterySpriteInfo;
 // 0x0061613c
 extern struct Element *BrollyImagesHandle;
 // 0x00616140
@@ -1950,7 +1950,7 @@ extern struct Sprite *SpaceTowerMatte2Sprite;
 // 0x0062fd80
 extern struct Sprite *SpaceTowerMatte1Sprite;
 // 0x0062fd88
-extern struct Point DAT_0062fd88[4];
+extern struct Point SpaceTowerLayerOffsets[4];
 // 0x0062fda8
 extern struct SpaceTowerCar *SpaceTowerCarList;
 // 0x0062fdb0
@@ -1970,11 +1970,11 @@ extern struct Point DAT_0062fdd8;
 // 0x0062fde8
 extern void *SpinningBarrelsBNV;
 // 0x0062fdf0
-extern void *DAT_0062fdf0[3];
+extern void *SpinningBarrelsBinVs[3];
 // 0x0062fdfc
 extern void *BoxBlokesOn1BNV;
 // 0x0062fe00
-extern void *DAT_0062fe00[2];
+extern void *SpinningBarrelsRiderSprites[2];
 // 0x0062fe08
 extern struct BarrelNode *SpinningBarrelList;
 // 0x0062fe48
@@ -1994,7 +1994,7 @@ extern void *Zoomer0ffBinV;
 // 0x0062fe7c
 extern struct Sprite *PlaneRideLayer;
 // 0x0062fe84
-extern void *DAT_0062fe84[3];
+extern void *PlaneRideBinVs[3];
 // 0x0062fe90
 extern void *ZoomerideBinV;
 // 0x0062fe94
@@ -2385,13 +2385,13 @@ extern LPDIRECTDRAWSURFACE renderEngineTargets[10];
 // 0x00668144
 extern int VideoSurfaceLocked;
 // 0x00668148
-extern struct Sprite *DAT_00668148;
+extern struct Sprite *CurrentPointerSprite;
 // 0x0066814c
 extern unsigned int DAT_0066814c;
 // 0x00668160
 extern unsigned int DAT_00668160;
 // 0x00668164
-extern int DAT_00668164[32];
+extern int RenderingStatusLockedStack[32];
 // 0x006681e4
 extern int RenderingStatusStackDepth;
 // 0x006681e8
@@ -2423,7 +2423,7 @@ extern unsigned int DAT_00668618;
 // 0x0066861c
 extern char BriefingFileName[128];
 // 0x0066869c
-extern char DAT_0066869c[128];
+extern char HintsFileName[128];
 // 0x0066871c
 extern unsigned int DAT_0066871c;
 // 0x00668720
@@ -3089,7 +3089,7 @@ extern struct WorkOrder *GardenerOrderHead;
 // 0x0079a8b4
 extern struct WorkOrder *GardenerOrderTail;
 // 0x0079a8b8
-extern int DAT_0079a8b8;
+extern int GardenerOrderCount;
 // 0x0079a8bc
 extern int GardenerCount;
 // 0x0079a8c0
@@ -3097,7 +3097,7 @@ extern struct WorkOrder *MechanicOrderHead;
 // 0x0079a8c4
 extern struct WorkOrder *MechanicOrderTail;
 // 0x0079a8c8
-extern int DAT_0079a8c8;
+extern int MechanicOrderCount;
 // 0x0079a8cc
 extern int MechanicCount;
 // 0x0079a8d0
@@ -3357,9 +3357,9 @@ extern int PopUpInfoY;
 // 0x007fded4
 extern struct NewObjTable NewObjects;
 // 0x007fdf7c
-extern struct Ride *DAT_007fdf7c;
+extern struct Ride *PopUpInfoRide;
 // 0x007fdf80
-extern struct InfoObjData *DAT_007fdf80;
+extern struct InfoObjData *PopUpInfoData;
 // 0x007fdf84
 extern unsigned char *DAT_007fdf84;
 // 0x007fdf88
@@ -3834,7 +3834,7 @@ extern struct Ride *LegoShop2Building;
 // 0x0081cb50
 extern struct Sprite *LegMediaShopMask2Sprite;
 // 0x0081cb54
-extern struct Ride *DAT_0081cb54;
+extern struct Ride *ActiveJungleCruiseRide;
 // 0x0081cb58
 extern struct TileMap *BoatingSchoolTileMap;
 // 0x0081cb5c
@@ -4105,9 +4105,9 @@ extern LEGO_EXPORT void *PathSprite;
 // 0x0082c6a0
 extern struct RideSpriteInfo RideSpriteInfoBuffer;
 // 0x00616028
-extern struct RideSpriteInfo DAT_00616028;
+extern struct RideSpriteInfo BalloonzSpriteInfo;
 // 0x006160a0
-extern struct RideSpriteInfo DAT_006160a0;
+extern struct RideSpriteInfo CarouselSpriteInfo;
 // 0x0062fe30
 extern struct RideSpriteInfo DAT_0062fe30;
 // 0x0062fe10
@@ -4136,7 +4136,7 @@ extern float DAT_004b559c[3];
 extern float FLOAT_004b55a8;
 
 // 0x004b4cac
-extern char DAT_004b4cac[];
+extern char SafariManboxName[];
 
 // 0x00641000
 extern int DAT_00641000;

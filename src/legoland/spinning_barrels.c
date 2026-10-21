@@ -110,7 +110,7 @@ void RenderSpinningBarrels(Element *obj, void *param_2, void *param_3, TileId *t
         AdjustOffsetForViewMode(&off);
         PrintSprite(GetSpriteForLayer(SpinningBarrelsLayer, 3), screen.x + off.x, screen.y + off.y, 0, 0);
         riders = ride->riders;
-        (*((struct Sprite *)DAT_0062fe00[0])->lls)->frame = state->frame;
+        (*((struct Sprite *)SpinningBarrelsRiderSprites[0])->lls)->frame = state->frame;
         for (; riders != NULL; riders = riders->next) {
             if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
                 bloke = riders->rider;
@@ -203,13 +203,13 @@ void SpinningBarrelsRideLoad(struct Element *elem) {
     SpinningBarrelsLayer = SpinningBarrelsRide->layer;
     SpinningBarrelsLayer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b7960
-    DAT_0062fe00[1] = DAT_0062fe00[0] = LoadSprite("z_SpinningBarrels.lls", 1);
+    SpinningBarrelsRiderSprites[1] = SpinningBarrelsRiderSprites[0] = LoadSprite("z_SpinningBarrels.lls", 1);
     // STRING: LEGOLAND 0x004b7944
-    BoxBlokesOn1BNV = DAT_0062fdf0[0] = LoadBinV("Zbuffers\\BoxBlokesOn1.bnv");
+    BoxBlokesOn1BNV = SpinningBarrelsBinVs[0] = LoadBinV("Zbuffers\\BoxBlokesOn1.bnv");
     // STRING: LEGOLAND 0x004b7924
-    SpinningBarrelsBNV = DAT_0062fdf0[1] = LoadBinV("Zbuffers\\SpinningBarrels.bnv");
+    SpinningBarrelsBNV = SpinningBarrelsBinVs[1] = LoadBinV("Zbuffers\\SpinningBarrels.bnv");
     // STRING: LEGOLAND 0x004b7908
-    BoxBlokesOffBNV = DAT_0062fdf0[2] = LoadBinV("Zbuffers\\BoxBlokesOff.bnv");
+    BoxBlokesOffBNV = SpinningBarrelsBinVs[2] = LoadBinV("Zbuffers\\BoxBlokesOff.bnv");
     HideLayer(SpinningBarrelsLayer, 3);
     StopLayerPlaying(SpinningBarrelsLayer, 3);
     LLSSetFrame(GetLLSForLayer(SpinningBarrelsLayer, 3), 0);
@@ -278,7 +278,7 @@ struct RideSpriteInfo *GetSpinningBarrelsRideSpriteInfo(struct Element *ride, un
 void SpinningBarrelsRideUnload(void) {
     KillSprite(SpinningBarrelsEntranceMatteSprite);
     KillSprite(SpinningBarrelsEntranceMatte2Sprite);
-    KillSprite(DAT_0062fe00[1]);
+    KillSprite(SpinningBarrelsRiderSprites[1]);
     if (SpinningBarrelsBNV != NULL) {
         FreeBinV(SpinningBarrelsBNV);
     }
@@ -348,7 +348,7 @@ LEGO_EXPORT int LoadSBarrel(struct Element *arg) {
     while (list != NULL) {
         car = list->person;
         if (car->field_30 != 0) {
-            car->sprite = DAT_0062fe00[car->field_30];
+            car->sprite = SpinningBarrelsRiderSprites[car->field_30];
         } else {
             car->sprite = NULL;
             list->person->field_30 = 0;
@@ -356,7 +356,7 @@ LEGO_EXPORT int LoadSBarrel(struct Element *arg) {
         data = list->rider;
         tc = data->bnv;
         if (tc != NULL) {
-            tc->file = DAT_0062fdf0[tc->index];
+            tc->file = SpinningBarrelsBinVs[tc->index];
         }
         list = list->next;
     }
@@ -429,7 +429,7 @@ void FUN_0043c7f0(struct BarrelNode *node) {
             SetBlokePositionFromBNV(SpinningBarrelsBNV, r->rider, BoxBlokeBnvName, node->frame, -1617922.25f, -1618065.75f, 0);
         }
     }
-    *(short *)*((struct Sprite *)DAT_0062fe00[0])->lls = (short)node->frame;
+    *(short *)*((struct Sprite *)SpinningBarrelsRiderSprites[0])->lls = (short)node->frame;
 }
 
 // FUNCTION: LEGOLAND 0x0043c930
@@ -498,13 +498,13 @@ void SpinningBarrelsUpdate(struct Element *elem) {
                 view_x = lpConfig->view_x;
                 coords[0] = ((((unsigned int)view_x - Get_XScroll()) + iv12) - DAT_0062fdd8.x / 2 - sc.x) * 2;
                 coords[1] = ((iv13 + ((unsigned int)lpConfig->view_y - Get_YScroll())) - DAT_0062fdd8.y / 2 - sc.y) * 2;
-                bloke->person->sprite = DAT_0062fe00[1];
+                bloke->person->sprite = SpinningBarrelsRiderSprites[1];
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617922.25f, -1618065.75f);
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
                 sprintf(BoxBlokeBnvName + 8, "%02d", PickBarrelSeat(rn, node, (char)SpinningBarrelsRide->seats));
-                bloke->path = NewBNVPath(DAT_0062fdf0[0], 0, BoxBlokeBnvName, -1617922.25f, -1618065.75f, coords);
+                bloke->path = NewBNVPath(SpinningBarrelsBinVs[0], 0, BoxBlokeBnvName, -1617922.25f, -1618065.75f, coords);
                 bloke->param_action++;
                 break;
             }
@@ -530,12 +530,12 @@ void SpinningBarrelsUpdate(struct Element *elem) {
                 coords2[1] = bloke->screen_y * 2;
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
-                bloke->person->sprite = DAT_0062fe00[1];
+                bloke->person->sprite = SpinningBarrelsRiderSprites[1];
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617922.25f, -1618065.75f);
                 bloke->field_35 = 2;
                 sprintf(BoxBlokeBnvName + 8, "%02d", bloke->field_36);
-                bloke->path = NewBNVPath(DAT_0062fdf0[2], 2, BoxBlokeBnvName, -1617922.25f, -1618065.75f, coords2);
+                bloke->path = NewBNVPath(SpinningBarrelsBinVs[2], 2, BoxBlokeBnvName, -1617922.25f, -1618065.75f, coords2);
                 bloke->param_action++;
                 break;
             case 9:

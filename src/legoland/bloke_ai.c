@@ -316,7 +316,7 @@ void BlokeAILeavePark(Bloke *bloke) {
         bloke->param_action = 1;
         /* fallthrough */
     case 1:
-        switch (SuggestNextMove(&bloke->pos, &DAT_004b8320, &out)) {
+        switch (SuggestNextMove(&bloke->pos, &ParkExitPos, &out)) {
         case -2:
             bloke->param_action = 5;
             return;
@@ -367,7 +367,7 @@ void BlokeAILeavePark(Bloke *bloke) {
         // STRING: LEGOLAND 0x004b8434
         sprintf(msg, "Stuck, Routing Point To Point...");
         LogBlokeAiMessage(msg);
-        switch (PTPSuggestNextMove(&bloke->pos, &DAT_004b8320, &out)) {
+        switch (PTPSuggestNextMove(&bloke->pos, &ParkExitPos, &out)) {
         case 2:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;

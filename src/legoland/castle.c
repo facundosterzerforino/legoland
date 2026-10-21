@@ -6579,21 +6579,21 @@ void RenderCastleObj(Element *obj, unsigned int param_2, unsigned int param_3, T
 
     r = obj->ride;
     RenderItems_New();
-    DAT_00610a18 = NULL;
+    CastleRiderRenderList = NULL;
     walk = r->riders;
     while (walk != NULL) {
         if (tile->id == walk->tile.id) {
             rider = walk->rider;
             if (rider->param_action < 0x10) {
-                AddBlokeToRenderList(&DAT_00610a18, walk, walk->person->field_20);
+                AddBlokeToRenderList(&CastleRiderRenderList, walk, walk->person->field_20);
             }
             if (rider->param_action >= 0x21) {
-                AddBlokeToRenderList(&DAT_00610a18, walk, walk->person->field_20);
+                AddBlokeToRenderList(&CastleRiderRenderList, walk, walk->person->field_20);
             }
         }
         walk = walk->next;
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_00610a18);
+    RenderBlokeList((struct RenderItemNode **)&CastleRiderRenderList);
     if (CastleMatteSprite != NULL) {
         pos = GetScreenCoordsForObject(tile, r);
         off = GetRenderOffsetForLayer(r->layer, 2);
@@ -7625,7 +7625,7 @@ void lego_sqrtf_init(void) {
     struct {
         float a;
         float b;
-    } *t = (void *)&DAT_00610a18;
+    } *t = (void *)&CastleRiderRenderList;
 
     for (i = 0; i < 64; i++) {
         if (i == 29) {

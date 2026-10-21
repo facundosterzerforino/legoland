@@ -615,16 +615,16 @@ void FUN_00492da0(void) {
 // STRING: LEGOLAND 0x004bfa78
 #define IMT_MSG_GET_FAILED "Error Getting music object (Call %d) (Ret = %d) (Error = %d)\n"
 
-/* Reads music file n into DAT_00799c1c[n] (DAT_0079a608[n] bytes). As in the original,
+/* Reads music file n into MusicFileData[n] (MusicFileSizes[n] bytes). As in the original,
  * "got" is the result of `read != size`, not the number of bytes read. */
 #define IMT_LOAD(n, file) \
     fd = _open(file, _O_BINARY); \
-    DAT_0079a608[n] = _filelength(fd); \
-    DAT_00799c1c[n] = malloc(DAT_0079a608[n]); \
-    if (DAT_00799c1c[n] != NULL) { \
-        got = _read(fd, DAT_00799c1c[n], DAT_0079a608[n]) != DAT_0079a608[n]; \
+    MusicFileSizes[n] = _filelength(fd); \
+    MusicFileData[n] = malloc(MusicFileSizes[n]); \
+    if (MusicFileData[n] != NULL) { \
+        got = _read(fd, MusicFileData[n], MusicFileSizes[n]) != MusicFileSizes[n]; \
         if (got != 0) { \
-            DBPrintf(IMT_MSG_SHORT_READ, file, DAT_0079a608[n], got); \
+            DBPrintf(IMT_MSG_SHORT_READ, file, MusicFileSizes[n], got); \
         } \
     } else { \
         DBPrintf(IMT_MSG_NO_MEMORY, file); \
@@ -637,14 +637,14 @@ void FUN_00492da0(void) {
     desc.dwSize = sizeof(desc); \
     desc.dwValidData = DMUS_OBJ_CLASS | DMUS_OBJ_NAME | DMUS_OBJ_MEMORY; \
     desc.guidClass = CLSID_DirectMusicSegment; \
-    desc.llMemLength = DAT_0079a608[n]; \
-    desc.pbMemData = DAT_00799c1c[n]; \
+    desc.llMemLength = MusicFileSizes[n]; \
+    desc.pbMemData = MusicFileData[n]; \
     wcscpy(desc.wszName, name); \
     hr = DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &IID_IDirectMusicSegment, (void **)&(seg)); \
     if (hr != S_OK) { \
         DBPrintf(IMT_MSG_GET_FAILED, DAT_0079a6b0, hr, GetLastError()); \
     } \
-    free(DAT_00799c1c[n])
+    free(MusicFileData[n])
 
 /* Interactive music thread (IMT). Sets up DirectMusic, loads the five themes (two segments each)
  * and the 5x5 transition segments, then serves the commands posted by RequestMusicTheme/SetInteractiveMusicTheme/

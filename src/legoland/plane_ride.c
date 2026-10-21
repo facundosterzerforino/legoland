@@ -222,9 +222,9 @@ void PlaneRideLoad(Element *input) {
     DAT_0062fe98 = ZoomerSprite = LoadSprite("z_Zoomer.lls", 1);
     DAT_0081cae8 = -10;
     DAT_0081caec = -0x6b;
-    DAT_0062fe84[0] = ZoomerideBinV;
-    DAT_0062fe84[1] = Zoomer0nBinV;
-    DAT_0062fe84[2] = Zoomer0ffBinV;
+    PlaneRideBinVs[0] = ZoomerideBinV;
+    PlaneRideBinVs[1] = Zoomer0nBinV;
+    PlaneRideBinVs[2] = Zoomer0ffBinV;
     Load_FXList(DAT_004b79d0, 2);
     HideLayer(PlaneRideLayer, 1);
     StopLayerPlaying(PlaneRideLayer, 1);
@@ -383,7 +383,7 @@ LEGO_EXPORT int LoadZoomer(struct Element *arg) {
         data = list->rider;
         tc = data->bnv;
         if (tc != NULL) {
-            tc->file = DAT_0062fe84[tc->index];
+            tc->file = PlaneRideBinVs[tc->index];
         }
         list = list->next;
     }
@@ -454,8 +454,8 @@ void FUN_0043e2b0(struct PlaneRideNode *node) {
     for (; r != NULL; r = r->next) {
         if (*(unsigned short *)node == r->tile.id && r->rider->field_35 == 1) {
             // STRING: LEGOLAND 0x004b4704
-            sprintf(DAT_004b79bc + 6, "%02d", r->rider->field_36);
-            SetBlokePositionFromBNV(ZoomerideBinV, r->rider, DAT_004b79bc, node->b4, -1617706.75f, -1617948.625f, 0);
+            sprintf(PlaneRideManboxName + 6, "%02d", r->rider->field_36);
+            SetBlokePositionFromBNV(ZoomerideBinV, r->rider, PlaneRideManboxName, node->b4, -1617706.75f, -1617948.625f, 0);
         }
     }
     *(short *)*ZoomerSprite->lls = (short)node->b4;
@@ -518,8 +518,8 @@ void PlaneRideUpdate(struct Element *elem) {
                 bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
-                sprintf(DAT_004b79bc + 6, "%02d", FUN_0043e050(rn, node, (char)PlaneRide->seats));
-                bloke->path = NewBNVPath(DAT_0062fe84[1], 1, DAT_004b79bc, -1617706.75f, -1617948.625f, coords);
+                sprintf(PlaneRideManboxName + 6, "%02d", FUN_0043e050(rn, node, (char)PlaneRide->seats));
+                bloke->path = NewBNVPath(PlaneRideBinVs[1], 1, PlaneRideManboxName, -1617706.75f, -1617948.625f, coords);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
                 bloke->field_58 = 0;
@@ -562,8 +562,8 @@ void PlaneRideUpdate(struct Element *elem) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
                 bloke->field_35 = 2;
-                sprintf(DAT_004b79bc + 6, "%02d", bloke->field_36);
-                bloke->path = NewBNVPath(DAT_0062fe84[2], 2, DAT_004b79bc, -1617706.75f, -1617948.625f, &coords2.x);
+                sprintf(PlaneRideManboxName + 6, "%02d", bloke->field_36);
+                bloke->path = NewBNVPath(PlaneRideBinVs[2], 2, PlaneRideManboxName, -1617706.75f, -1617948.625f, &coords2.x);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;

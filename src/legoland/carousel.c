@@ -131,7 +131,7 @@ void LoadCarouselResources(struct Element *param_1) {
     DAT_0061607c = layer.y + -0xcd;
     // STRING: LEGOLAND 0x004b65a4
     ZCarouselSprite = LoadSprite("z_Carousel.lls", 1);
-    DAT_006160c0 = ZCarouselSprite;
+    CarouselRiderSprite = ZCarouselSprite;
     // STRING: LEGOLAND 0x004b658c
     CarouselOnBinV = LoadBinV("Zbuffers\\CarouselOn.bnv");
     CarouselBinVs[0] = CarouselOnBinV;
@@ -159,7 +159,7 @@ void UnloadCarouselResources(struct Element *input) {
     ActiveCarouselRide = input->ride;
     KillSprite(CarouselEntranceMatteSprite);
     KillSprite(CarouselEntranceMatte2Sprite);
-    KillSprite(DAT_006160c0);
+    KillSprite(CarouselRiderSprite);
     FreeAllCarouselNodes();
     Kill_FXList(CAROUSSEL_SFX, 2);
     FreeBinV(CarouselBinVs[0]);
@@ -206,12 +206,12 @@ void CarouselAddObject(struct Element *param_1, unsigned char *param_2) {
 struct RideSpriteInfo *GetCarouselSpriteInfo(struct Element *param1, unsigned short param2) {
     struct Ride *ride = param1->ride;
 
-    DAT_006160a0.sprite = ride->layer;
-    DAT_006160a0.x = ride->field_14;
-    DAT_006160a0.y = ride->field_18;
-    DAT_006160a0.id = param2;
+    CarouselSpriteInfo.sprite = ride->layer;
+    CarouselSpriteInfo.x = ride->field_14;
+    CarouselSpriteInfo.y = ride->field_18;
+    CarouselSpriteInfo.id = param2;
     ride->layer->flags |= 0x2000;
-    return &DAT_006160a0;
+    return &CarouselSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0042c590
@@ -401,7 +401,7 @@ void CarouselUpdate(struct Element *param_1) {
                 x = screen.y + (lpConfig->view_y - (short)Get_YScroll());
                 in_path[0] = (y - DAT_00616078 / 2 - coords.x) * 2;
                 in_path[1] = (x - DAT_0061607c / 2 - coords.y) * 2;
-                bloke->person->sprite = DAT_006160c0;
+                bloke->person->sprite = CarouselRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->field_35 = 0;
@@ -425,7 +425,7 @@ void CarouselUpdate(struct Element *param_1) {
                 bloke->flags |= 0x80;
                 BlokeSetFrame(bloke, 0);
                 bloke->field_35 = 1;
-                bloke->person->sprite = DAT_006160c0;
+                bloke->person->sprite = CarouselRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->param_action++;
@@ -440,7 +440,7 @@ void CarouselUpdate(struct Element *param_1) {
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 bloke->flags |= 0x80;
-                bloke->person->sprite = DAT_006160c0;
+                bloke->person->sprite = CarouselRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->field_35 = 2;

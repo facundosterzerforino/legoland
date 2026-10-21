@@ -455,12 +455,12 @@ void BalloonzUpdate(Element *obj) {
 RideSpriteInfo *GetBalloonzSpriteInfo(Element *obj, unsigned short id) {
     Ride *ride = obj->ride;
 
-    DAT_00616028.sprite = ride->layer;
-    DAT_00616028.x = ride->field_14;
-    DAT_00616028.y = ride->field_18;
-    DAT_00616028.id = id;
+    BalloonzSpriteInfo.sprite = ride->layer;
+    BalloonzSpriteInfo.x = ride->field_14;
+    BalloonzSpriteInfo.y = ride->field_18;
+    BalloonzSpriteInfo.id = id;
     ride->layer->flags |= 0x2000;
-    return &DAT_00616028;
+    return &BalloonzSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0042b2e0

@@ -1324,9 +1324,9 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
         }
     }
     if (score != NULL) {
-        fake.ride = DAT_0081cb54;
-        IncrementObjectCount(DAT_0081cb54);
-        IncrementObjectCount(DAT_0081cb54);
+        fake.ride = ActiveJungleCruiseRide;
+        IncrementObjectCount(ActiveJungleCruiseRide);
+        IncrementObjectCount(ActiveJungleCruiseRide);
         memcpy(DAT_0082ae20.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
         path = JunglePathList;
         while (path != NULL) {
@@ -1776,14 +1776,14 @@ int GetBestJungleScore(Element *obj, int param_2) {
 
 // FUNCTION: LEGOLAND 0x00436190
 void InitJungleCruiseWater(Element *obj) {
-    DAT_0081cb54 = obj->ride;
+    ActiveJungleCruiseRide = obj->ride;
 }
 
 // FUNCTION: LEGOLAND 0x004361a0
 void JungleCruiseWaterSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb54;
-    DAT_0081cb54->footprint = DAT_004b7478;
+    EditMode.unk8 = ActiveJungleCruiseRide;
+    ActiveJungleCruiseRide->footprint = DAT_004b7478;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
@@ -2040,7 +2040,7 @@ void JungleCruiseWaterRemoveObject(Element *obj, TileId tile, struct Cursor *cur
     } else {
         elem = NULL;
     }
-    if (elem->field_0 != DAT_0081cb54->element) {
+    if (elem->field_0 != ActiveJungleCruiseRide->element) {
         fake.ride = JungleCruiseRide;
         JungleCruiseRemoveObject(&fake, tile, cursor);
         return;
@@ -2163,7 +2163,7 @@ void AddJunglePathTile(int x, int y, int mask, unsigned short *owner) {
             }
             elem->flags = 8;
             elem->field_10 = 2;
-            elem->field_0 = DAT_0081cb54->element;
+            elem->field_0 = ActiveJungleCruiseRide->element;
             *(unsigned short *)&elem->field_4 = tile.id;
             SetMapTile(pt.x, pt.y, *BoatingSchoolTileMap[DAT_004b72e4[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)DAT_004b72e4[mask * 25 + row * 5 + col]);
         }

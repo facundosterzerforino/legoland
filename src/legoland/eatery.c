@@ -1429,13 +1429,13 @@ void Restaurant2Update(Element *obj) {
 struct RideSpriteInfo *GetRestaurant2SpriteInfo(struct Element *obj, unsigned short a2) {
     struct Ride *fx = obj->ride;
     struct Sprite *inner = fx->layer;
-    DAT_00616120.sprite = inner;
-    DAT_00616120.x = fx->field_14;
-    DAT_00616120.y = fx->field_18;
-    DAT_00616120.id = a2;
+    EaterySpriteInfo.sprite = inner;
+    EaterySpriteInfo.x = fx->field_14;
+    EaterySpriteInfo.y = fx->field_18;
+    EaterySpriteInfo.id = a2;
     inner = fx->layer;
     inner->flags |= 0x2000;
-    return &DAT_00616120;
+    return &EaterySpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x004304e0

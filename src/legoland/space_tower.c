@@ -345,7 +345,7 @@ void DrawSpaceTowerSeatMatte(struct SpaceTowerCar *param_1, int param_2, unsigne
 
     coords = GetScreenCoordsForObject((TileId *)param_1, SpaceTowerRideObj);
     if (SpaceTowerSeatMatteSprites[param_2] != NULL) {
-        off = DAT_0062fd88[param_2];
+        off = SpaceTowerLayerOffsets[param_2];
         off.y -= param_1->seats[param_2].pos;
         AdjustOffsetForViewMode(&off);
         pos.x = coords.x + off.x;
@@ -361,7 +361,7 @@ void FUN_0043ae20(struct SpaceTowerCar *param_1, int param_2, unsigned int param
     int id;
 
     coords = GetScreenCoordsForObject((TileId *)param_1, SpaceTowerRideObj);
-    off = DAT_0062fd88[param_2];
+    off = SpaceTowerLayerOffsets[param_2];
     off.y -= param_1->seats[param_2].pos;
     AdjustOffsetForViewMode(&off);
     switch (param_2) {
@@ -476,10 +476,10 @@ void SpaceTowerRideLoad(struct Element *param_1) {
     HideLayer(SpaceTowerLayers, 3);
     StopLayerPlaying(SpaceTowerLayers, 3);
     LLSSetFrame(GetLLSForLayer(SpaceTowerLayers, 3), 0);
-    DAT_0062fd88[0] = GetRenderOffsetForLayer(SpaceTowerLayers, 6);
-    DAT_0062fd88[1] = GetRenderOffsetForLayer(SpaceTowerLayers, 4);
-    DAT_0062fd88[2] = GetRenderOffsetForLayer(SpaceTowerLayers, 0);
-    DAT_0062fd88[3] = GetRenderOffsetForLayer(SpaceTowerLayers, 2);
+    SpaceTowerLayerOffsets[0] = GetRenderOffsetForLayer(SpaceTowerLayers, 6);
+    SpaceTowerLayerOffsets[1] = GetRenderOffsetForLayer(SpaceTowerLayers, 4);
+    SpaceTowerLayerOffsets[2] = GetRenderOffsetForLayer(SpaceTowerLayers, 0);
+    SpaceTowerLayerOffsets[3] = GetRenderOffsetForLayer(SpaceTowerLayers, 2);
     SpaceTowerSeatMatteSprites[0] = NULL;
     // STRING: LEGOLAND 0x004b7880
     SpaceTowerSeatMatteSprites[1] = LoadSprite("SpaceTower Seat2 Matte.lls", 1);
@@ -698,7 +698,7 @@ void FUN_0043b810(struct SpaceTowerCar *param_1) {
             } else {
                 param_1->seats[idx].rider_slot1 = node;
             }
-            off = DAT_0062fd88[idx];
+            off = SpaceTowerLayerOffsets[idx];
             off.y -= param_1->seats[idx].pos;
             AdjustOffsetForViewMode(&off);
             pos.x = coords.x + off.x;
