@@ -4671,23 +4671,16 @@ unsigned int CanPlaceLogFlumeHoldUp(struct FlumeEntry **param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0040feb0
-void GetLogFlumeHoldUpConnections(TileId pos, struct FlumeOut *out) {
-    struct Ride *ride = (struct Ride *)LogFlumeHoldUpRide;
-    unsigned char x;
-    unsigned char y;
-    int span;
+void GetLogFlumeHoldUpConnections(TileId p, unsigned int *result) {
+    unsigned int w = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
 
-    span = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
-    x = pos.pos.x + (unsigned char)ride->footprint.x0;
-    y = pos.pos.y + (unsigned char)ride->footprint.y0;
-    pos.pos.x = x;
-    pos.pos.y = y;
-    out->kind = 10;
-    out->f_1c = pos.pos.x;
-    out->f_20 = pos.pos.y + 9;
-    ride = (struct Ride *)LogFlumeHoldUpRide;
-    out->f_10 = pos.pos.y + 7;
-    out->f_0c = ride->footprint.x1 - ride->footprint.x0 - span + pos.pos.x + 1;
+    p.pos.x += (unsigned char)LogFlumeHoldUpRide->footprint.v[0];
+    p.pos.y += (unsigned char)LogFlumeHoldUpRide->footprint.v[1];
+    result[0] = 10;
+    result[7] = p.pos.x;
+    result[8] = p.pos.y + 9;
+    result[3] = LogFlumeHoldUpRide->footprint.v[2] - LogFlumeHoldUpRide->footprint.v[0] - w + p.pos.x + 1;
+    result[4] = p.pos.y + 7;
 }
 
 // FUNCTION: LEGOLAND 0x0040ff30
