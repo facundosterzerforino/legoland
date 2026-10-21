@@ -131,8 +131,8 @@ void ChuckWagonUpdate(Element *obj) {
 
 // FUNCTION: LEGOLAND 0x0042e460
 void LoadBrollyImages(struct Element *obj) {
-    DAT_0081cd38 = obj->ride;
-    DAT_0081cd38->flags |= 0x400;
+    ActiveEateryRide = obj->ride;
+    ActiveEateryRide->flags |= 0x400;
     // STRING: LEGOLAND 0x004b6ec8
     if (LLIDB_FindElement("BROLLY IMAGES", &BrollyImagesHandle, 0) == 0) {
         BrollyImagesData = (struct BrollyData *)LLIDB_LoadData((void *)BrollyImagesHandle);
@@ -146,7 +146,7 @@ void UnloadBrollyImages(void) {
 
 // FUNCTION: LEGOLAND 0x0042e4c0
 void BrollySetEditMode(void) {
-    struct Ride *temp = DAT_0081cd38;
+    struct Ride *temp = ActiveEateryRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = temp;
     DefaultCursor(&EditCursor);

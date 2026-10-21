@@ -98,7 +98,7 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
     }
     PrintSprite(TempSlideMatteSprite, pos.x, pos.y, clip, 0);
     RenderItems_New();
-    DAT_004cbf84 = NULL;
+    TempleSlideRiderRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id && (node->rider->flags & 0x80) != 0) {
             struct Bloke *bloke = node->rider;
@@ -121,10 +121,10 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
             person->screen.x = bloke->screen_x + off1.x + off2.x + pos.x;
             person->screen.y = bloke->screen_y + off1.y + off2.y + pos.y;
             AdjustBlokePosition(&person->screen);
-            AddBlokeToRenderList(&DAT_004cbf84, node, node->person->field_20);
+            AddBlokeToRenderList(&TempleSlideRiderRenderList, node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_004cbf84);
+    RenderBlokeList((struct RenderItemNode **)&TempleSlideRiderRenderList);
 }
 
 // FUNCTION: LEGOLAND 0x00417130
@@ -153,7 +153,7 @@ void TempleSlideLoad(struct Element *arg) {
     TempSlideMatteSprite = LoadSprite(
         // STRING: LEGOLAND 0x004b4f50
         "tempslide_matte.lls", 1);
-    DAT_004cbfb8[0] = TempSlideBinV;
+    TempleSlideBinVs[0] = TempSlideBinV;
 }
 
 // FUNCTION: LEGOLAND 0x00417200
@@ -360,7 +360,7 @@ void TempleSlideUpdate(Element *obj) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617664.875f, -1617913.0f);
                 bloke->field_35 = 0;
-                bloke->path = NewBNVPath(DAT_004cbfb8[0], 0, DAT_004b4f08[bloke->field_36], -1617664.875f, -1617913.0f, off);
+                bloke->path = NewBNVPath(TempleSlideBinVs[0], 0, DAT_004b4f08[bloke->field_36], -1617664.875f, -1617913.0f, off);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
@@ -499,7 +499,7 @@ LEGO_EXPORT int LoadTempleSlide(struct Element *obj) {
         bloke = node->rider;
         path = bloke->bnv;
         if (path != NULL) {
-            path->file = DAT_004cbfb8[path->index];
+            path->file = TempleSlideBinVs[path->index];
         }
     }
 

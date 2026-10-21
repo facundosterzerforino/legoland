@@ -1014,7 +1014,7 @@ LEGO_EXPORT int UpdateSoundVols(void) {
             vol = VolumePercentToDSVolume(CurrentProfile.music_volume);
             ((struct SampleBuffer *)DMusicSoundBuffer)->vtable->method_0x3c((struct SampleBuffer *)DMusicSoundBuffer, vol);
         }
-        DAT_007988a0 = VolumePercentToDSVolume(CurrentProfile.fx_volume);
+        SfxDSVolume = VolumePercentToDSVolume(CurrentProfile.fx_volume);
         RefreshSampleVolumes();
         SpeechSetVolume(VolumePercentToDSVolume(CurrentProfile.speech_volume));
     }

@@ -219,7 +219,7 @@ void PlaneRideLoad(Element *input) {
     // STRING: LEGOLAND 0x004b7a24
     Zoomer0ffBinV = LoadBinV("Zbuffers\\Zoomer0ff.bnv");
     // STRING: LEGOLAND 0x004b7a14
-    DAT_0062fe98 = ZoomerSprite = LoadSprite("z_Zoomer.lls", 1);
+    PlaneRideRiderSprite = ZoomerSprite = LoadSprite("z_Zoomer.lls", 1);
     DAT_0081cae8 = -10;
     DAT_0081caec = -0x6b;
     PlaneRideBinVs[0] = ZoomerideBinV;
@@ -513,7 +513,7 @@ void PlaneRideUpdate(struct Element *elem) {
                 coords[0] = (ox - DAT_0081cae8 / 2 - sc.x) * 2;
                 coords[1] = (x - DAT_0081caec / 2 - sc.y) * 2;
                 bloke->flags |= 0x80;
-                bloke->person->sprite = DAT_0062fe98;
+                bloke->person->sprite = PlaneRideRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
                 bloke->field_35 = 0;
@@ -558,7 +558,7 @@ void PlaneRideUpdate(struct Element *elem) {
                 UnAdjustBlokePosition(&tmp);
                 coords2 = tmp;
                 bloke->flags |= 0x80;
-                bloke->person->sprite = DAT_0062fe98;
+                bloke->person->sprite = PlaneRideRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
                 bloke->field_35 = 2;

@@ -125,7 +125,7 @@ void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsi
     sn = FindSafariNode((struct SafariKey *)tile);
     if (sn != NULL) {
         RenderItems_New();
-        DAT_004cbecc = NULL;
+        SafariRiderRenderList = NULL;
         pos = GetScreenCoordsForObject((TileId *)tile, ride);
         for (; node != NULL; node = node->next) {
             if (*tile == node->tile.id) {
@@ -159,14 +159,14 @@ void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                         person->screen.y = bloke->screen_y + (off2.y + off1.y) + pos.y;
                         AdjustBlokePosition(&person->screen);
                     }
-                    AddBlokeToRenderList(&DAT_004cbecc, node, node->person->field_20);
+                    AddBlokeToRenderList(&SafariRiderRenderList, node, node->person->field_20);
                 }
             }
         } else {
             LLSSetFrame(GetLLSForLayer(SafariLayer, 0), sn->frame);
             PrintSprite(GetSpriteForLayer(SafariLayer, 0), pos.x, pos.y, clip, 0);
         }
-        RenderBlokeList((struct RenderItemNode **)&DAT_004cbecc);
+        RenderBlokeList((struct RenderItemNode **)&SafariRiderRenderList);
     }
 }
 

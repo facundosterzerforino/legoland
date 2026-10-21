@@ -278,8 +278,8 @@ int IsPointOnMap(int x, int y) {
 // FUNCTION: LEGOLAND 0x004831a0
 Point GetOffsetInDir(unsigned char dir, short dist) {
     Point result;
-    result.x = DAT_004bd32c[dir][0] * dist >> 8;
-    result.y = DAT_004bd32c[dir][1] * dist >> 8;
+    result.x = BlokeDirVectors[dir][0] * dist >> 8;
+    result.y = BlokeDirVectors[dir][1] * dist >> 8;
     return result;
 }
 

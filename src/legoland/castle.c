@@ -2943,17 +2943,17 @@ void LoadRollercoasterFiles(void) {
     LoadObjAndTxtFiles("ROLLERCOASTER");
     // STRING: LEGOLAND 0x004b5684
     SetCurrentDirectoryIfNotNull("..\\..\\..");
-    n = FUN_004225d0();
+    n = GetCoasterObjLineCount();
     for (i = 0; i < n; i++) {
         GetCoasterObjLine(i, buf);
         LmsFileTable[i] = LoadLmsFile(buf);
     }
-    n = FUN_004225d0();
+    n = GetCoasterObjLineCount();
     for (i = 0; i < n; i++) {
         GetCoasterObjLine(i, buf);
         LfmFileTable[i] = LoadLfmFile(buf, &LfmFileSizes[i]);
     }
-    n = FUN_00422640();
+    n = GetCoasterTxtLineCount();
     for (i = 0; i < n; i++) {
         FormatRollercoasterFileName(i, buf);
         LtxFileTable[i] = LoadLtxFile(buf);
@@ -4782,8 +4782,8 @@ void GetCoasterObjLine(unsigned int param_1, char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004225d0
-unsigned int FUN_004225d0(void) {
-    return DAT_004dd868;
+unsigned int GetCoasterObjLineCount(void) {
+    return CoasterObjLineCount;
 }
 
 // FUNCTION: LEGOLAND 0x00422600
@@ -4794,12 +4794,12 @@ unsigned int FindCoasterTxtLine(const char *param) {
 // FUNCTION: LEGOLAND 0x00422620
 void FormatRollercoasterFileName(int value, char *buffer) {
     // STRING: LEGOLAND 0x004b5afc
-    wsprintfA(buffer, "%s%04d", DAT_004dd760, value);
+    wsprintfA(buffer, "%s%04d", CoasterObjBaseName, value);
 }
 
 // FUNCTION: LEGOLAND 0x00422640
-unsigned int FUN_00422640(void) {
-    return DAT_004dd86c;
+unsigned int GetCoasterTxtLineCount(void) {
+    return CoasterTxtLineCount;
 }
 
 // FUNCTION: LEGOLAND 0x004226c0
@@ -4819,9 +4819,9 @@ int LoadObjAndTxtFiles(const char *name) {
         MemFree(CoasterObjFile.data);
         return 0;
     }
-    DAT_004dd868 = CountTextLines(&CoasterObjFile);
-    DAT_004dd86c = CountTextLines(&CoasterTxtFile);
-    strcpy(DAT_004dd760, name);
+    CoasterObjLineCount = CountTextLines(&CoasterObjFile);
+    CoasterTxtLineCount = CountTextLines(&CoasterTxtFile);
+    strcpy(CoasterObjBaseName, name);
     return 1;
 }
 

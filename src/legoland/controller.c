@@ -218,8 +218,8 @@ LEGO_EXPORT void ReadGameButtons(void) {
 
     DAT_00667c48 = 0;
     held = CONTROLLERBUFFER->buttons;
-    pressed = (DAT_00813a94 ^ held) & held;
-    released = ~pressed & (DAT_00813a94 ^ held);
+    pressed = (PrevHeldButtons ^ held) & held;
+    released = ~pressed & (PrevHeldButtons ^ held);
     if (released != 0 && DAT_00667108 != 0) {
         released = 0;
         DAT_00667108 = 0;
@@ -238,7 +238,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
         repeat = 0;
     }
     GamePad = GamePad & 0xffffffe1;
-    DAT_00813a94 = held;
+    PrevHeldButtons = held;
 
     DAT_00813abc = 0;
     if ((pressed & DAT_00813ab8) != 0) DAT_00813abc = 1;

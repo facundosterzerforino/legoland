@@ -285,8 +285,8 @@ void ResumeGameTimer(void) {
         return;
     }
     GameTimerPaused = 0;
-    DAT_0079a898 += GetTickCount() - GameTimerPausedTicks;
-    DAT_0079a8a0 += FrameCounter - GameTimerPausedFrame;
+    GameTimerBaseTicks += GetTickCount() - GameTimerPausedTicks;
+    GameTimerBaseFrame += FrameCounter - GameTimerPausedFrame;
 }
 
 // FUNCTION: LEGOLAND 0x00499410
@@ -296,8 +296,8 @@ void ResetGameTimer(void) {
 
     ticks = GetTicks();
     GameTimerPausedTicks = ticks;
-    DAT_0079a898 = ticks;
+    GameTimerBaseTicks = ticks;
     counter = FrameCounter;
     GameTimerPausedFrame = counter;
-    DAT_0079a8a0 = counter;
+    GameTimerBaseFrame = counter;
 }

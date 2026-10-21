@@ -168,10 +168,10 @@ int GetMapCapacity(void) {
 void SpawnVisitor(void) {
     Bloke *bloke;
 
-    if (++DAT_006661c8 >= 0x1e && ParkVisitorCount < GetMapCapacity()) {
+    if (++VisitorSpawnCounter >= 0x1e && ParkVisitorCount < GetMapCapacity()) {
         bloke = MakeBloke(0);
         if (bloke != NULL) {
-            DAT_006661c8 = 0;
+            VisitorSpawnCounter = 0;
             bloke->dir = rand() & 7;
             bloke->frame = rand() & 7;
             bloke->field_75 = 1;
@@ -263,8 +263,8 @@ void FUN_0044ebf0(Bloke *bloke) {
         bloke->flags |= 8;
         bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
         bloke->dest.y = (object->field_5 + ride->footprint.y1 - 5) << 8;
-        bloke->pos.x = bloke->dest.x + DAT_004b8318.x;
-        bloke->pos.y = bloke->dest.y + DAT_004b8318.y;
+        bloke->pos.x = bloke->dest.x + ParkEntranceWalkInOffset.x;
+        bloke->pos.y = bloke->dest.y + ParkEntranceWalkInOffset.y;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
         bloke->low_level_action = 7;
         bloke->dir = (dir >> 5) + 3;
@@ -423,8 +423,8 @@ void BlokeAILeavePark(Bloke *bloke) {
         break;
     case 12:
         RateBlokeOnLeaving(bloke->mood);
-        bloke->dest.x += DAT_004b8328.x;
-        bloke->dest.y += DAT_004b8328.y;
+        bloke->dest.x += ParkExitStep.x;
+        bloke->dest.y += ParkExitStep.y;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
         bloke->low_level_action = 7;
         bloke->target_dir = dir;

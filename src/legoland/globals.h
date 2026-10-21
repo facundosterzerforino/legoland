@@ -987,11 +987,11 @@ extern char *IconsPath;
 // 0x004b81d8
 extern char *ModelsPath;
 // 0x004b8318
-extern struct Point DAT_004b8318;
+extern struct Point ParkEntranceWalkInOffset;
 // 0x004b8320
 extern struct Point ParkExitPos;
 // 0x004b8328
-extern struct Point DAT_004b8328;
+extern struct Point ParkExitStep;
 // 0x004b8334
 extern int BlokeTirednessThresholds[4];
 // 0x004b8344
@@ -1165,7 +1165,7 @@ extern char *PTR_s_Abbie_004bd018[0x5a];
 // 0x004bd180
 extern char *PTR_s_Adams_004bd180[0x6b];
 // 0x004bd32c
-extern short DAT_004bd32c[8][2]; /* unit step (x, y) per direction, 8.8 fixed point */
+extern short BlokeDirVectors[8][2]; /* unit step (x, y) per direction, 8.8 fixed point */
 // 0x004bd34c
 extern void (*PTR_FUN_004bd34c[16])(struct Bloke *);
 // 0x004bdd00
@@ -1195,7 +1195,7 @@ extern struct Ride *CastleLevelRide;
 // 0x004c10e4
 extern struct Sprite *CastleLevelMatteSprite;
 // 0x004c10e8
-extern struct RenderItemNode *DAT_004c10e8;
+extern struct RenderItemNode *CastleLevelRiderRenderList;
 // 0x004c10f0
 extern void *CatapultLayer;
 // 0x004c10f4
@@ -1455,7 +1455,7 @@ extern void *SafariOffBNV;
 // 0x004cbec8
 extern struct Sprite *SafariLayer;
 // 0x004cbecc
-extern struct RenderItemNode *DAT_004cbecc;
+extern struct RenderItemNode *SafariRiderRenderList;
 // 0x004cbed0
 extern struct RideSpriteInfo SafariSpriteInfo;
 // 0x004cbee8
@@ -1543,7 +1543,7 @@ extern struct Sprite *TempleMatte1Sprite;
 // 0x004cbf6c
 extern struct Sprite *TempleMatte2Sprite;
 // 0x004cbf70
-extern struct RenderItemNode *DAT_004cbf70;
+extern struct RenderItemNode *TempleRiderRenderList;
 // 0x004cbf7c
 extern struct Sprite *TempleSlideLayer;
 // 0x004cbf78
@@ -1551,7 +1551,7 @@ extern struct Sprite *TempSlideMatteSprite;
 // 0x004cbf80
 extern struct Ride *ActiveTempleSlideRide;
 // 0x004cbf84
-extern struct RenderItemNode *DAT_004cbf84;
+extern struct RenderItemNode *TempleSlideRiderRenderList;
 // 0x004cbf88
 extern unsigned int DAT_004cbf88;
 // 0x004cbf8c
@@ -1559,7 +1559,7 @@ extern unsigned int DAT_004cbf8c;
 // 0x004cbf98
 extern struct RideSpriteInfo TempleSlideSpriteInfo;
 // 0x004cbfb8
-extern struct BinVFile *DAT_004cbfb8[3];
+extern struct BinVFile *TempleSlideBinVs[3];
 // 0x004cbfc4
 extern void *TempSlideBinV;
 // 0x004cbfc8
@@ -1691,13 +1691,13 @@ struct CoasterTextFile {
 };
 extern struct CoasterTextFile CoasterTxtFile;
 // 0x004dd760
-extern char DAT_004dd760[256];
+extern char CoasterObjBaseName[256];
 // 0x004dd860
 extern struct CoasterTextFile CoasterObjFile;
 // 0x004dd868
-extern unsigned int DAT_004dd868;
+extern unsigned int CoasterObjLineCount;
 // 0x004dd86c
-extern unsigned int DAT_004dd86c;
+extern unsigned int CoasterTxtLineCount;
 // 0x004dd870
 extern unsigned char DAT_004dd870[0x6000];
 // 0x0060f908
@@ -2000,7 +2000,7 @@ extern void *ZoomerideBinV;
 // 0x0062fe94
 extern void *Zoomer0nBinV;
 // 0x0062fe98
-extern struct Sprite *DAT_0062fe98;
+extern struct Sprite *PlaneRideRiderSprite;
 // 0x0062fe9c
 extern struct PlaneRideNode *PlaneRideNodeList;
 // 0x0062fea0
@@ -2163,7 +2163,7 @@ extern struct Element *SharkCafeBrollyElem;
 // 0x006661c4
 extern struct Element *Entrance1Elem;
 // 0x006661c8
-extern int DAT_006661c8;
+extern int VisitorSpawnCounter;
 // 0x006661cc
 extern char DAT_006661cc[8][100];
 // 0x006664ec
@@ -3013,7 +3013,7 @@ extern unsigned int AviLockBytes1;
 // 0x0079889c
 extern unsigned int AviLockBytes2;
 // 0x007988a0
-extern unsigned int DAT_007988a0;
+extern unsigned int SfxDSVolume;
 // 0x007988a4
 extern void *AviLockPtr1;
 // 0x007988a8
@@ -3075,11 +3075,11 @@ extern unsigned int GameTimerPaused;
 // 0x0079a894
 extern unsigned int GameTimerPausedTicks;
 // 0x0079a898
-extern unsigned int DAT_0079a898;
+extern unsigned int GameTimerBaseTicks;
 // 0x0079a89c
 extern unsigned int GameTimerPausedFrame;
 // 0x0079a8a0
-extern unsigned int DAT_0079a8a0;
+extern unsigned int GameTimerBaseFrame;
 // 0x0079a8a8
 extern LEGO_EXPORT struct Bloke *GardenerList;
 // 0x0079a8ac
@@ -3661,7 +3661,7 @@ extern int DAT_00813a7c;
 // 0x00813a80
 extern int DAT_00813a80;
 // 0x00813a94
-extern unsigned int DAT_00813a94;
+extern unsigned int PrevHeldButtons;
 // 0x00813a98
 extern unsigned int DAT_00813a98;
 // 0x00813a9c
@@ -3880,7 +3880,7 @@ extern struct Ride *Restaurant2Ride;
 // 0x0081cd34
 extern struct Sprite *R2FdoormSprite;
 // 0x0081cd38
-extern struct Ride *DAT_0081cd38;
+extern struct Ride *ActiveEateryRide;
 // 0x0081cd3c
 extern struct Ride *FoodcartFoodRide;
 // 0x0081cd40
