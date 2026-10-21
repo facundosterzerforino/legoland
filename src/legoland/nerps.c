@@ -958,7 +958,7 @@ void SetScriptStopped(unsigned int param_1) {
     MapStats.script_stopped = param_1;
     UpdateScriptEndIcon((void *)1);
     if (param_1 != 0) {
-        FUN_00458be0();
+        MarkLevelComplete();
         if (MapStats.field_3a8 != 0) {
             return;
         }
@@ -2101,7 +2101,7 @@ unsigned int SaveGameWriteString(char *str) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c680
-void *FUN_0046c680(void) {
+void *ReadSaveString(void) {
     int len;
     char *buffer; /* a string: len bytes, then the 0 added here */
 
@@ -2182,7 +2182,7 @@ struct ObjectiveEvent *LoadObjectiveEventList(void) {
         node->timestamp += DAT_007fe994;
         // STRING: LEGOLAND 0x004ba828
         DBPrintf("Fixed up to %d\n", node->timestamp);
-        str = (char *)FUN_0046c680();
+        str = (char *)ReadSaveString();
         if (ScriptLoadErrorCount != 0) {
             free(node);
             FreeObjectiveEventList(head);
@@ -2194,7 +2194,7 @@ struct ObjectiveEvent *LoadObjectiveEventList(void) {
         } else {
             node->field_4 = 0;
         }
-        node->text = FUN_0046c680();
+        node->text = ReadSaveString();
         if (node->field_8 != 0) {
             node->flags_10 |= 0x20;
         }
@@ -2324,7 +2324,7 @@ unsigned int LoadScripts(void) {
         return 0;
     }
     for (i = 0; i < (int)ScriptStringCount; i++) {
-        ScriptStringTable[i] = (char *)FUN_0046c680();
+        ScriptStringTable[i] = (char *)ReadSaveString();
         if (ScriptLoadErrorCount != 0) {
             return 0;
         }
@@ -2375,7 +2375,7 @@ unsigned int LoadScripts(void) {
         if (ScriptLoadErrorCount != 0) {
             return 0;
         }
-        node->field_8 = FUN_0046c680();
+        node->field_8 = ReadSaveString();
         if (ScriptLoadErrorCount != 0) {
             return 0;
         }

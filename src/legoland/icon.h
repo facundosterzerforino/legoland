@@ -57,7 +57,7 @@ LEGO_EXPORT void UpdateFocussedIconPtr(void);
 void FUN_0046ee00(void);
 LEGO_EXPORT void RemoveIconGroup(unsigned short group);
 void FUN_0046d3a0(void);
-void FUN_0046d590(unsigned short val);
+void RemoveIconRange(unsigned short val);
 int FUN_0046e920(struct IconNode *node);
 void SetIconSprite(struct IconNode *node, struct Sprite *sprite);
 LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprite *sprite);

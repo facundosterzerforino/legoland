@@ -221,7 +221,7 @@ void ClearCatapultSlot(struct CatapultNode *arg, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004035a0
-void FUN_004035a0(struct CatapultNode *node) {
+void UpdateCatapultNode(struct CatapultNode *node) {
     int i;
     struct RideNode *entry;
 
@@ -269,10 +269,10 @@ void FUN_004035a0(struct CatapultNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00403690
-void FUN_00403690(void) {
+void UpdateCatapultNodes(void) {
     struct CatapultNode *node = CatapultNodeList;
     while (node != NULL) {
-        FUN_004035a0(node);
+        UpdateCatapultNode(node);
         node = node->next;
     }
 }
@@ -291,7 +291,7 @@ signed char PickFreeCatapultSlot(struct CatapultNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x004036f0
-void FUN_004036f0(const unsigned short *key, struct RideNode *entry, int x, int y) {
+void SendRiderToCatapultSlot(const unsigned short *key, struct RideNode *entry, int x, int y) {
     struct Bloke *bloke = entry->rider;
     struct CatapultNode *node = Catapult_FindNode(key);
     signed char slot;
@@ -337,7 +337,7 @@ void CatapultUpdate(struct Element *elem) {
     struct RideNode *node;
     struct RideNode *next;
 
-    FUN_00403690();
+    UpdateCatapultNodes();
     for (node = ride->riders; node != NULL; node = next) {
         struct Bloke *bloke = node->rider;
         TileId *tile = &node->tile;
@@ -353,7 +353,7 @@ void CatapultUpdate(struct Element *elem) {
         switch (bloke->param_action) {
         case 0:
             bloke->flags |= 8;
-            FUN_004036f0(&tile->id, node, x, y);
+            SendRiderToCatapultSlot(&tile->id, node, x, y);
             break;
         case 1:
             FUN_004037d0(&tile->id, node);

@@ -520,7 +520,7 @@ void UnloadGameInterface(void) {
         ScriptEndIcon = 0;
         RemoveIconGroup(0x9a);
         DAT_00668e9c = NULL;
-        FUN_0046d590(0xd2);
+        RemoveIconRange(0xd2);
         UnLoad_PopUpInfo();
         DAT_007fdd80 = 2;
         DAT_007fdd84 = 1;

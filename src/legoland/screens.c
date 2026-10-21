@@ -330,7 +330,7 @@ void FUN_00458bc0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458be0
-void FUN_00458be0(void) {
+void MarkLevelComplete(void) {
     int slot = ((struct ScreenConfig *)lpConfig)->slot;
 
     if (slot < 0xf) {

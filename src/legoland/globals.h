@@ -3224,7 +3224,7 @@ extern struct Sprite *FreePlayTickSprite;
 // 0x007cb39c
 extern struct PanelNode *DAT_007cb39c;
 // 0x007cb3a0
-extern unsigned int DAT_007cb3a0;
+extern unsigned int FreePlayCostTotal;
 // 0x007cb3a4
 extern struct PanelNode *DAT_007cb3a4;
 // 0x007cb3a8

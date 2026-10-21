@@ -4,7 +4,7 @@
 
 struct Element;
 
-unsigned int FUN_0048aef0(const char *arg1, struct Element *arg2);
+unsigned int CanAffordFreePlayObject(const char *arg1, struct Element *arg2);
 void KillProgressScreenSprites(void);
 LEGO_EXPORT void InitFreePlayScreen(void);
 void FUN_0048b6c0(void);

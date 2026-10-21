@@ -135,7 +135,7 @@ void UnlinkIconAtSlot(struct IconNode **slot) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d4a0
-void FUN_0046d4a0(struct IconNode **slot) {
+void FreeIconAtSlot(struct IconNode **slot) {
     struct IconNode *node = *slot;
     struct IconNode *next;
     if (FocussedIconPtr == node->next) {
@@ -190,7 +190,7 @@ LEGO_EXPORT void RemoveIconGroup(unsigned short group) {
     while (node != NULL) {
         if (node->id == group) {
             node = node->next;
-            FUN_0046d4a0(slot);
+            FreeIconAtSlot(slot);
             removed++;
         } else {
             slot = &node->next;
@@ -200,7 +200,7 @@ LEGO_EXPORT void RemoveIconGroup(unsigned short group) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d590
-void FUN_0046d590(unsigned short val) {
+void RemoveIconRange(unsigned short val) {
     struct IconNode **slot;
     struct IconNode *node;
     int removed = 0;
@@ -225,7 +225,7 @@ void FUN_0046d590(unsigned short val) {
             node = node->next;
         } else {
             node = node->next;
-            FUN_0046d4a0(slot);
+            FreeIconAtSlot(slot);
             removed++;
         }
     }
@@ -750,7 +750,7 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
             sprite = node->sprite;
             if (sprite != NULL) {
                 FUN_0048a840((const char *)node->field_1c, 0);
-                if (FUN_0048aef0(node->field_1c, node->field_20p) != 0) {
+                if (CanAffordFreePlayObject(node->field_1c, node->field_20p) != 0) {
                     PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
                     return 0;
                 }
@@ -915,7 +915,7 @@ LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
     ctx.field_8 = 0;
     StoreClipping();
     clip.left = node->x;
-    clip.right = (int)(node->width * 0.00005f * (int)DAT_007cb3a0);
+    clip.right = (int)(node->width * 0.00005f * (int)FreePlayCostTotal);
     clip.right += clip.left;
     clip.top = node->y;
     clip.bottom = node->height + clip.top;

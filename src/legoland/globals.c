@@ -4118,7 +4118,7 @@ struct Sprite *FreePlayTickSprite;
 struct PanelNode *DAT_007cb39c;
 
 // GLOBAL: LEGOLAND 0x007cb3a0
-unsigned int DAT_007cb3a0;
+unsigned int FreePlayCostTotal;
 
 // GLOBAL: LEGOLAND 0x007cb3a4
 struct PanelNode *DAT_007cb3a4;
