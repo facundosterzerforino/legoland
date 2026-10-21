@@ -3185,7 +3185,7 @@ int DAT_00668964;
 char PopUpMessageText[0x400];
 
 // GLOBAL: LEGOLAND 0x00668d68
-unsigned int DAT_00668d68;
+unsigned int PopUpMessageShown;
 
 // GLOBAL: LEGOLAND 0x00668d78
 DIMOUSESTATE MouseState;
@@ -4091,7 +4091,7 @@ unsigned int DAT_007cb318;
 char SavedMusicVolume;
 
 // GLOBAL: LEGOLAND 0x007cb320
-unsigned int DAT_007cb320;
+unsigned int ExitCheckBoxShown;
 
 // GLOBAL: LEGOLAND 0x007cb324
 unsigned int DAT_007cb324;
@@ -4421,10 +4421,10 @@ struct Sprite *ObjectRepairOkSprite;
 struct Sprite *IPeckishSprite;
 
 // GLOBAL: LEGOLAND 0x007fe010
-int DAT_007fe010;
+int PopUpMessageX;
 
 // GLOBAL: LEGOLAND 0x007fe014
-int DAT_007fe014;
+int PopUpMessageY;
 
 // GLOBAL: LEGOLAND 0x007fe018
 struct Sprite *IHappySprite;

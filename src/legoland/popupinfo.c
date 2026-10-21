@@ -1437,33 +1437,33 @@ void UpdateAdvicePriority(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473680
-void FUN_00473680(int param_1, int param_2, char *param_3, void *param_4, void *param_5) {
+void ShowPopUpMessage(int param_1, int param_2, char *param_3, void *param_4, void *param_5) {
     strcpy(PopUpMessageText, param_3);
-    DAT_007fe010 = param_1;
-    DAT_007fe014 = param_2;
+    PopUpMessageX = param_1;
+    PopUpMessageY = param_2;
     FUN_00470950(param_4, param_5);
-    DAT_00668d68 = 1;
+    PopUpMessageShown = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004736e0
-void FUN_004736e0(void) {
+void HidePopUpMessage(void) {
     KillPUOKAndCBSprites();
-    DAT_00668d68 = 0;
+    PopUpMessageShown = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004736f0
-void FUN_004736f0(void) {
+void DrawPopUpMessage(void) {
     int x;
     int y;
     int i;
     RECT rc;
     RECT hit;
 
-    if (DAT_00668d68 != 0) {
+    if (PopUpMessageShown != 0) {
         struct PrintCtx ctx = {1};
 
-        y = DAT_007fe014;
-        x = DAT_007fe010;
+        y = PopUpMessageY;
+        x = PopUpMessageX;
         /* the bar: left end, DAT_00668964 centre pieces, right end */
         PrintSprite(CBBGLeftSprite, x, y, 0, (int *)&ctx);
         x += 0x7a;
@@ -1475,12 +1475,12 @@ void FUN_004736f0(void) {
         x += 0x4e;
         PopUpInfoOkIcon->flags &= ~0x400;
         PopUpInfoOkIcon->x = (short)(x - 0x4b);
-        PopUpInfoOkIcon->y = (short)DAT_007fe014 + 3;
+        PopUpInfoOkIcon->y = (short)PopUpMessageY + 3;
         CBCloseIcon->flags &= ~0x400;
         CBCloseIcon->x = (short)(x - 0x27);
-        CBCloseIcon->y = (short)DAT_007fe014 + 3;
-        rc.left = DAT_007fe010 + 0xc;
-        rc.top = DAT_007fe014 + 6;
+        CBCloseIcon->y = (short)PopUpMessageY + 3;
+        rc.left = PopUpMessageX + 0xc;
+        rc.top = PopUpMessageY + 6;
         rc.right = rc.left + DAT_00668964 * 0x14 + 0x7a;
         rc.bottom = rc.top + 0x1b;
         PrintTextBox(PopUpMessageText, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 1, 5, 0xff0000, 0xffffff);

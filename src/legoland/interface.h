@@ -44,7 +44,7 @@ int SaveObjectiveIcons(void);
 int LoadObjectiveIcons(void);
 LEGO_EXPORT int InitGameInterface(int a);
 void UnloadGameInterface(void);
-unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, const char *b);
+unsigned char InterfaceBriefingClicked(void *context, unsigned int flags, const char *a, const char *b);
 unsigned char FUN_00474fa0(unsigned int a, unsigned char flags);
 unsigned char SetEditObjectIconHandler(struct IconNode *a, unsigned int flags);
 unsigned char ScriptEndIconHandler(unsigned int a, unsigned int flags);

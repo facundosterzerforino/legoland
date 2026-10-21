@@ -22,7 +22,7 @@
 #include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0048eb40
-void FUN_0048eb40(void) {
+void RestoreSavedMouseHandlers(void) {
     DAT_006687bc = DAT_00798740;
     DAT_006687c0 = DAT_0079873c;
 }
@@ -151,12 +151,12 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->field_18s = 9;
     FxVolumeMarkerIcon = icon;
 
-    DAT_007cb320 = 0;
+    ExitCheckBoxShown = 0;
     DAT_00798754 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0048ef10
-unsigned char FUN_0048ef10(unsigned int param_1, unsigned int param_2) {
+unsigned char OptionsOkClicked(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         UpDateCurrentProfile();
@@ -166,7 +166,7 @@ unsigned char FUN_0048ef10(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ef40
-unsigned char FUN_0048ef40(unsigned int param_1, unsigned int param_2) {
+unsigned char OptionsCancelClicked(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         CurrentProfile.speech_volume = SavedSpeechVolume;
@@ -178,7 +178,7 @@ unsigned char FUN_0048ef40(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ef90
-unsigned char FUN_0048ef90(unsigned int param_1, unsigned int param_2) {
+unsigned char ExitCheckBoxOkClicked(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         CloseFontEndCheckBox();
@@ -224,7 +224,7 @@ unsigned char OptionsExitIconHandler(unsigned int param_1, unsigned int param_2)
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         InitExitCheckBox(0xfa, 0x28);
-        DAT_007cb320 = 1;
+        ExitCheckBoxShown = 1;
         DAT_004bef9c = 0;
     }
     return 1;
@@ -245,7 +245,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
 
     for (;;) {
         if (DAT_0080ff80.unk8 == 5) {
-            DAT_006687bc = FUN_0048f440;
+            DAT_006687bc = ExitLevelOkClicked;
             if (GetGameTimerSinceMark() > 0xea60) {
                 DAT_00798754 = 1;
                 // STRING: LEGOLAND 0x004bf4c4
@@ -255,7 +255,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
             }
             DAT_00798754 = 0;
         } else {
-            DAT_006687bc = FUN_0048ef90;
+            DAT_006687bc = ExitCheckBoxOkClicked;
             DAT_00798754 = 0;
         }
         // STRING: LEGOLAND 0x004bf4b0
@@ -275,17 +275,17 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     PopUpCloseIcon->string = GetString(4);
     PopUpCloseIcon->flags |= 0x2000;
     PopUpCloseIcon->flags |= 0x4002;
-    PopUpCloseIcon->event_handler = (void *)FUN_0048f4b0;
+    PopUpCloseIcon->event_handler = (void *)ExitCheckBoxCloseClicked;
     DAT_007cb318 = 0;
     DAT_007cb310 = 0;
-    DAT_006687c0 = FUN_0048f4b0;
+    DAT_006687c0 = ExitCheckBoxCloseClicked;
 }
 
 // FUNCTION: LEGOLAND 0x0048f2d0
 LEGO_EXPORT void PrintExitCheckBox(void) {
     RECT rc;
 
-    if (DAT_007cb320 != 0) {
+    if (ExitCheckBoxShown != 0) {
         PushRenderingStatusAndUnlockVideoSurface();
 
         rc.left = 0x106;
@@ -317,10 +317,10 @@ LEGO_EXPORT void PrintExitCheckBox(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f440
-unsigned char FUN_0048f440(unsigned int param_1, unsigned int param_2) {
+unsigned char ExitLevelOkClicked(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_007cb320 = 0;
+        ExitCheckBoxShown = 0;
         CloseFontEndCheckBox();
         MapStats.level_end = 3;
         DAT_00668e38 = 0;
@@ -328,19 +328,19 @@ unsigned char FUN_0048f440(unsigned int param_1, unsigned int param_2) {
         DestroyIconGroup(0xd2);
         KillTitleScreenSprites();
         EditMode.unk4 = 3;
-        FUN_0048eb40();
+        RestoreSavedMouseHandlers();
         SetDefaultMouseHandlers();
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0048f4b0
-unsigned char FUN_0048f4b0(unsigned int param_1, unsigned int param_2) {
+unsigned char ExitCheckBoxCloseClicked(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_CLICK1].sample, 0, 1, 0);
-        DAT_007cb320 = 0;
+        ExitCheckBoxShown = 0;
         CloseFontEndCheckBox();
-        FUN_0048eb40();
+        RestoreSavedMouseHandlers();
     }
     return 1;
 }
@@ -349,7 +349,7 @@ unsigned char FUN_0048f4b0(unsigned int param_1, unsigned int param_2) {
 unsigned char FUN_0048f4f0(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_007cb320 = 0;
+        ExitCheckBoxShown = 0;
         CloseFontEndCheckBox();
         DAT_007cb310 = 1;
         LoadMode = 0;

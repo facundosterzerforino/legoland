@@ -2583,7 +2583,7 @@ extern int DAT_00668964;
 // 0x00668968
 extern char PopUpMessageText[0x400];
 // 0x00668d68
-extern unsigned int DAT_00668d68;
+extern unsigned int PopUpMessageShown;
 // 0x00668d78  (DIMOUSESTATE; full type in <dinput.h>, dereferenced only by input.c)
 extern struct _DIMOUSESTATE MouseState;
 // 0x00668d88
@@ -3206,7 +3206,7 @@ extern unsigned int DAT_007cb318;
 // 0x007cb31c
 extern char SavedMusicVolume;
 // 0x007cb320
-extern unsigned int DAT_007cb320;
+extern unsigned int ExitCheckBoxShown;
 // 0x007cb324
 extern unsigned int DAT_007cb324;
 // 0x007cb328
@@ -3425,9 +3425,9 @@ extern struct Sprite *ObjectRepairOkSprite;
 // 0x007fe008
 extern struct Sprite *IPeckishSprite;
 // 0x007fe010
-extern int DAT_007fe010;
+extern int PopUpMessageX;
 // 0x007fe014
-extern int DAT_007fe014;
+extern int PopUpMessageY;
 // 0x007fe018
 extern struct Sprite *IHappySprite;
 // 0x007fe020

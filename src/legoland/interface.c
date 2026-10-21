@@ -458,7 +458,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string = GetString(0x24e);
         icon->field_18p = BriefIconSprite;
         icon->flags |= 0x600a;
-        icon->event_handler = (void *)FUN_00474f40;
+        icon->event_handler = (void *)InterfaceBriefingClicked;
         icon->render_func = (void *)RenderFocusableIcon;
         DAT_00668e9c = icon;
         icon->flags |= 0x400;
@@ -530,7 +530,7 @@ void UnloadGameInterface(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00474f40
-unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, const char *b) {
+unsigned char InterfaceBriefingClicked(void *context, unsigned int flags, const char *a, const char *b) {
     if (EditMode.unk4 != 1) {
         if (flags & 2) {
             EditMode.unk0 = 0;
