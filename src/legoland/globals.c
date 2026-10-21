@@ -1781,10 +1781,10 @@ struct Cursor DAT_004d2168[4];
 struct PathNode *BoatPathList;
 
 // GLOBAL: LEGOLAND 0x004d8240
-struct PathNode *DAT_004d8240;
+struct PathNode *BoatBfsFrontier;
 
 // GLOBAL: LEGOLAND 0x004d8244
-struct PathNode *DAT_004d8244;
+struct PathNode *BoatBfsNextFrontier;
 
 // GLOBAL: LEGOLAND 0x004d8250
 struct SprEnt DAT_004d8250;
@@ -1835,7 +1835,7 @@ char DAT_004d8bb0[0x100];
 float DAT_004dcbb8[3];
 
 // GLOBAL: LEGOLAND 0x004dcbd0
-struct VecMath DAT_004dcbd0;
+struct VecMath VecMathOps;
 
 // GLOBAL: LEGOLAND 0x004dcc00
 struct FloatArray DAT_004dcc00[30];
@@ -1844,7 +1844,7 @@ struct FloatArray DAT_004dcc00[30];
 unsigned int DAT_004dd5d8;
 
 // GLOBAL: LEGOLAND 0x004dd5e0
-void *DAT_004dd5e0[24];
+void *CurveFunctionTable[24];
 
 // GLOBAL: LEGOLAND 0x004dd758
 struct CoasterTextFile CoasterTxtFile;
@@ -1880,7 +1880,7 @@ struct LSub DAT_0060f914[20];
 struct SegBlob DAT_006102f8[3];
 
 // GLOBAL: LEGOLAND 0x00610a04
-unsigned int DAT_00610a04;
+unsigned int CastleCoasterPlaced;
 
 // GLOBAL: LEGOLAND 0x00610a08
 unsigned int DAT_00610a08;
@@ -2219,7 +2219,7 @@ struct Cursor DAT_00629c58[4];
 struct JunglePath *JunglePathList;
 
 // GLOBAL: LEGOLAND 0x0062fd30
-struct JunglePath *DAT_0062fd30;
+struct JunglePath *JungleBfsFrontier;
 
 // GLOBAL: LEGOLAND 0x0062fd34
 struct JunglePath *JungleBfsNextFrontier;
@@ -5264,13 +5264,13 @@ struct Element *DAT_00829abc;
 // One object of 0x118 bytes (0x10c of data, then three methods): the castle code reaches its parts both by name and through struct
 // views of its address (sentinel list node at +4, anims, list hosts), so they must keep these offsets.
 // GLOBAL: LEGOLAND 0x00829ae0
-struct CastleState DAT_00829ae0;
+struct CastleState CastleCoaster;
 
 // GLOBAL: LEGOLAND 0x004b5b48
 struct PieceClass DAT_004b5b48;
 
 // GLOBAL: LEGOLAND 0x00829bf8
-struct Ride *DAT_00829bf8;
+struct Ride *CastleCoasterRide;
 
 // GLOBAL: LEGOLAND 0x00829bfc
 struct Ride *DAT_00829bfc;

@@ -37,7 +37,7 @@ struct EarthQueue {
 
 void FUN_0042cd70(unsigned short *a1);
 void RemoveEarthNode(struct EarthNode *node);
-struct EarthNode *FUN_0042ce20(volatile unsigned short *param_1);
+struct EarthNode *FindEarthNode(volatile unsigned short *param_1);
 void FUN_0042ce50(struct EarthNode *node, struct RideNode *elem);
 void EarthNodeAppendQueueEntry(struct EarthNode *p, struct EarthQueue *value);
 void FUN_0042cec0(struct Ride *param_1, unsigned char *param_2, int *param_3);

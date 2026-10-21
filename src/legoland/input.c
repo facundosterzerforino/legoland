@@ -129,9 +129,9 @@ LEGO_EXPORT void ScanMouse(void) {
         }
     }
     if (MouseState.lZ <= -mouse_granularity) {
-        FUN_0046db40();
+        ScrollActiveIconRegionBack();
     } else if (MouseState.lZ >= mouse_granularity) {
-        FUN_0046dac0();
+        ScrollActiveIconRegionForward();
     }
 }
 

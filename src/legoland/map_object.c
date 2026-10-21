@@ -928,7 +928,7 @@ void PropagateCursorBlocked(struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f540
-struct Cursor *FUN_0045f540(struct Cursor *cursor) {
+struct Cursor *GetOrAddPathCursor(struct Cursor *cursor) {
     struct Cursor *node;
     struct Cursor *last;
 
@@ -971,7 +971,7 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
     while (1) {
         rect = *(struct Footprint *)&cursor->field_1414[0];
         if (param_3 != 0) {
-            FUN_0045f540(cursor);
+            GetOrAddPathCursor(cursor);
         }
         sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
         size = sprite->height;
@@ -1041,7 +1041,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, void *param) {
     int x1;
     first = cursor;
     if (FUN_0045ead0((struct Ride *)param) != 0 && (cursor->field_1828 & 0x4000) == 0) {
-        FUN_0045f540(cursor);
+        GetOrAddPathCursor(cursor);
     }
     ResetCursorBuildable(cursor);
     for (; cursor != 0; cursor = cursor->next) {

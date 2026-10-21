@@ -50,7 +50,7 @@ void FreeControllers(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00451f70
-int FUN_00451f70(void) {
+int ScrollMapFromKeys(void) {
     int dx;
     unsigned int dy;
     int result;
@@ -298,7 +298,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
         MousePos.x = CONTROLLERBUFFER->x;
         MousePos.y = CONTROLLERBUFFER->y;
         if (MapLoaded != 0) {
-            scroll = FUN_00451f70();
+            scroll = ScrollMapFromKeys();
             if ((GamePad & 0x1000) != 0 || FocussedIconPtr == 0) {
                 if (scroll == 0 && (GamePad & 0x20) != 0) {
                     MouseScrollMap();

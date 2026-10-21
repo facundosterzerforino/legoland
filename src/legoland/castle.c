@@ -284,7 +284,7 @@ int IsPointInPathSegFootprint(struct PathSeg *obj, short *pt) {
 }
 
 // FUNCTION: LEGOLAND 0x0041d100
-struct PathSeg *FUN_0041d100(struct CastleState *host, struct Ride *ride, short *pt) {
+struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short *pt) {
     struct PathSeg *node;
 
     if (host->flags & 2) {
@@ -341,21 +341,21 @@ int FUN_0041d210(short *pos, struct SprEnt *ent, struct PieceClass *info) {
     short p[2];
     int r;
 
-    if (DAT_00829ae0.flags != 2) {
-        ent->owner = (struct CastleState *)&DAT_00829ae0;
+    if (CastleCoaster.flags != 2) {
+        ent->owner = (struct CastleState *)&CastleCoaster;
         p[0] = info->door_b.x + pos[0];
         p[1] = info->door_b.y + pos[1];
-        r = FUN_0041cd40((unsigned int *)p, &DAT_00829ae0.pts_a.mask);
+        r = FUN_0041cd40((unsigned int *)p, &CastleCoaster.pts_a.mask);
         ent->id_a = r;
         if (r != -1) {
-            DAT_00829ae0.f_a8->dir_b = BitFromIndex(r);
+            CastleCoaster.f_a8->dir_b = BitFromIndex(r);
         }
         p[0] = info->door_a.x + pos[0];
         p[1] = info->door_a.y + pos[1];
-        r = FUN_0041cd40((unsigned int *)p, &DAT_00829ae0.pts_b.mask);
+        r = FUN_0041cd40((unsigned int *)p, &CastleCoaster.pts_b.mask);
         ent->id_b = r;
         if (r != -1) {
-            DAT_00829ae0.f_c0->dir_a = BitFromIndex(r);
+            CastleCoaster.f_c0->dir_a = BitFromIndex(r);
         }
         if (ent->id_a != -1 || ent->id_b != -1) {
             return 1;
@@ -551,9 +551,9 @@ void FUN_0041d760(struct PathSeg *obj) {
 
 // FUNCTION: LEGOLAND 0x0041d7c0
 unsigned int FUN_0041d7c0(struct PathSeg *value) {
-    if (DAT_00829ae0.flags != 2) {
-        if (value != DAT_00829ae0.f_a8) {
-            if (value != DAT_00829ae0.f_c0) {
+    if (CastleCoaster.flags != 2) {
+        if (value != CastleCoaster.f_a8) {
+            if (value != CastleCoaster.f_c0) {
                 return 0;
             }
         }
@@ -573,9 +573,9 @@ void FUN_0041d7f0(void *arg) {
             ResetAnim((struct PieceEnd *)&obj->next->dir_a);
             ResetAnim((struct PieceEnd *)&obj->prev->dir_b);
             owner->f_a8 = obj->prev;
-            FUN_0041d170(obj->prev, &DAT_00829ae0.pts_a);
+            FUN_0041d170(obj->prev, &CastleCoaster.pts_a);
             owner->f_c0 = obj->next;
-            FUN_0041d190(obj->next, &DAT_00829ae0.pts_b);
+            FUN_0041d190(obj->next, &CastleCoaster.pts_b);
             FUN_004299e0((struct PathSeg *)owner->f_a8);
             FUN_00429a30((struct PathSeg *)owner->f_c0);
             FUN_0041cfc0((struct PathSeg *)owner->f_a8);
@@ -585,25 +585,25 @@ void FUN_0041d7f0(void *arg) {
         } else if (obj == owner->f_a8) {
             ResetAnim((struct PieceEnd *)&obj->prev->dir_b);
             owner->f_a8 = obj->prev;
-            FUN_0041d170(obj->prev, &DAT_00829ae0.pts_a);
+            FUN_0041d170(obj->prev, &CastleCoaster.pts_a);
             FUN_004299e0((struct PathSeg *)owner->f_a8);
             FUN_0041cfc0((struct PathSeg *)owner->f_a8);
         } else {
             ResetAnim((struct PieceEnd *)&obj->next->dir_a);
             owner->f_c0 = obj->next;
-            FUN_0041d190(obj->next, &DAT_00829ae0.pts_b);
+            FUN_0041d190(obj->next, &CastleCoaster.pts_b);
             FUN_00429a30((struct PathSeg *)owner->f_c0);
             FUN_0041cfc0((struct PathSeg *)owner->f_c0);
         }
-        FUN_0041d1c0(&DAT_00829ae0.pts_a.mask);
-        FUN_0041d1c0(&DAT_00829ae0.pts_b.mask);
+        FUN_0041d1c0(&CastleCoaster.pts_a.mask);
+        FUN_0041d1c0(&CastleCoaster.pts_b.mask);
         ((struct PieceClass *)obj->cls)->method_2c(obj);
         MemFree(obj);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0041d950
-void FUN_0041d950(void *obj, float val, void *b) {
+void PositionTrainCarsAndBogies(void *obj, float val, void *b) {
     struct Train *host = obj;
     struct TrainCar *head;
     struct TrainCar *cur;
@@ -632,7 +632,7 @@ void FUN_0041d950(void *obj, float val, void *b) {
 }
 
 // FUNCTION: LEGOLAND 0x0041da10
-void FUN_0041da10(void *obj, float val, void *b) {
+void PositionTrainCars(void *obj, float val, void *b) {
     struct Train *host = obj;
     struct TrainCar *head;
     struct TrainCar *cur;
@@ -686,7 +686,7 @@ void FUN_0041db20(float a, struct FloatArray *out) {
 
     n = 1;
     node = &DAT_004d83b4->head;
-    FUN_0041da10(DAT_004d83b4, a, &DAT_004d83a0);
+    PositionTrainCars(DAT_004d83b4, a, &DAT_004d83a0);
     out->data[0] = 0.0f;
     p = &out->data[1];
     do {
@@ -714,7 +714,7 @@ void FUN_0041db90(struct Train *obj, float *a, float *b) {
     DAT_004d83b4 = obj;
     savedval = obj->motion.f4;
     DAT_004d83a0 = obj->walker;
-    FUN_0041f4e0(FUN_0041db20, &DAT_004d8270, savedval, 0.1f, &out);
+    VecDerivative(FUN_0041db20, &DAT_004d8270, savedval, 0.1f, &out);
     *b = out.data[0];
     *a = 0.0f;
     p = &out.data[1];
@@ -794,7 +794,7 @@ void FUN_0041ddd0(struct Integrator *a, struct FloatArray *b) {
     struct Train *e = a->owner;
 
     e->motion.kind = 2;
-    FUN_0041da10(e, b->data[0], &e->walker);
+    PositionTrainCars(e, b->data[0], &e->walker);
     FUN_0041dad0(e, b->data[1]);
 }
 
@@ -846,7 +846,7 @@ struct BisectOut {
 };
 
 // FUNCTION: LEGOLAND 0x0041df00
-float FUN_0041df00(struct Train *obj, float t) {
+float BisectTrainSegmentEnd(struct Train *obj, float t) {
     struct BisectPair s;
     struct AnimOut anim;
     float lo;
@@ -860,24 +860,24 @@ float FUN_0041df00(struct Train *obj, float t) {
     s.q = anim.kind;
     while (hi - lo > DAT_004ab418) {
         t = (hi + lo) * 0.5f;
-        FUN_0041da10(obj, anim.f4, &obj->walker);
+        PositionTrainCars(obj, anim.f4, &obj->walker);
         FUN_0041dad0((struct Train *)obj, anim.f8);
-        FUN_00420310(&obj->integ, &s.p, t);
+        IntegratorStepRK4(&obj->integ, &s.p, t);
         if (obj->motion.f4 > obj->walker.node->end) {
             hi = t;
         } else {
             lo = t;
         }
     }
-    FUN_0041da10(obj, anim.f4, &obj->walker);
+    PositionTrainCars(obj, anim.f4, &obj->walker);
     FUN_0041dad0((struct Train *)obj, anim.f8);
     t = (hi + lo) * 0.5f;
-    FUN_00420310(&obj->integ, &s.p, t);
+    IntegratorStepRK4(&obj->integ, &s.p, t);
     return t;
 }
 
 // FUNCTION: LEGOLAND 0x0041e000
-float FUN_0041e000(struct Train *obj, float total) {
+float StepTrainToSegmentEnd(struct Train *obj, float total) {
     struct BisectOut s;
     struct AnimOut anim;
     int i = 0;
@@ -890,11 +890,11 @@ float FUN_0041e000(struct Train *obj, float total) {
     for (i = 0; i < n; i++) {
         anim = obj->motion;
         s.q = anim.kind;
-        FUN_00420310(&obj->integ, &s.p, dt);
+        IntegratorStepRK4(&obj->integ, &s.p, dt);
         if (obj->motion.f4 > obj->walker.node->end) {
-            FUN_0041da10(obj, anim.f4, &obj->walker);
+            PositionTrainCars(obj, anim.f4, &obj->walker);
             FUN_0041dad0((struct Train *)obj, anim.f8);
-            return FUN_0041df00(obj, dt) + acc;
+            return BisectTrainSegmentEnd(obj, dt) + acc;
         }
         acc += dt;
     }
@@ -974,7 +974,7 @@ L41e1a6:
         call FUN_0041e100
         jmp L41e1c1
 L41e1bc:
-        call FUN_0041e000
+        call StepTrainToSegmentEnd
 L41e1c1:
         fadd dword ptr [ebp + 8]
         add esp, 8
@@ -1189,7 +1189,7 @@ void FUN_0041e500(struct Train *obj) {
     obj->flags = 8;
     t.piece = (struct PathSeg *)&obj->track->piece;
     obj->track->method_10c(obj->track, &t.node, &slot, &t.pos);
-    FUN_0041d950(obj, slot, &t);
+    PositionTrainCarsAndBogies(obj, slot, &t);
     obj->field_4 = GetGameTimer();
     obj->motion.f8 = SumTrainCarWeights(obj);
     obj->motion.f8 = FUN_0041ddb0(obj, 0.1f) + obj->motion.f8;
@@ -1814,7 +1814,7 @@ void SetClipPlanesFromRect(const int *r, struct PlaneSet *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0041f3e0
-struct FloatArray ***FUN_0041f3e0(void (*fn)(float, struct FloatArray *), struct VecMath *ar, int n, float a, float b) {
+struct FloatArray ***BuildVecDifferenceTable(void (*fn)(float, struct FloatArray *), struct VecMath *ar, int n, float a, float b) {
     int cnt = n + 1;
     struct FloatArray **blk;
     int i;
@@ -1850,7 +1850,7 @@ unsigned int FUN_0041f4c0(struct FloatArray ***param1, struct VecMath *param2, i
 }
 
 // FUNCTION: LEGOLAND 0x0041f4e0
-int FUN_0041f4e0(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d) {
+int VecDerivative(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d) {
     struct VecMath *ar = a;
     struct FloatArray ***t;
     struct FloatArray **h;
@@ -1858,7 +1858,7 @@ int FUN_0041f4e0(void (*fn)(float, struct FloatArray *), struct VecMath *a, floa
     struct FloatArray *q;
 
     c *= 0.5f;
-    t = FUN_0041f3e0(fn, ar, 4, b, c);
+    t = BuildVecDifferenceTable(fn, ar, 4, b, c);
     h = ar->alloc(2);
     p = h[0];
     q = h[1];
@@ -1900,7 +1900,7 @@ int FUN_0041f5a0(void (*fn)(float, struct FloatArray *), struct VecMath *a, floa
 }
 
 // FUNCTION: LEGOLAND 0x0041f650
-float **FUN_0041f650(double (*fn)(float), int n, float a, float b) {
+float **BuildDifferenceTable(double (*fn)(float), int n, float a, float b) {
     int cnt = n + 1;
     float **t;
     float *p;
@@ -1937,11 +1937,11 @@ void FUN_0041f710(void *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0041f720
-int FUN_0041f720(double (*fn)(float), float p2, float p3, float *out) {
+int ScalarDerivative(double (*fn)(float), float p2, float p3, float *out) {
     float **r;
 
     p3 *= 0.5f;
-    r = FUN_0041f650(fn, 4, p2, p3);
+    r = BuildDifferenceTable(fn, 4, p2, p3);
     if (!r) {
         return 0;
     }
@@ -1972,10 +1972,10 @@ void FUN_0041f7f0(void) {
     struct VecMath x;
     struct FloatArray y;
 
-    FUN_0041f720(LogFloat, 3.0f, 1.0f, &buf);
-    FUN_00421470();
+    ScalarDerivative(LogFloat, 3.0f, 1.0f, &buf);
+    InitVecMathOps();
     FUN_00421540(&x, 3);
-    FUN_0041f4e0(FUN_0041f790, &x, 3.0f, 0.01f, &y);
+    VecDerivative(FUN_0041f790, &x, 3.0f, 0.01f, &y);
 }
 
 // FUNCTION: LEGOLAND 0x0041f850
@@ -2884,7 +2884,7 @@ float IntegrateSimpson(float (*fn)(unsigned int), unsigned int a, unsigned int b
 #pragma optimize("", on)
 
 // FUNCTION: LEGOLAND 0x00420310
-void FUN_00420310(struct Integrator *ar, float *p, float c) {
+void IntegratorStepRK4(struct Integrator *ar, float *p, float c) {
     struct FloatArray **h;
     struct FloatArray *v0;
     struct FloatArray *v1;
@@ -3977,20 +3977,20 @@ void FloatArrayAddScaled(struct FloatArray *a, float f, struct FloatArray *out) 
 }
 
 // FUNCTION: LEGOLAND 0x00421470
-void FUN_00421470(void) {
+void InitVecMathOps(void) {
     struct FloatArray **table;
     struct FloatArray *cur;
 
-    DAT_004dcbd0.add = FloatArrayAdd;
-    DAT_004dcbd0.sub = FloatArraySub;
-    DAT_004dcbd0.copy = CopyFloatArray;
-    DAT_004dcbd0.scale = FloatArrayScale;
-    DAT_004dcbd0.maxabs = FloatArrayMaxAbs;
-    DAT_004dcbd0.blend = BlendFloatArrays;
-    DAT_004dcbd0.zero = ZeroIntBuffer;
-    DAT_004dcbd0.axpy = FloatArrayAddScaled;
-    DAT_004dcbd0.alloc = FUN_004214f0;
-    DAT_004dcbd0.release = FUN_00421510;
+    VecMathOps.add = FloatArrayAdd;
+    VecMathOps.sub = FloatArraySub;
+    VecMathOps.copy = CopyFloatArray;
+    VecMathOps.scale = FloatArrayScale;
+    VecMathOps.maxabs = FloatArrayMaxAbs;
+    VecMathOps.blend = BlendFloatArrays;
+    VecMathOps.zero = ZeroIntBuffer;
+    VecMathOps.axpy = FloatArrayAddScaled;
+    VecMathOps.alloc = FUN_004214f0;
+    VecMathOps.release = FUN_00421510;
 
     table = DAT_0082ac60;
     cur = DAT_004dcc00;
@@ -4015,8 +4015,8 @@ void FUN_00421510(struct FloatArray **param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00421540
 void FUN_00421540(struct VecMath *dest, unsigned int value) {
-    DAT_004dcbd0.dim = value;
-    memcpy(dest, &DAT_004dcbd0, sizeof(struct VecMath));
+    VecMathOps.dim = value;
+    memcpy(dest, &VecMathOps, sizeof(struct VecMath));
 }
 
 // FUNCTION: LEGOLAND 0x00421560
@@ -4039,7 +4039,7 @@ void UnseatCastleVisitor(struct CastleVisitor *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004215d0
-struct CastleVisitor *FUN_004215d0(struct BlokeInfo *a1) {
+struct CastleVisitor *CreateCastleVisitor(struct BlokeInfo *a1) {
     struct CastleVisitor *self = MemAlloc(sizeof(struct CastleVisitor), 0, 0, 0);
     if (self == NULL) {
         return NULL;
@@ -4158,11 +4158,11 @@ struct BlokeInfo *GetBlokeAppearance(struct BlokeSex0 *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00421930
-struct CastleVisitor *FUN_00421930(struct Bloke *param, struct CastleState *timer) {
+struct CastleVisitor *AddCastleVisitor(struct Bloke *param, struct CastleState *timer) {
     struct CastleVisitor *node;
     struct CastleVisitor *old_head;
 
-    node = FUN_004215d0(GetBlokeAppearance((struct BlokeSex0 *)param));
+    node = CreateCastleVisitor(GetBlokeAppearance((struct BlokeSex0 *)param));
 
     old_head = timer->visitors.prev;
     old_head->next = node;
@@ -4303,7 +4303,7 @@ void FUN_00421ab0(struct Obj421ab0 *obj, float *a, float *b, struct Words3 *c) {
     obj->field_40 = (float)sqrt(sum);
     obj->field_0 = *(struct Words3 *)a;
     obj->field_18 = *c;
-    obj->field_4c = &DAT_004dd5e0[8];
+    obj->field_4c = &CurveFunctionTable[8];
     obj->field_44 = 0;
     obj->field_48 = 1.0f;
     obj->field_50 = NULL;
@@ -4401,7 +4401,7 @@ void FUN_00421ce0(struct Words3 *a, struct Words3 *b, struct Words3 *c, struct O
     obj->field_0 = *a;
     obj->field_c = *b;
     obj->field_18 = *c;
-    obj->field_4c = &DAT_004dd5e0[16];
+    obj->field_4c = &CurveFunctionTable[16];
     obj->field_24 = d;
     obj->field_28 = e;
     obj->field_44 = 0;
@@ -4621,35 +4621,35 @@ void FUN_00422180(float *a1, float *a2, struct Words3 *a3, struct Obj421ab0 *a4)
         }
         *out++ = sum;
     } while ((INT_PTR)p <= (INT_PTR)&DAT_004b5abc[3][0]);
-    a4->field_4c = &DAT_004dd5e0[0];
+    a4->field_4c = &CurveFunctionTable[0];
 }
 
 // FUNCTION: LEGOLAND 0x00422210
-void FUN_00422210(void) {
-    DAT_004dd5e0[0] = FUN_00421df0;
-    DAT_004dd5e0[1] = FUN_00421da0;
-    DAT_004dd5e0[3] = FUN_00421da0;
-    DAT_004dd5e0[5] = FUN_00421da0;
-    DAT_004dd5e0[9] = FUN_004219f0;
-    DAT_004dd5e0[11] = FUN_004219f0;
-    DAT_004dd5e0[13] = FUN_004219f0;
-    DAT_004dd5e0[2] = FUN_00421d60;
-    DAT_004dd5e0[4] = FUN_00421e40;
-    DAT_004dd5e0[6] = BuildCurveSplitPoints;
-    DAT_004dd5e0[7] = FUN_004220e0;
-    DAT_004dd5e0[8] = FUN_00421a10;
-    DAT_004dd5e0[10] = FUN_004219c0;
-    DAT_004dd5e0[12] = FUN_00421a40;
-    DAT_004dd5e0[14] = FUN_00421a70;
-    DAT_004dd5e0[15] = FUN_00421a90;
-    DAT_004dd5e0[16] = FUN_00421be0;
-    DAT_004dd5e0[17] = FUN_00421b90;
-    DAT_004dd5e0[18] = FUN_00421b40;
-    DAT_004dd5e0[19] = FUN_00421b90;
-    DAT_004dd5e0[20] = FUN_00421c30;
-    DAT_004dd5e0[21] = FUN_00421b90;
-    DAT_004dd5e0[22] = FUN_00421c80;
-    DAT_004dd5e0[23] = FUN_00421cc0;
+void InitCurveFunctionTable(void) {
+    CurveFunctionTable[0] = FUN_00421df0;
+    CurveFunctionTable[1] = FUN_00421da0;
+    CurveFunctionTable[3] = FUN_00421da0;
+    CurveFunctionTable[5] = FUN_00421da0;
+    CurveFunctionTable[9] = FUN_004219f0;
+    CurveFunctionTable[11] = FUN_004219f0;
+    CurveFunctionTable[13] = FUN_004219f0;
+    CurveFunctionTable[2] = FUN_00421d60;
+    CurveFunctionTable[4] = FUN_00421e40;
+    CurveFunctionTable[6] = BuildCurveSplitPoints;
+    CurveFunctionTable[7] = FUN_004220e0;
+    CurveFunctionTable[8] = FUN_00421a10;
+    CurveFunctionTable[10] = FUN_004219c0;
+    CurveFunctionTable[12] = FUN_00421a40;
+    CurveFunctionTable[14] = FUN_00421a70;
+    CurveFunctionTable[15] = FUN_00421a90;
+    CurveFunctionTable[16] = FUN_00421be0;
+    CurveFunctionTable[17] = FUN_00421b90;
+    CurveFunctionTable[18] = FUN_00421b40;
+    CurveFunctionTable[19] = FUN_00421b90;
+    CurveFunctionTable[20] = FUN_00421c30;
+    CurveFunctionTable[21] = FUN_00421b90;
+    CurveFunctionTable[22] = FUN_00421c80;
+    CurveFunctionTable[23] = FUN_00421cc0;
 }
 
 // FUNCTION: LEGOLAND 0x004222f0
@@ -5707,7 +5707,7 @@ void PlotClippedPoints(int *points, int count, short c) {
 
 // FUNCTION: LEGOLAND 0x00423930
 unsigned int FUN_00423930(void) {
-    return DAT_00610a04;
+    return CastleCoasterPlaced;
 }
 
 // FUNCTION: LEGOLAND 0x00423940
@@ -5735,14 +5735,14 @@ void FUN_004239a0(void) {
 
 // FUNCTION: LEGOLAND 0x004239b0
 void FUN_004239b0(struct Int16Pair *a, struct Int16Pair *b) {
-    unsigned char *p = (unsigned char *)&DAT_00829bf8->footprint;
+    unsigned char *p = (unsigned char *)&CastleCoasterRide->footprint;
     b->x = *(unsigned short *)(p + 8) + a->x;
     b->y = *(unsigned short *)(p + 4) + a->y - 2;
 }
 
 // FUNCTION: LEGOLAND 0x004239e0
 void FUN_004239e0(struct Int16Pair *a, struct Int16Pair *b) {
-    unsigned char *global_ptr = (unsigned char *)&DAT_00829bf8->footprint;
+    unsigned char *global_ptr = (unsigned char *)&CastleCoasterRide->footprint;
     b->x = *(unsigned short *)global_ptr + a->x - 2;
     b->y = *(unsigned short *)(global_ptr + 0xc) + a->y;
 }
@@ -5869,15 +5869,15 @@ void FUN_00423d40(void) {
 
 // FUNCTION: LEGOLAND 0x00423db0
 void FUN_00423db0(void) {
-    DAT_00829ae0.method_10c = FUN_00424850;
-    DAT_00829ae0.method_110 = FUN_00424890;
-    DAT_00829ae0.method_114 = FUN_00424990;
+    CastleCoaster.method_10c = FUN_00424850;
+    CastleCoaster.method_110 = FUN_00424890;
+    CastleCoaster.method_114 = FUN_00424990;
     FUN_00423d40();
 }
 
 // FUNCTION: LEGOLAND 0x00423de0
 void FUN_00423de0(void) {
-    struct Ride *v0 = DAT_00829bf8;
+    struct Ride *v0 = CastleCoasterRide;
     memcpy(&DAT_00829a80, &v0->footprint, sizeof(struct Footprint));
     DAT_00829a80.next = &DAT_0060f914[1].fp;
     DAT_0060f914[DAT_00610a08].fp.next = 0;
@@ -5888,23 +5888,23 @@ void FUN_00423e20(void) {
     struct PathSeg *n;
     struct Footprint *tail;
 
-    DAT_00829a80 = DAT_00829bf8->footprint;
+    DAT_00829a80 = CastleCoasterRide->footprint;
     DAT_00829a80.next = &DAT_0060f914[1].fp;
     DAT_0060f914[DAT_00610a08].fp.next = 0;
     tail = &DAT_0060f914[DAT_00610a08].fp;
-    if (DAT_00829ae0.flags == 2) {
-        for (n = (struct PathSeg *)DAT_00829ae0.piece.next; n != (struct PathSeg *)&DAT_00829ae0.piece.flags; n = n->next) {
+    if (CastleCoaster.flags == 2) {
+        for (n = (struct PathSeg *)CastleCoaster.piece.next; n != (struct PathSeg *)&CastleCoaster.piece.flags; n = n->next) {
             tail->next = &n->fp;
             tail = &n->fp;
         }
         tail->next = 0;
         return;
     }
-    for (n = (struct PathSeg *)DAT_00829ae0.piece.next; n != 0; n = n->next) {
+    for (n = (struct PathSeg *)CastleCoaster.piece.next; n != 0; n = n->next) {
         tail->next = &n->fp;
         tail = &n->fp;
     }
-    for (n = (struct PathSeg *)DAT_00829ae0.piece.prev; n != 0; n = n->prev) {
+    for (n = (struct PathSeg *)CastleCoaster.piece.prev; n != 0; n = n->prev) {
         tail->next = &n->fp;
         tail = &n->fp;
     }
@@ -5917,23 +5917,23 @@ void FUN_00423ec0(struct CastleState *castle) {
     struct PathSeg *next;
     struct PathSeg *end;
 
-    if (DAT_00829ae0.flags == 2) {
-        n = (struct PathSeg *)DAT_00829ae0.piece.next;
-        while (n != (struct PathSeg *)&DAT_00829ae0.piece.flags) {
+    if (CastleCoaster.flags == 2) {
+        n = (struct PathSeg *)CastleCoaster.piece.next;
+        while (n != (struct PathSeg *)&CastleCoaster.piece.flags) {
             next = n->next;
             FUN_0041d7f0(n);
             n = next;
         }
         return;
     }
-    n = (struct PathSeg *)DAT_00829ae0.f_c0;
+    n = (struct PathSeg *)CastleCoaster.f_c0;
     end = (struct PathSeg *)&castle->piece;
     while (n != end) {
         next = n->next;
         FUN_0041d7f0(n);
         n = next;
     }
-    n = (struct PathSeg *)DAT_00829ae0.f_a8;
+    n = (struct PathSeg *)CastleCoaster.f_a8;
     while (n != end) {
         next = n->prev;
         FUN_0041d7f0(n);
@@ -5948,13 +5948,13 @@ int FUN_00423f40(struct Point *pos, float *a2, struct Point *a3, float *a4, stru
     struct SegBlob *c;
     struct PathSeg *n2;
 
-    *a6 = node->prev == (struct PathSeg *)&DAT_00829ae0.piece.flags;
+    *a6 = node->prev == (struct PathSeg *)&CastleCoaster.piece.flags;
     c = FUN_0041cff0(node, &a);
     c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
     b.z += a.z;
     *a2 = b.z * -2.0f;
     n2 = node->next;
-    if (n2 != 0 && n2 != (struct PathSeg *)&DAT_00829ae0.piece.flags) {
+    if (n2 != 0 && n2 != (struct PathSeg *)&CastleCoaster.piece.flags) {
         c = FUN_0041cff0(n2, &a);
         c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
         b.z += a.z;
@@ -5964,7 +5964,7 @@ int FUN_00423f40(struct Point *pos, float *a2, struct Point *a3, float *a4, stru
         return 1;
     }
     *a3 = *pos;
-    if (node->next == (struct PathSeg *)&DAT_00829ae0.piece.flags) {
+    if (node->next == (struct PathSeg *)&CastleCoaster.piece.flags) {
         a3->y -= 16;
     }
     *a4 = 0.0f;
@@ -5976,9 +5976,9 @@ int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5) {
     struct PathSeg *n;
     struct PathSeg *next;
 
-    if (DAT_00829ae0.flags == 2) {
-        n = (struct PathSeg *)DAT_00829ae0.piece.next;
-        while (n != (struct PathSeg *)&DAT_00829ae0.piece.flags) {
+    if (CastleCoaster.flags == 2) {
+        n = (struct PathSeg *)CastleCoaster.piece.next;
+        while (n != (struct PathSeg *)&CastleCoaster.piece.flags) {
             next = n->next;
             if (n->x == pos->x && n->y == pos->y) {
                 return FUN_00423f40(pos, a2, a3, a4, n, a5);
@@ -5987,16 +5987,16 @@ int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5) {
         }
         return 0;
     }
-    n = (struct PathSeg *)DAT_00829ae0.f_c0;
-    while (n != (struct PathSeg *)&DAT_00829ae0.piece.flags) {
+    n = (struct PathSeg *)CastleCoaster.f_c0;
+    while (n != (struct PathSeg *)&CastleCoaster.piece.flags) {
         next = n->next;
         if (n->x == pos->x && n->y == pos->y) {
             return FUN_00423f40(pos, a2, a3, a4, n, a5);
         }
         n = next;
     }
-    n = (struct PathSeg *)DAT_00829ae0.f_a8;
-    while (n != (struct PathSeg *)&DAT_00829ae0.piece.flags) {
+    n = (struct PathSeg *)CastleCoaster.f_a8;
+    while (n != (struct PathSeg *)&CastleCoaster.piece.flags) {
         next = n->prev;
         if (n->x == pos->x && n->y == pos->y) {
             return FUN_00423f40(pos, a2, a3, a4, n, a5);
@@ -6008,25 +6008,25 @@ int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5) {
 
 // FUNCTION: LEGOLAND 0x00424140
 void *FUN_00424140(void) {
-    return DAT_00610a04 ? &DAT_00829ae0 : 0;
+    return CastleCoasterPlaced ? &CastleCoaster : 0;
 }
 
 // FUNCTION: LEGOLAND 0x00424150
 void CastleObjLoad(struct Element *param_1) {
-    DAT_00610a04 = 0;
+    CastleCoasterPlaced = 0;
     FUN_00477400();
     DAT_00829abc = param_1;
-    DAT_00829bf8 = param_1->ride;
-    if (DAT_00829bf8->layer != NULL) {
-        DAT_00829bf8->layer->flags |= 0x2000;
+    CastleCoasterRide = param_1->ride;
+    if (CastleCoasterRide->layer != NULL) {
+        CastleCoasterRide->layer->flags |= 0x2000;
     }
-    DAT_00829bf8->flags |= 0x20;
+    CastleCoasterRide->flags |= 0x20;
     CastleMatteSprite = LoadSprite("Castle Matte.lls", 1);
     FUN_00425a50();
-    FUN_00421470();
+    InitVecMathOps();
     LoadRollercoasterFiles();
     FUN_00423740();
-    FUN_00422210();
+    InitCurveFunctionTable();
     FUN_00428b70();
     FUN_0041ef00();
     FUN_0042a2e0();
@@ -6039,24 +6039,24 @@ void CastleObjLoad(struct Element *param_1) {
 // FUNCTION: LEGOLAND 0x004241e0
 void CastleObjUnload(void) {
     KillSprite(CastleMatteSprite);
-    DAT_00829ae0.pts_a.mask = 0;
-    DAT_00829ae0.pts_b.mask = 0;
-    ClearDirPoints(&DAT_00829ae0.pts_a);
-    ClearDirPoints(&DAT_00829ae0.pts_b);
-    DAT_00829ae0.f_a8 = 0;
-    DAT_00829ae0.f_c0 = 0;
-    ResetAnim((struct PieceEnd *)&DAT_00829ae0.piece.end_a);
-    ResetAnim((struct PieceEnd *)&DAT_00829ae0.piece.end_b);
-    DAT_00829ae0.flags = 0;
+    CastleCoaster.pts_a.mask = 0;
+    CastleCoaster.pts_b.mask = 0;
+    ClearDirPoints(&CastleCoaster.pts_a);
+    ClearDirPoints(&CastleCoaster.pts_b);
+    CastleCoaster.f_a8 = 0;
+    CastleCoaster.f_c0 = 0;
+    ResetAnim((struct PieceEnd *)&CastleCoaster.piece.end_a);
+    ResetAnim((struct PieceEnd *)&CastleCoaster.piece.end_b);
+    CastleCoaster.flags = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00424240
 unsigned int FUN_00424240(void) {
-    if (DAT_00610a04 != 0) {
-        return DAT_00610a04;
+    if (CastleCoasterPlaced != 0) {
+        return CastleCoasterPlaced;
     }
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_00829bf8;
+    EditMode.unk8 = CastleCoasterRide;
     DefaultCursor(&EditCursor);
     FUN_00423de0();
     return ((unsigned int (*)(const char *))SetEditCursorFootPrint)((const char *)&DAT_00829a80); /* TODO: fold — SetEditCursorFootPrint leaves memcpy's eax, used here as uint return */
@@ -6070,21 +6070,21 @@ void FUN_00424280(struct Element *param_1, int *param_2, unsigned int param_3) {
     SetEditCursorFootPrint(&DAT_00829a80);
     ScreenToMapRef((int *)param_2, &EditCursor.tile_x, param_3);
     EditCursor.field_1830 = 0;
-    cursor = FUN_0045f540(&EditCursor);
+    cursor = GetOrAddPathCursor(&EditCursor);
     if (cursor != NULL) {
         cursor->field_1414[1]++;
         cursor->field_1414[0]++;
     }
     ResetCursorBuildable(&EditCursor);
     ValidateCursor(&EditCursor, param_1->data);
-    if (DAT_00610a04 != 0) {
+    if (CastleCoasterPlaced != 0) {
         SetCursorBlocked(&EditCursor, 0xf);
         PropagateCursorBlocked(&EditCursor);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00424320
-void FUN_00424320(struct Element *obj, short *pt) {
+void PlaceCastleCoaster(struct Element *obj, short *pt) {
     short v[2];
 
     FUN_0041d6c0(0);
@@ -6092,27 +6092,27 @@ void FUN_00424320(struct Element *obj, short *pt) {
     v[0] = pt[0];
     v[1] = pt[2];
     FUN_004245b0(v);
-    FUN_0041ce30(&DAT_00829ae0.piece);
-    DAT_00829ae0.flags = 1;
-    DAT_00829ae0.piece.x = pt[0];
-    DAT_00829ae0.piece.y = pt[2];
-    DAT_00829ae0.piece.cls = &DAT_004b5b48;
-    DAT_00829ae0.piece.owner = &DAT_00829ae0;
-    DAT_00829ae0.piece.ride = DAT_00829bf8;
-    DAT_00829ae0.f_a8 = (struct PathSeg *)&DAT_00829ae0.piece;
-    DAT_00829ae0.f_c0 = (struct PathSeg *)&DAT_00829ae0.piece;
-    DAT_00829ae0.pts_a.mask = 0;
-    DAT_00829ae0.pts_b.mask = 0;
-    FUN_0041d170((struct PathSeg *)&DAT_00829ae0.piece, &DAT_00829ae0.pts_a);
-    FUN_0041d190((struct PathSeg *)&DAT_00829ae0.piece, &DAT_00829ae0.pts_b);
-    FUN_0041d1c0(&DAT_00829ae0.pts_a.mask);
-    FUN_0041d1c0(&DAT_00829ae0.pts_b.mask);
-    FUN_0041cfc0((struct PathSeg *)&DAT_00829ae0.piece.flags);
-    FUN_0041cfd0((struct PathSeg *)&DAT_00829ae0.piece, 0);
-    CreateCastleTrain((struct CastleState *)&DAT_00829ae0);
-    InitCastleVisitorList((struct CastleState *)&DAT_00829ae0);
-    DAT_00829ae0.piece.flags |= 6;
-    DAT_00610a04 = 1;
+    FUN_0041ce30(&CastleCoaster.piece);
+    CastleCoaster.flags = 1;
+    CastleCoaster.piece.x = pt[0];
+    CastleCoaster.piece.y = pt[2];
+    CastleCoaster.piece.cls = &DAT_004b5b48;
+    CastleCoaster.piece.owner = &CastleCoaster;
+    CastleCoaster.piece.ride = CastleCoasterRide;
+    CastleCoaster.f_a8 = (struct PathSeg *)&CastleCoaster.piece;
+    CastleCoaster.f_c0 = (struct PathSeg *)&CastleCoaster.piece;
+    CastleCoaster.pts_a.mask = 0;
+    CastleCoaster.pts_b.mask = 0;
+    FUN_0041d170((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.pts_a);
+    FUN_0041d190((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.pts_b);
+    FUN_0041d1c0(&CastleCoaster.pts_a.mask);
+    FUN_0041d1c0(&CastleCoaster.pts_b.mask);
+    FUN_0041cfc0((struct PathSeg *)&CastleCoaster.piece.flags);
+    FUN_0041cfd0((struct PathSeg *)&CastleCoaster.piece, 0);
+    CreateCastleTrain((struct CastleState *)&CastleCoaster);
+    InitCastleVisitorList((struct CastleState *)&CastleCoaster);
+    CastleCoaster.piece.flags |= 6;
+    CastleCoasterPlaced = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00424440
@@ -6121,9 +6121,9 @@ void FUN_00424440(struct Element *param_1, struct Point *param_2) {
     int y;
 
     FUN_00423e20();
-    x = DAT_00829ae0.piece.x;
+    x = CastleCoaster.piece.x;
     memcpy(QueryCursor.field_1414, &DAT_00829a80, sizeof(struct Footprint));
-    y = DAT_00829ae0.piece.y;
+    y = CastleCoaster.piece.y;
     QueryCursor.tile_x = x;
     QueryCursor.tile_y = y;
     // STRING: LEGOLAND 0x004b5b7c
@@ -6135,31 +6135,31 @@ void FUN_00424440(struct Element *param_1, struct Point *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004244b0
-void FUN_004244b0(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
+void RemoveCastleCoaster(struct Element *param_1, TileId param_2, struct Cursor *param_3) {
     struct Cursor cursor;
     TileId tile;
     struct Element *handle;
 
-    if (DAT_00610a04 != 0) {
-        tile.pos.x = DAT_00829ae0.piece.x;
-        tile.pos.y = DAT_00829ae0.piece.y;
+    if (CastleCoasterPlaced != 0) {
+        tile.pos.x = CastleCoaster.piece.x;
+        tile.pos.y = CastleCoaster.piece.y;
         cursor.tile_x = tile.pos.x;
         cursor.tile_y = tile.pos.y;
-        cursor.footprint = DAT_00829bf8->footprint;
+        cursor.footprint = CastleCoasterRide->footprint;
         cursor.field_1414[4] = 0;
-        FUN_00424ab0((struct CastleState *)&DAT_00829ae0);
-        FUN_00423ec0(&DAT_00829ae0);
-        ClearDirPoints(&DAT_00829ae0.pts_a);
-        ClearDirPoints(&DAT_00829ae0.pts_b);
-        DAT_00829ae0.f_a8 = 0;
-        DAT_00829ae0.f_c0 = 0;
-        DestroyCastleTrain((struct CastleState *)&DAT_00829ae0);
-        FreeAllCastleVisitors((struct CastleState *)&DAT_00829ae0);
+        FUN_00424ab0((struct CastleState *)&CastleCoaster);
+        FUN_00423ec0(&CastleCoaster);
+        ClearDirPoints(&CastleCoaster.pts_a);
+        ClearDirPoints(&CastleCoaster.pts_b);
+        CastleCoaster.f_a8 = 0;
+        CastleCoaster.f_c0 = 0;
+        DestroyCastleTrain((struct CastleState *)&CastleCoaster);
+        FreeAllCastleVisitors((struct CastleState *)&CastleCoaster);
         CastleRemoveAllRiders();
         handle = GetCastleDispatchElement(0);
         RemoveMapObjectIfEnabled(handle, tile, &cursor);
-        FUN_00424620(&DAT_00829ae0.piece.pos);
-        DAT_00610a04 = 0;
+        FUN_00424620(&CastleCoaster.piece.pos);
+        CastleCoasterPlaced = 0;
         FUN_004775f0();
         FUN_00477410();
         FUN_0041d6c0(0);
@@ -6200,7 +6200,7 @@ void FUN_00424620(struct Int16Pair *pos) {
 
 // FUNCTION: LEGOLAND 0x004246e0
 unsigned int FUN_004246e0(struct Element *param_1, unsigned int param_2) {
-    if (param_2 != 0 && DAT_00829ae0.flags != 2) {
+    if (param_2 != 0 && CastleCoaster.flags != 2) {
         return 0;
     }
     return FUN_0041d6f0();
@@ -6214,13 +6214,13 @@ void RenderCastleDummy(struct Element *a1, unsigned int a2, unsigned int a3, uns
     int want;
     int i;
 
-    FUN_00425cb0(&DAT_00829ae0.piece.pos, (float)DAT_004b5b48.f8, &buf);
+    FUN_00425cb0(&CastleCoaster.piece.pos, (float)DAT_004b5b48.f8, &buf);
     key[0] = p[0];
     key[1] = p[1];
     want = *(int *)key;
     for (i = 0; i < (int)DAT_00610a08; i++) {
-        key[0] = DAT_0060f914[i].xy.x + DAT_00829ae0.piece.x;
-        key[1] = DAT_0060f914[i].xy.y + DAT_00829ae0.piece.y;
+        key[0] = DAT_0060f914[i].xy.x + CastleCoaster.piece.x;
+        key[1] = DAT_0060f914[i].xy.y + CastleCoaster.piece.y;
         if (want == *(int *)key) {
             obj = ((struct SegBlob *)&DAT_006102f8)[DAT_0060f914[i].k];
             obj.start = DAT_0060f914[i].a;
@@ -6229,7 +6229,7 @@ void RenderCastleDummy(struct Element *a1, unsigned int a2, unsigned int a3, uns
             break;
         }
     }
-    FUN_00424a20((struct PieceHead *)&DAT_00829ae0.piece.flags);
+    FUN_00424a20((struct PieceHead *)&CastleCoaster.piece.flags);
 }
 
 // FUNCTION: LEGOLAND 0x00424800
@@ -6238,7 +6238,7 @@ void FUN_00424800(void) {
 
     tile.pos.x = 0;
     tile.pos.y = 0;
-    FUN_004244b0(0, tile, 0);
+    RemoveCastleCoaster(0, tile, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00424820
@@ -6265,7 +6265,7 @@ void FUN_00424850(struct CastleState *p1, struct SegBlob **p2, float *p3, struct
 
 // FUNCTION: LEGOLAND 0x00424890
 float FUN_00424890(struct Train *param_1, float param_2) {
-    return FUN_0041e000(param_1, param_2);
+    return StepTrainToSegmentEnd(param_1, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x004248b0
@@ -6307,7 +6307,7 @@ float FUN_00424990(struct Train *self, float value) {
         return value;
     }
     self->integ.deriv = FUN_004248b0;
-    return FUN_0041e000(self, value);
+    return StepTrainToSegmentEnd(self, value);
 }
 
 // FUNCTION: LEGOLAND 0x004249e0
@@ -6347,7 +6347,7 @@ void FUN_00424a50(struct CastleState *param_1) {
 void FUN_00424ab0(struct CastleState *this) {
     if (FUN_0041e4a0(this->field_d8) != 0) {
         FUN_0041e4f0(this->field_d8);
-        FUN_00424d80((struct CastleState *)this);
+        UnseatAllCastleVisitors((struct CastleState *)this);
     }
 }
 
@@ -6365,7 +6365,7 @@ void InitCastleVisitorList(struct CastleState *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00424b30
-struct CastleVisitor *FUN_00424b30(struct CastleState *list) {
+struct CastleVisitor *FindWaitingCastleVisitor(struct CastleState *list) {
     struct CastleVisitor *node = list->visitors.next;
     struct CastleVisitor *list_end = (struct CastleVisitor *)&list->visitors;
     while (node != list_end && node->flags != 1) {
@@ -6375,7 +6375,7 @@ struct CastleVisitor *FUN_00424b30(struct CastleState *list) {
 }
 
 // FUNCTION: LEGOLAND 0x00424b60
-struct CastleVisitor *FUN_00424b60(struct CastleState *list) {
+struct CastleVisitor *FindSeatedCastleVisitor(struct CastleState *list) {
     struct CastleVisitor *node = list->visitors.next;
     struct CastleVisitor *list_end = (struct CastleVisitor *)&list->visitors;
     while (node != list_end && node->flags != 2) {
@@ -6385,7 +6385,7 @@ struct CastleVisitor *FUN_00424b60(struct CastleState *list) {
 }
 
 // FUNCTION: LEGOLAND 0x00424b90
-void *FUN_00424b90(struct CastleState *list) {
+void *FindFinishedCastleVisitor(struct CastleState *list) {
     struct CastleVisitor *cur = list->visitors.next;
     struct CastleVisitor *end = (struct CastleVisitor *)&list->visitors;
 
@@ -6396,7 +6396,7 @@ void *FUN_00424b90(struct CastleState *list) {
 }
 
 // FUNCTION: LEGOLAND 0x00424bc0
-unsigned int FUN_00424bc0(struct CastleState *ctx) {
+unsigned int GetLongestCastleVisitorWait(struct CastleState *ctx) {
     unsigned int result = 0;
     unsigned int t = GetGameTimer();
     struct CastleVisitor *cur = ctx->visitors.next;
@@ -6417,7 +6417,7 @@ unsigned int FUN_00424bc0(struct CastleState *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00424c10
-unsigned int FUN_00424c10(struct CastleState *ctx) {
+unsigned int CountWaitingCastleVisitors(struct CastleState *ctx) {
     unsigned int result = 0;
     struct CastleVisitor *cur = ctx->visitors.next;
     struct CastleVisitor *end = (struct CastleVisitor *)&ctx->visitors;
@@ -6431,9 +6431,9 @@ unsigned int FUN_00424c10(struct CastleState *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00424c40
-int FUN_00424c40(struct CastleState *arg) {
-    int temp1 = FUN_00424bc0(arg);
-    int temp2 = FUN_00424c10(arg);
+int ShouldCastleTrainDepart(struct CastleState *arg) {
+    int temp1 = GetLongestCastleVisitorWait(arg);
+    int temp2 = CountWaitingCastleVisitors(arg);
     if (temp1 > 0x1388 || temp2 > 3) {
         return 1;
     }
@@ -6449,20 +6449,20 @@ void FUN_00424c70(struct CastleState *param_1) {
     int found;
     int now = GetGameTimer();
 
-    if (DAT_00829ae0.flags == 2) {
+    if (CastleCoaster.flags == 2) {
         if (FUN_0041e4a0(param_1->field_d8) != 0) {
             if (FUN_0041e4b0(param_1->field_d8) == 0) {
                 return;
             }
         }
-        if (FUN_00424c40(host) == 0) {
+        if (ShouldCastleTrainDepart(host) == 0) {
             return;
         }
-        if (FUN_00424b30(host) == 0) {
+        if (FindWaitingCastleVisitor(host) == 0) {
             return;
         }
         found = 0;
-        while ((node = FUN_00424b30(host)) != 0) {
+        while ((node = FindWaitingCastleVisitor(host)) != 0) {
             ring = FindEmptyTrainSeat(param_1->field_d8);
             if (ring == 0) {
                 break;
@@ -6484,24 +6484,24 @@ void FUN_00424c70(struct CastleState *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00424d80
-void FUN_00424d80(struct CastleState *list) {
-    struct CastleVisitor *current = FUN_00424b60(list);
+void UnseatAllCastleVisitors(struct CastleState *list) {
+    struct CastleVisitor *current = FindSeatedCastleVisitor(list);
     while (current != NULL) {
         UnseatCastleVisitor((struct CastleVisitor *)current);
         current->flags = 4;
-        current = FUN_00424b60(list);
+        current = FindSeatedCastleVisitor(list);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00424dc0
-void FUN_00424dc0(struct CastleState *arg) {
-    struct CastleVisitor *current = FUN_00424b90(arg);
+void ReleaseFinishedCastleVisitors(struct CastleState *arg) {
+    struct CastleVisitor *current = FindFinishedCastleVisitor(arg);
     if (current != NULL) {
         while (current != NULL) {
             struct Bloke *next = current->bloke;
             next->param_action = 33;
             FreeCastleVisitor((struct CastleVisitor *)current);
-            current = FUN_00424b90(arg);
+            current = FindFinishedCastleVisitor(arg);
         }
     }
 }
@@ -6536,7 +6536,7 @@ void FUN_00424e60(struct CastleState *owner) {
 
 // FUNCTION: LEGOLAND 0x00424e70
 void FUN_00424e70(struct CastleState *owner) {
-    FUN_00424ab0((struct CastleState *)&DAT_00829ae0);
+    FUN_00424ab0((struct CastleState *)&CastleCoaster);
 }
 
 #pragma optimize("", off)
@@ -6609,10 +6609,10 @@ void FUN_00425170(Element *obj) {
     FUN_00424e80();
     FUN_00425e20();
     FUN_00423140(0);
-    if (DAT_00610a04 != 0) {
-        FUN_00424c70((struct CastleState *)&DAT_00829ae0);
-        FUN_00424a50((struct CastleState *)&DAT_00829ae0);
-        FUN_00424dc0((struct CastleState *)&DAT_00829ae0);
+    if (CastleCoasterPlaced != 0) {
+        FUN_00424c70((struct CastleState *)&CastleCoaster);
+        FUN_00424a50((struct CastleState *)&CastleCoaster);
+        ReleaseFinishedCastleVisitors((struct CastleState *)&CastleCoaster);
     }
 }
 #pragma optimize("", on)
@@ -6624,7 +6624,7 @@ void CastleObjUpdate(Element *obj) {
      * names reproduce the original layout (a at ebp-4 ... i at ebp-0x24). */
     RideNode *a; /* current rider node */
     TileId *b; /* &a->tile */
-    struct CastleState *c; /* DAT_00829ae0 */
+    struct CastleState *c; /* CastleCoaster */
     Ride *d; /* the castle ride */
     unsigned int e; /* tile y */
     unsigned int f; /* tile x */
@@ -6634,7 +6634,7 @@ void CastleObjUpdate(Element *obj) {
 
     d = obj->ride;
     a = d->riders;
-    c = &DAT_00829ae0;
+    c = &CastleCoaster;
     if (c->f_a8 != NULL) {
         FUN_0041d170(c->f_a8, &c->pts_a);
     }
@@ -6665,7 +6665,7 @@ void CastleObjUpdate(Element *obj) {
             }
             break;
         case 0x10:
-            i = FUN_00421930(g, &DAT_00829ae0);
+            i = AddCastleVisitor(g, &CastleCoaster);
             g->param_action = 0x20;
             break;
         case 0x21:
@@ -6715,8 +6715,8 @@ void CastleGetInterfaces(struct Element *head, struct Ride *obj) {
         CastleDispatchTable[0].fn_4 = (void (*)())FUN_00424240;
         CastleDispatchTable[0].fn_8 = FUN_00424280;
         CastleDispatchTable[0].fn_10 = FUN_00424440;
-        CastleDispatchTable[0].fn_c = FUN_00424320;
-        CastleDispatchTable[0].fn_14 = FUN_004244b0;
+        CastleDispatchTable[0].fn_c = PlaceCastleCoaster;
+        CastleDispatchTable[0].fn_14 = RemoveCastleCoaster;
         DAT_0082adb0[2] = head;
     }
     // STRING: LEGOLAND 0x004b5b7c
@@ -7439,7 +7439,7 @@ void BuildBasisFromDir(struct FVec3 *dir, struct FVec3 *basis) {
 }
 
 // FUNCTION: LEGOLAND 0x004265d0
-int FUN_004265d0(struct RectI *a, struct RectI *b) {
+int ClipRectIToRect(struct RectI *a, struct RectI *b) {
     if (a->var_0 > b->var_8) {
         return 0;
     }
@@ -7505,7 +7505,7 @@ void UnlinkListLink(struct ListLink *param_1) {
 // FUNCTION: LEGOLAND 0x00426700
 void FUN_00426700(struct RectI *dst, struct RectI *src) {
     *dst = *src;
-    ((int *)dst)[4] = FUN_004265d0(dst, (struct RectI *)&DAT_008299ac);
+    ((int *)dst)[4] = ClipRectIToRect(dst, (struct RectI *)&DAT_008299ac);
 }
 
 // FUNCTION: LEGOLAND 0x00426740
@@ -7938,7 +7938,7 @@ void FUN_00426f90(struct Struct426f40Dst *src, struct CastleState *obj) {
 
     dst->flags = src->field_0;
     FUN_00426f10((unsigned char *)&src->field_14, (struct CurveWalker *)&dst->walker, (struct CastleState *)obj);
-    FUN_0041da10(dst, src->field_4, &dst->walker);
+    PositionTrainCars(dst, src->field_4, &dst->walker);
     FUN_0041dad0(dst, src->field_8);
     dst->field_4 = GetGameTimer() - src->field_c;
     dst->field_8 = GetGameTimer() + src->field_10;
@@ -7995,7 +7995,7 @@ void FUN_00427070(struct Struct427070Src *param_1, struct CastleState *param_2) 
     struct CastleVisitor *node;
     unsigned int kind;
     struct Bloke *index = GetCastleRiderByIndex(param_1->field_4);
-    node = FUN_00421930(index, param_2);
+    node = AddCastleVisitor(index, param_2);
     kind = param_1->field_0;
     node->flags = kind;
     if (kind == 2) {
@@ -8266,12 +8266,12 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
     EditCursor.footprint = *fp;
     EditCursor.field_1830 = 0;
     ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
-    if (DAT_00829ae0.flags != 2) {
+    if (CastleCoaster.flags != 2) {
         bit = 1;
         for (i = 0; i <= 3; i++) {
-            if ((bit & DAT_00829ae0.pts_a.mask) && EditCursor.tile_x - DAT_00829ae0.pts_a.pt[i][0] >= -1 && EditCursor.tile_x - DAT_00829ae0.pts_a.pt[i][0] <= 1 && (int)EditCursor.tile_y - DAT_00829ae0.pts_a.pt[i][1] >= -1 && (int)EditCursor.tile_y - DAT_00829ae0.pts_a.pt[i][1] <= 1) {
-                EditCursor.tile_x = DAT_00829ae0.pts_a.pt[i][0];
-                EditCursor.tile_y = DAT_00829ae0.pts_a.pt[i][1];
+            if ((bit & CastleCoaster.pts_a.mask) && EditCursor.tile_x - CastleCoaster.pts_a.pt[i][0] >= -1 && EditCursor.tile_x - CastleCoaster.pts_a.pt[i][0] <= 1 && (int)EditCursor.tile_y - CastleCoaster.pts_a.pt[i][1] >= -1 && (int)EditCursor.tile_y - CastleCoaster.pts_a.pt[i][1] <= 1) {
+                EditCursor.tile_x = CastleCoaster.pts_a.pt[i][0];
+                EditCursor.tile_y = CastleCoaster.pts_a.pt[i][1];
                 found = 1;
                 break;
             }
@@ -8280,9 +8280,9 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         if (!found) {
             bit = 1;
             for (i = 0; i <= 3; i++) {
-                if ((bit & DAT_00829ae0.pts_b.mask) && EditCursor.tile_x - DAT_00829ae0.pts_b.pt[i][0] >= -1 && EditCursor.tile_x - DAT_00829ae0.pts_b.pt[i][0] <= 1 && (int)EditCursor.tile_y - DAT_00829ae0.pts_b.pt[i][1] >= -1 && (int)EditCursor.tile_y - DAT_00829ae0.pts_b.pt[i][1] <= 1) {
-                    EditCursor.tile_x = DAT_00829ae0.pts_b.pt[i][0];
-                    EditCursor.tile_y = DAT_00829ae0.pts_b.pt[i][1];
+                if ((bit & CastleCoaster.pts_b.mask) && EditCursor.tile_x - CastleCoaster.pts_b.pt[i][0] >= -1 && EditCursor.tile_x - CastleCoaster.pts_b.pt[i][0] <= 1 && (int)EditCursor.tile_y - CastleCoaster.pts_b.pt[i][1] >= -1 && (int)EditCursor.tile_y - CastleCoaster.pts_b.pt[i][1] <= 1) {
+                    EditCursor.tile_x = CastleCoaster.pts_b.pt[i][0];
+                    EditCursor.tile_y = CastleCoaster.pts_b.pt[i][1];
                     found = 1;
                     break;
                 }
@@ -8292,12 +8292,12 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         ValidateCursor(&EditCursor, ride);
         bit = 1;
         for (i = 0; i <= 3; i++) {
-            if (bit & DAT_00829ae0.pts_a.mask) {
+            if (bit & CastleCoaster.pts_a.mask) {
                 DefaultCursor(&DAT_0081ce00[n]);
                 DAT_0081ce00[n].next = EditCursor.next;
                 EditCursor.next = &DAT_0081ce00[n];
-                DAT_0081ce00[n].tile_x = DAT_00829ae0.pts_a.pt[i][0];
-                DAT_0081ce00[n].tile_y = DAT_00829ae0.pts_a.pt[i][1];
+                DAT_0081ce00[n].tile_x = CastleCoaster.pts_a.pt[i][0];
+                DAT_0081ce00[n].tile_y = CastleCoaster.pts_a.pt[i][1];
                 DAT_0081ce00[n].footprint = *fp;
                 DAT_0081ce00[n].field_1828 = 0x2032;
                 ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8307,12 +8307,12 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         }
         bit = 1;
         for (i = 0; i <= 3; i++) {
-            if (bit & DAT_00829ae0.pts_b.mask) {
+            if (bit & CastleCoaster.pts_b.mask) {
                 DefaultCursor(&DAT_0081ce00[n]);
                 DAT_0081ce00[n].next = EditCursor.next;
                 EditCursor.next = &DAT_0081ce00[n];
-                DAT_0081ce00[n].tile_x = DAT_00829ae0.pts_b.pt[i][0];
-                DAT_0081ce00[n].tile_y = DAT_00829ae0.pts_b.pt[i][1];
+                DAT_0081ce00[n].tile_x = CastleCoaster.pts_b.pt[i][0];
+                DAT_0081ce00[n].tile_y = CastleCoaster.pts_b.pt[i][1];
                 DAT_0081ce00[n].footprint = *fp;
                 DAT_0081ce00[n].field_1828 = 0x2032;
                 ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8336,12 +8336,12 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         if (IsCursorBuildable(&EditCursor)) {
             SetCursorBlocked(&EditCursor, 0xe);
             bit = 1;
-            mask = &DAT_00829ae0.pts_a.mask;
+            mask = &CastleCoaster.pts_a.mask;
             c = DAT_0081ce00;
             for (i = 0; i < 8; i++) {
                 if (i == 4) {
                     bit = 1;
-                    mask = &DAT_00829ae0.pts_b.mask;
+                    mask = &CastleCoaster.pts_b.mask;
                 }
                 if (bit & *mask) {
                     if (EditCursor.tile_x == c->tile_x && EditCursor.tile_y == c->tile_y) {
@@ -8382,7 +8382,7 @@ void FUN_00427970(Element *obj, const struct Struct427970Src *src) {
     BasicObjectDCalcCursor(obj, (struct Point *)src);
     pair.x = src->field_0;
     pair.y = src->field_4;
-    node = FUN_0041d100((struct CastleState *)&DAT_00829ae0, key, (short *)&pair);
+    node = FindPathSegAt((struct CastleState *)&CastleCoaster, key, (short *)&pair);
     if (FUN_0041d7c0(node) == 0) {
         SetCursorBlocked(&QueryCursor, 1);
         DAT_0081cdec = 0;
@@ -8403,7 +8403,7 @@ void RenderSquareTrack(struct Element *unused0, unsigned int unused1, unsigned i
     struct Int16Pair tile;
     tile.x = src[0];
     tile.y = src[1];
-    node = (struct PieceHead *)FUN_0041d060((struct CastleState *)&DAT_00829ae0, (unsigned int *)&tile);
+    node = (struct PieceHead *)FUN_0041d060((struct CastleState *)&CastleCoaster, (unsigned int *)&tile);
     FUN_00428700(node);
     FUN_00424a20(node);
 }
@@ -8572,12 +8572,12 @@ void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     n = 0;
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & DAT_00829ae0.pts_a.mask) {
+        if (bit & CastleCoaster.pts_a.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = DAT_00829ae0.pts_a.pt[i][0];
-            DAT_0081ce00[n].tile_y = DAT_00829ae0.pts_a.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.pts_a.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.pts_a.pt[i][1];
             DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8587,12 +8587,12 @@ void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     }
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & DAT_00829ae0.pts_b.mask) {
+        if (bit & CastleCoaster.pts_b.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = DAT_00829ae0.pts_b.pt[i][0];
-            DAT_0081ce00[n].tile_y = DAT_00829ae0.pts_b.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.pts_b.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.pts_b.pt[i][1];
             DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8740,12 +8740,12 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     n = 0;
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & DAT_00829ae0.pts_a.mask) {
+        if (bit & CastleCoaster.pts_a.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = DAT_00829ae0.pts_a.pt[i][0];
-            DAT_0081ce00[n].tile_y = DAT_00829ae0.pts_a.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.pts_a.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.pts_a.pt[i][1];
             DAT_0081ce00[n].footprint = *fp;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8755,12 +8755,12 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     }
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & DAT_00829ae0.pts_b.mask) {
+        if (bit & CastleCoaster.pts_b.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = DAT_00829ae0.pts_b.pt[i][0];
-            DAT_0081ce00[n].tile_y = DAT_00829ae0.pts_b.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.pts_b.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.pts_b.pt[i][1];
             DAT_0081ce00[n].footprint = *fp;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -10033,7 +10033,7 @@ void FUN_00429c60(struct CurveWalker *obj, int a, unsigned int b, float c, struc
         DAT_00615f84 = obj;
         DAT_00615f90 = a;
         DAT_00615fd4 = c;
-        FUN_0041f4e0(FUN_00429c10, &DAT_00615f98, *(float *)&b, 0.01f, (struct FloatArray *)&local);
+        VecDerivative(FUN_00429c10, &DAT_00615f98, *(float *)&b, 0.01f, (struct FloatArray *)&local);
         out->x = local.v.x;
         out->y = local.v.y;
         out->z = local.v.z;

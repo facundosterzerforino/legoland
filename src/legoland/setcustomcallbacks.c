@@ -299,7 +299,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
         iface->cb_b0 = RenderBoatingSchool;
         iface->save_hook = BoatingSchool_Save;
         iface->load_hook = BoatingSchool_Load;
-        iface->cb_c0 = FUN_0041b100;
+        iface->cb_c0 = GetBestBoatRideScore;
     }
     // STRING: LEGOLAND 0x004b5354
     else if (_stricmp("BOATING SCHOOL MERMAID", head->name) == 0) {

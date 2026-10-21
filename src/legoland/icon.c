@@ -380,7 +380,7 @@ void ScrollIconRegion(struct InterfacePanel *r, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d980
-unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
+unsigned char ScrollIconRegionForward(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
     struct InterfacePanel *region;
     if ((buttons & 1) != 0) {
         do {
@@ -412,7 +412,7 @@ unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3,
 }
 
 // FUNCTION: LEGOLAND 0x0046da20
-unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
+unsigned char ScrollIconRegionBack(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
     struct InterfacePanel *region;
     if ((buttons & 1) != 0) {
         region = (struct InterfacePanel *)icon->field_30;
@@ -440,7 +440,7 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
 }
 
 // FUNCTION: LEGOLAND 0x0046dac0
-void FUN_0046dac0(void) {
+void ScrollActiveIconRegionForward(void) {
     unsigned int v;
     struct IconNode *icon;
     if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
@@ -461,12 +461,12 @@ void FUN_0046dac0(void) {
     v = v + 3;
     icon = FindIcon((unsigned short)v);
     if (icon) {
-        FUN_0046d980(icon, 1, 0, 0);
+        ScrollIconRegionForward(icon, 1, 0, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046db40
-void FUN_0046db40(void) {
+void ScrollActiveIconRegionBack(void) {
     unsigned int v;
     struct IconNode *icon;
     if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
@@ -487,7 +487,7 @@ void FUN_0046db40(void) {
     v = v + 4;
     icon = FindIcon((unsigned short)v);
     if (icon) {
-        FUN_0046da20(icon, 1, 0, 0);
+        ScrollIconRegionBack(icon, 1, 0, 0);
     }
 }
 
@@ -502,14 +502,14 @@ LEGO_EXPORT struct IconNode *AddGBarIcons(struct InterfacePanel *param_1, unsign
     icon->string = GetString(0x95);
     icon->height = 0x1e;
     icon->flags = icon->flags | 0x2013;
-    icon->event_handler = (void *)FUN_0046d980;
+    icon->event_handler = (void *)ScrollIconRegionForward;
     icon = InsertIcon(param_2, param_5 - 0x1e + param_3, param_6 + 4, IfSideBDownSprite);
     icon->field_30 = param_1;
     icon->string_id = 0x94;
     icon->string = GetString(0x94);
     icon->height = 0x1e;
     icon->flags = icon->flags | 0x2013;
-    icon->event_handler = (void *)FUN_0046da20;
+    icon->event_handler = (void *)ScrollIconRegionBack;
     icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
     icon->field_30 = param_1;
     icon->width = 0x79;
@@ -1047,7 +1047,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(struct InterfacePanel *par
     icon->height = 0x1e;
     icon->flags = icon->flags | 0x201b;
     icon->render_func = (void *)RenderScroll_Icons;
-    icon->event_handler = (void *)FUN_0046d980;
+    icon->event_handler = (void *)ScrollIconRegionForward;
     icon->field_18 = 1;
     icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, IfSideBDownSprite);
     icon->field_30 = param_1;
@@ -1057,7 +1057,7 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(struct InterfacePanel *par
     icon->height = 0x1e;
     icon->flags = icon->flags | 0x201b;
     icon->render_func = (void *)RenderScroll_Icons;
-    icon->event_handler = (void *)FUN_0046da20;
+    icon->event_handler = (void *)ScrollIconRegionBack;
     icon->field_18 = 2;
     icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
     icon->field_30 = param_1;

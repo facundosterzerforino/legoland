@@ -405,7 +405,7 @@ void CarouselUpdate(struct Element *param_1) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->field_35 = 0;
-                sprintf(CarouselBlokeBoxName + 8, "%02d", FUN_0042cd20(elem, node, (signed char)DAT_006160bc->seats));
+                sprintf(CarouselBlokeBoxName + 8, "%02d", TakeRandomCarouselSeat(elem, node, (signed char)DAT_006160bc->seats));
                 bloke->path = NewBNVPath(DAT_00616090[0], 0, CarouselBlokeBoxName, -1617853.25f, -1618109.0f, in_path);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
@@ -607,7 +607,7 @@ void RenderCarousel(struct Element *param_1, unsigned int param_2, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x0042cd20
-int FUN_0042cd20(struct RideNode *elem, struct CarouselNode *node, signed char divisor) {
+int TakeRandomCarouselSeat(struct RideNode *elem, struct CarouselNode *node, signed char divisor) {
     int count = divisor;
     int eax = rand();
     int index = eax % count;

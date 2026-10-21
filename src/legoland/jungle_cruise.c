@@ -85,7 +85,7 @@ int FUN_00432b90(TileId tile, struct Bloke *bloke0, struct Bloke *bloke1, struct
 }
 
 // FUNCTION: LEGOLAND 0x00432cb0
-void FUN_00432cb0(struct JungleRide *ride) {
+void RemoveJungleRide(struct JungleRide *ride) {
     struct JungleRide *prev = NULL;
     struct JungleRide *node = JungleRideList;
 
@@ -346,7 +346,7 @@ struct JungleRide *FUN_004333e0(struct JungleRide *param_1) {
 
     if (param_1->field_3e4 == 0) {
         result = param_1->next;
-        FUN_00432cb0(param_1);
+        RemoveJungleRide(param_1);
         return result;
     }
     JungleCruiseBuildStepPath(param_1, 1, 4);
@@ -1144,7 +1144,7 @@ void UnloadJungleCruiseResources(Element *obj) {
         JungleScoreList = score;
     }
     while (JungleRideList != NULL) {
-        FUN_00432cb0(JungleRideList);
+        RemoveJungleRide(JungleRideList);
     }
     while (JunglePathList != NULL) {
         path = JunglePathList->next;
@@ -1333,7 +1333,7 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
             if (path->owner.id == tile.id) {
                 DAT_0082ae20.tile_x = path->tile.pos.x;
                 DAT_0082ae20.tile_y = path->tile.pos.y;
-                FUN_00436f30(&fake, path->tile, &DAT_0082ae20);
+                RemoveJunglePath(&fake, path->tile, &DAT_0082ae20);
                 path = JunglePathList;
             } else {
                 path = path->next;
@@ -1394,7 +1394,7 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
         }
         while (ride != NULL) {
             if (ride->tile.id == tile.id) {
-                FUN_00432cb0(ride);
+                RemoveJungleRide(ride);
                 ride = JungleRideList;
             } else {
                 ride = ride->next;
@@ -1742,7 +1742,7 @@ int JungleCruise_Load(struct Element *element) {
         }
     }
     for (score = JungleScoreList; score != NULL; score = score->next) {
-        FUN_004373c0(score->tile.id);
+        ComputeJunglePathDistances(score->tile.id);
     }
     return 1;
 }
@@ -1957,7 +1957,7 @@ void JungleCruiseWaterAddObject(Element *obj, int *coords) {
             y1 = score->end.pos.y;
             score->connected = AreJunglePathsConnected(x0, y0, x1, y1);
             if (score->connected != 0) {
-                FUN_004373c0(owner);
+                ComputeJunglePathDistances(owner);
             }
             return;
         }
@@ -2046,7 +2046,7 @@ void JungleCruiseWaterRemoveObject(Element *obj, TileId tile, struct Cursor *cur
         return;
     }
     mask = FUN_00436fb0(cursor->tile_x, cursor->tile_y, &owner);
-    FUN_00436f30(obj, tile, cursor);
+    RemoveJunglePath(obj, tile, cursor);
     if ((mask & 1) != 0) {
         y = cursor->tile_y - 5;
         x = cursor->tile_x;
@@ -2111,7 +2111,7 @@ void JungleCruiseWaterRemoveObject(Element *obj, TileId tile, struct Cursor *cur
             FUN_004367b0(x, y, &owner);
         }
     }
-    FUN_004373c0(owner);
+    ComputeJunglePathDistances(owner);
     for (; score != NULL; score = score->next) {
         if (score->tile.id == owner) {
             x0 = score->start.pos.x;
@@ -2171,7 +2171,7 @@ void FUN_00436dc0(int x, int y, int mask, unsigned short *owner) {
 }
 
 // FUNCTION: LEGOLAND 0x00436f30
-void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3) {
+void RemoveJunglePath(void *param_1, TileId tile, struct Cursor *param_3) {
     struct JunglePath *node = JunglePathList;
     struct JunglePath *prev = NULL;
 
@@ -2340,7 +2340,7 @@ void SearchJunglePathConnected(int x, int y, int tx, int ty, TileId *owner, int 
 }
 
 // FUNCTION: LEGOLAND 0x004373c0
-void FUN_004373c0(unsigned short param_1) {
+void ComputeJunglePathDistances(unsigned short param_1) {
     struct JungleScore *score = JungleScoreList;
     struct JunglePath *node;
     struct JunglePath *tmp;
@@ -2356,12 +2356,12 @@ void FUN_004373c0(unsigned short param_1) {
     node = FindJunglePathAt(score->end.pos.x, score->end.pos.y);
     node->field_8 = 0;
     node->bfs_next = NULL;
-    DAT_0062fd30 = node;
+    JungleBfsFrontier = node;
     JungleBfsNextFrontier = NULL;
     do {
         FUN_00437440(param_1);
         tmp = JungleBfsNextFrontier;
-        DAT_0062fd30 = tmp;
+        JungleBfsFrontier = tmp;
         JungleBfsNextFrontier = NULL;
     } while (tmp != NULL);
 }
@@ -2374,7 +2374,7 @@ void FUN_00437440(short param_1) {
     struct JunglePath *n3;
     struct JunglePath *n4;
 
-    for (p = DAT_0062fd30; p != NULL; p = p->bfs_next) {
+    for (p = JungleBfsFrontier; p != NULL; p = p->bfs_next) {
         n1 = FindJunglePathAt(p->tile.pos.x, p->tile.pos.y - 5);
         n2 = FindJunglePathAt(p->tile.pos.x + 5, p->tile.pos.y);
         n3 = FindJunglePathAt(p->tile.pos.x, p->tile.pos.y + 5);

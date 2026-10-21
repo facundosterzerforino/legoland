@@ -179,7 +179,7 @@ struct AnimOut {
     float f8; /* speed */
 };
 
-/* vector arithmetic on FloatArrays (DAT_004dcbd0 is the template; FUN_00421540 copies it with a dimension) */
+/* vector arithmetic on FloatArrays (VecMathOps is the template; FUN_00421540 copies it with a dimension) */
 struct VecMath {
     /* 0x00 */ void (*add)(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out);
     /* 0x04 */ void (*sub)(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out);
@@ -260,7 +260,7 @@ struct CastleVisitor {
     /* 0x24 */ void (*unlink)(struct CastleVisitor *self); /* FreeCastleVisitor */
 };
 
-/* DAT_00829ae0: the castle */
+/* CastleCoaster: the castle */
 struct CastleState {
     /* 0x00 */ unsigned int flags; /* 2: the pieces form a closed ring */
     /* 0x04 */ struct PieceHead piece;
@@ -367,18 +367,18 @@ void *LoadLtxFile(const char *name);
 int *LoadRollercoasterLpt(void);
 void FUN_0041f030(unsigned int param);
 struct FloatArray;
-int FUN_0041f4e0(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d);
+int VecDerivative(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d);
 int **ClipPolygonToPlanes(int n, int **verts, int *outCount, int nPlanes, float *planes);
 void FUN_0041f790(float x, struct FloatArray *out);
-void FUN_00421470(void);
-int FUN_0041f720(double (*fn)(float), float p2, float p3, float *out);
-float **FUN_0041f650(double (*fn)(float), int n, float a, float b);
+void InitVecMathOps(void);
+int ScalarDerivative(double (*fn)(float), float p2, float p3, float *out);
+float **BuildDifferenceTable(double (*fn)(float), int n, float a, float b);
 double LogFloat(float param);
 void FUN_0041f710(void *param);
 float FUN_0041ddb0(struct Train *param_1, float param_2);
-void FUN_0041d950(void *obj, float val, void *tmp);
+void PositionTrainCarsAndBogies(void *obj, float val, void *tmp);
 void FUN_0041db20(float a, struct FloatArray *out);
-void FUN_0041da10(void *obj, float val, void *b);
+void PositionTrainCars(void *obj, float val, void *b);
 unsigned int FUN_0041e930(struct TrainCar *obj, float *param);
 void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out);
 float CurveArcLength(struct CurveWalker *a, unsigned int hi, struct CurveWalker *b, unsigned int lo, int idx, float c);
@@ -388,7 +388,7 @@ struct PathSeg *FUN_00429840(struct PathSeg *n, int x);
 void FUN_00429750(struct PathSeg *seg, struct PathSeg *end);
 void FUN_00424e60(struct CastleState *owner);
 struct VecOps;
-void FUN_00420310(struct Integrator *ar, float *p, float c);
+void IntegratorStepRK4(struct Integrator *ar, float *p, float c);
 void FUN_0042a620(struct TrainWheel *param_1, struct CurveWalker *param_2, unsigned int param_5);
 void FUN_00424e70(struct CastleState *owner);
 void FUN_004299e0(struct PathSeg *n);
@@ -401,7 +401,7 @@ void FUN_0041d760(struct PathSeg *obj);
 float FUN_0041dca0(struct Train *param);
 void FUN_0041db90(struct Train *obj, float *a, float *b);
 struct Ride;
-struct PathSeg *FUN_0041d100(struct CastleState *host, struct Ride *ride, short *pt);
+struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short *pt);
 void GetTrainCarCenterAndAxis(struct TrainCar *obj, float *out);
 void SetClipRect(int a, int b, int c, int d);
 struct PlaneSet;
@@ -425,7 +425,7 @@ void FUN_00422e10(int param1, int index);
 void FUN_00422e40(int param1, char *entry);
 void CastleObjLoad(struct Element *param_1);
 void FUN_00424280(struct Element *param_1, int *param_2, unsigned int param_3);
-void FUN_004244b0(struct Element *param_1, TileId param_2, struct Cursor *param_3);
+void RemoveCastleCoaster(struct Element *param_1, TileId param_2, struct Cursor *param_3);
 void FUN_00424620(struct Int16Pair *pos);
 void FUN_00424800(void);
 struct SegBlob;
@@ -435,7 +435,7 @@ float FUN_00424990(struct Train *self, float value);
 void FUN_00424a50(struct CastleState *param_1);
 void DestroyCastleTrain(struct CastleState *param_1);
 void FUN_00424ab0(struct CastleState *this);
-void FUN_00424d80(struct CastleState *list);
+void UnseatAllCastleVisitors(struct CastleState *list);
 void FreeAllCastleVisitors(struct CastleState *esi);
 void CastleRemoveAllRiders(void);
 void FUN_00425a50(void);
@@ -543,7 +543,7 @@ void FUN_00428860(void);
 extern void *DAT_004b5648[2];
 extern void *DAT_004b5658[2];
 extern void *DAT_004b5f50[2];
-float FUN_0041e000(struct Train *obj, float total);
+float StepTrainToSegmentEnd(struct Train *obj, float total);
 float FUN_0041e0e0(struct Train *self, float time_left);
 float FUN_0041e100(struct Train *self, float time_left);
 void *ClipTriangle(void *verts, int *out, unsigned int code, int n);

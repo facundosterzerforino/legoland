@@ -686,7 +686,7 @@ int FUN_00483b60(Bloke *bloke, unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00483c20
-int FUN_00483c20(Bloke *bloke, Point pos) {
+int TurnRandomlyIfBlocked(Bloke *bloke, Point pos) {
     int chance;
     int state;
 
@@ -722,7 +722,7 @@ void FUN_00483d10(Bloke *bloke) {
     d.y += bloke->pos.y;
     if (FUN_00483300(bloke, d.x, d.y) == 0) {
         if (Handle_RndWalk_TileSpecifics(bloke, d.x, d.y) == 0) {
-            if (FUN_00483c20(bloke, d) == 0) {
+            if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                 HandleTileEnterLeave(bloke, d.x, d.y);
                 bloke->pos = d;
                 AdvanceBlokeFrame(bloke);
@@ -744,7 +744,7 @@ void FUN_00483d90(Bloke *bloke) {
     if (FrameCounter - bloke->field_54 >= 0x32) {
         if (FUN_00483300(bloke, d.x, d.y) == 0) {
             if (Handle_RndWalk_TileSpecifics(bloke, d.x, d.y) == 0) {
-                if (FUN_00483c20(bloke, d) == 0) {
+                if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                     HandleTileEnterLeave(bloke, d.x, d.y);
                     bloke->pos = d;
                     AdvanceBlokeFrame(bloke);
@@ -775,7 +775,7 @@ void FUN_00483e20(Bloke *bloke) {
     d.y += bloke->pos.y;
     if (FUN_00483300(bloke, d.x, d.y) == 0) {
         if (FUN_00483b60(bloke, d.x, d.y) == 0) {
-            if (FUN_00483c20(bloke, d) == 0) {
+            if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                 HandleTileEnterLeave(bloke, d.x, d.y);
                 bloke->pos = d;
                 AdvanceBlokeFrame(bloke);

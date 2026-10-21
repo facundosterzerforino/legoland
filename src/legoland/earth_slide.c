@@ -57,7 +57,7 @@ void RemoveEarthNode(struct EarthNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0042ce20
-struct EarthNode *FUN_0042ce20(volatile unsigned short *param_1) {
+struct EarthNode *FindEarthNode(volatile unsigned short *param_1) {
     struct EarthNode *node = EarthNodeHead;
 
     if (node != NULL) {
@@ -102,7 +102,7 @@ void EarthNodeAppendQueueEntry(struct EarthNode *p, struct EarthQueue *value) {
 
 // FUNCTION: LEGOLAND 0x0042cec0
 void FUN_0042cec0(struct Ride *param_1, unsigned char *param_2, int *param_3) {
-    struct EarthNode *node = FUN_0042ce20((unsigned short *)param_2);
+    struct EarthNode *node = FindEarthNode((unsigned short *)param_2);
     struct EarthQueue *q = node->queue_head;
     int x = param_1->x + param_2[0];
     int y = param_2[1] + param_1->y;
@@ -181,7 +181,7 @@ void FUN_0042d040(struct EarthNode *list) {
 // FUNCTION: LEGOLAND 0x0042d070
 void RenderEarthSlide(struct Element *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, void *param_5, unsigned int param_6) {
     struct Ride *ride = param_1->ride;
-    struct EarthNode *node = FUN_0042ce20((unsigned short *)param_4);
+    struct EarthNode *node = FindEarthNode((unsigned short *)param_4);
     struct Point coords;
     char cv;
 
@@ -253,7 +253,7 @@ void EarthSlideSetEditMode(void) {
 
 // FUNCTION: LEGOLAND 0x0042d270
 void EarthSlideRemoveObject(struct Element *param_1, TileId tile, struct Cursor *param_3) {
-    struct EarthNode *node = FUN_0042ce20(&tile.id);
+    struct EarthNode *node = FindEarthNode(&tile.id);
     if (node != NULL) {
         RemoveEarthNode(node);
     }
@@ -434,7 +434,7 @@ void EarthSlideRideUpdate(Element *obj) {
         next = elem->next;
         tile = &elem->tile;
         bloke = elem->rider;
-        node = FUN_0042ce20(&tile->id);
+        node = FindEarthNode(&tile->id);
         if (node == NULL) {
             return;
         }

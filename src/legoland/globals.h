@@ -1627,9 +1627,9 @@ extern struct Cursor DAT_004d2168[4];
 // 0x004d823c
 extern struct PathNode *BoatPathList;
 // 0x004d8240
-extern struct PathNode *DAT_004d8240;
+extern struct PathNode *BoatBfsFrontier;
 // 0x004d8244
-extern struct PathNode *DAT_004d8244;
+extern struct PathNode *BoatBfsNextFrontier;
 // 0x004d8250
 struct SprEnt {
     unsigned int field_0;
@@ -1669,7 +1669,7 @@ extern char DAT_004d8bb0[0x100];
 // 0x004dcbb8
 extern float DAT_004dcbb8[3];
 // 0x004dcbd0
-extern struct VecMath DAT_004dcbd0; /* .dim was DAT_004dcbf8 */
+extern struct VecMath VecMathOps; /* .dim was DAT_004dcbf8 */
 // 0x004dcc00
 /* a vector of the castle's numerical code: count floats (the pool's are 0x54 bytes) */
 struct FloatArray {
@@ -1681,7 +1681,7 @@ extern struct FloatArray DAT_004dcc00[30];
 // 0x004dd5d8
 extern unsigned int DAT_004dd5d8;
 // 0x004dd5e0
-extern void *DAT_004dd5e0[24];
+extern void *CurveFunctionTable[24];
 // 0x004dd758
 /* A text file read whole: its bytes and their count (CountTextLines and FindLineStart read both through the
  * address). */
@@ -1711,7 +1711,7 @@ extern struct LSub DAT_0060f914[20];
 // 0x006102f8
 extern struct SegBlob DAT_006102f8[3];
 // 0x00610a04
-extern unsigned int DAT_00610a04;
+extern unsigned int CastleCoasterPlaced;
 // 0x00610a08
 extern unsigned int DAT_00610a08;
 // 0x00610a18
@@ -1930,7 +1930,7 @@ extern struct Cursor DAT_00629c58[4];
 // 0x0062fd2c
 extern struct JunglePath *JunglePathList;
 // 0x0062fd30
-extern struct JunglePath *DAT_0062fd30;
+extern struct JunglePath *JungleBfsFrontier;
 // 0x0062fd34
 extern struct JunglePath *JungleBfsNextFrontier;
 // 0x0062fd3c
@@ -3991,12 +3991,12 @@ extern struct Footprint DAT_00829a80;
 // 0x00829abc
 extern struct Element *DAT_00829abc;
 // 0x00829ae0
-extern struct CastleState DAT_00829ae0;
-// 0x004b5b48: the castle object's class (DAT_00829ae0.field_10 points here): data, then three methods the
+extern struct CastleState CastleCoaster;
+// 0x004b5b48: the castle object's class (CastleCoaster.field_10 points here): data, then three methods the
 // code calls through it (+0x1c FUN_00423940, +0x20 FUN_00423970, +0x24 FUN_00423990).
 extern struct PieceClass DAT_004b5b48;
 // 0x00829bf8
-extern struct Ride *DAT_00829bf8;
+extern struct Ride *CastleCoasterRide;
 // 0x00829bfc
 extern struct Ride *DAT_00829bfc;
 
