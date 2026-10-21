@@ -4799,41 +4799,29 @@ void LogFlumeHoldUpRemoveObject(struct Element *param_1, TileId param_2, struct 
 
 // FUNCTION: LEGOLAND 0x00410180
 void BuildLogFlumeDropNodes(struct FlumeNode *param_1) {
-    volatile int ptmp170;
-    int ptmp171;
-    struct FlumeNode *parent;
+    struct FlumeNode *parent = param_1;
     struct FlumeNode *node;
-    register TileId pos;
     struct FlumeNode *prev;
-    register int ptmp172;
-    int w;
-    register int n;
-    volatile int ptmp424;
-    parent;
-    parent = param_1;
-    w = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
+    unsigned char x;
+    unsigned char y;
+    int h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
+    int i;
 
-    pos.pos.y = ((struct Ride *)LogFlumeDropRide)->footprint.y0 + parent->tile.pos.y;
-    pos.pos.x = ((struct Ride *)LogFlumeDropRide)->footprint.x0 + parent->tile.pos.x + 2;
-    node = NewFlumeNode(parent, 3, 0, pos.pos.y, pos.pos.x);
+    y = ((struct Ride *)LogFlumeDropRide)->footprint.y0 + parent->tile.pos.y;
+    x = ((struct Ride *)LogFlumeDropRide)->footprint.x0 + parent->tile.pos.x + 2;
+    node = NewFlumeNode(parent, 3, 0, y, x);
     AppendListNode((struct FlumeEntry *)parent, (struct ListNode *)node);
-    n = 0x18 / w;
-    n = n + (-2);
     parent->field_30 = node;
     prev = node;
-    for (; 0 < n; n--) {
-        pos.pos.y += w;
-        ptmp170 = pos.pos.y;
-        node = NewFlumeNode(parent, 1, 0, ptmp170, pos.pos.x);
-        { AppendListNode((struct FlumeEntry *)parent, (struct ListNode *)node); }
+    for (i = 0; i < 0x18 / h - 2; i++) {
+        y += h;
+        node = NewFlumeNode(parent, 1, 0, y, x);
+        AppendListNode((struct FlumeEntry *)parent, (struct ListNode *)node);
         LinkNodeAfter((struct FlumeEntry *)prev, (struct FlumeEntry *)node);
         prev = node;
     }
-    pos.pos.y += w;
-    ptmp172 = pos.pos.x;
-    ptmp171 = ptmp172;
-    ptmp424 = pos.pos.y;
-    node = NewFlumeNode(parent, 3, 2, ptmp424, ptmp171);
+    y += h;
+    node = NewFlumeNode(parent, 3, 2, y, x);
     AppendListNode((struct FlumeEntry *)parent, (struct ListNode *)node);
     LinkNodeAfter((struct FlumeEntry *)prev, (struct FlumeEntry *)node);
     parent->field_34 = node;
