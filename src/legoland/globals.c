@@ -3611,10 +3611,10 @@ unsigned int DAT_00798650;
 unsigned int DAT_00798660;
 
 // GLOBAL: LEGOLAND 0x00798664
-unsigned int DAT_00798664;
+unsigned int ProgressShowsTutorials;
 
 // GLOBAL: LEGOLAND 0x0079866c
-unsigned long DAT_0079866c;
+unsigned long ProgressLastClickTicks;
 
 // GLOBAL: LEGOLAND 0x00798668
 unsigned int DAT_00798668;

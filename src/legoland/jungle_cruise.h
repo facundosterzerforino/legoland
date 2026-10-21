@@ -77,7 +77,7 @@ void FUN_004334c0(struct JungleRide *param_1, int param_2);
 void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to);
 void AddJungleScore(unsigned short owner, int delta);
 struct RideNode;
-void FUN_00437570(struct RideNode *node, Element *obj, TileId *tile, int sfx);
+void BrowseAndBuyItem(struct RideNode *node, Element *obj, TileId *tile, int sfx);
 void AddJunglePathTile(int x, int y, int mask, unsigned short *owner);
 void RemoveJunglePath(void *param_1, TileId tile, struct Cursor *param_3);
 unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3);

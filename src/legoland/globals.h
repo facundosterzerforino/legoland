@@ -2870,10 +2870,10 @@ extern unsigned int DAT_00798650;
 // 0x00798660
 extern unsigned int DAT_00798660;
 // 0x00798664
-extern unsigned int DAT_00798664;
+extern unsigned int ProgressShowsTutorials;
 // 0x00798668
 extern unsigned int DAT_00798668;
-extern unsigned long DAT_0079866c;
+extern unsigned long ProgressLastClickTicks;
 // 0x00798674
 extern struct Sprite *PuOkOnSprite;
 // 0x00798678

@@ -174,7 +174,7 @@ void RenderFrontEndScreen(unsigned char param_1) {
         RenderCertificateScreen();
         break;
     case 6:
-        FUN_0048c100();
+        DrawTutorialList();
         break;
     default:
         break;
@@ -487,7 +487,7 @@ void GameProc(void) {
     saved = Hover;
     PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit.type);
     FUN_0046f100(0x2c3);
-    FUN_0046ee00();
+    UpdateEditModeButtonSprites();
     // STRING: LEGOLAND 0x004b91b0
     DAT_00667c40 = "In Game Help";
     ProcessInGameHelp();
@@ -604,7 +604,7 @@ void RenderMapScreenFrame(void) {
     DrawMapScreen();
     SetPointer(5);
     PrintSprite(InterfaceBgSprite, 0, 0, 0, (int *)&hit);
-    FUN_0046ee00();
+    UpdateEditModeButtonSprites();
     RenderIcons();
     CheckFocussedIcon();
     if (Hover.type == 2) {

@@ -71,7 +71,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->event_handler = (void *)OptionsSaveIconHandler;
     icon->flags |= flag_mask;
 
-    FUN_0048eb20();
+    SaveOptionsMouseHandlers();
 
     // STRING: LEGOLAND 0x004bf43c
     icon = LoadSpriteIcon("Down1.lls", 4, 0x19c, 0x2e, 7);
@@ -235,7 +235,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     short y_offset;
     struct IconNode *icon;
 
-    FUN_0048eb20();
+    SaveOptionsMouseHandlers();
     PuOkSprite = LoadSprite("PU_OK.lls", 4);
     PuOkOnSprite = LoadSprite("PU_OKON.lls", 4);
     PopUpCloseSprite = LoadSprite("PU_ClosePopUp.lls", 4);

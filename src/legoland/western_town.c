@@ -224,7 +224,7 @@ void GeneralStoreUpdate(struct Element *param_1) {
                 bloke->param_action++;
                 break;
             case 7:
-                FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->tile, 1);
+                BrowseAndBuyItem((struct RideNode *)node, (Element *)param_1, (TileId *)&node->tile, 1);
                 break;
             case 8:
                 bloke->dest.x = x * 0x100 + 0x80;
@@ -367,7 +367,7 @@ void SheriffUpdate(struct Element *param_1) {
                 bloke->dir = 8;
                 break;
             case 3:
-                FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->tile, 1);
+                BrowseAndBuyItem((struct RideNode *)node, (Element *)param_1, (TileId *)&node->tile, 1);
                 break;
             case 4:
                 bloke->dest.x = (x - 3) * 0x100;
@@ -1128,7 +1128,7 @@ void SaloonUpdate(Element *obj) {
                 bloke->param_action++;
                 break;
             case 4:
-                FUN_00437570(node, obj, tile, 1);
+                BrowseAndBuyItem(node, obj, tile, 1);
                 break;
             case 5:
                 bloke->dest.x = (x - 4) * 0x100;

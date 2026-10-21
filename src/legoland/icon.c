@@ -956,7 +956,7 @@ LEGO_EXPORT int RenderFlashingSpriteIcon(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046e920
-int FUN_0046e920(struct IconNode *node) {
+int RenderBlinkIcon(struct IconNode *node) {
     struct PrintCtx ctx;
     struct LLS *lls;
     int frame;
@@ -1125,7 +1125,7 @@ void FUN_0046ec50(char param) {
 }
 
 // FUNCTION: LEGOLAND 0x0046ee00
-void FUN_0046ee00(void) {
+void UpdateEditModeButtonSprites(void) {
     struct IconNode *node = IconListHead;
     int mode;
 

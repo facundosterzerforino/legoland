@@ -2407,7 +2407,7 @@ void ComputeJunglePathDistancesStep(short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00437570
-void FUN_00437570(struct RideNode *node, Element *obj, TileId *tile, int sfx) {
+void BrowseAndBuyItem(struct RideNode *node, Element *obj, TileId *tile, int sfx) {
     struct Bloke *bloke = node->rider;
 
     if (bloke->field_58 == 0) {

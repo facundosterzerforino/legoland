@@ -181,7 +181,7 @@ LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, un
 }
 
 // FUNCTION: LEGOLAND 0x004015e0
-void FUN_004015e0(struct NewBloke *param_1) {
+void AddDrivingSchoolStraightWaypoint(struct NewBloke *param_1) {
     struct Point local;
     unsigned int frame;
 
@@ -529,7 +529,7 @@ void RemoveDrivingSchoolCar(struct NewBloke *b) {
 }
 
 // FUNCTION: LEGOLAND 0x00401cd0
-void FUN_00401cd0(struct NewBloke *p) {
+void PopDrivingSchoolCarWaypoint(struct NewBloke *p) {
     unsigned char temp_bb = p->f_bb;
     if (temp_bb == 0) {
         return;
@@ -992,7 +992,7 @@ void UpdateDrivingSchoolCar(struct NewBloke *b) {
     case 2:
         if (FUN_00402390(b) != 0) {
             b->f_c4 = 0;
-            FUN_004015e0(b);
+            AddDrivingSchoolStraightWaypoint(b);
         }
         break;
     case 3:
@@ -1007,12 +1007,12 @@ void UpdateDrivingSchoolCar(struct NewBloke *b) {
         break;
     case 5:
         FUN_00401320(b);
-        FUN_004015e0(b);
+        AddDrivingSchoolStraightWaypoint(b);
         b->f_c4 = 0;
         break;
     }
     if (queued == 0) {
-        FUN_00401cd0((struct NewBloke *)b);
+        PopDrivingSchoolCarWaypoint((struct NewBloke *)b);
     }
 }
 
