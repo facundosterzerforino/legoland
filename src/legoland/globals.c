@@ -431,13 +431,13 @@ unsigned int DAT_004b5608;
 int DAT_004b560c;
 
 // GLOBAL: LEGOLAND 0x004b5b20
-void *DAT_004b5b20;
+void *CoasterSurfaceBits;
 
 // GLOBAL: LEGOLAND 0x004b5b24
 unsigned short *DAT_004b5b24;
 
 // GLOBAL: LEGOLAND 0x004b5b28
-int DAT_004b5b28;
+int CoasterSurfacePitch;
 
 // GLOBAL: LEGOLAND 0x004b59e8
 char SitLoGirlSitName[16] = "sit.logirlsit";
@@ -1787,10 +1787,10 @@ struct PathNode *BoatBfsFrontier;
 struct PathNode *BoatBfsNextFrontier;
 
 // GLOBAL: LEGOLAND 0x004d8250
-struct SprEnt DAT_004d8250;
+struct SprEnt CoasterPlacement;
 
 // GLOBAL: LEGOLAND 0x004d8268
-unsigned int DAT_004d8268;
+unsigned int CoasterPieceCount;
 
 // GLOBAL: LEGOLAND 0x004d8270
 struct VecMath DAT_004d8270;
@@ -1841,7 +1841,7 @@ struct VecMath VecMathOps;
 struct FloatArray DAT_004dcc00[30];
 
 // GLOBAL: LEGOLAND 0x004dd5d8
-unsigned int DAT_004dd5d8;
+unsigned int VecScratchTop;
 
 // GLOBAL: LEGOLAND 0x004dd5e0
 void *CurveFunctionTable[24];
@@ -5211,7 +5211,7 @@ struct Ride *BalloonzRide;
 struct Sprite *ZBalloon2Sprite;
 
 // GLOBAL: LEGOLAND 0x0081cdec
-void *DAT_0081cdec;
+void *CoasterPieceToRemove;
 
 // GLOBAL: LEGOLAND 0x0081ce00
 struct Cursor DAT_0081ce00[8];
@@ -5294,7 +5294,7 @@ char *DAT_00829c54;
 void *DAT_00829c60[1024];
 
 // GLOBAL: LEGOLAND 0x0082ac60
-struct FloatArray *DAT_0082ac60[48];
+struct FloatArray *VecScratchPool[48];
 
 // GLOBAL: LEGOLAND 0x0082ad20
 struct DispatchRow CastleDispatchTable[6];
@@ -5309,7 +5309,7 @@ struct LmsFile *CoasterTrainCarLms[3]; /* head, mid, tail; indexed by car type *
 struct LmsRec *CoasterTrainCarLfm[3]; /* head, mid, tail; indexed by car type */
 
 // GLOBAL: LEGOLAND 0x0082adec
-struct PathSeg *DAT_0082adec;
+struct PathSeg *TrainDrawPiece;
 
 // GLOBAL: LEGOLAND 0x0082adf0
 struct Ride *BoatingSchoolWaterRide;

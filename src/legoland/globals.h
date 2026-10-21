@@ -780,11 +780,11 @@ extern unsigned int DAT_004b5608;
 // 0x004b560c
 extern int DAT_004b560c;
 // 0x004b5b20
-extern void *DAT_004b5b20;
+extern void *CoasterSurfaceBits;
 // 0x004b5b24
 extern unsigned short *DAT_004b5b24;
 // 0x004b5b28
-extern int DAT_004b5b28;
+extern int CoasterSurfacePitch;
 // 0x004b59e8
 extern char SitLoGirlSitName[];
 // 0x004b59f8
@@ -1639,9 +1639,9 @@ struct SprEnt {
     int id_b;
     struct PathSeg *h_b;
 };
-extern struct SprEnt DAT_004d8250;
+extern struct SprEnt CoasterPlacement;
 // 0x004d8268
-extern unsigned int DAT_004d8268;
+extern unsigned int CoasterPieceCount;
 // 0x004d8270
 extern struct VecMath DAT_004d8270;
 extern float DAT_004d829c[64];
@@ -1679,7 +1679,7 @@ struct FloatArray {
 
 extern struct FloatArray DAT_004dcc00[30];
 // 0x004dd5d8
-extern unsigned int DAT_004dd5d8;
+extern unsigned int VecScratchTop;
 // 0x004dd5e0
 extern void *CurveFunctionTable[24];
 // 0x004dd758
@@ -3956,7 +3956,7 @@ extern struct Ride *BalloonzRide;
 // 0x0081cde8
 extern struct Sprite *ZBalloon2Sprite;
 // 0x0081cdec
-extern void *DAT_0081cdec;
+extern void *CoasterPieceToRemove;
 // 0x0081ce00
 extern struct Cursor DAT_0081ce00[8];
 // 0x00828fe0
@@ -4014,7 +4014,7 @@ extern char *DAT_00829c54;
 // 0x00829c60
 extern void *DAT_00829c60[1024];
 // 0x0082ac60
-extern struct FloatArray *DAT_0082ac60[48];
+extern struct FloatArray *VecScratchPool[48];
 // 0x0082ad20
 /* castle.c: the castle parts' handlers (a row per part class; the table ends where DAT_0082adb0 starts) */
 struct DispatchRow {
@@ -4033,7 +4033,7 @@ extern struct LmsFile *CoasterTrainCarLms[3];
 // 0x0082ade0
 extern struct LmsRec *CoasterTrainCarLfm[3];
 // 0x0082adec
-extern struct PathSeg *DAT_0082adec;
+extern struct PathSeg *TrainDrawPiece;
 // 0x0082adf0
 extern struct Ride *BoatingSchoolWaterRide;
 // 0x0082adf4
