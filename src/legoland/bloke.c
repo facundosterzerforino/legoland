@@ -1074,7 +1074,11 @@ void FUN_00484790(Bloke *bloke) {
     Point tile;
     MapElement *elem;
     FXSpriteList *set;
-    int result;
+    /* The original stores the tile set's byte answer and tests the whole stack dword. */
+    union {
+        int value;
+        unsigned char flags;
+    } result;
     unsigned int ux;
     unsigned int uy;
     int x;
@@ -1093,8 +1097,8 @@ void FUN_00484790(Bloke *bloke) {
         elem = NULL;
     }
     set = TileSpriteInfo[elem->field_8].src;
-    result = TileSetRFFlags(set, tile.x, tile.y);
-    if ((result & 3) > 0 && (result & 3) <= 2) {
+    result.flags = TileSetRFFlags(set, tile.x, tile.y);
+    if ((result.value & 3) > 0 && (result.value & 3) <= 2) {
         ux = tile.x;
         uy = tile.y;
         x = ux >> 8;
