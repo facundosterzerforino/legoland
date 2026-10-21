@@ -39,3 +39,11 @@ This restores the original immediate flag test and load/OR/store sequence.
 
 - Address normalization for the pointer four bytes beyond the table. Do not change the
   game data or substitute an unrelated neighboring symbol just to change the score.
+
+## Solved (2026-10-21, Opus 5.5): 98.63 -> 100
+
+The only diff was the loop end pointer `&ObjClassAliasTable[5].aliases`: in the original it is 0x4bcdf8, inside
+the string "BOATING SCHOOL WATER;" (0x4bcdf4) that follows the table, because the table is in .data at
+0x4bcdcc with its alias strings right after it. Ours was `static const`, so it went to .rdata and the same
+pointer pointed past an unrelated end. Dropping `const` from the table (`slot` is `const char **`) puts it in
+.data with the strings after it. Codegen of the function never changed.
