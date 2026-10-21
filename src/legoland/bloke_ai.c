@@ -1115,7 +1115,7 @@ void FUN_00450330(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x004503a0
-void FUN_004503a0(Bloke *bloke, Footprint *box) {
+void FaceBlokeTowardsFootprint(Bloke *bloke, Footprint *box) {
     int ox;
     int oy;
     int tx;
@@ -1163,7 +1163,7 @@ void FUN_00450450(Bloke *bloke) {
     switch (bloke->param_action) {
     case 0:
         ride = bloke->target->data;
-        FUN_004503a0(bloke, &ride->footprint);
+        FaceBlokeTowardsFootprint(bloke, &ride->footprint);
         bloke->field_58 = (rand() & 0x1f) + 10;
         bloke->param_action++;
         break;

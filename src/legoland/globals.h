@@ -1189,7 +1189,7 @@ extern unsigned int MusicState;
 // 0x004bff28
 extern const int DAT_004bff28[12][2];
 // 0x004c10d4
-extern struct NewBloke *DAT_004c10d4;
+extern struct NewBloke *DrivingSchoolCars;
 // 0x004c10dc
 extern struct Ride *CastleLevelRide;
 // 0x004c10e4

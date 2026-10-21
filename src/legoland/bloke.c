@@ -526,7 +526,7 @@ void HandleTileEnterLeave(Bloke *bloke, unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004837a0
-int FUN_004837a0(Bloke *bloke, unsigned int x, unsigned int y) {
+int CheckEnteredNewTile(Bloke *bloke, unsigned int x, unsigned int y) {
     if (OverNewTile(bloke, x, y) != 0) {
         bloke->flags &= 0xfffb;
         return 1;
@@ -655,7 +655,7 @@ LEGO_EXPORT int DoRndWalkPathTileAction(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00483b10
 LEGO_EXPORT int Handle_RndWalk_TileSpecifics(Bloke *bloke, unsigned int x, unsigned int y) {
-    if (FUN_004837a0(bloke, x, y) == 0) {
+    if (CheckEnteredNewTile(bloke, x, y) == 0) {
         if (CrossTileCentre(bloke, x, y) != 0 && (bloke->flags & 4) == 0) {
             return DoRndWalkPathTileAction(bloke);
         }
@@ -669,7 +669,7 @@ int FUN_00483b60(Bloke *bloke, unsigned int x, unsigned int y) {
     short mapFlags;
     short rf;
 
-    if (FUN_004837a0(bloke, x, y) == 0 && CrossTileCentre(bloke, x, y) != 0 && (bloke->flags & 4) == 0) {
+    if (CheckEnteredNewTile(bloke, x, y) == 0 && CrossTileCentre(bloke, x, y) != 0 && (bloke->flags & 4) == 0) {
         pos = &bloke->pos;
         if (pos->x >= 0 && pos->x < lpConfig->width * 0x100 && pos->y >= 0 && pos->y < lpConfig->height * 0x100) {
             mapFlags = Get_MapFlags(pos->x, pos->y);
@@ -797,7 +797,7 @@ void FUN_00483ef0(Bloke *bloke) {
     if (FUN_00483300(bloke, d.x, d.y) != 0) {
         return;
     }
-    FUN_004837a0(bloke, d.x, d.y);
+    CheckEnteredNewTile(bloke, d.x, d.y);
     if (CrossTileCentre(bloke, d.x, d.y) != 0) {
         bloke->flags |= 4;
         rf = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
@@ -843,7 +843,7 @@ void FUN_00484090(Bloke *bloke) {
     d.x += bloke->pos.x;
     d.y += bloke->pos.y;
     next = d;
-    FUN_004837a0(bloke, next.x, next.y);
+    CheckEnteredNewTile(bloke, next.x, next.y);
     if (CrossTileCentre(bloke, next.x, next.y) != 0) {
         bloke->flags |= 4;
         rf = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
@@ -900,7 +900,7 @@ void FUN_00484220(Bloke *bloke) {
         return;
     }
     NavigMoveLine(&bloke->nav, bloke->speed, &target);
-    if (FUN_004837a0(bloke, target.x, target.y) != 0) {
+    if (CheckEnteredNewTile(bloke, target.x, target.y) != 0) {
         if (HitObstacle(bloke, target.x, target.y) != 0) {
             bloke->low_level_action = 0;
             bloke->field_64 |= 1;
@@ -935,7 +935,7 @@ void FUN_00484350(Bloke *bloke) {
         return;
     }
     NavigMoveLine(&bloke->nav, bloke->speed, &target);
-    if (FUN_004837a0(bloke, target.x, target.y) != 0) {
+    if (CheckEnteredNewTile(bloke, target.x, target.y) != 0) {
         if (HitObstacle(bloke, target.x, target.y) == 0) {
             if (target.x >= 0 && target.x < lpConfig->width * 0x100 && target.y >= 0 && target.y < lpConfig->height * 0x100) {
                 mapFlags = Get_MapFlags(target.x, target.y);
@@ -963,7 +963,7 @@ void FUN_00484470(Bloke *bloke) {
         return;
     }
     NavigMoveLine(&bloke->nav, bloke->speed, &target);
-    if (FUN_004837a0(bloke, target.x, target.y) != 0) {
+    if (CheckEnteredNewTile(bloke, target.x, target.y) != 0) {
         if (HitObstacle(bloke, target.x, target.y) != 0) {
             bloke->low_level_action = 0;
             bloke->field_64 |= 1;
@@ -983,7 +983,7 @@ void FUN_00484520(Bloke *bloke) {
         return;
     }
     NavigMoveLine(&bloke->nav, bloke->speed, &target);
-    if (FUN_004837a0(bloke, target.x, target.y) != 0) {
+    if (CheckEnteredNewTile(bloke, target.x, target.y) != 0) {
         if (FUN_00483580(bloke, target.x, target.y) != 0) {
             bloke->low_level_action = 0;
             bloke->field_64 |= 1;

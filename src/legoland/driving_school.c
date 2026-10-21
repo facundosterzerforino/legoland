@@ -180,8 +180,8 @@ void UnloadDrivingSchoolResources(void) {
         LLIDB_UnLoadData(local);
     }
 
-    while (DAT_004c10d4 != NULL) {
-        FUN_00401c60(DAT_004c10d4);
+    while (DrivingSchoolCars != NULL) {
+        RemoveDrivingSchoolCar(DrivingSchoolCars);
     }
 
     RemoveAllPumps();
@@ -335,7 +335,7 @@ void DrivingSchoolDCalcCursor(struct Element *param_1, struct Point *param_2) {
 void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3) {
     struct RideQueueEntry *queue = RoadEntryList;
     struct CountNode *count = DrivingSchoolCountList;
-    struct NewBloke *blokes = DAT_004c10d4;
+    struct NewBloke *blokes = DrivingSchoolCars;
     struct RideQueueEntry *next;
     struct NewBloke *nextBloke;
 
@@ -380,7 +380,7 @@ void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3
     while (blokes != NULL) {
         nextBloke = blokes->next;
         if ((short)blokes->id == (short)QueryObj.id) {
-            FUN_00401c60(blokes);
+            RemoveDrivingSchoolCar(blokes);
         }
         blokes = nextBloke;
     }
@@ -463,7 +463,7 @@ void DrivingSchoolUpdate(Element *obj) {
     struct Sample *sample;
     int r;
 
-    FUN_00402c10();
+    UpdateDrivingSchoolCars();
     UpdateTrafficLights();
     while (node) {
         bloke = node->rider;
@@ -489,7 +489,7 @@ void DrivingSchoolUpdate(Element *obj) {
                     count = CountNewBlokesWithId(tile_id);
                     /* The original compares the weighted rider count as a signed value (jge). */
                     if ((int)(5 * count) < (int)CountRoadEntriesWithId(node->tile.id)) {
-                        res = FUN_00401ae0(node->tile.id, bloke);
+                        res = AddDrivingSchoolCar(node->tile.id, bloke);
                         if (0 == res) {
                             source.type = 1;
                             source.bloke = bloke;
@@ -587,10 +587,10 @@ int DrivingSchool_Save(struct Element *element) {
     }
 
     count = 0;
-    for (blokeCur = DAT_004c10d4; blokeCur != NULL; blokeCur = blokeCur->next) {
+    for (blokeCur = DrivingSchoolCars; blokeCur != NULL; blokeCur = blokeCur->next) {
         count++;
     }
-    bloke = DAT_004c10d4;
+    bloke = DrivingSchoolCars;
     SaveGameWrite(&count, 4);
     while (count--) {
         memcpy(&buf, bloke, sizeof(buf));
@@ -690,12 +690,12 @@ int DrivingSchool_Load(struct Element *element) {
         SaveGameRead(pumpPrev, sizeof(struct PumpNode));
     }
 
-    DAT_004c10d4 = NULL;
+    DrivingSchoolCars = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (blokePrev == NULL) {
-            DAT_004c10d4 = (struct NewBloke *)malloc(sizeof(struct NewBloke));
-            blokePrev = DAT_004c10d4;
+            DrivingSchoolCars = (struct NewBloke *)malloc(sizeof(struct NewBloke));
+            blokePrev = DrivingSchoolCars;
         } else {
             blokeNode = (struct NewBloke *)malloc(sizeof(struct NewBloke));
             blokePrev->next = blokeNode;

@@ -1123,7 +1123,7 @@ const int DAT_004bff28[12][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {0, 2}, {0, -
     {2, 0}, {-2, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
 // GLOBAL: LEGOLAND 0x004c10d4
-struct NewBloke *DAT_004c10d4;
+struct NewBloke *DrivingSchoolCars;
 
 // GLOBAL: LEGOLAND 0x004c10dc
 struct Ride *CastleLevelRide;
