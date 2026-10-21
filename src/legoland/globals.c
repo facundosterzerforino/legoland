@@ -5256,7 +5256,7 @@ float DAT_00829a60;
 struct Ride *DAT_00829a64;
 
 // GLOBAL: LEGOLAND 0x00829a80
-struct Footprint DAT_00829a80;
+struct Footprint CastleCoasterFootprint;
 
 // GLOBAL: LEGOLAND 0x00829abc
 struct Element *DAT_00829abc;
@@ -5288,10 +5288,10 @@ struct Ride *DAT_00829c08;
 struct Ride *DAT_00829c34;
 
 // GLOBAL: LEGOLAND 0x00829c54
-char *DAT_00829c54;
+char *CoasterShadeTableData;
 
 // GLOBAL: LEGOLAND 0x00829c60
-void *DAT_00829c60[1024];
+void *CoasterShadeTables[1024];
 
 // GLOBAL: LEGOLAND 0x0082ac60
 struct FloatArray *VecScratchPool[48];
@@ -5560,7 +5560,7 @@ unsigned int DAT_00610a10;
 int DAT_0060f900;
 
 // GLOBAL: LEGOLAND 0x0060f904
-int DAT_0060f904;
+int CoasterShadeTableCount;
 
 // GLOBAL: LEGOLAND 0x00579878
 char DAT_00579878[0x80];
