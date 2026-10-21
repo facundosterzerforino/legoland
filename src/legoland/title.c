@@ -415,7 +415,7 @@ void SetIntervalReportSpeechPrefix(const char *param_1) {
 
     _splitpath(param_1, 0, 0, fname, 0);
     // STRING: LEGOLAND 0x004bf674
-    sprintf(DAT_007cae80, "%s_", fname);
+    sprintf(IntervalReportSpeechPrefix, "%s_", fname);
 }
 
 // FUNCTION: LEGOLAND 0x00490770
@@ -423,7 +423,7 @@ void SetIntervalHintSpeechPrefix(const char *param_1) {
     char fname[64];
 
     _splitpath(param_1, 0, 0, fname, 0);
-    sprintf(DAT_007cb1e0, "%s_", fname);
+    sprintf(IntervalHintSpeechPrefix, "%s_", fname);
 }
 
 // FUNCTION: LEGOLAND 0x004907a0
@@ -536,7 +536,7 @@ void PlayIntervalReportSpeech(unsigned int param_1) {
     char buffer[256];
 
     // STRING: LEGOLAND 0x004bf688
-    sprintf(buffer, "%s%02d.wav", DAT_007cae80, param_1 + 1);
+    sprintf(buffer, "%s%02d.wav", IntervalReportSpeechPrefix, param_1 + 1);
     SpeechCloseFile();
     SpeechLoadWavFile(buffer);
     SpeechPlay();
@@ -547,7 +547,7 @@ void PlayIntervalReportSpeech(unsigned int param_1) {
 void PlayIntervalHintSpeech(unsigned int param_1) {
     char buffer[256];
 
-    sprintf(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
+    sprintf(buffer, "%s%02d.wav", IntervalHintSpeechPrefix, param_1 + 1);
     SpeechCloseFile();
     SpeechLoadWavFile(buffer);
     SpeechPlay();

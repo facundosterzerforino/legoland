@@ -282,7 +282,7 @@ LEGO_EXPORT void LoadColourTable(void) {
         entries[i].peRed = PaletteReadBuffer[i * 3 + 2];
         entries[i].peGreen = PaletteReadBuffer[i * 3 + 1];
         entries[i].peBlue = PaletteReadBuffer[i * 3];
-        DAT_00813e20[i] = (unsigned short)((((entries[i].peRed & 0xf8) << 5 | (entries[i].peGreen & 0xf8)) << 2) |
+        Palette16Bit[i] = (unsigned short)((((entries[i].peRed & 0xf8) << 5 | (entries[i].peGreen & 0xf8)) << 2) |
             (entries[i].peBlue >> 3));
         entries[i].peFlags = 4;
     }

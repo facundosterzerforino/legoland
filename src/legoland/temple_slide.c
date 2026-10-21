@@ -360,7 +360,7 @@ void TempleSlideUpdate(Element *obj) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617664.875f, -1617913.0f);
                 bloke->field_35 = 0;
-                bloke->path = NewBNVPath(TempleSlideBinVs[0], 0, DAT_004b4f08[bloke->field_36], -1617664.875f, -1617913.0f, off);
+                bloke->path = NewBNVPath(TempleSlideBinVs[0], 0, TempleSlidePathNames[bloke->field_36], -1617664.875f, -1617913.0f, off);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;

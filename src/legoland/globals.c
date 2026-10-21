@@ -365,7 +365,7 @@ struct SpiderBnv SpiderBnvInfo = {"manbox??", {0, 0x20, 0x1c, 0x14, 0x18, 0x0c, 
 Point DAT_004b4e20;
 
 // GLOBAL: LEGOLAND 0x004b4f08
-char *DAT_004b4f08[4] = {
+char *TempleSlidePathNames[4] = {
     // STRING: LEGOLAND 0x004b4f44
     "manbox01",
     // STRING: LEGOLAND 0x004b4f38
@@ -1023,7 +1023,7 @@ unsigned int DAT_004bb6bc;
 unsigned int DAT_004bb6d4;
 
 // GLOBAL: LEGOLAND 0x004bb6f8
-struct ScriptCommand DAT_004bb6f8[0x5d];
+struct ScriptCommand LevelScriptCommands[0x5d];
 
 // GLOBAL: LEGOLAND 0x004b86e0
 const char LegoFontName[] = "Lego";
@@ -4040,7 +4040,7 @@ void *DMusicSoundBuffer;
 struct ProfileData TempProfile;
 
 // GLOBAL: LEGOLAND 0x007cae80
-char DAT_007cae80[0x100];
+char IntervalReportSpeechPrefix[0x100];
 
 // GLOBAL: LEGOLAND 0x007caf80
 struct Sprite *RepHint1Sprite;
@@ -4058,7 +4058,7 @@ struct IconNode *RepHint1Icon;
 struct Sprite *RepHint2Sprite;
 
 // GLOBAL: LEGOLAND 0x007cb1e0
-char DAT_007cb1e0[0x100];
+char IntervalHintSpeechPrefix[0x100];
 
 // GLOBAL: LEGOLAND 0x007cb2e0
 struct IconNode *TitlePreviousPageIcon;
@@ -4616,7 +4616,7 @@ struct ScreenMode DAT_0080ff80;
 struct ScreenState CurrentProfile;
 
 // GLOBAL: LEGOLAND 0x008100c0
-char DAT_008100c0[0x80];
+char LevelEndMovieName[0x80];
 
 // GLOBAL: LEGOLAND 0x00810140
 unsigned int DAT_00810140;
@@ -4854,7 +4854,7 @@ unsigned int CurrentBlokeLetter;
 unsigned char PaletteReadBuffer[0x300] = {0};
 
 // GLOBAL: LEGOLAND 0x00813e20
-unsigned short DAT_00813e20[256] = {0};
+unsigned short Palette16Bit[256] = {0};
 
 // GLOBAL: LEGOLAND 0x00814020
 unsigned char ColourLookupTable[0x8000];

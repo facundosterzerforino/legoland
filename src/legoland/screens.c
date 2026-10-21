@@ -425,7 +425,7 @@ int FUN_00458c00(void) {
         if (MapStats.level_end != 0 && EditMode.unk4 == 3) {
             if (MapStats.field_3ac != 0) {
                 SetPointer(0);
-                PlayMovie(DAT_008100c0, 1, 1);
+                PlayMovie(LevelEndMovieName, 1, 1);
                 MapStats.field_3ac = 0;
                 SetPointer(5);
             }
@@ -764,7 +764,7 @@ void FUN_00459710(char *s) {
         semicolon++;
         semicolon[-1] = ';';
         if (strlen(semicolon) != 0) {
-            strcpy(DAT_008100c0, semicolon);
+            strcpy(LevelEndMovieName, semicolon);
             MapStats.field_3ac = 1;
         }
     }

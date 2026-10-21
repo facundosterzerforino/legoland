@@ -1738,7 +1738,7 @@ int LoadLevelScript(const char *param_1) {
     FUN_00492980();
     LLIDB_ClearOnLevel();
     ResetLevelScriptState();
-    result = ParseScriptFile(param_1, DAT_004bb6f8, 0x5d, 0);
+    result = ParseScriptFile(param_1, LevelScriptCommands, 0x5d, 0);
     FUN_00492990();
     v1 = (result >= 0) - 1;
     return v1 & 2;

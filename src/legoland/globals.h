@@ -742,7 +742,7 @@ extern Point DAT_004b4e20;
 // 0x004b78b4
 extern char BoxBlokeBnvName[];
 // 0x004b4f08
-extern char *DAT_004b4f08[4];
+extern char *TempleSlidePathNames[4];
 // 0x004b4f18
 extern signed char DAT_004b4f18[4];
 // 0x004b4f1c
@@ -1153,7 +1153,7 @@ extern unsigned int DAT_004bb6bc;
 // 0x004bb6d4
 extern unsigned int DAT_004bb6d4;
 // 0x004bb6f8
-extern struct ScriptCommand DAT_004bb6f8[0x5d];
+extern struct ScriptCommand LevelScriptCommands[0x5d];
 // 0x004bcba4
 extern const char *ResourceFileNames[3];
 // 0x004bcbf4
@@ -3172,7 +3172,7 @@ extern void *DMusicSoundBuffer;
 // 0x007cad60
 extern struct ProfileData TempProfile;
 // 0x007cae80
-extern char DAT_007cae80[0x100];
+extern char IntervalReportSpeechPrefix[0x100];
 // 0x007caf80
 extern struct Sprite *RepHint1Sprite;
 // 0x007cafa0
@@ -3184,7 +3184,7 @@ extern struct IconNode *RepHint1Icon;
 // 0x007cb1c4
 extern struct Sprite *RepHint2Sprite;
 // 0x007cb1e0
-extern char DAT_007cb1e0[0x100];
+extern char IntervalHintSpeechPrefix[0x100];
 // 0x007cb2e0
 extern struct IconNode *TitlePreviousPageIcon;
 // 0x007cb2e4
@@ -3554,7 +3554,7 @@ extern struct ScreenMode DAT_0080ff80;
 // 0x0080ffa0
 extern struct ScreenState CurrentProfile;
 // 0x008100c0
-extern char DAT_008100c0[0x80];
+extern char LevelEndMovieName[0x80];
 // 0x00810140
 extern unsigned int DAT_00810140;
 // 0x00810144
@@ -3718,7 +3718,7 @@ extern unsigned int CurrentBlokeLetter; /* letter of the bloke being processed *
 // 0x00813b20
 extern unsigned char PaletteReadBuffer[0x300];
 // 0x00813e20
-extern unsigned short DAT_00813e20[256];
+extern unsigned short Palette16Bit[256];
 // 0x00814020
 extern unsigned char ColourLookupTable[0x8000];
 // 0x0081c028
