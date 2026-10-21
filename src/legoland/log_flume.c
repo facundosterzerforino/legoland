@@ -1646,7 +1646,7 @@ void DrawLogFlumeBarrel(struct FlumeSlot *slot, struct FlumeEntry *other, int dr
         /* centre the barrel sprite horizontally; lift it by 3/4 of its height plus half the
            slot's bob offset */
         pos.x = p.x - (spriteB->width >> 1);
-        p.y -= (int)((short)spriteB->height * 0.75f + (slot->field_1c >> 1));
+        p.y -= (int)(((short)spriteB->height * 0.75f) + (int)(slot->field_1c >> 1));
         p.x = pos.x;
         if (drawBarrel != 0) {
             struct RideNode *node;
