@@ -1305,7 +1305,7 @@ extern struct Sprite *LogFlumeHup1M2Sprite;
 // 0x004c2aa8
 extern struct Footprint DAT_004c2aa8;
 // 0x004c2aa0
-extern struct Ride *DAT_004c2aa0;
+extern struct Ride *LogFlumeSpecialCorner2Ride;
 // 0x004c2abc
 extern struct Sprite *LogFlumeTrackSprites[10];
 // 0x004c2ae4
@@ -1317,19 +1317,19 @@ extern struct Sprite *LogFlumeDrop2MSprite;
 // 0x004c2af0
 extern struct Sprite *LogFlumeDrop1MSprite;
 // 0x004c2af4
-extern unsigned int DAT_004c2af4;
+extern unsigned int FlumeSpecialCornerIndex;
 // 0x004c2af8
 extern struct QueueTable *DAT_004c2af8;
 // 0x004c2afc
 extern struct Element *LogFlumeImageListId;
 // 0x004c2b0c
-extern struct Ride *DAT_004c2b0c;
+extern struct Ride *LogFlumeSpecialCorner3Ride;
 // 0x004c2b10
 extern struct Element *LogFlumeTrackEndyListId;
 // 0x004c2b50
 extern struct Element *DAT_004c2b50;
 // 0x004c2b60
-extern struct Ride *DAT_004c2b60;
+extern struct Ride *LogFlumeHoldUpRide;
 // 0x004c2b64
 extern struct Sprite *LogFlumeSplashSprite;
 // 0x004c2b68
@@ -1349,7 +1349,7 @@ extern struct Cursor DAT_004c2c18;
 // 0x004c2bf0
 extern struct Ride *LogFlumeCsaw2Ride;
 // 0x004c445c
-extern struct Ride *DAT_004c445c;
+extern struct Ride *LogFlumeSpecialCorner1Ride;
 // 0x004c4460
 extern struct Element *LogFlumeCsaw2Element;
 // 0x004c5c90
@@ -1365,7 +1365,7 @@ extern struct Cursor DAT_004c4468;
 // 0x004c5ca0
 extern struct Cursor DAT_004c5ca0;
 // 0x004c74d4
-extern struct Ride *DAT_004c74d4;
+extern struct Ride *LogFlumeSpecialCorner4Ride;
 // 0x004c74d8
 extern struct RideSpriteInfo DAT_004c74d8;
 // 0x004c8d2c
@@ -1399,7 +1399,7 @@ extern struct Element *DAT_004cbe10;
 // 0x004cbe14
 extern struct Sprite *LogFlumeCsaw2MSprite;
 // 0x004cbe18
-extern struct Ride *DAT_004cbe18;
+extern struct Ride *LogFlumeTunnelRide;
 // 0x004cbe1c
 extern struct Sprite *LogFlumeFc1M3Sprite;
 // 0x004cbe20
