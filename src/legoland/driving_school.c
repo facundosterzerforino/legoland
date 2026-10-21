@@ -446,8 +446,6 @@ void RenderDrivingSchool(Element *obj, unsigned int param_2, unsigned int param_
 void DrivingSchoolUpdate(Element *obj) {
     int tile_id;
     int ride_y0;
-    struct Bloke *rider;
-    struct Bloke *rider2;
     unsigned int ride_y3;
     int ride_x0;
     int flags;
@@ -455,7 +453,7 @@ void DrivingSchoolUpdate(Element *obj) {
     int ride_x3;
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
-    register struct RideNode *next;
+    struct RideNode *next;
     struct Bloke *bloke;
     struct SampleSource source;
     struct SampleSource source2;
@@ -468,9 +466,7 @@ void DrivingSchoolUpdate(Element *obj) {
     FUN_00402c10();
     UpdateTrafficLights();
     while (node) {
-        rider2 = node->rider;
-        rider = rider2;
-        bloke = rider;
+        bloke = node->rider;
         next = node->next;
         if (0 == bloke->low_level_action) {
             switch (bloke->param_action) {
@@ -522,10 +518,8 @@ void DrivingSchoolUpdate(Element *obj) {
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 bloke->pos.x = (node->tile.pos.x + ride->x) << 8;
-                ride_y3 = ride->y;
-                bloke->pos.y = (node->tile.pos.y - 3 + ride_y3) << 8;
-                ride_x3 = ride->x;
-                bloke->dest.x = ((node->tile.pos.x + ride_x3) << 8) + 0x80;
+                bloke->pos.y = (node->tile.pos.y - 3 + ride->y) << 8;
+                bloke->dest.x = ((node->tile.pos.x + ride->x) << 8) + 0x80;
                 bloke->dest.y = ((node->tile.pos.y + ride->y) << 8) + 0x80;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
@@ -535,8 +529,7 @@ void DrivingSchoolUpdate(Element *obj) {
                 break;
             case 4:
                 RemoveBlokeFromRide(ride, node);
-                flags = bloke->flags;
-                bloke->flags = flags & 0xfff7;
+                bloke->flags &= 0xfff7;
                 source2.type = 1;
                 source2.bloke = bloke;
                 KillAllSamplesFromSource(&source2);
