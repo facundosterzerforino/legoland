@@ -2127,15 +2127,13 @@ void FUN_00465850(struct AviFrame *frame) {
     unsigned char *dst;
     unsigned char *next;
     unsigned short *row;
-    unsigned short *s;
-    unsigned short *p0;
-    unsigned short *p1;
     short v;
     int width;
     int height;
     int half;
     int rest;
     int x;
+    int y;
 
     dst = CurrentSurfaceDesc.lpSurface;
     width = frame->width;
@@ -2152,23 +2150,17 @@ void FUN_00465850(struct AviFrame *frame) {
         dst += CurrentSurfaceDesc.lPitch;
     }
     /* each source pixel becomes a 2x2 block; the frame is stored bottom-up */
-    for (; height != 0; height--) {
+    for (y = height - 1; y >= 0; y--) {
         next = dst + CurrentSurfaceDesc.lPitch;
-        s = row;
-        p1 = (unsigned short *)next;
-        p0 = (unsigned short *)dst;
-        for (x = width; x > 0; x--) {
-            v = *s;
+        for (x = 0; x < width; x++) {
+            v = row[x];
             if (DisplayPixelFormat == 2) {
                 v = (v & 0x1f) | (v & ~0x1f) << 1;
             }
-            p0[0] = v;
-            p1[0] = v;
-            p0[1] = v;
-            p1[1] = v;
-            s++;
-            p0 += 2;
-            p1 += 2;
+            ((unsigned short *)dst)[x * 2] = v;
+            ((unsigned short *)next)[x * 2] = v;
+            ((unsigned short *)dst)[x * 2 + 1] = v;
+            ((unsigned short *)next)[x * 2 + 1] = v;
         }
         row -= width;
         dst += CurrentSurfaceDesc.lPitch * 2;
