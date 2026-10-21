@@ -230,8 +230,8 @@ struct ObjectiveEvent *PostObjectiveMessage(const char *format, ...) {
     event = AllocObjectiveEvent(0, 1);
     if (event != NULL) {
         va_start(args, format);
-        vsprintf(DAT_0066820c, format, args);
-        SetObjectiveEventText(event, (char *)DAT_0066820c, 1);
+        vsprintf(ObjectiveTextBuffer, format, args);
+        SetObjectiveEventText(event, (char *)ObjectiveTextBuffer, 1);
         InsertObjectiveMessageSorted(event);
     }
     return event;

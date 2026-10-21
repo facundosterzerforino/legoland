@@ -1327,7 +1327,7 @@ extern struct Ride *LogFlumeSpecialCorner3Ride;
 // 0x004c2b10
 extern struct Element *LogFlumeTrackEndyListId;
 // 0x004c2b50
-extern struct Element *DAT_004c2b50;
+extern struct Element *LogFlumeHoldUpElement;
 // 0x004c2b60
 extern struct Ride *LogFlumeHoldUpRide;
 // 0x004c2b64
@@ -1339,11 +1339,11 @@ extern struct Sprite *LogFlumeFc1M1Sprite;
 // 0x004c2b70
 extern struct Sprite *LogFlumeFc1M2Sprite;
 // 0x004c2b98
-extern struct Element *DAT_004c2b98;
+extern struct Element *LogFlumeSpecialCorner1Element;
 // 0x004c2b9c
 extern struct Ride *LogFlumeEntranceRide;
 // 0x004c2ba0
-extern struct Element *DAT_004c2ba0;
+extern struct Element *LogFlumeSpecialCorner4Element;
 // 0x004c2c18
 extern struct Cursor DAT_004c2c18;
 // 0x004c2bf0
@@ -1375,7 +1375,7 @@ extern struct Footprint DAT_004c8d38;
 // 0x004c8d4c
 extern struct Element *LogFlumeDropElement;
 // 0x004c8d50
-extern struct Element *DAT_004c8d50;
+extern struct Element *LogFlumeSpecialCorner3Element;
 // 0x004c8d54
 extern struct Sprite *LogFlumeEntranceLayer;
 // 0x004c8d68
@@ -1395,7 +1395,7 @@ extern struct Sprite *LogFlumeFc3M2Sprite;
 // 0x004cbe0c
 extern struct Sprite *LogFlumeFc3M1Sprite;
 // 0x004cbe10
-extern struct Element *DAT_004cbe10;
+extern struct Element *LogFlumeSpecialCorner2Element;
 // 0x004cbe14
 extern struct Sprite *LogFlumeCsaw2MSprite;
 // 0x004cbe18
@@ -1407,7 +1407,7 @@ extern struct FlumeEntry *FlumeNeighbours[4]; /* the 4 neighbours of a log flume
 // 0x004cbe30
 extern struct Ride *LogFlumeTrackRide;
 // 0x004cbe48
-extern struct Element *DAT_004cbe48;
+extern struct Element *LogFlumeTunnelElement;
 // 0x004cbe4c
 extern struct Sprite *LogFlumeEnta3MSprite;
 // 0x004cbe70
@@ -2031,7 +2031,7 @@ extern int *DAT_0062fef8;
 // 0x00630100
 extern void *AltManFileData;
 // 0x00638358
-extern unsigned short DAT_00638358;
+extern unsigned short SavedFPUControlWord;
 // 0x0064cd8c
 extern int *DAT_0064cd8c;
 // 0x00655a38
@@ -2073,15 +2073,15 @@ extern int DAT_00666004;
 // 0x00666008
 extern int DAT_00666008;
 // 0x0066600c
-extern int DAT_0066600c;
+extern int CastleScoreGoal;
 // 0x00666010
-extern int DAT_00666010;
+extern int DrivingSchoolScoreGoal;
 // 0x00666014
-extern int DAT_00666014;
+extern int LogFlumeScoreGoal;
 // 0x00666018
-extern int DAT_00666018;
+extern int BoatingSchoolScoreGoal;
 // 0x0066601c
-extern int DAT_0066601c;
+extern int JungleCruiseScoreGoal;
 // 0x00666020
 extern int DAT_00666020;
 // 0x00666024
@@ -2413,7 +2413,7 @@ extern unsigned int WatchActive;
 // 0x00668208
 extern struct Sprite *WatchSprite;
 // 0x0066820c
-extern char DAT_0066820c[0x404];
+extern char ObjectiveTextBuffer[0x404];
 // 0x00668610
 extern unsigned int ScriptDirtyCategories;
 // 0x00668614
@@ -2581,7 +2581,7 @@ extern unsigned int DAT_00668960;
 // 0x00668964
 extern int DAT_00668964;
 // 0x00668968
-extern char DAT_00668968[0x400];
+extern char PopUpMessageText[0x400];
 // 0x00668d68
 extern unsigned int DAT_00668d68;
 // 0x00668d78  (DIMOUSESTATE; full type in <dinput.h>, dereferenced only by input.c)
@@ -2595,7 +2595,7 @@ extern void *dintput_mouse;
 // 0x00668d94
 extern char CheatKeyBuffer[0x14];
 // 0x00668da8
-extern unsigned char DAT_00668da8[0x3b];
+extern unsigned char PrevKeyState[0x3b];
 // 0x00668de4
 extern unsigned char CheatKeyState[0x3b];
 // 0x00668e20
@@ -2764,7 +2764,7 @@ extern int DAT_00669250;
 // 0x00669254
 extern unsigned int AdjacentNodeCount;
 // 0x004bcec0
-extern struct Point DAT_004bcec0;
+extern struct Point PathGoalTile;
 // 0x00669258
 extern unsigned int PathVisitedBits[1152];
 // 0x0066a45c
@@ -2798,11 +2798,11 @@ extern unsigned int PrintListBytesUsed;
 // 0x0066b5ac
 extern unsigned int DAT_0066b5ac;
 // 0x0066b5b0
-extern DDSURFACEDESC DAT_0066b5b0;
+extern DDSURFACEDESC ZBufferSavedSurfaceDesc;
 // 0x0066b61c
 extern void *DAT_0066b61c;
 // 0x0066b620
-extern RECT DAT_0066b620;
+extern RECT ZBufferSavedSoftPrintClip;
 // 0x0066b630
 extern void *DAT_0066b630;
 // 0x0066be40
@@ -2852,7 +2852,7 @@ extern void *MasterDirList;
 // 0x00798628
 extern void *MasterVolList;
 // 0x0079862c
-extern void *DAT_0079862c;
+extern void *AllResVolEntries;
 // 0x00798630
 extern unsigned int SavedClipLeft;
 // 0x00798634
@@ -3190,21 +3190,21 @@ extern struct IconNode *TitlePreviousPageIcon;
 // 0x007cb2e4
 extern struct IconNode *TitleNextPageIcon;
 // 0x007cb2f0
-extern struct EditState DAT_007cb2f0; /* EditMode saved by SaveScreenState */
+extern struct EditState TitleSavedEditMode; /* EditMode saved by SaveScreenState */
 // 0x007cb300
-extern struct ScreenMode DAT_007cb300; /* DAT_0080ff80 saved */
+extern struct ScreenMode TitleSavedScreenMode; /* DAT_0080ff80 saved */
 // 0x007cb30c
 extern unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
 // 0x007cb310
 extern unsigned int DAT_007cb310;
 // 0x007cb314
-extern char DAT_007cb314;
+extern char SavedSpeechVolume;
 // 0x007cb315
-extern char DAT_007cb315;
+extern char SavedFxVolume;
 // 0x007cb318
 extern unsigned int DAT_007cb318;
 // 0x007cb31c
-extern char DAT_007cb31c;
+extern char SavedMusicVolume;
 // 0x007cb320
 extern unsigned int DAT_007cb320;
 // 0x007cb324

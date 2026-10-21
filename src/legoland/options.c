@@ -34,9 +34,9 @@ LEGO_EXPORT void InitOptionScreen(void) {
     unsigned int x;
 
     PauseGameTimer();
-    DAT_007cb314 = (char)CurrentProfile.speech_volume;
-    DAT_007cb31c = (char)CurrentProfile.music_volume;
-    DAT_007cb315 = (char)CurrentProfile.fx_volume;
+    SavedSpeechVolume = (char)CurrentProfile.speech_volume;
+    SavedMusicVolume = (char)CurrentProfile.music_volume;
+    SavedFxVolume = (char)CurrentProfile.fx_volume;
 
     // STRING: LEGOLAND 0x004bf49c
     SPRITE_TitleScreenBk = LoadSprite("OptionScreenBK.lls", 0);
@@ -169,9 +169,9 @@ unsigned char FUN_0048ef10(unsigned int param_1, unsigned int param_2) {
 unsigned char FUN_0048ef40(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        CurrentProfile.speech_volume = DAT_007cb314;
-        CurrentProfile.music_volume = DAT_007cb31c;
-        CurrentProfile.fx_volume = DAT_007cb315;
+        CurrentProfile.speech_volume = SavedSpeechVolume;
+        CurrentProfile.music_volume = SavedMusicVolume;
+        CurrentProfile.fx_volume = SavedFxVolume;
         DAT_0080ff80.unk8 = 1;
     }
     return 1;

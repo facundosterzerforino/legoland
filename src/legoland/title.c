@@ -153,7 +153,7 @@ void KillTitleScreenBkSpriteAndRemoveIconGroup7(void) {
 unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        SaveScreenState(&DAT_007cb30c, &DAT_007cb300, &DAT_007cb2f0);
+        SaveScreenState(&DAT_007cb30c, &TitleSavedScreenMode, &TitleSavedEditMode);
         EditMode.unk4 = 2;
         DAT_0080ff80.unk4 = 0xffffffff;
         DAT_0080ff80.unk8 = 9;
@@ -167,7 +167,7 @@ unsigned char AdvertGoBackHandler(unsigned int param_1, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillTitleScreenBkSpriteAndRemoveIconGroup7();
-        RestoreScreenState(&DAT_007cb30c, &DAT_007cb300, &DAT_007cb2f0);
+        RestoreScreenState(&DAT_007cb30c, &TitleSavedScreenMode, &TitleSavedEditMode);
     }
     return 1;
 }

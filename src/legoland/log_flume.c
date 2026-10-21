@@ -3900,7 +3900,7 @@ void LogFlumeSpecialCorner1LoadSprites(struct Element *obj_ptr) {
         }
     }
 
-    DAT_004c2b98 = obj_ptr;
+    LogFlumeSpecialCorner1Element = obj_ptr;
 
     // STRING: LEGOLAND 0x004b4a58
     LogFlumeFc1M1Sprite = LoadSprite("fc1_m1.lls", 1);
@@ -3928,7 +3928,7 @@ void LogFlumeSpecialCorner2LoadSprites(struct Element *obj_ptr) {
         }
     }
 
-    DAT_004cbe10 = obj_ptr;
+    LogFlumeSpecialCorner2Element = obj_ptr;
     // STRING: LEGOLAND 0x004b4a64
     LogFlumeFc2M1Sprite = LoadSprite("fc2_m1.lls", 1);
 }
@@ -3950,7 +3950,7 @@ void LogFlumeSpecialCorner3LoadSprites(struct Element *obj_ptr) {
         }
     }
 
-    DAT_004c8d50 = obj_ptr;
+    LogFlumeSpecialCorner3Element = obj_ptr;
 
     // STRING: LEGOLAND 0x004b4a7c
     LogFlumeFc3M1Sprite = LoadSprite("fc3_m1.lls", 1);
@@ -3969,7 +3969,7 @@ void LogFlumeSpecialCorner4LoadSprites(struct Element *obj_ptr) {
     LogFlumeSpecialCorner4Ride = (struct Ride *)obj_ptr->data;
     resA = (struct Ride *)LogFlumeSpecialCorner4Ride;
     resA->flags |= 0x400;
-    DAT_004c2ba0 = obj_ptr;
+    LogFlumeSpecialCorner4Element = obj_ptr;
 
     resA = (struct Ride *)LogFlumeSpecialCorner4Ride;
     if (resA != NULL) {
@@ -4025,7 +4025,7 @@ void LogFlumeSpecialCorner1AddObject(struct Element *param_1, struct FlumeBytes 
     *((unsigned char *)&packed + 1) = param_2->b4;
     memcpy(local, LogFlumeSpecialCorner1Ride->footprint.v, 20);
     FlumeSpecialCornerIndex = 0;
-    LogFlumePieceAddObject(packed, local, DAT_004c2b98, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
+    LogFlumePieceAddObject(packed, local, LogFlumeSpecialCorner1Element, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
 }
 
 // FUNCTION: LEGOLAND 0x0040eb40
@@ -4036,7 +4036,7 @@ void LogFlumeSpecialCorner2AddObject(struct Element *param_1, struct FlumeBytes 
     *((unsigned char *)&packed + 1) = param_2->b4;
     memcpy(local, LogFlumeSpecialCorner2Ride->footprint.v, 20);
     FlumeSpecialCornerIndex = 1;
-    LogFlumePieceAddObject(packed, local, DAT_004cbe10, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
+    LogFlumePieceAddObject(packed, local, LogFlumeSpecialCorner2Element, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
 }
 
 // FUNCTION: LEGOLAND 0x0040ebb0
@@ -4047,7 +4047,7 @@ void LogFlumeSpecialCorner3AddObject(struct Element *param_1, struct FlumeBytes 
     *((unsigned char *)&packed + 1) = param_2->b4;
     memcpy(local, LogFlumeSpecialCorner3Ride->footprint.v, 20);
     FlumeSpecialCornerIndex = 2;
-    LogFlumePieceAddObject(packed, local, DAT_004c8d50, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
+    LogFlumePieceAddObject(packed, local, LogFlumeSpecialCorner3Element, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
 }
 
 // FUNCTION: LEGOLAND 0x0040ec20
@@ -4058,7 +4058,7 @@ void LogFlumeSpecialCorner4AddObject(struct Element *param_1, struct FlumeBytes 
     *((unsigned char *)&packed + 1) = param_2->b4;
     memcpy(local, LogFlumeSpecialCorner4Ride->footprint.v, 20);
     FlumeSpecialCornerIndex = 3;
-    LogFlumePieceAddObject(packed, local, DAT_004c2ba0, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
+    LogFlumePieceAddObject(packed, local, LogFlumeSpecialCorner4Element, BuildFlumeSpecialCornerNodes, GetFlumeSpecialCornerConnections, GetFlumeSpecialCornerEndNodes);
 }
 
 // FUNCTION: LEGOLAND 0x0040ec90
@@ -4316,7 +4316,7 @@ void LogFlumeTunnelLoadSprites(struct Element *obj_ptr) {
     LogFlumeTunnelRide = (struct Ride *)obj_ptr->data;
     resA = (struct Ride *)LogFlumeTunnelRide;
     resA->flags |= 0x400;
-    DAT_004cbe48 = obj_ptr;
+    LogFlumeTunnelElement = obj_ptr;
 
     resA = (struct Ride *)LogFlumeTunnelRide;
     if (resA != NULL) {
@@ -4378,7 +4378,7 @@ void LogFlumeTunnelAddObject(struct Element *param_1, struct FlumeBytes *param_2
     unsigned int packed;
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
-    LogFlumePieceAddObject(packed, LogFlumeTunnelRide->footprint.v, DAT_004cbe48, BuildLogFlumeTunnelNodes, GetLogFlumeTunnelConnections, (FlumeEdgeFn)GetLogFlumeTunnelEndNodes);
+    LogFlumePieceAddObject(packed, LogFlumeTunnelRide->footprint.v, LogFlumeTunnelElement, BuildLogFlumeTunnelNodes, GetLogFlumeTunnelConnections, (FlumeEdgeFn)GetLogFlumeTunnelEndNodes);
 }
 
 // FUNCTION: LEGOLAND 0x0040f580
@@ -4671,7 +4671,7 @@ void LogFlumeHoldUpLoadSprites(struct Element *obj_ptr) {
     resA->flags |= 0x400;
 
     resA = (struct Ride *)LogFlumeHoldUpRide;
-    DAT_004c2b50 = obj_ptr;
+    LogFlumeHoldUpElement = obj_ptr;
     if (resA != NULL) {
         resB = resA->layer;
         if (resB != NULL) {
@@ -4758,7 +4758,7 @@ void LogFlumeHoldUpAddObject(struct Element *param_1, struct FlumeBytes *param_2
     *((unsigned char *)&packed) = param_2->b0;
     *((unsigned char *)&packed + 1) = param_2->b4;
     FlumeSpecialCornerIndex = 0;
-    LogFlumePieceAddObject(packed, LogFlumeHoldUpRide->footprint.v, DAT_004c2b50, BuildLogFlumeHoldUpNodes, (FlumeCallback)GetLogFlumeHoldUpConnections, (FlumeEdgeFn)GetLogFlumeHoldUpEndNodes);
+    LogFlumePieceAddObject(packed, LogFlumeHoldUpRide->footprint.v, LogFlumeHoldUpElement, BuildLogFlumeHoldUpNodes, (FlumeCallback)GetLogFlumeHoldUpConnections, (FlumeEdgeFn)GetLogFlumeHoldUpEndNodes);
 }
 
 // FUNCTION: LEGOLAND 0x00410160

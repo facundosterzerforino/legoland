@@ -367,10 +367,10 @@ LEGO_EXPORT char GetInputChar(void) {
     result = 0;
     i = 0;
     do {
-        prev = (char)DAT_00668da8[i];
+        prev = (char)PrevKeyState[i];
         state = KeyboardState[CheatKeyMap[i].flags];
         prev = (prev >> 7) & 1;
-        DAT_00668da8[i] = state;
+        PrevKeyState[i] = state;
         if ((state & 0x80) != 0 && prev == 0) {
             alt = GetKeyState(0x14) & 1;
             if (IsLeftShiftDown() != 0 || IsRightShiftDown() != 0) {

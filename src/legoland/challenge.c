@@ -714,7 +714,7 @@ void FUN_00444440(unsigned int param_1, unsigned int param_2) {
 void SetReportCastleScoreGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= (param_2 & 3) << 4;
-        DAT_0066600c = param_1;
+        CastleScoreGoal = param_1;
     } else {
         ReportFlags = (ReportFlags & 0xffffff00) | (ReportFlags & 0xcf);
     }
@@ -724,7 +724,7 @@ void SetReportCastleScoreGoal(unsigned int param_1, unsigned int param_2) {
 void SetReportDrivingSchoolScoreGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= (param_2 & 3) << 6;
-        DAT_00666010 = param_1;
+        DrivingSchoolScoreGoal = param_1;
     } else {
         ReportFlags = (ReportFlags & 0xffffff00) | (ReportFlags & 0x3f);
     }
@@ -734,7 +734,7 @@ void SetReportDrivingSchoolScoreGoal(unsigned int param_1, unsigned int param_2)
 void SetReportLogFlumeScoreGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= (param_2 & 3) << 8;
-        DAT_00666014 = param_1;
+        LogFlumeScoreGoal = param_1;
     } else {
         ReportFlags = (ReportFlags & 0xffff00ff) | ((ReportFlags >> 8 & 0xfc) << 8);
     }
@@ -744,7 +744,7 @@ void SetReportLogFlumeScoreGoal(unsigned int param_1, unsigned int param_2) {
 void SetReportBoatingSchoolScoreGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= (param_2 & 3) << 10;
-        DAT_00666018 = param_1;
+        BoatingSchoolScoreGoal = param_1;
     } else {
         ReportFlags = (ReportFlags & 0xffff00ff) | ((ReportFlags >> 8 & 0xf3) << 8);
     }
@@ -754,7 +754,7 @@ void SetReportBoatingSchoolScoreGoal(unsigned int param_1, unsigned int param_2)
 void SetReportJungleCruiseScoreGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= (param_2 & 3) << 12;
-        DAT_0066601c = param_1;
+        JungleCruiseScoreGoal = param_1;
     } else {
         ReportFlags = (ReportFlags & 0xffff00ff) | ((ReportFlags >> 8 & 0xcf) << 8);
     }
@@ -1684,7 +1684,7 @@ s1:
         }
         if (ReportFlags & 0x30) {
             total++;
-            ok = GetCastleScore() >= DAT_0066600c;
+            ok = GetCastleScore() >= CastleScoreGoal;
             if (ok) {
                 pass++;
             } else {
@@ -1759,7 +1759,7 @@ s1:
         }
         if (ReportFlags & 0xc0) {
             total++;
-            ok = GetDrivingSchoolScore() >= DAT_00666010;
+            ok = GetDrivingSchoolScore() >= DrivingSchoolScoreGoal;
             if (ok) {
                 pass++;
             } else {
@@ -1834,7 +1834,7 @@ s1:
         }
         if (ReportFlags & 0x300) {
             total++;
-            ok = GetLogFlumeScore() >= DAT_00666014;
+            ok = GetLogFlumeScore() >= LogFlumeScoreGoal;
             if (ok) {
                 pass++;
             } else {
@@ -1909,7 +1909,7 @@ s1:
         }
         if (ReportFlags & 0xc00) {
             total++;
-            ok = GetBoatingSchoolScore() >= DAT_00666018;
+            ok = GetBoatingSchoolScore() >= BoatingSchoolScoreGoal;
             if (ok) {
                 pass++;
             } else {
@@ -1984,7 +1984,7 @@ s1:
         }
         if (ReportFlags & 0x3000) {
             total++;
-            ok = GetJungleCruiseScore() >= DAT_0066601c;
+            ok = GetJungleCruiseScore() >= JungleCruiseScoreGoal;
             if (ok) {
                 pass++;
             } else {

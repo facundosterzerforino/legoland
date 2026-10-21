@@ -1438,7 +1438,7 @@ void UpdateAdvicePriority(void) {
 
 // FUNCTION: LEGOLAND 0x00473680
 void FUN_00473680(int param_1, int param_2, char *param_3, void *param_4, void *param_5) {
-    strcpy(DAT_00668968, param_3);
+    strcpy(PopUpMessageText, param_3);
     DAT_007fe010 = param_1;
     DAT_007fe014 = param_2;
     FUN_00470950(param_4, param_5);
@@ -1483,7 +1483,7 @@ void FUN_004736f0(void) {
         rc.top = DAT_007fe014 + 6;
         rc.right = rc.left + DAT_00668964 * 0x14 + 0x7a;
         rc.bottom = rc.top + 0x1b;
-        PrintTextBox(DAT_00668968, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 1, 5, 0xff0000, 0xffffff);
+        PrintTextBox(PopUpMessageText, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 1, 5, 0xff0000, 0xffffff);
         /* hit box of the bar: outside it, reset the OK/close icons */
         hit.left = PopUpInfoOkIcon->x;
         hit.right = CBCloseIcon->x + 0x24;

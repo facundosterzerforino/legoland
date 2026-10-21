@@ -607,9 +607,9 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
                 vid.width, vid.height);
             FUN_00488700((unsigned char *)vid.bits, (struct RenderViewport *)&MousePos);
             Render_SetViewport(&clip);
-            __asm { fstcw word ptr [DAT_00638358] }
+            __asm { fstcw word ptr [SavedFPUControlWord] }
             __asm {fldcw word ptr[DAT_004b7abc]} FUN_00440a30(person);
-            __asm { fldcw word ptr [DAT_00638358] }
+            __asm { fldcw word ptr [SavedFPUControlWord] }
             if (DAT_007feb14 != 0) {
                 if (DAT_00668954 != 0 && person->bloke == GetWorkerOnMouse()) {
                     return;

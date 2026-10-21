@@ -138,8 +138,8 @@ void FUN_004895a0(struct ResDirRecord *node, struct ResVolume *volume, struct Re
 
     if (node->is_dir == 0) {
         entry = (struct ResVolEntry *)malloc(sizeof(struct ResVolEntry));
-        entry->next_all = (struct ResVolEntry *)DAT_0079862c;
-        DAT_0079862c = entry;
+        entry->next_all = (struct ResVolEntry *)AllResVolEntries;
+        AllResVolEntries = entry;
         entry->next_dir = (struct ResVolEntry *)master->entries;
         master->entries = entry;
         entry->next = volume->dir;
