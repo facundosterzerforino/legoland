@@ -37,16 +37,6 @@ struct Particle {
     int c;
 };
 
-struct FlumeOut {
-    int kind;
-    unsigned char pad_4[0xc - 0x4];
-    int f_0c;
-    int f_10;
-    unsigned char pad_14[0x1c - 0x14];
-    int f_1c;
-    int f_20;
-};
-
 struct WalkNode {
     struct WalkNode *var_0;
     struct FlumeSlot *var_4;
