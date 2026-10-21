@@ -121,12 +121,12 @@ void ResetCarouselRide(struct CarouselNode *node) {
 void LoadCarouselResources(struct Element *param_1) {
     struct LayerResult layer;
 
-    DAT_006160bc = param_1->ride;
+    ActiveCarouselRide = param_1->ride;
     Load_FXList(CAROUSSEL_SFX, 2);
-    DAT_006160bc->flags |= 0x420;
-    CarouselLayer = DAT_006160bc->layer;
+    ActiveCarouselRide->flags |= 0x420;
+    CarouselLayer = ActiveCarouselRide->layer;
     CarouselLayer->flags |= 0x2000;
-    GetLayer(DAT_006160bc->layer, &layer, 0);
+    GetLayer(ActiveCarouselRide->layer, &layer, 0);
     DAT_00616078 = layer.x + -0x58;
     DAT_0061607c = layer.y + -0xcd;
     // STRING: LEGOLAND 0x004b65a4
@@ -134,13 +134,13 @@ void LoadCarouselResources(struct Element *param_1) {
     DAT_006160c0 = ZCarouselSprite;
     // STRING: LEGOLAND 0x004b658c
     CarouselOnBinV = LoadBinV("Zbuffers\\CarouselOn.bnv");
-    DAT_00616090[0] = CarouselOnBinV;
+    CarouselBinVs[0] = CarouselOnBinV;
     // STRING: LEGOLAND 0x004b6574
     CarouselBinV = LoadBinV("Zbuffers\\Carousel.bnv");
-    DAT_00616090[1] = CarouselBinV;
+    CarouselBinVs[1] = CarouselBinV;
     // STRING: LEGOLAND 0x004b6558
     CarouselOffBinV = LoadBinV("Zbuffers\\CarouselOff.bnv");
-    DAT_00616090[2] = CarouselOffBinV;
+    CarouselBinVs[2] = CarouselOffBinV;
     // STRING: LEGOLAND 0x004b653c
     CarouselEntranceMatteSprite = LoadSprite("Carousel Entrance Matte.lls", 1);
     // STRING: LEGOLAND 0x004b651c
@@ -156,21 +156,21 @@ void LoadCarouselResources(struct Element *param_1) {
 
 // FUNCTION: LEGOLAND 0x0042c3f0
 void UnloadCarouselResources(struct Element *input) {
-    DAT_006160bc = input->ride;
+    ActiveCarouselRide = input->ride;
     KillSprite(CarouselEntranceMatteSprite);
     KillSprite(CarouselEntranceMatte2Sprite);
     KillSprite(DAT_006160c0);
     FreeAllCarouselNodes();
     Kill_FXList(CAROUSSEL_SFX, 2);
-    FreeBinV(DAT_00616090[0]);
-    FreeBinV(DAT_00616090[1]);
-    FreeBinV(DAT_00616090[2]);
+    FreeBinV(CarouselBinVs[0]);
+    FreeBinV(CarouselBinVs[1]);
+    FreeBinV(CarouselBinVs[2]);
 }
 
 // FUNCTION: LEGOLAND 0x0042c460
 void CarouselSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_006160bc;
+    EditMode.unk8 = ActiveCarouselRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
@@ -267,7 +267,7 @@ int Carousel_Load(struct Element *param_1) {
     for (elem = ride->riders; elem != NULL; elem = elem->next) {
         struct Person *comp = elem->person;
         if (comp->field_30 != 0) {
-            comp->sprite = ((struct Sprite **)&DAT_006160bc)[comp->field_30];
+            comp->sprite = ((struct Sprite **)&ActiveCarouselRide)[comp->field_30];
         } else {
             comp->sprite = NULL;
             elem->person->field_30 = 0;
@@ -275,7 +275,7 @@ int Carousel_Load(struct Element *param_1) {
         {
             struct BNVRef *h = elem->rider->bnv;
             if (h != NULL) {
-                h->file = ((struct BinVFile **)DAT_00616090)[h->index];
+                h->file = ((struct BinVFile **)CarouselBinVs)[h->index];
             }
         }
     }
@@ -284,7 +284,7 @@ int Carousel_Load(struct Element *param_1) {
 
 // FUNCTION: LEGOLAND 0x0042c6d0
 void FUN_0042c6d0(struct CarouselNode *node) {
-    struct RideNode *elem = DAT_006160bc->riders;
+    struct RideNode *elem = ActiveCarouselRide->riders;
     unsigned int flags = node->flags;
 
     if ((flags & 1) != 0) {
@@ -295,7 +295,7 @@ void FUN_0042c6d0(struct CarouselNode *node) {
         f10 = node->cycles_left;
         v = node->frame_ticks;
         if (f10 == 0) {
-            if (GetAllBlokesOffRide(DAT_006160bc, node->id) == 0) {
+            if (GetAllBlokesOffRide(ActiveCarouselRide, node->id) == 0) {
                 return;
             }
             ResetCarouselRide(node);
@@ -405,8 +405,8 @@ void CarouselUpdate(struct Element *param_1) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->field_35 = 0;
-                sprintf(CarouselBlokeBoxName + 8, "%02d", TakeRandomCarouselSeat(elem, node, (signed char)DAT_006160bc->seats));
-                bloke->path = NewBNVPath(DAT_00616090[0], 0, CarouselBlokeBoxName, -1617853.25f, -1618109.0f, in_path);
+                sprintf(CarouselBlokeBoxName + 8, "%02d", TakeRandomCarouselSeat(elem, node, (signed char)ActiveCarouselRide->seats));
+                bloke->path = NewBNVPath(CarouselBinVs[0], 0, CarouselBlokeBoxName, -1617853.25f, -1618109.0f, in_path);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
                 bloke->flags |= 0x80;
@@ -429,7 +429,7 @@ void CarouselUpdate(struct Element *param_1) {
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->param_action++;
-                if ((short)(char)++node->seated_count == (short)DAT_006160bc->seats) {
+                if ((short)(char)++node->seated_count == (short)ActiveCarouselRide->seats) {
                     StartCarouselRide(node);
                 }
                 break;
@@ -445,7 +445,7 @@ void CarouselUpdate(struct Element *param_1) {
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->field_35 = 2;
                 sprintf(CarouselBlokeBoxName + 8, "%02d", bloke->field_36);
-                bloke->path = NewBNVPath(DAT_00616090[2], 2, CarouselBlokeBoxName, -1617853.25f, -1618109.0f, out_path);
+                bloke->path = NewBNVPath(CarouselBinVs[2], 2, CarouselBlokeBoxName, -1617853.25f, -1618109.0f, out_path);
                 bloke->param_action++;
                 break;
             case 8:

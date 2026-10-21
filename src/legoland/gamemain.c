@@ -57,8 +57,8 @@ int IsInMapBounds(int a, int b) {
 
 // FUNCTION: LEGOLAND 0x004776c0
 void ReleasePathNode(struct GameMainNode *node) {
-    node->next = DAT_00668fc4;
-    DAT_00668fc4 = node;
+    node->next = FreePathNodeList;
+    FreePathNodeList = node;
 }
 
 // FUNCTION: LEGOLAND 0x004776e0
@@ -66,11 +66,11 @@ void InsertOpenListSorted(struct GameMainNode *node) {
     struct GameMainNode *current;
     struct GameMainNode *previous;
 
-    if (DAT_00668fc0 == NULL) {
-        DAT_00668fc0 = node;
+    if (OpenPathNodeList == NULL) {
+        OpenPathNodeList = node;
         node->next = NULL;
     } else {
-        current = DAT_00668fc0;
+        current = OpenPathNodeList;
         previous = NULL;
         while (current != NULL) {
             if (current->field_1c >= node->field_1c) {
@@ -83,8 +83,8 @@ void InsertOpenListSorted(struct GameMainNode *node) {
             node->next = previous->next;
             previous->next = node;
         } else {
-            node->next = DAT_00668fc0;
-            DAT_00668fc0 = node;
+            node->next = OpenPathNodeList;
+            OpenPathNodeList = node;
         }
     }
 }
@@ -93,7 +93,7 @@ void InsertOpenListSorted(struct GameMainNode *node) {
 struct GameMainNode *FUN_00477730(struct Point *ctx) {
     struct GameMainNode *node;
 
-    node = DAT_00668fc4;
+    node = FreePathNodeList;
     if (node == NULL) {
         return NULL;
     }
@@ -112,7 +112,7 @@ void RemoveQueryNode(struct GameMainNode *ctx) {
     struct GameMainNode *node;
 
     prev = NULL;
-    node = DAT_00668fc4;
+    node = FreePathNodeList;
     while (node != NULL) {
         if (node == ctx) {
             break;
@@ -123,7 +123,7 @@ void RemoveQueryNode(struct GameMainNode *ctx) {
     if (prev != NULL) {
         prev->next = node->next;
     } else {
-        DAT_00668fc4 = node->next;
+        FreePathNodeList = node->next;
     }
 }
 
@@ -133,7 +133,7 @@ void RemoveFromOpenList(struct GameMainNode *param_1) {
     struct GameMainNode *node;
 
     prev = NULL;
-    node = DAT_00668fc0;
+    node = OpenPathNodeList;
     while (node != NULL) {
         if (node == param_1) {
             break;
@@ -145,12 +145,12 @@ void RemoveFromOpenList(struct GameMainNode *param_1) {
         prev->next = node->next;
         return;
     }
-    DAT_00668fc0 = node->next;
+    OpenPathNodeList = node->next;
 }
 
 // FUNCTION: LEGOLAND 0x004777c0
 struct GameMainNode *FUN_004777c0(struct Point *arg) {
-    struct GameMainNode *node = DAT_00668fc0;
+    struct GameMainNode *node = OpenPathNodeList;
     int first;
 
     if (node == NULL) {
@@ -353,8 +353,8 @@ void FindMapPathAStar(int x, int y, int a, int b) {
     nb = FUN_004777f0(&DAT_004bb598, &result);
     nb->path_cost = 0;
     InsertOpenListSorted((struct GameMainNode *)nb);
-    while ((cur = DAT_00668fc0) != NULL) {
-        DAT_00668fc0 = cur->next;
+    while ((cur = OpenPathNodeList) != NULL) {
+        OpenPathNodeList = cur->next;
 
         if ((DAT_004bb5a0 == cur->x && cur->y == DAT_004bb5a4) || cur->field_20 == 1) {
             best = cur;
@@ -502,8 +502,8 @@ void FindMapPathAStar(int x, int y, int a, int b) {
         }
         nb = nb->parent;
     }
-    while (DAT_00668fc4 != NULL) {
-        RemoveQueryNode(DAT_00668fc4);
+    while (FreePathNodeList != NULL) {
+        RemoveQueryNode(FreePathNodeList);
     }
 }
 

@@ -760,7 +760,7 @@ LEGO_EXPORT void SetEditObject(struct Ride *obj) {
 
 // FUNCTION: LEGOLAND 0x00481720
 void *GetBestNodeList(void) {
-    return DAT_0066b44c;
+    return BestNodeList;
 }
 
 // FUNCTION: LEGOLAND 0x00481730
@@ -770,8 +770,8 @@ struct BestNode *AddBestNode(void) {
     node = (struct BestNode *)malloc(sizeof(struct BestNode));
     node->field_20 = 0;
     node->field_1c = 0;
-    node->next = DAT_0066b44c;
-    DAT_0066b44c = node;
+    node->next = BestNodeList;
+    BestNodeList = node;
     return node;
 }
 
@@ -779,11 +779,11 @@ struct BestNode *AddBestNode(void) {
 void RemoveBestNode(struct BestNode *node) {
     struct BestNode *current;
 
-    if (DAT_0066b44c == node) {
-        DAT_0066b44c = node->next;
+    if (BestNodeList == node) {
+        BestNodeList = node->next;
         free(node);
     } else {
-        for (current = DAT_0066b44c; current->next != 0; current = current->next) {
+        for (current = BestNodeList; current->next != 0; current = current->next) {
             if (current->next == node) {
                 current->next = node->next;
                 free(node);
@@ -797,7 +797,7 @@ void RemoveBestNode(struct BestNode *node) {
 struct BestNode *FindBestNodeAtPoint(struct Point *pos) {
     struct BestNode *node;
 
-    node = DAT_0066b44c;
+    node = BestNodeList;
     if (node == 0) {
         return 0;
     }
@@ -815,10 +815,10 @@ struct BestNode *FindBestNodeAtPoint(struct Point *pos) {
 struct BestNode *FindBestNodeAtPixel(int *param_1) {
     struct BestNode *node;
 
-    if (DAT_0066b44c == 0) {
+    if (BestNodeList == 0) {
         return 0;
     }
-    node = DAT_0066b44c;
+    node = BestNodeList;
     do {
         if (param_1[0] >> 8 >= (int)node->x_min && param_1[0] >> 8 <= (int)node->x_max &&
             param_1[1] >> 8 >= (int)node->y_min && param_1[1] >> 8 <= (int)node->y_max) {

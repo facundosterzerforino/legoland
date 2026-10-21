@@ -97,11 +97,11 @@ void LoadCatapultResources(struct Element *param1) {
         inner = ActiveCatapultRide->layer;
         if (inner != NULL) {
             inner->flags |= 0x2000;
-            DAT_004c10f0 = ActiveCatapultRide->layer;
+            CatapultLayer = ActiveCatapultRide->layer;
         }
     }
-    HideLayer(DAT_004c10f0, 0);
-    HideLayer(DAT_004c10f0, 1);
+    HideLayer(CatapultLayer, 0);
+    HideLayer(CatapultLayer, 1);
     Load_FXList(Catapult_SFX, 4);
 }
 
@@ -127,23 +127,23 @@ void RenderCatapult(struct Element *obj, int unused, int unused2, TileId *tile, 
     if (item != NULL) {
         pos = GetScreenCoordsForObject(tile, ride);
         if (item->field_8 & 1) {
-            LLSSetFrame(GetLLSForLayer(DAT_004c10f0, 1), item->field_d);
-            off = GetRenderOffsetForLayer(DAT_004c10f0, 1);
+            LLSSetFrame(GetLLSForLayer(CatapultLayer, 1), item->field_d);
+            off = GetRenderOffsetForLayer(CatapultLayer, 1);
             AdjustOffsetForViewMode(&off);
-            PrintSprite(GetSpriteForLayer(DAT_004c10f0, 1), pos.x + off.x, pos.y + off.y, arg5, 0);
+            PrintSprite(GetSpriteForLayer(CatapultLayer, 1), pos.x + off.x, pos.y + off.y, arg5, 0);
         } else {
-            LLSSetFrame(GetLLSForLayer(DAT_004c10f0, 0), item->mode);
-            off = GetRenderOffsetForLayer(DAT_004c10f0, 0);
+            LLSSetFrame(GetLLSForLayer(CatapultLayer, 0), item->mode);
+            off = GetRenderOffsetForLayer(CatapultLayer, 0);
             AdjustOffsetForViewMode(&off);
-            PrintSprite(GetSpriteForLayer(DAT_004c10f0, 0), pos.x + off.x, pos.y + off.y, arg5, 0);
+            PrintSprite(GetSpriteForLayer(CatapultLayer, 0), pos.x + off.x, pos.y + off.y, arg5, 0);
         }
         lp = DAT_004b40a4;
         fp = item->active;
         for (i = 4; i != 0; i--) {
             if (*fp & 1) {
-                off = GetRenderOffsetForLayer(DAT_004c10f0, *lp);
+                off = GetRenderOffsetForLayer(CatapultLayer, *lp);
                 AdjustOffsetForViewMode(&off);
-                PrintSprite(GetSpriteForLayer(DAT_004c10f0, *lp), pos.x + off.x, pos.y + off.y, arg5, 0);
+                PrintSprite(GetSpriteForLayer(CatapultLayer, *lp), pos.x + off.x, pos.y + off.y, arg5, 0);
             }
             fp++;
             lp++;
@@ -176,7 +176,7 @@ void FUN_00403430(struct CatapultNode *node) {
 // FUNCTION: LEGOLAND 0x00403480
 void FUN_00403480(struct CatapultNode *item) {
     if (item->field_8 & 0x1) {
-        GetSpriteForLayer(DAT_004c10f0, 1);
+        GetSpriteForLayer(CatapultLayer, 1);
         item->field_d++;
         if (item->field_d >= 0x20) {
             item->field_8 &= 0xfffffffe;
@@ -210,7 +210,7 @@ void FUN_00403530(struct CatapultNode *node, unsigned int index) {
         if (++node->frame[index] >= 32) {
             node->active[index] = 0;
         }
-        LLSSetFrame(GetLLSForLayer(DAT_004c10f0, DAT_004b40a4[index]), node->frame[index]);
+        LLSSetFrame(GetLLSForLayer(CatapultLayer, DAT_004b40a4[index]), node->frame[index]);
     }
 }
 

@@ -50,7 +50,7 @@ LEGO_EXPORT void InitListProfiles(void) {
     // STRING: LEGOLAND 0x004bf050
     RegProfileOff8Sprite = LoadSprite("RegProfileOff_8.lls", 4);
     // STRING: LEGOLAND 0x004bf038
-    DAT_007986b8 = LoadSprite("Reg_Delete_PopUp.lls", 4);
+    RegDeletePopUpSprite = LoadSprite("Reg_Delete_PopUp.lls", 4);
     // STRING: LEGOLAND 0x004bf024
     RegDiffPopUpSprite = LoadSprite("Reg_Diff_PopUp.lls", 4);
     // STRING: LEGOLAND 0x004bf014
@@ -287,10 +287,10 @@ LEGO_EXPORT void KillListProfileSprite(void) {
         KillSprite(sprite);
         RegProfileOnSprite = NULL;
     }
-    sprite = DAT_007986b8;
+    sprite = RegDeletePopUpSprite;
     if (sprite != NULL) {
         KillSprite(sprite);
-        DAT_007986b8 = 0;
+        RegDeletePopUpSprite = 0;
     }
     sprite = RegDiffPopUpSprite;
     if (sprite != NULL) {
@@ -440,7 +440,7 @@ LEGO_EXPORT void PrintProfileDetails(void) {
             }
             if (CurrentProfile.profile_slot == (int)icon->slot) {
                 if (DeletePopUpShown != 0) {
-                    SetIconSprite(icon, DAT_007986b8);
+                    SetIconSprite(icon, RegDeletePopUpSprite);
                     last = icon;
                     icon->y = icon->slot * 0x26 + 0x6b;
                     rc.top = icon->y + 0x22;

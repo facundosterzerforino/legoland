@@ -583,9 +583,9 @@ LEGO_EXPORT void KillTitleScreenSprites(void) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = 0;
     }
-    if (DAT_007986b8 != 0) {
-        KillSprite(DAT_007986b8);
-        DAT_007986b8 = 0;
+    if (RegDeletePopUpSprite != 0) {
+        KillSprite(RegDeletePopUpSprite);
+        RegDeletePopUpSprite = 0;
     }
     PopUpOkIcon = 0;
     PopUpCloseIcon = 0;

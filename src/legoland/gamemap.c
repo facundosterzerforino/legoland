@@ -592,7 +592,7 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
 
     pt.x = 0;
     pt.y = 0;
-    DAT_00801408 = 0;
+    MapRenderOrderCount = 0;
     link = &DAT_007febb8;
     memset(MapRenderOrderList, 0, sizeof(MapRenderOrderList));
     while (pt.x < lpConfig->width) {
@@ -612,10 +612,10 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
                 origin = NULL;
             }
             ride = origin->field_0->ride;
-            entry = &MapRenderOrderList[DAT_00801408];
-            DAT_00801408++;
-            if (DAT_00801408 == 0x1000) {
-                DAT_00801408 = 0;
+            entry = &MapRenderOrderList[MapRenderOrderCount];
+            MapRenderOrderCount++;
+            if (MapRenderOrderCount == 0x1000) {
+                MapRenderOrderCount = 0;
             }
             entry->coords = cell->anchor.id;
             entry->x = (unsigned char)pt.x;
@@ -658,7 +658,7 @@ void FUN_0045a660(void) {
     pt.x = 0;
     pt.y = 0;
     roads = ElemID("DRIVING SCHOOL ROADS");
-    DAT_00801408 = 0;
+    MapRenderOrderCount = 0;
     memset(MapRenderOrderList, 0, sizeof(MapRenderOrderList));
     while (pt.x < lpConfig->width) {
         if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
@@ -677,10 +677,10 @@ void FUN_0045a660(void) {
                 origin = NULL;
             }
             ride = origin->field_0->ride;
-            entry = &MapRenderOrderList[DAT_00801408];
-            DAT_00801408++;
-            if (DAT_00801408 == 0x1000) {
-                DAT_00801408 = 0;
+            entry = &MapRenderOrderList[MapRenderOrderCount];
+            MapRenderOrderCount++;
+            if (MapRenderOrderCount == 0x1000) {
+                MapRenderOrderCount = 0;
             }
             entry->coords = cell->anchor.id;
             entry->x = (unsigned char)pt.x;

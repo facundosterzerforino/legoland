@@ -130,7 +130,7 @@ void FUN_00481e60(struct PathQuery *query, struct BestNode *box) {
 void ClearBestNodeVisited(void) {
     struct BestNode *node;
 
-    node = (struct BestNode *)DAT_0066b44c;
+    node = (struct BestNode *)BestNodeList;
     if (node) {
         while (node) {
             node->field_20 = node->field_20 & 0xfffffffe;
@@ -575,8 +575,8 @@ unsigned int SaveBestNodeList(void) {
     struct BestNode *node;
 
     count = 0;
-    if (DAT_0066b44c != NULL) {
-        node = (struct BestNode *)DAT_0066b44c;
+    if (BestNodeList != NULL) {
+        node = (struct BestNode *)BestNodeList;
         while (node != NULL) {
             count++;
             node = node->next;
@@ -587,7 +587,7 @@ unsigned int SaveBestNodeList(void) {
         return 0;
     }
 
-    node = (struct BestNode *)DAT_0066b44c;
+    node = (struct BestNode *)BestNodeList;
     while (node != NULL) {
         if (SaveGameWrite(&node->x_min, 20) == 0) {
             return 0;
@@ -607,10 +607,10 @@ unsigned int SaveBestNodeList(void) {
 // FUNCTION: LEGOLAND 0x004828f0
 void FreeBestNodeList(void) {
     struct BestNode *next;
-    while (DAT_0066b44c != 0) {
-        next = ((struct BestNode *)DAT_0066b44c)->next;
-        free(DAT_0066b44c);
-        DAT_0066b44c = next;
+    while (BestNodeList != 0) {
+        next = ((struct BestNode *)BestNodeList)->next;
+        free(BestNodeList);
+        BestNodeList = next;
     }
     ClearEntrance1();
 }
@@ -628,8 +628,8 @@ int LoadBestNodeList(void) {
 
     while (count-- != 0) {
         node = malloc(sizeof(struct BestNode));
-        node->next = DAT_0066b44c;
-        DAT_0066b44c = node;
+        node->next = BestNodeList;
+        BestNodeList = node;
         if (SaveGameRead(&node->x_min, 0x14) == 0) {
             return 0;
         }
@@ -675,8 +675,8 @@ void UpdateConnectedNodes(struct Point *pos) {
     struct BestNode *node;
     struct BestNode *found;
 
-    if (DAT_0066b44c != NULL) {
-        node = (struct BestNode *)DAT_0066b44c;
+    if (BestNodeList != NULL) {
+        node = (struct BestNode *)BestNodeList;
         while (node != NULL) {
             node->field_20 &= 0xfffffffd;
             node = node->next;

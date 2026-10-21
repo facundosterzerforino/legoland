@@ -369,7 +369,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         LLIDB_FindElement(PathControlName, &element, 0);
         obj = element->obj;
         PathControlObject = obj;
-        icon = InsertIcon((short)DAT_004bb04c[8], (short)DAT_004bb04c[9], 0x93, IfPathIconSprite);
+        icon = InsertIcon((short)InterfaceIconPos[8], (short)InterfaceIconPos[9], 0x93, IfPathIconSprite);
         icon->string = (char *)obj->field_7c;
         icon->string_id = 0xffffffff;
         icon->field_18 = 1;
@@ -380,7 +380,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->event_handler = (void *)SetEditObjectIconHandler;
         icon->flags = (icon->flags & 0xfffffdff) | 0x300a;
 
-        icon = InsertIcon((short)DAT_004bb04c[10], (short)DAT_004bb04c[11], 0x93, IfQueryiconSprite);
+        icon = InsertIcon((short)InterfaceIconPos[10], (short)InterfaceIconPos[11], 0x93, IfQueryiconSprite);
         icon->string_id = 0x5a;
         icon->string = GetString(0x5a);
         icon->flags |= 0x6002;
@@ -389,7 +389,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_1c = IfQueryIconPressedSprite;
         icon->field_20p = IfQueryiconSprite;
 
-        icon = InsertIcon((short)DAT_004bb04c[12], (short)DAT_004bb04c[13], 0x93, IfEraserIconSprite);
+        icon = InsertIcon((short)InterfaceIconPos[12], (short)InterfaceIconPos[13], 0x93, IfEraserIconSprite);
         icon->string_id = 0x5b;
         icon->string = GetString(0x5b);
         icon->flags |= 0x6002;
@@ -398,7 +398,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_1c = IfEraserIconPressedSprite;
         icon->field_20p = IfEraserIconSprite;
 
-        icon = InsertIcon((short)DAT_004bb04c[14], (short)DAT_004bb04c[15], 0x93, IfMapiconSprite);
+        icon = InsertIcon((short)InterfaceIconPos[14], (short)InterfaceIconPos[15], 0x93, IfMapiconSprite);
         icon->string_id = 0x5c;
         icon->string = GetString(0x5c);
         icon->flags |= 0x6002;
@@ -407,21 +407,21 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_1c = IfMapIconPressedSprite;
         icon->field_20p = IfMapiconSprite;
 
-        icon = InsertIcon((short)DAT_004bb04c[16], (short)DAT_004bb04c[17], 0x93, IfOptionsIconSprite);
+        icon = InsertIcon((short)InterfaceIconPos[16], (short)InterfaceIconPos[17], 0x93, IfOptionsIconSprite);
         icon->string_id = 0x5d;
         icon->string = GetString(0x5d);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)FUN_00475120;
         icon->field_20p = IfOptionsIconSprite;
 
-        icon = InsertIcon((short)DAT_004bb04c[0], (short)DAT_004bb04c[1], 0x9a, LegolandThemeOffSprite);
+        icon = InsertIcon((short)InterfaceIconPos[0], (short)InterfaceIconPos[1], 0x9a, LegolandThemeOffSprite);
         icon->string_id = 0x5e;
         icon->string = GetString(0x5e);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)LegolandThemeIconHandler;
         DAT_007fdd70[0] = (struct IconNode *)icon;
 
-        icon = InsertIcon((short)DAT_004bb04c[2], (short)DAT_004bb04c[3], 0x9a, WesternThemeOffSprite);
+        icon = InsertIcon((short)InterfaceIconPos[2], (short)InterfaceIconPos[3], 0x9a, WesternThemeOffSprite);
         DAT_00668e3c = icon;
         icon->string_id = 0x5f;
         icon->string = GetString(0x5f);
@@ -429,14 +429,14 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->event_handler = (void *)WesternThemeIconHandler;
         DAT_007fdd70[1] = (struct IconNode *)icon;
 
-        icon = InsertIcon((short)DAT_004bb04c[4], (short)DAT_004bb04c[5], 0x9a, CastleThemeOffSprite);
+        icon = InsertIcon((short)InterfaceIconPos[4], (short)InterfaceIconPos[5], 0x9a, CastleThemeOffSprite);
         icon->string_id = 0x60;
         icon->string = GetString(0x60);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)CastleThemeIconHandler;
         DAT_007fdd70[2] = (struct IconNode *)icon;
 
-        icon = InsertIcon((short)DAT_004bb04c[6], (short)DAT_004bb04c[7], 0x9a, AdventurersThemeOffSprite);
+        icon = InsertIcon((short)InterfaceIconPos[6], (short)InterfaceIconPos[7], 0x9a, AdventurersThemeOffSprite);
         icon->string_id = 0x61;
         icon->string = GetString(0x61);
         icon->flags |= 0x6002;
@@ -909,7 +909,7 @@ LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
         exit(1);
     }
     count = LLIDB_GetCount();
-    for (menu_name = DAT_004baffc[0]; (INT_PTR)menu_name < (INT_PTR)DAT_004bb04c; menu_name += 0x14) {
+    for (menu_name = DAT_004baffc[0]; (INT_PTR)menu_name < (INT_PTR)InterfaceIconPos; menu_name += 0x14) {
         if (LLIDB_FindElement(menu_name, &menu_elem, 0) != 0) {
             exit(1);
         }
@@ -1299,7 +1299,7 @@ void DrawFlashingButtons(void) {
     played = 0;
     FUN_00476020();
     if (EditMode.unk4 == 3) {
-        coords = DAT_004bb04c;
+        coords = InterfaceIconPos;
         i = 0;
         do {
             if (ButtonFlashStates[i] != 0) {

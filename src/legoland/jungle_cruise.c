@@ -690,8 +690,8 @@ void MonkeyTreeAddObject(struct Element *param_1, int *param_2) {
     if (obj != NULL) {
         obj->tile.id = coord;
         obj->owner = (unsigned short)local_4;
-        obj->next = DAT_00629c2c;
-        DAT_00629c2c = obj;
+        obj->next = JungleObjList;
+        JungleObjList = obj;
         AddBasicObject(param_1, param_2);
         AddJungleScore((unsigned short)local_4, 1);
     }
@@ -780,7 +780,7 @@ unsigned int JungleCruiseMonkeyTreeDCalcCursor(struct Element *param_1, struct P
 
 // FUNCTION: LEGOLAND 0x00433fc0
 void MonkeyTreeRemoveObject(void *param_1, TileId tile, struct Cursor *param_3) {
-    struct JungleObj *node = DAT_00629c2c;
+    struct JungleObj *node = JungleObjList;
     struct JungleObj *prev = NULL;
 
     StandardRemoveObject(param_1, tile, param_3);
@@ -798,7 +798,7 @@ void MonkeyTreeRemoveObject(void *param_1, TileId tile, struct Cursor *param_3) 
             free(node);
             return;
         }
-        DAT_00629c2c = node->next;
+        JungleObjList = node->next;
         free(node);
     }
 }
@@ -1241,7 +1241,7 @@ void JungleCruiseDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct JunglePath *p1 = JunglePathList;
     struct JungleFish *p3 = JungleFishList;
     struct JungleObj *p4 = DAT_00629c34;
-    struct JungleObj *p2 = DAT_00629c2c;
+    struct JungleObj *p2 = JungleObjList;
 
     BasicObjectDCalcCursor(param_1, param_2);
     DefaultCursor(&DAT_0082ae20);
@@ -1340,7 +1340,7 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
             }
         }
         fake.ride = MonkeyTreeRide;
-        thing = DAT_00629c2c;
+        thing = JungleObjList;
         while (thing != NULL) {
             if (thing->owner == tile.id) {
                 savedX = cursor->tile_x;
@@ -1350,7 +1350,7 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
                 MonkeyTreeRemoveObject(&fake, thing->tile, cursor);
                 cursor->tile_x = savedX;
                 cursor->tile_y = savedY;
-                thing = DAT_00629c2c;
+                thing = JungleObjList;
             } else {
                 thing = thing->next;
             }
@@ -1629,10 +1629,10 @@ int JungleCruise_Save(struct Element *element) {
         fish = fish->next;
     }
     count = 0;
-    for (thingCur = DAT_00629c2c; thingCur != NULL; thingCur = thingCur->next) {
+    for (thingCur = JungleObjList; thingCur != NULL; thingCur = thingCur->next) {
         count++;
     }
-    thing = DAT_00629c2c;
+    thing = JungleObjList;
     SaveGameWrite(&count, 4);
     while (count--) {
         SaveGameWrite(thing, sizeof(*thing));
@@ -1716,8 +1716,8 @@ int JungleCruise_Load(struct Element *element) {
     SaveGameRead(&count, 4);
     while (count--) {
         if (prevThing == NULL) {
-            DAT_00629c2c = (struct JungleObj *)malloc(sizeof(struct JungleObj));
-            prevThing = DAT_00629c2c;
+            JungleObjList = (struct JungleObj *)malloc(sizeof(struct JungleObj));
+            prevThing = JungleObjList;
         } else {
             thing = (struct JungleObj *)malloc(sizeof(struct JungleObj));
             prevThing->next = thing;

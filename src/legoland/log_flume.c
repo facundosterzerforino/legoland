@@ -1818,22 +1818,22 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     }
 
     RenderItems_New();
-    DAT_004cbe70 = NULL;
+    FlumeRiderRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x <= (base.x << 8) - 0x280) {
-            AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
+            AddBlokeToRenderList(&FlumeRiderRenderList, node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
+    RenderBlokeList((struct RenderItemNode **)&FlumeRiderRenderList);
 
     RenderItems_New();
-    DAT_004cbe70 = NULL;
+    FlumeRiderRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280 && (node->rider->pos.y >> 8) <= base.y - 9) {
-            AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
+            AddBlokeToRenderList(&FlumeRiderRenderList, node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
+    RenderBlokeList((struct RenderItemNode **)&FlumeRiderRenderList);
     if (LogFlumeEntrance3Sprite != NULL) {
         struct Point off;
         int frame;
@@ -1856,16 +1856,16 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     }
 
     RenderItems_New();
-    DAT_004cbe70 = NULL;
+    FlumeRiderRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280) {
             int y = node->rider->pos.y >> 8;
             if (y == base.y - 6 || y == base.y - 7 || y == base.y - 8) {
-                AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
+                AddBlokeToRenderList(&FlumeRiderRenderList, node, node->person->field_20);
             }
         }
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
+    RenderBlokeList((struct RenderItemNode **)&FlumeRiderRenderList);
     if (LogFlumeEntrance1Sprite != NULL) {
         struct Point off;
         int frame;
@@ -1888,13 +1888,13 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     }
 
     RenderItems_New();
-    DAT_004cbe70 = NULL;
+    FlumeRiderRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280 && (node->rider->pos.y >> 8) == base.y - 3) {
-            AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
+            AddBlokeToRenderList(&FlumeRiderRenderList, node, node->person->field_20);
         }
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
+    RenderBlokeList((struct RenderItemNode **)&FlumeRiderRenderList);
     if (LogFlumeEntrance2Sprite != NULL) {
         struct Point off;
         int frame;
@@ -1917,16 +1917,16 @@ void RenderLogFlumeEntrance(Element *elem, unsigned int param_2, unsigned int pa
     }
 
     RenderItems_New();
-    DAT_004cbe70 = NULL;
+    FlumeRiderRenderList = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (tile->id == node->tile.id && !(node->rider->flags & 0x80) && node->rider->pos.x > (base.x << 8) - 0x280) {
             int y = node->rider->pos.y >> 8;
             if (y == base.y - 2 || y == base.y - 1 || y == base.y) {
-                AddBlokeToRenderList(&DAT_004cbe70, node, node->person->field_20);
+                AddBlokeToRenderList(&FlumeRiderRenderList, node, node->person->field_20);
             }
         }
     }
-    RenderBlokeList((struct RenderItemNode **)&DAT_004cbe70);
+    RenderBlokeList((struct RenderItemNode **)&FlumeRiderRenderList);
     if (LogFlumeSignSprite != NULL) {
         struct Point off;
         int frame;

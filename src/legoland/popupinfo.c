@@ -200,13 +200,13 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     // STRING: LEGOLAND 0x004baa7c
     PuCornerMaskIcon = LoadSpriteIcon("PU_CornerMask.lls", 4, 0, 0, 0x2c3);
     PuCornerMaskIcon->flags |= 0x400;
-    DAT_007fdfcc = InsertIcon(0, 0, 0x2c3, PuDeleteObjectSprite);
-    DAT_007fdfcc->string_id = 0xa1;
-    DAT_007fdfcc->string = GetString(0xa1);
-    DAT_007fdfcc->flags |= 0x2000;
-    DAT_007fdfcc->flags |= 0x4002;
-    DAT_007fdfcc->flags |= 0x400;
-    DAT_007fdfcc->event_handler = (void *)DeleteWorkOrderEventHandler;
+    PopUpDeleteIcon = InsertIcon(0, 0, 0x2c3, PuDeleteObjectSprite);
+    PopUpDeleteIcon->string_id = 0xa1;
+    PopUpDeleteIcon->string = GetString(0xa1);
+    PopUpDeleteIcon->flags |= 0x2000;
+    PopUpDeleteIcon->flags |= 0x4002;
+    PopUpDeleteIcon->flags |= 0x400;
+    PopUpDeleteIcon->event_handler = (void *)DeleteWorkOrderEventHandler;
     FUN_00470950(PopUpOkEventHandler, CBCloseEventHandler);
 }
 
@@ -346,7 +346,7 @@ void DisablePopUpIconHandlers(void) {
     DeleteObjectIcon->event_handler = NULL;
     AddGardenerIcon->event_handler = NULL;
     AddMechanicsIcon->event_handler = NULL;
-    DAT_007fdfcc->event_handler = NULL;
+    PopUpDeleteIcon->event_handler = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x004714a0
@@ -355,7 +355,7 @@ void EnablePopUpIconHandlers(void) {
     ClosePopUpIcon->event_handler = (void *)ClosePopUpEventHandler;
     AddGardenerIcon->event_handler = (void *)AddGardenerEventHandler;
     AddMechanicsIcon->event_handler = (void *)AddMechanicsEventHandler;
-    DAT_007fdfcc->event_handler = (void *)DeleteWorkOrderEventHandler;
+    PopUpDeleteIcon->event_handler = (void *)DeleteWorkOrderEventHandler;
 }
 
 // FUNCTION: LEGOLAND 0x004714e0
@@ -404,7 +404,7 @@ LEGO_EXPORT void DisableInfoPopUPIcons(void) {
     CBCloseIcon->flags |= 0x400;
     AddGardenerIcon->flags |= 0x400;
     AddMechanicsIcon->flags |= 0x400;
-    DAT_007fdfcc->flags |= 0x400;
+    PopUpDeleteIcon->flags |= 0x400;
     NextPopUpIcon->flags |= 0x400;
     PrevPopUpIcon->flags |= 0x400;
 }
@@ -417,7 +417,7 @@ void SetPopUpIconSprites(void) {
     SetIconSprite((struct IconNode *)ClosePopUpIcon, PuClosePopUpSprite);
     SetIconSprite((struct IconNode *)AddGardenerIcon, PuAddGardenerSprite);
     SetIconSprite((struct IconNode *)AddMechanicsIcon, PuAddMechanicsSprite);
-    SetIconSprite((struct IconNode *)DAT_007fdfcc, PuDeleteObjectSprite);
+    SetIconSprite((struct IconNode *)PopUpDeleteIcon, PuDeleteObjectSprite);
 }
 
 // FUNCTION: LEGOLAND 0x004716a0
@@ -1156,10 +1156,10 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     ClosePopUpIcon->y = icon_y;
     last_x = ClosePopUpIcon->x;
     if (show_close != 0) {
-        DAT_007fdfcc->flags = DAT_007fdfcc->flags & 0xfffffbff;
-        DAT_007fdfcc->x = icon_x - 0x4e;
-        DAT_007fdfcc->y = icon_y;
-        last_x = DAT_007fdfcc->x;
+        PopUpDeleteIcon->flags = PopUpDeleteIcon->flags & 0xfffffbff;
+        PopUpDeleteIcon->x = icon_x - 0x4e;
+        PopUpDeleteIcon->y = icon_y;
+        last_x = PopUpDeleteIcon->x;
     }
     if (can_delete != 0) {
         if (FUN_004723f0() != 0) {

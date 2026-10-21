@@ -2035,7 +2035,7 @@ __declspec(naked) void FUN_0041f8d0(void) {
         shl eax, 4
         movsx eax, word ptr [eax + ecx + 2]
         mov dword ptr [ebp - 4], eax
-        mov eax, dword ptr [DAT_004b5b24]
+        mov eax, dword ptr [CoasterSurfacePixels]
         mov dword ptr [ebp - 0xc], eax
         mov eax, dword ptr [CoasterSurfacePitch]
         mov dword ptr [ebp - 8], eax
@@ -2147,7 +2147,7 @@ __declspec(naked) void FUN_0041fa10(void) {
         lea eax, [eax + eax*2]
         shl eax, 4
         inc word ptr [eax + edx + 2]
-        mov edi, dword ptr [DAT_004b5b24]
+        mov edi, dword ptr [CoasterSurfacePixels]
         lea eax, [eax + edx + 2]
         mov eax, dword ptr [ecx + esi*8 - 4]
         mov esi, dword ptr [CoasterSurfaceBits]
@@ -2296,7 +2296,7 @@ __declspec(naked) void FUN_0041fba0(void) {
         lea eax, [eax + eax*2]
         shl eax, 4
         inc word ptr [eax + edx + 2]
-        mov edi, dword ptr [DAT_004b5b24]
+        mov edi, dword ptr [CoasterSurfacePixels]
         lea eax, [eax + edx + 2]
         mov eax, dword ptr [ecx + esi*8 - 4]
         mov esi, dword ptr [CoasterSurfaceBits]
@@ -2471,7 +2471,7 @@ __declspec(naked) void FUN_0041fd80(void) {
         shl eax, 4
         movsx eax, word ptr [eax + edx + 2]
         mov dword ptr [ebp - 8], eax
-        mov eax, dword ptr [DAT_004b5b24]
+        mov eax, dword ptr [CoasterSurfacePixels]
         mov dword ptr [ebp - 0x10], eax
         mov eax, dword ptr [CoasterSurfacePitch]
         mov dword ptr [ebp - 0xc], eax
@@ -2646,7 +2646,7 @@ __declspec(naked) void FUN_0041ff80(void) {
         inc word ptr [eax + edx + 2]
         mov edi, dword ptr [CoasterSurfaceBits]
         lea eax, [eax + edx + 2]
-        mov ebx, dword ptr [DAT_004b5b24]
+        mov ebx, dword ptr [CoasterSurfacePixels]
         mov eax, dword ptr [ecx + esi*8 - 4]
         lea eax, [eax + eax*2]
         shl eax, 4
@@ -5303,7 +5303,7 @@ __declspec(naked) void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *sr
         lea eax, [eax + eax*2]
         shl eax, 4
         inc word ptr [eax + ecx + 2]
-        mov edi, dword ptr [DAT_004b5b24]
+        mov edi, dword ptr [CoasterSurfacePixels]
         lea eax, [eax + ecx + 2]
         mov ebx, dword ptr [CoasterSurfacePitch]
         mov eax, dword ptr [esi + edx*8 - 4]
@@ -5401,7 +5401,7 @@ L42345f:
 
 // FUNCTION: LEGOLAND 0x00423480
 void ClearCoasterSurfaceRect(struct ClearRect *r) {
-    unsigned short *row = DAT_004b5b24 + r->top * CoasterSurfacePitch;
+    unsigned short *row = CoasterSurfacePixels + r->top * CoasterSurfacePitch;
     int y;
     int x;
     unsigned short *p;
@@ -8505,9 +8505,9 @@ void FUN_00427bc0(struct Element *unused, const struct Struct427bc0Src *src) {
 // FUNCTION: LEGOLAND 0x00427c00
 struct PieceClass *FindPieceClassForElement(struct Element *key) {
     int i;
-    for (i = 0; i < (int)DAT_00611958; i++) {
-        if (DAT_00611688[i].key == key)
-            return DAT_00611688[i].value;
+    for (i = 0; i < (int)ElementPieceClassCount; i++) {
+        if (ElementPieceClasses[i].key == key)
+            return ElementPieceClasses[i].value;
     }
     return 0;
 }
@@ -8634,9 +8634,9 @@ void SquareTrackHeightLoad(Element *param_1) {
     struct Ride *a = param_1->ride;
     DAT_00829bfc = a;
     a->layer->flags |= 0x2000;
-    DAT_00611688[DAT_00611958].key = param_1;
-    DAT_00611688[DAT_00611958].value = &DAT_004b5d58;
-    DAT_00611958++;
+    ElementPieceClasses[ElementPieceClassCount].key = param_1;
+    ElementPieceClasses[ElementPieceClassCount].value = &DAT_004b5d58;
+    ElementPieceClassCount++;
 }
 
 // FUNCTION: LEGOLAND 0x00427f30
@@ -8644,9 +8644,9 @@ void SquareTrackHeight0Load(Element *param_1) {
     struct Ride *a = param_1->ride;
     DAT_00829a64 = a;
     a->layer->flags |= 0x2000;
-    DAT_00611688[DAT_00611958].key = param_1;
-    DAT_00611688[DAT_00611958].value = &DAT_004b5d90;
-    DAT_00611958++;
+    ElementPieceClasses[ElementPieceClassCount].key = param_1;
+    ElementPieceClasses[ElementPieceClassCount].value = &DAT_004b5d90;
+    ElementPieceClassCount++;
 }
 
 struct Struct427f70Arg {
@@ -8708,9 +8708,9 @@ void AddRollerCoasterPath2x2(struct Struct427ff0Point *point) {
 void SquareTrackHeightPathLoad(Element *param_1) {
     struct Ride *a = param_1->ride;
     a->layer->flags |= 0x2000;
-    DAT_00611688[DAT_00611958].key = param_1;
-    DAT_00611688[DAT_00611958].value = &DAT_004b5dc8;
-    DAT_00611958++;
+    ElementPieceClasses[ElementPieceClassCount].key = param_1;
+    ElementPieceClasses[ElementPieceClassCount].value = &DAT_004b5dc8;
+    ElementPieceClassCount++;
 }
 
 /* Placement-cursor callback for SQUARE_TRACK_HEIGHT_PATH. Add cursors for the enabled
@@ -9041,7 +9041,7 @@ __declspec(naked) void FUN_00428860(void) {
         mov dword ptr [ebp - 0x20], eax
         mov eax, dword ptr [ebp + 8]
         movsx edx, word ptr [ecx + edx + 2]
-        mov ecx, dword ptr [DAT_004b5b24]
+        mov ecx, dword ptr [CoasterSurfacePixels]
         mov dword ptr [ebp - 0x14], edx
         mov edx, dword ptr [CoasterSurfacePitch]
         push eax

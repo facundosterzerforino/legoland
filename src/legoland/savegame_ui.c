@@ -80,7 +80,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
     // STRING: LEGOLAND 0x004bf104
     RegDeleteSprite = LoadSprite("RegDelete.lls", 4);
     // STRING: LEGOLAND 0x004bf19c
-    DAT_007986b8 = LoadSprite("RegSaveDouble_PopUp.lls", 4);
+    RegDeletePopUpSprite = LoadSprite("RegSaveDouble_PopUp.lls", 4);
     // STRING: LEGOLAND 0x004bf188
     RegCornerMaskSprite = LoadSprite("RegCornerMask.lls", 4);
 
@@ -365,13 +365,13 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
                 if (CurrentProfile.save_slot == node->field_1cb) {
                     selected = node;
                     if (DeletePopUpShown != 0) {
-                        SetIconSprite(node, DAT_007986b8);
+                        SetIconSprite(node, RegDeletePopUpSprite);
                         node->y = (short)(node->field_1cb * 0x26 + 0x54);
                         by = node->y + 0x1b;
                         rc.top = node->y + 0x22;
                         LightUpthisDeleteIcon(node, 0);
                     } else if (DAT_00798700 != 0) {
-                        SetIconSprite(node, DAT_007986b8);
+                        SetIconSprite(node, RegDeletePopUpSprite);
                         node->y = (short)(node->field_1cb * 0x26 + 0x54);
                         by = node->y;
                         rc.top = by + 0x22;

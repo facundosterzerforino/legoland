@@ -1648,7 +1648,7 @@ LEGO_EXPORT struct Indicator *AllocateTimedIndicator(struct Sprite *sprite, unsi
     struct IconNode *icon;
 
     ind = malloc(sizeof(struct Indicator));
-    ind->next = DAT_006688d4;
+    ind->next = IndicatorList;
     ind->field_4 = 0;
     ind->field_8 = GetGameTimer();
     ind->field_c = a2;
@@ -1671,7 +1671,7 @@ LEGO_EXPORT struct Indicator *AllocateTimedIndicator(struct Sprite *sprite, unsi
     ind->field_18 = 0;
     ind->field_1c = 0;
 
-    DAT_006688d4 = (struct Indicator *)ind;
+    IndicatorList = (struct Indicator *)ind;
     return ind;
 }
 
@@ -1681,7 +1681,7 @@ LEGO_EXPORT struct Indicator *AllocatePermanentIndicator(struct Sprite *sprite, 
     struct IconNode *icon;
 
     ind = malloc(sizeof(struct Indicator));
-    ind->next = DAT_006688d4;
+    ind->next = IndicatorList;
     ind->field_4 = 1;
     ind->field_8 = GetGameTimer();
     ind->field_10 = param_2;
@@ -1703,7 +1703,7 @@ LEGO_EXPORT struct Indicator *AllocatePermanentIndicator(struct Sprite *sprite, 
     ind->field_18 = 0;
     ind->field_1c = 0;
 
-    DAT_006688d4 = (struct Indicator *)ind;
+    IndicatorList = (struct Indicator *)ind;
     return ind;
 }
 
@@ -1721,9 +1721,9 @@ LEGO_EXPORT void SetClickFunc(struct Indicator *ind, void (*func)(struct Indicat
 
 // FUNCTION: LEGOLAND 0x0046fd40
 LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
-    struct Indicator *cur = DAT_006688d4;
+    struct Indicator *cur = IndicatorList;
     if (cur == ind) {
-        DAT_006688d4 = cur->next;
+        IndicatorList = cur->next;
     } else {
         while (cur != NULL) {
             if (cur->next == ind) {
@@ -1757,8 +1757,8 @@ LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
         }
     }
     if (cur != NULL) {
-        ind->next = DAT_006688d4;
-        DAT_006688d4 = ind;
+        ind->next = IndicatorList;
+        IndicatorList = ind;
         ind->field_4 = ind->field_4 & 0xfffffff7;
         ind->field_14->flags = ind->field_14->flags | 0x400;
     }
@@ -1789,12 +1789,12 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
         return;
     }
 
-    if (DAT_006688d4 == ind) {
-        DAT_006688d4 = ((struct Indicator *)DAT_006688d4)->next;
+    if (IndicatorList == ind) {
+        IndicatorList = ((struct Indicator *)IndicatorList)->next;
         free(ind);
         return;
     }
-    cur = DAT_006688d4;
+    cur = IndicatorList;
     while (cur != 0) {
         if (cur->next == ind) {
             cur->next = ind->next;
