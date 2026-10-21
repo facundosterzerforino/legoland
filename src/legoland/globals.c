@@ -1891,12 +1891,6 @@ struct RenderItemNode *DAT_00610a18;
 // GLOBAL: LEGOLAND 0x00610a20
 float sqrtf_table[128];
 
-// GLOBAL: LEGOLAND 0x00610c40
-float invsqrtf_table[128];
-
-// GLOBAL: LEGOLAND 0x00610e44
-float invsqrtf_exp_table[256];
-
 // GLOBAL: LEGOLAND 0x00611244
 float sqrtf_exp_table[256];
 

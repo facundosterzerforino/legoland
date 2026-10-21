@@ -1719,7 +1719,7 @@ extern struct RenderItemNode *DAT_00610a18;
 // 0x00610a20 — sqrtf lookup table (64 entries: {intercept, slope} pairs)
 extern float sqrtf_table[128];
 // 0x00610c40 — invsqrtf lookup table (64 entries: {intercept, slope} pairs)
-extern float invsqrtf_table[128];
+extern float invsqrtf_table[129];
 // 0x00610e44 — invsqrtf exponent scale table (256 entries)
 extern float invsqrtf_exp_table[256];
 // 0x00611244 — sqrtf exponent scale table (256 entries)

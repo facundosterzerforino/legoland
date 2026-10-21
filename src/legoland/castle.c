@@ -7684,6 +7684,16 @@ __declspec(naked) void HASM_lego_invsqrtf(void) {
     }
 }
 
+/* Lookup tables of the inverse square root (lego_invsqrtf): 64 (x/2, 1/(2x)) mantissa pairs, then one
+ * factor per float exponent. The exponent table starts 0x204 bytes after the mantissa table (one unused
+ * float between them): lego_invsqrtf_init's loop end pointer is exactly invsqrtf_exp_table. Defined here,
+ * initialised, so the two stay in this order and adjacent as in the original. */
+// GLOBAL: LEGOLAND 0x00610c40
+float invsqrtf_table[129] = {0};
+
+// GLOBAL: LEGOLAND 0x00610e44
+float invsqrtf_exp_table[256] = {0};
+
 // FUNCTION: LEGOLAND 0x00426b10
 void lego_invsqrtf_init(void) {
     int i;
