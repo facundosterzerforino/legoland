@@ -333,7 +333,7 @@ void FUN_00482240(int x, int y, struct DirNode *parent) {
 }
 
 // FUNCTION: LEGOLAND 0x00482300
-struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
+struct DirNode *AllocDirNode(unsigned int x, unsigned int y) {
     struct DirNode *node;
 
     node = malloc(sizeof(struct DirNode));
@@ -411,14 +411,14 @@ int FUN_00482430(void) {
     switch (dir) {
     case 0:
         if (p2 != 0) {
-            FUN_00482300(p2->x, p2->y);
+            AllocDirNode(p2->x, p2->y);
         }
         return p4 == 0;
     case 1:
-        FUN_00482300(p3->x, p3->y);
+        AllocDirNode(p3->x, p3->y);
         return p4 == 0;
     case 2:
-        FUN_00482300(p4->x, p4->y);
+        AllocDirNode(p4->x, p4->y);
         break;
     }
     return p4 == 0;

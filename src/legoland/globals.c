@@ -4932,7 +4932,7 @@ struct LocFile *TracyLocData;
 struct LocFile *GeoffLocData;
 
 // GLOBAL: LEGOLAND 0x0081c8cc
-void *DAT_0081c8cc;
+void *RiderSearchCursor;
 
 // GLOBAL: LEGOLAND 0x0081c8d0
 unsigned int ViewportLeft;

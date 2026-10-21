@@ -226,7 +226,7 @@ void ReplaceExtension(char *path, char *ext) {
 }
 
 // FUNCTION: LEGOLAND 0x00499190
-void FUN_00499190(char *path, char *dir) {
+void PrependDirIfNoPath(char *path, char *dir) {
     char tmp[200];
     int i = strlen(path);
     while (path[i] != '\\' && path[i] != ':' && i > 0) {
@@ -240,7 +240,7 @@ void FUN_00499190(char *path, char *dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00499240
-void FUN_00499240(char *path, char *dir) {
+void ReplacePathDir(char *path, char *dir) {
     char tmp[200];
     int i = strlen(path);
     while (path[i] != '\\' && path[i] != ':' && i > 0) {

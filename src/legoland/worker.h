@@ -114,7 +114,7 @@ int BuyMechanic(void);
 void FUN_0049cfc0(void);
 
 struct MapRect;
-void FUN_0049cf00(struct MapRect *rect);
+void MarkTilesUnderWorkers(struct MapRect *rect);
 Bloke *FUN_00499c40(int *coords);
 void AssignGardenerToWorkOrder(Bloke *worker, WorkOrder *order);
 WorkOrder *CreateGardenerWorkOrder(Element *element, int *coords, int mode);

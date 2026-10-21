@@ -27,7 +27,7 @@ struct TempleRide {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00416ec0
-void FUN_00416ec0(TileId *key) {
+void AddSlideNode(TileId *key) {
     struct SlideNode *node = (struct SlideNode *)malloc(sizeof(struct SlideNode));
     if (node != NULL) {
         memset(node, 0, sizeof(struct SlideNode));
@@ -190,7 +190,7 @@ void TempleSlideAddObject(Element *obj, int *coords) {
     tile.pos.x = (unsigned char)coords[0];
     tile.pos.y = (unsigned char)coords[1];
     AddBasicObject(obj, coords);
-    FUN_00416ec0(&tile);
+    AddSlideNode(&tile);
 }
 
 // FUNCTION: LEGOLAND 0x00417300
@@ -210,7 +210,7 @@ struct RideSpriteInfo *GetTempleSlideSpriteInfo(struct Element *ctx, unsigned sh
 }
 
 // FUNCTION: LEGOLAND 0x00417340
-void FUN_00417340(void *arg) {
+void UpdateSlideAvailability(void *arg) {
     unsigned int *array = FindSlideNode(arg)->slots;
     int i = 0;
 
@@ -243,24 +243,24 @@ int FUN_00417380(void *arg) {
         if (count != 0) {
             pick = avail[0];
             node->slots[pick] = 1;
-            FUN_00417340(arg);
+            UpdateSlideAvailability(arg);
             return pick;
         }
         node->slots[0] = 1;
-        FUN_00417340(arg);
+        UpdateSlideAvailability(arg);
         return 0;
     }
     return -1;
 }
 
 // FUNCTION: LEGOLAND 0x00417400
-void FUN_00417400(unsigned int index, void *arg) {
+void ReleaseSlideSlot(unsigned int index, void *arg) {
     struct SlideNode *result = FindSlideNode(arg);
 
     if (result != NULL) {
         result->slots[index] = 0;
     }
-    FUN_00417340(arg);
+    UpdateSlideAvailability(arg);
 }
 
 // FUNCTION: LEGOLAND 0x00417430
@@ -427,7 +427,7 @@ void TempleSlideUpdate(Element *obj) {
                 bloke->param_action++;
                 break;
             case 6:
-                FUN_00417400(bloke->field_36, tile);
+                ReleaseSlideSlot(bloke->field_36, tile);
                 RemoveBlokeFromRide(ride, node);
                 bloke->flags &= 0xfff7;
                 break;

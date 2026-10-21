@@ -1495,7 +1495,7 @@ int CheckForPeople(MapRect *rect) {
             return 1;
         }
     }
-    FUN_0049cf00(rect);
+    MarkTilesUnderWorkers(rect);
     for (y = rect->y0; y <= rect->y1; y++) {
         for (x = rect->x0; x <= rect->x1; x++) {
             if ((GameMap[y][x].flags & 0x1000) != 0) {

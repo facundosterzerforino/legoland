@@ -490,7 +490,7 @@ void DrivingSchoolUpdate(Element *obj) {
             case 1:
                 if (!bloke->field_58) {
                     tile_id = node->tile.id;
-                    count = FUN_00401c40(tile_id);
+                    count = CountNewBlokesWithId(tile_id);
                     /* The original compares the weighted rider count as a signed value (jge). */
                     if ((int)(5 * count) < (int)FUN_00413970(node->tile.id)) {
                         res = FUN_00401ae0(node->tile.id, bloke);

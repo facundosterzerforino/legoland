@@ -27,7 +27,7 @@ void FUN_004860f0(void);
 void FreeCursorCache(void);
 void *FUN_00486280(int param_1, void *param_2);
 void FUN_00488700(unsigned char *base, struct RenderViewport *vp);
-int FUN_00486540(void);
+int InitReciprocalTables(void);
 void LoadTextureNode(struct Image *image, unsigned int index);
 void FreeTextureNodes(void);
 void FUN_004864e0(void *param_1);

@@ -162,7 +162,7 @@ void FUN_0043a9b0(struct SpaceTowerCar *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aa10
-void FUN_0043aa10(unsigned char *arg) {
+void PlaySpaceTowerSfx(unsigned char *arg) {
     unsigned int buffer[4];
 
     buffer[0] = 2;
@@ -172,7 +172,7 @@ void FUN_0043aa10(unsigned char *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aa50
-void FUN_0043aa50(unsigned char *arg) {
+void FadeSpaceTowerSfx(unsigned char *arg) {
     struct SampleSource params;
     params.type = 2;
     params.x = arg[0];
@@ -181,13 +181,13 @@ void FUN_0043aa50(unsigned char *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aa90
-void FUN_0043aa90(struct SpaceTowerCar *arg) {
+void StartSpaceTowerCar(struct SpaceTowerCar *arg) {
     unsigned char tmp = arg->var_2;
     arg->var_c |= 1;
     arg->var_3 = tmp;
     arg->var_10 = 0;
     FUN_0043a9b0(arg);
-    FUN_0043aa10((unsigned char *)arg);
+    PlaySpaceTowerSfx((unsigned char *)arg);
 }
 
 // FUNCTION: LEGOLAND 0x0043aac0
@@ -213,7 +213,7 @@ void FUN_0043aac0(struct SpaceTowerCar *arg) {
     arg->var_4 = 0;
     arg->var_2 = 0;
     arg->seats[3].delta = (char)(r % 3) + '\a';
-    FUN_0043aa50((unsigned char *)arg);
+    FadeSpaceTowerSfx((unsigned char *)arg);
 }
 
 // FUNCTION: LEGOLAND 0x0043ab70
@@ -291,14 +291,14 @@ void FUN_0043ac70(struct RideNode *param_1, unsigned short *param_2) {
 
     ride = FindSpaceTowerCar(param_2);
     if (ride != NULL) {
-        slot = FUN_0043acb0(param_1, ride);
+        slot = TakeRandomSpaceTowerSlot(param_1, ride);
         param_1->rider->field_50 = slot;
         param_1->rider->field_4c = DAT_004b7758[slot].field_0;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0043acb0
-unsigned int FUN_0043acb0(struct RideNode *param_1, struct SpaceTowerCar *param_2) {
+unsigned int TakeRandomSpaceTowerSlot(struct RideNode *param_1, struct SpaceTowerCar *param_2) {
     int slot;
 
     slot = rand() % 8;
@@ -517,7 +517,7 @@ void SpaceTowerRemoveObject(struct Element *param_1, TileId tile, struct Cursor 
     }
     StandardRemoveObject(param_1, tile, param_3);
     RemoveAllBlokesFromRide(param_1->ride, tile);
-    FUN_0043aa50(&tile.pos.x);
+    FadeSpaceTowerSfx(&tile.pos.x);
 }
 
 // FUNCTION: LEGOLAND 0x0043b4b0
@@ -756,7 +756,7 @@ void FUN_0043b990(struct SpaceTowerCar *esi) {
     if (esi->var_c & 0x4000) {
         if (esi->var_2 == esi->var_4) {
             esi->var_c &= ~0x4000;
-            FUN_0043aa90(esi);
+            StartSpaceTowerCar(esi);
         }
         return;
     }
@@ -859,7 +859,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 obj->var_2++;
                 FUN_0043a9b0(obj);
                 if ((short)(char)obj->var_2 == SpaceTowerRideObj->seats) {
-                    FUN_0043aa90(obj);
+                    StartSpaceTowerCar(obj);
                 }
                 break;
             case 6:

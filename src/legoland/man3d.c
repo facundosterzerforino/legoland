@@ -951,7 +951,7 @@ LEGO_EXPORT void UnInitMan(void) {
     if (TracyWalkMesh != 0) {
         FreeMesh(TracyWalkMesh);
     }
-    FUN_00442c70();
+    FreeRender3DBuffers();
     FreeCursorCache();
     FreeTextureNodes();
     FreeZBuffer();

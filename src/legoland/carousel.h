@@ -30,8 +30,8 @@ void AddCarouselNode(unsigned short *param_1);
 void RemoveCarouselNode(struct CarouselNode *node);
 void FreeAllCarouselNodes(void);
 struct CarouselNode *FindCarouselNode(unsigned short *param_1);
-void FUN_0042bc90(struct CarouselNode *node);
-void FUN_0042c210(struct CarouselNode *node);
+void StartCarouselRide(struct CarouselNode *node);
+void ResetCarouselRide(struct CarouselNode *node);
 void FUN_0042c800(void);
 int FUN_0042cd20(struct RideNode *elem, struct CarouselNode *node, signed char divisor);
 

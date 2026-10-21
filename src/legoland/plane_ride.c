@@ -22,7 +22,7 @@
 #include "objclass.h"
 
 // FUNCTION: LEGOLAND 0x0043d880
-void FUN_0043d880(void *param_1) {
+void AddPlaneRideNode(void *param_1) {
     void *node = malloc(sizeof(struct PlaneRideNode));
     if (node == NULL) {
         return;
@@ -31,7 +31,7 @@ void FUN_0043d880(void *param_1) {
     *(unsigned short *)node = *(unsigned short *)param_1;
     ((struct PlaneRideNode *)node)->next = PlaneRideNodeList;
     PlaneRideNodeList = node;
-    FUN_0043d9f0(node);
+    ResetPlaneRide(node);
 }
 
 // FUNCTION: LEGOLAND 0x0043d8c0
@@ -86,7 +86,7 @@ struct PlaneRideNode *FindPlaneRideNode(TileId *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d990
-void FUN_0043d990(struct PlaneRideNode *node) {
+void StartPlaneRide(struct PlaneRideNode *node) {
     int cfg[4];
 
     cfg[0] = 2;
@@ -102,7 +102,7 @@ void FUN_0043d990(struct PlaneRideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d9f0
-void FUN_0043d9f0(struct PlaneRideNode *node) {
+void ResetPlaneRide(struct PlaneRideNode *node) {
     int cfg[4];
 
     node->f10 = 0;
@@ -279,7 +279,7 @@ void PlaneRideAddObject(Element *a, int *p) {
     c[0] = *(unsigned char *)p;
     c[1] = ((unsigned char *)p)[4];
     AddBasicObject(a, p);
-    FUN_0043d880(c);
+    AddPlaneRideNode(c);
 }
 
 // FUNCTION: LEGOLAND 0x0043e010
@@ -423,7 +423,7 @@ void FUN_0043e2b0(struct PlaneRideNode *node) {
             if (GetAllBlokesOffRide(PlaneRide, *(unsigned short *)node) == 0) {
                 return;
             }
-            FUN_0043d9f0(node);
+            ResetPlaneRide(node);
             return;
         }
         if (v >= 2) {
@@ -438,7 +438,7 @@ void FUN_0043e2b0(struct PlaneRideNode *node) {
         if (flags & 0x4000) {
             if (cur == node->b14) {
                 node->flags = flags & 0xffffbfff;
-                FUN_0043d990(node);
+                StartPlaneRide(node);
                 return;
             }
         } else if (cur != 0) {
@@ -547,7 +547,7 @@ void PlaneRideUpdate(struct Element *elem) {
                 bloke->person->depth = GetUnitDepth(-1617706.75f, -1617948.625f);
                 bloke->param_action++;
                 if ((char)++node->b2 == PlaneRide->seats) {
-                    FUN_0043d990(node);
+                    StartPlaneRide(node);
                 }
                 break;
             case 7:

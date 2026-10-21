@@ -364,7 +364,7 @@ LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font) {
     box.top = 0;
     box.bottom = 0;
     box.right = 200;
-    cell = FUN_00455d40(text, font, 0x10, 0xd6dede, 0);
+    cell = FindTextCellByStyle(text, font, 0x10, 0xd6dede, 0);
     if (!cell) {
         hdc = CreateCompatibleDC(NULL);
         SetBkMode(hdc, 1);
@@ -487,7 +487,7 @@ LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
     block_color = GetNearestColour(0xda, 0xc6, 0x96);
     if (text != NULL) {
         box.right = 200;
-        cell = FUN_00455d40(text, font, 0x10, 0x96c6da, 0);
+        cell = FindTextCellByStyle(text, font, 0x10, 0x96c6da, 0);
         if (cell == NULL) {
             hdc = CreateCompatibleDC(NULL);
             SetBkMode(hdc, 1);
@@ -634,7 +634,7 @@ struct TextCell *FindTextCell(char *name, int width, int height, int font, unsig
 }
 
 // FUNCTION: LEGOLAND 0x00455d40
-struct TextCell *FUN_00455d40(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+struct TextCell *FindTextCellByStyle(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
     int i;
     struct TextCell *cell = TextCells;
 
@@ -739,7 +739,7 @@ void HTBubbleHelpWithMood(RECT *rect, const char *text, int font, int mood_icon)
     if (text != NULL) {
         box.right = 200;
         /* Reuse the measured text cell; otherwise measure it with GDI and cache it. */
-        cell = FUN_00455d40(text, font, 0x10, 0x96c6da, 0);
+        cell = FindTextCellByStyle(text, font, 0x10, 0x96c6da, 0);
         if (cell == NULL) {
             measure_dc = CreateCompatibleDC(NULL);
             SetBkMode(measure_dc, 1);

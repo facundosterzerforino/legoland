@@ -51,7 +51,7 @@ int AddSpiderNode(TileId *key) {
     node->tile_id = key->id;
     node->next = SpiderNodeList;
     SpiderNodeList = node;
-    return FUN_00415a90(node);
+    return ResetSpiderRide(node);
 }
 
 // FUNCTION: LEGOLAND 0x00415930
@@ -103,7 +103,7 @@ struct SpiderNode *FindSpiderNode(TileId *key) {
 }
 
 // FUNCTION: LEGOLAND 0x004159e0
-void FUN_004159e0(const unsigned char *arg0) {
+void PlaySpiderRideSfx(const unsigned char *arg0) {
     struct SampleSource params;
     params.type = 0x2;
     params.x = arg0[0];
@@ -112,7 +112,7 @@ void FUN_004159e0(const unsigned char *arg0) {
 }
 
 // FUNCTION: LEGOLAND 0x00415a20
-void FUN_00415a20(TileId *tile) {
+void FadeSpiderRideSfx(TileId *tile) {
     struct SampleSource params;
     params.type = 2;
     params.x = tile->pos.x;
@@ -121,17 +121,17 @@ void FUN_00415a20(TileId *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x00415a60
-void FUN_00415a60(struct SpiderState *a) {
+void StartSpiderRide(struct SpiderState *a) {
     a->field_3 = a->field_2;
     a->field_2 = 0;
     a->field_8 = (a->field_8 & 0xffffbfff) | 0x1;
     a->frame = 0;
     a->field_10 = 0;
-    FUN_004159e0((const unsigned char *)a);
+    PlaySpiderRideSfx((const unsigned char *)a);
 }
 
 // FUNCTION: LEGOLAND 0x00415a90
-int FUN_00415a90(struct SpiderNode *node) {
+int ResetSpiderRide(struct SpiderNode *node) {
     struct SpiderState *a = (struct SpiderState *)node;
     a->field_10 = 0;
     a->frame = 0;
@@ -139,7 +139,7 @@ int FUN_00415a90(struct SpiderNode *node) {
     a->field_8 &= 0xffffbffe;
     a->field_14 = 0;
     a->field_2 = 0;
-    FUN_00415a20((TileId *)node);
+    FadeSpiderRideSfx((TileId *)node);
 }
 
 // FUNCTION: LEGOLAND 0x00415ae0
@@ -293,7 +293,7 @@ void SpiderRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
     if (node != NULL) {
         RemoveSpiderNode(node);
     }
-    FUN_00415a20(&tile);
+    FadeSpiderRideSfx(&tile);
     StandardRemoveObject(obj, tile, cursor);
     RemoveAllBlokesFromRide(obj->ride, tile);
 }
@@ -350,7 +350,7 @@ void FUN_004161f0(struct SpiderNode *node) {
             if (GetAllBlokesOffRide((struct Ride *)DAT_004cbf20, s->id) == 0) {
                 return;
             }
-            FUN_00415a90(node);
+            ResetSpiderRide(node);
             return;
         }
         if (v >= 2) {
@@ -364,7 +364,7 @@ void FUN_004161f0(struct SpiderNode *node) {
     } else if (flags & 0x4000) {
         if (s->field_2 == s->field_14) {
             s->field_8 = flags & 0xffffbfff;
-            FUN_00415a60(s);
+            StartSpiderRide(s);
             return;
         }
     } else if (s->field_2 != 0) {
@@ -474,7 +474,7 @@ void SpiderRideUpdate(Element *obj) {
                 bloke->param_action++;
                 state->field_2++;
                 if ((short)(char)state->field_2 == DAT_004cbf20->seats) {
-                    FUN_00415a60(state);
+                    StartSpiderRide(state);
                 }
                 break;
             case 7:

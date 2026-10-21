@@ -3770,7 +3770,7 @@ extern struct LocFile *TracyLocData;
 // 0x0081c8c8
 extern struct LocFile *GeoffLocData;
 // 0x0081c8cc
-extern void *DAT_0081c8cc;
+extern void *RiderSearchCursor;
 // 0x0081c8d0
 extern unsigned int ViewportLeft;
 // 0x0081c8d4

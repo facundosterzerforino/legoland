@@ -2208,7 +2208,7 @@ void LoadMechanicWorkOrders(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049cf00
-void FUN_0049cf00(MapRect *rect) {
+void MarkTilesUnderWorkers(MapRect *rect) {
     Bloke *worker;
 
     for (worker = MechanicList; worker != NULL; worker = worker->next) {

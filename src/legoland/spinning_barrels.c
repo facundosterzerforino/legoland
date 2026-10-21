@@ -23,7 +23,7 @@ struct BarrelSource {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043bdb0
-void FUN_0043bdb0(void *param1) {
+void AddBarrelNode(void *param1) {
     struct BarrelNode *block = (struct BarrelNode *)malloc(sizeof(struct BarrelNode));
     if (block == NULL) {
         return;
@@ -33,7 +33,7 @@ void FUN_0043bdb0(void *param1) {
     block->frame = 0;
     block->next = SpinningBarrelList;
     SpinningBarrelList = block;
-    FUN_0043c2f0(block);
+    ResetBarrelRide(block);
 }
 
 // FUNCTION: LEGOLAND 0x0043be00
@@ -61,7 +61,7 @@ void FUN_0043be00(struct BarrelNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043be40
-struct BarrelNode *FUN_0043be40(unsigned short *key) {
+struct BarrelNode *FindBarrelNode(unsigned short *key) {
     struct BarrelNode *cur = SpinningBarrelList;
 
     if (cur != NULL) {
@@ -92,7 +92,7 @@ void RenderSpinningBarrels(Element *obj, void *param_2, void *param_3, TileId *t
     LayerResult layer;
     char i;
 
-    state = FUN_0043be40(&tile->id);
+    state = FindBarrelNode(&tile->id);
     if (state == NULL) {
         return;
     }
@@ -174,7 +174,7 @@ void RenderSpinningBarrels(Element *obj, void *param_2, void *param_3, TileId *t
 }
 
 // FUNCTION: LEGOLAND 0x0043c2f0
-void FUN_0043c2f0(struct BarrelNode *node) {
+void ResetBarrelRide(struct BarrelNode *node) {
     node->frame_ticks = 0;
     node->frame = 0;
     node->boarding_count = 0;
@@ -184,7 +184,7 @@ void FUN_0043c2f0(struct BarrelNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c320
-void FUN_0043c320(struct BarrelNode *node) {
+void StartBarrelRide(struct BarrelNode *node) {
     unsigned int packed = node->flags;
     unsigned char prev = node->seated_count;
     packed &= 0xffffbfff;
@@ -234,7 +234,7 @@ void SpinningBarrelsSetEditMode(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c4d0
-void FUN_0043c4d0(void) {
+void FreeAllBarrelNodes(void) {
     while (SpinningBarrelList != NULL) {
         FUN_0043be00(SpinningBarrelList);
     }
@@ -242,7 +242,7 @@ void FUN_0043c4d0(void) {
 
 // FUNCTION: LEGOLAND 0x0043c4f0
 void SpinningBarrelsRemoveObject(Element *editObj, TileId tile, struct Cursor *cursor) {
-    struct BarrelNode *node = FUN_0043be40(&tile.id);
+    struct BarrelNode *node = FindBarrelNode(&tile.id);
     if (node != NULL) {
         FUN_0043be00(node);
     }
@@ -256,7 +256,7 @@ void SpinningBarrelsAddObject(Element *editObj, int *coords) {
     tile.pos.x = (unsigned char)coords[0];
     tile.pos.y = (unsigned char)coords[1];
     AddBasicObject(editObj, coords);
-    FUN_0043bdb0(&tile);
+    AddBarrelNode(&tile);
 }
 
 // FUNCTION: LEGOLAND 0x0043c570
@@ -288,7 +288,7 @@ void SpinningBarrelsRideUnload(void) {
     if (BoxBlokesOffBNV != NULL) {
         FreeBinV(BoxBlokesOffBNV);
     }
-    FUN_0043c4d0();
+    FreeAllBarrelNodes();
 }
 
 // FUNCTION: LEGOLAND 0x0043c620
@@ -398,7 +398,7 @@ void FUN_0043c7f0(struct BarrelNode *node) {
             if (GetAllBlokesOffRide(SpinningBarrelsRide, node->tile_id) == 0) {
                 return;
             }
-            FUN_0043c2f0(node);
+            ResetBarrelRide(node);
             return;
         }
         if (v > 2) {
@@ -412,7 +412,7 @@ void FUN_0043c7f0(struct BarrelNode *node) {
     } else if (flags & 0x4000) {
         if (node->seated_count == node->boarding_count) {
             node->flags = flags & 0xffffbfff;
-            FUN_0043c320(node);
+            StartBarrelRide(node);
             return;
         }
     } else if (node->seated_count != 0) {
@@ -460,7 +460,7 @@ void SpinningBarrelsUpdate(struct Element *elem) {
         next = rn->next;
         bloke = rn->rider;
         pos = &rn->tile;
-        node = FUN_0043be40(&pos->id);
+        node = FindBarrelNode(&pos->id);
         if (node == NULL) {
             return;
         }
@@ -522,7 +522,7 @@ void SpinningBarrelsUpdate(struct Element *elem) {
                 BlokeSetFrame(bloke, 0);
                 bloke->param_action++;
                 if ((short)(signed char)++node->seated_count == SpinningBarrelsRide->seats) {
-                    FUN_0043c320(node);
+                    StartBarrelRide(node);
                 }
                 break;
             case 8:

@@ -410,7 +410,7 @@ void SheriffUpdate(struct Element *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00437f10
-void FUN_00437f10(unsigned short *param) {
+void AddJailCell(unsigned short *param) {
     struct JailCell *cell = malloc(sizeof(struct JailCell));
     if (cell != NULL) {
         memset(cell, 0, sizeof(struct JailCell));
@@ -432,11 +432,11 @@ void JailCellAddObject(struct Element *editObj, int *coords) {
     key[0] = (unsigned char)coords[0];
     key[1] = (unsigned char)coords[1];
     AddBasicObject(editObj, coords);
-    FUN_00437f10((unsigned short *)key);
+    AddJailCell((unsigned short *)key);
 }
 
 // FUNCTION: LEGOLAND 0x00437f90
-struct JailCell *FUN_00437f90(unsigned short *key) {
+struct JailCell *FindJailCell(unsigned short *key) {
     struct JailCell *cell;
 
     cell = JailCellList;
@@ -477,7 +477,7 @@ void FUN_00437fc0(struct JailCell *cell) {
 }
 
 // FUNCTION: LEGOLAND 0x00438000
-void FUN_00438000(void) {
+void FreeAllJailCells(void) {
     while (JailCellList != NULL) {
         FUN_00437fc0(JailCellList);
     }
@@ -485,7 +485,7 @@ void FUN_00438000(void) {
 
 // FUNCTION: LEGOLAND 0x00438020
 void JailCellRemoveObject(struct Element *editObj, TileId coords, struct Cursor *cursor) {
-    struct JailCell *cell = FUN_00437f90(&coords.id);
+    struct JailCell *cell = FindJailCell(&coords.id);
     if (cell != NULL) {
         FUN_00437fc0(cell);
     }
@@ -510,7 +510,7 @@ void JailCellLoad(struct Element *obj) {
 // FUNCTION: LEGOLAND 0x004380f0
 void JailCellUnload(void) {
     KillSprite(JailCellMaskSprite);
-    FUN_00438000();
+    FreeAllJailCells();
 }
 
 // FUNCTION: LEGOLAND 0x00438110
@@ -533,7 +533,7 @@ void RenderJailCell(Element *obj, unsigned int param_2, unsigned int param_3, un
     struct JailCell *cell;
 
     pos = GetScreenCoordsForObject((TileId *)tile, ride);
-    cell = FUN_00437f90(tile);
+    cell = FindJailCell(tile);
     if (cell == NULL) {
         return;
     }
@@ -622,7 +622,7 @@ void JailCellUpdate(Element *obj) {
         next = node->next;
         bloke = node->rider;
         tile = &node->tile;
-        cell = FUN_00437f90(&tile->id);
+        cell = FindJailCell(&tile->id);
         if (cell == NULL) {
             return;
         }

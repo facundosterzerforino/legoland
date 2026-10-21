@@ -32,7 +32,7 @@ void AddCarouselNode(unsigned short *param_1) {
         node->id = *param_1;
         node->next = CarouselNodeList;
         CarouselNodeList = node;
-        FUN_0042c210(node);
+        ResetCarouselRide(node);
     }
 }
 
@@ -85,7 +85,7 @@ struct CarouselNode *FindCarouselNode(unsigned short *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042bc90
-void FUN_0042bc90(struct CarouselNode *node) {
+void StartCarouselRide(struct CarouselNode *node) {
     struct SampleSource params;
 
     params.type = 2;
@@ -100,7 +100,7 @@ void FUN_0042bc90(struct CarouselNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c210
-void FUN_0042c210(struct CarouselNode *node) {
+void ResetCarouselRide(struct CarouselNode *node) {
     int r;
     struct SampleSource params;
 
@@ -298,7 +298,7 @@ void FUN_0042c6d0(struct CarouselNode *node) {
             if (GetAllBlokesOffRide(DAT_006160bc, node->id) == 0) {
                 return;
             }
-            FUN_0042c210(node);
+            ResetCarouselRide(node);
             return;
         }
         if (2 <= v) {
@@ -313,7 +313,7 @@ void FUN_0042c6d0(struct CarouselNode *node) {
     } else if ((flags & 0x4000) != 0) {
         if ((char)node->seated_count == (char)node->boarding_count) {
             node->flags = flags & 0xffffbfff;
-            FUN_0042bc90(node);
+            StartCarouselRide(node);
             return;
         }
     } else if (node->seated_count != 0) {
@@ -430,7 +430,7 @@ void CarouselUpdate(struct Element *param_1) {
                 bloke->person->depth = GetUnitDepth(-1617853.25f, -1618109.0f);
                 bloke->param_action++;
                 if ((short)(char)++node->seated_count == (short)DAT_006160bc->seats) {
-                    FUN_0042bc90(node);
+                    StartCarouselRide(node);
                 }
                 break;
             case 7:

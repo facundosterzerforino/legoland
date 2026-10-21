@@ -197,7 +197,7 @@ void FUN_004864e0(void *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00486540
-int FUN_00486540(void) {
+int InitReciprocalTables(void) {
     int i;
     float f;
 

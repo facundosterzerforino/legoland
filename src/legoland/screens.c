@@ -702,7 +702,7 @@ void FUN_00459520(void) {
     SetPointer(0);
     // STRING: LEGOLAND 0x004b91f4
     PlayMovie("Intro.avi", 1, 0);
-    FUN_00492ca0(0);
+    RequestMusicTheme(0);
     SetPointer(5);
     FrameCounter = 0;
     Load_Interface_ControlIcons();

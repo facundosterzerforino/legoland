@@ -488,7 +488,7 @@ int FUN_00401ae0(unsigned short id, struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00401c40
-unsigned int FUN_00401c40(unsigned short arg0) {
+unsigned int CountNewBlokesWithId(unsigned short arg0) {
     struct NewBloke *current = DAT_004c10d4;
     unsigned int count = 0;
 

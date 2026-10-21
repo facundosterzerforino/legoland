@@ -151,7 +151,7 @@ LEGO_EXPORT struct Sample *CreateSampleFromWAV(const char *path) {
                                     if (buffer->lpVtbl->Lock(buffer, 0, 0, &locked, &lockedSize, NULL, NULL, 2) == 0) {
                                         memcpy(locked, converted, lockedSize);
                                         buffer->lpVtbl->Unlock(buffer, locked, lockedSize, NULL, 0);
-                                        sample = (struct Sample *)FUN_004920e0();
+                                        sample = (struct Sample *)AllocSample();
                                         if (sample != NULL) {
                                             sample->refcount++;
                                             sample->active = NULL;
@@ -207,7 +207,7 @@ LEGO_EXPORT struct Sample *CreatePlayableSample(struct Sample *def) {
                     (LPDIRECTSOUNDBUFFER *)&def) != 0) {
             break;
         }
-        sample = FUN_00492110();
+        sample = NewSample();
         if (sample == 0) {
             ((LPDIRECTSOUNDBUFFER)def)->lpVtbl->Release((LPDIRECTSOUNDBUFFER)def);
             break;
@@ -564,7 +564,7 @@ void ResumeMusicThread(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492ca0
-void FUN_00492ca0(int param_1) {
+void RequestMusicTheme(int param_1) {
     if (MusicState == 1 || MusicState == 2) {
         MusicCommand = 3;
         NextMusicTheme = param_1 % 5;
@@ -575,7 +575,7 @@ void FUN_00492ca0(int param_1) {
 // FUNCTION: LEGOLAND 0x00492ce0
 void SetInteractiveMusicTheme(int theme) {
     if (MusicState == 1 || MusicState == 2) {
-        FUN_00492ca0(theme);
+        RequestMusicTheme(theme);
     } else if (theme == CurrentMusicTheme) {
         // STRING: LEGOLAND 0x004bf7cc
         DBPrintf("IMT:Theme was same %d, continuing\n", CurrentMusicTheme);
@@ -647,7 +647,7 @@ void FUN_00492da0(void) {
     free(DAT_00799c1c[n])
 
 /* Interactive music thread (IMT). Sets up DirectMusic, loads the five themes (two segments each)
- * and the 5x5 transition segments, then serves the commands posted by FUN_00492ca0/SetInteractiveMusicTheme/
+ * and the 5x5 transition segments, then serves the commands posted by RequestMusicTheme/SetInteractiveMusicTheme/
  * StopInteractiveMusic (MusicCommand, signalled through MusicCommandEvent) and DirectMusic notifications.
  * Setup failures jump into one release chain, as in the original. */
 // FUNCTION: LEGOLAND 0x00492db0
@@ -996,7 +996,7 @@ int StartMusicThread(void *hwnd) {
 }
 
 // FUNCTION: LEGOLAND 0x00495a50
-int FUN_00495a50(int param_1) {
+int VolumePercentToDSVolume(int param_1) {
     int v;
 
     v = param_1 * 4000 / 100 - 4000;
@@ -1011,12 +1011,12 @@ LEGO_EXPORT int UpdateSoundVols(void) {
 
     if (SoundAvailable != 0) {
         if (MusicEnabled != 0 && DMusicInitialised != 0) {
-            vol = FUN_00495a50(CurrentProfile.music_volume);
+            vol = VolumePercentToDSVolume(CurrentProfile.music_volume);
             ((struct SampleBuffer *)DMusicSoundBuffer)->vtable->method_0x3c((struct SampleBuffer *)DMusicSoundBuffer, vol);
         }
-        DAT_007988a0 = FUN_00495a50(CurrentProfile.fx_volume);
+        DAT_007988a0 = VolumePercentToDSVolume(CurrentProfile.fx_volume);
         RefreshSampleVolumes();
-        SpeechSetVolume(FUN_00495a50(CurrentProfile.speech_volume));
+        SpeechSetVolume(VolumePercentToDSVolume(CurrentProfile.speech_volume));
     }
     return 0;
 }
