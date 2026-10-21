@@ -192,27 +192,21 @@ void StartSpaceTowerCar(struct SpaceTowerCar *arg) {
 
 // FUNCTION: LEGOLAND 0x0043aac0
 void ResetSpaceTowerCar(struct SpaceTowerCar *arg) {
-    int r;
-
-    arg->var_c = arg->var_c & 0xffffbffe;
-    arg->seats[0].flags = arg->seats[0].flags & 0xfffffffe;
-    arg->seats[1].flags = arg->seats[1].flags & 0xfffffffe;
+    arg->var_c &= 0xffffbffe;
     arg->seats[0].pos = 0;
+    arg->seats[0].flags &= 0xfffffffe;
     arg->seats[1].pos = 0;
+    arg->seats[1].flags &= 0xfffffffe;
     arg->seats[2].pos = 0;
     arg->seats[3].pos = 0;
-    arg->seats[2].flags = arg->seats[2].flags & 0xfffffffe;
-    arg->seats[3].flags = arg->seats[3].flags & 0xfffffffe;
-    r = rand();
-    arg->seats[0].delta = (char)(r % 3) + '\a';
-    r = rand();
-    arg->seats[1].delta = (char)(r % 3) + '\a';
-    r = rand();
-    arg->seats[2].delta = (char)(r % 3) + '\a';
-    r = rand();
+    arg->seats[2].flags &= 0xfffffffe;
+    arg->seats[3].flags &= 0xfffffffe;
+    arg->seats[0].delta = rand() % 3 + 7;
+    arg->seats[1].delta = rand() % 3 + 7;
+    arg->seats[2].delta = rand() % 3 + 7;
+    arg->seats[3].delta = rand() % 3 + 7;
     arg->var_4 = 0;
     arg->var_2 = 0;
-    arg->seats[3].delta = (char)(r % 3) + '\a';
     FadeSpaceTowerSfx((unsigned char *)arg);
 }
 
