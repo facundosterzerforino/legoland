@@ -3755,15 +3755,12 @@ int CanPlaceFlumeSpecialCorner(struct FlumeEntry **ctx) {
 
 // FUNCTION: LEGOLAND 0x0040e440
 void GetFlumeSpecialCornerConnections(TileId p, unsigned int *result) {
-    int px;
     unsigned int w = LogFlumeFootprint.x1 - LogFlumeFootprint.x0;
-    unsigned int v3;
     unsigned int h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
-    int v1;
 
     switch (FlumeSpecialCornerIndex) {
     case 0:
-        p.pos.x = p.pos.x + ((unsigned char)LogFlumeSpecialCorner1Ride->footprint.v[0]);
+        p.pos.x += (unsigned char)LogFlumeSpecialCorner1Ride->footprint.v[0];
         p.pos.y += (unsigned char)LogFlumeSpecialCorner1Ride->footprint.v[1];
         result[0] = 3;
         result[1] = p.pos.x + 3;
@@ -3773,32 +3770,29 @@ void GetFlumeSpecialCornerConnections(TileId p, unsigned int *result) {
         break;
     case 1:
         p.pos.x += (unsigned char)LogFlumeSpecialCorner2Ride->footprint.v[0];
-        v1 = LogFlumeSpecialCorner2Ride->footprint.v[1];
+        p.pos.y += (unsigned char)LogFlumeSpecialCorner2Ride->footprint.v[1];
         result[0] = 6;
-        p.pos.y += (unsigned char)v1;
         result[3] = LogFlumeSpecialCorner2Ride->footprint.v[2] - LogFlumeSpecialCorner2Ride->footprint.v[0] - w + p.pos.x + 1;
-        result[5] = 2 + p.pos.x;
         result[4] = p.pos.y + 2;
+        result[5] = p.pos.x + 2;
         result[6] = LogFlumeSpecialCorner2Ride->footprint.v[3] - LogFlumeSpecialCorner2Ride->footprint.v[1] - h + p.pos.y + 1;
         break;
     case 2:
         p.pos.x += (unsigned char)LogFlumeSpecialCorner3Ride->footprint.v[0];
-        p.pos.y = p.pos.y + ((unsigned char)LogFlumeSpecialCorner3Ride->footprint.v[1]);
+        p.pos.y += (unsigned char)LogFlumeSpecialCorner3Ride->footprint.v[1];
         result[0] = 12;
-        px = p.pos.x;
-        result[5] = 4 + px;
-        v3 = LogFlumeSpecialCorner3Ride->footprint.v[3];
+        result[5] = p.pos.x + 4;
+        result[6] = LogFlumeSpecialCorner3Ride->footprint.v[3] - LogFlumeSpecialCorner3Ride->footprint.v[1] - h + p.pos.y + 1;
         result[7] = p.pos.x;
-        result[6] = v3 - LogFlumeSpecialCorner3Ride->footprint.v[1] - h + p.pos.y + 1;
         result[8] = p.pos.y + 3;
         break;
     case 3:
-        p.pos.x = p.pos.x + ((unsigned char)LogFlumeSpecialCorner4Ride->footprint.v[0]);
+        p.pos.x += (unsigned char)LogFlumeSpecialCorner4Ride->footprint.v[0];
         p.pos.y += (unsigned char)LogFlumeSpecialCorner4Ride->footprint.v[1];
-        result[7] = p.pos.x;
-        result[1] = p.pos.x + 4;
         result[0] = 9;
+        result[7] = p.pos.x;
         result[8] = p.pos.y + 4;
+        result[1] = p.pos.x + 4;
         result[2] = p.pos.y;
         break;
     }
