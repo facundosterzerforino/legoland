@@ -127,7 +127,7 @@ void FUN_00481e60(struct PathQuery *query, struct BestNode *box) {
 }
 
 // FUNCTION: LEGOLAND 0x00481ee0
-void FUN_00481ee0(void) {
+void ClearBestNodeVisited(void) {
     struct BestNode *node;
 
     node = (struct BestNode *)DAT_0066b44c;
@@ -214,7 +214,7 @@ LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Po
         out->y += 0x80;
         return 2;
     }
-    FUN_00481ee0();
+    ClearBestNodeVisited();
     if (!FUN_00481f00(start, end, &prev)) {
         return -1;
     }
@@ -671,7 +671,7 @@ void MarkConnectedNodes(struct BestNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00482a40
-void FUN_00482a40(struct Point *pos) {
+void UpdateConnectedNodes(struct Point *pos) {
     struct BestNode *node;
     struct BestNode *found;
 

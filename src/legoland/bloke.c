@@ -31,7 +31,7 @@ void UpdatePathLinks(int force) {
     }
     LastPathUpdateTime = now;
     InitEntrance1Point();
-    FUN_00482a40(&Entrance1Point);
+    UpdateConnectedNodes(&Entrance1Point);
 }
 
 // FUNCTION: LEGOLAND 0x00482b60

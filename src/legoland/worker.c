@@ -72,7 +72,7 @@ WorkOrder *AllocMechanicWorkOrder(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499620
-void FUN_00499620(WorkOrder *order) {
+void StepWorkOrderPerimeter(WorkOrder *order) {
     if (order->walk_dir == 1) {
         if (order->step_x < (order->footprints->x1 - order->footprints->x0) + 1) {
             order->step_x++;
@@ -105,7 +105,7 @@ void FUN_00499620(WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x004996a0
-int FUN_004996a0(WorkOrder *order) {
+int IsWorkOrderStepFree(WorkOrder *order) {
     MapElement *cell;
     int x = order->step_x + order->pos.x + order->footprints->x0;
     int y = order->footprints->y1 - order->step_y + order->pos.y;
@@ -125,18 +125,18 @@ int FUN_004996a0(WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499720
-void FUN_00499720(WorkOrder *order) {
+void AdvanceWorkOrderToFreeStep(WorkOrder *order) {
     int saved_24;
     int saved_28;
     int done;
 
-    FUN_00499620(order);
+    StepWorkOrderPerimeter(order);
     saved_24 = order->step_x;
     saved_28 = order->step_y;
 
     while (1) {
-        done = FUN_004996a0(order);
-        FUN_00499620(order);
+        done = IsWorkOrderStepFree(order);
+        StepWorkOrderPerimeter(order);
         if (order->step_x == saved_24 && order->step_y == saved_28) {
             break;
         }
@@ -173,7 +173,7 @@ WorkOrder *CreateGardenerWorkOrder(Element *element, int *coords, int mode) {
     order->type = mode;
     order->walk_dir = 1;
     order->step_y = -1;
-    FUN_00499720(order);
+    AdvanceWorkOrderToFreeStep(order);
     if (mode == 2) {
         cost = GetObjCost(ride) / (float)ride->durability;
         SetWorkOrderBricks(order, cost);
@@ -235,7 +235,7 @@ WorkOrder *CreateMechanicWorkOrder(Element *element, int *coords, int mode) {
     order->type = mode;
     order->walk_dir = 1;
     order->step_y = -1;
-    FUN_00499720(order);
+    AdvanceWorkOrderToFreeStep(order);
     if (mode == 2) {
         if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
             cell = &GameMap[coords[1]][coords[0]];
@@ -1123,7 +1123,7 @@ LEGO_EXPORT void RenderWorkerInterfaceGFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b0d0
-unsigned int FUN_0049b0d0(MapElement *tile, Ride *ride) {
+unsigned int RepairMapElement(MapElement *tile, Ride *ride) {
     tile->durability_level = tile->durability_level + 1;
 
     if (tile->durability_level == (ride->durability >> 2)) {
@@ -1519,7 +1519,7 @@ LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
             }
             ride = tile->field_0->ride;
             ScriptDirtyCategories |= 0x200;
-            FUN_0049b0d0(tile, ride);
+            RepairMapElement(tile, ride);
             if (tile->durability_level >= ride->durability) {
                 tile->flags &= 0xbfff;
                 tile->durability_level = ride->durability;
@@ -1568,7 +1568,7 @@ LEGO_EXPORT void Garderner_Repair(Bloke *worker) {
     case 0:
         switch (FUN_00482710(&worker->pos.x, &worker->goal.x, &dest.x)) {
         case 0:
-            FUN_00499720(worker->order);
+            AdvanceWorkOrderToFreeStep(worker->order);
             RemoveGardenerWorkOrder(worker->order);
             worker->action = 0x10;
             worker->param_action = 0;
@@ -1638,7 +1638,7 @@ LEGO_EXPORT void Garderner_Repair(Bloke *worker) {
             tile = GetTileAtPoint(&order->pos);
             ride = tile->field_0->ride;
             ScriptDirtyCategories |= 0x200;
-            FUN_0049b0d0(tile, ride);
+            RepairMapElement(tile, ride);
             if (tile->durability_level >= ride->durability) {
                 tile->flags &= 0xbfff;
                 tile->durability_level = ride->durability;
@@ -1687,7 +1687,7 @@ LEGO_EXPORT void Mechanics_Repair(Bloke *worker) {
     case 100:
         switch (FUN_00482710(&worker->pos.x, &worker->goal.x, &dest.x)) {
         case 0:
-            FUN_00499720(worker->order);
+            AdvanceWorkOrderToFreeStep(worker->order);
             RemoveMechanicWorkOrder(worker->order);
             worker->action = 0x11;
             worker->param_action = 0;
@@ -1742,7 +1742,7 @@ LEGO_EXPORT void Mechanics_Repair(Bloke *worker) {
                 tile = GetTileAtPoint(&order->pos);
                 ride = tile->field_0->ride;
                 ScriptDirtyCategories |= 0x200;
-                FUN_0049b0d0(tile, ride);
+                RepairMapElement(tile, ride);
                 if (tile->durability_level >= ride->durability) {
                     tile->flags &= 0xbfff;
                     tile->durability_level = ride->durability;
@@ -2226,7 +2226,7 @@ void MarkTilesUnderWorkers(MapRect *rect) {
 }
 
 // FUNCTION: LEGOLAND 0x0049cfc0
-void FUN_0049cfc0(void) {
+void FreeAllWorkOrdersAndWorkers(void) {
     while (GardenerOrderHead != NULL) {
         FreeGardenerWorkOrder(GardenerOrderHead);
     }

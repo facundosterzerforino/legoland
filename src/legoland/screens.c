@@ -311,7 +311,7 @@ void UnloadMap(void) {
         RemoveAllNewObjects();
         ResetInfoStruct();
         ClearBuildObjList();
-        FUN_0049cfc0();
+        FreeAllWorkOrdersAndWorkers();
         UnloadGameInterface();
         SetBricksLimited(1);
         GamePad = (GamePad & 0xffff00ff) | (((GamePad >> 8) & 0xeb) << 8);

@@ -111,7 +111,7 @@ LEGO_EXPORT void EraseGardenerOrder(WorkOrder *order);
 void FreeMechanicWorkOrder(WorkOrder *order);
 int BuyGardener(void);
 int BuyMechanic(void);
-void FUN_0049cfc0(void);
+void FreeAllWorkOrdersAndWorkers(void);
 
 struct MapRect;
 void MarkTilesUnderWorkers(struct MapRect *rect);

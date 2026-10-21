@@ -57,9 +57,9 @@ struct MermaidNode {
 };
 
 /* LLIDB "BOATING SCHOOL BOATS" data: boat sprites with per-frame screen offsets. */
-int FUN_00418e60(TileId tile, struct Bloke *bloke);
+int AddBoatRide(TileId tile, struct Bloke *bloke);
 void FUN_00418fe0(int param_1);
-void FUN_00419300(void);
+void UpdateBoatRides(void);
 void FUN_004193c0(struct BoatRide *param_1);
 struct BoatRide *FUN_00419420(struct BoatRide *param_1);
 void FUN_00419520(struct BoatRide *param_1, int param_2);
@@ -69,11 +69,11 @@ void RemoveBoatRide(struct BoatRide *param_1);
 void AddBoatRideNodeValue(unsigned short id, unsigned int value);
 struct PathNode *FindBoatPathAt(unsigned int a, unsigned int b);
 unsigned int FUN_0041c690(int param_1, int param_2, unsigned short *param_3);
-void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4);
+void AddBoatPathTile(int param_1, int param_2, int param_3, unsigned short *param_4);
 void RemoveBoatPath(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3);
 void ComputeBoatPathDistances(unsigned short param_1);
-void FUN_0041cb20(short param_1);
+void ComputeBoatPathDistancesStep(short param_1);
 int IsBoatPathConnected(int a, int b, int c, int d);
 void SearchBoatPathConnected(int x, int y, int tx, int ty, TileId *owner, int *found);
 void BoatingSchoolMermaidRemoveObject(void *param_1, TileId tile, struct Cursor *param_3);
