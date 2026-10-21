@@ -270,7 +270,7 @@ void SetIconSprite(struct IconNode *node, struct Sprite *sprite) {
 LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprite *sprite) {
     struct IconNode *icon = (struct IconNode *)malloc(sizeof(struct IconNode));
     if (icon != NULL) {
-        *icon = DAT_00668858;
+        *icon = DefaultIconNode;
         icon->x = a1;
         icon->y = a2;
         icon->id = (unsigned short)a3;

@@ -285,7 +285,7 @@ void InsertObjectiveEventSorted(struct ObjectiveEvent *event) {
         ObjectiveEventList = event;
         event->next = NULL;
     }
-    DAT_0066872c[event->type] += 1;
+    ObjectiveEventTypeCounts[event->type] += 1;
 }
 
 // FUNCTION: LEGOLAND 0x00468cd0

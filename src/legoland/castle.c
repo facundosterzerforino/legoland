@@ -4082,14 +4082,14 @@ struct LmsRec *FUN_00421660(struct BlokeInfo *p) {
         lms = GetLmsByName(SitLoManSitName);
         src = GetLfmByName(SitLoManSitName);
         size = GetLfmSizeByName(SitLoManSitName);
-        names = DAT_004b596c;
-        colours = DAT_004b5964;
+        names = ManVisitorTextures;
+        colours = ManVisitorColours;
     } else {
         lms = GetLmsByName(SitLoGirlSitName);
         src = GetLfmByName(SitLoGirlSitName);
         size = GetLfmSizeByName(SitLoGirlSitName);
-        names = DAT_004b597c;
-        colours = DAT_004b5974;
+        names = GirlVisitorTextures;
+        colours = GirlVisitorColours;
     }
     dst = MemAlloc(size, 0, 0, 0);
     if (dst == NULL) {

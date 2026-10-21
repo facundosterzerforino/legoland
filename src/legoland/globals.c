@@ -458,20 +458,20 @@ struct RecBuf *DAT_004b5b3c;
 struct BlokeInfo DAT_004b5988;
 
 // GLOBAL: LEGOLAND 0x004b5964
-unsigned int DAT_004b5964[2] = {0x191919, 0xf11a22};
+unsigned int ManVisitorColours[2] = {0x191919, 0xf11a22};
 
 // GLOBAL: LEGOLAND 0x004b596c
-const char *DAT_004b596c[2] = {
+const char *ManVisitorTextures[2] = {
     // STRING: LEGOLAND 0x004b59d8
     "Chest visitor1",
     // STRING: LEGOLAND 0x004b59d0
     "Face01"};
 
 // GLOBAL: LEGOLAND 0x004b5974
-unsigned int DAT_004b5974[2] = {0xf11a22, 0x8b4a};
+unsigned int GirlVisitorColours[2] = {0xf11a22, 0x8b4a};
 
 // GLOBAL: LEGOLAND 0x004b597c
-const char *DAT_004b597c[2] = {
+const char *GirlVisitorTextures[2] = {
     // STRING: LEGOLAND 0x004b59c0
     "Chest girly2",
     // STRING: LEGOLAND 0x004b59d0
@@ -915,7 +915,7 @@ const char BltFastNoSpriteFmt[] = "BltFast:Sprite Not Available:%s\n";
 unsigned int ScriptEventCategories[71];
 
 // GLOBAL: LEGOLAND 0x004b9f78
-int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
+int AdvisorHelpRect[4] = {0x1f4, 0x190, 0x280, 0x1e0};
 
 // GLOBAL: LEGOLAND 0x004b9f88
 unsigned int HelpChanged;
@@ -936,7 +936,7 @@ unsigned int DAT_004ba884 = 0xff000000;
 struct InfoTimedEntry DAT_004ba8e0[17];
 
 // GLOBAL: LEGOLAND 0x004ba9ac
-unsigned int DAT_004ba9ac[234];
+unsigned int AdviceSpeechIds[234];
 
 // GLOBAL: LEGOLAND 0x004bad54
 int mouse_granularity;
@@ -1306,7 +1306,7 @@ struct Sprite *LogFlumeTrackSprites[10];
 struct Sprite *DAT_004c2ae4;
 
 // GLOBAL: LEGOLAND 0x004c2ae8
-struct QueueTable *DAT_004c2ae8;
+struct QueueTable *FlumeQueueTable0;
 
 // GLOBAL: LEGOLAND 0x004c2aec
 struct Sprite *LogFlumeDrop2MSprite;
@@ -1318,7 +1318,7 @@ struct Sprite *LogFlumeDrop1MSprite;
 unsigned int FlumeSpecialCornerIndex;
 
 // GLOBAL: LEGOLAND 0x004c2af8
-struct QueueTable *DAT_004c2af8;
+struct QueueTable *FlumeQueueTable1;
 
 // GLOBAL: LEGOLAND 0x004c2afc
 struct Element *LogFlumeImageListId;
@@ -1534,7 +1534,7 @@ int DAT_004cbeec;
 void *SafariRunBNV;
 
 // GLOBAL: LEGOLAND 0x007988d0
-void *DAT_007988d0[600];
+void *DMusicStyles[600];
 
 // GLOBAL: LEGOLAND 0x00799230
 struct DirectMusicSegment *MusicIntroSegments[5]; /* seg<theme>1.sgt */
@@ -2354,10 +2354,10 @@ void *ManMeshes[6];
 void *WomanMeshes[6];
 
 // GLOBAL: LEGOLAND 0x0062feec
-struct RenderItemNode *DAT_0062feec[1];
+struct RenderItemNode *RenderItemPoolNext[1];
 
 // GLOBAL: LEGOLAND 0x0062fef0
-struct RenderItemNode *DAT_0062fef0;
+struct RenderItemNode *RenderItem2PoolNext;
 
 // GLOBAL: LEGOLAND 0x0062fef4
 void *TracyWalkMesh;
@@ -2960,7 +2960,7 @@ struct ObjectiveEvent *DAT_00668724;
 struct ObjectiveEvent *ObjectiveEventList;
 
 // GLOBAL: LEGOLAND 0x0066872c
-unsigned int DAT_0066872c[0x15];
+unsigned int ObjectiveEventTypeCounts[0x15];
 
 // GLOBAL: LEGOLAND 0x00668780
 unsigned int DAT_00668780;
@@ -3038,7 +3038,7 @@ short DAT_00668840;
 short DAT_0066884c;
 
 // GLOBAL: LEGOLAND 0x00668858
-struct IconNode DAT_00668858;
+struct IconNode DefaultIconNode;
 
 // GLOBAL: LEGOLAND 0x006688a8
 void *DAT_006688a8;
@@ -3554,10 +3554,10 @@ unsigned char *DAT_00797e68;
 void *DAT_00797e6c;
 
 // GLOBAL: LEGOLAND 0x00797e70
-float DAT_00797e70[100];
+float ReciprocalTable[100];
 
 // GLOBAL: LEGOLAND 0x00798000
-int DAT_00798000[100];
+int ScaledReciprocalTable[100];
 
 // GLOBAL: LEGOLAND 0x00798190
 void *DAT_00798190[256];

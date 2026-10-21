@@ -94,7 +94,7 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
             ClearAdvisorHelp();
             DAT_007fe050 = GetGameTimer();
         } else {
-            BubbleHelp(DAT_004b9f78, AdvisorHelpText, 2);
+            BubbleHelp(AdvisorHelpRect, AdvisorHelpText, 2);
             DAT_007fe050 = GetGameTimer();
         }
     } else {

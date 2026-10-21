@@ -203,8 +203,8 @@ int InitReciprocalTables(void) {
 
     for (i = 1; i < 100; i++) {
         f = (float)i;
-        DAT_00797e70[i] = 1.0f / f;
-        DAT_00798000[i] = (int)(DOUBLE_004ab558 / f);
+        ReciprocalTable[i] = 1.0f / f;
+        ScaledReciprocalTable[i] = (int)(DOUBLE_004ab558 / f);
     }
     return 0;
 }
@@ -289,12 +289,12 @@ L4865eb:
         cmp eax, esi
         mov dword ptr [ebp + 0x10], edi
         je L48697f
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x40]
         sub ecx, dword ptr [ebp - 0x54]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp - 0x58], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x28]
         sub ecx, dword ptr [ebp - 0x54]
         mov eax, dword ptr [ebx + ecx*4]
@@ -395,7 +395,7 @@ L486771:
         cmp esi, edi
         mov dword ptr [ebp - 0x18], eax
         jle L4867ef
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0xc]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -424,7 +424,7 @@ L486771:
         mov dword ptr [ebp - 0x1c], esi
         jmp L48683f
 L4867ef:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0xc]
         shr ecx, 0x10
@@ -542,7 +542,7 @@ L4868d9:
         mov dword ptr [ebp + 0x10], eax
         jl L486771
 L48692f:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x28]
         sub ecx, dword ptr [ebp - 0x40]
         mov eax, dword ptr [ebx + ecx*4]
@@ -568,12 +568,12 @@ L48692f:
         mov edi, dword ptr [ebp + 0x10]
         jmp L486a33
 L48697f:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x28]
         sub ecx, dword ptr [ebp - 0x54]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp + 0xc], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x28]
         sub ecx, dword ptr [ebp - 0x40]
         mov eax, dword ptr [ebx + ecx*4]
@@ -683,7 +683,7 @@ L486aac:
         cmp esi, edi
         mov dword ptr [ebp - 0x18], eax
         jle L486b29
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0xc]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -712,7 +712,7 @@ L486aac:
         mov dword ptr [ebp - 0x1c], esi
         jmp L486b79
 L486b29:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0xc]
         shr ecx, 0x10
@@ -976,12 +976,12 @@ L486cd5:
         cmp esi, edi
         mov dword ptr [ebp - 0x14], esi
         je L487300
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x80]
         sub ecx, dword ptr [ebp - 0x38]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp + 8], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x40]
         sub ecx, dword ptr [ebp - 0x38]
         mov eax, dword ptr [ebx + ecx*4]
@@ -1124,7 +1124,7 @@ L486fb1:
         cmp esi, edi
         mov dword ptr [ebp - 0x3c], eax
         jle L487072
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0x10]
         shr ecx, 0x10
@@ -1169,7 +1169,7 @@ L486fb1:
         mov dword ptr [ebp - 0x10], esi
         jmp L4870fc
 L487072:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0x10]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -1340,7 +1340,7 @@ L4871f8:
         mov dword ptr [ebp - 0x14], eax
         jl L486fb1
 L487280:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x40]
         sub ecx, dword ptr [ebp - 0x80]
         mov eax, dword ptr [ebx + ecx*4]
@@ -1378,12 +1378,12 @@ L487280:
         mov esi, dword ptr [ebp - 0x14]
         jmp L487432
 L487300:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x40]
         sub ecx, dword ptr [ebp - 0x38]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp + 0xc], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x40]
         sub ecx, dword ptr [ebp - 0x80]
         mov eax, dword ptr [ebx + ecx*4]
@@ -1537,7 +1537,7 @@ L4874d1:
         cmp esi, edi
         mov dword ptr [ebp - 0x3c], eax
         jle L487592
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0x10]
         shr ecx, 0x10
@@ -1582,7 +1582,7 @@ L4874d1:
         mov dword ptr [ebp - 0x10], esi
         jmp L48761c
 L487592:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0x10]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -1839,12 +1839,12 @@ L487826:
         mov dword ptr [ebp - 0x40], edx
         mov dword ptr [ebp + 0x10], eax
         je L487ae5
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x24]
         sub ecx, dword ptr [ebp - 0x38]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp - 0x4c], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x18]
         sub ecx, dword ptr [ebp - 0x38]
         mov eax, dword ptr [ebx + ecx*4]
@@ -1923,7 +1923,7 @@ L48794c:
         cmp esi, edi
         mov dword ptr [ebp - 0xc], eax
         jle L4879b3
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0xc]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -1944,7 +1944,7 @@ L48794c:
         mov dword ptr [ebp - 0x28], esi
         jmp L4879ec
 L4879b3:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0xc]
         shr ecx, 0x10
@@ -2038,7 +2038,7 @@ L487a6a:
         mov dword ptr [ebp + 0x10], eax
         jl L48794c
 L487aaa:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x18]
         sub ecx, dword ptr [ebp - 0x24]
         mov eax, dword ptr [ebx + ecx*4]
@@ -2057,12 +2057,12 @@ L487aaa:
         mov dword ptr [ebp - 0x20], eax
         jmp L487b66
 L487ae5:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x18]
         sub ecx, dword ptr [ebp - 0x38]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp + 0xc], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x18]
         sub ecx, dword ptr [ebp - 0x24]
         mov eax, dword ptr [ebx + ecx*4]
@@ -2151,7 +2151,7 @@ L487bd4:
         cmp esi, edi
         mov dword ptr [ebp - 0xc], eax
         jle L487c3a
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0xc]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -2172,7 +2172,7 @@ L487bd4:
         mov dword ptr [ebp - 0x28], esi
         jmp L487c73
 L487c3a:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0xc]
         shr ecx, 0x10
@@ -2405,12 +2405,12 @@ L487daf:
         cmp esi, edi
         mov dword ptr [ebp - 0x10], esi
         je L4882b5
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x6c]
         sub ecx, dword ptr [ebp - 0x30]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp + 8], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x38]
         sub ecx, dword ptr [ebp - 0x30]
         mov eax, dword ptr [ebx + ecx*4]
@@ -2532,7 +2532,7 @@ L488018:
         cmp esi, edi
         mov dword ptr [ebp - 0x34], eax
         jle L4880af
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0x10]
         shr ecx, 0x10
@@ -2569,7 +2569,7 @@ L488018:
         mov dword ptr [ebp - 0xc], esi
         jmp L488116
 L4880af:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0x10]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10
@@ -2717,7 +2717,7 @@ L4881e1:
         mov dword ptr [ebp - 0x10], eax
         jl L488018
 L48824d:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x38]
         sub ecx, dword ptr [ebp - 0x6c]
         mov eax, dword ptr [ebx + ecx*4]
@@ -2749,12 +2749,12 @@ L48824d:
         mov esi, dword ptr [ebp - 0x10]
         jmp L4883a5
 L4882b5:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x38]
         sub ecx, dword ptr [ebp - 0x30]
         mov eax, dword ptr [ebx + ecx*4]
         mov dword ptr [ebp + 0xc], eax
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp - 0x38]
         sub ecx, dword ptr [ebp - 0x6c]
         mov eax, dword ptr [ebx + ecx*4]
@@ -2886,7 +2886,7 @@ L48842e:
         cmp esi, edi
         mov dword ptr [ebp - 0x34], eax
         jle L4884c6
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 8]
         sub ecx, dword ptr [ebp + 0x10]
         shr ecx, 0x10
@@ -2923,7 +2923,7 @@ L48842e:
         mov dword ptr [ebp - 0xc], esi
         jmp L48852d
 L4884c6:
-        lea ebx, [DAT_00798000]
+        lea ebx, [ScaledReciprocalTable]
         mov ecx, dword ptr [ebp + 0x10]
         sub ecx, dword ptr [ebp + 8]
         shr ecx, 0x10

@@ -940,7 +940,7 @@ LEGO_EXPORT void UnInitMan(void) {
             FreeMesh(*p);
         }
         p++;
-    } while ((INT_PTR)p < (INT_PTR)DAT_0062feec);
+    } while ((INT_PTR)p < (INT_PTR)RenderItemPoolNext);
     p = GeoffMeshes;
     do {
         if (*p != 0) {

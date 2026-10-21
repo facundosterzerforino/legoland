@@ -729,7 +729,7 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
             // STRING: LEGOLAND 0x004bfd84
             DBPrintf("Loading Styles\n");
             for (i = 0; DMusicLoader->vtable->EnumObject(DMusicLoader, &CLSID_DirectMusicStyle, i, &desc) == S_OK; i++) {
-                DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &IID_IDirectMusicStyle, &DAT_007988d0[i]);
+                DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &IID_IDirectMusicStyle, &DMusicStyles[i]);
             }
         }
         // STRING: LEGOLAND 0x004bfd70

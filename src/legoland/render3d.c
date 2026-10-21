@@ -997,14 +997,14 @@ LEGO_EXPORT int TMNegParity(float *param_1) {
 
 /* the render item pools (2048 and 20 nodes) */
 // GLOBAL: LEGOLAND 0x00630108
-struct RenderItemNode DAT_00630108[0x800];
+struct RenderItemNode RenderItemPool[0x800];
 
 // GLOBAL: LEGOLAND 0x00638218
-struct RenderItemNode DAT_00638218[20];
+struct RenderItemNode RenderItem2Pool[20];
 
 // FUNCTION: LEGOLAND 0x00442e90
 LEGO_EXPORT void RenderItems_New(void) {
-    DAT_0062feec[0] = DAT_00630108;
+    RenderItemPoolNext[0] = RenderItemPool;
     RenderItemCount = 0;
 }
 
@@ -1051,8 +1051,8 @@ LEGO_EXPORT void AddBlokeToRenderList(struct RenderItemNode **head, struct RideN
 
 // FUNCTION: LEGOLAND 0x00442f50
 struct RenderItemNode *AllocRenderItem(void) {
-    struct RenderItemNode *result = DAT_0062feec[0];
-    DAT_0062feec[0] = DAT_0062feec[0] + 1;
+    struct RenderItemNode *result = RenderItemPoolNext[0];
+    RenderItemPoolNext[0] = RenderItemPoolNext[0] + 1;
     RenderItemCount = RenderItemCount + 1;
     return result;
 }
@@ -1108,7 +1108,7 @@ LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(void *param_1) {
 
 // FUNCTION: LEGOLAND 0x00443060
 LEGO_EXPORT void RenderItems2_New(void) {
-    DAT_0062fef0 = DAT_00638218;
+    RenderItem2PoolNext = RenderItem2Pool;
     RenderItem2Count = 0;
 }
 
@@ -1155,8 +1155,8 @@ LEGO_EXPORT void RenderItem2_AddItem(struct RenderItemNode **head, void *param_2
 
 // FUNCTION: LEGOLAND 0x00443120
 struct RenderItemNode *AllocRenderItem2(void) {
-    struct RenderItemNode *result = DAT_0062fef0;
-    DAT_0062fef0 = DAT_0062fef0 + 1;
+    struct RenderItemNode *result = RenderItem2PoolNext;
+    RenderItem2PoolNext = RenderItem2PoolNext + 1;
     RenderItem2Count = RenderItem2Count + 1;
     return result;
 }

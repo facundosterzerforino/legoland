@@ -37,7 +37,7 @@ static struct GoldSlot Gold_Slots[6] = {{0, 0.8f}, {0, 0.2f}, {1, 0.8f}, {1, 0.2
 // GLOBAL: LEGOLAND 0x004b45e0
 static struct PathPair Gold_PathPairs[5] = {{-2, 0}, {0, -6}, {-6, 0}, {0, 1}, {3, 0}};
 // GLOBAL: LEGOLAND 0x004b4608
-struct PathTable DAT_004b4608 = {5, Gold_PathPairs};
+struct PathTable GoldRushPathTable = {5, Gold_PathPairs};
 
 // GLOBAL: LEGOLAND 0x004b4610
 static struct Point Gold_Points[3] = {{0x400, 0x60}, {0x400, 0x3d0}, {0x400, 0x700}};
@@ -111,7 +111,7 @@ void GoldRushLoad(struct Element *obj) {
         }
     }
 
-    GoldRushQueueTable = (struct Sprite *)BuildQueueTable(&DAT_004b4608);
+    GoldRushQueueTable = (struct Sprite *)BuildQueueTable(&GoldRushPathTable);
     // STRING: LEGOLAND 0x004b465c
     GoldWashMatte1Sprite = LoadSprite("goldwashmatte1.lls", 1);
     // STRING: LEGOLAND 0x004b464c

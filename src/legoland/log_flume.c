@@ -127,11 +127,11 @@ struct FlumeNode;
 // GLOBAL: LEGOLAND 0x004b4798
 static struct PathPair Flume_PathPairs0[4] = {{0, -1}, {3, 0}, {0, -2}, {-4, 0}};
 // GLOBAL: LEGOLAND 0x004b47b8
-struct PathTable DAT_004b47b8 = {4, Flume_PathPairs0};
+struct PathTable FlumePathTable0 = {4, Flume_PathPairs0};
 // GLOBAL: LEGOLAND 0x004b47c0
 static struct PathPair Flume_PathPairs1[5] = {{0, 0}, {0, 1}, {3, 0}, {0, 3}, {-4, 0}};
 // GLOBAL: LEGOLAND 0x004b47e8
-struct PathTable DAT_004b47e8 = {5, Flume_PathPairs1};
+struct PathTable FlumePathTable1 = {5, Flume_PathPairs1};
 
 // GLOBAL: LEGOLAND 0x004b4768
 const char *LogFlumeTrackSpriteFiles[10] = {
@@ -1140,8 +1140,8 @@ void LogFlumeEntranceLoad(Element *elem) {
     if (LogFlumeEntranceLayer != NULL) {
         LogFlumeEntranceLayer->flags |= 0x2000;
     }
-    DAT_004c2ae8 = BuildQueueTable(&DAT_004b47b8);
-    DAT_004c2af8 = BuildQueueTable(&DAT_004b47e8);
+    FlumeQueueTable0 = BuildQueueTable(&FlumePathTable0);
+    FlumeQueueTable1 = BuildQueueTable(&FlumePathTable1);
     // STRING: LEGOLAND 0x004b49c8
     LogFlumeBarrelSprite = LoadSprite("lf_barrel.lls", 1);
     // STRING: LEGOLAND 0x004b49b8
@@ -1198,11 +1198,11 @@ void LogFlumeEntranceUnload(void) {
     if (LogFlumeBarrelMSprite) {
         KillSprite(LogFlumeBarrelMSprite);
     }
-    if (DAT_004c2af8) {
-        FreeIfNotNull(DAT_004c2af8);
+    if (FlumeQueueTable1) {
+        FreeIfNotNull(FlumeQueueTable1);
     }
-    if (DAT_004c2ae8) {
-        FreeIfNotNull(DAT_004c2ae8);
+    if (FlumeQueueTable0) {
+        FreeIfNotNull(FlumeQueueTable0);
     }
     if (LogFlumeBarrel1Sprite) {
         KillSprite(LogFlumeBarrel1Sprite);
@@ -1303,7 +1303,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
         h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
         midY = t.pos.y + ride->footprint.y0 + ((ride->footprint.y1 - ride->footprint.y0) >> 1);
         pos[0] = t.pos.x + ride->footprint.x0 + 1;
-        entry->sub2 = (struct FlumeEntry *)DAT_004c2ae8;
+        entry->sub2 = (struct FlumeEntry *)FlumeQueueTable0;
         pos[1] = t.pos.y + ride->footprint.y0 - h;
         node = AllocFlumeNode();
         if (NULL != node) {
@@ -2288,10 +2288,10 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->param_action++;
                 break;
             case 8:
-                StartQueueTableBackward((struct QueueTable *)DAT_004c2af8, (struct Bloke *)bloke);
+                StartQueueTableBackward((struct QueueTable *)FlumeQueueTable1, (struct Bloke *)bloke);
                 break;
             case 9:
-                MoveBlokeAlongQueueTable((struct QueueTable *)DAT_004c2af8, x, y, bloke);
+                MoveBlokeAlongQueueTable((struct QueueTable *)FlumeQueueTable1, x, y, bloke);
                 break;
             case 10:
                 bloke->dest.x = (x << 8) + 0x80;

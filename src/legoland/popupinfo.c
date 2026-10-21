@@ -1422,7 +1422,7 @@ unsigned int TryPlayAdviceSpeech(unsigned int param) {
 
 // FUNCTION: LEGOLAND 0x00473640
 unsigned int PlayCantBuildAdvice(unsigned int param_1) {
-    return TryPlayAdviceSpeech(DAT_004ba9ac[param_1]);
+    return TryPlayAdviceSpeech(AdviceSpeechIds[param_1]);
 }
 
 // FUNCTION: LEGOLAND 0x00473660

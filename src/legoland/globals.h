@@ -1076,7 +1076,7 @@ extern const char BltFastNoSpriteFmt[];
 // 0x004b9e5c
 extern unsigned int ScriptEventCategories[71];
 // 0x004b9f78
-extern int DAT_004b9f78[4];
+extern int AdvisorHelpRect[4];
 // 0x004b9f88
 extern unsigned int HelpChanged;
 // 0x004b9f8c
@@ -1090,7 +1090,7 @@ extern unsigned int DAT_004ba884;
 // 0x004ba8e0
 extern struct InfoTimedEntry DAT_004ba8e0[17];
 // 0x004ba9ac
-extern unsigned int DAT_004ba9ac[234];
+extern unsigned int AdviceSpeechIds[234];
 // 0x004bad54
 extern int mouse_granularity;
 struct KeyMapping {
@@ -1311,7 +1311,7 @@ extern struct Sprite *LogFlumeTrackSprites[10];
 // 0x004c2ae4
 extern struct Sprite *DAT_004c2ae4;
 // 0x004c2ae8
-extern struct QueueTable *DAT_004c2ae8;
+extern struct QueueTable *FlumeQueueTable0;
 // 0x004c2aec
 extern struct Sprite *LogFlumeDrop2MSprite;
 // 0x004c2af0
@@ -1319,7 +1319,7 @@ extern struct Sprite *LogFlumeDrop1MSprite;
 // 0x004c2af4
 extern unsigned int FlumeSpecialCornerIndex;
 // 0x004c2af8
-extern struct QueueTable *DAT_004c2af8;
+extern struct QueueTable *FlumeQueueTable1;
 // 0x004c2afc
 extern struct Element *LogFlumeImageListId;
 // 0x004c2b0c
@@ -1465,7 +1465,7 @@ extern int DAT_004cbeec;
 // 0x004cbef4
 extern void *SafariRunBNV;
 // 0x007988d0
-extern void *DAT_007988d0[600];
+extern void *DMusicStyles[600];
 // 0x00799230
 extern struct DirectMusicSegment *MusicIntroSegments[5];
 // 0x00799244
@@ -2021,9 +2021,9 @@ extern void *ManMeshes[6];
 extern void *WomanMeshes[6];
 
 // 0x0062feec
-extern struct RenderItemNode *DAT_0062feec[1]; /* the render item pool's next node */
+extern struct RenderItemNode *RenderItemPoolNext[1]; /* the render item pool's next node */
 // 0x0062fef0
-extern struct RenderItemNode *DAT_0062fef0; /* the second pool's next node */
+extern struct RenderItemNode *RenderItem2PoolNext; /* the second pool's next node */
 // 0x0062fef4
 extern void *TracyWalkMesh;
 // 0x0062fef8
@@ -2433,7 +2433,7 @@ extern struct ObjectiveEvent *DAT_00668724;
 // 0x00668728
 extern struct ObjectiveEvent *ObjectiveEventList;
 // 0x0066872c
-extern unsigned int DAT_0066872c[0x15];
+extern unsigned int ObjectiveEventTypeCounts[0x15];
 // 0x00668780
 extern unsigned int DAT_00668780;
 // 0x00668784
@@ -2485,7 +2485,7 @@ extern short DAT_00668840;
 // 0x0066884c
 extern short DAT_0066884c;
 // 0x00668858
-extern struct IconNode DAT_00668858;
+extern struct IconNode DefaultIconNode;
 // 0x006688a8
 extern void *DAT_006688a8;
 // 0x006688ac
@@ -2832,9 +2832,9 @@ extern unsigned char *DAT_00797e68;
 // 0x00797e6c
 extern void *DAT_00797e6c;
 // 0x00797e70
-extern float DAT_00797e70[100];
+extern float ReciprocalTable[100];
 // 0x00798000
-extern int DAT_00798000[100];
+extern int ScaledReciprocalTable[100];
 // 0x00798190
 extern void *DAT_00798190[256];
 // 0x00798590
@@ -4267,13 +4267,13 @@ extern int DAT_004d83bc;
 extern int DAT_0060f910;
 
 // 0x004b5964
-extern unsigned int DAT_004b5964[2];
+extern unsigned int ManVisitorColours[2];
 // 0x004b596c
-extern const char *DAT_004b596c[2];
+extern const char *ManVisitorTextures[2];
 // 0x004b5974
-extern unsigned int DAT_004b5974[2];
+extern unsigned int GirlVisitorColours[2];
 // 0x004b597c
-extern const char *DAT_004b597c[2];
+extern const char *GirlVisitorTextures[2];
 
 // 0x006121c8
 extern float DAT_006121c8[6][3];
