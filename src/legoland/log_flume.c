@@ -1542,9 +1542,9 @@ int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float 
     RECT rc;
 
     rc.left = rect->var_0 + tile.pos.x;
+    rc.top = rect->var_4 + tile.pos.y;
     rc.right = rect->var_8 + tile.pos.x;
     rc.bottom = rect->var_c + tile.pos.y;
-    rc.top = rect->var_4 + tile.pos.y;
     pt.x = rc.left;
     pt.y = rc.top;
     GetTileBounds(&pt, bounds);
