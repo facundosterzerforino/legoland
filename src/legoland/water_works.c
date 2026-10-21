@@ -633,9 +633,9 @@ unsigned int FUN_00418710(unsigned char *coords, int *base) {
     struct WaterRect rect;
 
     rect.x0 = coords[0] + base[0];
-    rect.x1 = rect.x0 + 3;
+    rect.x1 = coords[0] + base[0] + 3;
     rect.y0 = coords[1] + base[3];
-    rect.y1 = rect.y0 + 3;
+    rect.y1 = coords[1] + base[3] + 3;
     if (ListHasPointInRect(FirstBloke, &rect) != 0) {
         return 1;
     }
