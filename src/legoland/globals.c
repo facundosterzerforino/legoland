@@ -341,7 +341,7 @@ unsigned char DAT_004b4bd0[0x14];
 unsigned int DAT_004b4bf0[5];
 
 // GLOBAL: LEGOLAND 0x004b4c04
-int DAT_004b4c04;
+int TrafficLightTimer;
 
 // GLOBAL: LEGOLAND 0x004b4c08
 unsigned short DAT_004b4c08[15][4];
@@ -918,10 +918,10 @@ unsigned int ScriptEventCategories[71];
 int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
 
 // GLOBAL: LEGOLAND 0x004b9f88
-unsigned int DAT_004b9f88;
+unsigned int HelpChanged;
 
 // GLOBAL: LEGOLAND 0x004b9f8c
-UINT_PTR DAT_004b9f8c = (UINT_PTR)-1; /* nothing spoken yet */
+UINT_PTR CurrentHelpKey = (UINT_PTR)-1; /* nothing spoken yet */
 
 // GLOBAL: LEGOLAND 0x004ba87c
 void *PTR_some_list_head_004ba87c;
@@ -1207,10 +1207,10 @@ struct CountNode *DrivingSchoolCountList;
 int DAT_004c11c0;
 
 // GLOBAL: LEGOLAND 0x004c11c4
-struct RideQueueEntry *DAT_004c11c4;
+struct RideQueueEntry *RoadBfsFrontier;
 
 // GLOBAL: LEGOLAND 0x004c11c8
-struct RideQueueEntry *DAT_004c11c8;
+struct RideQueueEntry *RoadBfsNextFrontier;
 
 // GLOBAL: LEGOLAND 0x004c11cc
 struct Sprite *FortMaskSprite;
@@ -1360,13 +1360,13 @@ struct Cursor DAT_004c2c18;
 struct Element *DAT_004c2ba0;
 
 // GLOBAL: LEGOLAND 0x004c2bf0
-struct Ride *DAT_004c2bf0;
+struct Ride *LogFlumeCsaw2Ride;
 
 // GLOBAL: LEGOLAND 0x004c445c
 struct Ride *DAT_004c445c;
 
 // GLOBAL: LEGOLAND 0x004c4460
-struct Element *DAT_004c4460;
+struct Element *LogFlumeCsaw2Element;
 
 // GLOBAL: LEGOLAND 0x004c4468
 struct Cursor DAT_004c4468;
@@ -1393,7 +1393,7 @@ struct Sprite *LogFlumeFc2M1Sprite;
 struct Footprint DAT_004c8d38;
 
 // GLOBAL: LEGOLAND 0x004c8d4c
-struct Element *DAT_004c8d4c;
+struct Element *LogFlumeDropElement;
 
 // GLOBAL: LEGOLAND 0x004c8d50
 struct Element *DAT_004c8d50;
@@ -1408,7 +1408,7 @@ struct Cursor DAT_004c8d78;
 struct Sprite *LogFlumeFc3M3Sprite;
 
 // GLOBAL: LEGOLAND 0x004c8d6c
-struct Ride *DAT_004c8d6c;
+struct Ride *LogFlumeDropRide;
 
 // GLOBAL: LEGOLAND 0x004c8d70
 struct Sprite *LogFlumeFc4MSprite;
@@ -1441,7 +1441,7 @@ struct Ride *DAT_004cbe18;
 struct Sprite *LogFlumeFc1M3Sprite;
 
 // GLOBAL: LEGOLAND 0x004cbe20
-struct FlumeEntry *DAT_004cbe20[4]; /* the 4 neighbours of a log flume tile (up, right, down, left) */
+struct FlumeEntry *FlumeNeighbours[4]; /* the 4 neighbours of a log flume tile (up, right, down, left) */
 
 // GLOBAL: LEGOLAND 0x004cbe30
 struct Ride *LogFlumeTrackRide;
@@ -1498,16 +1498,16 @@ struct Ride *DrivingSchoolPumpsRide;
 struct PumpNode *PumpList;
 
 // GLOBAL: LEGOLAND 0x004cbeac
-struct RideQueueEntry *DAT_004cbeac;
+struct RideQueueEntry *RoadEntryList;
 
 // GLOBAL: LEGOLAND 0x004cbeb0
-int DAT_004cbeb0;
+int TrafficLightA;
 
 // GLOBAL: LEGOLAND 0x004cbeb4
-int DAT_004cbeb4;
+int TrafficLightB;
 
 // GLOBAL: LEGOLAND 0x004cbeb8
-unsigned int DAT_004cbeb8;
+unsigned int TrafficLightPhase;
 
 // GLOBAL: LEGOLAND 0x004cbec4
 struct Ride *SafariRide;
@@ -2990,10 +2990,10 @@ struct NerpsListNode *CurrentScriptSection;
 unsigned int ScriptLoadErrorCount;
 
 // GLOBAL: LEGOLAND 0x006687a4
-unsigned int DAT_006687a4;
+unsigned int CurrentHelpKind;
 
 // GLOBAL: LEGOLAND 0x006687a8
-unsigned int DAT_006687a8;
+unsigned int HelpRequested;
 
 // GLOBAL: LEGOLAND 0x006687ac
 unsigned int DAT_006687ac;
@@ -4466,7 +4466,7 @@ unsigned char AdventurersThemeCount;
 char *ScriptStringTable[512];
 
 // GLOBAL: LEGOLAND 0x007fe920
-unsigned int DAT_007fe920;
+unsigned int HelpShownTick;
 
 // GLOBAL: LEGOLAND 0x007fe930
 unsigned char ObjectiveCounters[10];

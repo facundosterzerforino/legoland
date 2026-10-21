@@ -86,7 +86,7 @@ struct InfoSource {
 #include "text.h"
 
 // FUNCTION: LEGOLAND 0x0046d3a0
-void FUN_0046d3a0(void) { DAT_006687a4 = 4; }
+void FUN_0046d3a0(void) { CurrentHelpKind = 4; }
 
 // FUNCTION: LEGOLAND 0x0046d3c0
 void FreeIcon(struct IconNode *node) {

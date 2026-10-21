@@ -414,9 +414,9 @@ unsigned char OptionsUpIconHandler(struct IconNode *param_1, unsigned int param_
                         result = VolumePercentToMarker(CurrentProfile.speech_volume);
                         SpeechVolumeMarkerIcon->x = (short)result;
                         if (!DAT_006687b4 && !SpeechIsPlaying()) {
-                            FUN_0046d230(-2);
+                            ShowHelpById(-2);
                         }
-                        FUN_0046d230(param_1->string_id);
+                        ShowHelpById(param_1->string_id);
                     }
                     break;
                 case 5:
@@ -474,9 +474,9 @@ unsigned char OptionsDownIconHandler(struct IconNode *param_1, unsigned int para
                         result = VolumePercentToMarker(CurrentProfile.speech_volume);
                         SpeechVolumeMarkerIcon->x = (short)result;
                         if (!DAT_006687b4 && !SpeechIsPlaying()) {
-                            FUN_0046d230(-2);
+                            ShowHelpById(-2);
                         }
-                        FUN_0046d230(param_1->string_id);
+                        ShowHelpById(param_1->string_id);
                     }
                     break;
                 case 4:
@@ -536,9 +536,9 @@ unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *param_1, unsigned 
             case 3:
                 CurrentProfile.speech_volume = result;
                 if (!DAT_006687b4 && !SpeechIsPlaying()) {
-                    FUN_0046d230(-2);
+                    ShowHelpById(-2);
                 }
-                FUN_0046d230(param_1->string_id);
+                ShowHelpById(param_1->string_id);
                 break;
             case 6:
                 CurrentProfile.music_volume = result;

@@ -613,20 +613,20 @@ int PickQueueTurn(unsigned short id, struct PathPair *p, int dir) {
         return 0;
     }
     StepPointByDirection(&e->x, &pt.a, dir);
-    q = FUN_004125a0(pt.a, pt.b);
+    q = FindRoadEntryAt(pt.a, pt.b);
     if (q != NULL && q->id == id && (q->field_14 & 0xf) != 6) {
         StepPointByDirection(&q->x, &pt.a, dir);
-        t1 = FUN_004125a0(pt.a, pt.b);
+        t1 = FindRoadEntryAt(pt.a, pt.b);
         if (t1 != NULL && (t1->id != id || (0xf & t1->field_14) == 6)) {
             t1 = NULL;
         }
         StepPointByDirection(&q->x, &pt.a, (dir - 2) & 7);
-        t2 = FUN_004125a0(pt.a, pt.b);
+        t2 = FindRoadEntryAt(pt.a, pt.b);
         if (t2 != NULL && (t2->id != id || (t2->field_14 & 0xf) == 6)) {
             t2 = NULL;
         }
         StepPointByDirection(&q->x, &pt.a, (dir + 2) & 7);
-        t3 = FUN_004125a0(pt.a, pt.b);
+        t3 = FindRoadEntryAt(pt.a, pt.b);
         if (t3 != NULL && (t3->id != id || (0xf & t3->field_14) == 6)) {
             t3 = NULL;
         }
@@ -681,7 +681,7 @@ int GetQueueTurn(unsigned short id, struct PathPair *p, int dir) {
         ptmp102 = pt.b;
         { ptmp99 = ptmp102; }
         ptmp310 = pt.a;
-        q = FUN_004125a0(ptmp310, ptmp99);
+        q = FindRoadEntryAt(ptmp310, ptmp99);
         if (q == NULL) {
             return PickQueueTurn(id, p, dir);
         }
@@ -722,15 +722,15 @@ int GetQueueTurn(unsigned short id, struct PathPair *p, int dir) {
 
 // FUNCTION: LEGOLAND 0x00402340
 int FUN_00402340(int a1) {
-    if (DAT_004cbeb0 != 0) {
+    if (TrafficLightA != 0) {
         if (a1 == 7 || a1 == 3)
             return 0;
     }
-    if (DAT_004cbeb4 != 0) {
+    if (TrafficLightB != 0) {
         if (a1 == 1 || a1 == 5)
             return 0;
     }
-    if (DAT_004cbeb0 == 0 && DAT_004cbeb4 == 0)
+    if (TrafficLightA == 0 && TrafficLightB == 0)
         return 0;
     return 1;
 }
@@ -747,7 +747,7 @@ int FUN_00402390(struct NewBloke *param_1) {
     local.x = iVar1->x;
     local.y = iVar1->y;
     StepPointByDirection((int *)&local, (int *)&local, DAT_004b4034[(unsigned int)param_1->f_b8]);
-    iVar1 = FUN_004125a0(local.x, local.y);
+    iVar1 = FindRoadEntryAt(local.x, local.y);
     if ((iVar1 != 0) && ((iVar1->field_14 & 0xf) == 5)) {
         return FUN_00402340(DAT_004b4034[(unsigned int)param_1->f_b8]);
     }

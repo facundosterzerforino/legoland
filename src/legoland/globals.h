@@ -721,7 +721,7 @@ extern unsigned char DAT_004b4bd0[0x14];
 // 0x004b4bf0
 extern unsigned int DAT_004b4bf0[5];
 // 0x004b4c04
-extern int DAT_004b4c04;
+extern int TrafficLightTimer;
 // 0x004b4cb8
 extern struct FXItem SAFARI_SFX[1];
 // 0x004b4cc4
@@ -1078,9 +1078,9 @@ extern unsigned int ScriptEventCategories[71];
 // 0x004b9f78
 extern int DAT_004b9f78[4];
 // 0x004b9f88
-extern unsigned int DAT_004b9f88;
+extern unsigned int HelpChanged;
 // 0x004b9f8c
-extern UINT_PTR DAT_004b9f8c; /* the speech playing: a text number or a name */
+extern UINT_PTR CurrentHelpKey; /* the speech playing: a text number or a name */
 // 0x004ba87c
 extern void *PTR_some_list_head_004ba87c;
 // 0x004ba880
@@ -1245,9 +1245,9 @@ extern struct CountNode *DrivingSchoolCountList;
 // 0x004c11c0
 extern int DAT_004c11c0;
 // 0x004c11c4
-extern struct RideQueueEntry *DAT_004c11c4;
+extern struct RideQueueEntry *RoadBfsFrontier;
 // 0x004c11c8
-extern struct RideQueueEntry *DAT_004c11c8;
+extern struct RideQueueEntry *RoadBfsNextFrontier;
 // 0x004c11cc
 extern struct Sprite *FortMaskSprite;
 // 0x004c11d8
@@ -1347,11 +1347,11 @@ extern struct Element *DAT_004c2ba0;
 // 0x004c2c18
 extern struct Cursor DAT_004c2c18;
 // 0x004c2bf0
-extern struct Ride *DAT_004c2bf0;
+extern struct Ride *LogFlumeCsaw2Ride;
 // 0x004c445c
 extern struct Ride *DAT_004c445c;
 // 0x004c4460
-extern struct Element *DAT_004c4460;
+extern struct Element *LogFlumeCsaw2Element;
 // 0x004c5c90
 extern unsigned int DAT_004c5c90;
 // 0x004c74c8
@@ -1373,7 +1373,7 @@ extern struct Sprite *LogFlumeFc2M1Sprite;
 // 0x004c8d38
 extern struct Footprint DAT_004c8d38;
 // 0x004c8d4c
-extern struct Element *DAT_004c8d4c;
+extern struct Element *LogFlumeDropElement;
 // 0x004c8d50
 extern struct Element *DAT_004c8d50;
 // 0x004c8d54
@@ -1383,7 +1383,7 @@ extern struct Sprite *LogFlumeFc3M3Sprite;
 // 0x004c8d78
 extern struct Cursor DAT_004c8d78;
 // 0x004c8d6c
-extern struct Ride *DAT_004c8d6c;
+extern struct Ride *LogFlumeDropRide;
 // 0x004c8d70
 extern struct Sprite *LogFlumeFc4MSprite;
 extern struct RenderItemNode *DAT_004c8d74;
@@ -1403,7 +1403,7 @@ extern struct Ride *DAT_004cbe18;
 // 0x004cbe1c
 extern struct Sprite *LogFlumeFc1M3Sprite;
 // 0x004cbe20
-extern struct FlumeEntry *DAT_004cbe20[4]; /* the 4 neighbours of a log flume tile (up, right, down, left) */
+extern struct FlumeEntry *FlumeNeighbours[4]; /* the 4 neighbours of a log flume tile (up, right, down, left) */
 // 0x004cbe30
 extern struct Ride *LogFlumeTrackRide;
 // 0x004cbe48
@@ -1441,13 +1441,13 @@ extern struct Ride *DrivingSchoolPumpsRide;
 // 0x004cbea4
 extern struct PumpNode *PumpList;
 // 0x004cbeac
-extern struct RideQueueEntry *DAT_004cbeac;
+extern struct RideQueueEntry *RoadEntryList;
 // 0x004cbeb0
-extern int DAT_004cbeb0;
+extern int TrafficLightA;
 // 0x004cbeb4
-extern int DAT_004cbeb4;
+extern int TrafficLightB;
 // 0x004cbeb8
-extern unsigned int DAT_004cbeb8;
+extern unsigned int TrafficLightPhase;
 // 0x004cbec4
 extern struct Ride *SafariRide;
 // 0x004cbec0
@@ -2453,9 +2453,9 @@ extern struct NerpsListNode *CurrentScriptSection;
 // 0x006687a0
 extern unsigned int ScriptLoadErrorCount;
 // 0x006687a4
-extern unsigned int DAT_006687a4;
+extern unsigned int CurrentHelpKind;
 // 0x006687a8
-extern unsigned int DAT_006687a8;
+extern unsigned int HelpRequested;
 // 0x006687ac
 extern unsigned int DAT_006687ac;
 // 0x006687b0
@@ -3455,7 +3455,7 @@ extern unsigned char AdventurersThemeCount;
 // 0x007fe120
 extern char *ScriptStringTable[512];
 // 0x007fe920
-extern unsigned int DAT_007fe920;
+extern unsigned int HelpShownTick;
 // 0x007fe930
 extern unsigned char ObjectiveCounters[10];
 // 0x007fe994

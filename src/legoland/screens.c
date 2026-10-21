@@ -493,7 +493,7 @@ void GameProc(void) {
     ProcessInGameHelp();
     DrawPopUpInfo();
     RenderIcons2(0x2c3, 0, 0);
-    FUN_0046cff0();
+    ShowFocusedIconHelp();
     if ((GamePad & 0x1000) != 0) {
         Hover = saved;
     }
@@ -508,27 +508,27 @@ void GameProc(void) {
                 SetPointer(8);
                 if (QueryClass != NULL) {
                     HTBubbleHelp(&help_rect, QueryClass->name, 2);
-                    FUN_0046d340(QueryClass->element->name);
+                    ShowHelpText(QueryClass->element->name);
                 }
                 break;
             case 0x10a:
                 HTBubbleHelp(&help_rect, GetString(0xd4), 2);
-                FUN_0046d230(0xd4);
+                ShowHelpById(0xd4);
                 SetPointer(8);
                 break;
             case 0x10b:
                 HTBubbleHelp(&help_rect, GetString(0xd2), 2);
-                FUN_0046d230(0xd2);
+                ShowHelpById(0xd2);
                 SetPointer(7);
                 break;
             case 0x10c:
                 HTBubbleHelp(&help_rect, GetString(0xd3), 2);
-                FUN_0046d230(0xd3);
+                ShowHelpById(0xd3);
                 SetPointer(7);
                 break;
             case 0x10d:
                 HTBubbleHelp(&help_rect, GetString(0x7e4), 2);
-                FUN_0046d230(0x7e4);
+                ShowHelpById(0x7e4);
                 SetPointer(8);
                 break;
             case 0x306:
@@ -538,13 +538,13 @@ void GameProc(void) {
                 break;
             case 0x307:
                 HTBubbleHelp(&help_rect, GetString(0x90), 2);
-                FUN_0046d230(0x90);
+                ShowHelpById(0x90);
                 SetPointer(8);
                 FUN_00450a40(Hover.ptr);
                 break;
             case 0x308:
                 HTBubbleHelp(&help_rect, GetString(0x92), 2);
-                FUN_0046d230(0x92);
+                ShowHelpById(0x92);
                 SetPointer(8);
                 FUN_00450a40(Hover.ptr);
                 break;
@@ -555,7 +555,7 @@ void GameProc(void) {
         } else {
             if (QueryClass != NULL) {
                 HTBubbleHelp(&help_rect, QueryClass->name, 2);
-                FUN_0046d340(QueryClass->element->name);
+                ShowHelpText(QueryClass->element->name);
             }
         }
     }

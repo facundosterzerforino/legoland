@@ -108,7 +108,7 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046cff0
-void FUN_0046cff0(void) {
+void ShowFocusedIconHelp(void) {
     RECT rect;
     struct IconNode *icon;
 
@@ -123,9 +123,9 @@ void FUN_0046cff0(void) {
         HTBubbleHelp(&rect, icon->string, 2);
         icon = (struct IconNode *)FocussedIconPtr;
         if ((icon->flags & 0x1000) != 0) {
-            FUN_0046d2f0((UINT_PTR)((struct Ride *)icon->field_8)->element->name);
+            ShowHelpByName((UINT_PTR)((struct Ride *)icon->field_8)->element->name);
         } else {
-            FUN_0046d230(icon->string_id);
+            ShowHelpById(icon->string_id);
         }
     }
 }
@@ -148,9 +148,9 @@ LEGO_EXPORT void ProcessFrontEndHelp(void) {
             HTBubbleHelp(&rect, icon->string, 2);
             icon = (struct IconNode *)FocussedIconPtr;
             if ((icon->flags & 0x1000) != 0) {
-                FUN_0046d340(*(const char **)icon->field_8);
+                ShowHelpText(*(const char **)icon->field_8);
             } else {
-                FUN_0046d230(icon->string_id);
+                ShowHelpById(icon->string_id);
             }
         }
     }
@@ -163,39 +163,39 @@ LEGO_EXPORT void KillHelp(void) { FreeAllScriptLists(); }
 void UpdateSpeechPlayback(void) {
     char buf[256];
 
-    if (DAT_006687a8 == 0) {
-        DAT_004b9f8c = 0xffffffff;
+    if (HelpRequested == 0) {
+        CurrentHelpKey = 0xffffffff;
     }
     if (DAT_006687ac == 0 && DAT_006687b0 != 0) {
         DAT_006687b0 = DAT_006687b0 - 1;
         return;
     }
-    if ((int)DAT_006687a4 < 3 && DAT_006687a8 != 0) {
-        unsigned int prev = DAT_004b9f88;
-        DAT_006687a8 = 0;
+    if ((int)CurrentHelpKind < 3 && HelpRequested != 0) {
+        unsigned int prev = HelpChanged;
+        HelpRequested = 0;
         if (prev != 0) {
-            if (GetTickCount() - DAT_007fe920 < 500 && DAT_006687ac == 0) {
+            if (GetTickCount() - HelpShownTick < 500 && DAT_006687ac == 0) {
                 DAT_006687b4 = 1;
                 return;
             }
             DAT_006687b4 = 0;
-            DAT_004b9f88 = 0;
+            HelpChanged = 0;
             DAT_006687ac = 0;
-            DAT_007fe920 = GetTickCount();
+            HelpShownTick = GetTickCount();
             SpeechCloseFile();
-            if (DAT_004b9f8c != 0xffffffff) {
-                switch (DAT_006687a4) {
+            if (CurrentHelpKey != 0xffffffff) {
+                switch (CurrentHelpKind) {
                 case 0:
                     // STRING: LEGOLAND 0x004ba858
-                    sprintf(buf, "Text%04d.wav", (int)DAT_004b9f8c);
+                    sprintf(buf, "Text%04d.wav", (int)CurrentHelpKey);
                     break;
                 case 1:
                     // STRING: LEGOLAND 0x004ba868
-                    sprintf(buf, "%s.wav", (const char *)DAT_004b9f8c);
+                    sprintf(buf, "%s.wav", (const char *)CurrentHelpKey);
                     break;
                 case 2:
                     // STRING: LEGOLAND 0x004ba870
-                    sprintf(buf, "%sz.wav", (const char *)DAT_004b9f8c);
+                    sprintf(buf, "%sz.wav", (const char *)CurrentHelpKey);
                     break;
                 }
                 SpeechLoadWavFile(buf);
@@ -206,33 +206,33 @@ void UpdateSpeechPlayback(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d230
-void FUN_0046d230(unsigned int a1) {
+void ShowHelpById(unsigned int a1) {
     if (SpeechIsPlaying() == 0) {
         if (a1 == 0xffffffff) {
             return;
         }
-        if (a1 != DAT_004b9f8c) {
-            DAT_004b9f8c = a1;
-            DAT_007fe920 = GetTickCount();
-            DAT_006687a4 = 0;
-            DAT_004b9f88 = 1;
+        if (a1 != CurrentHelpKey) {
+            CurrentHelpKey = a1;
+            HelpShownTick = GetTickCount();
+            CurrentHelpKind = 0;
+            HelpChanged = 1;
             ClearAdvicePriority();
         }
     }
-    DAT_006687a8 = 1;
+    HelpRequested = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046d280
 unsigned int PlaySpeech(unsigned int a1) {
     if (SpeechIsPlaying() == 0) {
-        if (a1 != 0xffffffff && a1 != DAT_004b9f8c) {
-            DAT_004b9f8c = a1;
-            DAT_007fe920 = GetTickCount();
-            DAT_006687a4 = 0;
-            DAT_004b9f88 = 1;
+        if (a1 != 0xffffffff && a1 != CurrentHelpKey) {
+            CurrentHelpKey = a1;
+            HelpShownTick = GetTickCount();
+            CurrentHelpKind = 0;
+            HelpChanged = 1;
             DAT_006687ac = 1;
             ClearAdvicePriority();
-            DAT_006687a8 = 1;
+            HelpRequested = 1;
             UpdateSpeechPlayback();
             return 1;
         }
@@ -241,18 +241,18 @@ unsigned int PlaySpeech(unsigned int a1) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d2f0
-void FUN_0046d2f0(UINT_PTR a1) {
+void ShowHelpByName(UINT_PTR a1) {
     if (SpeechIsPlaying() != 0) {
-        DAT_006687a8 = 1;
+        HelpRequested = 1;
         return;
     }
     if (a1 != 0) {
-        if (a1 != DAT_004b9f8c) {
-            DAT_004b9f8c = a1;
-            DAT_007fe920 = GetTickCount();
-            DAT_006687a4 = 1;
-            DAT_004b9f88 = 1;
+        if (a1 != CurrentHelpKey) {
+            CurrentHelpKey = a1;
+            HelpShownTick = GetTickCount();
+            CurrentHelpKind = 1;
+            HelpChanged = 1;
         }
-        DAT_006687a8 = 1;
+        HelpRequested = 1;
     }
 }
