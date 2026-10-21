@@ -157,7 +157,7 @@ LEGO_EXPORT void ProcessFrontEndHelp(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d100
-LEGO_EXPORT void KillHelp(void) { FUN_0046c5c0(); }
+LEGO_EXPORT void KillHelp(void) { FreeAllScriptLists(); }
 
 // FUNCTION: LEGOLAND 0x0046d110
 void UpdateSpeechPlayback(void) {

@@ -215,7 +215,7 @@ void FUN_00403530(struct CatapultNode *node, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00403580
-void FUN_00403580(struct CatapultNode *arg, unsigned int index) {
+void ClearCatapultSlot(struct CatapultNode *arg, unsigned int index) {
     arg->flags[index] = 0;
     arg->slots[index] = NULL;
 }
@@ -258,7 +258,7 @@ void FUN_004035a0(struct CatapultNode *node) {
             continue;
         }
         entry->rider->param_action = entry->rider->param_action + 1;
-        FUN_00403580(node, i);
+        ClearCatapultSlot(node, i);
     }
 
     FUN_00403480(node);
@@ -278,7 +278,7 @@ void FUN_00403690(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004036b0
-signed char FUN_004036b0(struct CatapultNode *node) {
+signed char PickFreeCatapultSlot(struct CatapultNode *node) {
     signed char i = rand() % 4;
 
     while (node->slots[i] != NULL) {
@@ -300,7 +300,7 @@ void FUN_004036f0(const unsigned short *key, struct RideNode *entry, int x, int 
     if (node == NULL) {
         return;
     }
-    slot = FUN_004036b0(node);
+    slot = PickFreeCatapultSlot(node);
     node->slots[slot] = entry;
     bloke->field_3a = 3;
     bloke->dest.x = (x << 8) - (rand() % 2 ? 0x10 : -0x10) - 0xe0;

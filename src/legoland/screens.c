@@ -283,7 +283,7 @@ void StartLevelGame(void) {
         SetBricksLimited(1);
         AllocBlokeCounters(lpConfig->max_blokes);
         ResetEditState();
-        FUN_00489ee0();
+        ClearObjInstanceTable();
         MapStats.level_end = 0;
         UpdateMenu();
         FUN_00490600(1);
@@ -306,7 +306,7 @@ void UnloadMap(void) {
         FUN_0046cb20();
         DAT_00667cd8 = 0;
         SetBricksLimited(0);
-        FUN_00489ee0();
+        ClearObjInstanceTable();
         DestroyAllBlokes();
         RemoveAllNewObjects();
         ResetInfoStruct();
@@ -384,7 +384,7 @@ int FUN_00458c00(void) {
             InitGameInterface(0);
             SetDefaultMouseHandlers();
         } else {
-            FUN_0046c5c0();
+            FreeAllScriptLists();
             StartLevelGame();
         }
         UpdateSoundVols();

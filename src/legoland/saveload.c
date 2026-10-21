@@ -313,7 +313,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
         LogPrintf("EditMode Failed");
         goto fail;
     }
-    FUN_00474190();
+    SaveInputState();
     if (SaveScripts() == 0) {
         // STRING: LEGOLAND 0x004bc828
         LogPrintf("Scripts Save Failed");
@@ -853,7 +853,7 @@ LEGO_EXPORT int LoadGame(char *path) {
     }
     EditMode.unk4 = 3;
     EditMode.unk8 = 0;
-    FUN_004741c0();
+    LoadInputState();
     SetDefaultMouseHandlers();
     DrawWatchSprite();
     if (LoadScripts() == 0) {

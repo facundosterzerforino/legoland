@@ -648,7 +648,7 @@ unsigned int ScriptEventRideVisitors(struct ObjectiveEvent *arg) {
             (robj = (struct MapElement *)GetFirstObjectMatching((Element *)node->iface->element)) != NULL) {
             pt.x = robj->field_4;
             pt.y = robj->field_5;
-            value = FUN_00489fd0(&pt) & 0xffff;
+            value = GetObjInstanceCount(&pt) & 0xffff;
             if ((int)value >= (int)arg->field_1c) {
                 return 1;
             }
@@ -2067,7 +2067,7 @@ void AppendSectionRewards(struct NerpsListNode *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c5c0
-void FUN_0046c5c0(void) {
+void FreeAllScriptLists(void) {
     FreeObjectiveEventList(ObjectiveEventList);
     ObjectiveEventList = NULL;
     FreeObjectiveEventList(DAT_00668724);
@@ -2291,7 +2291,7 @@ unsigned int FUN_0046cb20(void) {
         UnloadBaseMap();
     }
     FreeScriptStrings();
-    FUN_0046c5c0();
+    FreeAllScriptLists();
     ClearAdvisorHelp();
     FUN_0046ce00();
     return 1;

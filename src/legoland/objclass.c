@@ -187,7 +187,7 @@ LEGO_EXPORT void *LoadObjectClass(struct Element *cls) {
 }
 
 // FUNCTION: LEGOLAND 0x00480b70
-void FUN_00480b70(struct Element *param) {
+void SetObjectEditCursor(struct Element *param) {
     void *value;
 
     value = param->ride;
@@ -238,7 +238,7 @@ LEGO_EXPORT void BasicObjectDCalcCursor(struct Element *param_1, struct Point *p
 
 // FUNCTION: LEGOLAND 0x00480cd0
 LEGO_EXPORT void SetStandardCallbacks(struct Ride *table) {
-    table->cb_8c = FUN_00480b70;
+    table->cb_8c = SetObjectEditCursor;
     table->cb_90 = CalcBasicObjectCursor;
     table->cb_94 = BasicObjectDCalcCursor;
     table->cb_98 = (void (*)())AddBasicObject;

@@ -422,7 +422,7 @@ struct AreaNode DAT_004b5570;
 short DAT_004b5584[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
 
 // GLOBAL: LEGOLAND 0x004b55f4
-unsigned int DAT_004b55f4;
+unsigned int MapObjectsEnabled;
 
 // GLOBAL: LEGOLAND 0x004b5608
 unsigned int DAT_004b5608;
@@ -3392,7 +3392,7 @@ unsigned int DAT_00669054;
 char DAT_00669058[0x40];
 
 // GLOBAL: LEGOLAND 0x00669098
-unsigned int DAT_00669098;
+unsigned int NextScriptSectionId;
 
 // GLOBAL: LEGOLAND 0x006691a0
 unsigned int LLIDB_Capacity;

@@ -412,14 +412,14 @@ char ReadCheatKey(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00474190
-void FUN_00474190(void) {
+void SaveInputState(void) {
     SaveGameWrite(&DAT_004baff8, 4);
     SaveGameWrite(&DAT_00668e34, 4);
     SaveGameWrite(&DAT_007fdd80, 16);
 }
 
 // FUNCTION: LEGOLAND 0x004741c0
-void FUN_004741c0(void) {
+void LoadInputState(void) {
     SaveGameRead(&DAT_004baff8, 4);
     SaveGameRead(&DAT_00668e34, 4);
     SaveGameRead(&DAT_007fdd80, 16);

@@ -258,7 +258,7 @@ unsigned int FUN_0047b500(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b5a0
-unsigned int FUN_0047b5a0(void) {
+unsigned int LLIDB_GrowIfFull(void) {
     unsigned int capacity;
 
     if (((LLIDB_Capacity ^ LLIDB_ElementCount) & 0xffffff00) == 0) {
@@ -292,7 +292,7 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const cha
         return 0;
     }
 
-    index = FUN_0047b5a0();
+    index = LLIDB_GrowIfFull();
     page_off = (char *)(UINT_PTR)((index >> 8) * sizeof(struct Element *));
     slot_off = (index & 0xff) * sizeof(struct Element);
 

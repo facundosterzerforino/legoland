@@ -191,7 +191,7 @@ LEGO_EXPORT void PutObjOnMap(struct Ride *obj, struct Element *classid, struct P
         area = GetRectArea((struct RectNode *)&obj->footprint);
         switch (obj->type) {
         case 1:
-            FUN_00489f00(pos);
+            AddObjInstance(pos);
             DAT_00667ce4 = DAT_00667ce4 + area;
             break;
         case 2:
@@ -202,11 +202,11 @@ LEGO_EXPORT void PutObjOnMap(struct Ride *obj, struct Element *classid, struct P
             DAT_00667cf0 = DAT_00667cf0 + area;
             break;
         case 4:
-            FUN_00489f00(pos);
+            AddObjInstance(pos);
             DAT_00667ce8 = DAT_00667ce8 + area;
             break;
         case 5:
-            FUN_00489f00(pos);
+            AddObjInstance(pos);
             DAT_00667cec = DAT_00667cec + area;
         }
         DAT_00667ce0 = DAT_00667ce0 + area;
@@ -257,7 +257,7 @@ LEGO_EXPORT void RemObjFromMap(struct Ride *obj, struct Element *classid, TileId
         area = GetRectArea((struct RectNode *)&obj->footprint);
         switch (obj->type) {
         case 1:
-            FUN_00489f50((struct Point *)&blk);
+            RemoveObjInstance((struct Point *)&blk);
             DAT_00667ce4 = DAT_00667ce4 - area;
             break;
         case 2:
@@ -268,11 +268,11 @@ LEGO_EXPORT void RemObjFromMap(struct Ride *obj, struct Element *classid, TileId
             DAT_00667cf0 = DAT_00667cf0 - area;
             break;
         case 4:
-            FUN_00489f50((struct Point *)&blk);
+            RemoveObjInstance((struct Point *)&blk);
             DAT_00667ce8 = DAT_00667ce8 - area;
             break;
         case 5:
-            FUN_00489f50((struct Point *)&blk);
+            RemoveObjInstance((struct Point *)&blk);
             DAT_00667cec = DAT_00667cec - area;
         }
         DAT_00667ce0 = DAT_00667ce0 - area;

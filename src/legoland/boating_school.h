@@ -66,7 +66,7 @@ void FUN_00419520(struct BoatRide *param_1, int param_2);
 void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to);
 unsigned int FUN_004192d0(void *param_1);
 void FUN_00418f90(struct BoatRide *param_1);
-void FUN_0041b0d0(unsigned short id, unsigned int value);
+void AddBoatRideNodeValue(unsigned short id, unsigned int value);
 struct PathNode *FindBoatPathAt(unsigned int a, unsigned int b);
 unsigned int FUN_0041c690(int param_1, int param_2, unsigned short *param_3);
 void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4);
@@ -83,7 +83,7 @@ void BoatingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *cursor)
 
 void LoadBoatingSchoolResources(Element *obj);
 void UnloadBoatingSchoolResources();
-void FUN_0041a000();
+void SetBoatingSchoolEditCursor();
 struct Ride;
 void BoatingSchoolAddObject(struct Element *obj, int *coords);
 void BoatingSchoolCalcCursor(struct Element *param_1, int *param_2, unsigned int param_3);

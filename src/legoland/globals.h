@@ -774,7 +774,7 @@ extern struct AreaNode DAT_004b5570;
 // 0x004b5584
 extern short DAT_004b5584[4][2];
 // 0x004b55f4
-extern unsigned int DAT_004b55f4;
+extern unsigned int MapObjectsEnabled;
 // 0x004b5608
 extern unsigned int DAT_004b5608;
 // 0x004b560c
@@ -1735,7 +1735,7 @@ extern float DAT_00611654;
 // 0x00611658
 extern Vector3 DAT_00611658[4];
 // 0x00611688
-/* castle.c lookup table: FUN_00427c00 finds value by key; DAT_00611958 counts the entries */
+/* castle.c lookup table: FindPieceClassForElement finds value by key; DAT_00611958 counts the entries */
 struct KeyValuePair {
     struct Element *key;
     struct PieceClass *value;
@@ -2719,7 +2719,7 @@ extern unsigned int DAT_00669054;
 // 0x00669058
 extern char DAT_00669058[0x40];
 // 0x00669098
-extern unsigned int DAT_00669098;
+extern unsigned int NextScriptSectionId;
 // 0x004bc0ec
 extern char LanguageName[36];
 // 0x006691a0

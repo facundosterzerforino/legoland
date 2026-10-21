@@ -290,7 +290,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
     } else if (_stricmp("BOATING SCHOOL", head->name) == 0) {
         iface->cb_a4 = LoadBoatingSchoolResources;
         iface->cb_ac = UnloadBoatingSchoolResources;
-        iface->cb_8c = FUN_0041a000;
+        iface->cb_8c = SetBoatingSchoolEditCursor;
         iface->cb_90 = BoatingSchoolCalcCursor;
         iface->cb_94 = BoatingSchoolDCalcCursor;
         iface->cb_98 = BoatingSchoolAddObject;
@@ -330,7 +330,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
         iface->cb_b0 = RenderJungleCruise;
         iface->save_hook = JungleCruise_Save;
         iface->load_hook = JungleCruise_Load;
-        iface->cb_c0 = FUN_00436160;
+        iface->cb_c0 = GetBestJungleScore;
     }
     // STRING: LEGOLAND 0x004b88b8
     else if (_stricmp("JUNGLE CRUISE MONKEY TREE", head->name) == 0) {

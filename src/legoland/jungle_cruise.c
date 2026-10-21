@@ -693,7 +693,7 @@ void MonkeyTreeAddObject(struct Element *param_1, int *param_2) {
         obj->next = DAT_00629c2c;
         DAT_00629c2c = obj;
         AddBasicObject(param_1, param_2);
-        FUN_00436130((unsigned short)local_4, 1);
+        AddJungleScore((unsigned short)local_4, 1);
     }
 }
 
@@ -792,7 +792,7 @@ void MonkeyTreeRemoveObject(void *param_1, TileId tile, struct Cursor *param_3) 
         }
     }
     if (node != NULL) {
-        FUN_00436130(node->owner, -1);
+        AddJungleScore(node->owner, -1);
         if (prev != NULL) {
             prev->next = node->next;
             free(node);
@@ -858,7 +858,7 @@ void MonkeyFishAddObject(struct Element *obj, int *coords) {
     fish->next = JungleFishList;
     fish->field_4 = 0;
     JungleFishList = fish;
-    FUN_00436130(fish->owner, 2);
+    AddJungleScore(fish->owner, 2);
     AddBasicObject(obj, coords);
     for (y = MFish2Ride->footprint.v[1]; y <= MFish2Ride->footprint.v[3]; y++) {
         for (x = MFish2Ride->footprint.v[0]; x <= MFish2Ride->footprint.v[2]; x++) {
@@ -986,7 +986,7 @@ void MonkeyFishRemoveObject(void *param_1, TileId tile, struct Cursor *param_3) 
         }
     }
     if (node != NULL) {
-        FUN_00436130(node->owner, -2);
+        AddJungleScore(node->owner, -2);
         if (prev != NULL) {
             prev->next = node->next;
             free(node);
@@ -1748,7 +1748,7 @@ int JungleCruise_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x00436130
-void FUN_00436130(unsigned short param_1, int param_2) {
+void AddJungleScore(unsigned short param_1, int param_2) {
     struct JungleScore *node = JungleScoreList;
     while (node != NULL) {
         if (node->tile.id == param_1) {
@@ -1762,7 +1762,7 @@ void FUN_00436130(unsigned short param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00436160
-int FUN_00436160(Element *obj, int param_2) {
+int GetBestJungleScore(Element *obj, int param_2) {
     struct JungleScore *node;
     int best = 0;
 
@@ -2144,7 +2144,7 @@ void FUN_00436dc0(int x, int y, int mask, unsigned short *owner) {
         node->next = JunglePathList;
         node->parent = NULL;
         JunglePathList = node;
-        FUN_00436130(*owner, 1);
+        AddJungleScore(*owner, 1);
     }
     node->tile = tile;
     node->dir_mask = mask;
@@ -2184,7 +2184,7 @@ void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3) {
         }
     }
     if (node != NULL) {
-        FUN_00436130(node->owner.id, -1);
+        AddJungleScore(node->owner.id, -1);
         if (prev != NULL) {
             prev->next = node->next;
             free(node);

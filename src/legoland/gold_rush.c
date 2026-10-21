@@ -223,7 +223,7 @@ void RenderGoldRush(Element *obj, unsigned int param_2, unsigned int param_3, un
 }
 
 // FUNCTION: LEGOLAND 0x00406e90
-unsigned int FUN_00406e90(void *param) {
+unsigned int GoldWashHasFreeSlot(void *param) {
     struct GoldArray *a = (struct GoldArray *)FindGoldWashNode(param);
     unsigned int i;
 
@@ -239,7 +239,7 @@ unsigned int FUN_00406e90(void *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00406ec0
-void FUN_00406ec0(struct RideNode *item, void *param2) {
+void TakeGoldWashSlot(struct RideNode *item, void *param2) {
     struct GoldArray *a = (struct GoldArray *)FindGoldWashNode(param2);
     unsigned int i;
 
@@ -256,7 +256,7 @@ void FUN_00406ec0(struct RideNode *item, void *param2) {
 }
 
 // FUNCTION: LEGOLAND 0x00406f00
-struct GoldArray *FUN_00406f00(struct RideNode *item) {
+struct GoldArray *ReleaseGoldWashSlot(struct RideNode *item) {
     unsigned int idx = item->rider->field_36;
     struct GoldArray *a = (struct GoldArray *)FindGoldWashNode(&item->tile.pos.x);
 
@@ -267,8 +267,8 @@ struct GoldArray *FUN_00406f00(struct RideNode *item) {
 }
 
 // FUNCTION: LEGOLAND 0x00406f30
-void FUN_00406f30(void *param) {
-    if (FUN_00406e90(param) == 0) {
+void UpdateGoldWashAvailability(void *param) {
+    if (GoldWashHasFreeSlot(param) == 0) {
         Ride_SetFlagToNotLetAnyoneOn(param);
     } else {
         Ride_ClearFlagToNotLetAnyoneOn(param);
@@ -347,7 +347,7 @@ void FUN_00407170(struct RideNode *item, unsigned char *p) {
 }
 
 // FUNCTION: LEGOLAND 0x00407230
-void FUN_00407230(struct RideNode *param) {
+void SetRandomGoldPanTime(struct RideNode *param) {
     int value = rand() % 31;
     param->rider->field_58 = value + 15;
 }
@@ -364,8 +364,8 @@ void FUN_00407250(struct RideNode *ref) {
     if (b->field_58 <= 0) {
         b->flags &= 0xfeff;
         BlokeWalkWithPan((struct Bloke *)b);
-        FUN_00406f00((struct RideNode *)ref);
-        FUN_00406f30(&ref->tile.pos.x);
+        ReleaseGoldWashSlot((struct RideNode *)ref);
+        UpdateGoldWashAvailability(&ref->tile.pos.x);
         b->param_action++;
     }
 }
@@ -390,8 +390,8 @@ void GoldRushUpdate(struct Element *elem) {
             switch (b->param_action) {
             case 0:
                 b->flags |= 8;
-                FUN_00406ec0((struct RideNode *)node, t);
-                FUN_00406f30(t);
+                TakeGoldWashSlot((struct RideNode *)node, t);
+                UpdateGoldWashAvailability(t);
                 StartQueueTableForward((struct QueueTable *)DAT_004c11e4, (struct Bloke *)b);
                 break;
             case 1:
@@ -419,7 +419,7 @@ void GoldRushUpdate(struct Element *elem) {
                 break;
             case 5:
                 SendGoldRushRiderToSlot((struct RideNode *)node, t);
-                FUN_00407230((struct RideNode *)node);
+                SetRandomGoldPanTime((struct RideNode *)node);
                 b->param_action++;
                 break;
             case 6:

@@ -166,7 +166,7 @@ void StartFreePlayGame(void) {
     AllocBlokeCounters(lpConfig->max_blokes);
     ResetEditState();
     MapStats.level_end = 0;
-    FUN_00489ee0();
+    ClearObjInstanceTable();
     UpdateMenu();
     UnloadWatchSprite();
     FUN_00490600(1);

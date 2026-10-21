@@ -615,7 +615,7 @@ void UnloadBoatingSchoolResources(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041a000
-void FUN_0041a000(void) {
+void SetBoatingSchoolEditCursor(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = BoatingSchoolRide;
     DefaultCursor(&EditCursor);
@@ -1127,7 +1127,7 @@ int BoatingSchool_Load(struct Element *element) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b0d0
-void FUN_0041b0d0(unsigned short id, unsigned int value) {
+void AddBoatRideNodeValue(unsigned short id, unsigned int value) {
     struct BoatRideNode *node = BoatRideNodeList;
     if (node == NULL) {
         return;
@@ -1182,7 +1182,7 @@ LEGO_EXPORT void GetInterface(struct Element *head, struct Ride *iface) {
     if (_stricmp("BOATING SCHOOL", head->name) == 0) {
         cb[7] = LoadBoatingSchoolResources;
         cb[8] = UnloadBoatingSchoolResources;
-        cb[0] = FUN_0041a000;
+        cb[0] = SetBoatingSchoolEditCursor;
         cb[1] = BoatingSchoolCalcCursor;
         cb[2] = BoatingSchoolDCalcCursor;
         cb[3] = BoatingSchoolAddObject;
@@ -1239,7 +1239,7 @@ void BoatingSchoolMermaidAddObject(struct Element *obj, int *coords) {
     node->owner = owner;
     node->next = MermaidList;
     MermaidList = node;
-    FUN_0041b0d0(owner, 1);
+    AddBoatRideNodeValue(owner, 1);
     AddBasicObject(obj, coords);
     for (y = ride->footprint.v[1]; y <= ride->footprint.v[3]; y++) {
         for (x = ride->footprint.v[0]; x <= ride->footprint.v[2]; x++) {
@@ -1378,7 +1378,7 @@ void BoatingSchoolMermaidRemoveObject(void *param_1, TileId tile, struct Cursor 
         }
     }
     if (node != NULL) {
-        FUN_0041b0d0(node->owner, -1);
+        AddBoatRideNodeValue(node->owner, -1);
         if (prev != NULL) {
             prev->next = node->next;
         } else {
@@ -1422,7 +1422,7 @@ void BoatingSchoolWaterAddObject(Element *obj, int *coords) {
     mask = FUN_0041c690(coords[0], coords[1], &owner);
     FUN_0041c4c0(coords[0], coords[1], mask, &owner);
     IncrementObjectCount(obj->ride);
-    FUN_0041b0d0(owner, 1);
+    AddBoatRideNodeValue(owner, 1);
     FUN_0041bab0(coords[0], coords[1], &owner);
     if ((mask & 1) != 0) {
         FUN_0041c4c0(coords[0], coords[1] - 5, FUN_0041c690(coords[0], coords[1] - 5, &owner), NULL);
@@ -1668,7 +1668,7 @@ void BoatingSchoolWaterRemoveObject(Element *obj, TileId tile, struct Cursor *cu
     }
     mask = FUN_0041c690(cursor->tile_x, cursor->tile_y, &owner);
     FUN_0041c620(obj, tile, cursor);
-    FUN_0041b0d0(owner, -1);
+    AddBoatRideNodeValue(owner, -1);
     if ((mask & 1) != 0) {
         y = cursor->tile_y - 5;
         x = cursor->tile_x;

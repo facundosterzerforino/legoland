@@ -645,7 +645,7 @@ void ResetLevelScriptState(void) {
     DAT_004bb5ac = 1;
     CurrentObjectiveEventFlags = 0;
     CurrentScriptSection = 0;
-    DAT_00669098 = 0;
+    NextScriptSectionId = 0;
 
     lpConfig->field_30 = 0;
     lpConfig->gardeners_enabled = 1;

@@ -601,7 +601,7 @@ int PutBlokeOnRide(Bloke *bloke, Ride *ride, int wait) {
         if (object != NULL) {
             at.x = object->field_4;
             at.y = object->field_5;
-            FUN_00489f90(&at);
+            IncObjInstanceCount(&at);
             memset(node, 0, sizeof(RideNode));
             node->rider = bloke;
             bloke->field_58 = wait;

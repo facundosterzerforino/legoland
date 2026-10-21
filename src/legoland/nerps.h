@@ -94,7 +94,7 @@ void NewScriptSelectThemeEvent(unsigned char param_1, unsigned int param_2);
 void NewScriptSelectTabEvent(unsigned char param_1, unsigned int param_2);
 void NewScriptSelectModeEvent(unsigned char param_1, unsigned int param_2);
 void NewScriptForeverEvent(unsigned char param_1);
-void FUN_0046c5c0(void);
+void FreeAllScriptLists(void);
 unsigned int FUN_0046cb20(void);
 void FUN_0046ce00(void);
 unsigned int SaveScripts(void);

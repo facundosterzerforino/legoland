@@ -31,7 +31,7 @@ int IsStringEmpty(char **pp_str) {
 }
 
 // FUNCTION: LEGOLAND 0x004787d0
-void FUN_004787d0(void) {
+void EndScriptSection(void) {
     if (CurrentScriptSection != 0) {
         /* TODO: fold into struct SortNode/NerpsListNode views of CurrentScriptSection */
         InsertScriptSection(CurrentScriptSection);
@@ -40,9 +40,9 @@ void FUN_004787d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004787f0
-void FUN_004787f0(void) {
-    unsigned int id = DAT_00669098;
-    DAT_00669098 = DAT_00669098 + 1;
+void BeginScriptSection(void) {
+    unsigned int id = NextScriptSectionId;
+    NextScriptSectionId = NextScriptSectionId + 1;
     CurrentScriptSection = AllocScriptSection(id);
     DAT_007fdca4 = 0;
 }
@@ -58,7 +58,7 @@ int FUN_00478820(void) {
 int ScriptCmdEnd(void) {
     // STRING: LEGOLAND 0x004bc0b4
     SetScriptSectionType("Closed", 0);
-    FUN_004787d0();
+    EndScriptSection();
     CurrentScriptSection = 0;
     return 1;
 }
@@ -102,8 +102,8 @@ int ScriptCmdObjective(struct CommandArgs *param_1, unsigned int param_2) {
         }
         SetScriptSectionType(param_1->name, 2);
         SetScriptObjectiveKind(1);
-        FUN_004787d0();
-        FUN_004787f0();
+        EndScriptSection();
+        BeginScriptSection();
     }
     return 1;
 }
