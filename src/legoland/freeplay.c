@@ -140,7 +140,7 @@ void FUN_0048ab60(void) {
     do {
         DrawWatchSprite();
         if (node->field_18 == 1) {
-            if (FUN_00478b20(node->field_1c) != 0) {
+            if (EnableObjectClass(node->field_1c) != 0) {
                 GiveRewardObject(ElemID(node->field_1c), 0, 1);
             }
         }
@@ -160,7 +160,7 @@ void StartFreePlayGame(void) {
     MarkGameTimer();
     CastlePlacedFlag = 0;
     ResetMapAI();
-    DAT_00667c4c = FUN_0047afb0(buf);
+    DAT_00667c4c = LoadLevelScript(buf);
     SetBricksLimited(0);
     FUN_0048ab60();
     AllocBlokeCounters(lpConfig->max_blokes);
@@ -170,7 +170,7 @@ void StartFreePlayGame(void) {
     UpdateMenu();
     UnloadWatchSprite();
     FUN_00490600(1);
-    ShowIntervalScreen(DAT_0066861c, 0);
+    ShowIntervalScreen(BriefingFileName, 0);
     SetMapLoaded(1);
     ResumeGameTimer();
     UpdateSoundVols();
@@ -241,7 +241,7 @@ LEGO_EXPORT void InitFreePlayLists(void) {
             continue;
         }
         idx = 0;
-        for (entry = DAT_004bdeb8; (INT_PTR)entry < (INT_PTR)&DAT_004bdeb8[0x86]; entry++, idx++) {
+        for (entry = FreePlayObjectTable; (INT_PTR)entry < (INT_PTR)&FreePlayObjectTable[0x86]; entry++, idx++) {
             if (entry->id == i && LLIDB_FindElement(entry->name, &t1, 0) == 0) {
                 break;
             }
@@ -273,7 +273,7 @@ unsigned int CanAffordFreePlayObject(const char *arg1, struct Element *arg2) {
     unsigned int result;
     struct Element *elem;
 
-    result = FUN_0048a840(arg1, 0);
+    result = GetFreePlayObjectCost(arg1, 0);
     if ((int)(FreePlayCostTotal + result) <= 0x4e20) {
         if (arg2) {
             elem = ElemID(BuildMenuName);
@@ -293,7 +293,7 @@ void SelectFreePlayObject(const char *param) {
     struct ClipQueryResult *node;
 
     node = 0;
-    FreePlayCostTotal += FUN_0048a840(param, &node);
+    FreePlayCostTotal += GetFreePlayObjectCost(param, &node);
     if (node != 0) {
         node->field_c = 1;
     }
@@ -308,7 +308,7 @@ void DeselectFreePlayObject(const char *param) {
     struct ClipQueryResult *node;
 
     node = 0;
-    FreePlayCostTotal -= FUN_0048a840(param, &node);
+    FreePlayCostTotal -= GetFreePlayObjectCost(param, &node);
     if (node != 0) {
         node->field_c = 0;
     }

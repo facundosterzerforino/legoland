@@ -5,7 +5,7 @@
 LEGO_EXPORT void CheckWorkerOnMouseStatus(int a);
 LEGO_EXPORT void ResetMoveAWorkerStruct(void);
 LEGO_EXPORT void ResetWorkersOldCoords(void);
-unsigned int FUN_004700c0(void *object);
+unsigned int IsBlokeHovered(void *object);
 void *GetWorkerOnMouse(void);
 struct Bloke;
 void PickUpWorker(unsigned int type, struct Bloke *worker);

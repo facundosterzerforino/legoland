@@ -16,7 +16,7 @@
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004700c0
-unsigned int FUN_004700c0(void *object) {
+unsigned int IsBlokeHovered(void *object) {
     if (DAT_007fdf9c == 0x306) {
         if (DAT_007fdf8c == object) {
             return 1;

@@ -6161,7 +6161,7 @@ void RemoveCastleCoaster(struct Element *param_1, TileId param_2, struct Cursor 
         FUN_00424620(&CastleCoaster.piece.pos);
         CastleCoasterPlaced = 0;
         FUN_004775f0();
-        FUN_00477410();
+        FreeMoviePool();
         SetCoasterPieceCount(0);
     }
 }

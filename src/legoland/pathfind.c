@@ -200,8 +200,8 @@ LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Po
 
     DAT_004bcec0.x = goal->x >> 8;
     DAT_004bcec0.y = goal->y >> 8;
-    start = FUN_004817d0((int *)pos);
-    end = FUN_004817d0((int *)goal);
+    start = FindBestNodeAtPixel((int *)pos);
+    end = FindBestNodeAtPixel((int *)goal);
     if (start == 0) {
         return -2;
     }

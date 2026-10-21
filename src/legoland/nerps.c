@@ -258,7 +258,7 @@ unsigned int ScriptEventBridges(struct ObjectiveEvent *arg) {
 // FUNCTION: LEGOLAND 0x0046a480
 unsigned int ScriptEventBriefingFile(struct ObjectiveEvent *arg) {
     /* TODO: fold into NerpsArg — field_8 is used both as unsigned int (SetHintsFileName) and a string ptr here */
-    FUN_004687f0(arg->text);
+    SetBriefingFile(arg->text);
     return 1;
 }
 
@@ -2228,7 +2228,7 @@ unsigned int SaveScripts(void) {
     if (SaveObjectiveIcons() == 0) {
         return 0;
     }
-    if (SaveGameWrite(DAT_0066861c, 0x80) == 0) {
+    if (SaveGameWrite(BriefingFileName, 0x80) == 0) {
         return 0;
     }
     if (SaveGameWrite(DAT_0066869c, 0x80) == 0) {
@@ -2314,7 +2314,7 @@ unsigned int LoadScripts(void) {
     if (LoadObjectiveIcons() == 0) {
         return 0;
     }
-    if (SaveGameRead(DAT_0066861c, 0x80) == 0) {
+    if (SaveGameRead(BriefingFileName, 0x80) == 0) {
         return 0;
     }
     if (SaveGameRead(DAT_0066869c, 0x80) == 0) {

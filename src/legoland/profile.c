@@ -551,7 +551,7 @@ unsigned char AcceptProfileClick(unsigned int dummy, unsigned char arg_0) {
 unsigned char FUN_0048d390(struct IconNode *profile, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
         CurrentProfile.profile_slot = profile->field_1cb;
-        FUN_0048a800();
+        ClearFreePlaySelection();
     }
     return 1;
 }

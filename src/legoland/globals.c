@@ -2942,7 +2942,7 @@ unsigned int DAT_00668614;
 unsigned int DAT_00668618;
 
 // GLOBAL: LEGOLAND 0x0066861c
-char DAT_0066861c[128];
+char BriefingFileName[128];
 
 // GLOBAL: LEGOLAND 0x0066869c
 char DAT_0066869c[128];
@@ -3368,7 +3368,7 @@ unsigned int DAT_00668fb0;
 unsigned int DAT_00668fb4;
 
 // GLOBAL: LEGOLAND 0x00668fb8
-struct MoviePool *DAT_00668fb8;
+struct MoviePool *ActiveMoviePool;
 
 // GLOBAL: LEGOLAND 0x00668fc0
 void *DAT_00668fc0;

@@ -2421,7 +2421,7 @@ extern unsigned int DAT_00668614;
 // 0x00668618
 extern unsigned int DAT_00668618;
 // 0x0066861c
-extern char DAT_0066861c[128];
+extern char BriefingFileName[128];
 // 0x0066869c
 extern char DAT_0066869c[128];
 // 0x0066871c
@@ -2703,7 +2703,7 @@ extern unsigned int DAT_00668fb0;
 // 0x00668fb4
 extern unsigned int DAT_00668fb4;
 // 0x00668fb8
-extern struct MoviePool *DAT_00668fb8;
+extern struct MoviePool *ActiveMoviePool;
 // 0x00668fc0
 extern void *DAT_00668fc0;
 // 0x00668fc4

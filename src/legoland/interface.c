@@ -462,7 +462,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->render_func = (void *)RenderFocusableIcon;
         DAT_00668e9c = icon;
         icon->flags |= 0x400;
-        HasIntervalReport(DAT_0066861c);
+        HasIntervalReport(BriefingFileName);
 
         icon = InsertIcon(0x20a, 0x17a, 0x93, ScriptEndSprite);
         icon->field_20p = NULL;
@@ -535,7 +535,7 @@ unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, con
         if (flags & 2) {
             EditMode.unk0 = 0;
             FUN_00490600(1);
-            ShowIntervalScreen(DAT_0066861c, DAT_0066869c);
+            ShowIntervalScreen(BriefingFileName, DAT_0066869c);
         }
     }
     return 1;

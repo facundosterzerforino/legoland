@@ -1321,7 +1321,7 @@ LEGO_EXPORT void ControlPeople(void) {
     for (bloke = FirstBloke; bloke != NULL; bloke = next) {
         next = bloke->next;
         DAT_00813b08 = bloke->field_81;
-        if (FUN_004700c0(bloke) != 0) {
+        if (IsBlokeHovered(bloke) != 0) {
             // STRING: LEGOLAND 0x004b85a8
             DBPrintf("Processing your bloke\n");
         }

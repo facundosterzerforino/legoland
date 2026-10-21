@@ -53,7 +53,7 @@ LEGO_EXPORT int RenderingComplete(void);
 LEGO_EXPORT void PushSetTarget(struct Sprite *sprite);
 LEGO_EXPORT void PopTarget(void);
 LEGO_EXPORT int RecreateSprite(struct Sprite *sprite);
-void FUN_004687f0(const char *param_1);
+void SetBriefingFile(const char *param_1);
 LEGO_EXPORT int CheckHostSystemGPU(void);
 int BlitFrameToWindow(void);
 void __fastcall SoftPrint_BltFast(struct Sprite *sprite, RECT *rect, int *off);

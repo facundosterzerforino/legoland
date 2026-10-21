@@ -749,7 +749,7 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
         if ((char)node->field_18 != 1) {
             sprite = node->sprite;
             if (sprite != NULL) {
-                FUN_0048a840((const char *)node->field_1c, 0);
+                GetFreePlayObjectCost((const char *)node->field_1c, 0);
                 if (CanAffordFreePlayObject(node->field_1c, node->field_20p) != 0) {
                     PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
                     return 0;

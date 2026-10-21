@@ -190,7 +190,7 @@ int ScriptCmdMap(struct CommandArgs *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00478b20
-int FUN_00478b20(char *arg) {
+int EnableObjectClass(char *arg) {
     struct Element *obj = (struct Element *)ElemID(arg);
 
     if (obj != NULL) {
@@ -214,7 +214,7 @@ int ScriptCmdLoad(struct CommandArgs *param_1, unsigned int param_2) {
     if (CheckScriptCommand(param_1, param_2, 1, 1) == 0) {
         return 0;
     }
-    return FUN_00478b20(GetScriptArg1(param_1, param_2)) != 0;
+    return EnableObjectClass(GetScriptArg1(param_1, param_2)) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00478bc0
@@ -234,7 +234,7 @@ unsigned int ScriptCmdEnable(struct CommandArgs *param_1, unsigned int param_2, 
     }
     if (DAT_00669054 == 1) {
         name = GetScriptArg1(param_1, param_2);
-        if (FUN_00478b20(name) != 0) {
+        if (EnableObjectClass(name) != 0) {
             GiveRewardObject(ElemID(name), 0, 1);
         }
         return 1;
@@ -322,7 +322,7 @@ int ScriptCmdBriefingFile(struct CommandArgs *param_1, int param_2) {
             name = param_1->arg1;
         }
         if (DAT_00669054 == 1) {
-            FUN_004687f0(name);
+            SetBriefingFile(name);
             return 1;
         }
         NewScriptBriefingFileEvent(name);
@@ -1731,7 +1731,7 @@ int ScriptCmdEndLevel(struct CommandArgs *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0047afb0
-int FUN_0047afb0(const char *param_1) {
+int LoadLevelScript(const char *param_1) {
     int result;
     int v1;
 

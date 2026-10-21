@@ -5584,7 +5584,7 @@ L4687bc:
 }
 
 // FUNCTION: LEGOLAND 0x004687f0
-void FUN_004687f0(const char *param_1) {
-    strncpy(DAT_0066861c, param_1, 0x80);
-    DAT_0066861c[0x7f] = 0;
+void SetBriefingFile(const char *param_1) {
+    strncpy(BriefingFileName, param_1, 0x80);
+    BriefingFileName[0x7f] = 0;
 }

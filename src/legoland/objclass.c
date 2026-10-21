@@ -812,7 +812,7 @@ struct BestNode *FindBestNodeAtPoint(struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x004817d0
-struct BestNode *FUN_004817d0(int *param_1) {
+struct BestNode *FindBestNodeAtPixel(int *param_1) {
     struct BestNode *node;
 
     if (DAT_0066b44c == 0) {

@@ -279,7 +279,7 @@ void StartLevelGame(void) {
         sprintf(buf, "objlist%d.txt", lpConfig->level);
         SetBricksLimited(0);
         ResetMapAI();
-        DAT_00667c4c = FUN_0047afb0(buf);
+        DAT_00667c4c = LoadLevelScript(buf);
         SetBricksLimited(1);
         AllocBlokeCounters(lpConfig->max_blokes);
         ResetEditState();
@@ -287,10 +287,10 @@ void StartLevelGame(void) {
         MapStats.level_end = 0;
         UpdateMenu();
         FUN_00490600(1);
-        ShowIntervalScreen(DAT_0066861c, 0);
+        ShowIntervalScreen(BriefingFileName, 0);
         MapLoaded = 1;
         ResumeGameTimer();
-        FUN_0048a800();
+        ClearFreePlaySelection();
     }
 }
 
