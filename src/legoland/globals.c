@@ -5422,7 +5422,7 @@ struct RideSpriteInfo DAT_0062fe10;
 float FLOAT_004ab404;
 
 // GLOBAL: LEGOLAND 0x004b55fc
-struct PlaneSet *DAT_004b55fc;
+struct PlaneSet *ClipPlanes;
 
 // GLOBAL: LEGOLAND 0x004d83b4
 struct Train *DAT_004d83b4;

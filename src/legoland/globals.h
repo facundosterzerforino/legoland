@@ -4118,7 +4118,7 @@ extern float FLOAT_004ab404;
 
 // 0x004b55fc
 struct PlaneSet;
-extern struct PlaneSet *DAT_004b55fc;
+extern struct PlaneSet *ClipPlanes;
 
 // 0x004d83b4
 extern struct Train *DAT_004d83b4;

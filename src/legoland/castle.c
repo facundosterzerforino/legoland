@@ -1661,18 +1661,18 @@ struct PlaneSet {
 };
 
 // FUNCTION: LEGOLAND 0x0041ef20
-void FUN_0041ef20(int a, int b, int c, int d) {
+void SetClipRect(int a, int b, int c, int d) {
     struct RectI r;
 
     r.var_0 = b;
     r.var_4 = a;
     r.var_c = c;
     r.var_8 = d;
-    FUN_0041f380((int *)&r, DAT_004b55fc);
+    SetClipPlanesFromRect((int *)&r, ClipPlanes);
 }
 
 // FUNCTION: LEGOLAND 0x0041ef60
-void *FUN_0041ef60(void *verts, int *out, unsigned int code, int n) {
+void *ClipTriangle(void *verts, int *out, unsigned int code, int n) {
     int sel = 0;
 
     if (code == 0xf) {
@@ -1688,11 +1688,11 @@ void *FUN_0041ef60(void *verts, int *out, unsigned int code, int n) {
     }
     switch (sel) {
     case 3:
-        return FUN_0041f2b0(3, verts, out, 4, DAT_004b55fc->p[0]);
+        return ClipPolygonToPlanes(3, verts, out, 4, ClipPlanes->p[0]);
     case 2:
-        return FUN_0041f2b0(3, verts, out, 2, DAT_004b55fc->p[2]);
+        return ClipPolygonToPlanes(3, verts, out, 2, ClipPlanes->p[2]);
     case 1:
-        return FUN_0041f2b0(3, verts, out, 2, DAT_004b55fc->p[0]);
+        return ClipPolygonToPlanes(3, verts, out, 2, ClipPlanes->p[0]);
     }
     return out;
 }
@@ -1767,7 +1767,7 @@ int FUN_0041f050(int n, int **src, int **dst, int **cursor, float *pl) {
 }
 
 // FUNCTION: LEGOLAND 0x0041f2b0
-int **FUN_0041f2b0(int n, int **verts, int *outCount, int nPlanes, float *planes) {
+int **ClipPolygonToPlanes(int n, int **verts, int *outCount, int nPlanes, float *planes) {
     int i;
 
     for (i = 0; i < n; i++) {
@@ -1792,12 +1792,12 @@ struct Pair {
 };
 
 // FUNCTION: LEGOLAND 0x0041f350
-int **FUN_0041f350(int param1, int **param2, int *param3, struct PlaneSet *param4) {
-    return FUN_0041f2b0(param1, param2, param3, param4->count, param4->p[0]);
+int **ClipPolygonToPlaneSet(int param1, int **param2, int *param3, struct PlaneSet *param4) {
+    return ClipPolygonToPlanes(param1, param2, param3, param4->count, param4->p[0]);
 }
 
 // FUNCTION: LEGOLAND 0x0041f380
-void FUN_0041f380(const int *r, struct PlaneSet *out) {
+void SetClipPlanesFromRect(const int *r, struct PlaneSet *out) {
     out->count = 4;
     out->p[0][0] = 1.0f;
     out->p[0][1] = 0.0f;
@@ -7033,7 +7033,7 @@ void FUN_00425e20(void) {
     m.m[1][3] = -DAT_008299a0[1];
     m.m[2][3] = -DAT_008299a0[2];
     Mat4Multiply(DAT_008299bc.m, m.m, DAT_008299fc.m);
-    FUN_0041ef20(DAT_008299ac[0], DAT_008299ac[1], DAT_008299ac[2], DAT_008299ac[3]);
+    SetClipRect(DAT_008299ac[0], DAT_008299ac[1], DAT_008299ac[2], DAT_008299ac[3]);
 }
 
 // FUNCTION: LEGOLAND 0x00426000
@@ -10250,7 +10250,7 @@ L42a345:
         lea edx, [ebp - 4]
         push edx
         push eax
-        call FUN_0041ef60
+        call ClipTriangle
         mov ecx, dword ptr [ebp - 4]
         add esp, 0x10
         test ecx, ecx

@@ -33,7 +33,7 @@ struct ListNode {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043a7a0
-struct Point FUN_0043a7a0(struct AnimLayout *layout, int seg, int step) {
+struct Point GetAnimLayoutOffset(struct AnimLayout *layout, int seg, int step) {
     struct Point sum;
     struct AnimEntry *entry;
     struct AnimEntry **pp;
@@ -72,7 +72,7 @@ void FUN_0043a820(struct AnimEntry *param_1, struct RideNode *param_2) {
     char dir;
 
     bloke = param_2->rider;
-    base = FUN_0043a7a0((struct AnimLayout *)DAT_004b7758[bloke->field_50].anim_layout, bloke->field_4a, bloke->field_38);
+    base = GetAnimLayoutOffset((struct AnimLayout *)DAT_004b7758[bloke->field_50].anim_layout, bloke->field_4a, bloke->field_38);
     ride = SpaceTowerRideObj;
     base.x += (param_2->tile.pos.x + ride->x) << 8;
     base.y += (param_2->tile.pos.y + ride->y) << 8;

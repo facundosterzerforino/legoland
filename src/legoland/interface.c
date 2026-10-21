@@ -1656,7 +1656,7 @@ int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
             return 0;
         }
         PushRenderingStatusAndLockVideoSurface();
-        FUN_00465850(frame);
+        DrawMovieFrameDoubled(frame);
         PopRenderingStatus();
         if (started == 0) {
             if (audio != 0) {

@@ -2123,7 +2123,7 @@ L465841:
 }
 
 // FUNCTION: LEGOLAND 0x00465850
-void FUN_00465850(struct AviFrame *frame) {
+void DrawMovieFrameDoubled(struct AviFrame *frame) {
     unsigned char *dst;
     unsigned char *next;
     unsigned short *row;
