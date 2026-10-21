@@ -1577,13 +1577,13 @@ extern struct Ride *ElephantFountainRide;
 // 0x004cbfe0
 extern struct Sprite *ShowerLayer;
 // 0x004cbfe4
-extern struct Element *DAT_004cbfe4;
+extern struct Element *WaterWorksEntranceElement;
 // 0x004cbfe8
 extern struct Element *WaterWorksImageListHandle;
 // 0x004cbfec
 extern struct Sprite *ElephantFountainLayer;
 // 0x004cbff0
-extern struct RideSpriteInfo DAT_004cbff0;
+extern struct RideSpriteInfo WaterWorksSpriteInfo;
 // 0x004cc008
 extern struct Ride *WaterBlockRide;
 // 0x004cc014
@@ -1591,7 +1591,7 @@ extern struct Sprite *ShowerSprite;
 // 0x004cc018
 extern struct SpriteSet *WaterWorksImageListData;
 // 0x004cc01c
-extern struct Ride *DAT_004cc01c;
+extern struct Ride *WaterWorksEntranceRide;
 // 0x004cc020
 extern struct Sprite *WwElsquirtSprite;
 // 0x004cc024
@@ -1599,9 +1599,9 @@ extern struct Ride *ShowerRide;
 // 0x004cc028
 extern unsigned int WaterWorksSfxRefCount;
 // 0x004cc02c
-extern struct WaterNode *WaterNodeList;
+extern struct WaterNode *WaterBlockList;
 // 0x004cc030
-extern struct WaterNode *DAT_004cc030;
+extern struct WaterNode *ShowerList;
 // 0x004cc034
 extern struct WaterNode *ElephantFountainList;
 // 0x004cc03c

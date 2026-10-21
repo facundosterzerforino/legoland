@@ -2208,7 +2208,7 @@ void FUN_0040bf50(void) {
 
 // FUNCTION: LEGOLAND 0x0040bf70
 void LogFlumeEntranceUpdate(Element *obj) {
-    int field_73;
+    int target_dir;
     RideNode *ptmp375;
     Ride *ride = obj->ride;
     RideNode *elem;
@@ -2249,8 +2249,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->dest.y = v;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 3:
@@ -2260,8 +2260,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->dest.y = v;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 4:
@@ -2289,9 +2289,9 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->dest.y = (tile->pos.y << 8) - 0x100;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                field_73 = bloke->field_73;
-                NewDirForAction(bloke, (field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                target_dir = bloke->target_dir;
+                NewDirForAction(bloke, (target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 7:
@@ -2301,8 +2301,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->dest.y = v;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = 0x10 + dir;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = 0x10 + dir;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 8:
@@ -2316,8 +2316,8 @@ void LogFlumeEntranceUpdate(Element *obj) {
                 bloke->dest.y = ((tile->pos.y + ride->field_25) << 8) + 0x80;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 11:

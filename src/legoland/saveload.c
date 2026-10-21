@@ -414,7 +414,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
             BlokeSaveBuffer.pos.y = bloke->pos.y;
             BlokeSaveBuffer.height = bloke->height;
             BlokeSaveBuffer.dir = bloke->dir;
-            BlokeSaveBuffer.field_73 = bloke->field_73;
+            BlokeSaveBuffer.target_dir = bloke->target_dir;
             BlokeSaveBuffer.frame = bloke->frame;
             BlokeSaveBuffer.field_75 = bloke->field_75;
             BlokeSaveBuffer.nav = bloke->nav;
@@ -953,7 +953,7 @@ LEGO_EXPORT int LoadGame(char *path) {
         bloke->pos.y = BlokeSaveBuffer.pos.y;
         bloke->height = BlokeSaveBuffer.height;
         bloke->dir = BlokeSaveBuffer.dir;
-        bloke->field_73 = BlokeSaveBuffer.field_73;
+        bloke->target_dir = BlokeSaveBuffer.target_dir;
         bloke->frame = BlokeSaveBuffer.frame;
         bloke->field_75 = BlokeSaveBuffer.field_75;
         bloke->nav = BlokeSaveBuffer.nav;

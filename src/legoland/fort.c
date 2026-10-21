@@ -124,7 +124,7 @@ void FortWanderUpdate(RideNode *node, Bloke *bloke) {
         bloke->dest.y = (int)(((tile->pos.y + DAT_004b4580.top) << 8) + h * fy);
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
         bloke->low_level_action = 7;
-        bloke->field_73 = dir + 0x10;
+        bloke->target_dir = dir + 0x10;
         NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
         bloke->field_40 = 3;
         break;
@@ -148,7 +148,7 @@ void FortWanderUpdate(RideNode *node, Bloke *bloke) {
 }
 
 /* Update the fort animation and advance each rider after its current movement finishes.
- * Keep the walking setup in each case, with field_73 assigned before low_level_action:
+ * Keep the walking setup in each case, with target_dir assigned before low_level_action:
  * MSVC6 then shares the case 2/3 call tail and batches both calls' stack cleanup exactly
  * as in the original. An explicit shared label inserts an extra stack adjustment. */
 // FUNCTION: LEGOLAND 0x00406660
@@ -193,7 +193,7 @@ void FortUpdate(Element *elem) {
                     bloke->dest.x = (x - 4) << 8;
                     bloke->dest.y = y << 8;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_73 = 0x10 + dir;
+                    bloke->target_dir = 0x10 + dir;
                     bloke->low_level_action = 7;
                     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                     bloke->field_40 = 2;
@@ -208,7 +208,7 @@ void FortUpdate(Element *elem) {
                     bloke->dest.x = (tile_x << 8) + 0x80;
                     bloke->dest.y = (node->tile.pos.y << 8) + 0x80;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_73 = 0x10 + dir;
+                    bloke->target_dir = 0x10 + dir;
                     bloke->low_level_action = 7;
                     NewDirForAction(bloke, ((unsigned char)(0x10 + dir) >> 5) + 3);
                     bloke->param_action++;
@@ -218,7 +218,7 @@ void FortUpdate(Element *elem) {
                     bloke->dest.x = (x << 8) + 0x80;
                     bloke->dest.y = (y << 8) + 0x80;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_73 = 0x10 + dir;
+                    bloke->target_dir = 0x10 + dir;
                     bloke->low_level_action = 7;
                     NewDirForAction(bloke, ((unsigned char)(0x10 + dir) >> 5) + 3);
                     bloke->param_action++;

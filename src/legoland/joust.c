@@ -193,9 +193,9 @@ void JoustUpdate(struct Element *elem) {
                 b->flags |= 8;
                 b->dest.x = (x + 1) << 8;
                 b->dest.y = (y << 8) - 0x100;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 b->field_58 = 0;
                 break;
@@ -203,9 +203,9 @@ void JoustUpdate(struct Element *elem) {
                 if (busy == 0) {
                     b->dest.x = (x + 2) << 8;
                     b->dest.y = (y << 8) - 0x100;
-                    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                     b->low_level_action = 7;
-                    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                     b->param_action++;
                     busy = 1;
                 } else if (horses < 6) {
@@ -227,9 +227,9 @@ void JoustUpdate(struct Element *elem) {
                 if (f1c != 0) {
                     b->dest.x = (x + 1) << 8;
                     b->dest.y = (y - 3) << 8;
-                    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                     b->low_level_action = 7;
-                    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                     b->field_44 = FUN_00407c20(hb);
                     h.c[b->field_44] = 1;
                     b->param_action++;
@@ -267,11 +267,11 @@ void JoustUpdate(struct Element *elem) {
                     b->dest.x = (x + 2) << 8;
                     b->flags &= 0xff7f;
                     b->dest.y = (y << 8) - 0x100;
-                    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                     b->low_level_action = 7;
                     b->person->field_2c = 0;
                     b->person->field_30 = 0;
-                    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                     h.c[b->field_44] = 1;
                     b->param_action++;
                     count--;
@@ -280,9 +280,9 @@ void JoustUpdate(struct Element *elem) {
             case 7:
                 b->dest.x = x << 8;
                 b->dest.y = y << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 h.c[b->field_44] = 0;
                 b->param_action = 0x1e;
                 break;
@@ -290,25 +290,25 @@ void JoustUpdate(struct Element *elem) {
             case 15:
                 b->dest.x = (x << 8) - 0x100;
                 b->dest.y = (y << 8) - 0x100;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 12:
                 b->dest.x = (x << 8) - 0x364;
                 b->dest.y = (y << 8) + b->field_36 * 200 - 0x638;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 11:
                 b->dest.x = (x << 8) - 0x364;
                 b->dest.y = (y - 3) << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 13:
@@ -323,82 +323,82 @@ void JoustUpdate(struct Element *elem) {
             case 14:
                 b->dest.x = (x << 8) - 0x364;
                 b->dest.y = (y - 3) << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 16:
                 b->dest.x = x << 8;
                 b->dest.y = y << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action = 0x1e;
                 break;
             case 20:
                 b->dest.x = (x << 8) - 0x100;
                 b->dest.y = (y << 8) - 0x100;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 21:
                 b->dest.x = (x << 8) - 0x16a;
                 b->dest.y = (y - 2) << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 22:
                 b->dest.x = (x << 8) - 0x16a;
                 b->dest.y = (y << 8) - 0xf46;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 24:
                 b->dest.x = (x << 8) - 0x364;
                 b->dest.y = (y << 8) + b->field_36 * 200 - 0x102e;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 23:
             case 26:
                 b->dest.x = (x << 8) - 0x364;
                 b->dest.y = (y << 8) - 0xf46;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 27:
                 b->dest.x = (x << 8) - 0x16a;
                 b->dest.y = (y << 8) - 0xf46;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 28:
                 b->dest.x = (x << 8) - 0x16a;
                 b->dest.y = (y - 2) << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 29:
                 b->dest.x = x << 8;
                 b->dest.y = y << 8;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action = 0x1e;
                 break;
             case 30:

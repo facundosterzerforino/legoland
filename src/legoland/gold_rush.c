@@ -286,9 +286,9 @@ void FUN_00406f60(struct RideNode *item, unsigned char *p) {
     b->dest.y += p[1] << 8;
     b->dest.x += 0x80;
     b->dest.y += 0x80;
-    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
     b->low_level_action = 7;
-    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
 }
 
 // FUNCTION: LEGOLAND 0x00407000
@@ -303,9 +303,9 @@ void FUN_00407000(struct RideNode *item, unsigned char *p) {
     b->dest.x += p[0] << 8;
     b->dest.y += (p[1] << 8) + 0x80;
     b->dest.x += 0x80 - (int)(w * 512.0f);
-    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
     b->low_level_action = 7;
-    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
 }
 
 // Sends a gold-rush rider to its panning spot: the slot's point, offset by the tile in `p` and by
@@ -323,9 +323,9 @@ void SendGoldRushRiderToSlot(struct RideNode *item, unsigned char *p) {
     b->dest.y += p[1] << 8;
     b->dest.x += 0x80 - (int)(w * 512.0f);
     b->dest.y -= 0x50;
-    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
     b->low_level_action = 7;
-    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
 }
 
 // FUNCTION: LEGOLAND 0x00407170
@@ -341,9 +341,9 @@ void FUN_00407170(struct RideNode *item, unsigned char *p) {
     b->dest.x += p[0] << 8;
     b->dest.y += (p[1] << 8) + 0x80;
     b->dest.x += 0x80 - (int)w;
-    b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+    b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
     b->low_level_action = 7;
-    NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+    NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
 }
 
 // FUNCTION: LEGOLAND 0x00407230
@@ -404,9 +404,9 @@ void GoldRushUpdate(struct Element *elem) {
                 b->param_action++;
                 b->dest.x = (t[0] << 8) + 0x480;
                 b->dest.y = (t[1] << 8) - 0x180;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 break;
             case 3:
             case 8:
@@ -432,9 +432,9 @@ void GoldRushUpdate(struct Element *elem) {
             case 9:
                 b->dest.x = (t[0] << 8) + 0x480;
                 b->dest.y = (t[1] << 8) - 0x180;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 10:
@@ -449,9 +449,9 @@ void GoldRushUpdate(struct Element *elem) {
             case 12:
                 b->dest.x = (x << 8) + 0x80;
                 b->dest.y = (y << 8) + 0x80;
-                b->field_73 = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
+                b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
-                NewDirForAction(b, (unsigned char)((b->field_73 >> 5) + 3));
+                NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                 b->param_action++;
                 break;
             case 13:

@@ -1,4 +1,4 @@
-# FUN_00418710 (0x00418710, `src/legoland/water_works.c`)
+# IsBlokeNearElephantFountain (0x00418710, `src/legoland/water_works.c`)
 
 **Best: 82.69%** (unchanged from start). Kind: C.
 
@@ -21,7 +21,7 @@
 
 ## 2026-10-21 agent notes (82.69% -> 100.00%)
 
-# FUN_00418710 (0x00418710, `src/legoland/water_works.c`)
+# IsBlokeNearElephantFountain (0x00418710, `src/legoland/water_works.c`)
 
 **100%** (was 82.69%). Kind: C.
 

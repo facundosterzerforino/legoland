@@ -80,7 +80,7 @@ void FUN_0043a820(struct AnimEntry *param_1, struct RideNode *param_2) {
     bloke->dest.y = base.y;
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->low_level_action = 7;
-    bloke->field_73 = dir + 0x10;
+    bloke->target_dir = dir + 0x10;
     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
     param_2->rider->field_38++;
 }
@@ -830,7 +830,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 bloke->dest.y = ride_y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
+                bloke->target_dir = dir + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
@@ -846,7 +846,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 bloke->dest.y = (DAT_004b77e8[seat].y + coord_y) << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
+                bloke->target_dir = dir + 0x10;
                 NewDirForAction(bloke, (char)DAT_004b7798[seat >> 1].direction);
                 bloke->param_action++;
                 break;
@@ -880,7 +880,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 bloke->dest.y = (((signed char)ride->field_25 + tile_y) << 8) + 0x80;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = 0x10 + dir;
+                bloke->target_dir = 0x10 + dir;
                 NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;

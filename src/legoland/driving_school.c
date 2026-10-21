@@ -482,7 +482,7 @@ void DrivingSchoolUpdate(Element *obj) {
                 bloke->dest.y = (tile_y - 3 + ride_y0) << 8;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = 0x10 + move;
+                bloke->target_dir = 0x10 + move;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->field_58 = (rand() & 7) + 1;
                 bloke->param_action++;
@@ -529,7 +529,7 @@ void DrivingSchoolUpdate(Element *obj) {
                 bloke->dest.y = ((node->tile.pos.y + ride->y) << 8) + 0x80;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = move + 0x10;
+                bloke->target_dir = move + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;

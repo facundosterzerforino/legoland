@@ -334,7 +334,7 @@ void BlokeAILeavePark(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 6;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 != 0) {
                 bloke->low_level_action = 4;
@@ -347,7 +347,7 @@ void BlokeAILeavePark(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 6;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 != 0) {
                 bloke->low_level_action = 4;
@@ -372,7 +372,7 @@ void BlokeAILeavePark(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 0xb;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = (bloke->field_64 & 1) ? 6 : 10;
             return;
@@ -380,7 +380,7 @@ void BlokeAILeavePark(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 0xb;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if ((bloke->field_64 & 1) != 0) {
                 bloke->param_action = 6;
@@ -417,7 +417,7 @@ void BlokeAILeavePark(Bloke *bloke) {
         bloke->dest.y = (object->field_5 + ride->footprint.y0 + 8) << 8;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
         bloke->low_level_action = 7;
-        bloke->field_73 = dir;
+        bloke->target_dir = dir;
         NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         break;
@@ -427,7 +427,7 @@ void BlokeAILeavePark(Bloke *bloke) {
         bloke->dest.y += DAT_004b8328.y;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
         bloke->low_level_action = 7;
-        bloke->field_73 = dir;
+        bloke->target_dir = dir;
         NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         return;
@@ -741,7 +741,7 @@ void BlokeAIWander(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 6;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = bloke->field_64 != 0 ? 0 : 10;
             return;
@@ -749,7 +749,7 @@ void BlokeAIWander(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 6;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = bloke->field_64 == 0;
             return;
@@ -774,7 +774,7 @@ void BlokeAIWander(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 0xb;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = (bloke->field_64 & 1) ? 6 : 10;
             return;
@@ -782,7 +782,7 @@ void BlokeAIWander(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 0xb;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if ((bloke->field_64 & 1) != 0) {
                 bloke->param_action = 6;
@@ -900,7 +900,7 @@ void BlokeAIGoToEntrance(Bloke *bloke) {
         bloke->dest = to;
         dir = CalcMoveLine(bloke->pos, to, &bloke->nav) + 0x10;
         bloke->low_level_action = 0xf;
-        bloke->field_73 = dir;
+        bloke->target_dir = dir;
         NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         break;
@@ -952,7 +952,7 @@ void FUN_0044fe80(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 6;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 == 0) {
                 bloke->param_action = 2;
@@ -963,7 +963,7 @@ void FUN_0044fe80(Bloke *bloke) {
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->low_level_action = 6;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 == 0) {
                 bloke->param_action = 1;
@@ -992,7 +992,7 @@ void FUN_0044fe80(Bloke *bloke) {
             bloke->dest.x = bloke->goal.x - 0x80;
             bloke->dest.y = bloke->goal.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             bloke->low_level_action = 7;
             NewDirForAction(bloke, 7);
             bloke->field_5c = 0;
@@ -1030,7 +1030,7 @@ void FUN_0044fe80(Bloke *bloke) {
             bloke->dest.y = bloke->goal.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
             bloke->low_level_action = 7;
-            bloke->field_73 = dir;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action++;
             return;

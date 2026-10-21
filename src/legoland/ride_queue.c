@@ -144,8 +144,8 @@ void FUN_00411fa0(struct Queue *queue, int param_2, int param_3, struct Bloke *i
     inner->dest.x = x;
     dir = CalcMoveLine(*(struct Point *)&inner->pos.x, *(struct Point *)&inner->dest.x, &inner->nav);
     inner->low_level_action = 7;
-    inner->field_73 = dir + 0x10;
-    NewDirForAction((Bloke *)inner, (unsigned char)(inner->field_73 >> 5) + 3);
+    inner->target_dir = dir + 0x10;
+    NewDirForAction((Bloke *)inner, (unsigned char)(inner->target_dir >> 5) + 3);
     inner->field_38++;
     cur = inner->field_38;
     if (cur >= table->count) {
@@ -288,8 +288,8 @@ void MoveBlokeAlongQueueTable(struct QueueTable *table, int x, int y, struct Blo
     bloke->dest.y = p.y << 8;
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->low_level_action = 7;
-    bloke->field_73 = dir + 0x10;
-    NewDirForAction(bloke, (unsigned char)(bloke->field_73 >> 5) + 3);
+    bloke->target_dir = dir + 0x10;
+    NewDirForAction(bloke, (unsigned char)(bloke->target_dir >> 5) + 3);
     bloke->field_38 += (signed char)bloke->field_34;
     if ((signed char)bloke->field_34 < 0) {
         if (bloke->field_38 < 0) {

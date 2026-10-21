@@ -379,7 +379,7 @@ LEGO_EXPORT int NewDirForAction(Bloke *bloke, unsigned char dir) {
     unsigned char masked = dir & 0x7;
     if (bloke->dir != masked) {
         bloke->pending_action = bloke->low_level_action;
-        bloke->field_73 = masked;
+        bloke->target_dir = masked;
         bloke->low_level_action = 5;
         bloke->field_75 = 1;
         return 1;
@@ -568,7 +568,7 @@ void TurnTowardsTargetDir(Bloke *bloke) {
 
     if (--bloke->field_75 == 0) {
         bloke->field_75 = 3;
-        step = ((bloke->dir - bloke->field_73) & 4) ? 1 : -1;
+        step = ((bloke->dir - bloke->target_dir) & 4) ? 1 : -1;
         bloke->dir = (step + bloke->dir) & 7;
     }
 }
@@ -595,10 +595,10 @@ void BlokeActionWait(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x004838e0
 void BlokeActionTurn(Bloke *bloke) {
-    if (bloke->dir != bloke->field_73) {
+    if (bloke->dir != bloke->target_dir) {
         TurnTowardsTargetDir(bloke);
     }
-    if (bloke->dir == bloke->field_73) {
+    if (bloke->dir == bloke->target_dir) {
         bloke->field_75 = 1;
         DoPendingAction(bloke);
     }
@@ -1021,7 +1021,7 @@ void BlokeActionBounce(Bloke *bloke) {
         bloke->height = 0;
     }
     bloke->frame = 0;
-    bloke->field_73 = (bloke->dir + 1) & 7;
+    bloke->target_dir = (bloke->dir + 1) & 7;
     TurnTowardsTargetDir(bloke);
 }
 

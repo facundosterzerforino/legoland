@@ -211,8 +211,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->field_5c = 500;
                 bloke->param_action++;
                 break;
@@ -222,8 +222,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 2:
@@ -233,8 +233,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = 0x10 + dir;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = 0x10 + dir;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 3:
@@ -244,8 +244,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 4:
@@ -255,8 +255,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 5:
@@ -266,8 +266,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 6:
@@ -277,8 +277,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 queued = queued + 1;
                 break;
@@ -291,8 +291,8 @@ void BalloonzUpdate(Element *obj) {
                     bloke->dest.y = y;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->low_level_action = 7;
-                    bloke->field_73 = dir + 0x10;
-                    NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                    bloke->target_dir = dir + 0x10;
+                    NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                     bloke->field_36 = BalloonzCarAtPos(pos, lap);
                     cars[bloke->field_36] = 1;
                     bloke->field_58 = (rand() % 3 + 4) * 50;
@@ -307,8 +307,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 9:
@@ -347,11 +347,11 @@ void BalloonzUpdate(Element *obj) {
                         bloke->dest.x = x;
                         bloke->dest.y = y;
                         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                        bloke->field_73 = dir + 0x10;
+                        bloke->target_dir = dir + 0x10;
                         bloke->low_level_action = 7;
                         bloke->person->sprite = NULL;
                         bloke->person->field_30 = 0;
-                        NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                        NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                         bloke->param_action++;
                         cars[car] = 1;
                         riders--;
@@ -365,8 +365,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = 0x10 + dir;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = 0x10 + dir;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 14:
@@ -376,8 +376,8 @@ void BalloonzUpdate(Element *obj) {
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
-                bloke->field_73 = 0x10 + dir;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->target_dir = 0x10 + dir;
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 cars[bloke->field_36] = 0;
                 leaving--;

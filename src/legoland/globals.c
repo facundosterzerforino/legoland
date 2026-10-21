@@ -1702,7 +1702,7 @@ struct Ride *ElephantFountainRide;
 struct Sprite *ShowerLayer;
 
 // GLOBAL: LEGOLAND 0x004cbfe4
-struct Element *DAT_004cbfe4;
+struct Element *WaterWorksEntranceElement;
 
 // GLOBAL: LEGOLAND 0x004cbfe8
 struct Element *WaterWorksImageListHandle;
@@ -1711,7 +1711,7 @@ struct Element *WaterWorksImageListHandle;
 struct Sprite *ElephantFountainLayer;
 
 // GLOBAL: LEGOLAND 0x004cbff0
-struct RideSpriteInfo DAT_004cbff0;
+struct RideSpriteInfo WaterWorksSpriteInfo;
 
 // GLOBAL: LEGOLAND 0x004cc008
 struct Ride *WaterBlockRide;
@@ -1723,7 +1723,7 @@ struct Sprite *ShowerSprite;
 struct SpriteSet *WaterWorksImageListData;
 
 // GLOBAL: LEGOLAND 0x004cc01c
-struct Ride *DAT_004cc01c;
+struct Ride *WaterWorksEntranceRide;
 
 // GLOBAL: LEGOLAND 0x004cc020
 struct Sprite *WwElsquirtSprite;
@@ -1735,10 +1735,10 @@ struct Ride *ShowerRide;
 unsigned int WaterWorksSfxRefCount;
 
 // GLOBAL: LEGOLAND 0x004cc02c
-struct WaterNode *WaterNodeList;
+struct WaterNode *WaterBlockList;
 
 // GLOBAL: LEGOLAND 0x004cc030
-struct WaterNode *DAT_004cc030;
+struct WaterNode *ShowerList;
 
 // GLOBAL: LEGOLAND 0x004cc034
 struct WaterNode *ElephantFountainList;
@@ -4773,9 +4773,6 @@ int DAT_00813a80;
 
 // GLOBAL: LEGOLAND 0x00813a84
 struct MapRect SelectionRect;
-
-
-
 
 // GLOBAL: LEGOLAND 0x00813a94
 unsigned int DAT_00813a94;

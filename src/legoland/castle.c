@@ -6653,9 +6653,9 @@ void CastleObjUpdate(Element *obj) {
             if (g->low_level_action == 0) {
                 g->dest.x = (f - 8) << 8;
                 g->dest.y = (e - 1) << 8;
-                g->field_73 = ((CalcMoveLineIntFn)CalcMoveLine)(g->pos, g->dest, &g->nav) + 0x10;
+                g->target_dir = ((CalcMoveLineIntFn)CalcMoveLine)(g->pos, g->dest, &g->nav) + 0x10;
                 g->low_level_action = 7;
-                NewDirForAction(g, (g->field_73 >> 5) + 3);
+                NewDirForAction(g, (g->target_dir >> 5) + 3);
                 g->param_action++;
             }
             break;
@@ -6672,9 +6672,9 @@ void CastleObjUpdate(Element *obj) {
             if (g->low_level_action == 0) {
                 g->dest.x = (f << 8) + 0x80;
                 g->dest.y = (e << 8) + 0x80;
-                g->field_73 = ((CalcMoveLineIntFn)CalcMoveLine)(g->pos, g->dest, &g->nav) + 0x10;
+                g->target_dir = ((CalcMoveLineIntFn)CalcMoveLine)(g->pos, g->dest, &g->nav) + 0x10;
                 g->low_level_action = 7;
-                NewDirForAction(g, (g->field_73 >> 5) + 3);
+                NewDirForAction(g, (g->target_dir >> 5) + 3);
                 g->param_action++;
             }
             break;

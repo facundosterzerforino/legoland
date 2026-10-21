@@ -87,7 +87,7 @@ still differs" when they change. When a function reaches 100%, delete its file.
 | 0x00415ae0 | [RenderSpider](0x00415ae0-RenderSpider.md) | spider_ride.c | 98.62% |
 | 0x00416fa0 | [RenderTempleSlide](0x00416fa0-RenderTempleSlide.md) | temple_slide.c | 95.00% |
 | 0x00417430 | [TempleSlideUpdate](0x00417430-TempleSlideUpdate.md) | temple_slide.c | 79.39% |
-| 0x00418710 | [FUN_00418710](0x00418710-FUN_00418710.md) | water_works.c | 82.69% |
+| 0x00418710 | [IsBlokeNearElephantFountain](0x00418710-IsBlokeNearElephantFountain.md) | water_works.c | 82.69% |
 | 0x004198a0 | [BoatingSchoolBuildStepPath](0x004198a0-BoatingSchoolBuildStepPath.md) | boating_school.c | 81.26% |
 | 0x0041a720 | [BoatingSchoolUpdate](0x0041a720-BoatingSchoolUpdate.md) | boating_school.c | 96.58% |
 | 0x0041df00 | [FUN_0041df00](0x0041df00-FUN_0041df00.md) | castle.c | 44.94% |

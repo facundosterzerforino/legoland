@@ -444,7 +444,7 @@ void FUN_0043c930(void) {
 // FUNCTION: LEGOLAND 0x0043c950
 void SpinningBarrelsUpdate(struct Element *elem) {
     int view_x;
-    int field_73;
+    int target_dir;
     struct Ride *ride = elem->ride;
     struct RideNode *rn = ride->riders;
     struct RideNode *next;
@@ -477,9 +477,9 @@ void SpinningBarrelsUpdate(struct Element *elem) {
                 iv13 <<= 8;
                 bloke->dest.x = iv12;
                 bloke->dest.y = iv13;
-                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->target_dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
                 bloke->low_level_action = 7;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 bloke->field_58 = 0;
                 break;
@@ -555,18 +555,18 @@ void SpinningBarrelsUpdate(struct Element *elem) {
                 bloke->pos.y = iv13 - 0x180;
                 bloke->dest.x = iv12 + 0x180;
                 bloke->dest.y = iv13 - 0x80;
-                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->target_dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
                 bloke->low_level_action = 7;
-                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 0x10:
                 bloke->dest.x = ((2 + iv12) << 8) - (rand() % 2 ? 0x80 : 0);
                 bloke->dest.y = (iv13 << 8) + 0x80;
-                bloke->field_73 = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+                bloke->target_dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
                 bloke->low_level_action = 7;
-                field_73 = bloke->field_73;
-                NewDirForAction(bloke, (field_73 >> 5) + 3);
+                target_dir = bloke->target_dir;
+                NewDirForAction(bloke, (target_dir >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 0x11:
