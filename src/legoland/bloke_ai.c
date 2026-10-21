@@ -143,13 +143,13 @@ LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
     bloke->mood = Rand_Tween(10, 50);
     bloke->field_7e = Rand_Tween(0, 140) - 0x14;
     bloke->field_80 = Rand_Tween(5, 10);
-    bloke->field_7c = Rand_Tween(0, DAT_004b8334[1]);
+    bloke->field_7c = Rand_Tween(0, BlokeTirednessThresholds[1]);
     bloke->target = NULL;
     bloke->last_ride = NULL;
-    bloke->field_81 = DAT_004b8344;
-    DAT_004b8344++;
-    if (DAT_004b8344 > 'Z') {
-        DAT_004b8344 = 'A';
+    bloke->field_81 = NextBlokeLetter;
+    NextBlokeLetter++;
+    if (NextBlokeLetter > 'Z') {
+        NextBlokeLetter = 'A';
     }
     RandomiseBlokeName(bloke);
     bloke->favourite_attraction_0 = FUN_0044e790();
@@ -204,7 +204,7 @@ char GetBlokeHungerLevel(Bloke *bloke) {
         return 1;
     }
     for (i = 1; i < 5; i++) {
-        if (bloke->field_7c < DAT_004b8334[i - 1]) {
+        if (bloke->field_7c < BlokeTirednessThresholds[i - 1]) {
             return i - 1;
         }
     }
@@ -221,14 +221,14 @@ void FUN_0044eb50(Bloke *bloke) {
     }
     value = bloke->field_7c;
     extended = value & 0xffff;
-    if (extended >= DAT_004b8334[3] && (bloke->flags & 0x28) == 0) {
+    if (extended >= BlokeTirednessThresholds[3] && (bloke->flags & 0x28) == 0) {
         NewLongTermAction(bloke, 3);
         return;
     }
     if ((FrameCounter & 0x1f) != 0xf) {
         return;
     }
-    if (extended > DAT_004b8334[3]) {
+    if (extended > BlokeTirednessThresholds[3]) {
         return;
     }
     bloke->field_7c = bloke->field_80 + value;
@@ -296,9 +296,9 @@ void LogBlokeAiMessage(char *msg) {
     }
     DAT_006664ec++;
     // STRING: LEGOLAND 0x004b8404
-    sprintf(PTR_DAT_004b8348[7], "%c:%s", DAT_00813b08, msg);
+    sprintf(PTR_DAT_004b8348[7], "%c:%s", CurrentBlokeLetter, msg);
     // STRING: LEGOLAND 0x004b83f0
-    DBPrintf("[Bloke %c] - %s\n", DAT_00813b08, msg);
+    DBPrintf("[Bloke %c] - %s\n", CurrentBlokeLetter, msg);
 }
 
 // FUNCTION: LEGOLAND 0x0044ed70
@@ -653,7 +653,7 @@ void BlokeAIWander(Bloke *bloke) {
     Point out;
     char msg[100];
 
-    DAT_00813b08 = bloke->field_81;
+    CurrentBlokeLetter = bloke->field_81;
     switch (bloke->param_action) {
     case 0:
         BuildObjInfoList();
@@ -1320,7 +1320,7 @@ LEGO_EXPORT void ControlPeople(void) {
     SpawnVisitor();
     for (bloke = FirstBloke; bloke != NULL; bloke = next) {
         next = bloke->next;
-        DAT_00813b08 = bloke->field_81;
+        CurrentBlokeLetter = bloke->field_81;
         if (IsBlokeHovered(bloke) != 0) {
             // STRING: LEGOLAND 0x004b85a8
             DBPrintf("Processing your bloke\n");

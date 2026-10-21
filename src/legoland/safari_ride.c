@@ -194,7 +194,7 @@ void SafariRideLoad(struct Element *a1) {
     DAT_004cbef8 = SafariRunBNV;
     DAT_004cbefc = DAT_004cbf04[0];
     DAT_004cbf00 = SafariOffBNV;
-    DAT_004cbf08 = ZSafariSprite;
+    SafariRiderSprite = ZSafariSprite;
     Load_FXList(SAFARI_SFX, 1);
 }
 
@@ -206,7 +206,7 @@ void SafariRideUnload(struct Element *a1) {
     FreeBinV(DAT_004cbef8);
     FreeBinV(DAT_004cbefc);
     FreeBinV(DAT_004cbf00);
-    KillSprite(DAT_004cbf08);
+    KillSprite(SafariRiderSprite);
 }
 
 // FUNCTION: LEGOLAND 0x00414f00
@@ -254,12 +254,12 @@ void SafariAddObject(struct Element *uid, struct SafariBasicObject *a1) {
 // FUNCTION: LEGOLAND 0x00414ff0
 struct RideSpriteInfo *GetSafariRideSpriteInfo(struct Element *p1, unsigned short arg2) {
     struct Ride *pB = p1->ride;
-    DAT_004cbed0.sprite = pB->layer;
-    DAT_004cbed0.x = pB->field_14;
-    DAT_004cbed0.y = pB->field_18;
-    DAT_004cbed0.id = arg2;
+    SafariSpriteInfo.sprite = pB->layer;
+    SafariSpriteInfo.x = pB->field_14;
+    SafariSpriteInfo.y = pB->field_18;
+    SafariSpriteInfo.id = arg2;
     pB->layer->flags |= 0x2000;
-    return &DAT_004cbed0;
+    return &SafariSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x00415030
@@ -392,7 +392,7 @@ void SafariRideUpdate(Element *obj) {
                 x = x + (lpConfig->view_y - (short)Get_YScroll());
                 coords[1] = (x - DAT_0082c670.y / 2 - sc.y) * 2;
                 coords[0] = (ox - DAT_0082c670.x / 2 - sc.x) * 2;
-                bloke->person->sprite = DAT_004cbf08;
+                bloke->person->sprite = SafariRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
                 node->rider->field_35 = 0;
@@ -437,7 +437,7 @@ void SafariRideUpdate(Element *obj) {
                 coords2[1] = bloke->screen_y * 2;
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
-                bloke->person->sprite = DAT_004cbf08;
+                bloke->person->sprite = SafariRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
                 bloke->field_35 = 2;

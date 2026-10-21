@@ -98,7 +98,7 @@ void StartPlaneRide(struct PlaneRideNode *node) {
     node->f10 = 0;
     cfg[2] = node->b0;
     cfg[3] = node->b1;
-    PlayInstanceOfSample(DAT_004b79d0[0].sample, 1, 1, cfg);
+    PlayInstanceOfSample(PlaneRideFX[0].sample, 1, 1, cfg);
 }
 
 // FUNCTION: LEGOLAND 0x0043d9f0
@@ -225,7 +225,7 @@ void PlaneRideLoad(Element *input) {
     PlaneRideBinVs[0] = ZoomerideBinV;
     PlaneRideBinVs[1] = Zoomer0nBinV;
     PlaneRideBinVs[2] = Zoomer0ffBinV;
-    Load_FXList(DAT_004b79d0, 2);
+    Load_FXList(PlaneRideFX, 2);
     HideLayer(PlaneRideLayer, 1);
     StopLayerPlaying(PlaneRideLayer, 1);
     LLSSetFrame(GetLLSForLayer(PlaneRideLayer, 1), 0);
@@ -251,7 +251,7 @@ void PlaneRideUnload(struct Element *input) {
         FreeBinV(Zoomer0ffBinV);
     }
     RemoveAllPlaneRideNodes();
-    Kill_FXList(DAT_004b79d0, 2);
+    Kill_FXList(PlaneRideFX, 2);
 }
 
 // FUNCTION: LEGOLAND 0x0043df50
@@ -286,13 +286,13 @@ void PlaneRideAddObject(Element *a, int *p) {
 struct RideSpriteInfo *GetPlaneRideSpriteInfo(struct Element *param1, unsigned short param2) {
     struct Ride *block = param1->ride;
 
-    DAT_0062fe60.sprite = block->layer;
-    DAT_0062fe60.x = block->field_14;
-    DAT_0062fe60.y = block->field_18;
-    DAT_0062fe60.id = param2;
+    PlaneRideSpriteInfo.sprite = block->layer;
+    PlaneRideSpriteInfo.x = block->field_14;
+    PlaneRideSpriteInfo.y = block->field_18;
+    PlaneRideSpriteInfo.id = param2;
     block->layer->flags |= 0x2000;
 
-    return &DAT_0062fe60;
+    return &PlaneRideSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0043e050
@@ -363,7 +363,7 @@ LEGO_EXPORT int LoadZoomer(struct Element *arg) {
         }
         {
             struct TileSampleSource params = {2, ((unsigned char *)node)[0], ((unsigned char *)node)[1]};
-            PauseSingleSample(PlayInstanceOfSample(DAT_004b79d0[0].sample, 1, 1, &params));
+            PauseSingleSample(PlayInstanceOfSample(PlaneRideFX[0].sample, 1, 1, &params));
         }
         prev = node;
         if (!SaveGameRead(&marker, 4)) {

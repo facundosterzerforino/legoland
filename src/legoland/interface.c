@@ -1514,7 +1514,7 @@ struct MovieHandle *OpenAviMovie(const char *filename) {
                     rate = stream_info.rate / stream_info.scale;
                     height = stream_info.frame_bottom - stream_info.frame_top;
                 } else if (stream_info.type == 0x73647561) {
-                    DAT_00668fa4 = 0x16;
+                    AviSoundBufferFrames = 0x16;
                     audio_stream = stream;
                     AVIStreamAddRef(stream);
                 }
@@ -1621,11 +1621,11 @@ int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
         return 0;
     }
     audio = OpenMovieAudio(handle);
-    DAT_004bb4e0.biBitCount = 0x10;
-    DAT_004bb4e0.biWidth = handle->width;
-    DAT_004bb4e0.biHeight = handle->height;
-    DAT_004bb4e0.biSizeImage = DAT_004bb4e0.biHeight * DAT_004bb4e0.biWidth * 2;
-    handle->frame = AVIStreamGetFrameOpen(handle->video_stream, &DAT_004bb4e0);
+    AviFrameFormat.biBitCount = 0x10;
+    AviFrameFormat.biWidth = handle->width;
+    AviFrameFormat.biHeight = handle->height;
+    AviFrameFormat.biSizeImage = AviFrameFormat.biHeight * AviFrameFormat.biWidth * 2;
+    handle->frame = AVIStreamGetFrameOpen(handle->video_stream, &AviFrameFormat);
     while ((int)target < (int)handle->frame_count) {
         if (param_3 != 0) {
             if (ProcessSystemEvents() == 0) {
@@ -1722,12 +1722,12 @@ int OpenMovieAudio(struct MovieHandle *handle) {
     if (fmt->wFormatTag != 2 && fmt->wFormatTag != 0x11) {
         DAT_00668ee0 = 0;
         DAT_00668f9c = 0;
-        DAT_00668f50 = DAT_00668fa4;
+        DAT_00668f50 = AviSoundBufferFrames;
         AviSoundBytesPerFrame = fmt->nAvgBytesPerSec / handle->frame_rate;
-        DAT_00668f90 = fmt->nSamplesPerSec / handle->frame_rate;
-        DAT_00668f4c = fmt->wBitsPerSample;
+        AviSamplesPerFrame = fmt->nSamplesPerSec / handle->frame_rate;
+        AviAudioBitsPerSample = fmt->wBitsPerSample;
         AviAudioStream = handle->audio_stream;
-        AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(fmt, AviSoundBytesPerFrame * DAT_00668fa4);
+        AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(fmt, AviSoundBytesPerFrame * AviSoundBufferFrames);
         return 1;
     }
     DAT_00668ee0 = 1;
@@ -1743,12 +1743,12 @@ int OpenMovieAudio(struct MovieHandle *handle) {
         return 0;
     }
     DAT_00668f9c = 0;
-    DAT_00668f50 = DAT_00668fa4;
+    DAT_00668f50 = AviSoundBufferFrames;
     AviSoundBytesPerFrame = AviPcmFormat.nAvgBytesPerSec / handle->frame_rate;
-    DAT_00668f90 = AviPcmFormat.nSamplesPerSec / handle->frame_rate;
-    DAT_00668f4c = AviPcmFormat.wBitsPerSample;
+    AviSamplesPerFrame = AviPcmFormat.nSamplesPerSec / handle->frame_rate;
+    AviAudioBitsPerSample = AviPcmFormat.wBitsPerSample;
     AviAudioStream = handle->audio_stream;
-    AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(&AviPcmFormat, AviSoundBytesPerFrame * DAT_00668fa4);
+    AviSoundBuffer = KLIBAUDIO_CreateAVISoundBuffer(&AviPcmFormat, AviSoundBytesPerFrame * AviSoundBufferFrames);
     p = (unsigned int *)&AviAcmStreamHeader;
     for (i = sizeof(AviAcmStreamHeader) / 4; i != 0; i--) {
         *p = 0;
@@ -1839,11 +1839,11 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
             loops = param_1 - param_2;
             if (loops >= DAT_00668f50) {
                 KLIBAUDIO_StopAVISoundBuffer(AviSoundBuffer);
-                AviAudioSamplePos = DAT_00668f90 * param_1;
+                AviAudioSamplePos = AviSamplesPerFrame * param_1;
                 play = 1;
                 loops = 0xb;
                 DAT_00668fa0 = param_1 % DAT_00668f50;
-                play_pos = DAT_00668f90 * DAT_00668fa0;
+                play_pos = AviSamplesPerFrame * DAT_00668fa0;
             } else if (loops == 0) {
                 return 1;
             }
@@ -1861,7 +1861,7 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
                             DAT_00668fb4 = 0;
                             DAT_00668f54 = 0;
                             if (AviAudioSamplePos >= DAT_00668f88) {
-                                if (DAT_00668f4c == 8) {
+                                if (AviAudioBitsPerSample == 8) {
                                     memset(dst + (AviSoundBytesPerFrame - rem), 0x80, rem);
                                 } else {
                                     memset(dst + (AviSoundBytesPerFrame - rem), 0, rem);
@@ -1906,10 +1906,10 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
                         DAT_00668fb4 -= AviSoundBytesPerFrame;
                     }
                 } else {
-                    AVIStreamRead(AviAudioStream, AviAudioSamplePos, DAT_00668f90, dst, AviSoundBytesPerFrame, &bytes_out, &param_2);
+                    AVIStreamRead(AviAudioStream, AviAudioSamplePos, AviSamplesPerFrame, dst, AviSoundBytesPerFrame, &bytes_out, &param_2);
                 }
             } else {
-                if (DAT_00668f4c == 8) {
+                if (AviAudioBitsPerSample == 8) {
                     memset(dst, 0x80, AviSoundBytesPerFrame);
                 } else {
                     memset(dst, 0, AviSoundBytesPerFrame);
@@ -1920,7 +1920,7 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
             }
             KLIBAUDIO_UnLockAVISoundBuffer(AviSoundBuffer);
             if (DAT_00668ee0 == 0) {
-                AviAudioSamplePos += DAT_00668f90;
+                AviAudioSamplePos += AviSamplesPerFrame;
             }
             DAT_00668fa0++;
             if (DAT_00668fa0 >= DAT_00668f50) {

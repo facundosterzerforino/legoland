@@ -264,14 +264,14 @@ struct RideSpriteInfo *GetSpinningBarrelsRideSpriteInfo(struct Element *ride, un
     struct Ride *target = ride->ride;
     struct Sprite *layer;
 
-    DAT_0062fdb0.sprite = target->layer;
-    DAT_0062fdb0.x = target->field_14;
-    DAT_0062fdb0.y = target->field_18;
-    DAT_0062fdb0.id = param2;
+    SpinningBarrelsSpriteInfo.sprite = target->layer;
+    SpinningBarrelsSpriteInfo.x = target->field_14;
+    SpinningBarrelsSpriteInfo.y = target->field_18;
+    SpinningBarrelsSpriteInfo.id = param2;
 
     layer = target->layer;
     layer->flags |= 0x2000;
-    return &DAT_0062fdb0;
+    return &SpinningBarrelsSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0043c5b0

@@ -131,7 +131,7 @@ void JoustLoadResources(struct Element *root) {
     // STRING: LEGOLAND 0x004b46cc
     JoustSpecLMSprite = LoadSprite("Joust_SpecL_m.lls", 1);
     // STRING: LEGOLAND 0x004b46c0
-    DAT_004c123c[1] = ZJoustSprite = LoadSprite("z_joust.lls", 1);
+    JoustRiderSprites[1] = ZJoustSprite = LoadSprite("z_joust.lls", 1);
     // STRING: LEGOLAND 0x004b46a8
     JoustRideBnv = LoadBinV("Zbuffers\\joustride.bnv");
     HideLayer((struct Sprite *)JoustLayer, 1);
@@ -239,7 +239,7 @@ void JoustUpdate(struct Element *elem) {
                 break;
             case 3:
                 b->flags |= 0x80;
-                b->person->sprite = DAT_004c123c[1];
+                b->person->sprite = JoustRiderSprites[1];
                 b->person->field_30 = 1;
                 // STRING: LEGOLAND 0x004b4704
                 sprintf(name + 6, "%02d", b->field_44 + 1);
@@ -686,7 +686,7 @@ void JoustFreeResources(void) {
     KillSprite(JoustSpecRMSprite);
     KillSprite(JoustSpecLMSprite);
     FreeBinV(JoustRideBnv);
-    KillSprite(DAT_004c123c[1]);
+    KillSprite(JoustRiderSprites[1]);
     FreeJoustNodeList();
 }
 
@@ -694,13 +694,13 @@ void JoustFreeResources(void) {
 struct RideSpriteInfo *GetJoustSpriteInfo(struct Element *param1, unsigned short param2) {
     struct Ride *block = param1->ride;
 
-    DAT_004c1228.sprite = block->layer;
-    DAT_004c1228.x = block->field_14;
-    DAT_004c1228.y = block->field_18;
-    DAT_004c1228.id = param2;
+    JoustSpriteInfo.sprite = block->layer;
+    JoustSpriteInfo.x = block->field_14;
+    JoustSpriteInfo.y = block->field_18;
+    JoustSpriteInfo.id = param2;
     block->layer->flags |= 0x2000;
 
-    return &DAT_004c1228;
+    return &JoustSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x00408c90
@@ -758,7 +758,7 @@ LEGO_EXPORT int LoadJoust(struct Element *arg) {
     while (list != NULL) {
         car = list->person;
         if (car->field_30 != 0) {
-            car->sprite = DAT_004c123c[car->field_30];
+            car->sprite = JoustRiderSprites[car->field_30];
         } else {
             car->sprite = NULL;
             list->person->field_30 = 0;

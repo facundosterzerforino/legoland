@@ -263,7 +263,7 @@ void ClearDirSearchGrid(void) {
     int i;
 
     for (i = 0; i < 1152; i = i + 1) {
-        DAT_00669258[i] = 0;
+        PathVisitedBits[i] = 0;
     }
 }
 
@@ -314,7 +314,7 @@ void FUN_00482240(int x, int y, struct DirNode *parent) {
     }
 
     word_index = (x >> 5) + y * 6;
-    if ((1u << (x & 0x1f)) & DAT_00669258[word_index]) {
+    if ((1u << (x & 0x1f)) & PathVisitedBits[word_index]) {
         return;
     }
 
@@ -329,7 +329,7 @@ void FUN_00482240(int x, int y, struct DirNode *parent) {
     node->x = x;
     node->y = y;
     DAT_00669250++;
-    DAT_00669258[word_index] |= 1u << (x & 0x1f);
+    PathVisitedBits[word_index] |= 1u << (x & 0x1f);
 }
 
 // FUNCTION: LEGOLAND 0x00482300
@@ -500,7 +500,7 @@ void FUN_00482620(int x, int y, struct DirNode *parent) {
     }
 
     word_index = (x >> 5) + y * 6;
-    if ((1u << (x & 0x1f)) & DAT_00669258[word_index]) {
+    if ((1u << (x & 0x1f)) & PathVisitedBits[word_index]) {
         return;
     }
 
@@ -511,7 +511,7 @@ void FUN_00482620(int x, int y, struct DirNode *parent) {
     node->x = x;
     node->y = y;
     DAT_00669250++;
-    DAT_00669258[word_index] |= 1u << (x & 0x1f);
+    PathVisitedBits[word_index] |= 1u << (x & 0x1f);
 }
 
 // FUNCTION: LEGOLAND 0x00482710

@@ -198,15 +198,15 @@ struct RideSpriteInfo *GetTempleSlideSpriteInfo(struct Element *ctx, unsigned sh
     struct Ride *track = ctx->ride;
     struct Sprite *car = track->layer;
 
-    DAT_004cbf98.sprite = car;
-    DAT_004cbf98.x = track->field_14;
-    DAT_004cbf98.y = track->field_18;
-    DAT_004cbf98.id = param;
+    TempleSlideSpriteInfo.sprite = car;
+    TempleSlideSpriteInfo.x = track->field_14;
+    TempleSlideSpriteInfo.y = track->field_18;
+    TempleSlideSpriteInfo.id = param;
 
     car = track->layer;
     car->flags |= 0x2000;
 
-    return &DAT_004cbf98;
+    return &TempleSlideSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x00417340

@@ -241,11 +241,11 @@ void SpiderRideLoad(struct Element *param_1) {
     SpiderHutMask2Sprite = LoadSprite("SpiderHutMask2.lls", 1);
     // STRING: LEGOLAND 0x004b4e38
     ZSpiderSprite = LoadSprite("z_spider.lls", 1);
-    DAT_004cbf30[0] = SpiderRunBinV;
+    SpiderRideBinVs[0] = SpiderRunBinV;
     DAT_0082c660.x = -1;
     DAT_0082c660.y = 2;
     DAT_004cbf38[1] = ZSpiderSprite;
-    DAT_004cbf30[1] = SpiderOnBinV;
+    SpiderRideBinVs[1] = SpiderOnBinV;
     DAT_004cbf38[0] = SpiderOffBinV;
     HideLayer(SpiderRideLayer, 2);
     StopLayerPlaying(SpiderRideLayer, 2);
@@ -311,12 +311,12 @@ void SpiderAddObject(Element *editObj, int *coords) {
 // FUNCTION: LEGOLAND 0x00416120
 struct RideSpriteInfo *GetSpiderRideSpriteInfo(struct Element *a1, unsigned short a2) {
     struct Ride *ride = a1->ride;
-    DAT_004cbf40.sprite = ride->layer;
-    DAT_004cbf40.x = ride->field_14;
-    DAT_004cbf40.y = ride->field_18;
-    DAT_004cbf40.id = a2;
+    SpiderRideSpriteInfo.sprite = ride->layer;
+    SpiderRideSpriteInfo.x = ride->field_14;
+    SpiderRideSpriteInfo.y = ride->field_18;
+    SpiderRideSpriteInfo.id = a2;
     ride->layer->flags = ride->layer->flags | 0x2000;
-    return &DAT_004cbf40;
+    return &SpiderRideSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x00416160
@@ -442,7 +442,7 @@ void SpiderRideUpdate(Element *obj) {
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
                 sprintf(SpiderBnvInfo.name + 6, "%02d", FUN_00416830((struct RideNode *)elem, (struct SlotArray *)state, ActiveSpiderRide->seats));
-                bloke->path = NewBNVPath(DAT_004cbf30[1], 1, SpiderBnvInfo.name, -1617787.75f, -1618096.5f, coords);
+                bloke->path = NewBNVPath(SpiderRideBinVs[1], 1, SpiderBnvInfo.name, -1617787.75f, -1618096.5f, coords);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->field_58 = 0;
                 bloke->param_action++;
@@ -621,7 +621,7 @@ LEGO_EXPORT int LoadSpider(struct Element *arg) {
         data = list->rider;
         tc = data->bnv;
         if (tc != NULL) {
-            tc->file = DAT_004cbf30[tc->index];
+            tc->file = SpiderRideBinVs[tc->index];
         }
         list = list->next;
     }

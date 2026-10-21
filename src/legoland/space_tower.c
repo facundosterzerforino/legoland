@@ -72,7 +72,7 @@ void FUN_0043a820(struct AnimEntry *param_1, struct RideNode *param_2) {
     char dir;
 
     bloke = param_2->rider;
-    base = GetAnimLayoutOffset((struct AnimLayout *)DAT_004b7758[bloke->field_50].anim_layout, bloke->field_4a, bloke->field_38);
+    base = GetAnimLayoutOffset((struct AnimLayout *)SpaceTowerLayouts[bloke->field_50].anim_layout, bloke->field_4a, bloke->field_38);
     ride = SpaceTowerRideObj;
     base.x += (param_2->tile.pos.x + ride->x) << 8;
     base.y += (param_2->tile.pos.y + ride->y) << 8;
@@ -92,7 +92,7 @@ void FUN_0043a8c0(struct RideNode *param_1) {
     struct AnimEntry *entry;
 
     bloke = param_1->rider;
-    layout = (struct AnimLayout *)DAT_004b7758[bloke->field_50].anim_layout;
+    layout = (struct AnimLayout *)SpaceTowerLayouts[bloke->field_50].anim_layout;
     entry = layout->entries[bloke->field_4a];
     if ((int)bloke->field_4a >= layout->count) {
         bloke->param_action = bloke->param_action + '\x01';
@@ -287,7 +287,7 @@ void FUN_0043ac70(struct RideNode *param_1, unsigned short *param_2) {
     if (ride != NULL) {
         slot = TakeRandomSpaceTowerSlot(param_1, ride);
         param_1->rider->field_50 = slot;
-        param_1->rider->field_4c = DAT_004b7758[slot].field_0;
+        param_1->rider->field_4c = SpaceTowerLayouts[slot].field_0;
     }
 }
 
@@ -419,7 +419,7 @@ void RenderSpaceTower(struct Element *param_1, unsigned int param_2, unsigned in
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->tile.id, param_4, 2) == 0) {
                 bloke = node->rider;
-                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].anim_layout == &DAT_004b7750) {
+                if ((bloke->flags & 0x80) == 0 && SpaceTowerLayouts[bloke->field_50].anim_layout == &DAT_004b7750) {
                     IP_RenderBlokeIn3DNow(bloke);
                 }
             }
@@ -433,7 +433,7 @@ void RenderSpaceTower(struct Element *param_1, unsigned int param_2, unsigned in
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->tile.id, param_4, 2) == 0) {
                 bloke = node->rider;
-                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].anim_layout == &DAT_004b76b8) {
+                if ((bloke->flags & 0x80) == 0 && SpaceTowerLayouts[bloke->field_50].anim_layout == &DAT_004b76b8) {
                     IP_RenderBlokeIn3DNow(bloke);
                 }
             }
@@ -529,17 +529,17 @@ struct RideSpriteInfo *GetSpaceTowerRideSpriteInfo(struct Element *param_1, unsi
     struct Ride *ride;
 
     ride = param_1->ride;
-    DAT_0062fd48.sprite = ride->layer;
-    DAT_0062fd48.x = ride->field_14;
-    DAT_0062fd48.y = ride->field_18;
-    DAT_0062fd48.id = param_2;
+    SpaceTowerSpriteInfo.sprite = ride->layer;
+    SpaceTowerSpriteInfo.x = ride->field_14;
+    SpaceTowerSpriteInfo.y = ride->field_18;
+    SpaceTowerSpriteInfo.id = param_2;
     ride->layer->flags |= 0x2000;
     HideLayer(SpaceTowerLayers, 6);
     HideLayer(SpaceTowerLayers, 4);
     HideLayer(SpaceTowerLayers, 0);
     HideLayer(SpaceTowerLayers, 2);
     HideLayer(SpaceTowerLayers, 5);
-    return &DAT_0062fd48;
+    return &SpaceTowerSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0043b570
@@ -704,9 +704,9 @@ void FUN_0043b810(struct SpaceTowerCar *param_1) {
             pos.x = coords.x + off.x;
             pos.y = coords.y + off.y;
             if (odd == 0) {
-                dat = DAT_004b7798[idx].inner;
+                dat = SpaceTowerSeats[idx].inner;
             } else {
-                dat = DAT_004b7798[idx].outer;
+                dat = SpaceTowerSeats[idx].outer;
             }
             AdjustOffsetForViewMode(&dat);
             pos.x += dat.x;
@@ -714,7 +714,7 @@ void FUN_0043b810(struct SpaceTowerCar *param_1) {
             AdjustBlokePosition((struct Point *)&pos);
             person = node->person;
             SetPersonPosition(person, pos.x, pos.y);
-            SetPersonDirection(person, DAT_004b7798[idx].direction);
+            SetPersonDirection(person, SpaceTowerSeats[idx].direction);
         }
     }
 }
@@ -841,7 +841,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
                 bloke->target_dir = dir + 0x10;
-                NewDirForAction(bloke, (char)DAT_004b7798[seat >> 1].direction);
+                NewDirForAction(bloke, (char)SpaceTowerSeats[seat >> 1].direction);
                 bloke->param_action++;
                 break;
             case 4:

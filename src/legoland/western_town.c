@@ -496,10 +496,10 @@ void JailCellRemoveObject(struct Element *editObj, TileId coords, struct Cursor 
 // FUNCTION: LEGOLAND 0x00438070
 void JailCellLoad(struct Element *obj) {
     struct Ride *building = obj->ride;
-    DAT_0081cb10 = building;
+    ActiveWesternTownRide = building;
     building->flags |= 0x420;
-    WesternTownLayer = DAT_0081cb10->layer;
-    DAT_0081cb10->flags |= 0x2000;
+    WesternTownLayer = ActiveWesternTownRide->layer;
+    ActiveWesternTownRide->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b74d0
     JailCellMaskSprite = LoadSprite("JailCellMask.LLS", 1);
     HideLayer(WesternTownLayer, 1);
@@ -516,7 +516,7 @@ void JailCellUnload(void) {
 // FUNCTION: LEGOLAND 0x00438110
 void JailCellSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb10;
+    EditMode.unk8 = ActiveWesternTownRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }

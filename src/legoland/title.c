@@ -360,10 +360,10 @@ void FUN_00490600(unsigned int param_1) {
 // FUNCTION: LEGOLAND 0x00490610
 void SetPendingMovie(const char *param_1) {
     if (strlen(param_1) > 0xff) {
-        strncpy(DAT_00798778, param_1, 0x100);
-        DAT_00798778[0xff] = 0;
+        strncpy(IntervalMovieName, param_1, 0x100);
+        IntervalMovieName[0xff] = 0;
     } else {
-        strcpy(DAT_00798778, param_1);
+        strcpy(IntervalMovieName, param_1);
         (&DAT_00798777)[strlen(param_1) + 1] = 0;
     }
 }
@@ -435,7 +435,7 @@ unsigned int LoadIntervalReport(const char *param_1) {
     FreeIntervalReport();
     // STRING: LEGOLAND 0x004bf678
     sprintf(buffer, "Intervals\\%s", param_1);
-    result = ReadResourceLines(buffer, (void **)DAT_007cafa0, 100);
+    result = ReadResourceLines(buffer, (void **)IntervalTextLines, 100);
     DAT_0079887c = result;
     if (result != 0) {
         DAT_004bf670 = 1;
@@ -452,23 +452,23 @@ void LoadIntervalHints(const char *param_1) {
     SetIntervalHintSpeechPrefix(param_1);
     FreeIntervalHints();
     sprintf(buffer, "Intervals\\%s", param_1);
-    DAT_00798880 = ReadResourceLines(buffer, (void **)DAT_007cb140, 32);
+    IntervalHintCount = ReadResourceLines(buffer, (void **)IntervalHintLines, 32);
 }
 
 // FUNCTION: LEGOLAND 0x00490850
 void FreeIntervalReport(void) {
     if (DAT_0079887c != 0) {
-        free(DAT_007cafa0[0]);
+        free(IntervalTextLines[0]);
     }
     DAT_0079887c = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00490880
 void FreeIntervalHints(void) {
-    if (DAT_00798880 != 0) {
-        free(DAT_007cb140[0]);
+    if (IntervalHintCount != 0) {
+        free(IntervalHintLines[0]);
     }
-    DAT_00798880 = 0;
+    IntervalHintCount = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004908b0
@@ -515,9 +515,9 @@ unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char par
         FreeIntervalReport();
         FreeIntervalHints();
         FUN_00490600(0);
-        if (DAT_00798778[0] != 0) {
+        if (IntervalMovieName[0] != 0) {
             SetPointer(0);
-            PlayMovie(DAT_00798778, 1, 1);
+            PlayMovie(IntervalMovieName, 1, 1);
             SetPointer(6);
             SetPendingMovie(DAT_004d8bb0);
         }
@@ -601,13 +601,13 @@ unsigned char IntervalHintHandler(struct IconNode *param_1, unsigned int param_2
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         do {
-            DAT_00798884 = DAT_00798884 + 1;
-            if ((int)DAT_00798884 >= (int)DAT_00798880) {
-                DAT_00798884 = 0;
+            IntervalHintIndex = IntervalHintIndex + 1;
+            if ((int)IntervalHintIndex >= (int)IntervalHintCount) {
+                IntervalHintIndex = 0;
             }
-        } while (strlen(DAT_007cb140[DAT_00798884]) == 0);
+        } while (strlen(IntervalHintLines[IntervalHintIndex]) == 0);
         DAT_00798888 = GetTicks() + 8000;
-        PlayIntervalHintSpeech(DAT_00798884);
+        PlayIntervalHintSpeech(IntervalHintIndex);
     }
     return 1;
 }
@@ -653,12 +653,12 @@ void InitIntervalScreen(void) {
     icon->event_handler = (void *)IntervalHintHandler;
     icon->flags |= 0x6002;
     RepHint1Icon = icon;
-    if (DAT_00798880 == 0) {
+    if (IntervalHintCount == 0) {
         icon->flags |= 0x400;
     }
 
     DAT_00798888 = 0;
-    DAT_00798884 = 0xffffffff;
+    IntervalHintIndex = 0xffffffff;
     TitleNextPageIcon = InsertIcon(0x1b9, 0x1ae, 7, NextPageSprite);
     TitleNextPageIcon->string_id = 0x88e;
     TitleNextPageIcon->string = GetString(0x88e);
@@ -752,10 +752,10 @@ void RenderIntervalScreen(void) {
     int n;
     int idx;
 
-    PrintIntervalLine(DAT_007cafa0[0], 10, 0x45, 0x27, 1);
+    PrintIntervalLine(IntervalTextLines[0], 10, 0x45, 0x27, 1);
     y = 0x6b;
     n = 0;
-    line = &DAT_007cafa0[DAT_004bf670];
+    line = &IntervalTextLines[DAT_004bf670];
     idx = DAT_004bf670;
     while (n < 0xe && idx <= (int)DAT_0079887c) {
         PrintIntervalLine(*line, 10, y, 0x16, 0);
@@ -773,7 +773,7 @@ void RenderIntervalScreen(void) {
         if ((int)GetTicks() > (int)DAT_00798888) {
             DAT_00798888 = 0;
         }
-        BubbleHelp(rc, DAT_007cb140[DAT_00798884], 2);
+        BubbleHelp(rc, IntervalHintLines[IntervalHintIndex], 2);
     }
 }
 

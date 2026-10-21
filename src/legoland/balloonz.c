@@ -37,10 +37,10 @@ void LoadBalloonzResources(Element *obj) {
     BZBlueCarM1Sprite = LoadSprite("BZBlueCarM1.lls", 1);
     // STRING: LEGOLAND 0x004b6448
     ZBalloon2Sprite = LoadSprite("z_Balloon2.lls", 1);
-    DAT_0061603c[1] = ZBalloon2Sprite;
+    BalloonzRiderSprites[1] = ZBalloon2Sprite;
     // STRING: LEGOLAND 0x004b6430
     BalloonzBinV = LoadBinV("Zbuffers\\balloonz.bnv");
-    DAT_00616018[0] = BalloonzBinV;
+    BalloonzBinVs[0] = BalloonzBinV;
     HideLayer(BalloonzLayer, 2);
     StopLayerPlaying(BalloonzLayer, 2);
     LLSSetFrame(GetLLSForLayer(BalloonzLayer, 2), 0);
@@ -313,7 +313,7 @@ void BalloonzUpdate(Element *obj) {
                 break;
             case 9:
                 bloke->flags |= 0x80;
-                bloke->person->sprite = DAT_0061603c[1];
+                bloke->person->sprite = BalloonzRiderSprites[1];
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617692.375f, -1617904.25f);
                 sprintf(&buf[5], "%02d", bloke->field_36);
@@ -650,7 +650,7 @@ void UnloadBalloonzResources(void) {
     KillSprite(BZGreenCarM1Sprite);
     KillSprite(BZBlueCarM1Sprite);
     KillSprite(ZBalloon2Sprite);
-    FreeBinV(DAT_00616018[0]);
+    FreeBinV(BalloonzBinVs[0]);
     RemoveAllBalloonNodes();
 }
 
@@ -717,14 +717,14 @@ int Balloonz_Load(Element *obj) {
     }
     for (rider = ride->riders; rider != NULL; rider = rider->next) {
         if (rider->person->field_30 != 0) {
-            rider->person->sprite = DAT_0061603c[rider->person->field_30];
+            rider->person->sprite = BalloonzRiderSprites[rider->person->field_30];
         } else {
             rider->person->sprite = NULL;
             rider->person->field_30 = 0;
         }
         bnv = rider->rider->bnv;
         if (bnv != NULL) {
-            bnv->file = DAT_00616018[bnv->index];
+            bnv->file = BalloonzBinVs[bnv->index];
         }
     }
     return 1;
