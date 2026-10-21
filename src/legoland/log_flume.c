@@ -1279,23 +1279,20 @@ void FUN_0040a5d0(struct FlumeEntry *param) {
 // FUNCTION: LEGOLAND 0x0040a600
 void LogFlumeEntranceAddObject(Element *elem, int *pt) {
     TileId t;
-    register struct FlumeEntry *entry;
+    struct FlumeEntry *entry;
     struct FlumeEntry *mid;
     struct FlumeEntry *node;
     struct FlumeEntry *prev;
-    register struct Ride *ride;
+    struct Ride *ride;
     int pos[2];
     int coords[2];
     int h;
     int midY;
-    register int last;
+    int last;
     int count;
     int i;
 
-    int fy0;
-    int fy1;
     int node_y;
-    int fx0;
     t.pos.x = pt[0];
     t.pos.y = pt[1];
     ride = elem->ride;
@@ -1303,8 +1300,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
     AddFlumeEntry(t);
     entry = FindFlumeEntryByTile(&t);
     if (entry != NULL) {
-        fy1 = LogFlumeFootprint.y1;
-        h = fy1 - LogFlumeFootprint.y0;
+        h = LogFlumeFootprint.y1 - LogFlumeFootprint.y0;
         midY = t.pos.y + ride->footprint.y0 + ((ride->footprint.y1 - ride->footprint.y0) >> 1);
         pos[0] = t.pos.x + ride->footprint.x0 + 1;
         entry->sub2 = (struct FlumeEntry *)DAT_004c2ae8;
@@ -1317,8 +1313,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
             node->parent = entry;
             node->link28 = NULL;
             node->flags10d |= 3;
-            fx0 = LogFlumeFootprint.x0;
-            node->tile.pos.x = pos[0] - fx0;
+            node->tile.pos.x = pos[0] - LogFlumeFootprint.x0;
             node->tile.pos.y = pos[1] - LogFlumeFootprint.y0;
         }
         PushFlumeListNode((struct FlumeEntry *)entry, (struct ListNode *)node);
@@ -1349,8 +1344,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
                 node->parent = entry;
                 node->flags10d = node->flags10d | 7;
                 node->tile.pos.x = pos[0] - LogFlumeFootprint.x0;
-                fy0 = LogFlumeFootprint.y0;
-                node->tile.pos.y = coords[1] - fy0;
+                node->tile.pos.y = coords[1] - LogFlumeFootprint.y0;
             }
             if (coords[1] <= midY) {
                 if (coords[1] + h >= midY) {
@@ -1395,7 +1389,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
 // FUNCTION: LEGOLAND 0x0040a930
 void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_3) {
     struct Ride *ride;
-    register int x;
+    int x;
     int h;
     unsigned int y;
 
