@@ -1716,12 +1716,12 @@ extern unsigned int CastleCoasterPlaced;
 extern unsigned int CastleTrackCellCount;
 // 0x00610a18
 extern struct RenderItemNode *CastleRiderRenderList;
-// 0x00610a20 — sqrtf lookup table (64 entries: {intercept, slope} pairs)
-extern float sqrtf_table[128];
-// 0x00610c40 — invsqrtf lookup table (64 entries: {intercept, slope} pairs)
-extern float invsqrtf_table[129];
-// 0x00610e44 — invsqrtf exponent scale table (256 entries)
-extern float invsqrtf_exp_table[256];
+// 0x00610a20 — 1/sqrt mantissa table (64 entries: {intercept, slope} pairs)
+extern float rsqrtf_mantissa_table[128];
+// 0x00610c40 — sqrt mantissa table (64 entries: {intercept, slope} pairs)
+extern float sqrtf_mantissa_table[129];
+// 0x00610e44 — sqrt exponent scale table (256 entries: sqrt(2^(e - 127)))
+extern float sqrtf_exp_table[256];
 // 0x00611244 — sqrtf exponent scale table (256 entries)
 extern float rsqrtf_exp_table[256];
 // 0x00611648

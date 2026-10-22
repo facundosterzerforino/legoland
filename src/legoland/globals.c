@@ -1889,7 +1889,7 @@ unsigned int CastleTrackCellCount;
 struct RenderItemNode *CastleRiderRenderList;
 
 // GLOBAL: LEGOLAND 0x00610a20
-float sqrtf_table[128];
+float rsqrtf_mantissa_table[128];
 
 // GLOBAL: LEGOLAND 0x00611244
 float rsqrtf_exp_table[256];

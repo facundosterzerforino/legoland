@@ -335,7 +335,7 @@ struct BlokeSex0;
 void FreeCastleVisitor(struct CastleVisitor *p);
 
 void MapPosToWorld(const struct Int16Pair *in, float f, struct FVec3 *out);
-void lego_invsqrtf_init(void);
+void lego_sqrtf_init(void);
 void lego_rsqrtf_init(void);
 void SetTrackLighting(void);
 void InitCastleLinkList(void);
@@ -343,7 +343,7 @@ void Vec3Normalize(float *v);
 float lego_rsqrtf(float x);
 unsigned int GetLmsBoxScreenRect(struct LmsFile *param_1, unsigned int *param_2, unsigned int *param_3, struct RectI *param_4);
 void ClipRectIToCastleView(struct RectI *dst, struct RectI *src);
-float lego_invsqrtf(float x);
+float lego_sqrtf(float x);
 float Vec3Dot(struct FVec3 *param_1, struct FVec3 *param_2);
 void DrawDottedLine(void *a, void *b, short c);
 void PlotClippedPoints(int *points, int count, short c);

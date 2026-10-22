@@ -829,7 +829,7 @@ float FUN_0041dd00(struct Train *param, float result) {
     float t;
 
     FUN_00429c60(&param->walker, 1, *(unsigned int *)&param->motion.pos, 0.0f, &v);
-    t = lego_invsqrtf(Vec3Dot(&v, &v));
+    t = lego_sqrtf(Vec3Dot(&v, &v));
     t = t * result;
     return t * FLOAT_004ab404;
 }
@@ -875,7 +875,7 @@ void TrainIntegratorStore(struct Integrator *a, struct FloatArray *b) {
     SetTrainEnergy(e, b->data[1]);
 }
 
-/* The train integrator's derivative: [lego_invsqrtf(2 * (energy - potential) / inertia), 0]; when the train is
+/* The train integrator's derivative: [lego_sqrtf(2 * (energy - potential) / inertia), 0]; when the train is
  * about to stall (track speed < 0.05) the energy instead grows by dPE/ds, which keeps it climbing. */
 // FUNCTION: LEGOLAND 0x0041de10
 void TrainIntegratorDeriv(struct Integrator *obj, float unused, struct FloatArray *out) {
@@ -889,7 +889,7 @@ void TrainIntegratorDeriv(struct Integrator *obj, float unused, struct FloatArra
     GetTrainInertiaAndSlope(e, &a, &b);
     t = (e->motion.energy - t) * 2.0f / a;
     if (t > FLOAT_004ab390) {
-        t = lego_invsqrtf(t);
+        t = lego_sqrtf(t);
     } else {
         t = FLOAT_004ab390;
     }
@@ -7229,7 +7229,7 @@ void InitCastleView(void) {
     CastleIsoProjections[1].m[1][0] *= 0.5f;
     CastleIsoProjections[1].m[1][1] *= 0.5f;
     CastleIsoProjections[1].m[1][2] *= 0.5f;
-    lego_invsqrtf_init();
+    lego_sqrtf_init();
     lego_rsqrtf_init();
     CastleViewDir[0] = 1.0f;
     CastleViewDir[1] = 1.0f;
@@ -8027,9 +8027,9 @@ __declspec(naked) void HASM_lego_rsqrtf(void) {
         mov dword ptr [esp - 10h], ebx
         mov ebx, dword ptr [esp - 8]
         fld dword ptr [esp - 10h]
-        fmul dword ptr [eax*8 + sqrtf_table + 4]
+        fmul dword ptr [eax*8 + rsqrtf_mantissa_table + 4]
         shr edx, 17h
-        fadd dword ptr [eax*8 + sqrtf_table]
+        fadd dword ptr [eax*8 + rsqrtf_mantissa_table]
         mov eax, dword ptr [esp - 4]
         fmul dword ptr [edx*4 + rsqrtf_exp_table]
         mov edx, dword ptr [esp - 0Ch]
@@ -8067,9 +8067,9 @@ void lego_rsqrtf_init(void) {
     }
 }
 
-/* Fast sqrt(x) (through lego_sqrtf_impl, HASM_lego_invsqrtf). */
+/* Fast sqrt(x) (through lego_sqrtf_impl, HASM_lego_sqrtf). */
 // FUNCTION: LEGOLAND 0x00426a90
-float lego_invsqrtf(float x) {
+float lego_sqrtf(float x) {
     __asm {
         fld x
         call dword ptr [lego_sqrtf_impl]
@@ -8080,7 +8080,7 @@ float lego_invsqrtf(float x) {
 
 /* Table-driven sqrt(x), like HASM_lego_rsqrtf. Takes and returns ST(0). */
 // FUNCTION: LEGOLAND 0x00426ab0
-__declspec(naked) void HASM_lego_invsqrtf(void) {
+__declspec(naked) void HASM_lego_sqrtf(void) {
     __asm {
         fstp dword ptr [esp - 10h]
         mov dword ptr [esp - 8], ebx
@@ -8096,44 +8096,44 @@ __declspec(naked) void HASM_lego_invsqrtf(void) {
         mov dword ptr [esp - 10h], ebx
         mov ebx, dword ptr [esp - 8]
         fld dword ptr [esp - 10h]
-        fmul dword ptr [eax*8 + invsqrtf_table + 4]
+        fmul dword ptr [eax*8 + sqrtf_mantissa_table + 4]
         shr edx, 17h
-        fadd dword ptr [eax*8 + invsqrtf_table]
+        fadd dword ptr [eax*8 + sqrtf_mantissa_table]
         mov eax, dword ptr [esp - 4]
-        fmul dword ptr [edx*4 + invsqrtf_exp_table]
+        fmul dword ptr [edx*4 + sqrtf_exp_table]
         mov edx, dword ptr [esp - 0Ch]
         ret
     }
 }
 
-/* Lookup tables of the inverse square root (lego_invsqrtf): 64 (x/2, 1/(2x)) mantissa pairs, then one
+/* Lookup tables of the inverse square root (lego_sqrtf): 64 (x/2, 1/(2x)) mantissa pairs, then one
  * factor per float exponent. The exponent table starts 0x204 bytes after the mantissa table (one unused
- * float between them): lego_invsqrtf_init's loop end pointer is exactly invsqrtf_exp_table. Defined here,
+ * float between them): lego_sqrtf_init's loop end pointer is exactly sqrtf_exp_table. Defined here,
  * initialised, so the two stay in this order and adjacent as in the original. */
 // GLOBAL: LEGOLAND 0x00610c40
-float invsqrtf_table[129] = {0};
+float sqrtf_mantissa_table[129] = {0};
 
 // GLOBAL: LEGOLAND 0x00610e44
-float invsqrtf_exp_table[256] = {0};
+float sqrtf_exp_table[256] = {0};
 
-/* Builds the sqrt tables and installs HASM_lego_invsqrtf. */
+/* Builds the sqrt tables and installs HASM_lego_sqrtf. */
 // FUNCTION: LEGOLAND 0x00426b10
-void lego_invsqrtf_init(void) {
+void lego_sqrtf_init(void) {
     int i;
     int j;
     float x;
 
     for (i = 0; i < 64; i++) {
         x = (float)sqrt((float)i * 0.015625f + 1.0f);
-        invsqrtf_table[i * 2] = x * 0.5f;
-        invsqrtf_table[i * 2 + 1] = 0.5f / x;
+        sqrtf_mantissa_table[i * 2] = x * 0.5f;
+        sqrtf_mantissa_table[i * 2 + 1] = 0.5f / x;
     }
     for (j = 0; j <= 255; j++) {
-        invsqrtf_exp_table[j] = (float)sqrt(pow(2.0, j - 127));
+        sqrtf_exp_table[j] = (float)sqrt(pow(2.0, j - 127));
     }
     __asm {
         push eax
-        lea eax, HASM_lego_invsqrtf
+        lea eax, HASM_lego_sqrtf
         mov lego_sqrtf_impl, eax
         pop eax
     }
