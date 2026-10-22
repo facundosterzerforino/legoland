@@ -478,13 +478,13 @@ const char *GirlVisitorTextures[2] = {
     "Face01"};
 
 // GLOBAL: LEGOLAND 0x004b5c1c
-struct FMat4 DAT_004b5c1c[2];
+struct FMat4 CastleIsoProjections[2];
 
 // GLOBAL: LEGOLAND 0x004b5c9c
 unsigned int DAT_004b5c9c;
 
 // GLOBAL: LEGOLAND 0x004b5ca0
-unsigned int DAT_004b5ca0;
+unsigned int CastleLightDir;
 
 // GLOBAL: LEGOLAND 0x004b5ca4
 unsigned int DAT_004b5ca4;
@@ -496,7 +496,7 @@ unsigned int DAT_004b5ca8;
 float DAT_004b5cac;
 
 // GLOBAL: LEGOLAND 0x004b5cb0
-unsigned int DAT_004b5cb0;
+unsigned int TrackLightDir;
 
 // GLOBAL: LEGOLAND 0x004b5cb4
 unsigned int DAT_004b5cb4;
@@ -508,7 +508,7 @@ unsigned int DAT_004b5cb8;
 float DAT_004b5cbc;
 
 // GLOBAL: LEGOLAND 0x004b5cc0
-unsigned int DAT_004b5cc0;
+unsigned int ModelLightDir;
 
 // GLOBAL: LEGOLAND 0x004b5cc4
 unsigned int DAT_004b5cc4;
@@ -1892,7 +1892,7 @@ struct RenderItemNode *CastleRiderRenderList;
 float sqrtf_table[128];
 
 // GLOBAL: LEGOLAND 0x00611244
-float sqrtf_exp_table[256];
+float rsqrtf_exp_table[256];
 
 // GLOBAL: LEGOLAND 0x00611648
 unsigned int DAT_00611648;
@@ -5223,19 +5223,19 @@ unsigned int DAT_00828fe0[2];
 void *BasicTilesData;
 
 // GLOBAL: LEGOLAND 0x00829990
-float DAT_00829990[3];
+float CastleViewDir[3];
 
 // GLOBAL: LEGOLAND 0x0082999c
-float DAT_0082999c;
+float CastleLightScale;
 
 // GLOBAL: LEGOLAND 0x008299a0
-float DAT_008299a0[3];
+float CastleCameraPos[3];
 
 // GLOBAL: LEGOLAND 0x008299bc
-struct FMat4 DAT_008299bc;
+struct FMat4 CastleViewMatrix;
 
 // GLOBAL: LEGOLAND 0x008299fc
-struct FMat4 DAT_008299fc;
+struct FMat4 CastleWorldToScreen;
 
 // GLOBAL: LEGOLAND 0x008299ac
 int CastleViewRect[4]; /* view rect: left, top, right, bottom */
@@ -5244,13 +5244,13 @@ int CastleViewRect[4]; /* view rect: left, top, right, bottom */
 struct ListLink CastleLinkList;
 
 // GLOBAL: LEGOLAND 0x00829a58
-void (*DAT_00829a58)(void);
+void (*lego_sqrtf_impl)(void);
 
 // GLOBAL: LEGOLAND 0x00829a5c
-void (*DAT_00829a5c)(void);
+void (*lego_rsqrtf_impl)(void);
 
 // GLOBAL: LEGOLAND 0x00829a60
-float DAT_00829a60;
+float CastleLightBias;
 
 // GLOBAL: LEGOLAND 0x00829a64
 struct Ride *DAT_00829a64;

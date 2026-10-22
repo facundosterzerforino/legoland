@@ -1564,7 +1564,7 @@ void GetTrainCarCenterAndAxis(struct TrainCar *obj, float *out) {
 void DrawTrainCar(struct TrainCar *a) {
     struct CarXform x;
 
-    FUN_00425c40();
+    SetModelLighting();
     DrawTrainBogie(&a->front);
     DrawTrainBogie(&a->rear);
     GetTrainCarCenterAndAxis(a, &x.pos.x);
@@ -3429,7 +3429,7 @@ L42086a:
         fld dword ptr [DAT_004dcbb8]
         fmul dword ptr [eax]
         faddp st(1), st
-        fadd dword ptr [DAT_00829a60]
+        fadd dword ptr [CastleLightBias]
         fstp dword ptr [ebp - 4]
         fld dword ptr [ebp - 4]
         fistp dword ptr [ebp - 0x10]
@@ -3609,7 +3609,7 @@ L420b5f:
         fld dword ptr [DAT_004dcbb8]
         fmul dword ptr [eax]
         faddp st(1), st
-        fadd dword ptr [DAT_00829a60]
+        fadd dword ptr [CastleLightBias]
         fstp dword ptr [ebp - 0x10]
         fld dword ptr [ebp - 0x10]
         fistp dword ptr [ebp - 0x14]
@@ -3781,7 +3781,7 @@ L420c9a:
         fld dword ptr [DAT_004dcbb8]
         fmul dword ptr [eax]
         faddp st(1), st
-        fadd dword ptr [DAT_00829a60]
+        fadd dword ptr [CastleLightBias]
         fstp dword ptr [ebp + 0x10]
         fld dword ptr [ebp + 0x10]
         fistp dword ptr [ebp - 0x14]
@@ -3900,10 +3900,10 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         push 1
         push ecx
         push offset DAT_004dcbb8
-        push offset DAT_004b5ca0
+        push offset CastleLightDir
         call TransformPoints3x4
         fld dword ptr [DAT_004dcbb8]
-        fmul dword ptr [DAT_0082999c]
+        fmul dword ptr [CastleLightScale]
         mov eax, dword ptr [ebp + 0x10]
         lea edx, [ebp - 0x5c]
         push edx
@@ -3911,17 +3911,17 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         push eax
         fstp dword ptr [DAT_004dcbb8]
         fld dword ptr [DAT_004dcbb8 + 0x4]
-        fmul dword ptr [DAT_0082999c]
+        fmul dword ptr [CastleLightScale]
         fstp dword ptr [DAT_004dcbb8 + 0x4]
         fld dword ptr [DAT_004dcbb8 + 0x8]
-        fmul dword ptr [DAT_0082999c]
+        fmul dword ptr [CastleLightScale]
         fstp dword ptr [DAT_004dcbb8 + 0x8]
         call MakeMat4FromRotTrans
         lea ecx, [ebp - 0x9c]
         lea edx, [ebp - 0x5c]
         push ecx
         push edx
-        push offset DAT_008299fc
+        push offset CastleWorldToScreen
         call Mat4Multiply
         mov eax, dword ptr [esi]
         mov edx, dword ptr [esi + 0xc]
@@ -3931,7 +3931,7 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         push ecx
         push offset DAT_004d8bb0 + 0x8
         push edx
-        call FUN_00426250
+        call ProjectPoints
         add esp, 0x44
         push eax
         push edx
@@ -4065,7 +4065,7 @@ void InitBoxSolidToOrigin(struct BoxSolid *box, struct FVec3 *verts, struct FVec
     if (xverts != NULL) {
         for (i = 0; i <= 7; i++) {
             struct FVec3 tmp = box->verts[i];
-            FUN_00425d50(&tmp.x);
+            Vec3Normalize(&tmp.x);
             box->xverts[i] = tmp;
         }
         for (i = 0; i < 12; i++) {
@@ -4107,7 +4107,7 @@ void InitBoxSolidCentred(struct BoxSolid *box, struct FVec3 *verts, struct FVec3
     if (xverts != NULL) {
         for (i = 0; i <= 7; i++) {
             struct FVec3 tmp = box->verts[i];
-            FUN_00425d50(&tmp.x);
+            Vec3Normalize(&tmp.x);
             box->xverts[i] = tmp;
         }
         for (i = 0; i < 12; i++) {
@@ -4256,7 +4256,7 @@ void InitVecMath(struct VecMath *dest, unsigned int value) {
 /* Draws a seated visitor (the castle visitor's draw method). */
 // FUNCTION: LEGOLAND 0x00421560
 unsigned int DrawCastleVisitor(struct CastleVisitor *param_2, struct CarXform *param_1) {
-    FUN_00425c40();
+    SetModelLighting();
     return DrawLmsModel(param_2->lms, param_2->field_8, param_1, &param_1->m, 0);
 }
 
@@ -4834,7 +4834,7 @@ struct V3 {
     float x, y, z;
 };
 
-/* Slope stretch normal at t: the tangent, transformed (FUN_00425d50), turned 90 degrees in the plane of its larger
+/* Slope stretch normal at t: the tangent, transformed (Vec3Normalize), turned 90 degrees in the plane of its larger
  * horizontal component. */
 // FUNCTION: LEGOLAND 0x004220e0
 void SlopeCurveNormal(float *obj, float t, float *out) {
@@ -4843,7 +4843,7 @@ void SlopeCurveNormal(float *obj, float t, float *out) {
     *(struct V3 *)out = *(struct V3 *)(obj + 3);
     v = t * obj[9];
     out[2] = (v * FLOAT_004ab43c + obj[10] * 2) * t + obj[11];
-    FUN_00425d50(out);
+    Vec3Normalize(out);
     if (fabs(out[1]) < DAT_004ab418) {
         c = out[2];
         if (*(unsigned int *)&out[0] & 0x80000000) {
@@ -6349,7 +6349,7 @@ void CastleObjLoad(struct Element *param_1) {
     }
     CastleCoasterRide->flags |= 0x20;
     CastleMatteSprite = LoadSprite("Castle Matte.lls", 1);
-    FUN_00425a50();
+    InitCastleView();
     InitVecMathOps();
     LoadRollercoasterFiles();
     InitCoasterShading();
@@ -6676,7 +6676,7 @@ void DestroyCastleTrain(struct CastleState *param_1) {
 // FUNCTION: LEGOLAND 0x00424a20
 void DrawCastleTrainOnPiece(struct PieceHead *param_1) {
     struct Train *obj = param_1->owner->train;
-    if (FUN_00426650() != 0) {
+    if (AnyCastleLinkVisible() != 0) {
         DrawTrainCarsOnPiece(obj, (struct PathSeg *)param_1);
     }
 }
@@ -6911,6 +6911,8 @@ void OnCoasterRingOpened(struct CastleState *owner) {
 }
 
 #pragma optimize("", off)
+/* Debug profiling: stores this frame's counters (spans, triangles, cycles per renderer stage) in 64-entry history
+ * rings and resets them. */
 // FUNCTION: LEGOLAND 0x00424e80
 void RecordCastleFrameCounters(void) {
     DAT_00610804[DAT_00610a10 & 0x3f] = DepthSpanRecordCount;
@@ -6940,6 +6942,7 @@ void RecordCastleFrameCounters(void) {
 #pragma optimize("", on)
 
 #pragma optimize("", off)
+/* Castle object render: draws its riders on this tile that are walking in or out, then the castle matte sprite. */
 // FUNCTION: LEGOLAND 0x00425050
 void RenderCastleObj(Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, void *param_5, unsigned int clip) {
     struct Ride *r;
@@ -6975,10 +6978,11 @@ void RenderCastleObj(Element *obj, unsigned int param_2, unsigned int param_3, T
 #pragma optimize("", on)
 
 #pragma optimize("", off)
+/* Per frame: profiling, view and depth buffer reset, then boarding, the train and releasing finished visitors. */
 // FUNCTION: LEGOLAND 0x00425170
 void CastleCoasterUpdate(Element *obj) {
     RecordCastleFrameCounters();
-    FUN_00425e20();
+    UpdateCastleView();
     ClearCoasterDepth(0);
     if (CastleCoasterPlaced != 0) {
         BoardCastleVisitors((struct CastleState *)&CastleCoaster);
@@ -6989,6 +6993,9 @@ void CastleCoasterUpdate(Element *obj) {
 #pragma optimize("", on)
 
 #pragma optimize("", off)
+/* Castle object pre-render: refreshes the free cells at both ends of the track, then moves each rider: walk to the
+ * entrance (0, 1), queue as a visitor (0x10 -> 0x20, waiting for the ride), walk back out once released (0x21,
+ * 0x22) and leave the ride (0x40). */
 // FUNCTION: LEGOLAND 0x004251c0
 void CastleObjUpdate(Element *obj) {
     /* /Od build: stack-slot order follows the (hashed) local names; these single-letter
@@ -7066,6 +7073,8 @@ void CastleObjUpdate(Element *obj) {
 #pragma optimize("", on)
 
 #pragma optimize("", off)
+/* Sets the ride callbacks of the castle's elements (castle, dummy, square track, the three height blocks, coaster
+ * load/save) and fills their CastleDispatchTable rows. */
 // FUNCTION: LEGOLAND 0x004254d0
 void CastleGetInterfaces(struct Element *head, struct Ride *obj) {
     // STRING: LEGOLAND 0x004b5c0c
@@ -7194,44 +7203,47 @@ void CastleGetInterfaces(struct Element *head, struct Ride *obj) {
 }
 #pragma optimize("", on)
 
+/* Sets up the castle's 3D view: the isometric projections (full and half scale), the sqrt tables, the view
+ * direction, the two light directions, then the track lighting and the dirty-rectangle list. */
 // FUNCTION: LEGOLAND 0x00425a50
-void FUN_00425a50(void) {
-    DAT_004b5c1c[0].m[0][0] = 1.60334f;
-    DAT_004b5c1c[0].m[0][1] = -1.60334f;
-    DAT_004b5c1c[0].m[0][2] = 0.0f;
-    DAT_004b5c1c[0].m[0][3] = 0.0f;
-    DAT_004b5c1c[0].m[1][0] = 0.801688f;
-    DAT_004b5c1c[0].m[1][1] = 0.801688f;
-    DAT_004b5c1c[0].m[1][2] = 1.96416f;
-    DAT_004b5c1c[0].m[1][3] = 0.0f;
-    DAT_004b5c1c[0].m[2][0] = 3.19995f;
-    DAT_004b5c1c[0].m[2][1] = 3.19995f;
-    DAT_004b5c1c[0].m[2][2] = 0.0f;
-    DAT_004b5c1c[0].m[2][3] = 32767.5f;
-    DAT_004b5c1c[0].m[3][0] = 0.0f;
-    DAT_004b5c1c[0].m[3][1] = 0.0f;
-    DAT_004b5c1c[0].m[3][2] = 0.0f;
-    DAT_004b5c1c[0].m[3][3] = 1.0f;
-    DAT_004b5c1c[1] = DAT_004b5c1c[0];
-    *(volatile float *)&DAT_004b5c1c[1].m[0][0] *= 0.5f;
-    DAT_004b5c1c[1].m[0][1] *= 0.5f;
-    DAT_004b5c1c[1].m[1][0] *= 0.5f;
-    DAT_004b5c1c[1].m[1][1] *= 0.5f;
-    DAT_004b5c1c[1].m[1][2] *= 0.5f;
+void InitCastleView(void) {
+    CastleIsoProjections[0].m[0][0] = 1.60334f;
+    CastleIsoProjections[0].m[0][1] = -1.60334f;
+    CastleIsoProjections[0].m[0][2] = 0.0f;
+    CastleIsoProjections[0].m[0][3] = 0.0f;
+    CastleIsoProjections[0].m[1][0] = 0.801688f;
+    CastleIsoProjections[0].m[1][1] = 0.801688f;
+    CastleIsoProjections[0].m[1][2] = 1.96416f;
+    CastleIsoProjections[0].m[1][3] = 0.0f;
+    CastleIsoProjections[0].m[2][0] = 3.19995f;
+    CastleIsoProjections[0].m[2][1] = 3.19995f;
+    CastleIsoProjections[0].m[2][2] = 0.0f;
+    CastleIsoProjections[0].m[2][3] = 32767.5f;
+    CastleIsoProjections[0].m[3][0] = 0.0f;
+    CastleIsoProjections[0].m[3][1] = 0.0f;
+    CastleIsoProjections[0].m[3][2] = 0.0f;
+    CastleIsoProjections[0].m[3][3] = 1.0f;
+    CastleIsoProjections[1] = CastleIsoProjections[0];
+    *(volatile float *)&CastleIsoProjections[1].m[0][0] *= 0.5f;
+    CastleIsoProjections[1].m[0][1] *= 0.5f;
+    CastleIsoProjections[1].m[1][0] *= 0.5f;
+    CastleIsoProjections[1].m[1][1] *= 0.5f;
+    CastleIsoProjections[1].m[1][2] *= 0.5f;
     lego_invsqrtf_init();
-    lego_sqrtf_init();
-    DAT_00829990[0] = 1.0f;
-    DAT_00829990[1] = 1.0f;
-    DAT_00829990[2] = DAT_004b5c1c[0].m[1][0] * -2.0f / DAT_004b5c1c[0].m[1][2];
-    FUN_00425d50(DAT_00829990);
-    FUN_00425d50((float *)&DAT_004b5cb0);
-    FUN_00425d50((float *)&DAT_004b5cc0);
-    FUN_00425bd0();
+    lego_rsqrtf_init();
+    CastleViewDir[0] = 1.0f;
+    CastleViewDir[1] = 1.0f;
+    CastleViewDir[2] = CastleIsoProjections[0].m[1][0] * -2.0f / CastleIsoProjections[0].m[1][2];
+    Vec3Normalize(CastleViewDir);
+    Vec3Normalize((float *)&TrackLightDir);
+    Vec3Normalize((float *)&ModelLightDir);
+    SetTrackLighting();
     InitCastleLinkList();
 }
 
+/* Selects the track lighting: CastleLightDir = TrackLightDir with its shade range. */
 // FUNCTION: LEGOLAND 0x00425bd0
-void FUN_00425bd0(void) {
+void SetTrackLighting(void) {
     float f;
     unsigned int i1;
     unsigned int i2;
@@ -7241,10 +7253,10 @@ void FUN_00425bd0(void) {
     f = f + DAT_0061164c;
     f = f * 0.5f;
 
-    i1 = DAT_004b5cb0;
+    i1 = TrackLightDir;
     i2 = DAT_004b5cb4;
     i3 = DAT_004b5cb8;
-    DAT_004b5ca0 = i1;
+    CastleLightDir = i1;
 
     memcpy(&i1, &DAT_0061164c, sizeof(i1));
     DAT_004b5ca4 = i2;
@@ -7253,16 +7265,17 @@ void FUN_00425bd0(void) {
 
     DAT_00611648 = i1;
     DAT_004b5c9c = i2;
-    DAT_00829a60 = f;
+    CastleLightBias = f;
 
     f = DAT_004b5cac;
     f = f - DAT_0061164c;
     f = f * 0.5f;
-    DAT_0082999c = f;
+    CastleLightScale = f;
 }
 
+/* Selects the model lighting (train, visitors): CastleLightDir = ModelLightDir with its shade range. */
 // FUNCTION: LEGOLAND 0x00425c40
-void FUN_00425c40(void) {
+void SetModelLighting(void) {
     float f;
     unsigned int i1;
     unsigned int i2;
@@ -7272,10 +7285,10 @@ void FUN_00425c40(void) {
     f = f + DAT_00611650;
     f = f * 0.5f;
 
-    i1 = DAT_004b5cc0;
+    i1 = ModelLightDir;
     i2 = DAT_004b5cc4;
     i3 = DAT_004b5cc8;
-    DAT_004b5ca0 = i1;
+    CastleLightDir = i1;
 
     memcpy(&i1, &DAT_00611650, sizeof(i1));
     DAT_004b5ca4 = i2;
@@ -7285,15 +7298,16 @@ void FUN_00425c40(void) {
     if (f == f) {
         DAT_00611648 = i1;
         DAT_004b5c9c = i2;
-        DAT_00829a60 = f;
+        CastleLightBias = f;
     }
 
     f = DAT_004b5cbc;
     f = f - DAT_00611650;
     f = f * 0.5f;
-    DAT_0082999c = f;
+    CastleLightScale = f;
 }
 
+/* Map cell (x, y) and height f to castle world coordinates. */
 // FUNCTION: LEGOLAND 0x00425cb0
 void MapPosToWorld(const struct Int16Pair *in, float f, struct FVec3 *out) {
     short temp;
@@ -7306,6 +7320,7 @@ void MapPosToWorld(const struct Int16Pair *in, float f, struct FVec3 *out) {
     out->z = temp_f * FLOAT_004ab458;
 }
 
+/* result = a x b. */
 // FUNCTION: LEGOLAND 0x00425cf0
 void Vec3Cross(const struct FVec3 *a, const struct FVec3 *b, struct FVec3 *result) {
     result->x = b->z * a->y - a->z * b->y;
@@ -7313,13 +7328,15 @@ void Vec3Cross(const struct FVec3 *a, const struct FVec3 *b, struct FVec3 *resul
     result->z = a->x * b->y - a->y * b->x;
 }
 
+/* a . b. */
 // FUNCTION: LEGOLAND 0x00425d30
 float Vec3Dot(struct FVec3 *param_1, struct FVec3 *param_2) {
     return param_1->z * param_2->z + param_1->y * param_2->y + param_1->x * param_2->x;
 }
 
+/* Scales v to unit length (lego_rsqrtf). */
 // FUNCTION: LEGOLAND 0x00425d50
-void FUN_00425d50(float *v) {
+void Vec3Normalize(float *v) {
     float sum = FLOAT_004ab390;
     float s;
     int i;
@@ -7327,12 +7344,13 @@ void FUN_00425d50(float *v) {
     for (i = 0; i < 3; i++) {
         sum += v[i] * v[i];
     }
-    s = lego_sqrtf(sum);
+    s = lego_rsqrtf(sum);
     for (i = 0; i < 3; i++) {
         v[i] *= s;
     }
 }
 
+/* 1 if the two vectors are equal. */
 // FUNCTION: LEGOLAND 0x00425da0
 unsigned int Vec3Equal(const float *a, const float *b) {
     if (a[0] != b[0]) {
@@ -7347,6 +7365,7 @@ unsigned int Vec3Equal(const float *a, const float *b) {
     return 1;
 }
 
+/* Inverts a 2x2 matrix in place. */
 // FUNCTION: LEGOLAND 0x00425de0
 void Mat2Invert(float *a) {
     float inv = 1.0f / (a[0] * a[3] - a[1] * a[2]);
@@ -7358,8 +7377,10 @@ void Mat2Invert(float *a) {
     a[2] = -(inv * a[2]);
 }
 
+/* Per frame: puts the camera on the world point under the centre of the game view (inverting the projection's 2x2
+ * part) and rebuilds CastleWorldToScreen and the clip rectangle. */
 // FUNCTION: LEGOLAND 0x00425e20
-void FUN_00425e20(void) {
+void UpdateCastleView(void) {
     struct FMat4 m;
     float a[4];
     struct Point pt;
@@ -7371,19 +7392,19 @@ void FUN_00425e20(void) {
     float fx, fy, fm, fb;
     float dy;
 
-    DAT_008299bc = DAT_004b5c1c[1];
-    a[0] = DAT_008299bc.m[0][0];
-    a[1] = DAT_008299bc.m[0][1];
-    a[2] = DAT_008299bc.m[1][0];
-    a[3] = DAT_008299bc.m[1][1];
+    CastleViewMatrix = CastleIsoProjections[1];
+    a[0] = CastleViewMatrix.m[0][0];
+    a[1] = CastleViewMatrix.m[0][1];
+    a[2] = CastleViewMatrix.m[1][0];
+    a[3] = CastleViewMatrix.m[1][1];
     Mat2Invert(a);
     pt.x = (lpConfig->view_width >> 1) + lpConfig->view_x;
     pt.y = (lpConfig->view_height >> 1) + lpConfig->view_y;
-    DAT_008299bc.m[0][3] = (float)pt.x;
-    DAT_008299bc.m[1][3] = (float)pt.y;
+    CastleViewMatrix.m[0][3] = (float)pt.x;
+    CastleViewMatrix.m[1][3] = (float)pt.y;
     ScreenToMapRef(&pt.x, &ref.x, 0);
     GetTileBounds(&ref, bounds);
-    DAT_008299a0[2] = 0.0f;
+    CastleCameraPos[2] = 0.0f;
     mid = (bounds[2] + bounds[0]) >> 1;
     fx = (float)pt.x;
     fm = (float)mid;
@@ -7391,52 +7412,55 @@ void FUN_00425e20(void) {
     fy = (float)pt.y;
     fb = (float)bounds[1];
     dy = fy - fb;
-    DAT_008299a0[0] = dy * a[1] + dx * a[0];
-    DAT_008299a0[1] = dy * a[3] + dx * a[2];
-    DAT_008299a0[0] += (float)ref.x * FLOAT_004ab45c;
-    DAT_008299a0[1] += (float)ref.y * FLOAT_004ab45c;
+    CastleCameraPos[0] = dy * a[1] + dx * a[0];
+    CastleCameraPos[1] = dy * a[3] + dx * a[2];
+    CastleCameraPos[0] += (float)ref.x * FLOAT_004ab45c;
+    CastleCameraPos[1] += (float)ref.y * FLOAT_004ab45c;
     CastleViewRect[0] = lpConfig->view_x;
     CastleViewRect[1] = lpConfig->view_y;
     CastleViewRect[2] = lpConfig->view_width + lpConfig->view_x;
     CastleViewRect[3] = lpConfig->view_height + lpConfig->view_y;
     Mat4Identity(m.m);
-    m.m[0][3] = -DAT_008299a0[0];
-    m.m[1][3] = -DAT_008299a0[1];
-    m.m[2][3] = -DAT_008299a0[2];
-    Mat4Multiply(DAT_008299bc.m, m.m, DAT_008299fc.m);
+    m.m[0][3] = -CastleCameraPos[0];
+    m.m[1][3] = -CastleCameraPos[1];
+    m.m[2][3] = -CastleCameraPos[2];
+    Mat4Multiply(CastleViewMatrix.m, m.m, CastleWorldToScreen.m);
     SetClipRect(CastleViewRect[0], CastleViewRect[1], CastleViewRect[2], CastleViewRect[3]);
 }
 
+/* Like UpdateCastleView but with the camera at the origin; flag selects the half-scale projection. Not called. */
 // FUNCTION: LEGOLAND 0x00426000
-void FUN_00426000(int flag) {
+void SetCastleViewAtOrigin(int flag) {
     struct FMat4 m;
 
     if (flag) {
-        DAT_008299bc = DAT_004b5c1c[1];
+        CastleViewMatrix = CastleIsoProjections[1];
     } else {
-        DAT_008299bc = DAT_004b5c1c[0];
+        CastleViewMatrix = CastleIsoProjections[0];
     }
-    DAT_008299bc.m[0][3] = 0.0f;
-    DAT_008299bc.m[1][3] = 0.0f;
+    CastleViewMatrix.m[0][3] = 0.0f;
+    CastleViewMatrix.m[1][3] = 0.0f;
     CastleViewRect[0] = lpConfig->view_x;
     CastleViewRect[1] = lpConfig->view_y;
     CastleViewRect[2] = lpConfig->view_width + lpConfig->view_x;
     CastleViewRect[3] = lpConfig->view_height + lpConfig->view_y;
-    DAT_008299a0[0] = 0.0f;
-    DAT_008299a0[1] = 0.0f;
-    DAT_008299a0[2] = 0.0f;
+    CastleCameraPos[0] = 0.0f;
+    CastleCameraPos[1] = 0.0f;
+    CastleCameraPos[2] = 0.0f;
     Mat4Identity(m.m);
     m.m[0][3] = 0.0f;
     m.m[1][3] = 0.0f;
     m.m[2][3] = 0.0f;
-    Mat4Multiply(DAT_008299bc.m, m.m, DAT_008299fc.m);
+    Mat4Multiply(CastleViewMatrix.m, m.m, CastleWorldToScreen.m);
 }
 
+/* Screen y per unit of height in the current projection. Not called. */
 // FUNCTION: LEGOLAND 0x004260e0
-float FUN_004260e0(void) {
-    return DAT_008299bc.m[1][2];
+float GetCastleViewHeightScale(void) {
+    return CastleViewMatrix.m[1][2];
 }
 
+/* m = identity. */
 // FUNCTION: LEGOLAND 0x004260f0
 void Mat4Identity(float m[4][4]) {
     int i;
@@ -7452,6 +7476,7 @@ void Mat4Identity(float m[4][4]) {
     }
 }
 
+/* out = a * b (4x4). */
 // FUNCTION: LEGOLAND 0x00426120
 void Mat4Multiply(float a[4][4], float b[4][4], float out[4][4]) {
     int i;
@@ -7473,6 +7498,7 @@ struct Mat4x4 {
     unsigned int m[4][4];
 };
 
+/* param_1 = transpose of param_2. */
 // FUNCTION: LEGOLAND 0x00426190
 void Mat4Transpose(struct Mat4x4 *param_2, struct Mat4x4 *param_1) {
     int i;
@@ -7484,6 +7510,7 @@ void Mat4Transpose(struct Mat4x4 *param_2, struct Mat4x4 *param_1) {
     }
 }
 
+/* Transforms n points by the 3x4 part of m. */
 // FUNCTION: LEGOLAND 0x004261c0
 void TransformPoints3x4(float *in, float *out, float m[4][4], int n) {
     int j;
@@ -7502,14 +7529,17 @@ void TransformPoints3x4(float *in, float *out, float m[4][4], int n) {
     }
 }
 
+/* ProjectPoints with CastleWorldToScreen. */
 // FUNCTION: LEGOLAND 0x00426230
 unsigned int ProjectCastlePoints(float in[][3], int out[][4], int n) {
-    return FUN_00426250(in, out, &DAT_008299fc.m[0][0], 0x10, n);
+    return ProjectPoints(in, out, &CastleWorldToScreen.m[0][0], 0x10, n);
 }
 
+/* Projects n points with matrix m to integer screen coordinates (16.16) and depth, with their clip code: bits 1, 2,
+ * 4, 8 = inside the left, right, top, bottom planes, 0xf0 = depth in range. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00426250
-__declspec(naked) unsigned int FUN_00426250(float in[][3], int out[][4], float *m, unsigned int stride, int n) {
+__declspec(naked) unsigned int ProjectPoints(float in[][3], int out[][4], float *m, unsigned int stride, int n) {
     __asm {
         push ebp
         mov ebp, esp
@@ -7659,6 +7689,7 @@ L42639c:
     }
 }
 
+/* Screen rectangle of n points projected with m. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004263a0
 __declspec(naked) void GetPointsScreenRect(void *pts, unsigned int m[4][4], int n, struct RectI *out) {
@@ -7746,6 +7777,7 @@ L426458:
     }
 }
 
+/* Transposed 3x3 part of a 4x4 matrix. */
 // FUNCTION: LEGOLAND 0x00426460
 void Mat4ToMat3Transpose(unsigned int *dst, void *src) {
     unsigned int i;
@@ -7758,6 +7790,7 @@ void Mat4ToMat3Transpose(unsigned int *dst, void *src) {
     }
 }
 
+/* 4x4 matrix from a transposed 3x3 rotation (no translation). */
 // FUNCTION: LEGOLAND 0x00426490
 void Mat3ToMat4Transposed(unsigned int *src, unsigned int dst[4][4]) {
     int i;
@@ -7775,6 +7808,7 @@ void Mat3ToMat4Transposed(unsigned int *src, unsigned int dst[4][4]) {
     dst[3][3] = 0x3f800000;
 }
 
+/* 4x4 matrix from a 3x3 rotation and a translation t. */
 // FUNCTION: LEGOLAND 0x004264e0
 void MakeMat4FromRotTrans(unsigned int *t, unsigned int *m3, unsigned int dst[4][4]) {
     Mat3ToMat4Transposed(m3, dst);
@@ -7783,6 +7817,7 @@ void MakeMat4FromRotTrans(unsigned int *t, unsigned int *m3, unsigned int dst[4]
     dst[2][3] = t[2];
 }
 
+/* Mat3ToMat4Transposed, transposed back. */
 // FUNCTION: LEGOLAND 0x00426510
 void Mat3ToMat4Transpose(unsigned int *m3, struct Mat4x4 *out) {
     float t[3];
@@ -7794,6 +7829,7 @@ void Mat3ToMat4Transpose(unsigned int *m3, struct Mat4x4 *out) {
     Mat4Transpose((struct Mat4x4 *)dst, out);
 }
 
+/* Orthonormal basis with basis[0] along dir and basis[2] as close to up as possible. */
 // FUNCTION: LEGOLAND 0x00426560
 void BuildBasisFromDir(struct FVec3 *dir, struct FVec3 *basis) {
     int i;
@@ -7805,10 +7841,11 @@ void BuildBasisFromDir(struct FVec3 *dir, struct FVec3 *basis) {
     Vec3Cross(dir, &basis[1], &basis[2]);
     basis[0] = *dir;
     for (i = 0; i < 3; i++) {
-        FUN_00425d50(&basis[i].x);
+        Vec3Normalize(&basis[i].x);
     }
 }
 
+/* Clips rectangle a to b; 0 if they do not overlap, else 0xf. */
 // FUNCTION: LEGOLAND 0x004265d0
 int ClipRectIToRect(struct RectI *a, struct RectI *b) {
     if (a->var_0 > b->var_8) {
@@ -7838,63 +7875,70 @@ int ClipRectIToRect(struct RectI *a, struct RectI *b) {
     return 0xF;
 }
 
+/* 1 if any rectangle on the castle's dirty list is on screen. */
 // FUNCTION: LEGOLAND 0x00426650
-unsigned int FUN_00426650(void) {
-    struct ListLink *n = (struct ListLink *)CastleLinkList.var_18;
+unsigned int AnyCastleLinkVisible(void) {
+    struct ListLink *n = (struct ListLink *)CastleLinkList.next;
 
     while (n != (struct ListLink *)&CastleLinkList) {
-        if (n->kind == 0xf) {
+        if (n->visible == 0xf) {
             return 1;
         }
-        n = n->var_18;
+        n = n->next;
     }
     return 0;
 }
 
+/* Adds a rectangle to the castle's dirty list. */
 // FUNCTION: LEGOLAND 0x004266b0
 void AddCastleLink(struct ListLink *param_1) {
-    CastleLinkList.var_18->var_14 = param_1;
-    param_1->var_18 = CastleLinkList.var_18;
-    CastleLinkList.var_18 = param_1;
-    param_1->var_14 = &CastleLinkList;
+    CastleLinkList.next->prev = param_1;
+    param_1->next = CastleLinkList.next;
+    CastleLinkList.next = param_1;
+    param_1->prev = &CastleLinkList;
 }
 
+/* Removes a rectangle from the castle's dirty list. */
 // FUNCTION: LEGOLAND 0x004266e0
 void UnlinkListLink(struct ListLink *param_1) {
     struct ListLink *temp_ptr_1;
     struct ListLink *temp_ptr_2;
 
-    temp_ptr_1 = param_1->var_18;
-    temp_ptr_2 = param_1->var_14;
-    temp_ptr_1->var_14 = temp_ptr_2;
+    temp_ptr_1 = param_1->next;
+    temp_ptr_2 = param_1->prev;
+    temp_ptr_1->prev = temp_ptr_2;
 
-    temp_ptr_1 = param_1->var_14;
-    temp_ptr_2 = param_1->var_18;
-    temp_ptr_1->var_18 = temp_ptr_2;
+    temp_ptr_1 = param_1->prev;
+    temp_ptr_2 = param_1->next;
+    temp_ptr_1->next = temp_ptr_2;
 }
 
+/* Stores src clipped to the castle view in the list entry, with its visibility. */
 // FUNCTION: LEGOLAND 0x00426700
 void ClipRectIToCastleView(struct RectI *dst, struct RectI *src) {
     *dst = *src;
-    ((int *)dst)[4] = ClipRectIToRect(dst, (struct RectI *)&CastleViewRect);
+    ((struct ListLink *)dst)->visible = ClipRectIToRect(dst, (struct RectI *)&CastleViewRect);
 }
 
+/* Empties the castle's dirty list. */
 // FUNCTION: LEGOLAND 0x00426740
 void InitCastleLinkList(void) {
-    CastleLinkList.var_18 = &CastleLinkList;
-    CastleLinkList.var_14 = &CastleLinkList;
+    CastleLinkList.next = &CastleLinkList;
+    CastleLinkList.prev = &CastleLinkList;
 }
 
+/* Screen rectangle of an 8-corner box at position a with rotation b. */
 // FUNCTION: LEGOLAND 0x00426750
 unsigned int GetBoxScreenRect(void *ptr, unsigned int *a, unsigned int *b, struct RectI *c) {
     unsigned int m[4][4];
     unsigned int m2[4][4];
 
     MakeMat4FromRotTrans(a, b, m);
-    Mat4Multiply(DAT_008299fc.m, (float (*)[4])m, (float (*)[4])m2);
+    Mat4Multiply(CastleWorldToScreen.m, (float (*)[4])m, (float (*)[4])m2);
     GetPointsScreenRect(ptr, m2, 8, c);
 }
 
+/* Draws an edge object (a debug wire box) as dotted lines. */
 // FUNCTION: LEGOLAND 0x004267b0
 void DrawEdgeObj(unsigned int *t, unsigned int *m3, struct EdgeObj *obj) {
     unsigned int m[4][4];
@@ -7910,6 +7954,7 @@ void DrawEdgeObj(unsigned int *t, unsigned int *m3, struct EdgeObj *obj) {
     }
 }
 
+/* Makes a wire box +-x by +-y, 0 to -z (8 corners, 12 edges). */
 // FUNCTION: LEGOLAND 0x00426850
 void InitEdgeObjBox(float x, float y, float z, struct EdgeObj *obj) {
     int i;
@@ -7952,18 +7997,21 @@ void InitEdgeObjBox(float x, float y, float z, struct EdgeObj *obj) {
     obj->edges[11].b = 7;
 }
 
+/* Fast 1 / sqrt(x) (through lego_rsqrtf_impl, HASM_lego_rsqrtf). */
 // FUNCTION: LEGOLAND 0x00426960
-float lego_sqrtf(float x) {
+float lego_rsqrtf(float x) {
     __asm {
         fld x
-        call dword ptr [DAT_00829a5c]
+        call dword ptr [lego_rsqrtf_impl]
         fstp x
     }
     return x;
 }
 
+/* Table-driven 1 / sqrt(x): one linear step on the mantissa (rsqrt mantissa table) times the exponent's 1 /
+ * sqrt(2^e) (rsqrtf_exp_table). Takes and returns ST(0). */
 // FUNCTION: LEGOLAND 0x00426980
-__declspec(naked) void HASM_lego_sqrtf(void) {
+__declspec(naked) void HASM_lego_rsqrtf(void) {
     __asm {
         fstp dword ptr [esp - 10h]
         mov dword ptr [esp - 8], ebx
@@ -7983,14 +8031,15 @@ __declspec(naked) void HASM_lego_sqrtf(void) {
         shr edx, 17h
         fadd dword ptr [eax*8 + sqrtf_table]
         mov eax, dword ptr [esp - 4]
-        fmul dword ptr [edx*4 + sqrtf_exp_table]
+        fmul dword ptr [edx*4 + rsqrtf_exp_table]
         mov edx, dword ptr [esp - 0Ch]
         ret
     }
 }
 
+/* Builds the 1 / sqrt tables and installs HASM_lego_rsqrtf. */
 // FUNCTION: LEGOLAND 0x004269e0
-void lego_sqrtf_init(void) {
+void lego_rsqrtf_init(void) {
     int i;
     float x;
     struct {
@@ -8006,28 +8055,30 @@ void lego_sqrtf_init(void) {
         t[i + 1].a = FLOAT_004ab43c / (x + x);
         t[i + 1].b = FLOAT_004ab468 / (x * x * x * 2.0f);
     }
-    sqrtf_exp_table[0] = 1.0f;
+    rsqrtf_exp_table[0] = 1.0f;
     for (i = 1; i <= 255; i++) {
-        sqrtf_exp_table[i] = 1.0f / (float)sqrt(pow(2.0, i - 127));
+        rsqrtf_exp_table[i] = 1.0f / (float)sqrt(pow(2.0, i - 127));
     }
     __asm {
         push eax
-        lea eax, HASM_lego_sqrtf
-        mov DAT_00829a5c, eax
+        lea eax, HASM_lego_rsqrtf
+        mov lego_rsqrtf_impl, eax
         pop eax
     }
 }
 
+/* Fast sqrt(x) (through lego_sqrtf_impl, HASM_lego_invsqrtf). */
 // FUNCTION: LEGOLAND 0x00426a90
 float lego_invsqrtf(float x) {
     __asm {
         fld x
-        call dword ptr [DAT_00829a58]
+        call dword ptr [lego_sqrtf_impl]
         fstp x
     }
     return x;
 }
 
+/* Table-driven sqrt(x), like HASM_lego_rsqrtf. Takes and returns ST(0). */
 // FUNCTION: LEGOLAND 0x00426ab0
 __declspec(naked) void HASM_lego_invsqrtf(void) {
     __asm {
@@ -8065,6 +8116,7 @@ float invsqrtf_table[129] = {0};
 // GLOBAL: LEGOLAND 0x00610e44
 float invsqrtf_exp_table[256] = {0};
 
+/* Builds the sqrt tables and installs HASM_lego_invsqrtf. */
 // FUNCTION: LEGOLAND 0x00426b10
 void lego_invsqrtf_init(void) {
     int i;
@@ -8082,11 +8134,12 @@ void lego_invsqrtf_init(void) {
     __asm {
         push eax
         lea eax, HASM_lego_invsqrtf
-        mov DAT_00829a58, eax
+        mov lego_sqrtf_impl, eax
         pop eax
     }
 }
 
+/* Adds base to a saved offset unless it is 0 (pointer fix-up after loading). */
 // FUNCTION: LEGOLAND 0x00426ba0
 void RelocatePointer(UINT_PTR *param_1, UINT_PTR param_2) {
     if (*param_1 != 0) {
@@ -8094,6 +8147,7 @@ void RelocatePointer(UINT_PTR *param_1, UINT_PTR param_2) {
     }
 }
 
+/* Subtracts base from a pointer unless it is NULL (offset for saving). */
 // FUNCTION: LEGOLAND 0x00426bc0
 void UnrelocatePointer(UINT_PTR *param_1, UINT_PTR param_2) {
     UINT_PTR var_0 = *param_1;
@@ -8115,6 +8169,7 @@ struct TrackList {
     struct TrackEntry *var_c;
 };
 
+/* Debug: prints a track list. */
 // FUNCTION: LEGOLAND 0x00426be0
 void PrintTrackList(struct TrackList *edi) {
     int i;
@@ -8125,17 +8180,17 @@ void PrintTrackList(struct TrackList *edi) {
     }
 }
 
-struct Struct426d80X {
-    struct CastleState *field_0;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned int field_10;
+struct CastleSaveInfo {
+    struct CastleState *castle;
+    unsigned int size;
+    unsigned int piece_count;
+    unsigned int train_running;
+    unsigned int visitor_count;
 };
 
-struct Struct426e80Dst {
-    unsigned int field_0;
-    unsigned int field_4;
+struct PieceSaveRef {
+    unsigned int kind; /* CastleDispatchTable index of the piece element */
+    unsigned int xy; /* its map cell, x and y packed */
 };
 
 struct TrainSaveRecord {
@@ -8149,65 +8204,68 @@ struct TrainSaveRecord {
     unsigned int field_1c;
 };
 
-struct SaveRec {
+struct CastleSaveRecord {
     unsigned int size;
     unsigned int field_4;
-    int pairCount;
-    struct Struct426e80Dst *pairs;
-    unsigned int timerCount;
-    struct TrainSaveRecord *timer;
-    unsigned int recCount;
-    struct Struct427070Src *recs;
+    int piece_count;
+    struct PieceSaveRef *pieces;
+    unsigned int train_count;
+    struct TrainSaveRecord *train;
+    unsigned int visitor_count;
+    struct VisitorLoadRecord *visitors;
 };
 
+/* Loads the castle from the save game: re-places every piece through its dispatch row (map objects off), then the
+ * train and the visitors. */
 // FUNCTION: LEGOLAND 0x00426c20
 int CastleObj_Load(struct Element *element) {
-    struct SaveRec *rec = ReadSaveRec();
+    struct CastleSaveRecord *rec = ReadSaveRec();
     void *obj;
     int i;
 
     if (rec == 0) {
         return 0;
     }
-    if (rec == (struct SaveRec *)-1) {
+    if (rec == (struct CastleSaveRecord *)-1) {
         return 1;
     }
-    RelocatePointer((UINT_PTR *)&rec->pairs, (UINT_PTR)rec);
-    RelocatePointer((UINT_PTR *)&rec->timer, (UINT_PTR)rec);
-    RelocatePointer((UINT_PTR *)&rec->recs, (UINT_PTR)rec);
+    RelocatePointer((UINT_PTR *)&rec->pieces, (UINT_PTR)rec);
+    RelocatePointer((UINT_PTR *)&rec->train, (UINT_PTR)rec);
+    RelocatePointer((UINT_PTR *)&rec->visitors, (UINT_PTR)rec);
     SetMapObjectsEnabled(0);
-    for (i = 0; i < rec->pairCount; i++) {
-        CastleDispatchAddObjectByIndex(rec->pairs[i].field_0, (short *)&rec->pairs[i].field_4);
+    for (i = 0; i < rec->piece_count; i++) {
+        CastleDispatchAddObjectByIndex(rec->pieces[i].kind, (short *)&rec->pieces[i].xy);
     }
     obj = GetPlacedCastleCoaster();
-    if (rec->timer != 0) {
-        LoadCastleTrain(rec->timer, obj);
+    if (rec->train != 0) {
+        LoadCastleTrain(rec->train, obj);
     }
-    if (rec->recs != 0) {
-        LoadCastleVisitors(rec->recs, rec->recCount, obj);
+    if (rec->visitors != 0) {
+        LoadCastleVisitors(rec->visitors, rec->visitor_count, obj);
     }
     MemFree(rec);
     SetMapObjectsEnabled(1);
     return 1;
 }
 
+/* Saves the castle (one block: pieces, the train if it runs, the visitors), or a 0 if none is placed. */
 // FUNCTION: LEGOLAND 0x00426ce0
 int CastleObj_Save(struct Element *element) {
-    struct Struct426d80X info;
+    struct CastleSaveInfo info;
     unsigned int zero;
-    struct SaveRec *rec;
+    struct CastleSaveRecord *rec;
     struct CastleState *obj = GetPlacedCastleCoaster();
 
     if (obj != 0) {
         MeasureCastleSave(obj, &info);
-        rec = MemAlloc(info.field_4, 0, 0, 0);
+        rec = MemAlloc(info.size, 0, 0, 0);
         if (rec == 0) {
             return 0;
         }
         WriteCastleSave(&info, rec);
-        UnrelocatePointer((UINT_PTR *)&rec->pairs, (UINT_PTR)rec);
-        UnrelocatePointer((UINT_PTR *)&rec->timer, (UINT_PTR)rec);
-        UnrelocatePointer((UINT_PTR *)&rec->recs, (UINT_PTR)rec);
+        UnrelocatePointer((UINT_PTR *)&rec->pieces, (UINT_PTR)rec);
+        UnrelocatePointer((UINT_PTR *)&rec->train, (UINT_PTR)rec);
+        UnrelocatePointer((UINT_PTR *)&rec->visitors, (UINT_PTR)rec);
         WriteSaveRec((unsigned int *)rec);
         MemFree(rec);
         return 1;
@@ -8217,57 +8275,62 @@ int CastleObj_Save(struct Element *element) {
     return 1;
 }
 
+/* Counts what the save needs and its size. */
 // FUNCTION: LEGOLAND 0x00426d80
-void MeasureCastleSave(struct CastleState *param1, struct Struct426d80X *param2) {
-    param2->field_0 = param1;
-    param2->field_8 = CountCoasterPieces(param1);
+void MeasureCastleSave(struct CastleState *param1, struct CastleSaveInfo *param2) {
+    param2->castle = param1;
+    param2->piece_count = CountCoasterPieces(param1);
     if (IsTrainRunning(param1->train) != 0) {
-        param2->field_c = 1;
+        param2->train_running = 1;
     } else {
-        param2->field_c = 0;
+        param2->train_running = 0;
     }
-    param2->field_10 = CountCastleVisitors((struct CastleState *)param1);
-    param2->field_4 = (param2->field_8 + param2->field_c * 4 + 4 + param2->field_10) * 8;
+    param2->visitor_count = CountCastleVisitors((struct CastleState *)param1);
+    param2->size = (param2->piece_count + param2->train_running * 4 + 4 + param2->visitor_count) * 8;
 }
 
+/* Fills the save block: the pieces, the train record when it runs and the visitor records. */
 // FUNCTION: LEGOLAND 0x00426de0
-void WriteCastleSave(struct Struct426d80X *src, struct SaveRec *dst) {
+void WriteCastleSave(struct CastleSaveInfo *src, struct CastleSaveRecord *dst) {
     unsigned char *end;
 
-    dst->size = src->field_4;
-    dst->pairCount = src->field_8;
-    dst->pairs = (struct Struct426e80Dst *)&dst[1];
-    SaveCoasterPieces(src->field_0, dst->pairs);
-    end = (unsigned char *)(dst->pairs + dst->pairCount);
-    if (IsTrainRunning(src->field_0->train) != 0) {
-        struct Train *t = (struct Train *)src->field_0->train;
-        dst->timerCount = 1;
-        dst->timer = (struct TrainSaveRecord *)end;
+    dst->size = src->size;
+    dst->piece_count = src->piece_count;
+    dst->pieces = (struct PieceSaveRef *)&dst[1];
+    SaveCoasterPieces(src->castle, dst->pieces);
+    end = (unsigned char *)(dst->pieces + dst->piece_count);
+    if (IsTrainRunning(src->castle->train) != 0) {
+        struct Train *t = (struct Train *)src->castle->train;
+        dst->train_count = 1;
+        dst->train = (struct TrainSaveRecord *)end;
         SaveCastleTrain(t, (struct TrainSaveRecord *)end);
-        end = (unsigned char *)(dst->timer + dst->timerCount);
+        end = (unsigned char *)(dst->train + dst->train_count);
     } else {
-        dst->timer = 0;
+        dst->train = 0;
     }
-    dst->recCount = src->field_10;
-    if (dst->recCount != 0) {
-        dst->recs = (struct Struct427070Src *)end;
-        SaveCastleVisitors((struct CastleState *)src->field_0, (struct Struct427050Dst *)end);
+    dst->visitor_count = src->visitor_count;
+    if (dst->visitor_count != 0) {
+        dst->visitors = (struct VisitorLoadRecord *)end;
+        SaveCastleVisitors((struct CastleState *)src->castle, (struct VisitorSaveRecord *)end);
     } else {
-        dst->recs = 0;
+        dst->visitors = 0;
     }
 }
 
+/* A piece's save reference: its element kind and map cell. */
 // FUNCTION: LEGOLAND 0x00426e80
-void SavePathSegRef(struct PathSeg *src, struct Struct426e80Dst *dst) {
-    dst->field_0 = FindCastleDispatchIndex(src->ride);
-    dst->field_4 = src->xy;
+void SavePathSegRef(struct PathSeg *src, struct PieceSaveRef *dst) {
+    dst->kind = FindCastleDispatchIndex(src->ride);
+    dst->xy = src->xy;
 }
 
+/* The piece at the saved map cell. */
 // FUNCTION: LEGOLAND 0x00426ea0
 struct PathSeg *LoadPathSegRef(unsigned char *param_1, struct CastleState *param_2) {
     return FindPathSegByXY(param_2, (unsigned int *)(param_1 + 4));
 }
 
+/* Saves a walker: its piece and the index of its stretch in the piece (the index is not used when loading). */
 // FUNCTION: LEGOLAND 0x00426ec0
 void SaveCurveWalker(struct CurveWalker *arg0, unsigned int *arg1) {
     struct FVec3 local;
@@ -8275,7 +8338,7 @@ void SaveCurveWalker(struct CurveWalker *arg0, unsigned int *arg1) {
     struct SegBlob *end;
     unsigned int count = 0;
 
-    SavePathSegRef(arg0->piece, (struct Struct426e80Dst *)arg1);
+    SavePathSegRef(arg0->piece, (struct PieceSaveRef *)arg1);
     cur = GetPieceCurve(arg0->piece, &local);
     end = arg0->node;
     while (cur != end) {
@@ -8287,6 +8350,7 @@ void SaveCurveWalker(struct CurveWalker *arg0, unsigned int *arg1) {
     arg1[2] = count;
 }
 
+/* Restores a walker on its piece's first stretch. */
 // FUNCTION: LEGOLAND 0x00426f10
 void LoadCurveWalker(unsigned char *a, struct CurveWalker *b, struct CastleState *c) {
     b->piece = LoadPathSegRef(a, c);
@@ -8315,6 +8379,7 @@ void LoadCastleTrain(struct TrainSaveRecord *src, struct CastleState *obj) {
     dst->hold_until = GetGameTimer() + src->hold_left;
 }
 
+/* Index of the bloke in the castle ride's rider list, or -1. */
 // FUNCTION: LEGOLAND 0x00426ff0
 int FindCastleRiderIndex(struct Bloke *param) {
     int i = 0;
@@ -8330,6 +8395,7 @@ int FindCastleRiderIndex(struct Bloke *param) {
     return -1;
 }
 
+/* The rider at index, or NULL. */
 // FUNCTION: LEGOLAND 0x00427020
 struct Bloke *GetCastleRiderByIndex(unsigned int index) {
     unsigned int i = 0;
@@ -8345,43 +8411,46 @@ struct Bloke *GetCastleRiderByIndex(unsigned int index) {
     return 0;
 }
 
-struct Struct427050Dst {
-    unsigned int field_0;
-    unsigned int field_4;
+struct VisitorSaveRecord {
+    unsigned int flags;
+    unsigned int rider;
 };
 
+/* A visitor's save record: its state and rider index. */
 // FUNCTION: LEGOLAND 0x00427050
-void SaveCastleVisitor(struct CastleVisitor *param1, struct Struct427050Dst *param2) {
-    param2->field_0 = param1->flags;
-    param2->field_4 = FindCastleRiderIndex(param1->bloke);
+void SaveCastleVisitor(struct CastleVisitor *param1, struct VisitorSaveRecord *param2) {
+    param2->flags = param1->flags;
+    param2->rider = FindCastleRiderIndex(param1->bloke);
 }
 
-struct Struct427070Src {
-    unsigned int field_0;
-    unsigned int field_4;
+struct VisitorLoadRecord {
+    unsigned int flags;
+    unsigned int rider;
 };
 
+/* Re-queues a saved visitor, seating it if it was on the train. */
 // FUNCTION: LEGOLAND 0x00427070
-void LoadCastleVisitor(struct Struct427070Src *param_1, struct CastleState *param_2) {
+void LoadCastleVisitor(struct VisitorLoadRecord *param_1, struct CastleState *param_2) {
     struct CastleVisitor *node;
     unsigned int kind;
-    struct Bloke *index = GetCastleRiderByIndex(param_1->field_4);
+    struct Bloke *index = GetCastleRiderByIndex(param_1->rider);
     node = AddCastleVisitor(index, param_2);
-    kind = param_1->field_0;
+    kind = param_1->flags;
     node->flags = kind;
     if (kind == 2) {
         SeatCastleVisitor((struct CastleVisitor *)node, FindEmptyTrainSeat((struct Train *)param_2->train));
     }
 }
 
+/* Saves every visitor. */
 // FUNCTION: LEGOLAND 0x004270c0
-void SaveCastleVisitors(struct CastleState *a1, struct Struct427050Dst *a2) {
+void SaveCastleVisitors(struct CastleState *a1, struct VisitorSaveRecord *a2) {
     struct CastleVisitor *node = a1->visitors.next;
     struct CastleVisitor *end = &a1->visitors;
     if (node != end) {
-        struct Struct427050Dst *out = a2;
+        struct VisitorSaveRecord *out = a2;
         do {
-            struct Struct427050Dst *cur = out;
+            struct VisitorSaveRecord *cur = out;
             out = out + 1;
             SaveCastleVisitor(node, cur);
             node = node->next;
@@ -8389,13 +8458,15 @@ void SaveCastleVisitors(struct CastleState *a1, struct Struct427050Dst *a2) {
     }
 }
 
+/* Restores count visitors. */
 // FUNCTION: LEGOLAND 0x00427100
-void LoadCastleVisitors(struct Struct427070Src *arr, int count, struct CastleState *obj) {
+void LoadCastleVisitors(struct VisitorLoadRecord *arr, int count, struct CastleState *obj) {
     for (; count > 0; count--) {
         LoadCastleVisitor(arr++, obj);
     }
 }
 
+/* Number of visitors in the queue. */
 // FUNCTION: LEGOLAND 0x00427130
 unsigned int CountCastleVisitors(struct CastleState *main) {
     unsigned int counter = 0;
@@ -8408,6 +8479,7 @@ unsigned int CountCastleVisitors(struct CastleState *main) {
     return counter;
 }
 
+/* Number of pieces including the castle. */
 // FUNCTION: LEGOLAND 0x00427150
 unsigned int CountCoasterPieces(struct CastleState *arg) {
     unsigned int count = 1;
@@ -8443,12 +8515,13 @@ unsigned int CountCoasterPieces(struct CastleState *arg) {
     return count;
 }
 
+/* Saves the castle and every piece (ring order, or after then before the castle). */
 // FUNCTION: LEGOLAND 0x00427190
-void SaveCoasterPieces(struct CastleState *obj, struct Struct426e80Dst *out) {
+void SaveCoasterPieces(struct CastleState *obj, struct PieceSaveRef *out) {
     struct PathSeg *cur;
 
-    out->field_0 = FindCastleDispatchIndex(obj->piece.ride);
-    out->field_4 = obj->piece.xy;
+    out->kind = FindCastleDispatchIndex(obj->piece.ride);
+    out->xy = obj->piece.xy;
     cur = obj->piece.next;
     out++;
     if (obj->flags == 2) {
@@ -8478,13 +8551,13 @@ void WriteSaveRec(unsigned int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00427240
-struct SaveRec *ReadSaveRec(void) {
+struct CastleSaveRecord *ReadSaveRec(void) {
     unsigned int size;
-    struct SaveRec *rec;
+    struct CastleSaveRecord *rec;
 
     SaveGameRead(&size, 4);
     if (size == 0) {
-        return (struct SaveRec *)-1;
+        return (struct CastleSaveRecord *)-1;
     }
     rec = MemAlloc(size, 0, 0, 0);
     if (rec == 0) {
@@ -9772,7 +9845,7 @@ L428cf0:
         lea edx, [ebp - 0x88]
         push ecx
         push edx
-        push offset DAT_008299fc
+        push offset CastleWorldToScreen
         call Mat4Multiply
         push 6
         lea eax, [ebp - 0xc8]
@@ -9780,7 +9853,7 @@ L428cf0:
         push eax
         push ebx
         push offset DAT_006121c8
-        call FUN_00426250
+        call ProjectPoints
         fld dword ptr [DAT_004b5ca8]
         fmul dword ptr [ebp - 0x28]
         fld dword ptr [DAT_004b5ca4]
@@ -9789,20 +9862,20 @@ L428cf0:
         mov esi, offset DAT_006126d8
         add ebx, 0x10
         faddp st(1), st
-        fld dword ptr [DAT_004b5ca0]
+        fld dword ptr [CastleLightDir]
         fmul dword ptr [ebp - 0x30]
         faddp st(1), st
-        fmul dword ptr [DAT_0082999c]
+        fmul dword ptr [CastleLightScale]
         fld dword ptr [DAT_004b5ca8]
         fmul dword ptr [ebp - 0x1c]
         fld dword ptr [DAT_004b5ca4]
         fmul dword ptr [ebp - 0x20]
         faddp st(1), st
-        fld dword ptr [DAT_004b5ca0]
+        fld dword ptr [CastleLightDir]
         fmul dword ptr [ebp - 0x24]
         faddp st(1), st
-        fmul dword ptr [DAT_0082999c]
-        fld dword ptr [DAT_00829a60]
+        fmul dword ptr [CastleLightScale]
+        fld dword ptr [CastleLightBias]
 L428de0:
         fld st(1)
         fmul dword ptr [esi + 4]
@@ -9999,7 +10072,7 @@ void FUN_00429150(struct SegBlob *curve, float *off, int flag) {
         FUN_00429490(&pos, basis);
         return;
     }
-    if (Vec3Dot((struct FVec3 *)DAT_00829990, &basis[2]) < FLOAT_004ab390) {
+    if (Vec3Dot((struct FVec3 *)CastleViewDir, &basis[2]) < FLOAT_004ab390) {
         if (flag != 1) {
             FUN_004292f0(&pos, basis);
         }
@@ -10114,7 +10187,7 @@ void FUN_004294b0(void) {
 
 // FUNCTION: LEGOLAND 0x004294f0
 void FUN_004294f0(struct SegBlob *a, struct FVec3 *b, unsigned int c, unsigned int d) {
-    FUN_00425bd0();
+    SetTrackLighting();
     if (c == 1) {
         FUN_00428e70(a, b, 0);
         FUN_00429150(a, &b->x, d);
@@ -10360,7 +10433,7 @@ void BuildUprightBasis(struct FVec3 *a, struct FVec3 *b) {
     Vec3Cross(v, &m[1], &m[2]);
     m[0] = *v;
     for (i = 0; i < 3; i++) {
-        FUN_00425d50(&m[i].x);
+        Vec3Normalize(&m[i].x);
     }
 }
 
@@ -10905,7 +10978,7 @@ void DrawTrainBogie(struct TrainBogie *p) {
     float C[3];
     int i;
 
-    FUN_00425c40();
+    SetModelLighting();
     FUN_00429b60(&o->w0.walker, *(int *)&o->w0.t, A);
     Mat3ToMat4Transposed(A, B);
     for (i = 0; i <= 1; i++) {

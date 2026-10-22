@@ -321,10 +321,10 @@ struct DeferredSprite {
 };
 
 struct ListLink {
-    unsigned char pad_0[0x10];
-    /* 0x10 */ int kind;
-    struct ListLink *var_14;
-    struct ListLink *var_18;
+    unsigned char pad_0[0x10]; /* the screen rectangle (a RectI) */
+    /* 0x10 */ int visible; /* 0xf when the rectangle overlaps the castle view (ClipRectIToRect), else 0 */
+    struct ListLink *prev;
+    struct ListLink *next;
 };
 
 struct CastleFloatEnt {
@@ -796,11 +796,11 @@ extern struct RecBuf *DepthSpanRecordEnd;
 // 0x004b5988
 extern struct BlokeInfo CastleVisitorInfo;
 // 0x004b5c1c
-extern struct FMat4 DAT_004b5c1c[2];
+extern struct FMat4 CastleIsoProjections[2];
 // 0x004b5c9c
 extern unsigned int DAT_004b5c9c;
 // 0x004b5ca0
-extern unsigned int DAT_004b5ca0;
+extern unsigned int CastleLightDir;
 // 0x004b5ca4
 extern unsigned int DAT_004b5ca4;
 // 0x004b5ca8
@@ -808,7 +808,7 @@ extern unsigned int DAT_004b5ca8;
 // 0x004b5cac
 extern float DAT_004b5cac;
 // 0x004b5cb0
-extern unsigned int DAT_004b5cb0;
+extern unsigned int TrackLightDir;
 // 0x004b5cb4
 extern unsigned int DAT_004b5cb4;
 // 0x004b5cb8
@@ -816,7 +816,7 @@ extern unsigned int DAT_004b5cb8;
 // 0x004b5cbc
 extern float DAT_004b5cbc;
 // 0x004b5cc0
-extern unsigned int DAT_004b5cc0;
+extern unsigned int ModelLightDir;
 // 0x004b5cc4
 extern unsigned int DAT_004b5cc4;
 // 0x004b5cc8
@@ -1723,7 +1723,7 @@ extern float invsqrtf_table[129];
 // 0x00610e44 — invsqrtf exponent scale table (256 entries)
 extern float invsqrtf_exp_table[256];
 // 0x00611244 — sqrtf exponent scale table (256 entries)
-extern float sqrtf_exp_table[256];
+extern float rsqrtf_exp_table[256];
 // 0x00611648
 extern unsigned int DAT_00611648;
 // 0x0061164c
@@ -3964,25 +3964,25 @@ extern unsigned int DAT_00828fe0[2];
 // 0x00829980
 extern void *BasicTilesData;
 // 0x00829990
-extern float DAT_00829990[3];
+extern float CastleViewDir[3];
 // 0x0082999c
-extern float DAT_0082999c;
+extern float CastleLightScale;
 // 0x008299a0
-extern float DAT_008299a0[3];
+extern float CastleCameraPos[3];
 // 0x008299bc
-extern struct FMat4 DAT_008299bc;
+extern struct FMat4 CastleViewMatrix;
 // 0x008299fc
-extern struct FMat4 DAT_008299fc;
+extern struct FMat4 CastleWorldToScreen;
 // 0x008299ac
 extern int CastleViewRect[4];
 // 0x00829a3c
 extern struct ListLink CastleLinkList;
 // 0x00829a58
-extern void (*DAT_00829a58)(void);
+extern void (*lego_sqrtf_impl)(void);
 // 0x00829a5c
-extern void (*DAT_00829a5c)(void);
+extern void (*lego_rsqrtf_impl)(void);
 // 0x00829a60
-extern float DAT_00829a60;
+extern float CastleLightBias;
 // 0x00829a64
 extern struct Ride *DAT_00829a64;
 
