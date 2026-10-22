@@ -598,8 +598,8 @@ int PickQueueTurn(unsigned short id, struct PathPair *p, int dir) {
     struct RideQueueEntry *t1;
     struct RideQueueEntry *t2;
     struct RideQueueEntry *t3;
-    struct PathPair pt;
-    unsigned char r;
+    int pt[4]; /* only pt[0] and pt[1] are used; the frame reserves 16 bytes */
+    char r;
     int mask;
 
     int pb;
@@ -612,21 +612,21 @@ int PickQueueTurn(unsigned short id, struct PathPair *p, int dir) {
     if (NULL == e) {
         return 0;
     }
-    StepPointByDirection(&e->x, &pt.a, dir);
-    q = FindRoadEntryAt(pt.a, pt.b);
+    StepPointByDirection(&e->x, pt, dir);
+    q = FindRoadEntryAt(pt[0], pt[1]);
     if (q != NULL && q->id == id && (q->field_14 & 0xf) != 6) {
-        StepPointByDirection(&q->x, &pt.a, dir);
-        t1 = FindRoadEntryAt(pt.a, pt.b);
+        StepPointByDirection(&q->x, pt, dir);
+        t1 = FindRoadEntryAt(pt[0], pt[1]);
         if (t1 != NULL && (t1->id != id || (0xf & t1->field_14) == 6)) {
             t1 = NULL;
         }
-        StepPointByDirection(&q->x, &pt.a, (dir - 2) & 7);
-        t2 = FindRoadEntryAt(pt.a, pt.b);
+        StepPointByDirection(&q->x, pt, (dir - 2) & 7);
+        t2 = FindRoadEntryAt(pt[0], pt[1]);
         if (t2 != NULL && (t2->id != id || (t2->field_14 & 0xf) == 6)) {
             t2 = NULL;
         }
-        StepPointByDirection(&q->x, &pt.a, (dir + 2) & 7);
-        t3 = FindRoadEntryAt(pt.a, pt.b);
+        StepPointByDirection(&q->x, pt, (dir + 2) & 7);
+        t3 = FindRoadEntryAt(pt[0], pt[1]);
         if (t3 != NULL && (t3->id != id || (0xf & t3->field_14) == 6)) {
             t3 = NULL;
         }
@@ -647,7 +647,7 @@ int PickQueueTurn(unsigned short id, struct PathPair *p, int dir) {
         case 5:
             return (~r & 2) | 1;
         case 3:
-            return ((r & 2) != 0) + 1;
+            return (r & 2) ? 2 : 1;
         case 6:
             return ((~r & 2) | 4) >> 1;
         case 7:
