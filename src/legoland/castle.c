@@ -847,7 +847,7 @@ struct BisectOut {
 
 // FUNCTION: LEGOLAND 0x0041df00
 float BisectTrainSegmentEnd(struct Train *obj, float t) {
-    struct BisectPair s;
+    struct BisectOut s;
     struct AnimOut anim;
     float lo;
     float hi;
