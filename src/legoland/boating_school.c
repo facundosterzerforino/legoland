@@ -1230,7 +1230,7 @@ void BoatingSchoolMermaidAddObject(struct Element *obj, int *coords) {
 
     tile.pos.x = coords[0];
     tile.pos.y = coords[1];
-    FUN_0041c690(coords[0], coords[1], &owner);
+    GetBoatPathNeighbourMask(coords[0], coords[1], &owner);
     node = (struct MermaidNode *)malloc(sizeof(struct MermaidNode));
     if (node == NULL) {
         return;
@@ -1280,7 +1280,7 @@ void BoatingSchoolMermaidCalcCursor(Element *obj, int *param_2, unsigned int par
     ride = obj->ride;
     memcpy(EditCursor.field_1414, &ride->footprint, sizeof(struct Footprint));
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
-    mask = FUN_0041c690(EditCursor.tile_x, EditCursor.tile_y, &owner);
+    mask = GetBoatPathNeighbourMask(EditCursor.tile_x, EditCursor.tile_y, &owner);
     EditCursor.field_1830 = n;
     if (mask == 0) {
         SetCursorBlocked(&EditCursor, 0xe);
@@ -1419,26 +1419,26 @@ void BoatingSchoolWaterAddObject(Element *obj, int *coords) {
     int x1;
     int y1;
 
-    mask = FUN_0041c690(coords[0], coords[1], &owner);
+    mask = GetBoatPathNeighbourMask(coords[0], coords[1], &owner);
     AddBoatPathTile(coords[0], coords[1], mask, &owner);
     IncrementObjectCount(obj->ride);
     AddBoatRideNodeValue(owner, 1);
-    FUN_0041bab0(coords[0], coords[1], &owner);
+    FillBoatingWaterCorners(coords[0], coords[1], &owner);
     if ((mask & 1) != 0) {
-        AddBoatPathTile(coords[0], coords[1] - 5, FUN_0041c690(coords[0], coords[1] - 5, &owner), NULL);
-        FUN_0041bab0(coords[0], coords[1] - 5, &owner);
+        AddBoatPathTile(coords[0], coords[1] - 5, GetBoatPathNeighbourMask(coords[0], coords[1] - 5, &owner), NULL);
+        FillBoatingWaterCorners(coords[0], coords[1] - 5, &owner);
     }
     if ((mask & 2) != 0) {
-        AddBoatPathTile(coords[0] + 5, coords[1], FUN_0041c690(coords[0] + 5, coords[1], &owner), NULL);
-        FUN_0041bab0(coords[0] + 5, coords[1], &owner);
+        AddBoatPathTile(coords[0] + 5, coords[1], GetBoatPathNeighbourMask(coords[0] + 5, coords[1], &owner), NULL);
+        FillBoatingWaterCorners(coords[0] + 5, coords[1], &owner);
     }
     if ((mask & 4) != 0) {
-        AddBoatPathTile(coords[0], coords[1] + 5, FUN_0041c690(coords[0], coords[1] + 5, &owner), NULL);
-        FUN_0041bab0(coords[0], coords[1] + 5, &owner);
+        AddBoatPathTile(coords[0], coords[1] + 5, GetBoatPathNeighbourMask(coords[0], coords[1] + 5, &owner), NULL);
+        FillBoatingWaterCorners(coords[0], coords[1] + 5, &owner);
     }
     if ((mask & 8) != 0) {
-        AddBoatPathTile(coords[0] - 5, coords[1], FUN_0041c690(coords[0] - 5, coords[1], &owner), NULL);
-        FUN_0041bab0(coords[0] - 5, coords[1], &owner);
+        AddBoatPathTile(coords[0] - 5, coords[1], GetBoatPathNeighbourMask(coords[0] - 5, coords[1], &owner), NULL);
+        FillBoatingWaterCorners(coords[0] - 5, coords[1], &owner);
     }
     for (; score != NULL; score = score->next) {
         if (score->id == owner) {
@@ -1456,7 +1456,7 @@ void BoatingSchoolWaterAddObject(Element *obj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0041bab0
-void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
+void FillBoatingWaterCorners(int param_1, int param_2, unsigned short *param_3) {
     struct BoatRideNode *score = BoatRideNodeList;
     struct PathNode *path;
     struct PathNode *other;
@@ -1520,7 +1520,7 @@ void BoatingSchoolWaterCalcCursor(Element *obj, int *param_2, unsigned int param
     n = 0;
     memcpy(EditCursor.field_1414, &DAT_004b53c0, sizeof(DAT_004b53c0));
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
-    mask = FUN_0041c690(EditCursor.tile_x, EditCursor.tile_y, &owner);
+    mask = GetBoatPathNeighbourMask(EditCursor.tile_x, EditCursor.tile_y, &owner);
     EditCursor.field_1830 = n;
     if (mask == 0) {
         SetCursorBlocked(&EditCursor, 0xe);
@@ -1666,71 +1666,71 @@ void BoatingSchoolWaterRemoveObject(Element *obj, TileId tile, struct Cursor *cu
         BoatingSchoolRemoveObject(&fake, tile, cursor);
         return;
     }
-    mask = FUN_0041c690(cursor->tile_x, cursor->tile_y, &owner);
+    mask = GetBoatPathNeighbourMask(cursor->tile_x, cursor->tile_y, &owner);
     RemoveBoatPath(obj, tile, cursor);
     AddBoatRideNodeValue(owner, -1);
     if ((mask & 1) != 0) {
         y = cursor->tile_y - 5;
         x = cursor->tile_x;
-        dir = FUN_0041c690(x, y, &other);
+        dir = GetBoatPathNeighbourMask(x, y, &other);
         AddBoatPathTile(x, y, dir, &owner);
-        FUN_0041bab0(x, y, &owner);
+        FillBoatingWaterCorners(x, y, &owner);
     }
     if ((mask & 2) != 0) {
         x = cursor->tile_x + 5;
         y = cursor->tile_y;
-        dir = FUN_0041c690(x, y, &other);
+        dir = GetBoatPathNeighbourMask(x, y, &other);
         AddBoatPathTile(x, y, dir, &owner);
-        FUN_0041bab0(x, y, &owner);
+        FillBoatingWaterCorners(x, y, &owner);
     }
     if ((mask & 4) != 0) {
         y = cursor->tile_y + 5;
         x = cursor->tile_x;
-        dir = FUN_0041c690(x, y, &other);
+        dir = GetBoatPathNeighbourMask(x, y, &other);
         AddBoatPathTile(x, y, dir, &owner);
-        FUN_0041bab0(x, y, &owner);
+        FillBoatingWaterCorners(x, y, &owner);
     }
     if ((mask & 8) != 0) {
         x = cursor->tile_x - 5;
         y = cursor->tile_y;
-        dir = FUN_0041c690(x, y, &other);
+        dir = GetBoatPathNeighbourMask(x, y, &other);
         AddBoatPathTile(x, y, dir, &owner);
-        FUN_0041bab0(x, y, &owner);
+        FillBoatingWaterCorners(x, y, &owner);
     }
     if ((mask & 1) != 0 && (mask & 8) != 0) {
         x = cursor->tile_x - 5;
         y = cursor->tile_y - 5;
         if (FindBoatPathAt(x, y) != NULL) {
-            dir = FUN_0041c690(x, y, &other);
+            dir = GetBoatPathNeighbourMask(x, y, &other);
             AddBoatPathTile(x, y, dir, &owner);
-            FUN_0041bab0(x, y, &owner);
+            FillBoatingWaterCorners(x, y, &owner);
         }
     }
     if ((mask & 1) != 0 && (mask & 2) != 0) {
         x = cursor->tile_x + 5;
         y = cursor->tile_y - 5;
         if (FindBoatPathAt(x, y) != NULL) {
-            dir = FUN_0041c690(x, y, &other);
+            dir = GetBoatPathNeighbourMask(x, y, &other);
             AddBoatPathTile(x, y, dir, &owner);
-            FUN_0041bab0(x, y, &owner);
+            FillBoatingWaterCorners(x, y, &owner);
         }
     }
     if ((mask & 4) != 0 && (mask & 8) != 0) {
         x = cursor->tile_x - 5;
         y = cursor->tile_y + 5;
         if (FindBoatPathAt(x, y) != NULL) {
-            dir = FUN_0041c690(x, y, &other);
+            dir = GetBoatPathNeighbourMask(x, y, &other);
             AddBoatPathTile(x, y, dir, &owner);
-            FUN_0041bab0(x, y, &owner);
+            FillBoatingWaterCorners(x, y, &owner);
         }
     }
     if ((mask & 4) != 0 && (mask & 2) != 0) {
         x = cursor->tile_x + 5;
         y = cursor->tile_y + 5;
         if (FindBoatPathAt(x, y) != NULL) {
-            dir = FUN_0041c690(x, y, &other);
+            dir = GetBoatPathNeighbourMask(x, y, &other);
             AddBoatPathTile(x, y, dir, &owner);
-            FUN_0041bab0(x, y, &owner);
+            FillBoatingWaterCorners(x, y, &owner);
         }
     }
     ComputeBoatPathDistances(owner);
@@ -1816,7 +1816,7 @@ void RemoveBoatPath(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0041c690
-unsigned int FUN_0041c690(int x, int y, unsigned short *owner) {
+unsigned int GetBoatPathNeighbourMask(int x, int y, unsigned short *owner) {
     struct BoatRideNode *score;
     struct PathNode *node;
     unsigned int mask;

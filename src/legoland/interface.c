@@ -281,7 +281,7 @@ LEGO_EXPORT void UnLoad_Interface_Icons(void) {
 // FUNCTION: LEGOLAND 0x00474820
 unsigned char DefaultOkKeyHandler(unsigned int dummy, unsigned char flags) {
     if ((flags & 2) != 0) {
-        FUN_00473160();
+        HandlePopUpOkKey();
     }
     return 1;
 }

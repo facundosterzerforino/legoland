@@ -109,7 +109,7 @@ struct ListNode;
 struct FlumeDims;
 struct LinkList;
 
-void FUN_004113d0(void);
+void InitLogFlumeShapes(void);
 struct FlumeSlot;
 int IsFlumeSlotOnDrop(struct FlumeSlot *slot);
 int AdvanceFlumeMover(struct FlumeSlot *mover);

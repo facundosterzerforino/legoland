@@ -1233,7 +1233,7 @@ unsigned int TryClosePopUp(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473160
-unsigned int FUN_00473160(void) {
+unsigned int HandlePopUpOkKey(void) {
     unsigned int state = DAT_007fdfa0;
 
     if (state == 1) {

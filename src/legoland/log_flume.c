@@ -2398,7 +2398,7 @@ void LogFlumeTrackLoad(Element *elem) {
     if (LLIDB_FindElement("LOG FLUME TRACK ENDY LIST", &LogFlumeTrackEndyListId, 0) == 0) {
         LogFlumeTrackEndyList = LLIDB_LoadData((void *)LogFlumeTrackEndyListId);
     }
-    FUN_004113d0();
+    InitLogFlumeShapes();
     for (i = 0; i < 10; i++) {
         LogFlumeTrackSprites[i] = LoadSprite(LogFlumeTrackSpriteFiles[i], 1);
     }
@@ -2635,7 +2635,7 @@ struct RideSpriteInfo *GetLogFlumeTrackSpriteInfo(struct Element *unused, TileId
 }
 
 // FUNCTION: LEGOLAND 0x0040ca30
-void FUN_0040ca30(void *a1, struct FlumeEntry *a2) {
+void DrawFlumeBarrelList(void *a1, struct FlumeEntry *a2) {
     struct WalkNode *node = *(struct WalkNode **)a1;
     if (node != NULL) {
         do {
@@ -2698,30 +2698,30 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
         thisX = entry->tile.pos.x;
         if (entry->submode == 0) {
             if (next->tile.pos.x != thisX) {
-                FUN_0040ca30(&DAT_004c8d74, entry);
+                DrawFlumeBarrelList(&DAT_004c8d74, entry);
                 if (spr != NULL) {
                     PrintSprite(spr, pos.x, pos.y, arg, 0);
                 }
-                FUN_0040ca30(&DAT_004ca5ac, entry);
+                DrawFlumeBarrelList(&DAT_004ca5ac, entry);
             } else {
-                FUN_0040ca30(&DAT_004ca5ac, entry);
+                DrawFlumeBarrelList(&DAT_004ca5ac, entry);
                 if (spr != NULL) {
                     PrintSprite(spr, pos.x, pos.y, 0, 0);
                 }
-                FUN_0040ca30(&DAT_004c8d74, entry);
+                DrawFlumeBarrelList(&DAT_004c8d74, entry);
             }
         } else if (next->tile.pos.x != thisX) {
-            FUN_0040ca30(&DAT_004ca5ac, entry);
+            DrawFlumeBarrelList(&DAT_004ca5ac, entry);
             if (spr != NULL) {
                 PrintSprite(spr, pos.x, pos.y, 0, 0);
             }
-            FUN_0040ca30(&DAT_004c8d74, entry);
+            DrawFlumeBarrelList(&DAT_004c8d74, entry);
         } else {
-            FUN_0040ca30(&DAT_004c8d74, entry);
+            DrawFlumeBarrelList(&DAT_004c8d74, entry);
             if (spr != NULL) {
                 PrintSprite(spr, pos.x, pos.y, 0, 0);
             }
-            FUN_0040ca30(&DAT_004ca5ac, entry);
+            DrawFlumeBarrelList(&DAT_004ca5ac, entry);
         }
         idx = GetFlumeTrackSpriteIndex((struct FlumeEntry *)entry);
         pos = GetFlumePieceScreenPos(entry);
@@ -5439,7 +5439,7 @@ struct FlumeDims InterpolateFlumeShape(struct FlumeShape *shape, float t, int re
 }
 
 // FUNCTION: LEGOLAND 0x004113d0
-void FUN_004113d0(void) {
+void InitLogFlumeShapes(void) {
     int w;
     int h;
     int dx;
