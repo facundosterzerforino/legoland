@@ -806,7 +806,7 @@ LEGO_EXPORT void Gardener_Build(Bloke *worker) {
         worker->param_action = dx * dx + dy * dy < 0x9000 ? 107 : 100;
         return;
     case 100:
-        switch (FUN_00482710(&worker->pos.x, &worker->goal.x, &dest.x)) {
+        switch (WorkerSuggestNextMove(&worker->pos.x, &worker->goal.x, &dest.x)) {
         case 0:
             RemoveGardenerWorkOrder(worker->order);
             worker->action = 0x10;
@@ -895,7 +895,7 @@ LEGO_EXPORT void Mechanic_Build(Bloke *worker) {
         worker->param_action = dx * dx + dy * dy < 0x10000 ? 107 : 101;
         return;
     case 0x65:
-        switch (FUN_00482710(&worker->pos.x, &worker->goal.x, &dest.x)) {
+        switch (WorkerSuggestNextMove(&worker->pos.x, &worker->goal.x, &dest.x)) {
         case 0:
             RemoveMechanicWorkOrder(worker->order);
             worker->action = 0x11;
@@ -1566,7 +1566,7 @@ LEGO_EXPORT void Garderner_Repair(Bloke *worker) {
 
     switch (worker->param_action) {
     case 0:
-        switch (FUN_00482710(&worker->pos.x, &worker->goal.x, &dest.x)) {
+        switch (WorkerSuggestNextMove(&worker->pos.x, &worker->goal.x, &dest.x)) {
         case 0:
             AdvanceWorkOrderToFreeStep(worker->order);
             RemoveGardenerWorkOrder(worker->order);
@@ -1685,7 +1685,7 @@ LEGO_EXPORT void Mechanics_Repair(Bloke *worker) {
         worker->param_action = dx * dx + dy * dy < 0x10000 ? 107 : 100;
         return;
     case 100:
-        switch (FUN_00482710(&worker->pos.x, &worker->goal.x, &dest.x)) {
+        switch (WorkerSuggestNextMove(&worker->pos.x, &worker->goal.x, &dest.x)) {
         case 0:
             AdvanceWorkOrderToFreeStep(worker->order);
             RemoveMechanicWorkOrder(worker->order);

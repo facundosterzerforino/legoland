@@ -279,7 +279,7 @@ struct SpaceTowerCar *FindSpaceTowerCar(unsigned short *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ac70
-void FUN_0043ac70(struct RideNode *param_1, unsigned short *param_2) {
+void AssignSpaceTowerSlot(struct RideNode *param_1, unsigned short *param_2) {
     struct SpaceTowerCar *ride;
     unsigned int slot;
 
@@ -355,7 +355,7 @@ void DrawSpaceTowerSeatMatte(struct SpaceTowerCar *param_1, int param_2, unsigne
 }
 
 // FUNCTION: LEGOLAND 0x0043ae20
-void FUN_0043ae20(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
+void DrawSpaceTowerSeatSprite(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     struct Point coords;
     struct Point off;
     int id;
@@ -383,7 +383,7 @@ void FUN_0043ae20(struct SpaceTowerCar *param_1, int param_2, unsigned int param
 
 // FUNCTION: LEGOLAND 0x0043aee0
 void RenderSpaceTowerSeat(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
-    FUN_0043ae20(param_1, param_2, param_3);
+    DrawSpaceTowerSeatSprite(param_1, param_2, param_3);
     if ((param_1->seats[param_2].flags & 1) != 0) {
         FUN_0043ad00((unsigned char *)param_1, param_2);
         if (param_1->seats[param_2].rider_slot0 != NULL) {
@@ -667,7 +667,7 @@ void SpaceTowerRide(struct Element *name, struct Ride *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b810
-void FUN_0043b810(struct SpaceTowerCar *param_1) {
+void AssignSpaceTowerSeatRiders(struct SpaceTowerCar *param_1) {
     struct RideNode *node;
     int slot;
     int idx;
@@ -742,7 +742,7 @@ void UpdateSpaceTowerCar(struct SpaceTowerCar *esi) {
             return;
         }
     }
-    FUN_0043b810(esi);
+    AssignSpaceTowerSeatRiders(esi);
     Put3DBlokesOnRide2(SpaceTowerRideObj, esi);
     if (esi->var_c & 1) {
         return;
@@ -816,7 +816,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
             case 0:
                 obj->var_4++;
                 obj->var_b0 = 200;
-                FUN_0043ac70(node, &tile->id);
+                AssignSpaceTowerSlot(node, &tile->id);
                 bloke->flags |= 8;
                 ride_x <<= 8;
                 ride_y = (ride_y + 1) << 8;

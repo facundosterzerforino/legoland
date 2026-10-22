@@ -553,7 +553,7 @@ unsigned char ScriptEndIconHandler(unsigned int a, unsigned int flags) {
 unsigned char FUN_00474fa0(unsigned int a, unsigned char flags) {
     if (EditMode.unk4 != 1) {
         if ((flags & 2) != 0) {
-            FUN_0046b700();
+            RepeatCurrentObjective();
         }
     }
     return 1;

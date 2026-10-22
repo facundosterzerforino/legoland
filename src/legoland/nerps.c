@@ -1318,7 +1318,7 @@ void PostScriptSectionIntro(struct NerpsListNode *ctx, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b700
-unsigned int FUN_0046b700(void) {
+unsigned int RepeatCurrentObjective(void) {
     if (CurrentScriptSection != 0) {
         if (DAT_00668614 != 0) {
             PostObjectiveMessage(PercentSFormat, ScriptStringTable[DAT_00668614]);
@@ -2283,7 +2283,7 @@ unsigned int SaveScripts(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046cb20
-unsigned int FUN_0046cb20(void) {
+unsigned int UnloadLevelData(void) {
     DAT_00668614 = 0;
     if (DAT_00810140 != 0) {
         UnloadSaveGameMap();

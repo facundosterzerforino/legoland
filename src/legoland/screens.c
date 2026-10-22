@@ -303,7 +303,7 @@ void UnloadMap(void) {
         FreeBlokeCounters();
         FreeAllObjectClassInstances();
         DAT_00667cd8 = 1;
-        FUN_0046cb20();
+        UnloadLevelData();
         DAT_00667cd8 = 0;
         SetBricksLimited(0);
         ClearObjInstanceTable();
@@ -751,7 +751,7 @@ void FUN_00459520(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00459710
-void FUN_00459710(char *s) {
+void ShowLevelEndScreens(char *s) {
     char buffer[0x80];
     char *semicolon;
     char *source;
@@ -799,10 +799,10 @@ void FUN_004597e0(int param0, const char *param1) {
 void EndLevel(unsigned int a1) {
     MapStats.level_end = a1;
     if (a1 == 1) {
-        FUN_00459710(MapStats.field_198);
+        ShowLevelEndScreens(MapStats.field_198);
         return;
     }
     if (a1 == 2) {
-        FUN_00459710(MapStats.field_298);
+        ShowLevelEndScreens(MapStats.field_298);
     }
 }

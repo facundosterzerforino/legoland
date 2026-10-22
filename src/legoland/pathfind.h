@@ -6,7 +6,7 @@ struct Point;
 
 struct Point;
 
-int FUN_00482710(int *a, int *b, int *out);
+int WorkerSuggestNextMove(int *a, int *b, int *out);
 LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out);
 LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out);
 LEGO_EXPORT void AddPathSquare(struct Point *pos);

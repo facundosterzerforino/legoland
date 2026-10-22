@@ -130,7 +130,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ab60
-void FUN_0048ab60(void) {
+void GiveSelectedFreePlayObjects(void) {
     struct IconNode *node;
 
     node = (struct IconNode *)IconListHead;
@@ -162,7 +162,7 @@ void StartFreePlayGame(void) {
     ResetMapAI();
     DAT_00667c4c = LoadLevelScript(buf);
     SetBricksLimited(0);
-    FUN_0048ab60();
+    GiveSelectedFreePlayObjects();
     AllocBlokeCounters(lpConfig->max_blokes);
     ResetEditState();
     MapStats.level_end = 0;
@@ -493,7 +493,7 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
 }
 
 // FUNCTION: LEGOLAND 0x0048b4a0
-void FUN_0048b4a0(int arg) {
+void FreeFreePlayPanel(int arg) {
     struct PanelNode **head;
     struct PanelNode *cur;
     struct PanelNode *next;
@@ -577,10 +577,10 @@ LEGO_EXPORT void CleanUpFreePlay(void) {
     DestroyIconGroup(0x12c);
     DestroyIconGroup(0x190);
     DestroyIconGroup(0x1f4);
-    FUN_0048b4a0(0xc8);
-    FUN_0048b4a0(0x12c);
-    FUN_0048b4a0(0x190);
-    FUN_0048b4a0(0x1f4);
+    FreeFreePlayPanel(0xc8);
+    FreeFreePlayPanel(0x12c);
+    FreeFreePlayPanel(0x190);
+    FreeFreePlayPanel(0x1f4);
 }
 
 // FUNCTION: LEGOLAND 0x0048b6c0
@@ -620,7 +620,7 @@ void LoadProgressScreenSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048b740
-void FUN_0048b740(void) {
+void ReferenceProgressLevelSprites(void) {
     struct Sprite **esi;
 
     esi = &ProgressScreenTables.levels[0].sprite1;

@@ -296,7 +296,7 @@ void FreeDirPathNodes(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482240
-void FUN_00482240(int x, int y, struct DirNode *parent) {
+void AddPTPSearchNode(int x, int y, struct DirNode *parent) {
     struct MapElement *tile;
     struct DirNode *node;
     int word_index;
@@ -444,7 +444,7 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
 
     DAT_00669250 = 0;
     DAT_0066b454 = 0;
-    FUN_00482240(start_x, start_y, 0);
+    AddPTPSearchNode(start_x, start_y, 0);
 
     while (DAT_00669250 != 0) {
         wave = DAT_00669250;
@@ -466,10 +466,10 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
                 FreeDirPathNodes();
                 return 1;
             }
-            FUN_00482240(node->x, node->y - 1, node);
-            FUN_00482240(node->x + 1, node->y, node);
-            FUN_00482240(node->x, node->y + 1, node);
-            FUN_00482240(node->x - 1, node->y, node);
+            AddPTPSearchNode(node->x, node->y - 1, node);
+            AddPTPSearchNode(node->x + 1, node->y, node);
+            AddPTPSearchNode(node->x, node->y + 1, node);
+            AddPTPSearchNode(node->x - 1, node->y, node);
             node = node->next;
         }
     }
@@ -480,7 +480,7 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
 }
 
 // FUNCTION: LEGOLAND 0x00482620
-void FUN_00482620(int x, int y, struct DirNode *parent) {
+void AddWorkerSearchNode(int x, int y, struct DirNode *parent) {
     struct MapElement *tile;
     struct DirNode *node;
     int word_index;
@@ -515,7 +515,7 @@ void FUN_00482620(int x, int y, struct DirNode *parent) {
 }
 
 // FUNCTION: LEGOLAND 0x00482710
-int FUN_00482710(int *a, int *b, int *out) {
+int WorkerSuggestNextMove(int *a, int *b, int *out) {
     int start_x;
     int start_y;
     int goal_x;
@@ -534,7 +534,7 @@ int FUN_00482710(int *a, int *b, int *out) {
 
     DAT_00669250 = 0;
     DAT_0066b454 = 0;
-    FUN_00482620(start_x, start_y, 0);
+    AddWorkerSearchNode(start_x, start_y, 0);
 
     while (DAT_00669250 != 0) {
         wave = DAT_00669250;
@@ -556,10 +556,10 @@ int FUN_00482710(int *a, int *b, int *out) {
                 FreeDirPathNodes();
                 return 1;
             }
-            FUN_00482620(node->x, node->y - 1, node);
-            FUN_00482620(node->x + 1, node->y, node);
-            FUN_00482620(node->x, node->y + 1, node);
-            FUN_00482620(node->x - 1, node->y, node);
+            AddWorkerSearchNode(node->x, node->y - 1, node);
+            AddWorkerSearchNode(node->x + 1, node->y, node);
+            AddWorkerSearchNode(node->x, node->y + 1, node);
+            AddWorkerSearchNode(node->x - 1, node->y, node);
             node = node->next;
         }
     }

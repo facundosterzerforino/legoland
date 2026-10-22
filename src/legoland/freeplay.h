@@ -15,4 +15,4 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e);
 LEGO_EXPORT void CleanUpFreePlay(void);
 void FUN_0048b6d0(void);
 void LoadProgressScreenSprites(void);
-void FUN_0048b740(void);
+void ReferenceProgressLevelSprites(void);

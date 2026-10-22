@@ -80,7 +80,7 @@ LEGO_EXPORT void InitProgressScreen(void) {
             icon->event_handler = (void *)FUN_0048c090;
         }
     }
-    FUN_0048b740();
+    ReferenceProgressLevelSprites();
     RemoveIconGroup(0x1c);
     if (MapStats.level_end == 1) {
         flags = 0x200a;
