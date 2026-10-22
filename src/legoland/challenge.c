@@ -99,9 +99,8 @@ unsigned int LoadBmpIntoImage(struct Image *param_1) {
     param_1->width = (short)*(int *)(info + 4);
     param_1->height = (short)*(int *)(info + 8);
     param_1->field_14 = 1;
-    dst = (unsigned char *)malloc(*(int *)(info + 8) * *(int *)(info + 4));
-    param_1->data = dst;
-    if (dst == NULL) {
+    param_1->data = (unsigned char *)malloc(*(int *)(info + 8) * *(int *)(info + 4));
+    if (param_1->data == NULL) {
         free(pixels);
         free(param_1);
         RES_CloseFile(file);
@@ -109,6 +108,7 @@ unsigned int LoadBmpIntoImage(struct Image *param_1) {
     }
     if (*(short *)(info + 0xe) == 8) {
         row = pixels + row_size; /* the BMP's rows are stored bottom-up: copy them from the last one */
+        dst = param_1->data;
         RES_SetFilePointer(file, pixel_offset);
         x = 0;
         while (x < 0x100) {
