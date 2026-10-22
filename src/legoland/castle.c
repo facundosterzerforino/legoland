@@ -10677,13 +10677,15 @@ int BisectRoot(float (*fn)(unsigned int), float lo, float hi, float *out) {
 /* Finds the track position behind src (stretch by stretch backwards) whose point x below the track is r away from
  * center: used to put the rear wheels one car length behind the front ones. */
 // FUNCTION: LEGOLAND 0x00429f30
-void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out) {
+void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float first_hi, float x, struct CurveWalker *dst, float *out) {
     struct CurveWalker cur;
     float lo;
+    float hi;
     int found;
 
     cur = *src;
     lo = *(float *)&cur.node->start_bits;
+    hi = first_hi;
     RangeRadiusSq = r * r;
     RangeCentre = center;
     RangeRadius = r;
@@ -10693,23 +10695,24 @@ void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, f
     RangeInnerSq = (r - x) * (r - x);
     found = RangeRootFinder(WalkerRangeFn, lo, hi, out);
     while (!found) {
-        float hi2;
         CurveWalkerPrev(&cur);
         lo = *(float *)&cur.node->start_bits;
-        hi2 = *(float *)&cur.node->end_bits;
-        found = RangeRootFinder(WalkerRangeFn, lo, hi2, out);
+        hi = *(float *)&cur.node->end_bits;
+        found = RangeRootFinder(WalkerRangeFn, lo, hi, out);
     }
     *dst = cur;
 }
 
 /* Like FindPathPosAtRangeBehind, searching forwards. */
 // FUNCTION: LEGOLAND 0x0042a020
-void FindPathPosAtRangeAhead(float *center, float r, struct CurveWalker *src, float start, float x, struct CurveWalker *dst, float *out) {
+void FindPathPosAtRangeAhead(float *center, float r, struct CurveWalker *src, float first_lo, float x, struct CurveWalker *dst, float *out) {
     struct CurveWalker cur;
+    float start;
     float end;
     int found;
 
     cur = *src;
+    start = first_lo;
     end = *(float *)&cur.node->end_bits;
     RangeRadiusSq = r * r;
     RangeCentre = center;

@@ -408,7 +408,7 @@ void PositionTrainCarsAndBogies(void *obj, float val, void *tmp);
 void EvalTrainPotentialAndCentres(float a, struct FloatArray *out);
 void PositionTrainCars(void *obj, float val, void *b);
 unsigned int GetTrainCarRearPos(struct TrainCar *obj, float *param);
-void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out);
+void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float first_hi, float x, struct CurveWalker *dst, float *out);
 float CurveArcLength(struct CurveWalker *a, unsigned int hi, struct CurveWalker *b, unsigned int lo, int idx, float c);
 void GetTrainCarCenter(unsigned char *obj, unsigned int *out);
 int HasStraightForClosingSlope(struct PieceClass *info, struct CastleState *owner, struct PathSeg **a, struct PathSeg **b);
