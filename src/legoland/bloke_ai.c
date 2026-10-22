@@ -212,7 +212,7 @@ char GetBlokeHungerLevel(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044eb50
-void FUN_0044eb50(Bloke *bloke) {
+void UpdateBlokeTiredness(Bloke *bloke) {
     unsigned short value;
     int extended;
 
@@ -251,7 +251,7 @@ LEGO_EXPORT void PopLongTermAction(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ebf0
-void FUN_0044ebf0(Bloke *bloke) {
+void BlokeAIEnterPark(Bloke *bloke) {
     MapElement *object;
     Ride *ride;
     unsigned char dir;
@@ -911,7 +911,7 @@ void BlokeAIGoToEntrance(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044fe80
-void FUN_0044fe80(Bloke *bloke) {
+void BlokeAIGoToBrolly(Bloke *bloke) {
     MapElement *object;
     MapElement *element;
     Ride *ride;
@@ -1325,7 +1325,7 @@ LEGO_EXPORT void ControlPeople(void) {
             // STRING: LEGOLAND 0x004b85a8
             DBPrintf("Processing your bloke\n");
         }
-        FUN_0044eb50(bloke);
+        UpdateBlokeTiredness(bloke);
         if ((bloke->flags & 0x20) != 0) {
             if (bloke->low_level_action != 0) {
                 DoLowLevelAI(bloke);

@@ -279,7 +279,7 @@ LEGO_EXPORT void UnLoad_Interface_Icons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00474820
-unsigned char FUN_00474820(unsigned int dummy, unsigned char flags) {
+unsigned char DefaultOkKeyHandler(unsigned int dummy, unsigned char flags) {
     if ((flags & 2) != 0) {
         FUN_00473160();
     }
@@ -287,13 +287,13 @@ unsigned char FUN_00474820(unsigned int dummy, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00474830
-unsigned char FUN_00474830(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
+unsigned char DefaultCancelKeyHandler(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
     if ((flags & 2) != 0) {
         if (TryClosePopUp() == 0) {
             if (DAT_00668954 != 0) {
                 CheckWorkerOnMouseStatus(1);
             } else {
-                return FUN_00475120(a, flags, c, d);
+                return InterfaceOptionsClicked(a, flags, c, d);
             }
         }
     }
@@ -302,8 +302,8 @@ unsigned char FUN_00474830(unsigned int a, unsigned int flags, unsigned int c, u
 
 // FUNCTION: LEGOLAND 0x00474880
 void SetDefaultMouseHandlers(void) {
-    OkKeyHandler = FUN_00474820;
-    CancelKeyHandler = FUN_00474830;
+    OkKeyHandler = DefaultOkKeyHandler;
+    CancelKeyHandler = DefaultCancelKeyHandler;
 }
 
 // FUNCTION: LEGOLAND 0x004748a0
@@ -384,7 +384,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string_id = 0x5a;
         icon->string = GetString(0x5a);
         icon->flags |= 0x6002;
-        icon->event_handler = (void *)FUN_00475000;
+        icon->event_handler = (void *)InterfaceQueryClicked;
         icon->field_18 = 2;
         icon->field_1c = IfQueryIconPressedSprite;
         icon->field_20p = IfQueryiconSprite;
@@ -393,7 +393,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string_id = 0x5b;
         icon->string = GetString(0x5b);
         icon->flags |= 0x6002;
-        icon->event_handler = (void *)FUN_00475040;
+        icon->event_handler = (void *)InterfaceEraserClicked;
         icon->field_18 = 3;
         icon->field_1c = IfEraserIconPressedSprite;
         icon->field_20p = IfEraserIconSprite;
@@ -411,7 +411,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string_id = 0x5d;
         icon->string = GetString(0x5d);
         icon->flags |= 0x6002;
-        icon->event_handler = (void *)FUN_00475120;
+        icon->event_handler = (void *)InterfaceOptionsClicked;
         icon->field_20p = IfOptionsIconSprite;
 
         icon = InsertIcon((short)InterfaceIconPos[0], (short)InterfaceIconPos[1], 0x9a, LegolandThemeOffSprite);
@@ -469,7 +469,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_1c = NULL;
         icon->string_id = 0x24f;
         icon->string = GetString(0x24f);
-        icon->event_handler = (void *)FUN_00474fa0;
+        icon->event_handler = (void *)InterfaceAdvisorClicked;
         icon->flags |= 0x4008;
         icon->render_func = (void *)RenderAdvisorIcon;
         ScriptEndIcon = icon;
@@ -550,7 +550,7 @@ unsigned char ScriptEndIconHandler(unsigned int a, unsigned int flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00474fa0
-unsigned char FUN_00474fa0(unsigned int a, unsigned char flags) {
+unsigned char InterfaceAdvisorClicked(unsigned int a, unsigned char flags) {
     if (EditMode.unk4 != 1) {
         if ((flags & 2) != 0) {
             RepeatCurrentObjective();
@@ -572,7 +572,7 @@ unsigned char SetEditObjectIconHandler(struct IconNode *a, unsigned int flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00475000
-unsigned char FUN_00475000(unsigned int a, unsigned int flags) {
+unsigned char InterfaceQueryClicked(unsigned int a, unsigned int flags) {
     if (EditMode.unk4 != 1) {
         if (flags & 2) {
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
@@ -584,7 +584,7 @@ unsigned char FUN_00475000(unsigned int a, unsigned int flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00475040
-unsigned char FUN_00475040(unsigned int a, unsigned int flags) {
+unsigned char InterfaceEraserClicked(unsigned int a, unsigned int flags) {
     if (EditMode.unk4 == 1) {
         return 1;
     }
@@ -622,7 +622,7 @@ unsigned char ToggleMapScreen(unsigned int a, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00475120
-unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
+unsigned char InterfaceOptionsClicked(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
     if ((flags & 2) != 0 && EditMode.unk4 != 1) {
         if (DAT_00668954 == 0) {
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
