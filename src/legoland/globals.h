@@ -1167,7 +1167,7 @@ extern char *PTR_s_Adams_004bd180[0x6b];
 // 0x004bd32c
 extern short BlokeDirVectors[8][2]; /* unit step (x, y) per direction, 8.8 fixed point */
 // 0x004bd34c
-extern void (*PTR_FUN_004bd34c[16])(struct Bloke *);
+extern void (*BlokeActionTable[16])(struct Bloke *);
 // 0x004bdd00
 extern struct HoverInfo Hover;
 // 0x004bdea0

@@ -308,7 +308,7 @@ LEGO_EXPORT unsigned short DoPendingAction(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00483260
-void FUN_00483260(Bloke *bloke) {
+void StartPassThroughTile(Bloke *bloke) {
     Point tile;
     unsigned int ux;
     unsigned int uy;
@@ -338,7 +338,7 @@ void FUN_00483260(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00483300
-int FUN_00483300(Bloke *bloke, int x, int y) {
+int CheckPassThroughTile(Bloke *bloke, int x, int y) {
     unsigned char result;
     int tx;
     int ty;
@@ -368,7 +368,7 @@ int FUN_00483300(Bloke *bloke, int x, int y) {
         result = 2;
     }
     if ((result & 3) == 3) {
-        FUN_00483260(bloke);
+        StartPassThroughTile(bloke);
         return 1;
     }
     return 0;
@@ -450,7 +450,7 @@ LEGO_EXPORT int HitObstacle(Bloke *bloke, int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00483580
-int FUN_00483580(Bloke *bloke, int x, int y) {
+int IsLeavingPath(Bloke *bloke, int x, int y) {
     int rf;
     int mapFlags;
     int from;
@@ -702,7 +702,7 @@ int TurnRandomlyIfBlocked(Bloke *bloke, Point pos) {
             return 1;
         }
     } else {
-        if (HitPathEdge(bloke, pos.x, pos.y) != 0 || FUN_00483580(bloke, pos.x, pos.y) != 0) {
+        if (HitPathEdge(bloke, pos.x, pos.y) != 0 || IsLeavingPath(bloke, pos.x, pos.y) != 0) {
             unsigned char dir = rand() & 7;
             if ((bloke->flags & 2) != 0) {
                 dir |= 1;
@@ -715,12 +715,12 @@ int TurnRandomlyIfBlocked(Bloke *bloke, Point pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00483d10
-void FUN_00483d10(Bloke *bloke) {
+void BlokeActionRandomWalk(Bloke *bloke) {
     Point d = GetOffsetInDir(bloke->dir, bloke->speed);
 
     d.x += bloke->pos.x;
     d.y += bloke->pos.y;
-    if (FUN_00483300(bloke, d.x, d.y) == 0) {
+    if (CheckPassThroughTile(bloke, d.x, d.y) == 0) {
         if (Handle_RndWalk_TileSpecifics(bloke, d.x, d.y) == 0) {
             if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                 HandleTileEnterLeave(bloke, d.x, d.y);
@@ -736,13 +736,13 @@ void FUN_00483d10(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00483d90
-void FUN_00483d90(Bloke *bloke) {
+void BlokeActionRandomWalkDelayed(Bloke *bloke) {
     Point d = GetOffsetInDir(bloke->dir, bloke->speed);
 
     d.x += bloke->pos.x;
     d.y += bloke->pos.y;
     if (FrameCounter - bloke->field_54 >= 0x32) {
-        if (FUN_00483300(bloke, d.x, d.y) == 0) {
+        if (CheckPassThroughTile(bloke, d.x, d.y) == 0) {
             if (Handle_RndWalk_TileSpecifics(bloke, d.x, d.y) == 0) {
                 if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                     HandleTileEnterLeave(bloke, d.x, d.y);
@@ -759,7 +759,7 @@ void FUN_00483d90(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00483e20
-void FUN_00483e20(Bloke *bloke) {
+void BlokeActionWalkUntilPath(Bloke *bloke) {
     Point d;
     if (bloke->pos.x >= 0 && bloke->pos.x < lpConfig->width * 0x100 &&
         bloke->pos.y >= 0 && bloke->pos.y < lpConfig->height * 0x100) {
@@ -773,7 +773,7 @@ void FUN_00483e20(Bloke *bloke) {
     d = GetOffsetInDir(bloke->dir, bloke->speed);
     d.x += bloke->pos.x;
     d.y += bloke->pos.y;
-    if (FUN_00483300(bloke, d.x, d.y) == 0) {
+    if (CheckPassThroughTile(bloke, d.x, d.y) == 0) {
         if (FUN_00483b60(bloke, d.x, d.y) == 0) {
             if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                 HandleTileEnterLeave(bloke, d.x, d.y);
@@ -785,7 +785,7 @@ void FUN_00483e20(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00483ef0
-void FUN_00483ef0(Bloke *bloke) {
+void BlokeActionWalkPath(Bloke *bloke) {
     Point d = GetOffsetInDir(bloke->dir, bloke->speed);
     short rf;
     short mapFlags;
@@ -794,7 +794,7 @@ void FUN_00483ef0(Bloke *bloke) {
     d.x += bloke->pos.x;
     d.y += bloke->pos.y;
 
-    if (FUN_00483300(bloke, d.x, d.y) != 0) {
+    if (CheckPassThroughTile(bloke, d.x, d.y) != 0) {
         return;
     }
     CheckEnteredNewTile(bloke, d.x, d.y);
@@ -833,7 +833,7 @@ void FUN_00483ef0(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00484090
-void FUN_00484090(Bloke *bloke) {
+void BlokeActionWalkPathStraight(Bloke *bloke) {
     Point d = GetOffsetInDir(bloke->dir, bloke->speed);
     Point next;
     short rf;
@@ -890,7 +890,7 @@ unsigned char IsNearDestination(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00484220
-void FUN_00484220(Bloke *bloke) {
+void BlokeActionMoveToDestOnPath(Bloke *bloke) {
     Point target;
     short mapFlags;
     short rf;
@@ -921,7 +921,7 @@ void FUN_00484220(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00484350
-void FUN_00484350(Bloke *bloke) {
+void BlokeActionMoveUntilPath(Bloke *bloke) {
     Point target;
     short mapFlags;
     short rf;
@@ -956,7 +956,7 @@ void FUN_00484350(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00484470
-void FUN_00484470(Bloke *bloke) {
+void BlokeActionMoveToDestAvoiding(Bloke *bloke) {
     Point target;
     if (ReachedDestination(bloke, bloke->speed << 1) != 0) {
         bloke->low_level_action = 0;
@@ -976,7 +976,7 @@ void FUN_00484470(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00484520
-void FUN_00484520(Bloke *bloke) {
+void BlokeActionMoveToDestStayOnPath(Bloke *bloke) {
     Point target;
     if (ReachedDestination(bloke, bloke->speed << 1) != 0) {
         bloke->low_level_action = 0;
@@ -984,7 +984,7 @@ void FUN_00484520(Bloke *bloke) {
     }
     NavigMoveLine(&bloke->nav, bloke->speed, &target);
     if (CheckEnteredNewTile(bloke, target.x, target.y) != 0) {
-        if (FUN_00483580(bloke, target.x, target.y) != 0) {
+        if (IsLeavingPath(bloke, target.x, target.y) != 0) {
             bloke->low_level_action = 0;
             bloke->field_64 |= 1;
             return;
@@ -1061,7 +1061,7 @@ LEGO_EXPORT Point GetTileInDir(Point pos, unsigned char dir) {
 }
 
 /* The tile set's RF flags at (x, y): its callback's answer, or 2 when it has none. Inlined into
- * FUN_00484790, where the original keeps the returned byte in a stack slot. */
+ * BlokeActionPassThroughTile, where the original keeps the returned byte in a stack slot. */
 static __inline unsigned char TileSetRFFlags(FXSpriteList *set, int x, int y) {
     if (set->get_rf_flags != NULL) {
         return set->get_rf_flags(x, y);
@@ -1070,7 +1070,7 @@ static __inline unsigned char TileSetRFFlags(FXSpriteList *set, int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00484790
-void FUN_00484790(Bloke *bloke) {
+void BlokeActionPassThroughTile(Bloke *bloke) {
     Point tile;
     MapElement *elem;
     FXSpriteList *set;
@@ -1114,7 +1114,7 @@ void FUN_00484790(Bloke *bloke) {
         }
         bloke->flags &= 0xfff7;
         DoPendingAction(bloke);
-        PTR_FUN_004bd34c[bloke->low_level_action](bloke);
+        BlokeActionTable[bloke->low_level_action](bloke);
         return;
     }
     bloke->field_20++;
@@ -1136,7 +1136,7 @@ LEGO_EXPORT void Bloke_DoNothing(void) {
 // FUNCTION: LEGOLAND 0x00484920
 LEGO_EXPORT void DoLowLevelAI(Bloke *bloke) {
     SetPathFlag(bloke);
-    PTR_FUN_004bd34c[bloke->low_level_action](bloke);
+    BlokeActionTable[bloke->low_level_action](bloke);
 }
 
 // FUNCTION: LEGOLAND 0x00484950

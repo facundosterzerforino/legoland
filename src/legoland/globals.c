@@ -1072,23 +1072,23 @@ short BlokeDirVectors[8][2] = {
 };
 
 // GLOBAL: LEGOLAND 0x004bd34c
-BlokeAction PTR_FUN_004bd34c[16] = {
+BlokeAction BlokeActionTable[16] = {
     LogBlokeRethinking,
     BlokeActionWait,
-    FUN_00483ef0,
-    FUN_00484090,
-    FUN_00483d10,
+    BlokeActionWalkPath,
+    BlokeActionWalkPathStraight,
+    BlokeActionRandomWalk,
     BlokeActionTurn,
-    FUN_00484220,
+    BlokeActionMoveToDestOnPath,
     BlokeActionMoveToDest,
     BlokeActionBounce,
-    FUN_00484790,
-    FUN_00483e20,
-    FUN_00484470,
-    FUN_00484520,
+    BlokeActionPassThroughTile,
+    BlokeActionWalkUntilPath,
+    BlokeActionMoveToDestAvoiding,
+    BlokeActionMoveToDestStayOnPath,
     BlokeActionWaitWhileHovered,
-    FUN_00483d90,
-    FUN_00484350,
+    BlokeActionRandomWalkDelayed,
+    BlokeActionMoveUntilPath,
 };
 
 // GLOBAL: LEGOLAND 0x004bdd00
