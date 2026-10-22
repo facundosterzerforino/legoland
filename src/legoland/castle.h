@@ -225,7 +225,7 @@ struct Integrator {
  * station (leaving), 4 out on the track (physics), 0x10 arriving back at the castle. walker is the head car's
  * position on the track, motion its curve parameter and total energy, stepped by integ (RK4). The cars form a ring
  * through head. */
-/* the castle's coaster train (CastleState.field_d8) */
+/* the castle's coaster train (CastleState.train) */
 struct Train {
     /* 0x00 */ unsigned int flags;
     /* 0x04 */ int last_step_time; /* game time of the last step */
@@ -297,17 +297,17 @@ struct CastleState {
     /* 0xac */ struct DirPoints next_spots;
     /* 0xc0 */ struct PathSeg *head;
     /* 0xc4 */ struct DirPoints prev_spots;
-    /* 0xd8 */ struct Train *field_d8;
+    /* 0xd8 */ struct Train *train;
     /* 0xdc */ unsigned char pad_dc[4];
-    /* 0xe0 */ unsigned int field_e0;
+    /* 0xe0 */ unsigned int arrive_time; /* game time the train last stopped in the station */
     /* 0xe4 */ struct CastleVisitor visitors;
-    /* 0x10c */ void (*method_10c)(struct CastleState *self, struct SegBlob **node, float *t, struct FVec3 *pos);
-    /* 0x110 */ float (*method_110)(struct Train *self, float time_left); /* FUN_00424890 */
-    /* 0x114 */ float (*method_114)(struct Train *self, float time_left); /* FUN_00424990 */
+    /* 0x10c */ void (*get_start)(struct CastleState *self, struct SegBlob **node, float *t, struct FVec3 *pos);
+    /* 0x110 */ float (*step_leaving)(struct Train *self, float time_left); /* CastleStepLeaving */
+    /* 0x114 */ float (*step_arriving)(struct Train *self, float time_left); /* CastleStepArriving */
 };
 
 struct Point;
-int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5);
+int GetCoasterPieceMapLine(struct Point *pos, void *a2, void *a3, void *a4, void *a5);
 
 struct ObjAtC8;
 struct ListLink;
@@ -324,7 +324,7 @@ void CreateCastleTrain(struct CastleState *param_1);
 void InitCastleVisitorList(struct CastleState *param_1);
 struct RecIdx;
 struct RecSrc;
-void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *src);
+void ClearDepthSpans(int n, struct RecIdx *idx, struct RecSrc *src);
 struct TrainSaveRecord;
 struct Struct427070Src;
 struct Struct427050Dst;
@@ -414,11 +414,11 @@ void GetTrainCarCenter(unsigned char *obj, unsigned int *out);
 int HasStraightForClosingSlope(struct PieceClass *info, struct CastleState *owner, struct PathSeg **a, struct PathSeg **b);
 struct PathSeg *FindReachableAnchor(struct PathSeg *n, int x);
 void InterpolateCoasterHeights(struct PathSeg *seg, struct PathSeg *end);
-void FUN_00424e60(struct CastleState *owner);
+void OnCoasterRingClosed(struct CastleState *owner);
 struct VecOps;
 void IntegratorStepRK4(struct Integrator *ar, float *p, float c);
 void SetTrainWheelPos(struct TrainWheel *param_1, struct CurveWalker *param_2, unsigned int param_5);
-void FUN_00424e70(struct CastleState *owner);
+void OnCoasterRingOpened(struct CastleState *owner);
 void ResetCoasterHeightsBack(struct PathSeg *n);
 void ResetCoasterHeightsForward(struct PathSeg *n);
 int CheckTrackPiecePlacement(struct PieceClass *info, short *pos, struct PiecePlacement *ent);
@@ -452,14 +452,14 @@ void SlopeCurveNormal(float *obj, float t, float *out);
 void SetCoasterShadeTable(int param1, int index);
 void BuildShadeRamp(int param1, char *entry);
 void CastleObjLoad(struct Element *param_1);
-void FUN_00424280(struct Element *param_1, int *param_2, unsigned int param_3);
+void CastleObjCalcCursor(struct Element *param_1, int *param_2, unsigned int param_3);
 void RemoveCastleCoaster(struct Element *param_1, TileId param_2, struct Cursor *param_3);
 void RemoveCastleCoasterMapObjects(struct Int16Pair *pos);
-void FUN_00424800(void);
+void CastleDummyRemoveObject(void);
 struct SegBlob;
-void FUN_00424850(struct CastleState *p1, struct SegBlob **p2, float *p3, struct FVec3 *p4);
-float FUN_00424890(struct Train *param_1, float param_2);
-float FUN_00424990(struct Train *self, float value);
+void GetCastleStationStart(struct CastleState *p1, struct SegBlob **p2, float *p3, struct FVec3 *p4);
+float CastleStepLeaving(struct Train *param_1, float param_2);
+float CastleStepArriving(struct Train *self, float value);
 void UpdateCastleTrain(struct CastleState *param_1);
 void DestroyCastleTrain(struct CastleState *param_1);
 void StopCastleTrain(struct CastleState *this);
@@ -579,14 +579,14 @@ struct SegBlob *CurveWalkerNext(struct CurveWalker *cursor);
 void DrawLmsFlatTriangles(void);
 void DrawLmsGouraudTriangles(void);
 void DrawLmsTexturedTriangles(void);
-void FUN_00423200(int n, int x, struct RecIdx *idx, struct RecSrc *src);
+void RecordDepthSpans(int n, int x, struct RecIdx *idx, struct RecSrc *src);
 struct RecBuf;
-void FUN_004232b0(struct RecBuf *rb);
+void ClearRecordedDepthSpans(struct RecBuf *rb);
 struct ClearRect;
 void ClearCoasterSurfaceRect(struct ClearRect *r);
 struct VideoArg;
 int GetCoasterSurface(struct VideoArg *arg);
-void FUN_00423790(void);
+void ReleaseCoasterSurface(void);
 void TransformPoints3x4(float *in, float *out, float m[4][4], int n);
 void MakeMat4FromRotTrans(unsigned int *t, unsigned int *m3, unsigned int dst[4][4]);
 struct Mat4x4;

@@ -434,7 +434,7 @@ int ClipVertexLastField;
 void *CoasterSurfaceBits;
 
 // GLOBAL: LEGOLAND 0x004b5b24
-unsigned short *CoasterSurfacePixels;
+unsigned short *CoasterDepthBuffer;
 
 // GLOBAL: LEGOLAND 0x004b5b28
 int CoasterSurfacePitch;
@@ -452,7 +452,7 @@ char SitLoManSitName[] = "sit.lomansit";
 float HermiteBasis[4][4];
 
 // GLOBAL: LEGOLAND 0x004b5b3c
-struct RecBuf *DAT_004b5b3c;
+struct RecBuf *DepthSpanRecordEnd;
 
 // GLOBAL: LEGOLAND 0x004b5988
 struct BlokeInfo CastleVisitorInfo;
@@ -1862,28 +1862,28 @@ unsigned int CoasterObjLineCount;
 unsigned int CoasterTxtLineCount;
 
 // GLOBAL: LEGOLAND 0x004dd870
-unsigned char DAT_004dd870[0x6000];
+unsigned char DepthSpanRecords[0x6000];
 
 // GLOBAL: LEGOLAND 0x0060f908
-int DAT_0060f908;
+int DepthSpanRecordCount;
 
 // GLOBAL: LEGOLAND 0x0060f90c
-int DAT_0060f90c;
+int DepthSpanRecordsOverflow;
 
 // GLOBAL: LEGOLAND 0x004e3870
-char DAT_004e3870[16];
+char CoasterDepthBufferData[16];
 
 // GLOBAL: LEGOLAND 0x0060f914
-struct LSub DAT_0060f914[20];
+struct CastleTrackCell CastleTrackCells[20];
 
 // GLOBAL: LEGOLAND 0x006102f8
-struct SegBlob DAT_006102f8[3];
+struct SegBlob CastleCurves[3];
 
 // GLOBAL: LEGOLAND 0x00610a04
 unsigned int CastleCoasterPlaced;
 
 // GLOBAL: LEGOLAND 0x00610a08
-unsigned int DAT_00610a08;
+unsigned int CastleTrackCellCount;
 
 // GLOBAL: LEGOLAND 0x00610a18
 struct RenderItemNode *CastleRiderRenderList;
@@ -5259,7 +5259,7 @@ struct Ride *DAT_00829a64;
 struct Footprint CastleCoasterFootprint;
 
 // GLOBAL: LEGOLAND 0x00829abc
-struct Element *DAT_00829abc;
+struct Element *CastleObjElement;
 
 // One object of 0x118 bytes (0x10c of data, then three methods): the castle code reaches its parts both by name and through struct
 // views of its address (sentinel list node at +4, anims, list hosts), so they must keep these offsets.
@@ -5276,7 +5276,7 @@ struct Ride *CastleCoasterRide;
 struct Ride *DAT_00829bfc;
 
 // GLOBAL: LEGOLAND 0x00829c00
-struct Element *DAT_00829c00;
+struct Element *CastleDummyElement;
 
 // GLOBAL: LEGOLAND 0x00829c04
 struct Sprite *CastleMatteSprite;
@@ -5285,7 +5285,7 @@ struct Sprite *CastleMatteSprite;
 struct Ride *DAT_00829c08;
 
 // GLOBAL: LEGOLAND 0x00829c34
-struct Ride *DAT_00829c34;
+struct Ride *CastleDummyRide;
 
 // GLOBAL: LEGOLAND 0x00829c54
 char *CoasterShadeTableData;
@@ -5566,7 +5566,7 @@ int CoasterShadeTableCount;
 char DAT_00579878[0x80];
 
 // GLOBAL: LEGOLAND 0x0060f8fc
-int DAT_0060f8fc;
+int EdgeMeshDrawCycles;
 
 // GLOBAL: LEGOLAND 0x00611644
 int DAT_00611644;
@@ -5581,7 +5581,7 @@ int LmsDrawCycles;
 int TrainStepCycles;
 
 // GLOBAL: LEGOLAND 0x0060f910
-int DAT_0060f910;
+int DepthClearCycles;
 
 // GLOBAL: LEGOLAND 0x006126d8
 float DAT_006126d8[6][2];

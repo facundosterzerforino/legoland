@@ -446,7 +446,7 @@ LEGO_EXPORT void RenderFullMap(void) {
 
                 piece.x = elem.field_4;
                 piece.y = elem.field_5;
-                if (FUN_00424050(&piece, &height, &dest, &dest_height, &flag)) {
+                if (GetCoasterPieceMapLine(&piece, &height, &dest, &dest_height, &flag)) {
                     struct Point pt;
                     int x1;
                     int y1;

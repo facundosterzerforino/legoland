@@ -339,7 +339,7 @@ struct Int16Pair {
 };
 
 /* castle track-segment list node (0x60f914 table entries; also embedded in castle nodes) */
-struct LSub {
+struct CastleTrackCell {
     /* 0x00 */ struct Footprint fp; /* a link of the castle cursor's footprint chain (CastleCoasterFootprint) */
     /* 0x14 */ struct Int16Pair xy;
     /* 0x18 */ unsigned int k;
@@ -349,7 +349,7 @@ struct LSub {
 
 /* 0x6102f8: three 0x58-byte ride-path objects (doubly linked via next/prev) */
 /* a stretch of the castle track's curve: a piece's own (PathSeg.blob), one its class makes (method_24), or a
-   template (DAT_006102f8) */
+   template (CastleCurves) */
 struct SegBlob {
     /* 0x00 */ unsigned int v[16];
     /* 0x40 */ float length; /* straight and slope stretches: the length of the xy line */
@@ -782,7 +782,7 @@ extern int ClipVertexLastField;
 // 0x004b5b20
 extern void *CoasterSurfaceBits;
 // 0x004b5b24
-extern unsigned short *CoasterSurfacePixels;
+extern unsigned short *CoasterDepthBuffer;
 // 0x004b5b28
 extern int CoasterSurfacePitch;
 // 0x004b59e8
@@ -792,7 +792,7 @@ extern char SitLoManSitName[];
 // 0x004b5abc
 extern float HermiteBasis[4][4];
 // 0x004b5b3c
-extern struct RecBuf *DAT_004b5b3c;
+extern struct RecBuf *DepthSpanRecordEnd;
 // 0x004b5988
 extern struct BlokeInfo CastleVisitorInfo;
 // 0x004b5c1c
@@ -1699,21 +1699,21 @@ extern unsigned int CoasterObjLineCount;
 // 0x004dd86c
 extern unsigned int CoasterTxtLineCount;
 // 0x004dd870
-extern unsigned char DAT_004dd870[0x6000];
+extern unsigned char DepthSpanRecords[0x6000];
 // 0x0060f908
-extern int DAT_0060f908;
+extern int DepthSpanRecordCount;
 // 0x0060f90c
-extern int DAT_0060f90c;
+extern int DepthSpanRecordsOverflow;
 // 0x004e3870
-extern char DAT_004e3870[];
+extern char CoasterDepthBufferData[];
 // 0x0060f914
-extern struct LSub DAT_0060f914[20];
+extern struct CastleTrackCell CastleTrackCells[20];
 // 0x006102f8
-extern struct SegBlob DAT_006102f8[3];
+extern struct SegBlob CastleCurves[3];
 // 0x00610a04
 extern unsigned int CastleCoasterPlaced;
 // 0x00610a08
-extern unsigned int DAT_00610a08;
+extern unsigned int CastleTrackCellCount;
 // 0x00610a18
 extern struct RenderItemNode *CastleRiderRenderList;
 // 0x00610a20 — sqrtf lookup table (64 entries: {intercept, slope} pairs)
@@ -3989,7 +3989,7 @@ extern struct Ride *DAT_00829a64;
 // 0x00829a80
 extern struct Footprint CastleCoasterFootprint;
 // 0x00829abc
-extern struct Element *DAT_00829abc;
+extern struct Element *CastleObjElement;
 // 0x00829ae0
 extern struct CastleState CastleCoaster;
 // 0x004b5b48: the castle object's class (CastleCoaster.field_10 points here): data, then three methods the
@@ -4001,14 +4001,14 @@ extern struct Ride *CastleCoasterRide;
 extern struct Ride *DAT_00829bfc;
 
 // 0x00829c00
-extern struct Element *DAT_00829c00;
+extern struct Element *CastleDummyElement;
 // 0x00829c04
 extern struct Sprite *CastleMatteSprite;
 // 0x00829c08
 extern struct Ride *DAT_00829c08;
 
 // 0x00829c34
-extern struct Ride *DAT_00829c34;
+extern struct Ride *CastleDummyRide;
 // 0x00829c54
 extern char *CoasterShadeTableData;
 // 0x00829c60
@@ -4249,7 +4249,7 @@ extern int CoasterShadeTableCount;
 extern char DAT_00579878[0x80];
 
 // 0x0060f8fc
-extern int DAT_0060f8fc;
+extern int EdgeMeshDrawCycles;
 
 // 0x00611644
 extern int DAT_00611644;
@@ -4264,7 +4264,7 @@ extern int LmsDrawCycles;
 extern int TrainStepCycles;
 
 // 0x0060f910
-extern int DAT_0060f910;
+extern int DepthClearCycles;
 
 // 0x004b5964
 extern unsigned int ManVisitorColours[2];
