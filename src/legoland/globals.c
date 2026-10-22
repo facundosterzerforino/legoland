@@ -419,7 +419,7 @@ unsigned char DAT_004b53d4[0x190];
 struct AreaNode DAT_004b5570;
 
 // GLOBAL: LEGOLAND 0x004b5584
-short DAT_004b5584[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
+short PieceNeighbourOffsets[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
 
 // GLOBAL: LEGOLAND 0x004b55f4
 unsigned int MapObjectsEnabled;
@@ -520,16 +520,16 @@ unsigned int DAT_004b5cc8;
 char RollerCoasterSavePath[32] = "RollerCoaster\\RollerCoaster.sav";
 
 // GLOBAL: LEGOLAND 0x004b5d20
-struct PieceClass DAT_004b5d20;
+struct PieceClass SquareTrackPieceClass;
 
 // GLOBAL: LEGOLAND 0x004b5d58
-struct PieceClass DAT_004b5d58;
+struct PieceClass HeightTrack25PieceClass;
 
 // GLOBAL: LEGOLAND 0x004b5d90
-struct PieceClass DAT_004b5d90;
+struct PieceClass HeightTrack2PieceClass;
 
 // GLOBAL: LEGOLAND 0x004b5dc8
-struct PieceClass DAT_004b5dc8;
+struct PieceClass HeightTrackPathPieceClass;
 
 // GLOBAL: LEGOLAND 0x004b5e00
 float DAT_004b5e00[4][3] = {{1.0f, 0.0f, 0.0f}, {2.0f, 1.0f, 0.0f}, {1.0f, 2.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
@@ -1787,7 +1787,7 @@ struct PathNode *BoatBfsFrontier;
 struct PathNode *BoatBfsNextFrontier;
 
 // GLOBAL: LEGOLAND 0x004d8250
-struct SprEnt CoasterPlacement;
+struct PiecePlacement CoasterPlacement;
 
 // GLOBAL: LEGOLAND 0x004d8268
 unsigned int CoasterPieceCount;
@@ -5267,7 +5267,7 @@ struct Element *DAT_00829abc;
 struct CastleState CastleCoaster;
 
 // GLOBAL: LEGOLAND 0x004b5b48
-struct PieceClass DAT_004b5b48;
+struct PieceClass CastlePieceClass;
 
 // GLOBAL: LEGOLAND 0x00829bf8
 struct Ride *CastleCoasterRide;

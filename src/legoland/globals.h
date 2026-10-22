@@ -772,7 +772,7 @@ extern unsigned char DAT_004b53d4[0x190];
 // 0x004b5570
 extern struct AreaNode DAT_004b5570;
 // 0x004b5584
-extern short DAT_004b5584[4][2];
+extern short PieceNeighbourOffsets[4][2];
 // 0x004b55f4
 extern unsigned int MapObjectsEnabled;
 // 0x004b5608
@@ -823,16 +823,16 @@ extern unsigned int DAT_004b5cc4;
 extern unsigned int DAT_004b5cc8;
 // 0x004b5d20
 extern char RollerCoasterSavePath[32];
-extern struct PieceClass DAT_004b5d20;
+extern struct PieceClass SquareTrackPieceClass;
 
 // 0x004b5d58
-extern struct PieceClass DAT_004b5d58;
+extern struct PieceClass HeightTrack25PieceClass;
 
 // 0x004b5d90
-extern struct PieceClass DAT_004b5d90;
+extern struct PieceClass HeightTrack2PieceClass;
 
 // 0x004b5dc8
-extern struct PieceClass DAT_004b5dc8;
+extern struct PieceClass HeightTrackPathPieceClass;
 // 0x004b5e00
 extern float DAT_004b5e00[4][3];
 // 0x004b5e30
@@ -1631,15 +1631,15 @@ extern struct PathNode *BoatBfsFrontier;
 // 0x004d8244
 extern struct PathNode *BoatBfsNextFrontier;
 // 0x004d8250
-struct SprEnt {
-    unsigned int field_0;
+struct PiecePlacement {
+    unsigned int joins; /* 1: joins after the tail, 2: before the head */
     struct CastleState *owner;
-    int id_a;
-    struct PathSeg *h_a;
-    int id_b;
-    struct PathSeg *h_b;
+    int next_spot;
+    struct PathSeg *tail_anchor;
+    int prev_spot;
+    struct PathSeg *head_anchor;
 };
-extern struct SprEnt CoasterPlacement;
+extern struct PiecePlacement CoasterPlacement;
 // 0x004d8268
 extern unsigned int CoasterPieceCount;
 // 0x004d8270
@@ -3993,8 +3993,8 @@ extern struct Element *DAT_00829abc;
 // 0x00829ae0
 extern struct CastleState CastleCoaster;
 // 0x004b5b48: the castle object's class (CastleCoaster.field_10 points here): data, then three methods the
-// code calls through it (+0x1c FUN_00423940, +0x20 FUN_00423970, +0x24 FUN_00423990).
-extern struct PieceClass DAT_004b5b48;
+// code calls through it (+0x1c CastleFillOpenEnd, +0x20 CastleSetHeights, +0x24 CastleGetCurve).
+extern struct PieceClass CastlePieceClass;
 // 0x00829bf8
 extern struct Ride *CastleCoasterRide;
 // 0x00829bfc

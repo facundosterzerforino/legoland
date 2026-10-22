@@ -59,6 +59,7 @@ struct EdgeSet {
 };
 
 #include "image_sprite.h"
+/* Returns the opposite of a direction bit (N 1 <-> S 4, E 2 <-> W 8). An unset end (0xffffffff) gives N. */
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int GetOppositeDirection(unsigned int dir) {
     if (dir == 1) return 4;
@@ -69,11 +70,13 @@ unsigned int GetOppositeDirection(unsigned int dir) {
     return 0;
 }
 
+/* Returns 1 << index: direction index 0..3 to direction bit. */
 // FUNCTION: LEGOLAND 0x0041cc90
 unsigned int BitFromIndex(unsigned int shift) {
     return 1U << shift;
 }
 
+/* Direction bit (1, 2, 4, 8) to its index 0..3. */
 // FUNCTION: LEGOLAND 0x0041cca0
 unsigned int DirMaskToIndex(unsigned int dir) {
     if (dir == 1) return 0;
@@ -83,6 +86,7 @@ unsigned int DirMaskToIndex(unsigned int dir) {
     return 0;
 }
 
+/* The ride's footprint rectangle moved to map cell pt: out = {x0, y0, x1, y1}. */
 // FUNCTION: LEGOLAND 0x0041cce0
 void GetFootprintRectAt(short *pt, struct Ride *ride, int *out) {
     int *rect = ride->footprint.v;
@@ -92,11 +96,13 @@ void GetFootprintRectAt(short *pt, struct Ride *ride, int *out) {
     out[3] = pt[1] + rect[3];
 }
 
+/* IsAreaListClear on the area list at pos. */
 // FUNCTION: LEGOLAND 0x0041cd20
 unsigned int IsAreaListClearAt(short *a, struct AreaNode *b) {
     return IsAreaListClear(a, b);
 }
 
+/* Index (0..3) of the DirPoints entry at cell *val whose direction bit is set in rec[0], or -1. */
 // FUNCTION: LEGOLAND 0x0041cd40
 int FindDoorPointIndex(unsigned int *val, unsigned int *rec) {
     int i;
@@ -111,6 +117,8 @@ int FindDoorPointIndex(unsigned int *val, unsigned int *rec) {
     return -1;
 }
 
+/* Fills out with the cells next to pos (two map cells away, PieceNeighbourOffsets) in each direction of mask, and
+ * sets the direction's bit in out->mask when that 2x2 area is free. */
 // FUNCTION: LEGOLAND 0x0041cd80
 void FindOpenDoorPoints(short *pos, struct DirPoints *out, unsigned int mask) {
     int i;
@@ -119,8 +127,8 @@ void FindOpenDoorPoints(short *pos, struct DirPoints *out, unsigned int mask) {
     out->mask = 0;
     for (i = 0; i * 4 + 4 <= 16; i++) {
         if ((mask & bit) != 0) {
-            out->pt[i][0] = pos[0] + DAT_004b5584[i][0];
-            out->pt[i][1] = pos[1] + DAT_004b5584[i][1];
+            out->pt[i][0] = pos[0] + PieceNeighbourOffsets[i][0];
+            out->pt[i][1] = pos[1] + PieceNeighbourOffsets[i][1];
             if (IsAreaListClearAt(&out->pt[i][0], &DAT_004b5570) == 1) {
                 out->mask |= bit;
             }
@@ -129,13 +137,15 @@ void FindOpenDoorPoints(short *pos, struct DirPoints *out, unsigned int mask) {
     }
 }
 
+/* Clears a piece end: no neighbour, direction unset, height 0. */
 // FUNCTION: LEGOLAND 0x0041ce10
-void ResetAnim(struct PieceEnd *anim) {
+void ResetPieceEnd(struct PieceEnd *anim) {
     anim->link = 0;
     anim->dir = 0xffffffff;
     anim->height = 0;
 }
 
+/* Clears a piece header: flags, position, class, owner and both ends. */
 // FUNCTION: LEGOLAND 0x0041ce30
 void InitPieceHead(struct PieceHead *pair) {
     pair->flags = 0;
@@ -143,10 +153,12 @@ void InitPieceHead(struct PieceHead *pair) {
     pair->y = 0;
     pair->cls = 0;
     pair->owner = 0;
-    ResetAnim(&pair->end_b);
-    ResetAnim(&pair->end_a);
+    ResetPieceEnd(&pair->end_b);
+    ResetPieceEnd(&pair->end_a);
 }
 
+/* Index 0..15 of the piece's (prev direction, next direction) pair, prev in bits 0-1 and next in bits 2-3; an unset
+ * end counts as straight through. Selects the piece's curve shape (FUN_004283c0, FUN_00428700). */
 // FUNCTION: LEGOLAND 0x0041ce60
 unsigned int GetPieceHeadDirPairIndex(struct PieceHead *pair) {
     unsigned int a = pair->end_a.dir;
@@ -164,6 +176,7 @@ unsigned int GetPieceHeadDirPairIndex(struct PieceHead *pair) {
     return (DirMaskToIndex(b) << 2) | lo;
 }
 
+/* Puts the piece's element on the map at the piece's cell (if map objects are enabled). */
 // FUNCTION: LEGOLAND 0x0041ceb0
 void AddPathSegMapObject(struct PathSeg *obj) {
     int pt[2];
@@ -173,6 +186,7 @@ void AddPathSegMapObject(struct PathSeg *obj) {
     AddMapObjectIfEnabled(obj->ride->element, pt);
 }
 
+/* Number of pieces from node back along prev until a piece with flags & 6 (or the chain end). */
 // FUNCTION: LEGOLAND 0x0041cee0
 unsigned int CountPrevSegs(struct PathSeg *node) {
     unsigned int count = 0;
@@ -184,6 +198,7 @@ unsigned int CountPrevSegs(struct PathSeg *node) {
     return count;
 }
 
+/* Number of pieces from node forward along next until a piece with flags & 6 (or the chain end). */
 // FUNCTION: LEGOLAND 0x0041cf00
 unsigned int CountNextSegs(struct PathSeg *node) {
     unsigned int count = 0;
@@ -195,6 +210,7 @@ unsigned int CountNextSegs(struct PathSeg *node) {
     return count;
 }
 
+/* Counts the pieces before (into out_a) and after (into out_b) src; 0xffffffff where there is no neighbour. */
 // FUNCTION: LEGOLAND 0x0041cf20
 void CountPathSegsAround(struct PathSeg *src, unsigned int *out_b, unsigned int *out_a) {
     *out_a = 0xffffffff;
@@ -207,35 +223,42 @@ void CountPathSegsAround(struct PathSeg *src, unsigned int *out_b, unsigned int 
     }
 }
 
+/* For an open chain: pieces after the head (out_b) and before the tail (out_a); both 0 for a ring. */
 // FUNCTION: LEGOLAND 0x0041cf70
 void CountCastleCoasterSegs(struct CastleState *src, int *out_a, int *out_b) {
     *out_a = 0;
     *out_b = 0;
     if (src->flags == 2) return;
-    *out_b = CountNextSegs(src->f_c0);
-    *out_a = CountPrevSegs(src->f_a8);
+    *out_b = CountNextSegs(src->head);
+    *out_a = CountPrevSegs(src->tail);
 }
 
+/* Calls the piece's fill_open_end method (makes an end that has no neighbour straight-through). */
 // FUNCTION: LEGOLAND 0x0041cfc0
-void FUN_0041cfc0(struct PathSeg *host) {
-    host->cls->method_1c(host);
+void PieceFillOpenEnd(struct PathSeg *host) {
+    host->cls->fill_open_end(host);
 }
 
+/* Calls the piece's set_heights method with the height of the neighbour it was just attached to. */
 // FUNCTION: LEGOLAND 0x0041cfd0
-unsigned int FUN_0041cfd0(struct PathSeg *host, float arg) {
-    return host->cls->method_20(host, arg);
+unsigned int PieceSetHeights(struct PathSeg *host, float arg) {
+    return host->cls->set_heights(host, arg);
 }
 
+/* Returns the curve stretch for the piece and its world position in *pos: stored in the piece when flags & 1, else
+ * the cell position at the piece's prev-end height and the class's get_curve. */
 // FUNCTION: LEGOLAND 0x0041cff0
-struct SegBlob *FUN_0041cff0(struct PathSeg *obj, struct FVec3 *pos) {
+struct SegBlob *GetPieceCurve(struct PathSeg *obj, struct FVec3 *pos) {
     if (obj->flags & 1) {
         *pos = obj->vec;
         return &obj->blob;
     }
     MapPosToWorld(&obj->pos, obj->f18, pos);
-    return obj->cls->method_24(obj);
+    return obj->cls->get_curve(obj);
 }
 
+/* Finds the piece at map cell *key (x and y packed as one dword): around the ring when closed, else from the head
+ * along next. */
 // FUNCTION: LEGOLAND 0x0041d060
 struct PathSeg *FindPathSegByXY(struct CastleState *host, unsigned int *key) {
     if (host->flags & 0x2) {
@@ -254,7 +277,7 @@ struct PathSeg *FindPathSegByXY(struct CastleState *host, unsigned int *key) {
             }
         }
     } else {
-        struct PathSeg *current = host->f_c0;
+        struct PathSeg *current = host->head;
         unsigned int search = *key;
         if (current->xy == search) {
             return current;
@@ -272,6 +295,7 @@ struct PathSeg *FindPathSegByXY(struct CastleState *host, unsigned int *key) {
     return NULL;
 }
 
+/* 1 when map cell pt lies inside the piece's footprint. */
 // FUNCTION: LEGOLAND 0x0041d0b0
 int IsPointInPathSegFootprint(struct PathSeg *obj, short *pt) {
     int r[5];
@@ -283,6 +307,7 @@ int IsPointInPathSegFootprint(struct PathSeg *obj, short *pt) {
     return 0;
 }
 
+/* Finds the piece of the given ride type whose footprint contains map cell pt (ring or head to tail). */
 // FUNCTION: LEGOLAND 0x0041d100
 struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short *pt) {
     struct PathSeg *node;
@@ -297,7 +322,7 @@ struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short
         } while (node != (struct PathSeg *)&host->piece);
         return 0;
     }
-    node = host->f_c0;
+    node = host->head;
     do {
         if (node->ride == ride && IsPointInPathSegFootprint(node, pt)) {
             return node;
@@ -307,25 +332,31 @@ struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short
     return 0;
 }
 
+/* The free cells where a piece can follow obj (its next door). */
 // FUNCTION: LEGOLAND 0x0041d170
 unsigned int FindPathSegDoorAPoints(struct PathSeg *obj, struct DirPoints *pts) {
-    return FindPathSegDoorPoints(obj, &obj->cls->door_a, pts);
+    return FindPathSegDoorPoints(obj, &obj->cls->next_door, pts);
 }
 
+/* The free cells where a piece can precede obj (its prev door). */
 // FUNCTION: LEGOLAND 0x0041d190
 unsigned int FindPathSegDoorBPoints(struct PathSeg *obj, struct DirPoints *pts) {
-    return FindPathSegDoorPoints(obj, &obj->cls->door_b, pts);
+    return FindPathSegDoorPoints(obj, &obj->cls->prev_door, pts);
 }
 
+/* Empties a DirPoints set. */
 // FUNCTION: LEGOLAND 0x0041d1b0
 void ClearDirPoints(struct DirPoints *pts) {
     pts->mask = 0;
 }
 
+/* Empty in the release build; called with both free-cell sets after every attach and removal (probably a stripped
+ * debug display). */
 // FUNCTION: LEGOLAND 0x0041d1c0
 void FUN_0041d1c0(void *unused) {
 }
 
+/* Fills pts with the free cells around the given door of the piece. */
 // FUNCTION: LEGOLAND 0x0041d1d0
 unsigned int FindPathSegDoorPoints(struct PathSeg *obj, struct PieceDoor *door, struct DirPoints *pts) {
     short sum[2];
@@ -336,46 +367,52 @@ unsigned int FindPathSegDoorPoints(struct PathSeg *obj, struct PieceDoor *door, 
     FindOpenDoorPoints(sum, pts, door->mask);
 }
 
+/* Checks a piece of class info placed at pos against both open ends of CastleCoaster: next_spot = the tail's free
+ * cell its prev door sits on, prev_spot = the head's free cell its next door sits on (-1 if none), and points the
+ * tail/head end at it. Returns 1 if it connects to either end. Never matches a closed ring. */
 // FUNCTION: LEGOLAND 0x0041d210
-int FUN_0041d210(short *pos, struct SprEnt *ent, struct PieceClass *info) {
+int MatchPieceToCoasterEnds(short *pos, struct PiecePlacement *ent, struct PieceClass *info) {
     short p[2];
     int r;
 
     if (CastleCoaster.flags != 2) {
         ent->owner = (struct CastleState *)&CastleCoaster;
-        p[0] = info->door_b.x + pos[0];
-        p[1] = info->door_b.y + pos[1];
-        r = FindDoorPointIndex((unsigned int *)p, &CastleCoaster.pts_a.mask);
-        ent->id_a = r;
+        p[0] = info->prev_door.x + pos[0];
+        p[1] = info->prev_door.y + pos[1];
+        r = FindDoorPointIndex((unsigned int *)p, &CastleCoaster.next_spots.mask);
+        ent->next_spot = r;
         if (r != -1) {
-            CastleCoaster.f_a8->dir_b = BitFromIndex(r);
+            CastleCoaster.tail->dir_b = BitFromIndex(r);
         }
-        p[0] = info->door_a.x + pos[0];
-        p[1] = info->door_a.y + pos[1];
-        r = FindDoorPointIndex((unsigned int *)p, &CastleCoaster.pts_b.mask);
-        ent->id_b = r;
+        p[0] = info->next_door.x + pos[0];
+        p[1] = info->next_door.y + pos[1];
+        r = FindDoorPointIndex((unsigned int *)p, &CastleCoaster.prev_spots.mask);
+        ent->prev_spot = r;
         if (r != -1) {
-            CastleCoaster.f_c0->dir_a = BitFromIndex(r);
+            CastleCoaster.head->dir_a = BitFromIndex(r);
         }
-        if (ent->id_a != -1 || ent->id_b != -1) {
+        if (ent->next_spot != -1 || ent->prev_spot != -1) {
             return 1;
         }
     }
     return 0;
 }
 
+/* Placement test for a fixed-height piece (class flags & 1): on each end it connects to, the previous anchor must
+ * be reachable, i.e. a straight run in between to slope over or the same height (FindReachableAnchor). Stores those
+ * anchors in ent. */
 // FUNCTION: LEGOLAND 0x0041d2e0
-int FUN_0041d2e0(struct PieceClass *info, short *pos, struct SprEnt *ent) {
-    if (FUN_0041d210(pos, ent, info)) {
-        if (ent->id_a != -1) {
-            ent->h_a = FUN_00429840(ent->owner->f_a8, info->f8);
-            if (!ent->h_a) {
+int CheckAnchorPiecePlacement(struct PieceClass *info, short *pos, struct PiecePlacement *ent) {
+    if (MatchPieceToCoasterEnds(pos, ent, info)) {
+        if (ent->next_spot != -1) {
+            ent->tail_anchor = FindReachableAnchor(ent->owner->tail, info->f8);
+            if (!ent->tail_anchor) {
                 return 0;
             }
         }
-        if (ent->id_b != -1) {
-            ent->h_b = FUN_00429840(ent->owner->f_c0, info->f4);
-            if (!ent->h_b) {
+        if (ent->prev_spot != -1) {
+            ent->head_anchor = FindReachableAnchor(ent->owner->head, info->f4);
+            if (!ent->head_anchor) {
                 return 0;
             }
         }
@@ -384,75 +421,83 @@ int FUN_0041d2e0(struct PieceClass *info, short *pos, struct SprEnt *ent) {
     return 0;
 }
 
+/* Placement test for a plain track piece: connecting to one end is always allowed; closing the ring needs at least
+ * one straight piece between the two anchors to absorb the height difference. */
 // FUNCTION: LEGOLAND 0x0041d350
-int FUN_0041d350(struct PieceClass *info, short *pos, struct SprEnt *ent) {
-    if (FUN_0041d210(pos, ent, info)) {
-        if (ent->id_a == -1 || ent->id_b == -1) {
+int CheckTrackPiecePlacement(struct PieceClass *info, short *pos, struct PiecePlacement *ent) {
+    if (MatchPieceToCoasterEnds(pos, ent, info)) {
+        if (ent->next_spot == -1 || ent->prev_spot == -1) {
             return 1;
         }
-        return FUN_004298a0(info, ent->owner, &ent->h_a, &ent->h_b) != 0;
+        return HasStraightForClosingSlope(info, ent->owner, &ent->tail_anchor, &ent->head_anchor) != 0;
     }
     return 0;
 }
 
+/* Runs the placement test for a piece of class cls at pos and returns CoasterPlacement with joins = 1 (joins after
+ * the tail) | 2 (joins before the head), or 0 if it cannot be placed there. */
 // FUNCTION: LEGOLAND 0x0041d3b0
-struct SprEnt *CheckCoasterPiecePlacement(struct PieceClass *cls, struct Int16Pair *pos) {
+struct PiecePlacement *CheckCoasterPiecePlacement(struct PieceClass *cls, struct Int16Pair *pos) {
     int r;
 
     if (cls->flags & 1) {
-        r = FUN_0041d2e0(cls, &pos->x, &CoasterPlacement);
+        r = CheckAnchorPiecePlacement(cls, &pos->x, &CoasterPlacement);
     } else {
-        r = FUN_0041d350(cls, &pos->x, &CoasterPlacement);
+        r = CheckTrackPiecePlacement(cls, &pos->x, &CoasterPlacement);
     }
-    CoasterPlacement.field_0 = 0;
+    CoasterPlacement.joins = 0;
     if (r) {
-        if (CoasterPlacement.id_a != -1) {
-            CoasterPlacement.field_0 = 1;
+        if (CoasterPlacement.next_spot != -1) {
+            CoasterPlacement.joins = 1;
         }
-        if (CoasterPlacement.id_b != -1) {
-            CoasterPlacement.field_0 |= 2;
+        if (CoasterPlacement.prev_spot != -1) {
+            CoasterPlacement.joins |= 2;
         }
         return &CoasterPlacement;
     }
-    CoasterPlacement.field_0 = 0;
+    CoasterPlacement.joins = 0;
     return &CoasterPlacement;
 }
 
+/* Makes b follow a (a->next = b, b->prev = a). */
 // FUNCTION: LEGOLAND 0x0041d430
 void LinkPathSegs(struct PathSeg *a, struct PathSeg *b) {
     a->next = b;
     b->prev = a;
 }
 
+/* Links a new piece into the castle's track at the end(s) found by MatchPieceToCoasterEnds, sets the joined ends'
+ * directions and heights, updates tail/head and their free cells, closes the ring (flags 2) when both ends join,
+ * puts the element on the map and stores the piece's footprint relative to the castle. */
 // FUNCTION: LEGOLAND 0x0041d440
-void AttachPathSegToCoaster(struct PathSeg *obj, struct SprEnt *ent) {
+void AttachPathSegToCoaster(struct PathSeg *obj, struct PiecePlacement *ent) {
     struct CastleState *owner = ent->owner;
     int *r;
 
     obj->owner = owner;
-    if (ent->id_a != -1) {
-        LinkPathSegs(owner->f_a8, obj);
-        owner->f_a8->dir_b = BitFromIndex(ent->id_a);
-        obj->dir_a = GetOppositeDirection(owner->f_a8->dir_b);
-        FUN_0041cfd0(obj, owner->f_a8->f24);
-        owner->f_a8 = obj;
-        FindPathSegDoorAPoints(obj, &owner->pts_a);
+    if (ent->next_spot != -1) {
+        LinkPathSegs(owner->tail, obj);
+        owner->tail->dir_b = BitFromIndex(ent->next_spot);
+        obj->dir_a = GetOppositeDirection(owner->tail->dir_b);
+        PieceSetHeights(obj, owner->tail->f24);
+        owner->tail = obj;
+        FindPathSegDoorAPoints(obj, &owner->next_spots);
     }
-    if (ent->id_b != -1) {
-        LinkPathSegs(obj, owner->f_c0);
-        owner->f_c0->dir_a = BitFromIndex(ent->id_b);
-        obj->dir_b = GetOppositeDirection(owner->f_c0->dir_a);
-        FUN_0041cfd0(obj, owner->f_c0->f18);
-        owner->f_c0 = obj;
-        FindPathSegDoorBPoints(obj, &owner->pts_b);
+    if (ent->prev_spot != -1) {
+        LinkPathSegs(obj, owner->head);
+        owner->head->dir_a = BitFromIndex(ent->prev_spot);
+        obj->dir_b = GetOppositeDirection(owner->head->dir_a);
+        PieceSetHeights(obj, owner->head->f18);
+        owner->head = obj;
+        FindPathSegDoorBPoints(obj, &owner->prev_spots);
     }
-    if (ent->id_a != -1 && ent->id_b != -1) {
+    if (ent->next_spot != -1 && ent->prev_spot != -1) {
         owner->flags = 2;
         FUN_00424e60(owner);
     } else {
-        FUN_0041cfc0((struct PathSeg *)obj);
-        FUN_0041d1c0(&owner->pts_a);
-        FUN_0041d1c0(&owner->pts_b);
+        PieceFillOpenEnd((struct PathSeg *)obj);
+        FUN_0041d1c0(&owner->next_spots);
+        FUN_0041d1c0(&owner->prev_spots);
     }
     AddPathSegMapObject(obj);
     r = obj->ride->footprint.v;
@@ -463,8 +508,10 @@ void AttachPathSegToCoaster(struct PathSeg *obj, struct SprEnt *ent) {
     obj->fp.next = 0;
 }
 
+/* Allocates and links a plain track piece; when it closes the ring, the heights between the two anchors are
+ * interpolated along the straight pieces. */
 // FUNCTION: LEGOLAND 0x0041d5b0
-struct PathSeg *FUN_0041d5b0(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos, struct SprEnt *ent) {
+struct PathSeg *NewTrackPiece(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos, struct PiecePlacement *ent) {
     struct PathSeg *obj = MemAlloc(sizeof(struct PathSeg), 0, 0, 0);
 
     if (obj == NULL) {
@@ -476,15 +523,17 @@ struct PathSeg *FUN_0041d5b0(struct Ride *ride, struct PieceClass *cls, struct I
     obj->pos = *pos;
     obj->cls = cls;
     AttachPathSegToCoaster(obj, ent);
-    if (ent->id_a != -1 && ent->id_b != -1) {
-        InterpolateCoasterHeights(ent->h_a, ent->h_b);
+    if (ent->next_spot != -1 && ent->prev_spot != -1) {
+        InterpolateCoasterHeights(ent->tail_anchor, ent->head_anchor);
     }
-    obj->cls->method_28(obj);
+    obj->cls->on_add(obj);
     return obj;
 }
 
+/* Allocates and links a fixed-height piece; the heights between it and the anchor before/after it are interpolated
+ * along the straight pieces. */
 // FUNCTION: LEGOLAND 0x0041d630
-struct PathSeg *FUN_0041d630(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos, struct SprEnt *ent) {
+struct PathSeg *NewAnchorPiece(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos, struct PiecePlacement *ent) {
     struct PathSeg *obj = MemAlloc(sizeof(struct PathSeg), 0, 0, 0);
 
     if (obj == NULL) {
@@ -496,46 +545,52 @@ struct PathSeg *FUN_0041d630(struct Ride *ride, struct PieceClass *cls, struct I
     obj->pos = *pos;
     obj->cls = cls;
     AttachPathSegToCoaster(obj, ent);
-    if (ent->id_a != -1) {
-        InterpolateCoasterHeights(ent->h_a, obj);
+    if (ent->next_spot != -1) {
+        InterpolateCoasterHeights(ent->tail_anchor, obj);
     }
-    if (ent->id_b != -1) {
-        InterpolateCoasterHeights(obj, ent->h_b);
+    if (ent->prev_spot != -1) {
+        InterpolateCoasterHeights(obj, ent->head_anchor);
     }
-    obj->cls->method_28(obj);
+    obj->cls->on_add(obj);
     return obj;
 }
 
+/* Sets CoasterPieceCount. */
 // FUNCTION: LEGOLAND 0x0041d6c0
 void SetCoasterPieceCount(unsigned int value) {
     CoasterPieceCount = value;
 }
 
+/* Adds delta to CoasterPieceCount and returns the new count. */
 // FUNCTION: LEGOLAND 0x0041d6d0
 unsigned int AddCoasterPieceCount(unsigned int delta) {
     CoasterPieceCount += delta;
     return CoasterPieceCount;
 }
 
+/* Returns CoasterPieceCount. */
 // FUNCTION: LEGOLAND 0x0041d6f0
 unsigned int GetCoasterPieceCount(void) {
     return CoasterPieceCount;
 }
 
+/* Places a piece of class cls at pos if it connects to the track (NewAnchorPiece for fixed-height classes, else
+ * NewTrackPiece); NULL otherwise. */
 // FUNCTION: LEGOLAND 0x0041d700
 struct PathSeg *AddCoasterPiece(struct Ride *ride, struct PieceClass *cls, struct Int16Pair *pos) {
-    struct SprEnt *result = CheckCoasterPiecePlacement(cls, pos);
-    if (result->field_0 != 0) {
+    struct PiecePlacement *result = CheckCoasterPiecePlacement(cls, pos);
+    if (result->joins != 0) {
         AddCoasterPieceCount(1);
         if ((cls->flags & 1) != 0) {
-            return FUN_0041d630(ride, cls, pos, &CoasterPlacement);
+            return NewAnchorPiece(ride, cls, pos, &CoasterPlacement);
         } else {
-            return FUN_0041d5b0(ride, cls, pos, &CoasterPlacement);
+            return NewTrackPiece(ride, cls, pos, &CoasterPlacement);
         }
     }
     return 0;
 }
 
+/* Removes the piece's element from the map at the piece's cell. */
 // FUNCTION: LEGOLAND 0x0041d760
 void RemovePathSegMapObject(struct PathSeg *obj) {
     TileId tile;
@@ -549,11 +604,12 @@ void RemovePathSegMapObject(struct PathSeg *obj) {
     RemoveMapObjectIfEnabled(obj->ride->element, tile, &QueryCursor);
 }
 
+/* 1 if the piece may be removed: the track is a closed ring, or it is the tail or the head. */
 // FUNCTION: LEGOLAND 0x0041d7c0
 unsigned int IsCoasterEndPiece(struct PathSeg *value) {
     if (CastleCoaster.flags != 2) {
-        if (value != CastleCoaster.f_a8) {
-            if (value != CastleCoaster.f_c0) {
+        if (value != CastleCoaster.tail) {
+            if (value != CastleCoaster.head) {
                 return 0;
             }
         }
@@ -561,6 +617,9 @@ unsigned int IsCoasterEndPiece(struct PathSeg *value) {
     return 1;
 }
 
+/* Removes a piece: off the map, out of the chain (opening the ring if it was closed, else moving the tail or head
+ * back), resets the heights of the straight run behind/ahead of the new end(s), makes the new end(s)
+ * straight-through, runs the class's on_remove and frees it. */
 // FUNCTION: LEGOLAND 0x0041d7f0
 void RemoveCoasterPiece(void *arg) {
     struct PathSeg *obj = arg;
@@ -570,34 +629,34 @@ void RemoveCoasterPiece(void *arg) {
         RemovePathSegMapObject(obj);
         AddCoasterPieceCount(-1);
         if (owner->flags == 2) {
-            ResetAnim((struct PieceEnd *)&obj->next->dir_a);
-            ResetAnim((struct PieceEnd *)&obj->prev->dir_b);
-            owner->f_a8 = obj->prev;
-            FindPathSegDoorAPoints(obj->prev, &CastleCoaster.pts_a);
-            owner->f_c0 = obj->next;
-            FindPathSegDoorBPoints(obj->next, &CastleCoaster.pts_b);
-            ResetCoasterHeightsBack((struct PathSeg *)owner->f_a8);
-            ResetCoasterHeightsForward((struct PathSeg *)owner->f_c0);
-            FUN_0041cfc0((struct PathSeg *)owner->f_a8);
-            FUN_0041cfc0((struct PathSeg *)owner->f_c0);
+            ResetPieceEnd((struct PieceEnd *)&obj->next->dir_a);
+            ResetPieceEnd((struct PieceEnd *)&obj->prev->dir_b);
+            owner->tail = obj->prev;
+            FindPathSegDoorAPoints(obj->prev, &CastleCoaster.next_spots);
+            owner->head = obj->next;
+            FindPathSegDoorBPoints(obj->next, &CastleCoaster.prev_spots);
+            ResetCoasterHeightsBack((struct PathSeg *)owner->tail);
+            ResetCoasterHeightsForward((struct PathSeg *)owner->head);
+            PieceFillOpenEnd((struct PathSeg *)owner->tail);
+            PieceFillOpenEnd((struct PathSeg *)owner->head);
             owner->flags = 1;
             FUN_00424e70(owner);
-        } else if (obj == owner->f_a8) {
-            ResetAnim((struct PieceEnd *)&obj->prev->dir_b);
-            owner->f_a8 = obj->prev;
-            FindPathSegDoorAPoints(obj->prev, &CastleCoaster.pts_a);
-            ResetCoasterHeightsBack((struct PathSeg *)owner->f_a8);
-            FUN_0041cfc0((struct PathSeg *)owner->f_a8);
+        } else if (obj == owner->tail) {
+            ResetPieceEnd((struct PieceEnd *)&obj->prev->dir_b);
+            owner->tail = obj->prev;
+            FindPathSegDoorAPoints(obj->prev, &CastleCoaster.next_spots);
+            ResetCoasterHeightsBack((struct PathSeg *)owner->tail);
+            PieceFillOpenEnd((struct PathSeg *)owner->tail);
         } else {
-            ResetAnim((struct PieceEnd *)&obj->next->dir_a);
-            owner->f_c0 = obj->next;
-            FindPathSegDoorBPoints(obj->next, &CastleCoaster.pts_b);
-            ResetCoasterHeightsForward((struct PathSeg *)owner->f_c0);
-            FUN_0041cfc0((struct PathSeg *)owner->f_c0);
+            ResetPieceEnd((struct PieceEnd *)&obj->next->dir_a);
+            owner->head = obj->next;
+            FindPathSegDoorBPoints(obj->next, &CastleCoaster.prev_spots);
+            ResetCoasterHeightsForward((struct PathSeg *)owner->head);
+            PieceFillOpenEnd((struct PathSeg *)owner->head);
         }
-        FUN_0041d1c0(&CastleCoaster.pts_a.mask);
-        FUN_0041d1c0(&CastleCoaster.pts_b.mask);
-        ((struct PieceClass *)obj->cls)->method_2c(obj);
+        FUN_0041d1c0(&CastleCoaster.next_spots.mask);
+        FUN_0041d1c0(&CastleCoaster.prev_spots.mask);
+        ((struct PieceClass *)obj->cls)->on_remove(obj);
         MemFree(obj);
     }
 }
@@ -1979,7 +2038,7 @@ struct SegBlob *CurveWalkerNext(struct CurveWalker *cursor) {
     if (result == 0) {
         struct PathSeg *piece = cursor->piece->next;
         cursor->piece = piece;
-        result = FUN_0041cff0(piece, &cursor->pos);
+        result = GetPieceCurve(piece, &cursor->pos);
     }
     cursor->node = result;
     return result;
@@ -1993,7 +2052,7 @@ void CurveWalkerPrev(struct CurveWalker *walker) {
         return;
     }
     walker->piece = walker->piece->prev;
-    walker->node = FUN_0041cff0(walker->piece, &walker->pos);
+    walker->node = GetPieceCurve(walker->piece, &walker->pos);
     if (walker->node->next == NULL) {
         return;
     }
@@ -5705,22 +5764,25 @@ unsigned int IsCastleCoasterPlaced(void) {
     return CastleCoasterPlaced;
 }
 
+/* The castle's fill_open_end: resets its directions (prev E, next W) and its heights from CastlePieceClass. */
 // FUNCTION: LEGOLAND 0x00423940
-void FUN_00423940(struct PathSeg *arg1) {
+void CastleFillOpenEnd(struct PathSeg *arg1) {
     arg1->dir_a = 2;
-    arg1->f18 = (float)DAT_004b5b48.f8;
+    arg1->f18 = (float)CastlePieceClass.f8;
     arg1->dir_b = 8;
-    arg1->f24 = (float)DAT_004b5b48.f4;
+    arg1->f24 = (float)CastlePieceClass.f4;
 }
 
+/* The castle's set_heights: always the CastlePieceClass heights. */
 // FUNCTION: LEGOLAND 0x00423970
-void FUN_00423970(struct PathSeg *param_1) {
-    param_1->f18 = (float)DAT_004b5b48.f8;
-    param_1->f24 = (float)DAT_004b5b48.f4;
+void CastleSetHeights(struct PathSeg *param_1) {
+    param_1->f18 = (float)CastlePieceClass.f8;
+    param_1->f24 = (float)CastlePieceClass.f4;
 }
 
+/* The castle's get_curve: its own fixed curve stretch DAT_006102f8. */
 // FUNCTION: LEGOLAND 0x00423990
-struct SegBlob *FUN_00423990(void) {
+struct SegBlob *CastleGetCurve(void) {
     return DAT_006102f8;
 }
 
@@ -5855,10 +5917,10 @@ void InitCastleCoasterDoors(void) {
     a.y = 0;
     GetCastleCoasterDoorA(&a, &b);
     GetCastleCoasterDoorB(&a, &c);
-    DAT_004b5b48.door_a.x = b.x;
-    DAT_004b5b48.door_a.y = b.y;
-    DAT_004b5b48.door_b.x = c.x;
-    DAT_004b5b48.door_b.y = c.y;
+    CastlePieceClass.next_door.x = b.x;
+    CastlePieceClass.next_door.y = b.y;
+    CastlePieceClass.prev_door.x = c.x;
+    CastlePieceClass.prev_door.y = c.y;
     FUN_00423a10();
 }
 
@@ -5921,14 +5983,14 @@ void RemoveAllCoasterPieces(struct CastleState *castle) {
         }
         return;
     }
-    n = (struct PathSeg *)CastleCoaster.f_c0;
+    n = (struct PathSeg *)CastleCoaster.head;
     end = (struct PathSeg *)&castle->piece;
     while (n != end) {
         next = n->next;
         RemoveCoasterPiece(n);
         n = next;
     }
-    n = (struct PathSeg *)CastleCoaster.f_a8;
+    n = (struct PathSeg *)CastleCoaster.tail;
     while (n != end) {
         next = n->prev;
         RemoveCoasterPiece(n);
@@ -5944,13 +6006,13 @@ int FUN_00423f40(struct Point *pos, float *a2, struct Point *a3, float *a4, stru
     struct PathSeg *n2;
 
     *a6 = node->prev == (struct PathSeg *)&CastleCoaster.piece.flags;
-    c = FUN_0041cff0(node, &a);
+    c = GetPieceCurve(node, &a);
     c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
     b.z += a.z;
     *a2 = b.z * -2.0f;
     n2 = node->next;
     if (n2 != 0 && n2 != (struct PathSeg *)&CastleCoaster.piece.flags) {
-        c = FUN_0041cff0(n2, &a);
+        c = GetPieceCurve(n2, &a);
         c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
         b.z += a.z;
         *a4 = b.z * -2.0f;
@@ -5982,7 +6044,7 @@ int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5) {
         }
         return 0;
     }
-    n = (struct PathSeg *)CastleCoaster.f_c0;
+    n = (struct PathSeg *)CastleCoaster.head;
     while (n != (struct PathSeg *)&CastleCoaster.piece.flags) {
         next = n->next;
         if (n->x == pos->x && n->y == pos->y) {
@@ -5990,7 +6052,7 @@ int FUN_00424050(struct Point *pos, void *a2, void *a3, void *a4, void *a5) {
         }
         n = next;
     }
-    n = (struct PathSeg *)CastleCoaster.f_a8;
+    n = (struct PathSeg *)CastleCoaster.tail;
     while (n != (struct PathSeg *)&CastleCoaster.piece.flags) {
         next = n->prev;
         if (n->x == pos->x && n->y == pos->y) {
@@ -6034,14 +6096,14 @@ void CastleObjLoad(struct Element *param_1) {
 // FUNCTION: LEGOLAND 0x004241e0
 void CastleObjUnload(void) {
     KillSprite(CastleMatteSprite);
-    CastleCoaster.pts_a.mask = 0;
-    CastleCoaster.pts_b.mask = 0;
-    ClearDirPoints(&CastleCoaster.pts_a);
-    ClearDirPoints(&CastleCoaster.pts_b);
-    CastleCoaster.f_a8 = 0;
-    CastleCoaster.f_c0 = 0;
-    ResetAnim((struct PieceEnd *)&CastleCoaster.piece.end_a);
-    ResetAnim((struct PieceEnd *)&CastleCoaster.piece.end_b);
+    CastleCoaster.next_spots.mask = 0;
+    CastleCoaster.prev_spots.mask = 0;
+    ClearDirPoints(&CastleCoaster.next_spots);
+    ClearDirPoints(&CastleCoaster.prev_spots);
+    CastleCoaster.tail = 0;
+    CastleCoaster.head = 0;
+    ResetPieceEnd((struct PieceEnd *)&CastleCoaster.piece.end_a);
+    ResetPieceEnd((struct PieceEnd *)&CastleCoaster.piece.end_b);
     CastleCoaster.flags = 0;
 }
 
@@ -6091,19 +6153,19 @@ void PlaceCastleCoaster(struct Element *obj, short *pt) {
     CastleCoaster.flags = 1;
     CastleCoaster.piece.x = pt[0];
     CastleCoaster.piece.y = pt[2];
-    CastleCoaster.piece.cls = &DAT_004b5b48;
+    CastleCoaster.piece.cls = &CastlePieceClass;
     CastleCoaster.piece.owner = &CastleCoaster;
     CastleCoaster.piece.ride = CastleCoasterRide;
-    CastleCoaster.f_a8 = (struct PathSeg *)&CastleCoaster.piece;
-    CastleCoaster.f_c0 = (struct PathSeg *)&CastleCoaster.piece;
-    CastleCoaster.pts_a.mask = 0;
-    CastleCoaster.pts_b.mask = 0;
-    FindPathSegDoorAPoints((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.pts_a);
-    FindPathSegDoorBPoints((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.pts_b);
-    FUN_0041d1c0(&CastleCoaster.pts_a.mask);
-    FUN_0041d1c0(&CastleCoaster.pts_b.mask);
-    FUN_0041cfc0((struct PathSeg *)&CastleCoaster.piece.flags);
-    FUN_0041cfd0((struct PathSeg *)&CastleCoaster.piece, 0);
+    CastleCoaster.tail = (struct PathSeg *)&CastleCoaster.piece;
+    CastleCoaster.head = (struct PathSeg *)&CastleCoaster.piece;
+    CastleCoaster.next_spots.mask = 0;
+    CastleCoaster.prev_spots.mask = 0;
+    FindPathSegDoorAPoints((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.next_spots);
+    FindPathSegDoorBPoints((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.prev_spots);
+    FUN_0041d1c0(&CastleCoaster.next_spots.mask);
+    FUN_0041d1c0(&CastleCoaster.prev_spots.mask);
+    PieceFillOpenEnd((struct PathSeg *)&CastleCoaster.piece.flags);
+    PieceSetHeights((struct PathSeg *)&CastleCoaster.piece, 0);
     CreateCastleTrain((struct CastleState *)&CastleCoaster);
     InitCastleVisitorList((struct CastleState *)&CastleCoaster);
     CastleCoaster.piece.flags |= 6;
@@ -6144,10 +6206,10 @@ void RemoveCastleCoaster(struct Element *param_1, TileId param_2, struct Cursor 
         cursor.field_1414[4] = 0;
         StopCastleTrain((struct CastleState *)&CastleCoaster);
         RemoveAllCoasterPieces(&CastleCoaster);
-        ClearDirPoints(&CastleCoaster.pts_a);
-        ClearDirPoints(&CastleCoaster.pts_b);
-        CastleCoaster.f_a8 = 0;
-        CastleCoaster.f_c0 = 0;
+        ClearDirPoints(&CastleCoaster.next_spots);
+        ClearDirPoints(&CastleCoaster.prev_spots);
+        CastleCoaster.tail = 0;
+        CastleCoaster.head = 0;
         DestroyCastleTrain((struct CastleState *)&CastleCoaster);
         FreeAllCastleVisitors((struct CastleState *)&CastleCoaster);
         CastleRemoveAllRiders();
@@ -6209,7 +6271,7 @@ void RenderCastleDummy(struct Element *a1, unsigned int a2, unsigned int a3, uns
     int want;
     int i;
 
-    MapPosToWorld(&CastleCoaster.piece.pos, (float)DAT_004b5b48.f8, &buf);
+    MapPosToWorld(&CastleCoaster.piece.pos, (float)CastlePieceClass.f8, &buf);
     key[0] = p[0];
     key[1] = p[1];
     want = *(int *)key;
@@ -6255,7 +6317,7 @@ void CastleDummyLoad(struct Element *param_1) {
 void FUN_00424850(struct CastleState *p1, struct SegBlob **p2, float *p3, struct FVec3 *p4) {
     *p2 = &DAT_006102f8[2];
     *(unsigned int *)p3 = 0x3dcccccd;
-    MapPosToWorld(&p1->piece.pos, (float)DAT_004b5b48.f8, p4);
+    MapPosToWorld(&p1->piece.pos, (float)CastlePieceClass.f8, p4);
 }
 
 // FUNCTION: LEGOLAND 0x00424890
@@ -6274,7 +6336,7 @@ void FUN_004248b0(struct Integrator *obj, float unused, struct FloatArray *out) 
 
     FUN_0041de10(obj, unused, out);
     t = FUN_0041dd50(e);
-    MapPosToWorld(&sub->piece.pos, (float)DAT_004b5b48.f8, &v);
+    MapPosToWorld(&sub->piece.pos, (float)CastlePieceClass.f8, &v);
     r = t * t;
     s[0] = &sub->piece;
     s[1] = &DAT_006102f8[2];
@@ -6630,11 +6692,11 @@ void CastleObjUpdate(Element *obj) {
     d = obj->ride;
     a = d->riders;
     c = &CastleCoaster;
-    if (c->f_a8 != NULL) {
-        FindPathSegDoorAPoints(c->f_a8, &c->pts_a);
+    if (c->tail != NULL) {
+        FindPathSegDoorAPoints(c->tail, &c->next_spots);
     }
-    if (c->f_c0 != NULL) {
-        FindPathSegDoorBPoints(c->f_c0, &c->pts_b);
+    if (c->head != NULL) {
+        FindPathSegDoorBPoints(c->head, &c->prev_spots);
     }
     while (a != NULL) {
         h = a->next;
@@ -7900,7 +7962,7 @@ void SaveCurveWalker(struct CurveWalker *arg0, unsigned int *arg1) {
     unsigned int count = 0;
 
     SavePathSegRef(arg0->piece, (struct Struct426e80Dst *)arg1);
-    cur = FUN_0041cff0(arg0->piece, &local);
+    cur = GetPieceCurve(arg0->piece, &local);
     end = arg0->node;
     while (cur != end) {
         cur = cur->next;
@@ -7914,7 +7976,7 @@ void SaveCurveWalker(struct CurveWalker *arg0, unsigned int *arg1) {
 // FUNCTION: LEGOLAND 0x00426f10
 void LoadCurveWalker(unsigned char *a, struct CurveWalker *b, struct CastleState *c) {
     b->piece = LoadPathSegRef(a, c);
-    b->node = FUN_0041cff0(b->piece, &b->pos);
+    b->node = GetPieceCurve(b->piece, &b->pos);
 }
 
 // FUNCTION: LEGOLAND 0x00426f40
@@ -8247,7 +8309,7 @@ void FUN_004275c0(void) {}
 
 // FUNCTION: LEGOLAND 0x004275d0
 void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
-    struct SprEnt *result;
+    struct PiecePlacement *result;
     struct PieceClass *key;
     unsigned int bit;
     unsigned int *mask;
@@ -8264,9 +8326,9 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
     if (CastleCoaster.flags != 2) {
         bit = 1;
         for (i = 0; i <= 3; i++) {
-            if ((bit & CastleCoaster.pts_a.mask) && EditCursor.tile_x - CastleCoaster.pts_a.pt[i][0] >= -1 && EditCursor.tile_x - CastleCoaster.pts_a.pt[i][0] <= 1 && (int)EditCursor.tile_y - CastleCoaster.pts_a.pt[i][1] >= -1 && (int)EditCursor.tile_y - CastleCoaster.pts_a.pt[i][1] <= 1) {
-                EditCursor.tile_x = CastleCoaster.pts_a.pt[i][0];
-                EditCursor.tile_y = CastleCoaster.pts_a.pt[i][1];
+            if ((bit & CastleCoaster.next_spots.mask) && EditCursor.tile_x - CastleCoaster.next_spots.pt[i][0] >= -1 && EditCursor.tile_x - CastleCoaster.next_spots.pt[i][0] <= 1 && (int)EditCursor.tile_y - CastleCoaster.next_spots.pt[i][1] >= -1 && (int)EditCursor.tile_y - CastleCoaster.next_spots.pt[i][1] <= 1) {
+                EditCursor.tile_x = CastleCoaster.next_spots.pt[i][0];
+                EditCursor.tile_y = CastleCoaster.next_spots.pt[i][1];
                 found = 1;
                 break;
             }
@@ -8275,9 +8337,9 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         if (!found) {
             bit = 1;
             for (i = 0; i <= 3; i++) {
-                if ((bit & CastleCoaster.pts_b.mask) && EditCursor.tile_x - CastleCoaster.pts_b.pt[i][0] >= -1 && EditCursor.tile_x - CastleCoaster.pts_b.pt[i][0] <= 1 && (int)EditCursor.tile_y - CastleCoaster.pts_b.pt[i][1] >= -1 && (int)EditCursor.tile_y - CastleCoaster.pts_b.pt[i][1] <= 1) {
-                    EditCursor.tile_x = CastleCoaster.pts_b.pt[i][0];
-                    EditCursor.tile_y = CastleCoaster.pts_b.pt[i][1];
+                if ((bit & CastleCoaster.prev_spots.mask) && EditCursor.tile_x - CastleCoaster.prev_spots.pt[i][0] >= -1 && EditCursor.tile_x - CastleCoaster.prev_spots.pt[i][0] <= 1 && (int)EditCursor.tile_y - CastleCoaster.prev_spots.pt[i][1] >= -1 && (int)EditCursor.tile_y - CastleCoaster.prev_spots.pt[i][1] <= 1) {
+                    EditCursor.tile_x = CastleCoaster.prev_spots.pt[i][0];
+                    EditCursor.tile_y = CastleCoaster.prev_spots.pt[i][1];
                     found = 1;
                     break;
                 }
@@ -8287,12 +8349,12 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         ValidateCursor(&EditCursor, ride);
         bit = 1;
         for (i = 0; i <= 3; i++) {
-            if (bit & CastleCoaster.pts_a.mask) {
+            if (bit & CastleCoaster.next_spots.mask) {
                 DefaultCursor(&DAT_0081ce00[n]);
                 DAT_0081ce00[n].next = EditCursor.next;
                 EditCursor.next = &DAT_0081ce00[n];
-                DAT_0081ce00[n].tile_x = CastleCoaster.pts_a.pt[i][0];
-                DAT_0081ce00[n].tile_y = CastleCoaster.pts_a.pt[i][1];
+                DAT_0081ce00[n].tile_x = CastleCoaster.next_spots.pt[i][0];
+                DAT_0081ce00[n].tile_y = CastleCoaster.next_spots.pt[i][1];
                 DAT_0081ce00[n].footprint = *fp;
                 DAT_0081ce00[n].field_1828 = 0x2032;
                 ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8302,12 +8364,12 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
         }
         bit = 1;
         for (i = 0; i <= 3; i++) {
-            if (bit & CastleCoaster.pts_b.mask) {
+            if (bit & CastleCoaster.prev_spots.mask) {
                 DefaultCursor(&DAT_0081ce00[n]);
                 DAT_0081ce00[n].next = EditCursor.next;
                 EditCursor.next = &DAT_0081ce00[n];
-                DAT_0081ce00[n].tile_x = CastleCoaster.pts_b.pt[i][0];
-                DAT_0081ce00[n].tile_y = CastleCoaster.pts_b.pt[i][1];
+                DAT_0081ce00[n].tile_x = CastleCoaster.prev_spots.pt[i][0];
+                DAT_0081ce00[n].tile_y = CastleCoaster.prev_spots.pt[i][1];
                 DAT_0081ce00[n].footprint = *fp;
                 DAT_0081ce00[n].field_1828 = 0x2032;
                 ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8321,22 +8383,22 @@ void SquareTrackCalcCursor(Element *obj, int *x, unsigned int y) {
             pair.y = (unsigned short)EditCursor.tile_y;
             key = FindPieceClassForElement(obj);
             if (key == 0) {
-                key = &DAT_004b5d20;
+                key = &SquareTrackPieceClass;
             }
-            result = (struct SprEnt *)CheckCoasterPiecePlacement(key, &pair);
-            if (result->field_0 == 0) {
+            result = (struct PiecePlacement *)CheckCoasterPiecePlacement(key, &pair);
+            if (result->joins == 0) {
                 SetCursorBlocked(&EditCursor, 0xe);
             }
         }
         if (IsCursorBuildable(&EditCursor)) {
             SetCursorBlocked(&EditCursor, 0xe);
             bit = 1;
-            mask = &CastleCoaster.pts_a.mask;
+            mask = &CastleCoaster.next_spots.mask;
             c = DAT_0081ce00;
             for (i = 0; i < 8; i++) {
                 if (i == 4) {
                     bit = 1;
-                    mask = &CastleCoaster.pts_b.mask;
+                    mask = &CastleCoaster.prev_spots.mask;
                 }
                 if (bit & *mask) {
                     if (EditCursor.tile_x == c->tile_x && EditCursor.tile_y == c->tile_y) {
@@ -8412,8 +8474,9 @@ struct Struct427a40 {
     unsigned int field_24;
 };
 
+/* fill_open_end of plain track: the unconnected end continues straight on at the same height. */
 // FUNCTION: LEGOLAND 0x00427a40
-void FUN_00427a40(struct Struct427a40 *param_1) {
+void SquareTrackFillOpenEnd(struct Struct427a40 *param_1) {
     if (param_1->field_20 == 0xffffffff) {
         param_1->field_20 = GetOppositeDirection(param_1->field_14);
         param_1->field_24 = param_1->field_18;
@@ -8430,8 +8493,9 @@ struct Struct427a80 {
     float field_24;
 };
 
+/* set_heights of plain track: both ends take the height of the neighbour it was attached to. */
 // FUNCTION: LEGOLAND 0x00427a80
-void FUN_00427a80(struct Struct427a80 *param_1, float param_2) {
+void SquareTrackSetHeights(struct Struct427a80 *param_1, float param_2) {
     param_1->field_24 = param_2;
     param_1->field_18 = *(unsigned int *)&param_2;
 }
@@ -8463,7 +8527,7 @@ void CastleUnloadBasicTiles(void) {
 // FUNCTION: LEGOLAND 0x00427b20
 void FUN_00427b20(Element *obj, int *x, unsigned int y) {
     struct Int16Pair tile;
-    struct SprEnt *result;
+    struct PiecePlacement *result;
 
     SetEditCursorFootPrint(&obj->ride->footprint);
     ScreenToMapRef((int *)x, &EditCursor.tile_x, y);
@@ -8471,8 +8535,8 @@ void FUN_00427b20(Element *obj, int *x, unsigned int y) {
     EditCursor.field_1828 |= 8;
     tile.x = (unsigned short)EditCursor.tile_x;
     tile.y = (unsigned short)EditCursor.tile_y;
-    result = CheckCoasterPiecePlacement(&DAT_004b5d20, &tile);
-    if (result->field_0 != 0) {
+    result = CheckCoasterPiecePlacement(&SquareTrackPieceClass, &tile);
+    if (result->joins != 0) {
         ResetCursorBuildable(&EditCursor);
     } else {
         SetCursorBlocked(&EditCursor, 0xe);
@@ -8491,7 +8555,7 @@ void FUN_00427bc0(struct Element *unused, const struct Struct427bc0Src *src) {
     struct PathSeg *entry;
     pair.x = src->field_0;
     pair.y = src->field_4;
-    entry = AddCoasterPiece(DAT_00829c08, &DAT_004b5d20, &pair);
+    entry = AddCoasterPiece(DAT_00829c08, &SquareTrackPieceClass, &pair);
     if (entry != NULL) {
         entry->flags |= 6;
     }
@@ -8516,8 +8580,9 @@ struct Struct427c30 {
     unsigned int field_24;
 };
 
+/* fill_open_end of the height blocks (same as plain track). */
 // FUNCTION: LEGOLAND 0x00427c30
-void FUN_00427c30(struct Struct427c30 *param_1) {
+void HeightTrackFillOpenEnd(struct Struct427c30 *param_1) {
     if (param_1->field_20 == 0xffffffff) {
         param_1->field_20 = GetOppositeDirection(param_1->field_14);
         param_1->field_24 = param_1->field_18;
@@ -8544,8 +8609,9 @@ struct Struct427c70 {
     float field_24;
 };
 
+/* set_heights of the height blocks: their own fixed heights from the class (f4 next end, f8 prev end). */
 // FUNCTION: LEGOLAND 0x00427c70
-void FUN_00427c70(struct Struct427c70 *param_1) {
+void HeightTrackSetHeights(struct Struct427c70 *param_1) {
     struct Struct427c70Inner *inner = param_1->field_c;
     param_1->field_24 = (float)inner->field_4;
     param_1->field_18 = (float)inner->field_8;
@@ -8554,7 +8620,7 @@ void FUN_00427c70(struct Struct427c70 *param_1) {
 // FUNCTION: LEGOLAND 0x00427c90
 void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     struct Int16Pair pair;
-    struct SprEnt *result;
+    struct PiecePlacement *result;
     struct PieceClass *key;
     unsigned int bit;
     int n;
@@ -8567,12 +8633,12 @@ void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     n = 0;
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & CastleCoaster.pts_a.mask) {
+        if (bit & CastleCoaster.next_spots.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = CastleCoaster.pts_a.pt[i][0];
-            DAT_0081ce00[n].tile_y = CastleCoaster.pts_a.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.next_spots.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.next_spots.pt[i][1];
             DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8582,12 +8648,12 @@ void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     }
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & CastleCoaster.pts_b.mask) {
+        if (bit & CastleCoaster.prev_spots.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = CastleCoaster.pts_b.pt[i][0];
-            DAT_0081ce00[n].tile_y = CastleCoaster.pts_b.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.prev_spots.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.prev_spots.pt[i][1];
             DAT_0081ce00[n].footprint = ride->footprint;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8602,7 +8668,7 @@ void FUN_00427c90(Element *obj, int *x, unsigned int y) {
     key = FindPieceClassForElement(obj);
     if (key != 0) {
         result = CheckCoasterPiecePlacement(key, &pair);
-        if (result->field_0 != 0) {
+        if (result->joins != 0) {
             ResetCursorBuildable(&EditCursor);
         } else {
             SetCursorBlocked(&EditCursor, 0xe);
@@ -8630,7 +8696,7 @@ void SquareTrackHeightLoad(Element *param_1) {
     DAT_00829bfc = a;
     a->layer->flags |= 0x2000;
     ElementPieceClasses[ElementPieceClassCount].key = param_1;
-    ElementPieceClasses[ElementPieceClassCount].value = &DAT_004b5d58;
+    ElementPieceClasses[ElementPieceClassCount].value = &HeightTrack25PieceClass;
     ElementPieceClassCount++;
 }
 
@@ -8640,7 +8706,7 @@ void SquareTrackHeight0Load(Element *param_1) {
     DAT_00829a64 = a;
     a->layer->flags |= 0x2000;
     ElementPieceClasses[ElementPieceClassCount].key = param_1;
-    ElementPieceClasses[ElementPieceClassCount].value = &DAT_004b5d90;
+    ElementPieceClasses[ElementPieceClassCount].value = &HeightTrack2PieceClass;
     ElementPieceClassCount++;
 }
 
@@ -8704,7 +8770,7 @@ void SquareTrackHeightPathLoad(Element *param_1) {
     struct Ride *a = param_1->ride;
     a->layer->flags |= 0x2000;
     ElementPieceClasses[ElementPieceClassCount].key = param_1;
-    ElementPieceClasses[ElementPieceClassCount].value = &DAT_004b5dc8;
+    ElementPieceClasses[ElementPieceClassCount].value = &HeightTrackPathPieceClass;
     ElementPieceClassCount++;
 }
 
@@ -8716,7 +8782,7 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     struct Int16Pair pair;
     int a;
     int b;
-    struct SprEnt *result;
+    struct PiecePlacement *result;
     struct PieceClass *key;
     unsigned int bit;
     int n;
@@ -8735,12 +8801,12 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     n = 0;
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & CastleCoaster.pts_a.mask) {
+        if (bit & CastleCoaster.next_spots.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = CastleCoaster.pts_a.pt[i][0];
-            DAT_0081ce00[n].tile_y = CastleCoaster.pts_a.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.next_spots.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.next_spots.pt[i][1];
             DAT_0081ce00[n].footprint = *fp;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8750,12 +8816,12 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     }
     bit = 1;
     for (i = 0; i <= 3; i++) {
-        if (bit & CastleCoaster.pts_b.mask) {
+        if (bit & CastleCoaster.prev_spots.mask) {
             DefaultCursor(&DAT_0081ce00[n]);
             DAT_0081ce00[n].next = EditCursor.next;
             EditCursor.next = &DAT_0081ce00[n];
-            DAT_0081ce00[n].tile_x = CastleCoaster.pts_b.pt[i][0];
-            DAT_0081ce00[n].tile_y = CastleCoaster.pts_b.pt[i][1];
+            DAT_0081ce00[n].tile_x = CastleCoaster.prev_spots.pt[i][0];
+            DAT_0081ce00[n].tile_y = CastleCoaster.prev_spots.pt[i][1];
             DAT_0081ce00[n].footprint = *fp;
             DAT_0081ce00[n].field_1828 = 0x2032;
             ResetCursorBuildable(&DAT_0081ce00[n]);
@@ -8770,7 +8836,7 @@ void FUN_004280b0(Element *obj, int *x, unsigned int y) {
     key = FindPieceClassForElement(obj);
     if (key != 0) {
         result = CheckCoasterPiecePlacement(key, &pair);
-        if (result->field_0 == 0) {
+        if (result->joins == 0) {
             SetCursorBlocked(&EditCursor, 0xe);
         } else {
             CountCastleCoasterSegs(result->owner, &a, &b);
@@ -8934,7 +9000,7 @@ struct Struct4286e0Element *FUN_004286e0(void *param1) {
 void FUN_00428700(void *node) {
     struct FVec3 buf;
     unsigned int idx = GetPieceHeadDirPairIndex((struct PieceHead *)node);
-    struct SegBlob *r = FUN_0041cff0(node, &buf);
+    struct SegBlob *r = GetPieceCurve(node, &buf);
     if (*(unsigned char *)node & 6) {
         FUN_004294f0(r, &buf, DAT_00611710[idx], 0);
     } else {
@@ -9779,8 +9845,10 @@ void FUN_00429560(struct PathSeg *seg, struct PathSeg *end, int count, float h, 
     }
 }
 
+/* Gives every piece from n up to the next straight one (or end) the height v at both ends: curves stay level.
+ * Returns the piece it stopped at. */
 // FUNCTION: LEGOLAND 0x00429690
-struct PathSeg *FUN_00429690(struct PathSeg *n, float v, struct PathSeg *end) {
+struct PathSeg *SetHeightUntilStraight(struct PathSeg *n, float v, struct PathSeg *end) {
     while (!IsStraightSegment(n->cls, n->dir_a, n->dir_b) && n != end) {
         n->f24 = n->f18 = v;
         n = n->next;
@@ -9828,14 +9896,16 @@ void InterpolateCoasterHeights(struct PathSeg *seg, struct PathSeg *end) {
                 base = h + base;
                 n = node->next;
             } else {
-                n = FUN_00429690(n, base, end);
+                n = SetHeightUntilStraight(n, base, end);
             }
         }
     }
 }
 
+/* From an open end piece, walks back (tail) or forward (head) to the nearest fixed-height piece. Returns it if a
+ * straight piece lies in between (a slope can reach any height) or its facing end already has height x; else NULL. */
 // FUNCTION: LEGOLAND 0x00429840
-struct PathSeg *FUN_00429840(struct PathSeg *n, int x) {
+struct PathSeg *FindReachableAnchor(struct PathSeg *n, int x) {
     struct PathSeg *r;
     unsigned int ok;
 
@@ -9856,11 +9926,13 @@ struct PathSeg *FUN_00429840(struct PathSeg *n, int x) {
     }
 }
 
+/* For a plain piece that would close the ring: 1 if the straight pieces before the tail, after the head, plus the
+ * new piece itself if straight, give at least one piece to build the slope on. */
 // FUNCTION: LEGOLAND 0x004298a0
-int FUN_004298a0(struct PieceClass *info, struct CastleState *owner, struct PathSeg **a, struct PathSeg **b) {
-    int n = CountStraightSegsBack(owner->f_a8, a) + CountStraightSegsForward(owner->f_c0, b);
-    unsigned int da = GetOppositeDirection(owner->f_a8->dir_b);
-    unsigned int db = GetOppositeDirection(owner->f_c0->dir_a);
+int HasStraightForClosingSlope(struct PieceClass *info, struct CastleState *owner, struct PathSeg **a, struct PathSeg **b) {
+    int n = CountStraightSegsBack(owner->tail, a) + CountStraightSegsForward(owner->head, b);
+    unsigned int da = GetOppositeDirection(owner->tail->dir_b);
+    unsigned int db = GetOppositeDirection(owner->head->dir_a);
 
     if (IsStraightSegment(info, da, db)) {
         n++;
