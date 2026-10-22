@@ -953,8 +953,8 @@ float BisectTrainSegmentEnd(struct Train *obj, float t) {
 
     /* bisection on t in [0, t]: t itself holds the midpoint being tried */
     anim = obj->motion;
-    hi = t;
     lo = 0.0f;
+    hi = t;
     s.p = 0.0f;
     s.q = anim.count;
     while (hi - lo > DAT_004ab418) {
@@ -970,9 +970,9 @@ float BisectTrainSegmentEnd(struct Train *obj, float t) {
     }
     PositionTrainCars(obj, anim.pos, &obj->walker);
     SetTrainEnergy((struct Train *)obj, anim.energy);
-    t = (hi + lo) * 0.5f;
-    IntegratorStepRK4(&obj->integ, &s.p, t);
-    return t;
+    lo = (hi + lo) * 0.5f;
+    IntegratorStepRK4(&obj->integ, &s.p, lo);
+    return lo;
 }
 
 /* Physics step of up to `total` seconds in RK4 steps of at most 1/70 s; stops exactly at the end of the current
@@ -983,11 +983,10 @@ float StepTrainToSegmentEnd(struct Train *obj, float total) {
     struct TrainMotion anim;
     int i = 0;
     int n = (int)ceil(total * 70.0f);
+    float dt = total / n;
     float acc = 0.0f;
-    float dt;
 
     s.p = 0.0f;
-    dt = total / n;
     for (i = 0; i < n; i++) {
         anim = obj->motion;
         s.q = anim.count;
