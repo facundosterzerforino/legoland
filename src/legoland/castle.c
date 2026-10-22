@@ -1,3 +1,25 @@
+/* castle.c: the Castle roller coaster (the "CASTLE OBJ" ride and its SQUARE_TRACK* pieces).
+ *
+ * The player places the castle, then lays track pieces (2x2 cells each) from its two doors: plain track (turns and
+ * straights) and height blocks (fixed-height anchors, one of them also puts path under itself). CastleCoaster holds
+ * the pieces as an open chain (head..castle..tail) until both ends meet, which closes the ring. Heights between
+ * anchors are interpolated: every straight run becomes one slope stretch, turns stay level.
+ *
+ * Every piece's track is a list of curve stretches (lines, slopes, quarter arcs; CurveFunctionTable holds their
+ * methods). The train (three cars, two seats each) runs on them by energy conservation: its state [curve parameter,
+ * total energy] is stepped with RK4, speed = sqrt(2 (E - PE) / inertia), both terms numeric derivatives of the
+ * cars' potential energy and centres; the rear wheels sit where the track is one car length behind the front ones
+ * (bisection). The castle's own track (CastleCurves) holds the station: the train starts on its last stretch and is
+ * braked to a stop there when it comes back. Visitors queue (CastleVisitor), board when someone waited 5 s or more
+ * than 3 wait, and leave after the ride.
+ *
+ * Everything is drawn by the castle's own software 3D renderer into the locked 16-bit screen: models (.lms meshes,
+ * .lfm materials, .ltx textures, Rollercoaster.lpt palette with 64-step shade ramps) are projected with an
+ * isometric matrix matching the game map, clipped, and scan-converted by hand-written span fillers (flat, Gouraud,
+ * textured; depth-tested twins use a 640x480 16-bit depth buffer cleared span by span). Track is drawn as hexagonal
+ * rail tubes with sleepers and support posts. lego_sqrtf / lego_rsqrtf are table-driven sqrt and 1/sqrt. Many
+ * functions time themselves with rdtsc into profiling counters (RecordCastleFrameCounters). */
+
 #include <windows.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -821,10 +843,10 @@ float GetTrainParamSpeed(struct Train *param) {
     return FLOAT_004ab390;
 }
 
-/* Scales the curve-parameter speed by the curve's tangent at the train's position (GetWalkerTangentBelow with derivative 1)
- * and a constant: probably the speed along the track. */
+/* Curve-parameter speed to speed along the track: times the length of the centre line's tangent at the train's
+ * position, times 0.0015875 (a unit scale). */
 // FUNCTION: LEGOLAND 0x0041dd00
-float FUN_0041dd00(struct Train *param, float result) {
+float ParamSpeedToTrackSpeed(struct Train *param, float result) {
     struct FVec3 v;
     float t;
 
@@ -834,11 +856,11 @@ float FUN_0041dd00(struct Train *param, float result) {
     return t * FLOAT_004ab404;
 }
 
-/* GetTrainParamSpeed converted by FUN_0041dd00 (the train's track speed). */
+/* The train's speed along the track (GetTrainParamSpeed times the tangent length and unit scale). */
 // FUNCTION: LEGOLAND 0x0041dd50
-float FUN_0041dd50(struct Train *param) {
+float GetTrainTrackSpeed(struct Train *param) {
     float result = GetTrainParamSpeed(param);
-    return FUN_0041dd00(param, result);
+    return ParamSpeedToTrackSpeed(param, result);
 }
 
 /* Sum of the cars' masses. */
@@ -896,7 +918,7 @@ void TrainIntegratorDeriv(struct Integrator *obj, float unused, struct FloatArra
     out->data[0] = t;
     out->data[1] = 0.0f;
     if (b > FLT_MIN) {
-        if (FUN_0041dd00(e, t) < 0.05) {
+        if (ParamSpeedToTrackSpeed(e, t) < 0.05) {
             out->data[1] = b;
         }
     }
@@ -980,16 +1002,16 @@ float StepTrainToSegmentEnd(struct Train *obj, float total) {
     return total;
 }
 
-/* Steps the train while in the station phase (the track's step_leaving). Returns the time used. */
+/* Steps the train while leaving the castle (the track's step_leaving). Returns the time used. */
 // FUNCTION: LEGOLAND 0x0041e0e0
-float FUN_0041e0e0(struct Train *self, float time_left) {
+float StepTrainLeaving(struct Train *self, float time_left) {
     return self->track->step_leaving(self, time_left);
 }
 
 /* Steps the train while arriving (the track's step_arriving), keeping the integrator's derivative function. Returns
  * the time used. */
 // FUNCTION: LEGOLAND 0x0041e100
-float FUN_0041e100(struct Train *self, float time_left) {
+float StepTrainArriving(struct Train *self, float time_left) {
     void (*saved)(struct Integrator *, float, struct FloatArray *) = self->integ.deriv;
     float used = self->track->step_arriving(self, time_left);
 
@@ -1047,7 +1069,7 @@ L41e18c:
         push ecx
         fstp dword ptr [esp]
         push esi
-        call FUN_0041e0e0
+        call StepTrainLeaving
         jmp L41e1c1
 L41e1a6:
         fld dword ptr [ebp - 4]
@@ -1057,7 +1079,7 @@ L41e1a6:
         fstp dword ptr [esp]
         push esi
         je L41e1bc
-        call FUN_0041e100
+        call StepTrainArriving
         jmp L41e1c1
 L41e1bc:
         call StepTrainToSegmentEnd
@@ -1441,9 +1463,9 @@ struct CastleVisitor *FindOccupantInCar(struct TrainCar *host) {
     return 0;
 }
 
-/* Calls method_18 on both seats of the car. */
+/* Frees the occupants of both seats of the car (the seats' method_18). */
 // FUNCTION: LEGOLAND 0x0041e7c0
-void FUN_0041e7c0(struct TrainCar *host) {
+void FreeCarSeatOccupants(struct TrainCar *host) {
     struct TrainSeat *slot = &host->seats[0];
     int i = 2;
     do {
@@ -5961,6 +5983,7 @@ int GetCoasterSurface(struct VideoArg *arg) {
 void ReleaseCoasterSurface(void) {
 }
 
+/* Debug: draws an edge set as dotted lines (white). */
 // FUNCTION: LEGOLAND 0x004237a0
 void DrawEdgeSet(struct EdgeSet *set) {
     int i;
@@ -5970,6 +5993,7 @@ void DrawEdgeSet(struct EdgeSet *set) {
     }
 }
 
+/* Debug: a dotted line of 30 points between two projected points. */
 // FUNCTION: LEGOLAND 0x004237f0
 void DrawDottedLine(void *a, void *b, short c) {
     int *pa = (int *)a;
@@ -5991,6 +6015,7 @@ void DrawDottedLine(void *a, void *b, short c) {
     PlotClippedPoints(&pts[0][0], 30, c);
 }
 
+/* Debug: plots points (16-bit colour c) on the screen surface inside the castle view. */
 // FUNCTION: LEGOLAND 0x004238a0
 void PlotClippedPoints(int *points, int count, short c) {
     struct VideoArg surf;
@@ -6537,7 +6562,7 @@ void RemoveCastleCoasterMapObjects(struct Int16Pair *pos) {
 
 /* The castle's cb_c0: the number of pieces, 0 when param_2 is set and the track is not a closed ring. */
 // FUNCTION: LEGOLAND 0x004246e0
-unsigned int FUN_004246e0(struct Element *param_1, unsigned int param_2) {
+unsigned int CastleObjPieceCount(struct Element *param_1, unsigned int param_2) {
     if (param_2 != 0 && CastleCoaster.flags != 2) {
         return 0;
     }
@@ -6624,7 +6649,7 @@ void CastleBrakingDeriv(struct Integrator *obj, float unused, struct FloatArray 
     float r;
 
     TrainIntegratorDeriv(obj, unused, out);
-    t = FUN_0041dd50(e);
+    t = GetTrainTrackSpeed(e);
     MapPosToWorld(&sub->piece.pos, (float)CastlePieceClass.f8, &v);
     r = t * t;
     s[0] = &sub->piece;
@@ -7090,7 +7115,7 @@ void CastleGetInterfaces(struct Element *head, struct Ride *obj) {
         obj->cb_b0 = RenderCastleObj;
         obj->save_hook = CastleObj_Save;
         obj->load_hook = CastleObj_Load;
-        obj->cb_c0 = (int (*)())FUN_004246e0;
+        obj->cb_c0 = (int (*)())CastleObjPieceCount;
         CastleDispatchTable[0].element = head;
         CastleDispatchTable[0].fn_4 = (void (*)())CastleObjSetEditMode;
         CastleDispatchTable[0].fn_8 = CastleObjCalcCursor;
@@ -8357,6 +8382,8 @@ void LoadCurveWalker(unsigned char *a, struct CurveWalker *b, struct CastleState
     b->node = GetPieceCurve(b->piece, &b->pos);
 }
 
+/* Writes the train's save record: flags, position and energy, the time since its last step and the time left of its
+ * start hold (so both survive the save as offsets). */
 // FUNCTION: LEGOLAND 0x00426f40
 void SaveCastleTrain(struct Train *src, struct TrainSaveRecord *dst) {
     SaveCurveWalker(&src->walker, &dst->field_14);
@@ -8367,6 +8394,7 @@ void SaveCastleTrain(struct Train *src, struct TrainSaveRecord *dst) {
     dst->hold_left = src->hold_until - GetGameTimer();
 }
 
+/* Restores the train from its save record (inverse of SaveCastleTrain). */
 // FUNCTION: LEGOLAND 0x00426f90
 void LoadCastleTrain(struct TrainSaveRecord *src, struct CastleState *obj) {
     struct Train *dst = obj->train;
@@ -9493,6 +9521,7 @@ void InitRailDrawOrder(void) {
     }
 }
 
+/* Index of the lowest set bit (0 for 0). */
 // FUNCTION: LEGOLAND 0x00428840
 unsigned int LowestSetBitIndex(unsigned int param_1) {
     unsigned int mask = 1;
@@ -9506,6 +9535,8 @@ unsigned int LowestSetBitIndex(unsigned int param_1) {
     return result;
 }
 
+/* Span filler (TexturedSpanFillers, both entries): affine texture mapping from the triangle's .ltx texture, shaded
+ * through its shade table, with the depth test of FillSpansFlatZ. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00428860
 __declspec(naked) void FillSpansTexturedZ(void) {
