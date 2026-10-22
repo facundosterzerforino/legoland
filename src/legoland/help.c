@@ -21,11 +21,11 @@
 
 // FUNCTION: LEGOLAND 0x0046ce20
 void ClearAdvisorHelp(void) {
-    if ((DAT_007fe040 & 0x3) != 0) {
+    if ((AdvisorHelpFlags & 0x3) != 0) {
         free((void *)AdvisorHelpText);
         UpdateScriptEndIcon((void *)1);
     }
-    DAT_007fe040 &= ~0x3;
+    AdvisorHelpFlags &= ~0x3;
     FUN_00476000();
     SetNextAdvisorAnimState(0, 0);
     SpeechStop();
@@ -33,10 +33,10 @@ void ClearAdvisorHelp(void) {
 
 // FUNCTION: LEGOLAND 0x0046ce60
 LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned int param_3) {
-    if ((DAT_007fe040 & 1) != 0) {
+    if ((AdvisorHelpFlags & 1) != 0) {
         return 0;
     }
-    DAT_007fe040 |= 1;
+    AdvisorHelpFlags |= 1;
     AdvisorHelpText = (char *)malloc(strlen(param_1) + 1);
     strcpy(AdvisorHelpText, param_1);
     AdvisorHelpStartTime = GetGameTimer();
@@ -47,7 +47,7 @@ LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned
 
 // FUNCTION: LEGOLAND 0x0046cee0
 unsigned int FUN_0046cee0(void) {
-    unsigned int result = GetGameTimer() - DAT_007fe050;
+    unsigned int result = GetGameTimer() - AdvisorHelpClearTime;
     if ((int)result >= 0) {
         DAT_00668618 = 0;
         return 1;
@@ -89,13 +89,13 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
         DAT_007fe054 = GetGameTimer();
     }
 
-    if ((DAT_007fe040 & 0x1) != 0) {
+    if ((AdvisorHelpFlags & 0x1) != 0) {
         if (FUN_0046cf20() != 0) {
             ClearAdvisorHelp();
-            DAT_007fe050 = GetGameTimer();
+            AdvisorHelpClearTime = GetGameTimer();
         } else {
             BubbleHelp(AdvisorHelpRect, AdvisorHelpText, 2);
-            DAT_007fe050 = GetGameTimer();
+            AdvisorHelpClearTime = GetGameTimer();
         }
     } else {
         if (FUN_0046cee0() != 0) {

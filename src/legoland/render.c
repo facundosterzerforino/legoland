@@ -3161,17 +3161,17 @@ __declspec(naked) unsigned short FUN_00488730(unsigned int p1, unsigned int p2, 
 }
 
 // FUNCTION: LEGOLAND 0x004887a0
-void FUN_004887a0(void) {
+void InitZBufferImageSprite(void) {
     DAT_00798590 = (void *)1;
-    DAT_0066be50 = CreateSourceImage(DAT_004d8bb0, 0);
-    DAT_0066be50->data = DAT_00701e68;
-    DAT_0066be50->width = 0x280;
-    DAT_0066be50->height = 0x1e0;
-    DAT_0066be50->refcount = 1;
-    DAT_0066be50->aux = NULL;
-    DAT_0066be50->field_14 = 1;
-    DAT_00701e64 = CreateSprite(DAT_0066be50);
-    DAT_00701e64->flags = DAT_00701e64->flags | 0x208;
+    ZBufferSourceImage = CreateSourceImage(DAT_004d8bb0, 0);
+    ZBufferSourceImage->data = ZBufferImagePixels;
+    ZBufferSourceImage->width = 0x280;
+    ZBufferSourceImage->height = 0x1e0;
+    ZBufferSourceImage->refcount = 1;
+    ZBufferSourceImage->aux = NULL;
+    ZBufferSourceImage->field_14 = 1;
+    ZBufferImageSprite = CreateSprite(ZBufferSourceImage);
+    ZBufferImageSprite->flags = ZBufferImageSprite->flags | 0x208;
 }
 
 // FUNCTION: LEGOLAND 0x00488820
@@ -3191,7 +3191,7 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     int yy;
 
     if (!DAT_00798590) {
-        FUN_004887a0();
+        InitZBufferImageSprite();
     }
     ZBufferSavedSurfaceDesc = CurrentSurfaceDesc;
     ZBufferSavedSoftPrintClip = SoftPrintClip;
@@ -3224,17 +3224,17 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
             } else {
                 px = transp;
             }
-            ((unsigned short *)DAT_00701e68)[yy * w + row] = px;
+            ((unsigned short *)ZBufferImagePixels)[yy * w + row] = px;
         }
         yy = 1 + yy;
     }
-    DAT_0066be50->width = (short)w;
-    DAT_0066be50->height = (short)h;
-    DAT_00701e64->width = (short)w;
-    DAT_00701e64->height = (short)h;
+    ZBufferSourceImage->width = (short)w;
+    ZBufferSourceImage->height = (short)h;
+    ZBufferImageSprite->width = (short)w;
+    ZBufferImageSprite->height = (short)h;
     CurrentSurfaceDesc = ZBufferSavedSurfaceDesc;
     SoftPrintClip = ZBufferSavedSoftPrintClip;
-    return DAT_00701e64;
+    return ZBufferImageSprite;
 }
 
 // FUNCTION: LEGOLAND 0x00488a10

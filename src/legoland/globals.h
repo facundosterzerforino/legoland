@@ -2435,7 +2435,7 @@ extern struct ObjectiveEvent *ObjectiveEventList;
 // 0x0066872c
 extern unsigned int ObjectiveEventTypeCounts[0x15];
 // 0x00668780
-extern unsigned int DAT_00668780;
+extern unsigned int ObjectiveHintTimer;
 // 0x00668784
 extern struct ObjectiveEvent *ScriptEventList;
 // 0x00668788
@@ -2814,7 +2814,7 @@ extern unsigned int DAT_0066be48;
 // 0x0066be4c
 extern unsigned int DAT_0066be4c;
 // 0x0066be50
-extern struct Image *DAT_0066be50;
+extern struct Image *ZBufferSourceImage;
 // 0x0066be54
 extern unsigned short DAT_0066be54[0x4b002];
 // 0x00701e58
@@ -2824,9 +2824,9 @@ extern unsigned char *DAT_00701e5c;
 // 0x00701e60
 extern unsigned int DAT_00701e60;
 // 0x00701e64
-extern struct Sprite *DAT_00701e64;
+extern struct Sprite *ZBufferImageSprite;
 // 0x00701e68
-extern unsigned short DAT_00701e68[0x4b000];
+extern unsigned short ZBufferImagePixels[0x4b000];
 // 0x00797e68
 extern unsigned char *DAT_00797e68;
 // 0x00797e6c
@@ -3003,7 +3003,7 @@ extern unsigned int IntervalHintCount;
 // 0x00798884
 extern unsigned int IntervalHintIndex;
 // 0x00798888
-extern unsigned int DAT_00798888;
+extern unsigned int IntervalHintBubbleEndTime;
 // 0x00798890
 extern void *ProfileListHead;
 // 0x00798894
@@ -3021,7 +3021,7 @@ extern void *AviLockPtr2;
 // 0x007988b0
 extern void *SoundHwnd;
 // 0x007988bc
-extern volatile unsigned int DAT_007988bc; /* the music thread has finished starting (polled) */
+extern volatile unsigned int MusicThreadReady; /* the music thread has finished starting (polled) */
 // 0x007988c0
 extern unsigned int SoundAvailable;
 // 0x007988c4
@@ -3433,7 +3433,7 @@ extern struct Sprite *IHappySprite;
 // 0x007fe020
 extern RECT ScreenRect;
 // 0x007fe040
-extern unsigned int DAT_007fe040;
+extern unsigned int AdvisorHelpFlags;
 // 0x007fe044
 extern unsigned int DAT_007fe044;
 // 0x007fe048
@@ -3441,7 +3441,7 @@ extern char *AdvisorHelpText;
 // 0x007fe04c
 extern unsigned int AdvisorHelpStartTime;
 // 0x007fe050
-extern unsigned int DAT_007fe050;
+extern unsigned int AdvisorHelpClearTime;
 // 0x007fe054
 extern unsigned int DAT_007fe054;
 // 0x007fe114

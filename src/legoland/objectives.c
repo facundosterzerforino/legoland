@@ -301,12 +301,12 @@ struct ObjectiveEvent *AllocTimestampedObjectiveEvent(unsigned int type, int sor
 
 // FUNCTION: LEGOLAND 0x00468d00
 void ResetObjectiveHintTimer(void) {
-    DAT_00668780 = GetGameTimer();
+    ObjectiveHintTimer = GetGameTimer();
 }
 
 // FUNCTION: LEGOLAND 0x00468d10
 int IsObjectiveHintDue(void) {
-    if ((int)(GetGameTimer() - DAT_00668780) > 0xc350) {
+    if ((int)(GetGameTimer() - ObjectiveHintTimer) > 0xc350) {
         ResetObjectiveHintTimer();
         return 1;
     }

@@ -672,7 +672,7 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
     int k;
 
     if (MusicEnabled == 0) {
-        DAT_007988bc = 1;
+        MusicThreadReady = 1;
         return 0;
     }
     desc.dwSize = sizeof(desc);
@@ -869,7 +869,7 @@ DWORD WINAPI MusicThreadProc(LPVOID param) {
             }
         }
     }
-    DAT_007988bc = 1;
+    MusicThreadReady = 1;
     DMusicInitialised = 1;
     events[0] = DMusicNotificationEvent;
     events[1] = MusicCommandEvent;
@@ -981,7 +981,7 @@ release_composer:
     DMusicComposer->vtable->Release(DMusicComposer);
 fail:
     DMusicInitialised = 0;
-    DAT_007988bc = 1;
+    MusicThreadReady = 1;
     return 0;
 }
 
@@ -991,7 +991,7 @@ int StartMusicThread(void *hwnd) {
         MusicThread = CreateThread(0, 0x4000, MusicThreadProc, 0, 0, (LPDWORD)&MusicThreadId);
         return 1;
     }
-    DAT_007988bc = 1;
+    MusicThreadReady = 1;
     return 0;
 }
 

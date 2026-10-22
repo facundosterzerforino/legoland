@@ -688,7 +688,7 @@ void FUN_00459520(void) {
     ResumeMusicThread();
     LoadWatchSprite(0, 0);
 
-    while (DAT_007988bc == 0) {
+    while (MusicThreadReady == 0) {
         PeekMessageA(&msg, NULL, 0, 0, 0);
         Sleep(100);
         DrawWatchSprite();

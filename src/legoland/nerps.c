@@ -2242,7 +2242,7 @@ unsigned int SaveScripts(void) {
             return 0;
         }
     }
-    scratch = DAT_007fe994 - DAT_00668780;
+    scratch = DAT_007fe994 - ObjectiveHintTimer;
     if (SaveGameWrite(&scratch, 4) == 0) {
         return 0;
     }
@@ -2332,7 +2332,7 @@ unsigned int LoadScripts(void) {
     if (SaveGameRead(&base, 4) == 0) {
         return 0;
     }
-    DAT_00668780 = DAT_007fe994 + base;
+    ObjectiveHintTimer = DAT_007fe994 + base;
     DAT_00668614 = 0;
     UpdateScriptEndIcon((void *)1);
     if (SaveGameRead(&i, 4) == 0) {
@@ -2403,6 +2403,6 @@ unsigned int LoadScripts(void) {
 // FUNCTION: LEGOLAND 0x0046ce00
 void FUN_0046ce00(void) {
     ResetObjectiveHintTimer();
-    DAT_007fe050 = 0;
+    AdvisorHelpClearTime = 0;
     DAT_007fe054 = 0;
 }

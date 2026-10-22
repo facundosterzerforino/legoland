@@ -606,7 +606,7 @@ unsigned char IntervalHintHandler(struct IconNode *param_1, unsigned int param_2
                 IntervalHintIndex = 0;
             }
         } while (strlen(IntervalHintLines[IntervalHintIndex]) == 0);
-        DAT_00798888 = GetTicks() + 8000;
+        IntervalHintBubbleEndTime = GetTicks() + 8000;
         PlayIntervalHintSpeech(IntervalHintIndex);
     }
     return 1;
@@ -657,7 +657,7 @@ void InitIntervalScreen(void) {
         icon->flags |= 0x400;
     }
 
-    DAT_00798888 = 0;
+    IntervalHintBubbleEndTime = 0;
     IntervalHintIndex = 0xffffffff;
     TitleNextPageIcon = InsertIcon(0x1b9, 0x1ae, 7, NextPageSprite);
     TitleNextPageIcon->string_id = 0x88e;
@@ -765,13 +765,13 @@ void RenderIntervalScreen(void) {
         y = y + 0x18;
     }
     UpdateIntervalScreenIcons();
-    if (DAT_00798888 != 0) {
+    if (IntervalHintBubbleEndTime != 0) {
         rc[0] = 0x1db;
         rc[1] = 5;
         rc[2] = 0x280;
         rc[3] = 0x78;
-        if ((int)GetTicks() > (int)DAT_00798888) {
-            DAT_00798888 = 0;
+        if ((int)GetTicks() > (int)IntervalHintBubbleEndTime) {
+            IntervalHintBubbleEndTime = 0;
         }
         BubbleHelp(rc, IntervalHintLines[IntervalHintIndex], 2);
     }

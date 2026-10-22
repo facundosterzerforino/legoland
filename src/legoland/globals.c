@@ -2963,7 +2963,7 @@ struct ObjectiveEvent *ObjectiveEventList;
 unsigned int ObjectiveEventTypeCounts[0x15];
 
 // GLOBAL: LEGOLAND 0x00668780
-unsigned int DAT_00668780;
+unsigned int ObjectiveHintTimer;
 
 // GLOBAL: LEGOLAND 0x00668784
 struct ObjectiveEvent *ScriptEventList;
@@ -3527,7 +3527,7 @@ unsigned int DAT_0066be48;
 unsigned int DAT_0066be4c;
 
 // GLOBAL: LEGOLAND 0x0066be50
-struct Image *DAT_0066be50;
+struct Image *ZBufferSourceImage;
 
 // GLOBAL: LEGOLAND 0x0066be54
 unsigned short DAT_0066be54[0x4b002];
@@ -3542,10 +3542,10 @@ unsigned char *DAT_00701e5c;
 unsigned int DAT_00701e60;
 
 // GLOBAL: LEGOLAND 0x00701e64
-struct Sprite *DAT_00701e64;
+struct Sprite *ZBufferImageSprite;
 
 // GLOBAL: LEGOLAND 0x00701e68
-unsigned short DAT_00701e68[0x4b000];
+unsigned short ZBufferImagePixels[0x4b000];
 
 // GLOBAL: LEGOLAND 0x00797e68
 unsigned char *DAT_00797e68;
@@ -3812,7 +3812,7 @@ unsigned int IntervalHintCount;
 unsigned int IntervalHintIndex;
 
 // GLOBAL: LEGOLAND 0x00798888
-unsigned int DAT_00798888;
+unsigned int IntervalHintBubbleEndTime;
 
 // GLOBAL: LEGOLAND 0x00798890
 void *ProfileListHead;
@@ -3839,7 +3839,7 @@ void *AviLockPtr2;
 void *SoundHwnd;
 
 // GLOBAL: LEGOLAND 0x007988bc
-volatile unsigned int DAT_007988bc;
+volatile unsigned int MusicThreadReady;
 
 // GLOBAL: LEGOLAND 0x007988c0
 unsigned int SoundAvailable;
@@ -4433,7 +4433,7 @@ struct Sprite *IHappySprite;
 RECT ScreenRect;
 
 // GLOBAL: LEGOLAND 0x007fe040
-unsigned int DAT_007fe040;
+unsigned int AdvisorHelpFlags;
 
 // GLOBAL: LEGOLAND 0x007fe044
 unsigned int DAT_007fe044;
@@ -4445,7 +4445,7 @@ char *AdvisorHelpText;
 unsigned int AdvisorHelpStartTime;
 
 // GLOBAL: LEGOLAND 0x007fe050
-unsigned int DAT_007fe050;
+unsigned int AdvisorHelpClearTime;
 
 // GLOBAL: LEGOLAND 0x007fe054
 unsigned int DAT_007fe054;
