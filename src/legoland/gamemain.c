@@ -56,9 +56,9 @@ int IsInMapBounds(int a, int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004776c0
-void ReleasePathNode(struct GameMainNode *node) {
-    node->next = FreePathNodeList;
-    FreePathNodeList = node;
+void AddToClosedList(struct GameMainNode *node) {
+    node->next = ClosedPathNodeList;
+    ClosedPathNodeList = node;
 }
 
 // FUNCTION: LEGOLAND 0x004776e0
@@ -90,10 +90,10 @@ void InsertOpenListSorted(struct GameMainNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00477730
-struct GameMainNode *FUN_00477730(struct Point *ctx) {
+struct GameMainNode *FindClosedPathNode(struct Point *ctx) {
     struct GameMainNode *node;
 
-    node = FreePathNodeList;
+    node = ClosedPathNodeList;
     if (node == NULL) {
         return NULL;
     }
@@ -107,12 +107,12 @@ struct GameMainNode *FUN_00477730(struct Point *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00477760
-void RemoveQueryNode(struct GameMainNode *ctx) {
+void RemoveFromClosedList(struct GameMainNode *ctx) {
     struct GameMainNode *prev;
     struct GameMainNode *node;
 
     prev = NULL;
-    node = FreePathNodeList;
+    node = ClosedPathNodeList;
     while (node != NULL) {
         if (node == ctx) {
             break;
@@ -123,7 +123,7 @@ void RemoveQueryNode(struct GameMainNode *ctx) {
     if (prev != NULL) {
         prev->next = node->next;
     } else {
-        FreePathNodeList = node->next;
+        ClosedPathNodeList = node->next;
     }
 }
 
@@ -149,7 +149,7 @@ void RemoveFromOpenList(struct GameMainNode *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004777c0
-struct GameMainNode *FUN_004777c0(struct Point *arg) {
+struct GameMainNode *FindOpenPathNode(struct Point *arg) {
     struct GameMainNode *node = OpenPathNodeList;
     int first;
 
@@ -167,7 +167,7 @@ struct GameMainNode *FUN_004777c0(struct Point *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x004777f0
-struct GameMainNode *FUN_004777f0(struct Point *pos, int *result) {
+struct GameMainNode *GetPathNodeAt(struct Point *pos, int *result) {
     struct GameMainNode *node;
     struct MapElement *tile;
     struct Ride *ride;
@@ -175,12 +175,12 @@ struct GameMainNode *FUN_004777f0(struct Point *pos, int *result) {
     int dx;
     int dy;
 
-    node = FUN_00477730(pos);
+    node = FindClosedPathNode(pos);
     if (node != NULL) {
         *result = 2;
         return node;
     }
-    node = FUN_004777c0(pos);
+    node = FindOpenPathNode(pos);
     if (node != NULL) {
         *result = 1;
         return node;
@@ -350,7 +350,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
     best = NULL;
     DAT_004bb5a0 = a;
     DAT_004bb5a4 = b;
-    nb = FUN_004777f0(&DAT_004bb598, &result);
+    nb = GetPathNodeAt(&DAT_004bb598, &result);
     nb->path_cost = 0;
     InsertOpenListSorted((struct GameMainNode *)nb);
     while ((cur = OpenPathNodeList) != NULL) {
@@ -362,7 +362,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             pos.x = cur->x;
             pos.y = cur->y - 1;
             if (IsInMapBounds(pos.x, pos.y)) {
-                nb = FUN_004777f0(&pos, &result);
+                nb = GetPathNodeAt(&pos, &result);
                 if (nb->step_cost != -1) {
                     if (nb->field_20 && (unsigned)nb->field_20 != 1) {
                         cur_y = cur->y;
@@ -372,7 +372,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                     }
                     if (result == 0) {
                         if (NULL != best && cost > best->path_cost) {
-                            ReleasePathNode((struct GameMainNode *)nb);
+                            AddToClosedList((struct GameMainNode *)nb);
                         } else {
                             cur_x2 = cur->x;
                             nb->field_24 = FUN_004779a0(cur_x2, cur->y, nb->x, nb->y);
@@ -380,7 +380,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                RemoveQueryNode((struct GameMainNode *)nb);
+                                RemoveFromClosedList((struct GameMainNode *)nb);
                             }
                             if (result == 1) {
                                 RemoveFromOpenList((struct GameMainNode *)nb);
@@ -393,7 +393,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             pos.x = cur->x + 1;
             pos.y = cur->y;
             if (IsInMapBounds(pos.x, pos.y)) {
-                nb = FUN_004777f0(&pos, &result);
+                nb = GetPathNodeAt(&pos, &result);
                 cur_x = cur->x;
                 nb->field_24 = FUN_004779a0(cur_x, cur->y, nb->x, nb->y);
                 if (nb->step_cost != -1) {
@@ -404,14 +404,14 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                     }
                     if (result == 0) {
                         if (NULL != best && cost > best->path_cost) {
-                            ReleasePathNode((struct GameMainNode *)nb);
+                            AddToClosedList((struct GameMainNode *)nb);
                         } else {
                             nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                RemoveQueryNode((struct GameMainNode *)nb);
+                                RemoveFromClosedList((struct GameMainNode *)nb);
                             }
                             if (result == 1) {
                                 RemoveFromOpenList((struct GameMainNode *)nb);
@@ -425,7 +425,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             pos.x = pos_x;
             pos.y = cur->y + 1;
             if (IsInMapBounds(pos.x, pos.y)) {
-                nb = FUN_004777f0(&pos, &result);
+                nb = GetPathNodeAt(&pos, &result);
                 nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
                 if (nb->step_cost != -1) {
                     if (!(nb->field_20 != 0 && nb->field_20 != 1)) {
@@ -435,14 +435,14 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                     }
                     if (result == 0) {
                         if (NULL != best && cost > best->path_cost) {
-                            ReleasePathNode((struct GameMainNode *)nb);
+                            AddToClosedList((struct GameMainNode *)nb);
                         } else {
                             nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (result == 2) {
-                                RemoveQueryNode((struct GameMainNode *)nb);
+                                RemoveFromClosedList((struct GameMainNode *)nb);
                             }
                             if (result == 1) {
                                 RemoveFromOpenList((struct GameMainNode *)nb);
@@ -455,7 +455,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             pos.x = cur->x - 1;
             pos.y = cur->y;
             if (IsInMapBounds(pos.x, pos.y)) {
-                nb = FUN_004777f0(&pos, &result);
+                nb = GetPathNodeAt(&pos, &result);
                 nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
                 if (nb->step_cost != -1) {
                     if (0 != nb->field_20 && nb->field_20 != 1) {
@@ -465,14 +465,14 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                     }
                     if (result == 0) {
                         if (best != NULL && cost > best->path_cost) {
-                            ReleasePathNode((struct GameMainNode *)nb);
+                            AddToClosedList((struct GameMainNode *)nb);
                         } else {
                             nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
                             if (2 == result) {
-                                RemoveQueryNode((struct GameMainNode *)nb);
+                                RemoveFromClosedList((struct GameMainNode *)nb);
                             }
                             if (result == 1) {
                                 RemoveFromOpenList((struct GameMainNode *)nb);
@@ -483,7 +483,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                 }
             }
         }
-        ReleasePathNode((struct GameMainNode *)cur);
+        AddToClosedList((struct GameMainNode *)cur);
     }
     id = ElemID(PathControlName);
     nb = best;
@@ -502,8 +502,8 @@ void FindMapPathAStar(int x, int y, int a, int b) {
         }
         nb = nb->parent;
     }
-    while (FreePathNodeList != NULL) {
-        RemoveQueryNode(FreePathNodeList);
+    while (ClosedPathNodeList != NULL) {
+        RemoveFromClosedList(ClosedPathNodeList);
     }
 }
 

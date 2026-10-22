@@ -2707,7 +2707,7 @@ extern struct MoviePool *ActiveMoviePool;
 // 0x00668fc0
 extern void *OpenPathNodeList;
 // 0x00668fc4
-extern struct GameMainNode *FreePathNodeList;
+extern struct GameMainNode *ClosedPathNodeList;
 // 0x00668fcc
 extern int DAT_00668fcc;
 // 0x00668fd0

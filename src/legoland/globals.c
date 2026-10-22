@@ -3374,7 +3374,7 @@ struct MoviePool *ActiveMoviePool;
 void *OpenPathNodeList;
 
 // GLOBAL: LEGOLAND 0x00668fc4
-struct GameMainNode *FreePathNodeList;
+struct GameMainNode *ClosedPathNodeList;
 
 // GLOBAL: LEGOLAND 0x00668fcc
 int DAT_00668fcc;
