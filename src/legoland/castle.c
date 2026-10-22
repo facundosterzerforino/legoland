@@ -1830,11 +1830,6 @@ int FUN_0041ef00(void) {
     return 1;
 }
 
-struct PlaneSet {
-    int count;
-    float p[4][3];
-};
-
 /* Sets the four screen clip planes to the rectangle x0..x1, y0..y1. */
 // FUNCTION: LEGOLAND 0x0041ef20
 void SetClipRect(int a, int b, int c, int d) {
@@ -10234,13 +10229,13 @@ void DrawSupportPost(struct FVec3 *pos, struct FVec3 *basis) {
     ident[6] = 0.0f;
     ident[7] = 0.0f;
     ident[8] = 1.0f;
-    DrawLmsModel(&DAT_004b6150, (struct LmsRec *)DAT_00615f70, zero, ident, 1);
+    DrawLmsModel(&SupportPostModel, (struct LmsRec *)DAT_00615f70, zero, ident, 1);
 }
 
 /* Draws the sleeper model at pos with the track's basis. */
 // FUNCTION: LEGOLAND 0x00429490
 void DrawTrackTie(struct FVec3 *param_1, struct FVec3 *param_2) {
-    DrawLmsModel(&DAT_004b6300, (struct LmsRec *)DAT_004b62f0, param_1, param_2, 1);
+    DrawLmsModel(&TrackTieModel, (struct LmsRec *)DAT_004b62f0, param_1, param_2, 1);
 }
 
 /* Scales the sleeper's vertices (2.5 along the track, 8.2 across). */
@@ -10249,9 +10244,9 @@ void InitTrackTieShape(void) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        DAT_00614858[i].a = DAT_004b61e0[i].a * 2.5f;
-        DAT_00614858[i].b = DAT_004b61e0[i].b * 8.2f;
-        DAT_00614858[i].c = DAT_004b61e0[i].c;
+        TrackTieVerts[i].a = TrackTieShape[i].a * 2.5f;
+        TrackTieVerts[i].b = TrackTieShape[i].b * 8.2f;
+        TrackTieVerts[i].c = TrackTieShape[i].c;
     }
 }
 

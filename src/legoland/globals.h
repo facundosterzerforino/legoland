@@ -853,12 +853,12 @@ extern unsigned int DAT_004b5f14[4][2];
 struct EdgeMesh;
 extern struct EdgeMesh RailTubeMesh;
 // 0x004b61e0
-extern struct CastleFloatEnt DAT_004b61e0[8];
+extern struct CastleFloatEnt TrackTieShape[8];
 
 // 0x004b62f0
 extern unsigned int DAT_004b62f0[4];
 // 0x004b6300
-extern struct LmsFile DAT_004b6300; /* a mesh header like DAT_004b6150 */
+extern struct LmsFile TrackTieModel; /* the track sleeper: 8 vertices (TrackTieVerts, InitTrackTieShape), 8 flat triangles */
 // 0x004b6398
 extern float DAT_004b6398[4][3];
 // 0x004b63c8
@@ -1765,7 +1765,7 @@ extern char RailSplitPoints[1];
 // 0x006122a0
 extern float DAT_006122a0[90][3];
 // 0x00614858
-extern struct CastleFloatEnt DAT_00614858[8];
+extern struct CastleFloatEnt TrackTieVerts[8];
 
 // 0x00616180
 extern struct Cursor DAT_00616180[8];
@@ -1797,7 +1797,7 @@ extern int ArcLengthCurvePair;
 extern float ArcLengthDepth;
 extern struct CastleFloatEnt DAT_004b5f80[3][4];
 // 0x004b6150
-extern struct LmsFile DAT_004b6150; /* the castle cursor's mesh */
+extern struct LmsFile SupportPostModel; /* the track support post: 12 vertices (written by DrawSupportPost), 16 flat triangles */
 extern struct CastleFloatEnt DAT_00612210[3][4];
 // 0x00615f90
 extern int DAT_00615f90;
@@ -4015,7 +4015,7 @@ extern char *CoasterShadeTableData;
 // 0x00829c60
 extern void *CoasterShadeTables[1024];
 // 0x0082ac60
-extern struct FloatArray *VecScratchPool[48];
+extern struct FloatArray *VecScratchPool[32];
 // 0x0082ad20
 /* castle.c: the castle parts' handlers (a row per part class; the table ends where CastleDispatchTableEnd starts) */
 struct DispatchRow {

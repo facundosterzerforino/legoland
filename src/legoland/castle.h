@@ -453,7 +453,11 @@ struct Ride;
 struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short *pt);
 void GetTrainCarCenterAndAxis(struct TrainCar *obj, float *out);
 void SetClipRect(int a, int b, int c, int d);
-struct PlaneSet;
+/* the clip planes (a x + b y + c >= 0 is inside) */
+struct PlaneSet {
+    int count;
+    float p[4][3];
+};
 void SetClipPlanesFromRect(const int *r, struct PlaneSet *out);
 float ParamSpeedToTrackSpeed(struct Train *param, float result);
 float GetTrainTrackSpeed(struct Train *param);

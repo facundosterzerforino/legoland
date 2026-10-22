@@ -430,8 +430,11 @@ unsigned int ClipVertexStride = 28;
 // GLOBAL: LEGOLAND 0x004b560c
 int ClipVertexLastField = 2;
 
+// GLOBAL: LEGOLAND 0x005798fc
+unsigned short CoasterSurfaceData[640 * 480]; /* the renderer's 16-bit frame until GetCoasterSurface locks a surface */
+
 // GLOBAL: LEGOLAND 0x004b5b20
-void *CoasterSurfaceBits;
+void *CoasterSurfaceBits = CoasterSurfaceData;
 
 // GLOBAL: LEGOLAND 0x004b5b24
 unsigned short *CoasterDepthBuffer = (unsigned short *)CoasterDepthBufferData;
@@ -572,17 +575,29 @@ unsigned int DAT_004b5f14[4][2] = {{0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc0
 // GLOBAL: LEGOLAND 0x004b5f60
 struct EdgeMesh RailTubeMesh = {0, 0, 0, 0, (struct MVert *)DAT_006139c8, (struct MEdge *)DAT_006148b8, (struct MTri *)DAT_00612708};
 
+// GLOBAL: LEGOLAND 0x004b6010
+unsigned short DAT_004b6010[16][8] = {{0, 4, 0, 1, 4, 0, 0, 0}, {0, 4, 4, 1, 5, 0, 0, 0}, {0, 4, 1, 2, 5, 0, 0, 0}, {0, 4, 5, 2, 6, 0, 0, 0}, {0, 4, 2, 3, 6, 0, 0, 0}, {0, 4, 6, 3, 7, 0, 0, 0}, {0, 4, 3, 0, 7, 0, 0, 0}, {0, 4, 7, 0, 4, 0, 0, 0}, {0, 0, 4, 5, 8, 0, 0, 0}, {0, 0, 8, 5, 9, 0, 0, 0}, {0, 1, 5, 6, 9, 0, 0, 0}, {0, 1, 9, 6, 10, 0, 0, 0}, {0, 2, 6, 7, 10, 0, 0, 0}, {0, 2, 10, 7, 11, 0, 0, 0}, {0, 3, 7, 4, 11, 0, 0, 0}, {0, 3, 11, 4, 8, 0, 0, 0}}; /* SupportPostModel's 16 triangles */
+
+// GLOBAL: LEGOLAND 0x004b6110
+float DAT_004b6110[16] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f};
+
 // GLOBAL: LEGOLAND 0x004b6150
-struct LmsFile DAT_004b6150 = {0};
+struct LmsFile SupportPostModel = {{12, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0}, DAT_00612708[30], DAT_004b6110, NULL, (struct LmsRef *)DAT_004b6010, 16, NULL, 0, NULL, 0};
 
 // GLOBAL: LEGOLAND 0x004b61e0
-struct CastleFloatEnt DAT_004b61e0[8] = {0};
+struct CastleFloatEnt TrackTieShape[8] = {{1.0f, -1.0f, 0xbf800000 /* -1.0f */}, {1.0f, 1.0f, 0xbf800000 /* -1.0f */}, {-1.0f, 1.0f, 0xbf800000 /* -1.0f */}, {-1.0f, -1.0f, 0xbf800000 /* -1.0f */}, {1.0f, -1.0f, 0x3f800000 /* 1.0f */}, {1.0f, 1.0f, 0x3f800000 /* 1.0f */}, {-1.0f, 1.0f, 0x3f800000 /* 1.0f */}, {-1.0f, -1.0f, 0x3f800000 /* 1.0f */}}; /* unit box; c holds z as float bits */
+
+// GLOBAL: LEGOLAND 0x004b6240
+float DAT_004b6240[12] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f};
+
+// GLOBAL: LEGOLAND 0x004b6270
+unsigned short DAT_004b6270[8][8] = {{0, 0, 0, 1, 2, 0, 0, 0}, {0, 0, 0, 2, 3, 0, 0, 0}, {0, 1, 7, 6, 5, 0, 0, 0}, {0, 1, 7, 5, 4, 0, 0, 0}, {0, 2, 0, 5, 1, 0, 0, 0}, {0, 2, 0, 4, 5, 0, 0, 0}, {0, 3, 2, 7, 3, 0, 0, 0}, {0, 3, 2, 6, 7, 0, 0, 0}}; /* TrackTieModel's 8 triangles */
 
 // GLOBAL: LEGOLAND 0x004b62f0
 unsigned int DAT_004b62f0[4] = {1, 0, 0, 0};
 
 // GLOBAL: LEGOLAND 0x004b6300
-struct LmsFile DAT_004b6300;
+struct LmsFile TrackTieModel = {{8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0}, TrackTieVerts, DAT_004b6240, NULL, (struct LmsRef *)DAT_004b6270, 8, NULL, 0, NULL, 0};
 
 // GLOBAL: LEGOLAND 0x004b6398
 float DAT_004b6398[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 40.0f, 0.0f}, {0.0f, 20.0f, 0.0f}};
@@ -1963,7 +1978,7 @@ float DAT_006122a0[90][3];
 unsigned char DAT_006139c8[0xe90] = {0};
 
 // GLOBAL: LEGOLAND 0x00614858
-struct CastleFloatEnt DAT_00614858[8] = {0};
+struct CastleFloatEnt TrackTieVerts[8] = {0};
 
 // GLOBAL: LEGOLAND 0x00616180
 struct Cursor DAT_00616180[8];
@@ -5311,7 +5326,7 @@ char *CoasterShadeTableData;
 void *CoasterShadeTables[1024];
 
 // GLOBAL: LEGOLAND 0x0082ac60
-struct FloatArray *VecScratchPool[48];
+struct FloatArray *VecScratchPool[32]; /* InitVecMath fills 30 */
 
 // GLOBAL: LEGOLAND 0x0082ad20
 struct DispatchRow CastleDispatchTable[6];
@@ -5438,8 +5453,11 @@ struct RideSpriteInfo PottingShedSpriteInfo;
 // GLOBAL: LEGOLAND 0x004ab404
 float FLOAT_004ab404;
 
+// GLOBAL: LEGOLAND 0x0082ace0
+struct PlaneSet ClipPlaneSet;
+
 // GLOBAL: LEGOLAND 0x004b55fc
-struct PlaneSet *ClipPlanes;
+struct PlaneSet *ClipPlanes = &ClipPlaneSet;
 
 // GLOBAL: LEGOLAND 0x004d83b4
 struct Train *DerivTrain;
@@ -5486,8 +5504,11 @@ int DAT_00638110;
 // GLOBAL: LEGOLAND 0x00638108
 int DAT_00638108;
 
+// GLOBAL: LEGOLAND 0x004d87cc
+int *ClipVertsOut[32];
+
 // GLOBAL: LEGOLAND 0x004b5600
-int **ClipVertexLists[2];
+int **ClipVertexLists[2] = {ClipVertsIn, ClipVertsOut};
 
 // GLOBAL: LEGOLAND 0x004b5610
 float DerivThirdDiffWeight = 0.16666667f;
