@@ -5585,19 +5585,21 @@ void ClearRecordedDepthSpans(struct RecBuf *rb) {
     int i;
 
     for (i = 0; i < n; i++) {
-        short w = rb->ent[i].w;
-        short w2 = rb->ent[i].w;
+        struct RecSrc *s = &poly.src[i];
+        struct RecEnt *e = &rb->ent[i];
+        short w = e->w;
+        short w2 = e->w;
 
         if (w < 0) {
-            poly.src[i].flag = 1;
+            s->flag = 1;
             poly.idx[i].v = -w;
         } else {
-            poly.src[i].flag = 0;
+            s->flag = 0;
             poly.idx[i].v = w2;
         }
         poly.idx[i].k = i;
-        poly.src[i].fx = rb->ent[i - 1].s0n << 16;
-        poly.src[i].d = rb->ent[i].d;
+        s->fx = e[-1].s0n << 16;
+        s->d = rb->ent[i].d;
     }
     ((short *)&poly.src[i - 1].f0)[1] = (short)(rb->x - 1);
     ClearDepthSpans(n, poly.idx, poly.src);
