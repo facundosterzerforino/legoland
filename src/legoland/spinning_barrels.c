@@ -37,7 +37,7 @@ void AddBarrelNode(void *param1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043be00
-void FUN_0043be00(struct BarrelNode *node) {
+void FreeBarrelNode(struct BarrelNode *node) {
     struct BarrelNode *prev;
     struct BarrelNode *cur;
 
@@ -236,7 +236,7 @@ void SpinningBarrelsSetEditMode(void) {
 // FUNCTION: LEGOLAND 0x0043c4d0
 void FreeAllBarrelNodes(void) {
     while (SpinningBarrelList != NULL) {
-        FUN_0043be00(SpinningBarrelList);
+        FreeBarrelNode(SpinningBarrelList);
     }
 }
 
@@ -244,7 +244,7 @@ void FreeAllBarrelNodes(void) {
 void SpinningBarrelsRemoveObject(Element *editObj, TileId tile, struct Cursor *cursor) {
     struct BarrelNode *node = FindBarrelNode(&tile.id);
     if (node != NULL) {
-        FUN_0043be00(node);
+        FreeBarrelNode(node);
     }
     StandardRemoveObject(editObj, tile, cursor);
     RemoveAllBlokesFromRide(editObj->ride, tile);
@@ -381,7 +381,7 @@ void SpinningBarrelsGetInterfaces(struct Element *str, struct Ride *ride) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c7f0
-void FUN_0043c7f0(struct BarrelNode *node) {
+void UpdateBarrelNode(struct BarrelNode *node) {
     struct RideNode *r = SpinningBarrelsRide->riders;
     unsigned int flags;
 
@@ -433,10 +433,10 @@ void FUN_0043c7f0(struct BarrelNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c930
-void FUN_0043c930(void) {
+void UpdateBarrelNodes(void) {
     struct BarrelNode *node = SpinningBarrelList;
     while (node != NULL) {
-        FUN_0043c7f0(node);
+        UpdateBarrelNode(node);
         node = node->next;
     }
 }
@@ -581,7 +581,7 @@ void SpinningBarrelsUpdate(struct Element *elem) {
         }
         rn = next;
     }
-    FUN_0043c930();
+    UpdateBarrelNodes();
 }
 
 // FUNCTION: LEGOLAND 0x0043ce10

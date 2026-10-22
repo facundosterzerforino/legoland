@@ -12,6 +12,6 @@ void PickUpWorker(unsigned int type, struct Bloke *worker);
 int FUN_00470270(void);
 struct Point;
 struct WorkOrder *FUN_00470410(struct Point *out);
-void FUN_00470950(void *a, void *b);
+void CreatePopUpInfoButtons(void *a, void *b);
 void KillPUOKAndCBSprites(void);
 LEGO_EXPORT void RenderWorkerOnMouse(void);

@@ -337,7 +337,7 @@ void SpiderRide(struct Element *name_ptr, struct Ride *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x004161f0
-void FUN_004161f0(struct SpiderNode *node) {
+void UpdateSpiderNode(struct SpiderNode *node) {
     struct SpiderState *s = (struct SpiderState *)node;
     struct RideNode *r = ActiveSpiderRide->riders;
     unsigned int flags = s->field_8;
@@ -384,10 +384,10 @@ void FUN_004161f0(struct SpiderNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00416310
-void FUN_00416310(void) {
+void UpdateSpiderNodes(void) {
     struct SpiderNode *node = SpiderNodeList;
     while (node != NULL) {
-        FUN_004161f0(node);
+        UpdateSpiderNode(node);
         node = node->next;
     }
 }
@@ -409,7 +409,7 @@ void SpiderRideUpdate(Element *obj) {
     int walk[3]; /* BNV start position (leaving path) */
     char dir;
 
-    FUN_00416310();
+    UpdateSpiderNodes();
     while (elem != NULL) {
         next = elem->next;
         bloke = elem->rider;

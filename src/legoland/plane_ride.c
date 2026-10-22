@@ -408,7 +408,7 @@ void PlaneRide_GetInterfaces(struct Element *name, struct Ride *iface) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e2b0
-void FUN_0043e2b0(struct PlaneRideNode *node) {
+void UpdatePlaneRideNode(struct PlaneRideNode *node) {
     struct RideNode *r = PlaneRide->riders;
     unsigned int flags;
 
@@ -462,11 +462,11 @@ void FUN_0043e2b0(struct PlaneRideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e3f0
-void FUN_0043e3f0(void) {
+void UpdatePlaneRideNodes(void) {
     struct PlaneRideNode *current = PlaneRideNodeList;
 
     while (current != NULL) {
-        FUN_0043e2b0(current);
+        UpdatePlaneRideNode(current);
         current = current->next;
     }
 }
@@ -615,5 +615,5 @@ void PlaneRideUpdate(struct Element *elem) {
         }
         rn = next;
     }
-    FUN_0043e3f0();
+    UpdatePlaneRideNodes();
 }

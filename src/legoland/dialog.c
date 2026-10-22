@@ -172,7 +172,7 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
 }
 
 // FUNCTION: LEGOLAND 0x0043eee0
-struct Element *FUN_0043eee0(char *title, struct Sprite *bg, RECT *box, unsigned int mask, int flag) {
+struct Element *SelectElementDialog(char *title, struct Sprite *bg, RECT *box, unsigned int mask, int flag) {
     struct Sprite *happy;
     struct Sprite *poor;
     struct Element *e;

@@ -280,7 +280,7 @@ void SafariRideGetInterfaces(struct Element *name, struct Ride *interfaces) {
 }
 
 // FUNCTION: LEGOLAND 0x004150c0
-void FUN_004150c0(struct SafariNode *node) {
+void UpdateSafariNode(struct SafariNode *node) {
     struct SafariNode *s = (struct SafariNode *)node;
     struct RideNode *r = ((struct Ride *)SafariRide)->riders;
     unsigned int flags = s->field_14;
@@ -333,11 +333,11 @@ void FUN_004150c0(struct SafariNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00415200
-void FUN_00415200(void) {
+void UpdateSafariNodes(void) {
     struct SafariNode *current = SafariNodeList;
     if (current != NULL) {
         while (current != NULL) {
-            FUN_004150c0(current);
+            UpdateSafariNode(current);
             current = current->next;
         }
     }
@@ -359,7 +359,7 @@ void SafariRideUpdate(Element *obj) {
     int coords2[3]; /* BNV start position (leaving path) */
     char dir;
 
-    FUN_00415200();
+    UpdateSafariNodes();
     node = ride->riders;
     while (node != NULL) {
         next = node->next;

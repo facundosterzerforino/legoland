@@ -903,7 +903,7 @@ void LLIDB_UnLoadODF(struct Element *head) {
 }
 
 // FUNCTION: LEGOLAND 0x0047c7f0
-struct Sprite *FUN_0047c7f0(struct Element *elem, char **name2, int *key, char ***after) {
+struct Sprite *LoadObjDescFile(struct Element *elem, char **name2, int *key, char ***after) {
     char filename[0x100];
     char buf2[0x100];
     char buf1[0x100];

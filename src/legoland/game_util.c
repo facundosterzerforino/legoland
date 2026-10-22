@@ -48,7 +48,7 @@ void BeginScriptSection(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00478820
-int FUN_00478820(void) {
+int SetUninitialisedScriptSection(void) {
     // STRING: LEGOLAND 0x004bc0a4
     SetScriptSectionType("Uninitialised", 0);
     return 1;

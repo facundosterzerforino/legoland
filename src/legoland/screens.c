@@ -336,7 +336,7 @@ void MarkLevelComplete(void) {
     if (slot < 0xf) {
         CurrentProfile.flags[4 + slot] = 1;
     }
-    FUN_0048a750();
+    UnlockAllFreePlayObjects();
     UpDateCurrentProfile();
 }
 
@@ -433,7 +433,7 @@ int FUN_00458c00(void) {
                 if (MapStats.level_end == 1) {
                     ((struct ScreenConfig *)lpConfig)->slot += 1;
                 }
-                FUN_0048a750();
+                UnlockAllFreePlayObjects();
                 UnloadMap();
                 DAT_00668e38 = 1;
                 EditMode.unk4 = 2;

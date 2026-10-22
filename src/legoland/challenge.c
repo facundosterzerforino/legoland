@@ -4917,7 +4917,7 @@ int CheckAppraisalDue(void) {
             }
             SetScriptStopped(1);
             lpConfig->field_30 = 1;
-            FUN_0048a750();
+            UnlockAllFreePlayObjects();
         } else {
             if (MapStats.appraisal_streak < 0) {
                 MapStats.appraisal_streak = MapStats.appraisal_streak - 1;

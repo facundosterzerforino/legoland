@@ -323,7 +323,7 @@ LEGO_EXPORT void Mute_SFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004928a0
-int FUN_004928a0(struct Sample *sample) {
+int UnMuteSample(struct Sample *sample) {
     if (SoundAvailable == 0) {
         return 0;
     }
@@ -351,7 +351,7 @@ LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample) {
     if (SoundAvailable != 0 && sample != 0 && (sample->flags & 1) != 0) {
         sample->flags &= 0xfffe;
         if (SfxMuted == 0) {
-            FUN_004928a0(sample);
+            UnMuteSample(sample);
         }
         return 1;
     }
@@ -364,7 +364,7 @@ LEGO_EXPORT void UnMute_FX(void) {
 
     sample = SampleListHead;
     while (sample != 0) {
-        FUN_004928a0(sample);
+        UnMuteSample(sample);
         sample = sample->next;
     }
     SfxMuted = 0;

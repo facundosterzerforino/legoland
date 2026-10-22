@@ -22,7 +22,7 @@ LEGO_EXPORT void SetClipping(RECT *rect);
 LEGO_EXPORT void GetClipping(RECT *dest);
 LEGO_EXPORT void StoreClipping(void);
 LEGO_EXPORT void RestoreClipping(void);
-void FUN_0048a750(void);
+void UnlockAllFreePlayObjects(void);
 void FUN_0048a780(void *arg);
 void FUN_0048a790(void);
 void ClearFreePlaySelection(void);

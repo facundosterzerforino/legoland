@@ -78,7 +78,7 @@ void UnlockFreePlayObject(struct Element *object) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a750
-void FUN_0048a750(void) {
+void UnlockAllFreePlayObjects(void) {
     struct Ride *current = (struct Ride *)ObjectClassList;
     while (current != NULL) {
         struct Element *object = current->element;

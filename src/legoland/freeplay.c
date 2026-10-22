@@ -249,7 +249,7 @@ LEGO_EXPORT void InitFreePlayLists(void) {
         if (idx == 0x86) {
             continue;
         }
-        sprite = FUN_0047c7f0(t1, &t4, &t2, &t3);
+        sprite = LoadObjDescFile(t1, &t4, &t2, &t3);
         if (sprite == 0) {
             continue;
         }

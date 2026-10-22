@@ -330,7 +330,7 @@ LEGO_EXPORT void ResetMoveAWorkerStruct(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00470950
-void FUN_00470950(void *a, void *b) {
+void CreatePopUpInfoButtons(void *a, void *b) {
     unsigned int temp_val, temp_val2;
 
     if (!PUOKSprite) {

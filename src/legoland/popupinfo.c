@@ -207,7 +207,7 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     PopUpDeleteIcon->flags |= 0x4002;
     PopUpDeleteIcon->flags |= 0x400;
     PopUpDeleteIcon->event_handler = (void *)DeleteWorkOrderEventHandler;
-    FUN_00470950(PopUpOkEventHandler, CBCloseEventHandler);
+    CreatePopUpInfoButtons(PopUpOkEventHandler, CBCloseEventHandler);
 }
 
 // FUNCTION: LEGOLAND 0x00471170
@@ -1441,7 +1441,7 @@ void ShowPopUpMessage(int param_1, int param_2, char *param_3, void *param_4, vo
     strcpy(PopUpMessageText, param_3);
     PopUpMessageX = param_1;
     PopUpMessageY = param_2;
-    FUN_00470950(param_4, param_5);
+    CreatePopUpInfoButtons(param_4, param_5);
     PopUpMessageShown = 1;
 }
 

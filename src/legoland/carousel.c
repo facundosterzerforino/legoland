@@ -283,7 +283,7 @@ int Carousel_Load(struct Element *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c6d0
-void FUN_0042c6d0(struct CarouselNode *node) {
+void UpdateCarouselNode(struct CarouselNode *node) {
     struct RideNode *elem = ActiveCarouselRide->riders;
     unsigned int flags = node->flags;
 
@@ -335,11 +335,11 @@ void FUN_0042c6d0(struct CarouselNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c800
-void FUN_0042c800(void) {
+void UpdateCarouselNodes(void) {
     struct CarouselNode *current = CarouselNodeList;
 
     while (current != NULL) {
-        FUN_0042c6d0(current);
+        UpdateCarouselNode(current);
         current = current->next;
     }
 }
@@ -491,7 +491,7 @@ void CarouselUpdate(struct Element *param_1) {
         }
         elem = next;
     }
-    FUN_0042c800();
+    UpdateCarouselNodes();
 }
 
 // FUNCTION: LEGOLAND 0x0042bcf0

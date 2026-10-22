@@ -453,7 +453,7 @@ struct JailCell *FindJailCell(unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00437fc0
-void FUN_00437fc0(struct JailCell *cell) {
+void FreeJailCell(struct JailCell *cell) {
     struct JailCell *cur;
     struct JailCell *prev;
 
@@ -479,7 +479,7 @@ void FUN_00437fc0(struct JailCell *cell) {
 // FUNCTION: LEGOLAND 0x00438000
 void FreeAllJailCells(void) {
     while (JailCellList != NULL) {
-        FUN_00437fc0(JailCellList);
+        FreeJailCell(JailCellList);
     }
 }
 
@@ -487,7 +487,7 @@ void FreeAllJailCells(void) {
 void JailCellRemoveObject(struct Element *editObj, TileId coords, struct Cursor *cursor) {
     struct JailCell *cell = FindJailCell(&coords.id);
     if (cell != NULL) {
-        FUN_00437fc0(cell);
+        FreeJailCell(cell);
     }
     StandardRemoveObject(editObj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)editObj->ride, coords);

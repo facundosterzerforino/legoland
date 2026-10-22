@@ -6,7 +6,7 @@ int DialogSlider(RECT *rc, int min, int max, int value, int step);
 struct Sprite;
 struct Element;
 int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void (*callback)(int), struct Sprite **icons, int w, int h, int flag);
-struct Element *FUN_0043eee0(char *title, struct Sprite *bg, RECT *box, unsigned int mask, int flag);
+struct Element *SelectElementDialog(char *title, struct Sprite *bg, RECT *box, unsigned int mask, int flag);
 struct FileNode {
     struct FileNode *next;
     char *name;
