@@ -352,7 +352,7 @@ struct LSub {
    template (DAT_006102f8) */
 struct SegBlob {
     /* 0x00 */ unsigned int v[16];
-    /* 0x40 */ float f40;
+    /* 0x40 */ float length; /* straight and slope stretches: the length of the xy line */
     /* 0x44 */ union {
         float start;
         unsigned int start_bits; /* passed on as raw bits by the curve integrators */
@@ -790,7 +790,7 @@ extern char SitLoGirlSitName[];
 // 0x004b59f8
 extern char SitLoManSitName[];
 // 0x004b5abc
-extern float DAT_004b5abc[4][4];
+extern float HermiteBasis[4][4];
 // 0x004b5b3c
 extern struct RecBuf *DAT_004b5b3c;
 // 0x004b5988
@@ -4187,15 +4187,15 @@ extern struct FloatArray **DifferenceTableRows[5];
 // 0x004b5660
 extern float RK4Coefficients[4][2];
 
-struct Struct1e40;
+struct SlopeCurve;
 // 0x004dd644
-extern struct Struct1e40 *DAT_004dd644;
+extern struct SlopeCurve *SplitCurveStart;
 // 0x004dd648
-extern struct Struct1e40 *DAT_004dd648;
+extern struct SlopeCurve *SplitCurve;
 // 0x004dd64c
-extern float *DAT_004dd64c;
+extern float *SplitPointsNext;
 // 0x004dd650
-extern int DAT_004dd650;
+extern int SplitPointCount;
 
 // 0x004ab438
 extern float FLOAT_004ab438;

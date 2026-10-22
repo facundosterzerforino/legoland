@@ -4445,8 +4445,9 @@ struct Vec3 {
     unsigned int field_8;
 };
 
+/* Line stretch, centre at t: start + t * dir in x/y, constant height. */
 // FUNCTION: LEGOLAND 0x004219c0
-void FUN_004219c0(struct Vec5 *arg1, float float_arg, struct Vec3 *arg3) {
+void LineCurvePos(struct Vec5 *arg1, float float_arg, struct Vec3 *arg3) {
     arg3->field_0 = arg1->field_0 + (float_arg * arg1->field_c);
     arg3->field_4 = arg1->field_4 + (float_arg * arg1->field_10);
     arg3->field_8 = arg1->field_8;
@@ -4458,8 +4459,9 @@ struct Words3 {
     unsigned int field_8;
 };
 
+/* Tangent of a line stretch: its constant direction. */
 // FUNCTION: LEGOLAND 0x004219f0
-void FUN_004219f0(unsigned char *param_1, unsigned int param_2, struct Words3 *param_3) {
+void LineCurveTangent(unsigned char *param_1, unsigned int param_2, struct Words3 *param_3) {
     param_1 = param_1 + 12;
     param_3->field_0 = *(unsigned int *)param_1;
     param_3->field_4 = *(unsigned int *)(param_1 + 4);
@@ -4477,15 +4479,17 @@ struct Vec7 {
     float field_1c;
 };
 
+/* Line stretch, side A at t: the centre plus the side offset. */
 // FUNCTION: LEGOLAND 0x00421a10
-void FUN_00421a10(struct Vec7 *s1, float arg2, struct Vec3 *s2) {
+void LineCurveSideAPos(struct Vec7 *s1, float arg2, struct Vec3 *s2) {
     s2->field_0 = arg2 * s1->field_c + s1->field_18 + s1->field_0;
     s2->field_4 = arg2 * s1->field_10 + s1->field_1c + s1->field_4;
     s2->field_8 = s1->field_8;
 }
 
+/* Line stretch, side B at t: the centre minus the side offset. */
 // FUNCTION: LEGOLAND 0x00421a40
-void FUN_00421a40(struct Vec7 *a, float c, struct Vec3 *b) {
+void LineCurveSideBPos(struct Vec7 *a, float c, struct Vec3 *b) {
     b->field_0 = c * a->field_c + a->field_0 - a->field_18;
     b->field_4 = c * a->field_10 + a->field_4 - a->field_1c;
     b->field_8 = a->field_8;
@@ -4497,8 +4501,9 @@ struct Struct1a70A {
     unsigned int field_48;
 };
 
+/* Line stretch split points: just its two ends. Returns 2. */
 // FUNCTION: LEGOLAND 0x00421a70
-int FUN_00421a70(struct Struct1a70A *param_1, struct Pair *param_2) {
+int LineCurveSplitPoints(struct Struct1a70A *param_1, struct Pair *param_2) {
     param_2->field_0 = param_1->field_44;
     param_2->field_4 = param_1->field_48;
     return 2;
@@ -4510,50 +4515,53 @@ struct Struct1a90 {
     float field_8;
 };
 
+/* Line stretch normal: straight up (0, 0, 1). */
 // FUNCTION: LEGOLAND 0x00421a90
-void FUN_00421a90(unsigned int param_1, unsigned int param_2, struct Struct1a90 *param_3) {
+void LineCurveNormal(unsigned int param_1, unsigned int param_2, struct Struct1a90 *param_3) {
     param_3->field_0 = 0;
     param_3->field_4 = 0;
     param_3->field_8 = 1.0f;
 }
 
-struct Obj421ab0 {
-    struct Words3 field_0;
-    float field_c[3];
-    struct Words3 field_18;
-    float field_24[4];
+struct LineCurve {
+    struct Words3 start;
+    float dir[3];
+    struct Words3 side;
+    float height[4];
     unsigned char pad_34[0xc];
-    float field_40;
-    unsigned int field_44;
-    float field_48;
-    void **field_4c;
-    struct SegBlob *field_50; /* next */
-    struct SegBlob *field_54; /* prev */
+    float length;
+    unsigned int start_t;
+    float end_t;
+    void **vt;
+    struct SegBlob *next;
+    struct SegBlob *prev;
 };
 
+/* Makes a straight stretch from a to b with side offset c: t runs 0..1, length is the 3D distance. */
 // FUNCTION: LEGOLAND 0x00421ab0
-void InitLineCurve(struct Obj421ab0 *obj, float *a, float *b, struct Words3 *c) {
+void InitLineCurve(struct LineCurve *obj, float *a, float *b, struct Words3 *c) {
     float sum = FLOAT_004ab390;
     float d;
     int i;
 
     for (i = 0; i < 3; i++) {
         d = b[i] - a[i];
-        obj->field_c[i] = d;
+        obj->dir[i] = d;
         sum += d * d;
     }
-    obj->field_40 = (float)sqrt(sum);
-    obj->field_0 = *(struct Words3 *)a;
-    obj->field_18 = *c;
-    obj->field_4c = &CurveFunctionTable[8];
-    obj->field_44 = 0;
-    obj->field_48 = 1.0f;
-    obj->field_50 = NULL;
-    obj->field_54 = NULL;
+    obj->length = (float)sqrt(sum);
+    obj->start = *(struct Words3 *)a;
+    obj->side = *c;
+    obj->vt = &CurveFunctionTable[8];
+    obj->start_t = 0;
+    obj->end_t = 1.0f;
+    obj->next = NULL;
+    obj->prev = NULL;
 }
 
+/* Arc stretch, centre at angle t: cos t * axis0 + sin t * axis1 + centre (x/y; z from the centre). */
 // FUNCTION: LEGOLAND 0x00421b40
-void FUN_00421b40(float m[3][3], float angle, float out[3]) {
+void ArcCurvePos(float m[3][3], float angle, float out[3]) {
     int j;
     float s = (float)sin(angle);
     float c = (float)cos(angle);
@@ -4563,8 +4571,9 @@ void FUN_00421b40(float m[3][3], float angle, float out[3]) {
     out[2] = m[2][2];
 }
 
+/* Arc stretch tangent at angle t: -sin t * axis0 + cos t * axis1 (level). */
 // FUNCTION: LEGOLAND 0x00421b90
-void FUN_00421b90(float m[3][3], float angle, float out[3]) {
+void ArcCurveTangent(float m[3][3], float angle, float out[3]) {
     int j;
     float s = (float)sin(angle);
     angle = (float)cos(angle);
@@ -4575,8 +4584,9 @@ void FUN_00421b90(float m[3][3], float angle, float out[3]) {
     out[2] = 0.0f;
 }
 
+/* Arc stretch, side A at angle t: the centre circle scaled by side_a_scale. */
 // FUNCTION: LEGOLAND 0x00421be0
-void FUN_00421be0(float m[12], float angle, float out[3]) {
+void ArcCurveSideAPos(float m[12], float angle, float out[3]) {
     int j;
     float s = (float)sin(angle) * m[9];
     float c = (float)cos(angle) * m[9];
@@ -4586,8 +4596,9 @@ void FUN_00421be0(float m[12], float angle, float out[3]) {
     out[2] = m[8];
 }
 
+/* Arc stretch, side B at angle t: the centre circle scaled by side_b_scale. */
 // FUNCTION: LEGOLAND 0x00421c30
-void FUN_00421c30(float m[12], float angle, float out[3]) {
+void ArcCurveSideBPos(float m[12], float angle, float out[3]) {
     int j;
     float s = (float)sin(angle) * m[10];
     float c = (float)cos(angle) * m[10];
@@ -4606,6 +4617,7 @@ struct Floats6 {
     float field_14;
 };
 
+/* Arc stretch split points: 0 to pi/2 in five steps. Returns 6. */
 // FUNCTION: LEGOLAND 0x00421c80
 unsigned int GetQuarterCircleAngles(unsigned int param_1, struct Floats6 *ptr_0) {
     ptr_0->field_0 = 0.0f;
@@ -4617,39 +4629,42 @@ unsigned int GetQuarterCircleAngles(unsigned int param_1, struct Floats6 *ptr_0)
     return 6;
 }
 
+/* Arc stretch normal: straight up (0, 0, 1). */
 // FUNCTION: LEGOLAND 0x00421cc0
-void FUN_00421cc0(int param_1, int param_2, struct Struct1a90 *param_3) {
+void ArcCurveNormal(int param_1, int param_2, struct Struct1a90 *param_3) {
     param_3->field_0 = 0;
     param_3->field_4 = 0;
     param_3->field_8 = 1.0f;
 }
 
-struct Obj421ce0 {
-    struct Words3 field_0;
-    struct Words3 field_c;
-    struct Words3 field_18;
-    unsigned int field_24;
-    unsigned int field_28;
+struct ArcCurve {
+    struct Words3 axis0;
+    struct Words3 axis1;
+    struct Words3 centre;
+    unsigned int side_a_scale;
+    unsigned int side_b_scale;
     unsigned char pad_2c[0x18];
-    unsigned int field_44;
-    float field_48;
-    void **field_4c;
-    struct SegBlob *field_50; /* next */
-    struct SegBlob *field_54; /* prev */
+    unsigned int start_t;
+    float end_t;
+    void **vt;
+    struct SegBlob *next;
+    struct SegBlob *prev;
 };
 
+/* Makes a quarter-circle stretch (t = 0..pi/2) from its two axes (radius vectors at 0 and 90 degrees), its centre
+ * and the side radius factors. */
 // FUNCTION: LEGOLAND 0x00421ce0
-void FUN_00421ce0(struct Words3 *a, struct Words3 *b, struct Words3 *c, struct Obj421ce0 *obj, unsigned int d, unsigned int e) {
-    obj->field_0 = *a;
-    obj->field_c = *b;
-    obj->field_18 = *c;
-    obj->field_4c = &CurveFunctionTable[16];
-    obj->field_24 = d;
-    obj->field_28 = e;
-    obj->field_44 = 0;
-    obj->field_48 = 1.5707950592041016f;
-    obj->field_50 = NULL;
-    obj->field_54 = NULL;
+void InitArcCurve(struct Words3 *a, struct Words3 *b, struct Words3 *c, struct ArcCurve *obj, unsigned int d, unsigned int e) {
+    obj->axis0 = *a;
+    obj->axis1 = *b;
+    obj->centre = *c;
+    obj->vt = &CurveFunctionTable[16];
+    obj->side_a_scale = d;
+    obj->side_b_scale = e;
+    obj->start_t = 0;
+    obj->end_t = 1.5707950592041016f;
+    obj->next = NULL;
+    obj->prev = NULL;
 }
 
 struct Struct1d60 {
@@ -4671,15 +4686,17 @@ struct Floats3 {
     float field_8;
 };
 
+/* Slope stretch, centre at t: the xy line, height from the cubic in t. */
 // FUNCTION: LEGOLAND 0x00421d60
-void FUN_00421d60(struct Struct1d60 *a, float b, struct Floats3 *out) {
+void SlopeCurvePos(struct Struct1d60 *a, float b, struct Floats3 *out) {
     out->field_0 = a->field_0 + b * a->field_c;
     out->field_4 = a->field_4 + b * a->field_10;
     out->field_8 = a->field_30 + b * (a->field_2c + b * (a->field_28 + b * a->field_24));
 }
 
+/* Slope stretch tangent at t: (dx, dy, 3 a t^2 + 2 b t + c). */
 // FUNCTION: LEGOLAND 0x00421da0
-void FUN_00421da0(unsigned char *param_1, float t, struct Words3 *out) {
+void SlopeCurveTangent(unsigned char *param_1, float t, struct Words3 *out) {
     float *f = (float *)param_1;
     float v;
     *out = *(struct Words3 *)(param_1 + 12);
@@ -4689,22 +4706,23 @@ void FUN_00421da0(unsigned char *param_1, float t, struct Words3 *out) {
     *(float *)&out->field_8 = v * t + f[11];
 }
 
+/* Slope stretch, side A at t: the centre plus the side offset in x/y. */
 // FUNCTION: LEGOLAND 0x00421df0
-void FUN_00421df0(float *a, float x, float *out) {
+void SlopeCurveSideAPos(float *a, float x, float *out) {
     out[0] = x * a[3] + a[6] + a[0];
     out[1] = x * a[4] + a[7] + a[1];
     out[2] = ((x * a[9] + a[10]) * x + a[11]) * x + a[12];
 }
 
-struct Struct1e40 {
-    float field_0;
-    float field_4;
+struct SlopeCurve {
+    float x0;
+    float y0;
     float pad_8;
-    float field_c;
-    float field_10;
+    float dx;
+    float dy;
     float pad_14;
-    float field_18;
-    float field_1c;
+    float side_x;
+    float side_y;
     float pad_20;
     float coef_t3;
     float coef_t2;
@@ -4715,12 +4733,13 @@ struct Struct1e40 {
     float t_end;
 };
 
+/* Slope stretch, side B at t: the centre minus the side offset in x/y. */
 // FUNCTION: LEGOLAND 0x00421e40
-void FUN_00421e40(struct Struct1e40 *ptr1, float multiplier, struct Floats3 *ptr2) {
+void SlopeCurveSideBPos(struct SlopeCurve *ptr1, float multiplier, struct Floats3 *ptr2) {
     float temp;
 
-    ptr2->field_0 = multiplier * ptr1->field_c + ptr1->field_0 - ptr1->field_18;
-    ptr2->field_4 = multiplier * ptr1->field_10 + ptr1->field_4 - ptr1->field_1c;
+    ptr2->field_0 = multiplier * ptr1->dx + ptr1->x0 - ptr1->side_x;
+    ptr2->field_4 = multiplier * ptr1->dy + ptr1->y0 - ptr1->side_y;
 
     temp = multiplier * ptr1->coef_t3 + ptr1->coef_t2;
     temp = temp * multiplier + ptr1->coef_t1;
@@ -4728,6 +4747,8 @@ void FUN_00421e40(struct Struct1e40 *ptr1, float multiplier, struct Floats3 *ptr
     ptr2->field_8 = temp;
 }
 
+/* Recursively adds split points between (x0, y0) and (x1, y1) where the slope's height cubic is furthest (more than
+ * 1 unit) from the straight chord, so the drawn segments follow the curve. */
 // FUNCTION: LEGOLAND 0x00421e90
 void SubdivideCurveAtMaxError(float x0, float y0, float x1, float y1) {
     float roots[2];
@@ -4736,7 +4757,7 @@ void SubdivideCurveAtMaxError(float x0, float y0, float x1, float y1) {
     float bx;
     float m;
     float best = 1.17549435e-38f;
-    struct Struct1e40 *o = DAT_004dd648;
+    struct SlopeCurve *o = SplitCurve;
     float *r = roots;
     int i = 2;
 
@@ -4772,29 +4793,30 @@ void SubdivideCurveAtMaxError(float x0, float y0, float x1, float y1) {
         }
     }
     if (fabs(best) > 1.0) {
-        *DAT_004dd64c++ = bx;
-        DAT_004dd650++;
+        *SplitPointsNext++ = bx;
+        SplitPointCount++;
         SubdivideCurveAtMaxError(x0, y0, bx, by);
         SubdivideCurveAtMaxError(bx, by, x1, y1);
     }
 }
 
+/* Slope stretch split points: its ends plus the points SubdivideCurveAtMaxError adds, sorted. Returns the count. */
 // FUNCTION: LEGOLAND 0x00422000
-int BuildCurveSplitPoints(struct Struct1e40 *o, float *out) {
+int BuildCurveSplitPoints(struct SlopeCurve *o, float *out) {
     int i;
     int j;
     float t;
 
-    DAT_004dd644 = o;
-    DAT_004dd648 = o;
-    DAT_004dd650 = 2;
-    DAT_004dd64c = out;
-    *DAT_004dd64c = o->t_start;
-    DAT_004dd64c++;
-    *DAT_004dd64c = o->t_end;
-    DAT_004dd64c++;
+    SplitCurveStart = o;
+    SplitCurve = o;
+    SplitPointCount = 2;
+    SplitPointsNext = out;
+    *SplitPointsNext = o->t_start;
+    SplitPointsNext++;
+    *SplitPointsNext = o->t_end;
+    SplitPointsNext++;
     SubdivideCurveAtMaxError(o->t_start, ((o->t_start * o->coef_t3 + o->coef_t2) * o->t_start + o->coef_t1) * o->t_start + o->coef_t0, o->t_end, ((o->t_end * o->coef_t3 + o->coef_t2) * o->t_end + o->coef_t1) * o->t_end + o->coef_t0);
-    for (i = DAT_004dd650 - 1; i >= 0; i--) {
+    for (i = SplitPointCount - 1; i >= 0; i--) {
         for (j = 0; j < i; j++) {
             if (out[j] > out[j + 1]) {
                 t = out[j];
@@ -4803,15 +4825,17 @@ int BuildCurveSplitPoints(struct Struct1e40 *o, float *out) {
             }
         }
     }
-    return DAT_004dd650;
+    return SplitPointCount;
 }
 
 struct V3 {
     float x, y, z;
 };
 
+/* Slope stretch normal at t: the tangent, transformed (FUN_00425d50), turned 90 degrees in the plane of its larger
+ * horizontal component. */
 // FUNCTION: LEGOLAND 0x004220e0
-void FUN_004220e0(float *obj, float t, float *out) {
+void SlopeCurveNormal(float *obj, float t, float *out) {
     float c, v;
 
     *(struct V3 *)out = *(struct V3 *)(obj + 3);
@@ -4839,8 +4863,10 @@ void FUN_004220e0(float *obj, float t, float *out) {
     }
 }
 
+/* Makes a slope stretch from a1 to a2: a straight xy line whose height follows the Hermite cubic from a1.z to a2.z
+ * with level ends. */
 // FUNCTION: LEGOLAND 0x00422180
-void FUN_00422180(float *a1, float *a2, struct Words3 *a3, struct Obj421ab0 *a4) {
+void InitSlopeCurve(float *a1, float *a2, struct Words3 *a3, struct LineCurve *a4) {
     float q[4];
     float sum;
     float *p;
@@ -4854,44 +4880,46 @@ void FUN_00422180(float *a1, float *a2, struct Words3 *a3, struct Obj421ab0 *a4)
     a2[2] = 0.0f;
     a1[2] = 0.0f;
     InitLineCurve(a4, a1, a2, a3);
-    p = &DAT_004b5abc[0][0];
-    out = a4->field_24;
+    p = &HermiteBasis[0][0];
+    out = a4->height;
     do {
         sum = FLOAT_004ab390;
         for (j = 0; j < 4; j++) {
             sum += q[j] * *p++;
         }
         *out++ = sum;
-    } while ((INT_PTR)p <= (INT_PTR)&DAT_004b5abc[3][0]);
-    a4->field_4c = &CurveFunctionTable[0];
+    } while ((INT_PTR)p <= (INT_PTR)&HermiteBasis[3][0]);
+    a4->vt = &CurveFunctionTable[0];
 }
 
+/* Fills CurveFunctionTable: rows of 8 for slope (0), line (8) and arc (16) stretches: side A position and tangent,
+ * centre position and tangent, side B position and tangent, split points, normal. */
 // FUNCTION: LEGOLAND 0x00422210
 void InitCurveFunctionTable(void) {
-    CurveFunctionTable[0] = FUN_00421df0;
-    CurveFunctionTable[1] = FUN_00421da0;
-    CurveFunctionTable[3] = FUN_00421da0;
-    CurveFunctionTable[5] = FUN_00421da0;
-    CurveFunctionTable[9] = FUN_004219f0;
-    CurveFunctionTable[11] = FUN_004219f0;
-    CurveFunctionTable[13] = FUN_004219f0;
-    CurveFunctionTable[2] = FUN_00421d60;
-    CurveFunctionTable[4] = FUN_00421e40;
+    CurveFunctionTable[0] = SlopeCurveSideAPos;
+    CurveFunctionTable[1] = SlopeCurveTangent;
+    CurveFunctionTable[3] = SlopeCurveTangent;
+    CurveFunctionTable[5] = SlopeCurveTangent;
+    CurveFunctionTable[9] = LineCurveTangent;
+    CurveFunctionTable[11] = LineCurveTangent;
+    CurveFunctionTable[13] = LineCurveTangent;
+    CurveFunctionTable[2] = SlopeCurvePos;
+    CurveFunctionTable[4] = SlopeCurveSideBPos;
     CurveFunctionTable[6] = BuildCurveSplitPoints;
-    CurveFunctionTable[7] = FUN_004220e0;
-    CurveFunctionTable[8] = FUN_00421a10;
-    CurveFunctionTable[10] = FUN_004219c0;
-    CurveFunctionTable[12] = FUN_00421a40;
-    CurveFunctionTable[14] = FUN_00421a70;
-    CurveFunctionTable[15] = FUN_00421a90;
-    CurveFunctionTable[16] = FUN_00421be0;
-    CurveFunctionTable[17] = FUN_00421b90;
-    CurveFunctionTable[18] = FUN_00421b40;
-    CurveFunctionTable[19] = FUN_00421b90;
-    CurveFunctionTable[20] = FUN_00421c30;
-    CurveFunctionTable[21] = FUN_00421b90;
+    CurveFunctionTable[7] = SlopeCurveNormal;
+    CurveFunctionTable[8] = LineCurveSideAPos;
+    CurveFunctionTable[10] = LineCurvePos;
+    CurveFunctionTable[12] = LineCurveSideBPos;
+    CurveFunctionTable[14] = LineCurveSplitPoints;
+    CurveFunctionTable[15] = LineCurveNormal;
+    CurveFunctionTable[16] = ArcCurveSideAPos;
+    CurveFunctionTable[17] = ArcCurveTangent;
+    CurveFunctionTable[18] = ArcCurvePos;
+    CurveFunctionTable[19] = ArcCurveTangent;
+    CurveFunctionTable[20] = ArcCurveSideBPos;
+    CurveFunctionTable[21] = ArcCurveTangent;
     CurveFunctionTable[22] = GetQuarterCircleAngles;
-    CurveFunctionTable[23] = FUN_00421cc0;
+    CurveFunctionTable[23] = ArcCurveNormal;
 }
 
 // FUNCTION: LEGOLAND 0x004222f0
@@ -6025,7 +6053,7 @@ void FUN_00423a10(void) {
     c.x = -10.0f;
     c.y = 0.0f;
     c.z = 0.0f;
-    InitLineCurve((struct Obj421ab0 *)&DAT_006102f8[0], &v1.x, &v2.x, (struct Words3 *)&c);
+    InitLineCurve((struct LineCurve *)&DAT_006102f8[0], &v1.x, &v2.x, (struct Words3 *)&c);
     n = (q.y - r.y) >> 1;
     t = DAT_006102f8[0].start;
     pt = q;
@@ -6048,7 +6076,7 @@ void FUN_00423a10(void) {
     pt.x = r.x + 2;
     pt.y = r.y + 2;
     MapPosToWorld(&pt, 0.0f, &v3);
-    FUN_00421ce0((struct Words3 *)&v1, (struct Words3 *)&v2, (struct Words3 *)&v3, (struct Obj421ce0 *)&DAT_006102f8[1], 0x3fc00000, 0x3f000000);
+    InitArcCurve((struct Words3 *)&v1, (struct Words3 *)&v2, (struct Words3 *)&v3, (struct ArcCurve *)&DAT_006102f8[1], 0x3fc00000, 0x3f000000);
     DAT_0060f914[cnt].xy = r;
     DAT_0060f914[cnt].k = 1;
     DAT_0060f914[cnt].a = DAT_006102f8[1].start;
@@ -6063,7 +6091,7 @@ void FUN_00423a10(void) {
     c.x = 0.0f;
     c.y = -10.0f;
     c.z = 0.0f;
-    InitLineCurve((struct Obj421ab0 *)&DAT_006102f8[2], &v1.x, &v2.x, (struct Words3 *)&c);
+    InitLineCurve((struct LineCurve *)&DAT_006102f8[2], &v1.x, &v2.x, (struct Words3 *)&c);
     DAT_006102f8[0].prev = 0;
     DAT_006102f8[0].next = &DAT_006102f8[1];
     DAT_006102f8[1].prev = &DAT_006102f8[0];
@@ -6195,13 +6223,13 @@ int FUN_00423f40(struct Point *pos, float *a2, struct Point *a3, float *a4, stru
 
     *a6 = node->prev == (struct PathSeg *)&CastleCoaster.piece.flags;
     c = GetPieceCurve(node, &a);
-    c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
+    c->vt->pos(c, (c->end + c->start) * 0.5f, &b.x);
     b.z += a.z;
     *a2 = b.z * -2.0f;
     n2 = node->next;
     if (n2 != 0 && n2 != (struct PathSeg *)&CastleCoaster.piece.flags) {
         c = GetPieceCurve(n2, &a);
-        c->vt->method_8(c, (c->end + c->start) * 0.5f, &b.x);
+        c->vt->pos(c, (c->end + c->start) * 0.5f, &b.x);
         b.z += a.z;
         *a4 = b.z * -2.0f;
         a3->x = n2->x;
@@ -9058,7 +9086,7 @@ void FUN_00428300(Element *obj, const struct Struct427bc0Src *src) {
 }
 
 // FUNCTION: LEGOLAND 0x00428350
-void FUN_00428350(int a, int b, int c, struct Obj421ab0 *obj, int d) {
+void FUN_00428350(int a, int b, int c, struct LineCurve *obj, int d) {
     Vector3 pt;
 
     pt.x = DAT_006117c0[b].x;
@@ -9107,8 +9135,8 @@ unsigned int FUN_004283c0(struct PieceHead *pair) {
 
 // FUNCTION: LEGOLAND 0x004284d0
 void FUN_004284d0(void) {
-    struct Obj421ce0 *base;
-    register struct Obj421ce0 *cur;
+    struct ArcCurve *base;
+    register struct ArcCurve *cur;
     struct Words3 *p;
     struct Words3 *q;
     int x;
@@ -9153,20 +9181,20 @@ void FUN_004284d0(void) {
         y = DAT_004b5f14[i][1];
         p = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][0]];
         x = DAT_004b5f14[i][0];
-        FUN_00421ce0(p, q, (struct Words3 *)&DAT_006116e0[i], &((struct Obj421ce0 *)DAT_00828fe0)[n++], x, y);
+        InitArcCurve(p, q, (struct Words3 *)&DAT_006116e0[i], &((struct ArcCurve *)DAT_00828fe0)[n++], x, y);
         if (5 == n) {
             n = 5;
         }
-        FUN_00421ce0(q, p, (struct Words3 *)&DAT_006116e0[i], &((struct Obj421ce0 *)DAT_00828fe0)[n++], y, x);
+        InitArcCurve(q, p, (struct Words3 *)&DAT_006116e0[i], &((struct ArcCurve *)DAT_00828fe0)[n++], y, x);
         i++;
     }
     j = 0;
-    base = &((struct Obj421ce0 *)DAT_00828fe0)[n];
+    base = &((struct ArcCurve *)DAT_00828fe0)[n];
     while (j <= 3) {
         cur = base;
         base = 5 + base;
         for (k = 0; k < 5; k++) {
-            FUN_00428350(DAT_004b5ec0[j], (DAT_004b5ec0[j] - 2) & 3, DAT_004b5ee0[k], (struct Obj421ab0 *)cur++, j);
+            FUN_00428350(DAT_004b5ec0[j], (DAT_004b5ec0[j] - 2) & 3, DAT_004b5ee0[k], (struct LineCurve *)cur++, j);
         }
         j++;
     }
@@ -9549,17 +9577,17 @@ void PlotCurvePoints(struct SegBlob *curve, float *off) {
     int k = 0;
 
     for (i = 0; i < 30; i++) {
-        curve->vt->method_8(curve, t, DAT_006122a0[k]);
+        curve->vt->pos(curve, t, DAT_006122a0[k]);
         DAT_006122a0[k][0] += off[0];
         DAT_006122a0[k][1] += off[1];
         DAT_006122a0[k][2] += off[2];
         k++;
-        curve->vt->method_0(curve, t, DAT_006122a0[k]);
+        curve->vt->side_a_pos(curve, t, DAT_006122a0[k]);
         DAT_006122a0[k][0] += off[0];
         DAT_006122a0[k][1] += off[1];
         DAT_006122a0[k][2] += off[2];
         k++;
-        curve->vt->method_10(curve, t, DAT_006122a0[k]);
+        curve->vt->side_b_pos(curve, t, DAT_006122a0[k]);
         DAT_006122a0[k][0] += off[0];
         DAT_006122a0[k][1] += off[1];
         DAT_006122a0[k][2] += off[2];
@@ -9863,9 +9891,9 @@ void FUN_00429150(struct SegBlob *curve, float *off, int flag) {
     struct FVec3 basis[3];
     float t = (curve->end + curve->start) * 0.5f;
 
-    curve->vt->method_c(curve, t, &dir.x);
+    curve->vt->tangent(curve, t, &dir.x);
     BuildBasisFromDir(&dir, basis);
-    curve->vt->method_8(curve, t, &pos.x);
+    curve->vt->pos(curve, t, &pos.x);
     pos.x += off[0];
     pos.y += off[1];
     pos.z += off[2];
@@ -10019,7 +10047,7 @@ void FUN_00429560(struct PathSeg *seg, struct PathSeg *end, int count, float h, 
     MapPosToWorld(&end->pos, h + dh, &b);
     b.x += DAT_004b6398[dout][0];
     b.y += DAT_004b6398[dout][1];
-    FUN_00422180(&a.x, &b.x, (struct Words3 *)DAT_004b63c8[di], (struct Obj421ab0 *)&blob);
+    InitSlopeCurve(&a.x, &b.x, (struct Words3 *)DAT_004b63c8[di], (struct LineCurve *)&blob);
     for (i = 0; i < count; i++) {
         seg->flags |= 1;
         seg->blob = blob;
@@ -10248,7 +10276,7 @@ void FUN_00429b60(struct CurveWalker *a, int b, void *out) {
 // FUNCTION: LEGOLAND 0x00429b90
 unsigned int FUN_00429b90(struct CurveWalker *param_1, unsigned int param_2, unsigned int param_3, float *param_4) {
     struct SegBlob *inner = param_1->node;
-    return inner->vt->method_1c(inner, param_3, param_4);
+    return inner->vt->normal(inner, param_3, param_4);
 }
 
 // FUNCTION: LEGOLAND 0x00429bb0

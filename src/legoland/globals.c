@@ -449,7 +449,7 @@ char LanguageName[36] = "english";
 char SitLoManSitName[] = "sit.lomansit";
 
 // GLOBAL: LEGOLAND 0x004b5abc
-float DAT_004b5abc[4][4];
+float HermiteBasis[4][4];
 
 // GLOBAL: LEGOLAND 0x004b5b3c
 struct RecBuf *DAT_004b5b3c;
@@ -5503,16 +5503,16 @@ struct FloatArray **DifferenceTableRows[5];
 float RK4Coefficients[4][2];
 
 // GLOBAL: LEGOLAND 0x004dd644
-struct Struct1e40 *DAT_004dd644;
+struct SlopeCurve *SplitCurveStart;
 
 // GLOBAL: LEGOLAND 0x004dd648
-struct Struct1e40 *DAT_004dd648;
+struct SlopeCurve *SplitCurve;
 
 // GLOBAL: LEGOLAND 0x004dd64c
-float *DAT_004dd64c;
+float *SplitPointsNext;
 
 // GLOBAL: LEGOLAND 0x004dd650
-int DAT_004dd650;
+int SplitPointCount;
 
 // GLOBAL: LEGOLAND 0x004ab438
 float FLOAT_004ab438;

@@ -85,7 +85,8 @@ struct PieceHead {
     };
 };
 
-/* a curve stretch's methods: pairs of (point at t, derivative at t), t passed as raw float bits */
+/* a curve stretch's methods (one row of 8 in CurveFunctionTable per stretch kind): pairs of (point at t, derivative at t),
+ * t passed as raw float bits */
 struct CurveFnPair {
     void (*func)(void *base, int t, struct FVec3 *out);
     void (*fn)(void *self, int t, void *out);
@@ -95,14 +96,14 @@ struct CurveVt {
     union {
         struct CurveFnPair pair[4];
         struct {
-            void (*method_0)(struct SegBlob *self, float t, float *out);
-            void *pad_4;
-            void (*method_8)(struct SegBlob *self, float t, float *out);
-            void (*method_c)(struct SegBlob *self, float t, float *out);
-            void (*method_10)(struct SegBlob *self, float t, float *out);
-            void *pad_14;
-            void *pad_18;
-            unsigned int (*method_1c)(struct SegBlob *self, unsigned int t, float *out);
+            void (*side_a_pos)(struct SegBlob *self, float t, float *out); /* centre + side offset */
+            void *side_a_tangent;
+            void (*pos)(struct SegBlob *self, float t, float *out); /* the centre line */
+            void (*tangent)(struct SegBlob *self, float t, float *out);
+            void (*side_b_pos)(struct SegBlob *self, float t, float *out); /* centre - side offset */
+            void *side_b_tangent;
+            void *split_points; /* (self, float *out): parameters to split the stretch at for drawing; returns the count */
+            unsigned int (*normal)(struct SegBlob *self, unsigned int t, float *out); /* the track's up vector */
         };
     };
 };
@@ -447,7 +448,7 @@ void FreeVecScratch(struct FloatArray **param_1, unsigned int param_2);
 void InitVecMath(struct VecMath *dest, unsigned int value);
 unsigned int FindCoasterObjLine(const char *s);
 unsigned int FindCoasterTxtLine(const char *param);
-void FUN_004220e0(float *obj, float t, float *out);
+void SlopeCurveNormal(float *obj, float t, float *out);
 void SetCoasterShadeTable(int param1, int index);
 void BuildShadeRamp(int param1, char *entry);
 void CastleObjLoad(struct Element *param_1);
