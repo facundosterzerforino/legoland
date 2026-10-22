@@ -171,6 +171,9 @@ struct TrainBogie {
     /* 0x20 */ struct TrainWheel w1;
 };
 
+/* A car of the train (kind 0 head, 1 middle, 2 tail). Two bogies (each a wheel pair on the track), two seats, the
+ * centre between the bogies and its potential energy. flags bit 1: drawn this frame. link is its entry in the
+ * castle's dirty-rectangle list. */
 /* a car of the castle's coaster train (the train's cars form a ring through prev/next) */
 struct TrainCar {
     /* 0x00 */ unsigned int flags;
@@ -179,17 +182,17 @@ struct TrainCar {
     /* 0x40 */ struct TrainBogie rear;
     /* 0x78 */ struct TrainSeat seats[2];
     /* 0xb8 */ struct FVec3 center;
-    /* 0xc4 */ float weight;
+    /* 0xc4 */ float potential; /* potential energy: mass * height (PositionTrainCar) */
     /* 0xc8 */ struct ListLink link;
     /* 0xe4 */ struct TrainCar *prev;
     /* 0xe8 */ struct TrainCar *next;
 };
 
 /* the train's motion state (Train.motion) */
-struct AnimOut {
-    unsigned int kind;
-    float f4; /* position along the current curve stretch */
-    float f8; /* speed */
+struct TrainMotion {
+    unsigned int count; /* always 2: this is a FloatArray of [pos, energy] for the integrator */
+    float pos; /* curve parameter along the current curve stretch */
+    float energy; /* total energy: potential energy of the cars + kinetic energy */
 };
 
 /* vector arithmetic on FloatArrays (VecMathOps is the template; InitVecMath copies it with a dimension) */
@@ -217,13 +220,17 @@ struct Integrator {
     /* 0x3c */ struct Train *owner;
 };
 
+/* The castle's coaster train. flags: 2 running, 0x40 held at the start (until hold_until), and the phase: 8 in the
+ * station (leaving), 4 out on the track (physics), 0x10 arriving back at the castle. walker is the head car's
+ * position on the track, motion its curve parameter and total energy, stepped by integ (RK4). The cars form a ring
+ * through head. */
 /* the castle's coaster train (CastleState.field_d8) */
 struct Train {
     /* 0x00 */ unsigned int flags;
-    /* 0x04 */ int field_4; /* game time of the last step */
-    /* 0x08 */ int field_8; /* game time the hold (flags & 0x40) ends */
+    /* 0x04 */ int last_step_time; /* game time of the last step */
+    /* 0x08 */ int hold_until; /* game time the hold (flags & 0x40) ends */
     /* 0x0c */ struct CurveWalker walker;
-    /* 0x20 */ struct AnimOut motion;
+    /* 0x20 */ struct TrainMotion motion;
     /* 0x2c */ struct Integrator integ; /* state &motion, owner itself */
     /* 0x6c */ struct CastleState *track;
     /* 0x70 */ struct TrainCar head;
@@ -313,7 +320,7 @@ void InitCastleVisitorList(struct CastleState *param_1);
 struct RecIdx;
 struct RecSrc;
 void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *src);
-struct Struct426f40Dst;
+struct TrainSaveRecord;
 struct Struct427070Src;
 struct Struct427050Dst;
 struct Struct426d80X;
@@ -355,8 +362,8 @@ void AddMapObjectIfEnabled(struct Element *element, int *pos);
 
 unsigned int FindPathSegDoorPoints(struct PathSeg *obj, struct PieceDoor *door, struct DirPoints *pts);
 float GetTrainCarMass(struct TrainCar *obj);
-float GetTrainCarWeight(struct TrainCar *obj);
-void FUN_0041e500(struct Train *obj);
+float GetTrainCarPotential(struct TrainCar *obj);
+void ResetTrainToStation(struct Train *obj);
 void ClearTrainCarDrawn(struct TrainCar *obj);
 void InitTrainCar(struct TrainCar *param, unsigned int value);
 void AddTrainCarLink(struct TrainCar *obj);
@@ -393,7 +400,7 @@ double LogFloat(float param);
 void FUN_0041f710(void *param);
 float GetTrainKineticEnergy(struct Train *param_1, float param_2);
 void PositionTrainCarsAndBogies(void *obj, float val, void *tmp);
-void FUN_0041db20(float a, struct FloatArray *out);
+void EvalTrainPotentialAndCentres(float a, struct FloatArray *out);
 void PositionTrainCars(void *obj, float val, void *b);
 unsigned int GetTrainCarRearPos(struct TrainCar *obj, float *param);
 void FindPathPosAtRangeBehind(float *center, float r, struct CurveWalker *src, float hi, float x, struct CurveWalker *dst, float *out);
@@ -414,8 +421,8 @@ int CheckAnchorPiecePlacement(struct PieceClass *info, short *pos, struct PieceP
 int MatchPieceToCoasterEnds(short *pos, struct PiecePlacement *ent, struct PieceClass *info);
 void RemoveMapObjectIfEnabled(struct Element *element, TileId tile, struct Cursor *cursor);
 void RemovePathSegMapObject(struct PathSeg *obj);
-float FUN_0041dca0(struct Train *param);
-void FUN_0041db90(struct Train *obj, float *a, float *b);
+float GetTrainParamSpeed(struct Train *param);
+void GetTrainInertiaAndSlope(struct Train *obj, float *a, float *b);
 struct Ride;
 struct PathSeg *FindPathSegAt(struct CastleState *host, struct Ride *ride, short *pt);
 void GetTrainCarCenterAndAxis(struct TrainCar *obj, float *out);
@@ -510,14 +517,14 @@ void FUN_00428300(struct Element *obj, const struct Struct427bc0Src *src);
 void FUN_00425e20(void);
 
 struct SaveRec *ReadSaveRec(void);
-void LoadCastleTrain(struct Struct426f40Dst *src, struct CastleState *obj);
+void LoadCastleTrain(struct TrainSaveRecord *src, struct CastleState *obj);
 void LoadCastleVisitors(struct Struct427070Src *arr, int count, struct CastleState *obj);
 void MeasureCastleSave(struct CastleState *param1, struct Struct426d80X *param2);
 void WriteCastleSave(struct Struct426d80X *src, struct SaveRec *dst);
 void SaveCastleVisitors(struct CastleState *a1, struct Struct427050Dst *a2);
 void WriteSaveRec(unsigned int *param_1);
 void SaveCoasterPieces(struct CastleState *obj, struct Struct426e80Dst *out);
-void SaveCastleTrain(struct Train *src, struct Struct426f40Dst *dst);
+void SaveCastleTrain(struct Train *src, struct TrainSaveRecord *dst);
 struct BlokeInfo;
 struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p);
 

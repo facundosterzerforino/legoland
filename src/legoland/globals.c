@@ -145,7 +145,7 @@ double DAT_004ab4b0;
 float FLOAT_004ab4b8;
 
 // GLOBAL: LEGOLAND 0x004ab430
-float DAT_004ab430;
+float TrainCarMass;
 
 // GLOBAL: LEGOLAND 0x004ab43c
 float FLOAT_004ab43c;
@@ -1796,10 +1796,10 @@ unsigned int CoasterPieceCount;
 struct VecMath TrainVecMath;
 
 // GLOBAL: LEGOLAND 0x004d829c
-float DAT_004d829c[64];
+float TrainInertiaHistory[64];
 
 // GLOBAL: LEGOLAND 0x004d83c0
-unsigned int DAT_004d83c0;
+unsigned int TrainInertiaHistoryIndex;
 
 // GLOBAL: LEGOLAND 0x004d88f4
 unsigned char DAT_004d88f4[0x80];
@@ -5300,7 +5300,7 @@ struct FloatArray *VecScratchPool[48];
 struct DispatchRow CastleDispatchTable[6];
 
 // GLOBAL: LEGOLAND 0x0082adb0
-struct Element *DAT_0082adb0[6];
+struct Element *CastleDispatchTableEnd[6];
 
 // GLOBAL: LEGOLAND 0x0082add0
 struct LmsFile *CoasterTrainCarLms[3]; /* head, mid, tail; indexed by car type */
@@ -5425,19 +5425,19 @@ float FLOAT_004ab404;
 struct PlaneSet *ClipPlanes;
 
 // GLOBAL: LEGOLAND 0x004d83b4
-struct Train *DAT_004d83b4;
+struct Train *DerivTrain;
 
 // GLOBAL: LEGOLAND 0x004d83a0
-struct CurveWalker DAT_004d83a0;
+struct CurveWalker DerivTrainWalker;
 
 // GLOBAL: LEGOLAND 0x004b5634
 float FLOAT_004b5634;
 
 // GLOBAL: LEGOLAND 0x004b559c
-float DAT_004b559c[3];
+float TrainCarSeatX[3];
 
 // GLOBAL: LEGOLAND 0x004b55a8
-float FLOAT_004b55a8;
+float TrainSeatSpacing;
 
 // GLOBAL: LEGOLAND 0x004b4cac
 char SafariManboxName[] = "manbox??";
@@ -5578,7 +5578,7 @@ int DAT_00615f68;
 int DAT_004dcbc8;
 
 // GLOBAL: LEGOLAND 0x004d83bc
-int DAT_004d83bc;
+int TrainStepCycles;
 
 // GLOBAL: LEGOLAND 0x0060f910
 int DAT_0060f910;

@@ -563,7 +563,7 @@ extern double DAT_004ab4b0;
 // 0x004ab4b8
 extern float FLOAT_004ab4b8;
 // 0x004ab430
-extern float DAT_004ab430;
+extern float TrainCarMass;
 // 0x004ab43c
 extern float FLOAT_004ab43c;
 // 0x004ab418
@@ -1644,8 +1644,8 @@ extern struct PiecePlacement CoasterPlacement;
 extern unsigned int CoasterPieceCount;
 // 0x004d8270
 extern struct VecMath TrainVecMath;
-extern float DAT_004d829c[64];
-extern unsigned int DAT_004d83c0;
+extern float TrainInertiaHistory[64];
+extern unsigned int TrainInertiaHistoryIndex;
 // 0x004d88f4
 extern unsigned char DAT_004d88f4[0x80];
 // 0x004d8974
@@ -4016,7 +4016,7 @@ extern void *CoasterShadeTables[1024];
 // 0x0082ac60
 extern struct FloatArray *VecScratchPool[48];
 // 0x0082ad20
-/* castle.c: the castle parts' handlers (a row per part class; the table ends where DAT_0082adb0 starts) */
+/* castle.c: the castle parts' handlers (a row per part class; the table ends where CastleDispatchTableEnd starts) */
 struct DispatchRow {
     /* 0x00 */ struct Element *element;
     /* 0x04 */ void (*fn_4)(); /* select (edit mode) */
@@ -4027,7 +4027,7 @@ struct DispatchRow {
 };
 extern struct DispatchRow CastleDispatchTable[6];
 // 0x0082adb0
-extern struct Element *DAT_0082adb0[6];
+extern struct Element *CastleDispatchTableEnd[6];
 // 0x0082add0
 extern struct LmsFile *CoasterTrainCarLms[3];
 // 0x0082ade0
@@ -4121,19 +4121,19 @@ struct PlaneSet;
 extern struct PlaneSet *ClipPlanes;
 
 // 0x004d83b4
-extern struct Train *DAT_004d83b4;
+extern struct Train *DerivTrain;
 
 // 0x004d83a0
-extern struct CurveWalker DAT_004d83a0;
+extern struct CurveWalker DerivTrainWalker;
 
 // 0x004b5634
 extern float FLOAT_004b5634;
 
 // 0x004b559c
-extern float DAT_004b559c[3];
+extern float TrainCarSeatX[3];
 
 // 0x004b55a8
-extern float FLOAT_004b55a8;
+extern float TrainSeatSpacing;
 
 // 0x004b4cac
 extern char SafariManboxName[];
@@ -4261,7 +4261,7 @@ extern int DAT_00615f68;
 extern int DAT_004dcbc8;
 
 // 0x004d83bc
-extern int DAT_004d83bc;
+extern int TrainStepCycles;
 
 // 0x0060f910
 extern int DAT_0060f910;
