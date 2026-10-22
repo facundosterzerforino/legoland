@@ -23,8 +23,8 @@
 
 // FUNCTION: LEGOLAND 0x0048eb40
 void RestoreSavedMouseHandlers(void) {
-    DAT_006687bc = DAT_00798740;
-    DAT_006687c0 = DAT_0079873c;
+    OkKeyHandler = DAT_00798740;
+    CancelKeyHandler = DAT_0079873c;
 }
 
 // FUNCTION: LEGOLAND 0x0048eb60
@@ -47,7 +47,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string = GetString(0x3c);
     icon->flags |= flag_mask;
     icon->event_handler = (void *)OptionsAcceptIconHandler;
-    DAT_006687bc = 0;
+    OkKeyHandler = 0;
 
     // STRING: LEGOLAND 0x004bf470
     icon = LoadSpriteIcon("Exit_on_Options.lls", 4, 0x1e0, 6, 7);
@@ -55,7 +55,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     icon->string = GetString(0x3e);
     icon->flags |= flag_mask;
     icon->event_handler = (void *)OptionsExitIconHandler;
-    DAT_006687c0 = OptionsExitIconHandler;
+    CancelKeyHandler = OptionsExitIconHandler;
 
     // STRING: LEGOLAND 0x004bf45c
     icon = LoadSpriteIcon("Load_on_Options.lls", 4, 0x168, 0x13a, 7);
@@ -245,7 +245,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
 
     for (;;) {
         if (DAT_0080ff80.unk8 == 5) {
-            DAT_006687bc = ExitLevelOkClicked;
+            OkKeyHandler = ExitLevelOkClicked;
             if (GetGameTimerSinceMark() > 0xea60) {
                 DAT_00798754 = 1;
                 // STRING: LEGOLAND 0x004bf4c4
@@ -255,7 +255,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
             }
             DAT_00798754 = 0;
         } else {
-            DAT_006687bc = ExitCheckBoxOkClicked;
+            OkKeyHandler = ExitCheckBoxOkClicked;
             DAT_00798754 = 0;
         }
         // STRING: LEGOLAND 0x004bf4b0
@@ -268,7 +268,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     PopUpOkIcon->string = GetString(0x4e);
     PopUpOkIcon->flags |= 0x2000;
     PopUpOkIcon->flags |= 0x4002;
-    PopUpOkIcon->event_handler = (void *)DAT_006687bc;
+    PopUpOkIcon->event_handler = (void *)OkKeyHandler;
 
     PopUpCloseIcon = InsertIcon(PopUpOkIcon->x + 0x24, PopUpOkIcon->y, 0xe, PopUpCloseSprite);
     PopUpCloseIcon->string_id = 4;
@@ -278,7 +278,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     PopUpCloseIcon->event_handler = (void *)ExitCheckBoxCloseClicked;
     DAT_007cb318 = 0;
     DAT_007cb310 = 0;
-    DAT_006687c0 = ExitCheckBoxCloseClicked;
+    CancelKeyHandler = ExitCheckBoxCloseClicked;
 }
 
 // FUNCTION: LEGOLAND 0x0048f2d0

@@ -129,8 +129,8 @@ LEGO_EXPORT void InitProgressScreen(void) {
             }
         }
     }
-    DAT_006687bc = ProgressPlayClicked;
-    DAT_006687c0 = FUN_0048c020;
+    OkKeyHandler = ProgressPlayClicked;
+    CancelKeyHandler = FUN_0048c020;
 }
 
 // FUNCTION: LEGOLAND 0x0048bb60
@@ -156,8 +156,8 @@ unsigned char ProgressLevelClicked(unsigned char *arg0, unsigned int arg1, unsig
 unsigned char ProgressPlayClicked(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
     if ((arg1 & 2) != 0) {
         do {
-            DAT_006687c0 = 0;
-            DAT_006687bc = 0;
+            CancelKeyHandler = 0;
+            OkKeyHandler = 0;
             SpeechCloseFile();
             DAT_006687b0 = 4;
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
@@ -244,7 +244,7 @@ void InitTutorialScreen(void) {
         icon->string = GetString(0x262);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)TutorialPlayClicked;
-        DAT_006687bc = TutorialPlayClicked;
+        OkKeyHandler = TutorialPlayClicked;
         // STRING: LEGOLAND 0x004bef5c
         icon = LoadSpriteIcon("GoBack_on_Tut.lls", 4, 0x20a, 0xf5, 0x23);
         icon->string_id = 0x26;
@@ -259,7 +259,7 @@ void InitTutorialScreen(void) {
             icon->event_handler = (void *)FUN_0048c020;
         }
         icon->flags |= 0x6002;
-        DAT_006687c0 = icon->event_handler;
+        CancelKeyHandler = icon->event_handler;
     }
     ReferenceTutorialSprites();
     RemoveIconGroup(0x1c);
@@ -291,8 +291,8 @@ void InitTutorialScreen(void) {
 // FUNCTION: LEGOLAND 0x0048bf90
 unsigned char TutorialPlayClicked(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
     if ((arg1 & 2) != 0) {
-        DAT_006687c0 = 0;
-        DAT_006687bc = 0;
+        CancelKeyHandler = 0;
+        OkKeyHandler = 0;
         SpeechCloseFile();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
@@ -315,8 +315,8 @@ unsigned char FUN_0048c020(unsigned int a1, unsigned int a2, unsigned int a3, un
     unsigned int temp;
 
     if ((a2 & 2) != 0) {
-        DAT_006687c0 = 0;
-        DAT_006687bc = 0;
+        CancelKeyHandler = 0;
+        OkKeyHandler = 0;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         temp = ProgressShowsTutorials;
         DAT_00798660 = 0;

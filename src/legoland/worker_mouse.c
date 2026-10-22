@@ -210,8 +210,8 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
     WorkOrder *order;
     MapElement *elem;
 
-    if (!(DAT_00813a60 & 2) && a == 0) {
-        if (DAT_00813a50 & 2) {
+    if (!(MapRightClickFlags & 2) && a == 0) {
+        if (MapLeftClickFlags & 2) {
             DAT_00667c48 = 1;
             DAT_00668954 = 0;
             for (;;) {

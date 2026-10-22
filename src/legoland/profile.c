@@ -74,8 +74,8 @@ LEGO_EXPORT void InitListProfiles(void) {
     ((struct IconNode *)AcceptIcon)->flags |= 0x4002;
     ((struct IconNode *)AcceptIcon)->flags |= 0x400;
     ((struct IconNode *)AcceptIcon)->event_handler = (void *)AcceptProfileClick;
-    DAT_006687bc = AcceptProfileClick;
-    DAT_006687c0 = FUN_004920a0;
+    OkKeyHandler = AcceptProfileClick;
+    CancelKeyHandler = FUN_004920a0;
     strcpy(DAT_007cb340, GetString(0x84));
 
     for (; node != NULL; node = node->next) {
@@ -150,7 +150,7 @@ LEGO_EXPORT void EnterNewProfileCheckBoxIcons(struct IconNode *param_1) {
     PopUpCloseIcon->flags |= 0x2000;
     PopUpCloseIcon->flags |= 0x4002;
     PopUpCloseIcon->event_handler = (void *)FUN_004920a0;
-    DAT_006687c0 = PopUpCloseIcon->event_handler;
+    CancelKeyHandler = PopUpCloseIcon->event_handler;
 }
 
 // FUNCTION: LEGOLAND 0x0048c720
@@ -595,12 +595,12 @@ unsigned char DeletePopUpCancelHandler(unsigned int param_1, unsigned int param_
 
 // FUNCTION: LEGOLAND 0x0048d470
 void FUN_0048d470(void) {
-    DAT_007986f8 = DAT_006687bc;
-    DAT_007986f4 = DAT_006687c0;
+    DAT_007986f8 = OkKeyHandler;
+    DAT_007986f4 = CancelKeyHandler;
 }
 
 // FUNCTION: LEGOLAND 0x0048d490
 void FUN_0048d490(void) {
-    DAT_006687bc = DAT_007986f8;
-    DAT_006687c0 = DAT_007986f4;
+    OkKeyHandler = DAT_007986f8;
+    CancelKeyHandler = DAT_007986f4;
 }

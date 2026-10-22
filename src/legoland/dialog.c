@@ -111,7 +111,7 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
     bar.bottom = clip.bottom;
     while (ProcessSystemEvents()) {
         ReadGameButtons();
-        if ((DAT_00813ad4 & 1) || (DAT_00813acc & 1)) {
+        if ((CancelKeyState & 1) || (RightClickFlags & 1)) {
             return -1;
         }
         if (MousePos.x >= clip.left && MousePos.x <= clip.right && MousePos.y >= clip.top && MousePos.y <= clip.bottom) {

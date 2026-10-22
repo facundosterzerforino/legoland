@@ -2263,7 +2263,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
     }
     RES_ReadFile(file, &curx, 4);
     DAT_00801a74 = curx;
-    DAT_00801a70 = malloc(sizeof(*DAT_00801a70) * curx);
+    MapTileSets = malloc(sizeof(*MapTileSets) * curx);
     for (i = 0; i < curx; i++) {
         DrawWatchSprite();
         RES_ReadFile(file, &len, 4);
@@ -2271,8 +2271,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
         strbuf[len] = 0;
         LLIDB_FindElement(strbuf, &elem, 0);
         LLIDB_LoadData((void *)elem);
-        DAT_00801a70[i] = elem->data;
-        obj = DAT_00801a70[i]->element;
+        MapTileSets[i] = elem->data;
+        obj = MapTileSets[i]->element;
         if (obj != NULL && obj->data != NULL) {
             obj->flags = obj->flags | 4;
         }
@@ -2313,7 +2313,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
                         } else {
                             tile = 0;
                         }
-                        obj = DAT_00801a70[prev & 0x1f]->element;
+                        obj = MapTileSets[prev & 0x1f]->element;
                         tile->field_0 = obj;
                         PutObjOnMap(obj->ride, obj, &pos);
                         phase++;
@@ -2340,7 +2340,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
                         } else {
                             tile = 0;
                         }
-                        obj = DAT_00801a70[prev & 0x1f]->element;
+                        obj = MapTileSets[prev & 0x1f]->element;
                         tile->field_0 = obj;
                         PutObjOnMap(obj->ride, obj, &pos);
                     } else {
@@ -2671,13 +2671,13 @@ unsigned int UnloadBaseMap(void) {
     i = 0;
     if (0 < DAT_00801a74) {
         do {
-            LLIDB_FindElementFromDataPtr(DAT_00801a70[i], &elem2, 0);
+            LLIDB_FindElementFromDataPtr(MapTileSets[i], &elem2, 0);
             elem2->flags = elem2->flags & 0xfffcfff1;
             LLIDB_UnLoadData(elem2);
             i = i + 1;
         } while (i < DAT_00801a74);
     }
-    free(DAT_00801a70);
+    free(MapTileSets);
     ClearOverlays();
     FreeBestNodeList();
     MapDataLoaded = 0;

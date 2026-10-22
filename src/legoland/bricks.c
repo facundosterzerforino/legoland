@@ -295,7 +295,7 @@ void FUN_00457a70(void) {
                 DAT_0080ff6c = NULL;
             }
         }
-        if (DAT_00813acc & 2) {
+        if (RightClickFlags & 2) {
             EditMode.unk0 = 0;
             GamePad &= ~0x1400;
         }
@@ -365,7 +365,7 @@ void FUN_00457a70(void) {
         } else {
             RenderCursor(&EditCursor);
         }
-        if (DAT_00813acc & 2) {
+        if (RightClickFlags & 2) {
             EditMode.unk0 = 0;
             GamePad &= ~0x1400;
         }
@@ -398,7 +398,7 @@ void FUN_00457a70(void) {
         RenderCursor(&QueryCursor);
         break;
     }
-    if ((DAT_00813a50 & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
+    if ((MapLeftClickFlags & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
         PopUpInfoSetUp(Hover, MousePos.x, MousePos.y);
         DAT_00667c48 = 1;
     }

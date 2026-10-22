@@ -302,8 +302,8 @@ unsigned char FUN_00474830(unsigned int a, unsigned int flags, unsigned int c, u
 
 // FUNCTION: LEGOLAND 0x00474880
 void SetDefaultMouseHandlers(void) {
-    DAT_006687bc = FUN_00474820;
-    DAT_006687c0 = FUN_00474830;
+    OkKeyHandler = FUN_00474820;
+    CancelKeyHandler = FUN_00474830;
 }
 
 // FUNCTION: LEGOLAND 0x004748a0
@@ -1635,7 +1635,7 @@ int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
             if ((MouseClickFlags & 1) != 0) {
                 break;
             }
-            if ((DAT_00813ad4 & 7) != 0) {
+            if ((CancelKeyState & 7) != 0) {
                 DAT_00668fb0 = 1;
                 break;
             }
@@ -1760,7 +1760,7 @@ int OpenMovieAudio(struct MovieHandle *handle) {
     AviAcmStreamHeader.pbSrc = malloc(AviAcmStreamHeader.cbSrcLength);
     AviAcmStreamHeader.pbDst = malloc(AviAcmStreamHeader.cbDstLength * 3);
     AviAcmDstBase = AviAcmStreamHeader.pbDst;
-    DAT_00668f54 = 0;
+    AviAcmDstOffset = 0;
     if (AviAcmStreamHeader.pbSrc != NULL && AviAcmStreamHeader.pbDst != NULL) {
         return 1;
     }
@@ -1834,7 +1834,7 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
         if (param_1 == 0 && param_2 == 0) {
             loops = 0xb;
             AviAudioSamplePos = 0;
-            DAT_00668fa0 = 0;
+            AviSoundBufferSlot = 0;
         } else {
             loops = param_1 - param_2;
             if (loops >= DAT_00668f50) {
@@ -1842,24 +1842,24 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
                 AviAudioSamplePos = AviSamplesPerFrame * param_1;
                 play = 1;
                 loops = 0xb;
-                DAT_00668fa0 = param_1 % DAT_00668f50;
-                play_pos = AviSamplesPerFrame * DAT_00668fa0;
+                AviSoundBufferSlot = param_1 % DAT_00668f50;
+                play_pos = AviSamplesPerFrame * AviSoundBufferSlot;
             } else if (loops == 0) {
                 return 1;
             }
         }
         count = loops;
         do {
-            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, AviSoundBytesPerFrame * DAT_00668fa0, AviSoundBytesPerFrame);
+            dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, AviSoundBytesPerFrame * AviSoundBufferSlot, AviSoundBytesPerFrame);
             if (AviAudioSamplePos < DAT_00668f88 && AviAudioSamplePos >= 0) {
                 if (DAT_00668ee0 != 0) {
                     produced = 0;
-                    if (DAT_00668fb4 != 0) {
-                        if (DAT_00668fb4 < AviSoundBytesPerFrame) {
-                            memcpy(dst, (char *)AviAcmDstBase + DAT_00668f54, DAT_00668fb4);
-                            rem = AviSoundBytesPerFrame - DAT_00668fb4;
-                            DAT_00668fb4 = 0;
-                            DAT_00668f54 = 0;
+                    if (AviAcmDstBytes != 0) {
+                        if (AviAcmDstBytes < AviSoundBytesPerFrame) {
+                            memcpy(dst, (char *)AviAcmDstBase + AviAcmDstOffset, AviAcmDstBytes);
+                            rem = AviSoundBytesPerFrame - AviAcmDstBytes;
+                            AviAcmDstBytes = 0;
+                            AviAcmDstOffset = 0;
                             if (AviAudioSamplePos >= DAT_00668f88) {
                                 if (AviAudioBitsPerSample == 8) {
                                     memset(dst + (AviSoundBytesPerFrame - rem), 0x80, rem);
@@ -1867,43 +1867,43 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
                                     memset(dst + (AviSoundBytesPerFrame - rem), 0, rem);
                                 }
                             } else {
-                                while (DAT_00668fb4 < AviSoundBytesPerFrame) {
+                                while (AviAcmDstBytes < AviSoundBytesPerFrame) {
                                     AVIStreamRead(AviAudioStream, AviAudioSamplePos, 0x100, AviAcmStreamHeader.pbSrc, AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
                                     AviAcmStreamHeader.pbDst = (unsigned char *)AviAcmDstBase + produced;
                                     acmStreamPrepareHeader(AviAcmStream, &AviAcmStreamHeader, 0);
                                     acmStreamConvert(AviAcmStream, &AviAcmStreamHeader, 0x10);
                                     acmStreamUnprepareHeader(AviAcmStream, &AviAcmStreamHeader, 0);
                                     produced += AviAcmStreamHeader.cbDstLengthUsed;
-                                    DAT_00668fb4 += AviAcmStreamHeader.cbDstLengthUsed;
+                                    AviAcmDstBytes += AviAcmStreamHeader.cbDstLengthUsed;
                                     AviAudioSamplePos++;
                                 }
                                 memcpy(dst + (AviSoundBytesPerFrame - rem), AviAcmDstBase, rem);
-                                DAT_00668f54 += rem;
-                                DAT_00668fb4 -= rem;
+                                AviAcmDstOffset += rem;
+                                AviAcmDstBytes -= rem;
                             }
                         } else {
-                            memcpy(dst, (char *)AviAcmDstBase + DAT_00668f54, AviSoundBytesPerFrame);
-                            DAT_00668fb4 -= AviSoundBytesPerFrame;
-                            if (DAT_00668fb4 != 0) {
-                                DAT_00668f54 += AviSoundBytesPerFrame;
+                            memcpy(dst, (char *)AviAcmDstBase + AviAcmDstOffset, AviSoundBytesPerFrame);
+                            AviAcmDstBytes -= AviSoundBytesPerFrame;
+                            if (AviAcmDstBytes != 0) {
+                                AviAcmDstOffset += AviSoundBytesPerFrame;
                             } else {
-                                DAT_00668f54 = 0;
+                                AviAcmDstOffset = 0;
                             }
                         }
                     } else {
-                        while (DAT_00668fb4 < AviSoundBytesPerFrame) {
+                        while (AviAcmDstBytes < AviSoundBytesPerFrame) {
                             AVIStreamRead(AviAudioStream, AviAudioSamplePos, 0x100, AviAcmStreamHeader.pbSrc, AviSoundBytesPerFrame >> 2, &bytes_out, &param_2);
                             AviAcmStreamHeader.pbDst = (unsigned char *)AviAcmDstBase + produced;
                             acmStreamPrepareHeader(AviAcmStream, &AviAcmStreamHeader, 0);
                             acmStreamConvert(AviAcmStream, &AviAcmStreamHeader, 0x10);
                             acmStreamUnprepareHeader(AviAcmStream, &AviAcmStreamHeader, 0);
                             produced += AviAcmStreamHeader.cbDstLengthUsed;
-                            DAT_00668fb4 += AviAcmStreamHeader.cbDstLengthUsed;
+                            AviAcmDstBytes += AviAcmStreamHeader.cbDstLengthUsed;
                             AviAudioSamplePos++;
                         }
-                        memcpy(dst, (char *)AviAcmDstBase + DAT_00668f54, AviSoundBytesPerFrame);
-                        DAT_00668f54 += AviSoundBytesPerFrame;
-                        DAT_00668fb4 -= AviSoundBytesPerFrame;
+                        memcpy(dst, (char *)AviAcmDstBase + AviAcmDstOffset, AviSoundBytesPerFrame);
+                        AviAcmDstOffset += AviSoundBytesPerFrame;
+                        AviAcmDstBytes -= AviSoundBytesPerFrame;
                     }
                 } else {
                     AVIStreamRead(AviAudioStream, AviAudioSamplePos, AviSamplesPerFrame, dst, AviSoundBytesPerFrame, &bytes_out, &param_2);
@@ -1922,9 +1922,9 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
             if (DAT_00668ee0 == 0) {
                 AviAudioSamplePos += AviSamplesPerFrame;
             }
-            DAT_00668fa0++;
-            if (DAT_00668fa0 >= DAT_00668f50) {
-                DAT_00668fa0 = 0;
+            AviSoundBufferSlot++;
+            if (AviSoundBufferSlot >= DAT_00668f50) {
+                AviSoundBufferSlot = 0;
             }
             count--;
         } while (count != 0);
@@ -1991,7 +1991,7 @@ int PlayMovie(char *filename, unsigned int param_2, int param_3) {
             do {
                 ProcessSystemEvents();
                 ReadGameButtons();
-            } while ((DAT_00813ad4 & 7) != 0);
+            } while ((CancelKeyState & 7) != 0);
             ResumeAllSamples();
             FUN_00492da0();
             return result;

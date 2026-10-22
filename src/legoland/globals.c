@@ -455,7 +455,7 @@ float DAT_004b5abc[4][4];
 struct RecBuf *DAT_004b5b3c;
 
 // GLOBAL: LEGOLAND 0x004b5988
-struct BlokeInfo DAT_004b5988;
+struct BlokeInfo CastleVisitorInfo;
 
 // GLOBAL: LEGOLAND 0x004b5964
 unsigned int ManVisitorColours[2] = {0x191919, 0xf11a22};
@@ -2174,7 +2174,7 @@ struct Element *BrollyImagesHandle;
 struct BrollyData *BrollyImagesData;
 
 // GLOBAL: LEGOLAND 0x00616144
-struct BrollyNode *DAT_00616144;
+struct BrollyNode *BrollyNodeList;
 
 // GLOBAL: LEGOLAND 0x00616148
 struct SaveBlock *SaveBlockList;
@@ -2393,7 +2393,7 @@ unsigned int DAT_00665e8c;
 int DAT_00665eec;
 
 // GLOBAL: LEGOLAND 0x00665f48
-unsigned int DAT_00665f48;
+unsigned int AviAnimOpenCount;
 
 // GLOBAL: LEGOLAND 0x00665f5c
 void *DAT_00665f5c;
@@ -2447,40 +2447,40 @@ int BoatingSchoolScoreGoal;
 int JungleCruiseScoreGoal;
 
 // GLOBAL: LEGOLAND 0x00666020
-int DAT_00666020;
+int ReportType1Or3ObjectCountGoal;
 
 // GLOBAL: LEGOLAND 0x00666024
-int DAT_00666024;
+int ReportType1Or3ObjectCountMax;
 
 // GLOBAL: LEGOLAND 0x00666028
-int DAT_00666028;
+int ReportType1Or3ClassCountGoal;
 
 // GLOBAL: LEGOLAND 0x0066602c
-int DAT_0066602c;
+int ReportType1Or3ClassCountMax;
 
 // GLOBAL: LEGOLAND 0x00666030
-int DAT_00666030;
+int ReportLinkedObjectPercentGoal;
 
 // GLOBAL: LEGOLAND 0x00666034
-int DAT_00666034;
+int ReportLinkedObjectPercentMax;
 
 // GLOBAL: LEGOLAND 0x00666038
-int DAT_00666038;
+int ReportVisitorCountGoal;
 
 // GLOBAL: LEGOLAND 0x0066603c
-int DAT_0066603c;
+int ReportVisitorCountMax;
 
 // GLOBAL: LEGOLAND 0x00666040
-int DAT_00666040;
+int ReportFoodStallObjectCountGoal;
 
 // GLOBAL: LEGOLAND 0x00666044
-int DAT_00666044;
+int ReportFoodStallObjectCountMax;
 
 // GLOBAL: LEGOLAND 0x00666048
-int DAT_00666048;
+int ReportFoodStallClassCountGoal;
 
 // GLOBAL: LEGOLAND 0x0066604c
-int DAT_0066604c;
+int ReportFoodStallClassCountMax;
 
 // GLOBAL: LEGOLAND 0x00666050
 int DAT_00666050;
@@ -2489,10 +2489,10 @@ int DAT_00666050;
 int DAT_00666054;
 
 // GLOBAL: LEGOLAND 0x00666058
-int DAT_00666058;
+int ReportPowerSupplyGoal;
 
 // GLOBAL: LEGOLAND 0x0066605c
-int DAT_0066605c;
+int ReportPowerSupplyMax;
 
 // GLOBAL: LEGOLAND 0x00666060
 int DAT_00666060;
@@ -2501,22 +2501,22 @@ int DAT_00666060;
 int DAT_00666064;
 
 // GLOBAL: LEGOLAND 0x00666068
-int DAT_00666068;
+int ReportMapTileCountGoal;
 
 // GLOBAL: LEGOLAND 0x0066606c
-int DAT_0066606c;
+int ReportMapTileCountMax;
 
 // GLOBAL: LEGOLAND 0x00666070
-int DAT_00666070;
+int ReportType2ObjectCountGoal;
 
 // GLOBAL: LEGOLAND 0x00666074
-int DAT_00666074;
+int ReportType2ObjectCountMax;
 
 // GLOBAL: LEGOLAND 0x00666078
-int DAT_00666078;
+int ReportType2ClassCountGoal;
 
 // GLOBAL: LEGOLAND 0x0066607c
-int DAT_0066607c;
+int ReportType2ClassCountMax;
 
 // GLOBAL: LEGOLAND 0x00666080
 int DAT_00666080;
@@ -2525,16 +2525,16 @@ int DAT_00666080;
 int DAT_00666084;
 
 // GLOBAL: LEGOLAND 0x00666088
-int DAT_00666088;
+int ReportType4ObjectCountGoal;
 
 // GLOBAL: LEGOLAND 0x0066608c
-int DAT_0066608c;
+int ReportType4ObjectCountMax;
 
 // GLOBAL: LEGOLAND 0x00666090
-int DAT_00666090;
+int ReportType4ClassCountGoal;
 
 // GLOBAL: LEGOLAND 0x00666094
-int DAT_00666094;
+int ReportType4ClassCountMax;
 
 // GLOBAL: LEGOLAND 0x00666098
 unsigned int AppraisalDeadline;
@@ -3005,10 +3005,10 @@ unsigned int DAT_006687b0;
 unsigned int DAT_006687b4;
 
 // GLOBAL: LEGOLAND 0x006687bc
-void *DAT_006687bc;
+void *OkKeyHandler;
 
 // GLOBAL: LEGOLAND 0x006687c0
-void *DAT_006687c0;
+void *CancelKeyHandler;
 
 // GLOBAL: LEGOLAND 0x006687c8
 struct IconNode *IconListHead;
@@ -3317,7 +3317,7 @@ unsigned int AviAudioBitsPerSample;
 unsigned int DAT_00668f50;
 
 // GLOBAL: LEGOLAND 0x00668f54
-int DAT_00668f54;
+int AviAcmDstOffset;
 
 // GLOBAL: LEGOLAND 0x00668f58
 unsigned int DAT_00668f58;
@@ -3350,7 +3350,7 @@ unsigned int AviSamplesPerFrame;
 int DAT_00668f9c;
 
 // GLOBAL: LEGOLAND 0x00668fa0
-unsigned int DAT_00668fa0;
+unsigned int AviSoundBufferSlot;
 
 // GLOBAL: LEGOLAND 0x00668f98
 unsigned int AviOpenCount;
@@ -3365,7 +3365,7 @@ unsigned int PerfCounterState;
 unsigned int DAT_00668fb0;
 
 // GLOBAL: LEGOLAND 0x00668fb4
-unsigned int DAT_00668fb4;
+unsigned int AviAcmDstBytes;
 
 // GLOBAL: LEGOLAND 0x00668fb8
 struct MoviePool *ActiveMoviePool;
@@ -4550,7 +4550,7 @@ struct Element **DAT_00801a68;
 int *DAT_00801a6c;
 
 // GLOBAL: LEGOLAND 0x00801a70
-struct MapTileSet **DAT_00801a70;
+struct MapTileSet **MapTileSets;
 
 // GLOBAL: LEGOLAND 0x00801a74
 int DAT_00801a74;
@@ -4727,19 +4727,19 @@ LEGO_EXPORT unsigned int GamePad;
 struct Point MousePos;
 
 // GLOBAL: LEGOLAND 0x00813a4c
-unsigned int DAT_00813a4c;
+unsigned int MapLeftButtonMask;
 
 // GLOBAL: LEGOLAND 0x00813a50
-unsigned int DAT_00813a50;
+unsigned int MapLeftClickFlags;
 
 // GLOBAL: LEGOLAND 0x00813a54
 unsigned int DAT_00813a54;
 
 // GLOBAL: LEGOLAND 0x00813a5c
-unsigned int DAT_00813a5c;
+unsigned int MapRightButtonMask;
 
 // GLOBAL: LEGOLAND 0x00813a60
-unsigned int DAT_00813a60;
+unsigned int MapRightClickFlags;
 
 // GLOBAL: LEGOLAND 0x00813a64
 unsigned int MouseTileX;
@@ -4754,16 +4754,16 @@ int FootprintWidth;
 int FootprintHeight;
 
 // GLOBAL: LEGOLAND 0x00813a74
-int DAT_00813a74;
+int DragStartTileX;
 
 // GLOBAL: LEGOLAND 0x00813a78
-int DAT_00813a78;
+int DragStartTileY;
 
 // GLOBAL: LEGOLAND 0x00813a7c
-int DAT_00813a7c;
+int DragEndTileX;
 
 // GLOBAL: LEGOLAND 0x00813a80
-int DAT_00813a80;
+int DragEndTileY;
 
 // GLOBAL: LEGOLAND 0x00813a84
 struct MapRect SelectionRect;
@@ -4772,28 +4772,28 @@ struct MapRect SelectionRect;
 unsigned int PrevHeldButtons;
 
 // GLOBAL: LEGOLAND 0x00813a98
-unsigned int DAT_00813a98;
+unsigned int ScrollUpKeyMask;
 
 // GLOBAL: LEGOLAND 0x00813a9c
-unsigned int DAT_00813a9c;
+unsigned int ScrollUpKeyState;
 
 // GLOBAL: LEGOLAND 0x00813aa0
-unsigned int DAT_00813aa0;
+unsigned int ScrollRightKeyMask;
 
 // GLOBAL: LEGOLAND 0x00813aa4
-unsigned int DAT_00813aa4;
+unsigned int ScrollRightKeyState;
 
 // GLOBAL: LEGOLAND 0x00813aa8
-unsigned int DAT_00813aa8;
+unsigned int ScrollDownKeyMask;
 
 // GLOBAL: LEGOLAND 0x00813aac
-unsigned int DAT_00813aac;
+unsigned int ScrollDownKeyState;
 
 // GLOBAL: LEGOLAND 0x00813ab0
-unsigned int DAT_00813ab0;
+unsigned int ScrollLeftKeyMask;
 
 // GLOBAL: LEGOLAND 0x00813ab4
-unsigned int DAT_00813ab4;
+unsigned int ScrollLeftKeyState;
 
 // GLOBAL: LEGOLAND 0x00813ab8
 unsigned int DAT_00813ab8;
@@ -4802,28 +4802,28 @@ unsigned int DAT_00813ab8;
 unsigned int DAT_00813abc;
 
 // GLOBAL: LEGOLAND 0x00813ac0
-unsigned int DAT_00813ac0;
+unsigned int LeftButtonMask;
 
 // GLOBAL: LEGOLAND 0x00813ac4
 unsigned int MouseClickFlags;
 
 // GLOBAL: LEGOLAND 0x00813ac8
-unsigned int DAT_00813ac8;
+unsigned int RightButtonMask;
 
 // GLOBAL: LEGOLAND 0x00813acc
-unsigned int DAT_00813acc;
+unsigned int RightClickFlags;
 
 // GLOBAL: LEGOLAND 0x00813ad0
-unsigned int DAT_00813ad0;
+unsigned int CancelKeyMask;
 
 // GLOBAL: LEGOLAND 0x00813ad4
-unsigned int DAT_00813ad4;
+unsigned int CancelKeyState;
 
 // GLOBAL: LEGOLAND 0x00813ad8
-unsigned int DAT_00813ad8;
+unsigned int OkKeyMask;
 
 // GLOBAL: LEGOLAND 0x00813adc
-unsigned int DAT_00813adc;
+unsigned int OkKeyState;
 
 // GLOBAL: LEGOLAND 0x00813ae0
 unsigned int DAT_00813ae0;
@@ -4917,7 +4917,7 @@ void *AdPhoneAnim;
 void *AdPhoneGestureAnim;
 
 // GLOBAL: LEGOLAND 0x0081c0c0
-int DAT_0081c0c0[0x200];
+int TextureSizes[0x200];
 
 // GLOBAL: LEGOLAND 0x0081c4c0
 unsigned int DAT_0081c4c0[0x100];

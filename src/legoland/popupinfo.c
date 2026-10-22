@@ -954,7 +954,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     if (DAT_007fdfa0 == 0) {
         return;
     }
-    if (DAT_00813a60 & 2) {
+    if (MapRightClickFlags & 2) {
         ResetInfoStruct();
         return;
     }

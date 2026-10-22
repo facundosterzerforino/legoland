@@ -495,8 +495,8 @@ void RemapTexCoordsToCell(struct LocFile *param_1, int param_2, int param_3, str
                 if (u2 > 1.0) u2 = 1.0f;
                 if (v2 < FLOAT_004ab390) v2 = FLOAT_004ab390;
                 if (v2 > 1.0) v2 = 1.0f;
-                w = DAT_0081c0c0[idx1 * 2];
-                h = DAT_0081c0c0[idx1 * 2 + 1];
+                w = TextureSizes[idx1 * 2];
+                h = TextureSizes[idx1 * 2 + 1];
                 u0 = w * u0;
                 u1 = w * u1;
                 u2 = w * u2;
@@ -506,8 +506,8 @@ void RemapTexCoordsToCell(struct LocFile *param_1, int param_2, int param_3, str
                 if (u0 >= lo_x && u0 <= hi_x && u1 >= lo_x && u1 <= hi_x && u2 >= lo_x && u2 <= hi_x &&
                     v0 >= lo_y && v0 <= hi_y && v1 >= lo_y && v1 <= hi_y && sv2 >= lo_y && sv2 <= hi_y) {
                     /* texture size of the destination cell */
-                    w = DAT_0081c0c0[idx2 * 2];
-                    h = DAT_0081c0c0[idx2 * 2 + 1];
+                    w = TextureSizes[idx2 * 2];
+                    h = TextureSizes[idx2 * 2 + 1];
                     /* map from the source cell's rectangle to the destination cell's, normalized */
                     u0 = ((u0 - entry1->x) / entry1->field_4 * entry2->field_4 + entry2->x) / w;
                     v0 = ((v0 - entry1->y) / entry1->field_5 * entry2->field_5 + entry2->y) / h;

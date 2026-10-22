@@ -579,10 +579,10 @@ struct BrollyNode *AllocBrollyNode(unsigned short *param_1) {
     if (node != NULL) {
         memset(node, 0, sizeof(struct BrollyNode));
         node->value = *param_1;
-        node->next = DAT_00616144;
+        node->next = BrollyNodeList;
         memset(&node->seats, 0, sizeof(node->seats));
         node->field_9 = 0;
-        DAT_00616144 = node;
+        BrollyNodeList = node;
     }
     return node;
 }
@@ -598,7 +598,7 @@ void Restaurant1AddObject(struct Element *param_1, unsigned char *param_2) {
 
 // FUNCTION: LEGOLAND 0x0042ef40
 struct BrollyNode *FindBrollyNode(unsigned short *param_1) {
-    struct BrollyNode *node = DAT_00616144;
+    struct BrollyNode *node = BrollyNodeList;
     if (node == NULL) {
         return NULL;
     }
@@ -613,9 +613,9 @@ struct BrollyNode *FindBrollyNode(unsigned short *param_1) {
 
 // FUNCTION: LEGOLAND 0x0042ef70
 void RemoveBrollyNode(struct BrollyNode *node) {
-    struct BrollyNode *head = DAT_00616144;
+    struct BrollyNode *head = BrollyNodeList;
     if (head == node) {
-        DAT_00616144 = node->next;
+        BrollyNodeList = node->next;
     } else {
         struct BrollyNode *current = head;
         if (current->next != node) {
@@ -2191,7 +2191,7 @@ void RenderOctopusCafe(struct Element *param_1, unsigned int param_2, unsigned i
 int Restaurant1_Save(struct Element *element) {
     unsigned int one = 1;
     unsigned int zero = 0;
-    struct BrollyNode *node = DAT_00616144;
+    struct BrollyNode *node = BrollyNodeList;
     while (node != NULL) {
         if (SaveGameWrite(&one, 4) == 0) {
             return 0;
@@ -2224,7 +2224,7 @@ int Restaurant1_Load(struct Element *element) {
         if (prev != NULL) {
             prev->next = node;
         } else {
-            DAT_00616144 = node;
+            BrollyNodeList = node;
         }
         prev = node;
         if (!SaveGameRead(&count, 4)) {

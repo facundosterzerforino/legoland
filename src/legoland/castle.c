@@ -4148,13 +4148,13 @@ struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
 
 // FUNCTION: LEGOLAND 0x00421890
 struct BlokeInfo *GetBlokeAppearance(struct BlokeSex0 *bloke) {
-    DAT_004b5988.bloke = bloke;
-    DAT_004b5988.sex = GetSexOfBloke(bloke) != 0;
-    DAT_004b5988.leg = GetLegColourOfBloke(bloke) & 0xffffff;
-    DAT_004b5988.arm = GetArmColourOfBloke(bloke) & 0xffffff;
-    strcpy(DAT_004b5988.chest, GetChestTextureNameOfBloke(bloke));
-    strcpy(DAT_004b5988.face, GetFaceTextureNameOfBloke(bloke));
-    return &DAT_004b5988;
+    CastleVisitorInfo.bloke = bloke;
+    CastleVisitorInfo.sex = GetSexOfBloke(bloke) != 0;
+    CastleVisitorInfo.leg = GetLegColourOfBloke(bloke) & 0xffffff;
+    CastleVisitorInfo.arm = GetArmColourOfBloke(bloke) & 0xffffff;
+    strcpy(CastleVisitorInfo.chest, GetChestTextureNameOfBloke(bloke));
+    strcpy(CastleVisitorInfo.face, GetFaceTextureNameOfBloke(bloke));
+    return &CastleVisitorInfo;
 }
 
 // FUNCTION: LEGOLAND 0x00421930

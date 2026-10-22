@@ -85,8 +85,8 @@ void CloseFrontEndScreen(void) {
         default:
             break;
         }
-        DAT_006687bc = 0;
-        DAT_006687c0 = 0;
+        OkKeyHandler = 0;
+        CancelKeyHandler = 0;
     }
 }
 
@@ -348,18 +348,18 @@ int FUN_00458c00(void) {
     if (MapScreenOpenPending != 0) {
         PauseGameTimer();
         PauseAllSamples();
-        DAT_006687bc = 0;
+        OkKeyHandler = 0;
         GamePad = GamePad & 0xffffffdf;
-        DAT_006687c0 = 0;
+        CancelKeyHandler = 0;
         InitMapScreen();
         DisableInfoPopUPIcons();
         DisableSidePanelIcons();
         MapScreenOpenPending = 0;
     } else if (MapScreenClosePending != 0) {
         ResumeAllSamples();
-        DAT_006687bc = 0;
+        OkKeyHandler = 0;
         GamePad = GamePad | 0x20;
-        DAT_006687c0 = 0;
+        CancelKeyHandler = 0;
         KillMapScreen();
         SetDefaultMouseHandlers();
         EnableSidePanelIcons();
@@ -369,8 +369,8 @@ int FUN_00458c00(void) {
         PauseGameTimer();
         ResetGameTimer();
         MarkGameTimer();
-        DAT_006687bc = 0;
-        DAT_006687c0 = 0;
+        OkKeyHandler = 0;
+        CancelKeyHandler = 0;
         CastlePlacedFlag = 0;
         SamplesPaused = 1;
         PauseAllSamples();

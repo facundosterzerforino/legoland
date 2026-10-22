@@ -83,7 +83,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     icon->string = GetString(0x26);
     icon->flags |= 0x6002;
     icon->event_handler = (void *)FUN_0048fb80;
-    DAT_006687c0 = FUN_0048fb80;
+    CancelKeyHandler = FUN_0048fb80;
 
     // STRING: LEGOLAND 0x004bea70
     icon = LoadSpriteIcon("Accept_On_FreePlay.lls", 4, 0x1e4, 0x14b, 7);
@@ -91,7 +91,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     icon->string = GetString(0x32);
     icon->flags |= 0x6002;
     icon->event_handler = (void *)FreePlayStartIconHandler;
-    DAT_006687bc = FreePlayStartIconHandler;
+    OkKeyHandler = FreePlayStartIconHandler;
     icon->flags |= 0x400;
     DAT_0079864c = icon;
 

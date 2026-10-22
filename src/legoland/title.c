@@ -49,7 +49,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     } else {
         icon->alt_sprite = NULL;
     }
-    DAT_006687bc = FUN_0048feb0;
+    OkKeyHandler = FUN_0048feb0;
 
     // STRING: LEGOLAND 0x004bf534
     icon = LoadSpriteIcon("Free_on_Title.lls", 4, 0x9a, 8, 7);
@@ -74,7 +74,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string = GetString(1000);
     icon->flags |= 0x6002;
     icon->event_handler = OptionsExitIconHandler;
-    DAT_006687c0 = OptionsExitIconHandler;
+    CancelKeyHandler = OptionsExitIconHandler;
 
     // STRING: LEGOLAND 0x004bf4f8
     icon = LoadSpriteIcon("Load_on_Title.lls", 4, 0x19, 0x118, 7);
@@ -218,8 +218,8 @@ void InitAdvertScreen(void) {
     icon->string = GetString(0x26);
     icon->flags |= 0x6002;
     icon->event_handler = AdvertGoBackHandler;
-    DAT_006687c0 = AdvertGoBackHandler;
-    DAT_006687bc = 0;
+    CancelKeyHandler = AdvertGoBackHandler;
+    OkKeyHandler = 0;
 
     // STRING: LEGOLAND 0x004bf5cc
     icon = LoadSpriteIcon("California.lls", 4, 0x1c, 0x24, 7);
@@ -645,7 +645,7 @@ void InitIntervalScreen(void) {
     }
     accept->flags |= 0x6002;
     accept->event_handler = IntervalScreenCloseHandler;
-    DAT_006687c0 = IntervalScreenCloseHandler;
+    CancelKeyHandler = IntervalScreenCloseHandler;
 
     icon = InsertIcon(0x1b9, 0x50, 7, RepHint1Sprite);
     icon->string_id = 0x2d0;
@@ -665,7 +665,7 @@ void InitIntervalScreen(void) {
     TitleNextPageIcon->flags |= 0x2000;
     TitleNextPageIcon->flags |= 0x4002;
     TitleNextPageIcon->event_handler = (void *)IntervalNextPageHandler;
-    DAT_006687bc = IntervalNextPageHandler;
+    OkKeyHandler = IntervalNextPageHandler;
 
     TitlePreviousPageIcon = InsertIcon(6, 0x1ae, 7, PreviousPageSprite);
     TitlePreviousPageIcon->string_id = 0x88f;

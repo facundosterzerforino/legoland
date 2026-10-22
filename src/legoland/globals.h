@@ -794,7 +794,7 @@ extern float DAT_004b5abc[4][4];
 // 0x004b5b3c
 extern struct RecBuf *DAT_004b5b3c;
 // 0x004b5988
-extern struct BlokeInfo DAT_004b5988;
+extern struct BlokeInfo CastleVisitorInfo;
 // 0x004b5c1c
 extern struct FMat4 DAT_004b5c1c[2];
 // 0x004b5c9c
@@ -1899,7 +1899,7 @@ extern struct Element *BrollyImagesHandle;
 // 0x00616140
 extern struct BrollyData *BrollyImagesData;
 // 0x00616144
-extern struct BrollyNode *DAT_00616144;
+extern struct BrollyNode *BrollyNodeList;
 // 0x00616148
 extern struct SaveBlock *SaveBlockList;
 // 0x0061614c
@@ -2047,7 +2047,7 @@ extern unsigned int DAT_00665e8c;
 // 0x00665eec
 extern int DAT_00665eec;
 // 0x00665f48
-extern unsigned int DAT_00665f48;
+extern unsigned int AviAnimOpenCount;
 // 0x00665f5c
 extern void *DAT_00665f5c;
 // 0x00665f60
@@ -2083,65 +2083,65 @@ extern int BoatingSchoolScoreGoal;
 // 0x0066601c
 extern int JungleCruiseScoreGoal;
 // 0x00666020
-extern int DAT_00666020;
+extern int ReportType1Or3ObjectCountGoal;
 // 0x00666024
-extern int DAT_00666024;
+extern int ReportType1Or3ObjectCountMax;
 // 0x00666028
-extern int DAT_00666028;
+extern int ReportType1Or3ClassCountGoal;
 // 0x0066602c
-extern int DAT_0066602c;
+extern int ReportType1Or3ClassCountMax;
 // 0x00666030
-extern int DAT_00666030;
+extern int ReportLinkedObjectPercentGoal;
 // 0x00666034
-extern int DAT_00666034;
+extern int ReportLinkedObjectPercentMax;
 // 0x00666038
-extern int DAT_00666038;
+extern int ReportVisitorCountGoal;
 // 0x0066603c
-extern int DAT_0066603c;
+extern int ReportVisitorCountMax;
 // 0x00666040
-extern int DAT_00666040;
+extern int ReportFoodStallObjectCountGoal;
 // 0x00666044
-extern int DAT_00666044;
+extern int ReportFoodStallObjectCountMax;
 // 0x00666048
-extern int DAT_00666048;
+extern int ReportFoodStallClassCountGoal;
 // 0x0066604c
-extern int DAT_0066604c;
+extern int ReportFoodStallClassCountMax;
 // 0x00666050
 extern int DAT_00666050;
 // 0x00666054
 extern int DAT_00666054;
 // 0x00666058
-extern int DAT_00666058;
+extern int ReportPowerSupplyGoal;
 // 0x0066605c
-extern int DAT_0066605c;
+extern int ReportPowerSupplyMax;
 // 0x00666060
 extern int DAT_00666060;
 // 0x00666064
 extern int DAT_00666064;
 // 0x00666068
-extern int DAT_00666068;
+extern int ReportMapTileCountGoal;
 // 0x0066606c
-extern int DAT_0066606c;
+extern int ReportMapTileCountMax;
 // 0x00666070
-extern int DAT_00666070;
+extern int ReportType2ObjectCountGoal;
 // 0x00666074
-extern int DAT_00666074;
+extern int ReportType2ObjectCountMax;
 // 0x00666078
-extern int DAT_00666078;
+extern int ReportType2ClassCountGoal;
 // 0x0066607c
-extern int DAT_0066607c;
+extern int ReportType2ClassCountMax;
 // 0x00666080
 extern int DAT_00666080;
 // 0x00666084
 extern int DAT_00666084;
 // 0x00666088
-extern int DAT_00666088;
+extern int ReportType4ObjectCountGoal;
 // 0x0066608c
-extern int DAT_0066608c;
+extern int ReportType4ObjectCountMax;
 // 0x00666090
-extern int DAT_00666090;
+extern int ReportType4ClassCountGoal;
 // 0x00666094
-extern int DAT_00666094;
+extern int ReportType4ClassCountMax;
 // 0x00666098
 extern unsigned int AppraisalDeadline;
 // 0x0066609c
@@ -2463,9 +2463,9 @@ extern unsigned int DAT_006687b0;
 // 0x006687b4
 extern unsigned int DAT_006687b4;
 // 0x006687bc
-extern void *DAT_006687bc;
+extern void *OkKeyHandler;
 // 0x006687c0
-extern void *DAT_006687c0;
+extern void *CancelKeyHandler;
 // 0x006687c8
 extern struct IconNode *IconListHead;
 // 0x006687cc
@@ -2670,7 +2670,7 @@ extern unsigned int AviAudioBitsPerSample;
 // 0x00668f50
 extern unsigned int DAT_00668f50;
 // 0x00668f54
-extern int DAT_00668f54;
+extern int AviAcmDstOffset;
 // 0x00668f58
 extern unsigned int DAT_00668f58;
 // 0x00668f5c
@@ -2692,7 +2692,7 @@ extern unsigned int AviSamplesPerFrame;
 // 0x00668f9c
 extern int DAT_00668f9c;
 // 0x00668fa0
-extern unsigned int DAT_00668fa0;
+extern unsigned int AviSoundBufferSlot;
 extern unsigned int AviOpenCount;
 // 0x00668fa4
 extern unsigned int AviSoundBufferFrames;
@@ -2701,7 +2701,7 @@ extern unsigned int PerfCounterState;
 // 0x00668fb0
 extern unsigned int DAT_00668fb0;
 // 0x00668fb4
-extern unsigned int DAT_00668fb4;
+extern unsigned int AviAcmDstBytes;
 // 0x00668fb8
 extern struct MoviePool *ActiveMoviePool;
 // 0x00668fc0
@@ -3511,7 +3511,7 @@ extern struct Element **DAT_00801a68; /* the level's object classes */
 // 0x00801a6c
 extern int *DAT_00801a6c;
 // 0x00801a70
-extern struct MapTileSet **DAT_00801a70; /* the level's tile object sets */
+extern struct MapTileSet **MapTileSets; /* the level's tile object sets */
 // 0x00801a74
 extern int DAT_00801a74;
 // 0x00801a80
@@ -3635,15 +3635,15 @@ extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44
 extern struct Point MousePos;
 // 0x00813a4c
-extern unsigned int DAT_00813a4c;
+extern unsigned int MapLeftButtonMask;
 // 0x00813a50
-extern unsigned int DAT_00813a50;
+extern unsigned int MapLeftClickFlags;
 // 0x00813a54
 extern unsigned int DAT_00813a54;
 // 0x00813a5c
-extern unsigned int DAT_00813a5c;
+extern unsigned int MapRightButtonMask;
 // 0x00813a60
-extern unsigned int DAT_00813a60;
+extern unsigned int MapRightClickFlags;
 // 0x00813a64
 extern unsigned int MouseTileX;
 // 0x00813a68
@@ -3653,51 +3653,51 @@ extern int FootprintWidth;
 // 0x00813a70
 extern int FootprintHeight;
 // 0x00813a74
-extern int DAT_00813a74;
+extern int DragStartTileX;
 // 0x00813a78
-extern int DAT_00813a78;
+extern int DragStartTileY;
 // 0x00813a7c
-extern int DAT_00813a7c;
+extern int DragEndTileX;
 // 0x00813a80
-extern int DAT_00813a80;
+extern int DragEndTileY;
 // 0x00813a94
 extern unsigned int PrevHeldButtons;
 // 0x00813a98
-extern unsigned int DAT_00813a98;
+extern unsigned int ScrollUpKeyMask;
 // 0x00813a9c
-extern unsigned int DAT_00813a9c;
+extern unsigned int ScrollUpKeyState;
 // 0x00813aa0
-extern unsigned int DAT_00813aa0;
+extern unsigned int ScrollRightKeyMask;
 // 0x00813aa4
-extern unsigned int DAT_00813aa4;
+extern unsigned int ScrollRightKeyState;
 // 0x00813aa8
-extern unsigned int DAT_00813aa8;
+extern unsigned int ScrollDownKeyMask;
 // 0x00813aac
-extern unsigned int DAT_00813aac;
+extern unsigned int ScrollDownKeyState;
 // 0x00813ab0
-extern unsigned int DAT_00813ab0;
+extern unsigned int ScrollLeftKeyMask;
 // 0x00813ab4
-extern unsigned int DAT_00813ab4;
+extern unsigned int ScrollLeftKeyState;
 // 0x00813ab8
 extern unsigned int DAT_00813ab8;
 // 0x00813abc
 extern unsigned int DAT_00813abc;
 // 0x00813ac0
-extern unsigned int DAT_00813ac0;
+extern unsigned int LeftButtonMask;
 // 0x00813ac4
 extern unsigned int MouseClickFlags;
 // 0x00813ac8
-extern unsigned int DAT_00813ac8;
+extern unsigned int RightButtonMask;
 // 0x00813acc
-extern unsigned int DAT_00813acc;
+extern unsigned int RightClickFlags;
 // 0x00813ad0
-extern unsigned int DAT_00813ad0;
+extern unsigned int CancelKeyMask;
 // 0x00813ad4
-extern unsigned int DAT_00813ad4;
+extern unsigned int CancelKeyState;
 // 0x00813ad8
-extern unsigned int DAT_00813ad8;
+extern unsigned int OkKeyMask;
 // 0x00813adc
-extern unsigned int DAT_00813adc;
+extern unsigned int OkKeyState;
 // 0x00813ae0
 extern unsigned int DAT_00813ae0;
 // 0x00813af0
@@ -3760,7 +3760,7 @@ extern void *AdPhoneAnim;
 // 0x0081c0a4
 extern void *AdPhoneGestureAnim;
 // 0x0081c0c0
-extern int DAT_0081c0c0[0x200];
+extern int TextureSizes[0x200];
 // 0x0081c4c0
 extern unsigned int DAT_0081c4c0[0x100];
 // 0x0081c8c0

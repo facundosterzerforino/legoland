@@ -1372,17 +1372,17 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
 LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
     struct IconNode *icon;
 
-    if (DAT_006687c0 != 0 && (DAT_00813ad4 & 7) != 0) {
-        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))DAT_006687c0)(0, DAT_00813ad4, 0, 0);
+    if (CancelKeyHandler != 0 && (CancelKeyState & 7) != 0) {
+        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))CancelKeyHandler)(0, CancelKeyState, 0, 0);
     }
 
     icon = (struct IconNode *)FocussedIconPtr;
     if (icon != NULL) {
         if ((icon->flags & 2) != 0 && icon->event_handler != NULL) {
             unsigned int buttons;
-            if ((DAT_00813adc & 7) != 0 && DAT_00668954 == 0) {
+            if ((OkKeyState & 7) != 0 && DAT_00668954 == 0) {
                 return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
-                    icon, DAT_00813adc, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
+                    icon, OkKeyState, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
             }
             buttons = MouseClickFlags;
             DAT_00667c48 = 1;
@@ -1390,8 +1390,8 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
                 icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
         }
         {
-            unsigned int buttons = DAT_00813adc;
-            if ((DAT_00813adc & 7) == 0 || DAT_00668954 != 0) {
+            unsigned int buttons = OkKeyState;
+            if ((OkKeyState & 7) == 0 || DAT_00668954 != 0) {
                 buttons = MouseClickFlags;
                 DAT_00667c48 = 1;
             }
@@ -1399,8 +1399,8 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
         }
     }
 
-    if (DAT_006687bc != 0 && (DAT_00813adc & 7) != 0) {
-        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))DAT_006687bc)(0, DAT_00813adc, 0, 0);
+    if (OkKeyHandler != 0 && (OkKeyState & 7) != 0) {
+        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))OkKeyHandler)(0, OkKeyState, 0, 0);
     }
     return 0;
 }

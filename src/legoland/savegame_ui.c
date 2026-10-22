@@ -96,7 +96,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
         icon->string_id = 0x28;
         icon->string = GetString(0x28);
     }
-    DAT_006687c0 = icon->event_handler;
+    CancelKeyHandler = icon->event_handler;
 
     if (!LoadMode) {
         // STRING: LEGOLAND 0x004bf15c
@@ -122,7 +122,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
         AcceptIcon->flags |= 0x400;
         AcceptIcon->event_handler = (void *)SavedGameLoadClicked;
     }
-    DAT_006687bc = AcceptIcon->event_handler;
+    OkKeyHandler = AcceptIcon->event_handler;
 
     FUN_0048d470();
     DeleteSavedGameList();
@@ -531,7 +531,7 @@ LEGO_EXPORT void InitNewSaveGamePOPUP(struct IconNode *icon) {
     PopUpOkIcon->flags |= 0x2000;
     PopUpOkIcon->flags |= 0x4002;
     PopUpOkIcon->event_handler = (void *)NewSaveGameOkClicked;
-    DAT_006687bc = PopUpOkIcon->event_handler;
+    OkKeyHandler = PopUpOkIcon->event_handler;
 
     PopUpCloseIcon = InsertIcon(icon->x + 0xe1, icon->y - 0x18, 7, PopUpCloseSprite);
     PopUpCloseIcon->string_id = 4;
@@ -539,7 +539,7 @@ LEGO_EXPORT void InitNewSaveGamePOPUP(struct IconNode *icon) {
     PopUpCloseIcon->flags |= 0x2000;
     PopUpCloseIcon->flags |= 0x4002;
     PopUpCloseIcon->event_handler = (void *)NewSaveGameCloseClicked;
-    DAT_006687c0 = PopUpCloseIcon->event_handler;
+    CancelKeyHandler = PopUpCloseIcon->event_handler;
     DAT_007986f0 = 0;
 }
 
@@ -826,6 +826,6 @@ int VolumePercentToMarker(int param) {
 
 // FUNCTION: LEGOLAND 0x0048eb20
 void SaveOptionsMouseHandlers(void) {
-    DAT_00798740 = DAT_006687bc;
-    DAT_0079873c = DAT_006687c0;
+    DAT_00798740 = OkKeyHandler;
+    DAT_0079873c = CancelKeyHandler;
 }
