@@ -5139,28 +5139,6 @@ void FreeObjAndTxtFiles(void) {
     MemFree(CoasterObjFile.data);
 }
 
-struct MVert {
-    int x;
-    int y;
-    int rest[3];
-};
-struct MEdge {
-    int v0;
-    int v1;
-};
-struct MTri {
-    int e[3];
-};
-struct EdgeMesh {
-    int f0;
-    int nVerts;
-    int nEdges;
-    int nTris;
-    struct MVert *verts;
-    struct MEdge *edges;
-    struct MTri *tris;
-};
-
 /* Copy of an edge mesh without its back-facing triangles (negative screen-space winding) and the edges and vertices
  * only they used; indices are renumbered. Edge references in triangles carry bit 31 for reversed edges. */
 // FUNCTION: LEGOLAND 0x004227c0
@@ -10020,7 +9998,7 @@ void DrawTrackRail(struct SegBlob *p, const struct FVec3 *a, unsigned int b) {
     unsigned int result = ((unsigned int (**)(void *, const char *))p->vt)[6](p, (const char *)RailSplitPoints);
     RailSplitCount = result;
     BuildRailTubeMesh(p, a, b, result, RailSplitPoints);
-    DrawEdgeMeshTriangles(RailTubeMesh);
+    DrawEdgeMeshTriangles(&RailTubeMesh);
     FPURestoreControlWord(handle);
 }
 
@@ -10029,7 +10007,7 @@ void DrawTrackRail(struct SegBlob *p, const struct FVec3 *a, unsigned int b) {
 void DrawTrackRailSameSplit(struct SegBlob *p, const struct FVec3 *a, unsigned int b) {
     unsigned short handle = FPUSetSinglePrecision();
     BuildRailTubeMesh(p, a, b, RailSplitCount, RailSplitPoints);
-    DrawEdgeMeshTriangles(RailTubeMesh);
+    DrawEdgeMeshTriangles(&RailTubeMesh);
     FPURestoreControlWord(handle);
 }
 

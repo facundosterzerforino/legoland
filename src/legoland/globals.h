@@ -850,7 +850,8 @@ extern unsigned int DAT_004b5ef4[4][2];
 // 0x004b5f14
 extern unsigned int DAT_004b5f14[4][2];
 // 0x004b5f60
-extern unsigned char RailTubeMesh[0x20];
+struct EdgeMesh;
+extern struct EdgeMesh RailTubeMesh;
 // 0x004b61e0
 extern struct CastleFloatEnt DAT_004b61e0[8];
 

@@ -416,25 +416,25 @@ struct Footprint DAT_004b53c0;
 unsigned char DAT_004b53d4[0x190];
 
 // GLOBAL: LEGOLAND 0x004b5570
-struct AreaNode DAT_004b5570;
+struct AreaNode DAT_004b5570 = {0, 0, 2, 2, NULL};
 
 // GLOBAL: LEGOLAND 0x004b5584
 short PieceNeighbourOffsets[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
 
 // GLOBAL: LEGOLAND 0x004b55f4
-unsigned int MapObjectsEnabled;
+unsigned int MapObjectsEnabled = 1;
 
 // GLOBAL: LEGOLAND 0x004b5608
-unsigned int ClipVertexStride;
+unsigned int ClipVertexStride = 28;
 
 // GLOBAL: LEGOLAND 0x004b560c
-int ClipVertexLastField;
+int ClipVertexLastField = 2;
 
 // GLOBAL: LEGOLAND 0x004b5b20
 void *CoasterSurfaceBits;
 
 // GLOBAL: LEGOLAND 0x004b5b24
-unsigned short *CoasterDepthBuffer;
+unsigned short *CoasterDepthBuffer = (unsigned short *)CoasterDepthBufferData;
 
 // GLOBAL: LEGOLAND 0x004b5b28
 int CoasterSurfacePitch;
@@ -449,10 +449,10 @@ char LanguageName[36] = "english";
 char SitLoManSitName[] = "sit.lomansit";
 
 // GLOBAL: LEGOLAND 0x004b5abc
-float HermiteBasis[4][4];
+float HermiteBasis[4][4] = {{-2.0f, 2.0f, 1.0f, 1.0f}, {3.0f, -3.0f, -1.0f, -2.0f}, {0.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f, 0.0f}};
 
 // GLOBAL: LEGOLAND 0x004b5b3c
-struct RecBuf *DepthSpanRecordEnd;
+struct RecBuf *DepthSpanRecordEnd = (struct RecBuf *)DepthSpanRecords;
 
 // GLOBAL: LEGOLAND 0x004b5988
 struct BlokeInfo CastleVisitorInfo;
@@ -478,10 +478,10 @@ const char *GirlVisitorTextures[2] = {
     "Face01"};
 
 // GLOBAL: LEGOLAND 0x004b5c1c
-struct FMat4 CastleIsoProjections[2];
+struct FMat4 CastleIsoProjections[2] = {{{{1.60334f, -1.60334f, 0.0f, 0.0f}, {0.801688f, 0.801688f, 1.96416f, 0.0f}, {3.19995f, 3.19995f, 0.0f, 32767.5f}, {0.0f, 0.0f, 0.0f, 1.0f}}}, {{{1.60334f, -1.60334f, 0.0f, 0.0f}, {0.801688f, 0.801688f, 1.96416f, 0.0f}, {3.19995f, 3.19995f, 0.0f, 32767.5f}, {0.0f, 0.0f, 0.0f, 1.0f}}}};
 
 // GLOBAL: LEGOLAND 0x004b5c9c
-unsigned int DAT_004b5c9c;
+unsigned int DAT_004b5c9c = 0x427c0000 /* 63.0f */;
 
 // GLOBAL: LEGOLAND 0x004b5ca0
 unsigned int CastleLightDir;
@@ -490,10 +490,10 @@ unsigned int CastleLightDir;
 unsigned int DAT_004b5ca4;
 
 // GLOBAL: LEGOLAND 0x004b5ca8
-unsigned int DAT_004b5ca8;
+unsigned int DAT_004b5ca8 = 0xbf800000 /* -1.0f */;
 
 // GLOBAL: LEGOLAND 0x004b5cac
-float DAT_004b5cac;
+float DAT_004b5cac = 63.0f;
 
 // GLOBAL: LEGOLAND 0x004b5cb0
 unsigned int TrackLightDir;
@@ -502,19 +502,19 @@ unsigned int TrackLightDir;
 unsigned int DAT_004b5cb4;
 
 // GLOBAL: LEGOLAND 0x004b5cb8
-unsigned int DAT_004b5cb8;
+unsigned int DAT_004b5cb8 = 0xbf800000 /* -1.0f */;
 
 // GLOBAL: LEGOLAND 0x004b5cbc
-float DAT_004b5cbc;
+float DAT_004b5cbc = 40.0f;
 
 // GLOBAL: LEGOLAND 0x004b5cc0
-unsigned int ModelLightDir;
+unsigned int ModelLightDir = 0x3e70a3d7 /* 0.235f */;
 
 // GLOBAL: LEGOLAND 0x004b5cc4
-unsigned int DAT_004b5cc4;
+unsigned int DAT_004b5cc4 = 0x3eb0a3d7 /* 0.345f */;
 
 // GLOBAL: LEGOLAND 0x004b5cc8
-unsigned int DAT_004b5cc8;
+unsigned int DAT_004b5cc8 = 0xbf800000 /* -1.0f */;
 
 // GLOBAL: LEGOLAND 0x004b5cf4
 char RollerCoasterSavePath[32] = "RollerCoaster\\RollerCoaster.sav";
@@ -570,7 +570,7 @@ unsigned int DAT_004b5ef4[4][2] = {{0, 3}, {2, 3}, {2, 1}, {0, 1}};
 unsigned int DAT_004b5f14[4][2] = {{0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc00000}, {0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc00000}};
 
 // GLOBAL: LEGOLAND 0x004b5f60
-unsigned char RailTubeMesh[0x20];
+struct EdgeMesh RailTubeMesh = {0, 0, 0, 0, (struct MVert *)DAT_006139c8, (struct MEdge *)DAT_006148b8, (struct MTri *)DAT_00612708};
 
 // GLOBAL: LEGOLAND 0x004b6150
 struct LmsFile DAT_004b6150 = {0};
@@ -579,7 +579,7 @@ struct LmsFile DAT_004b6150 = {0};
 struct CastleFloatEnt DAT_004b61e0[8] = {0};
 
 // GLOBAL: LEGOLAND 0x004b62f0
-unsigned int DAT_004b62f0[4];
+unsigned int DAT_004b62f0[4] = {1, 0, 0, 0};
 
 // GLOBAL: LEGOLAND 0x004b6300
 struct LmsFile DAT_004b6300;
@@ -1885,7 +1885,7 @@ int DepthSpanRecordCount;
 int DepthSpanRecordsOverflow;
 
 // GLOBAL: LEGOLAND 0x004e3870
-char CoasterDepthBufferData[16];
+char CoasterDepthBufferData[640 * 480 * 2]; /* the castle view's 16-bit depth buffer (CoasterDepthBuffer) */
 
 // GLOBAL: LEGOLAND 0x0060f914
 struct CastleTrackCell CastleTrackCells[20];
@@ -1990,7 +1990,7 @@ int ArcLengthCurvePair;
 float ArcLengthDepth;
 
 // GLOBAL: LEGOLAND 0x004b5f80
-struct CastleFloatEnt DAT_004b5f80[3][4];
+struct CastleFloatEnt DAT_004b5f80[3][4] = {{{1.0f, 1.0f, 0}, {-1.0f, 1.0f, 0}, {-1.0f, -1.0f, 0}, {1.0f, -1.0f, 0}}, {{1.0f, 1.0f, 0}, {-1.0f, 1.0f, 0}, {-1.0f, -1.0f, 0}, {1.0f, -1.0f, 0}}, {{1.0f, 1.0f, 0}, {-1.0f, 1.0f, 0}, {-1.0f, -1.0f, 0}, {1.0f, -1.0f, 0}}};
 
 // GLOBAL: LEGOLAND 0x006121c8
 float DAT_006121c8[6][3] = {0};
@@ -2031,8 +2031,11 @@ int DAT_00615fec;
 // GLOBAL: LEGOLAND 0x00615f8c
 float *RangeCentre;
 
+/* RangeRootFinder's initial value */
+int BisectRoot(float (*fn)(unsigned int), float lo, float hi, float *out);
+
 // GLOBAL: LEGOLAND 0x004b63fc
-int (*RangeRootFinder)(float (*fn)(unsigned int), float lo, float hi, float *out);
+int (*RangeRootFinder)(float (*fn)(unsigned int), float lo, float hi, float *out) = BisectRoot;
 
 // GLOBAL: LEGOLAND 0x00615f84
 struct CurveWalker *RangeWalker;
@@ -5445,13 +5448,13 @@ struct Train *DerivTrain;
 struct CurveWalker DerivTrainWalker;
 
 // GLOBAL: LEGOLAND 0x004b5634
-float ScalarDerivThirdDiffWeight;
+float ScalarDerivThirdDiffWeight = 0.16666667f;
 
 // GLOBAL: LEGOLAND 0x004b559c
-float TrainCarSeatX[3];
+float TrainCarSeatX[3] = {0.0f, 4.0f, 8.0f};
 
 // GLOBAL: LEGOLAND 0x004b55a8
-float TrainSeatSpacing;
+float TrainSeatSpacing = 16.0f;
 
 // GLOBAL: LEGOLAND 0x004b4cac
 char SafariManboxName[] = "manbox??";
@@ -5487,19 +5490,19 @@ int DAT_00638108;
 int **ClipVertexLists[2];
 
 // GLOBAL: LEGOLAND 0x004b5610
-float DerivThirdDiffWeight;
+float DerivThirdDiffWeight = 0.16666667f;
 
 // GLOBAL: LEGOLAND 0x004b5614
-float Deriv4PointFirstOffset;
+float Deriv4PointFirstOffset = -1.0f;
 
 // GLOBAL: LEGOLAND 0x004b5618
-float Deriv4PointOffsets[3];
+float Deriv4PointOffsets[3] = {-0.33333334f, 0.33333334f, 1.0f};
 
 // GLOBAL: LEGOLAND 0x004b5624
-float Deriv4PointFirstWeight;
+float Deriv4PointFirstWeight = 0.0625f;
 
 // GLOBAL: LEGOLAND 0x004b5628
-float Deriv4PointWeights[3];
+float Deriv4PointWeights[3] = {-1.6875f, 1.6875f, -0.0625f};
 
 // GLOBAL: LEGOLAND 0x004d83c4
 int ClipVertexPool[0x100];
@@ -5514,7 +5517,7 @@ int *ClipVertsIn[32];
 struct FloatArray **DifferenceTableRows[5];
 
 // GLOBAL: LEGOLAND 0x004b5660
-float RK4Coefficients[4][2];
+float RK4Coefficients[4][2] = {{0.0f, 0.1666666f}, {0.5f, 0.3333333f}, {0.5f, 0.3333333f}, {1.0f, 0.1666666f}};
 
 // GLOBAL: LEGOLAND 0x004dd644
 struct SlopeCurve *SplitCurveStart;

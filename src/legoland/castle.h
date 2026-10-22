@@ -312,7 +312,28 @@ int GetCoasterPieceMapLine(struct Point *pos, void *a2, void *a3, void *a4, void
 struct ObjAtC8;
 struct ListLink;
 struct Int16Pair;
-struct EdgeMesh;
+/* a triangle mesh: vertices, edges between two vertices, triangles of three edges (bit 31: edge reversed) */
+struct MVert {
+    int x;
+    int y;
+    int rest[3];
+};
+struct MEdge {
+    int v0;
+    int v1;
+};
+struct MTri {
+    int e[3];
+};
+struct EdgeMesh {
+    int f0;
+    int nVerts;
+    int nEdges;
+    int nTris;
+    struct MVert *verts;
+    struct MEdge *edges;
+    struct MTri *tris;
+};
 struct EdgeMesh *EdgeMeshRemoveBackfaces(struct EdgeMesh *src);
 struct FVec3;
 struct PiecePlacement;
