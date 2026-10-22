@@ -10037,20 +10037,28 @@ void DrawTrackRailSameSplit(struct SegBlob *p, const struct FVec3 *a, unsigned i
  * profile. */
 // FUNCTION: LEGOLAND 0x00428f00
 void InitRailTubeMesh(void) {
-    unsigned int *volatile ptmp7;
-    unsigned int *ptmp8;
-    int i, j, k, m, n, t, e, v;
-    register float ang;
-    register int cnt;
+    int i;
+    int j;
+    int n;
+    int t = 0;
+    int e;
+    int v;
+    int k;
+    int cnt;
+    int m;
+    int k6;
+    int k18;
+    unsigned int *g;
+    unsigned int *out;
+    float ang;
     float s;
-    unsigned int *g, *out;
-    int (*d)[2];
-    int (*sp)[2];
-    int k6, k18;
 
-    for (i = 0; 4 >= i; i++) {
-        DAT_00613908[i][0] = i;
-        DAT_00613908[i][1] = i + 1;
+    {
+        int *end = &DAT_00613908[0][1]; /* the edge's second vertex */
+        for (i = 0; i <= 4; i++, end += 2) {
+            end[-1] = i;
+            end[0] = i + 1;
+        }
     }
     DAT_00613908[5][0] = i;
     DAT_00613908[5][1] = 0;
@@ -10060,7 +10068,7 @@ void InitRailTubeMesh(void) {
         DAT_00613908[n][1] = j + 6;
         n++;
         DAT_00613908[n][0] = j;
-        DAT_00613908[n][1] = 7 + j;
+        DAT_00613908[n][1] = j + 7;
         n++;
     }
     DAT_00613908[n][0] = j;
@@ -10071,15 +10079,14 @@ void InitRailTubeMesh(void) {
     n++;
     for (j = 0; j <= 4; j++) {
         DAT_00613908[n][0] = j + 6;
-        DAT_00613908[n][1] = 7 + j;
+        DAT_00613908[n][1] = j + 7;
         n++;
     }
     DAT_00613908[n][0] = j + 6;
     DAT_00613908[n][1] = 6;
 
-    t = 0;
     v = 6;
-    for (e = 18; 23 > e; e++) {
+    for (e = 18; e < 23; e++) {
         DAT_00613878[t * 3] = e - 18 + 0x80000000;
         DAT_00613878[t * 3 + 1] = v + 1;
         DAT_00613878[t * 3 + 2] = v + 2 + 0x80000000;
@@ -10093,51 +10100,44 @@ void InitRailTubeMesh(void) {
     DAT_00613878[t * 3] = 0x80000005;
     DAT_00613878[t * 3 + 1] = v + 1;
     DAT_00613878[t * 3 + 2] = 0x80000006;
-    DAT_00613878[t * 3 + 3] = v;
-    DAT_00613878[t * 3 + 4] = e;
-    DAT_00613878[t * 3 + 5] = v + 1 + 0x80000000;
+    t++;
+    DAT_00613878[t * 3] = v;
+    DAT_00613878[t * 3 + 1] = e;
+    DAT_00613878[t * 3 + 2] = v + 1 + 0x80000000;
 
     n = 0;
-    ptmp8 = DAT_00612708[0];
-    ptmp7 = ptmp8;
-    g = ptmp7;
-    k = 0;
-    while (k < 30) {
+    g = DAT_00612708[0];
+    for (k = 0; k < 30; k++) {
         k6 = k * 6;
         k18 = k * 18;
         cnt = 18;
         if (k == 29) {
             cnt = 24;
         }
-        d = &DAT_006148b8[n];
-        sp = DAT_00613908;
-        n += cnt;
-        do {
-            (*d)[0] = (*sp)[0] + k6;
-            (*d)[1] = (*sp)[1] + k6;
-            d++;
-            sp++;
-        } while (--cnt);
+        for (m = 0; m < cnt; m++) {
+            DAT_006148b8[n][0] = DAT_00613908[m][0] + k6;
+            DAT_006148b8[n][1] = DAT_00613908[m][1] + k6;
+            n++;
+        }
         out = g;
-        g = g + 36;
+        g += 36;
         for (i = 0; i < 12; i++) {
-            for (j = 0; 3 > j; j++) {
+            for (j = 0; j < 3; j++) {
                 unsigned int x = DAT_00613878[i * 3 + j];
                 *out++ = ((x & 0x7fffffff) + k18) | (x & 0x80000000);
             }
         }
-        k++;
     }
 
     ang = FLOAT_004ab390;
-    for (i = 0; i < (unsigned)6; i++) {
+    for (i = 0; i < 6; i++) {
         DAT_006121c8[i][0] = 0.0f;
         DAT_006121c8[i][1] = (float)cos(ang) * 1.8f;
         s = (float)sin(ang);
         DAT_006121c8[i][2] = s * 1.8f;
         DAT_006126d8[i][0] = (float)cos(ang);
         DAT_006126d8[i][1] = s;
-        ang += 1.0471976f;
+        ang += 1.0472f;
     }
 }
 
