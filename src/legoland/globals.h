@@ -776,9 +776,9 @@ extern short PieceNeighbourOffsets[4][2];
 // 0x004b55f4
 extern unsigned int MapObjectsEnabled;
 // 0x004b5608
-extern unsigned int DAT_004b5608;
+extern unsigned int ClipVertexStride;
 // 0x004b560c
-extern int DAT_004b560c;
+extern int ClipVertexLastField;
 // 0x004b5b20
 extern void *CoasterSurfaceBits;
 // 0x004b5b24
@@ -1647,13 +1647,13 @@ extern struct VecMath TrainVecMath;
 extern float TrainInertiaHistory[64];
 extern unsigned int TrainInertiaHistoryIndex;
 // 0x004d88f4
-extern unsigned char DAT_004d88f4[0x80];
+extern unsigned char ShadeClampTable[0x80];
 // 0x004d8974
-extern unsigned char DAT_004d8974[0x40];
+extern unsigned char ShadeClampTableTop[0x40];
 // 0x004d89b4
 extern unsigned int DAT_004d89b4[4];
 // 0x004d89c4
-extern void *DAT_004d89c4;
+extern void *ShadeClamp;
 // 0x004d89c8
 extern void *LtxFileTable[30];
 // 0x004d8a40
@@ -4127,7 +4127,7 @@ extern struct Train *DerivTrain;
 extern struct CurveWalker DerivTrainWalker;
 
 // 0x004b5634
-extern float FLOAT_004b5634;
+extern float ScalarDerivThirdDiffWeight;
 
 // 0x004b559c
 extern float TrainCarSeatX[3];
@@ -4164,28 +4164,28 @@ extern int DAT_00638110;
 extern int DAT_00638108;
 
 // 0x004b5600
-extern int **DAT_004b5600[2];
+extern int **ClipVertexLists[2];
 // 0x004b5610
-extern float DAT_004b5610;
+extern float DerivThirdDiffWeight;
 // 0x004b5614
-extern float DAT_004b5614;
+extern float Deriv4PointFirstOffset;
 // 0x004b5618
-extern float DAT_004b5618[3];
+extern float Deriv4PointOffsets[3];
 // 0x004b5624
-extern float DAT_004b5624;
+extern float Deriv4PointFirstWeight;
 // 0x004b5628
-extern float DAT_004b5628[3];
+extern float Deriv4PointWeights[3];
 // 0x004d83c4
-extern int DAT_004d83c4[0x100];
+extern int ClipVertexPool[0x100];
 // 0x004d87c4
-extern int *DAT_004d87c4;
+extern int *ClipVertexPoolNext;
 // 0x004d884c
-extern int *DAT_004d884c[32];
+extern int *ClipVertsIn[32];
 // 0x004d88cc
-extern struct FloatArray **DAT_004d88cc[5];
+extern struct FloatArray **DifferenceTableRows[5];
 
 // 0x004b5660
-extern float DAT_004b5660[4][2];
+extern float RK4Coefficients[4][2];
 
 struct Struct1e40;
 // 0x004dd644
@@ -4240,7 +4240,7 @@ extern int DAT_00610904[64];
 extern unsigned int DAT_00610a10;
 
 // 0x0060f900
-extern int DAT_0060f900;
+extern int FilledTriangleCount;
 
 // 0x0060f904
 extern int CoasterShadeTableCount;
@@ -4258,7 +4258,7 @@ extern int DAT_00611644;
 extern int DAT_00615f68;
 
 // 0x004dcbc8
-extern int DAT_004dcbc8;
+extern int LmsDrawCycles;
 
 // 0x004d83bc
 extern int TrainStepCycles;

@@ -251,18 +251,22 @@ struct LmsRec {
     unsigned char pad_4[8];
 };
 
+/* A coaster model (.lms, from RollerCoaster/RollerCoaster/CreatedData; offsets are made absolute by LoadLmsFile).
+ * Three triangle lists, one per shading mode; each LmsRef's idx selects the triangle's material record in the
+ * model's .lfm file, whose key is an lpt colour (flat, Gouraud) or an ltx texture index (textured). DrawLmsModel
+ * transforms the vertices and draws the three lists. */
 /* a roller coaster mesh (.lms, CreatedData): the offsets at 0x0c..0x28 are relocated into pointers on load */
 struct LmsFile {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ void *field_c;
     /* 0x10 */ void *field_10;
     /* 0x14 */ void *field_14;
-    /* 0x18 */ struct LmsRef *field_18; /* field_1c of them */
-    /* 0x1c */ int field_1c;
-    /* 0x20 */ struct LmsRef *field_20; /* field_24 of them */
-    /* 0x24 */ int field_24;
-    /* 0x28 */ struct LmsRef *field_28; /* field_2c of them */
-    /* 0x2c */ int field_2c;
+    /* 0x18 */ struct LmsRef *flat_tris; /* flat_count flat-shaded triangles (lfm key: lpt colour) */
+    /* 0x1c */ int flat_count;
+    /* 0x20 */ struct LmsRef *gouraud_tris; /* gouraud_count Gouraud-shaded triangles (lfm key: lpt colour) */
+    /* 0x24 */ int gouraud_count;
+    /* 0x28 */ struct LmsRef *tex_tris; /* tex_count textured triangles (lfm key: ltx texture) */
+    /* 0x2c */ int tex_count;
     /* 0x30 */ struct FVec3 box[8]; /* the bounding box's corners */
 };
 
@@ -388,7 +392,7 @@ unsigned int GetCoasterTxtLineCount(void);
 void FormatRollercoasterFileName(int value, char *buffer);
 void *LoadLtxFile(const char *name);
 int *LoadRollercoasterLpt(void);
-void FUN_0041f030(unsigned int param);
+void SetClipVertexFormat(unsigned int param);
 struct FloatArray;
 int VecDerivative(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d);
 int **ClipPolygonToPlanes(int n, int **verts, int *outCount, int nPlanes, float *planes);
@@ -397,7 +401,7 @@ void InitVecMathOps(void);
 int ScalarDerivative(double (*fn)(float), float p2, float p3, float *out);
 float **BuildDifferenceTable(double (*fn)(float), int n, float a, float b);
 double LogFloat(float param);
-void FUN_0041f710(void *param);
+void FreeDifferenceTable(void *param);
 float GetTrainKineticEnergy(struct Train *param_1, float param_2);
 void PositionTrainCarsAndBogies(void *obj, float val, void *tmp);
 void EvalTrainPotentialAndCentres(float a, struct FloatArray *out);
@@ -551,29 +555,29 @@ struct BoxSolid {
     unsigned char pad_28[0x90 - 0x28];
 };
 
-extern float DAT_004b5700[6][3];
+extern float BoxFaceNormals[6][3];
 extern struct BoxFace DAT_004b5748[12];
 extern struct BoxFace DAT_004b5808[12];
-extern struct BoxSolid DAT_004b58c8;
+extern struct BoxSolid BoxSolidTemplate;
 
 void InitBoxSolidToOrigin(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d);
 void InitBoxSolidCentred(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d);
-void FUN_0041f8d0(void);
-void FUN_0041fba0(void);
-void FUN_0041fd80(void);
-void FUN_0041ff80(void);
-void FUN_00428860(void);
-extern void *DAT_004b5648[2];
-extern void *DAT_004b5658[2];
-extern void *DAT_004b5f50[2];
+void FillSpansFlat(void);
+void FillSpansFlatZ(void);
+void FillSpansGouraud(void);
+void FillSpansGouraudZ(void);
+void FillSpansTexturedZ(void);
+extern void *FlatSpanFillers[2];
+extern void *GouraudSpanFillers[2];
+extern void *TexturedSpanFillers[2];
 float StepTrainToSegmentEnd(struct Train *obj, float total);
 float FUN_0041e0e0(struct Train *self, float time_left);
 float FUN_0041e100(struct Train *self, float time_left);
 void *ClipTriangle(void *verts, int *out, unsigned int code, int n);
 struct SegBlob *CurveWalkerNext(struct CurveWalker *cursor);
-void FUN_00420810(void);
-void FUN_00420a20(void);
-void FUN_00420c40(void);
+void DrawLmsFlatTriangles(void);
+void DrawLmsGouraudTriangles(void);
+void DrawLmsTexturedTriangles(void);
 void FUN_00423200(int n, int x, struct RecIdx *idx, struct RecSrc *src);
 struct RecBuf;
 void FUN_004232b0(struct RecBuf *rb);
@@ -588,5 +592,5 @@ struct Mat4x4;
 void Mat3ToMat4Transpose(unsigned int *m3, struct Mat4x4 *out);
 void BuildBasisFromDir(struct FVec3 *dir, struct FVec3 *basis);
 unsigned int LowestSetBitIndex(unsigned int param_1);
-void FUN_0042a2f0(void);
+void RasteriseTriangle(void);
 void *GetLtxFileTableEntry(unsigned int param);

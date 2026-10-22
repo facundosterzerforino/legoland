@@ -425,10 +425,10 @@ short PieceNeighbourOffsets[4][2] = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
 unsigned int MapObjectsEnabled;
 
 // GLOBAL: LEGOLAND 0x004b5608
-unsigned int DAT_004b5608;
+unsigned int ClipVertexStride;
 
 // GLOBAL: LEGOLAND 0x004b560c
-int DAT_004b560c;
+int ClipVertexLastField;
 
 // GLOBAL: LEGOLAND 0x004b5b20
 void *CoasterSurfaceBits;
@@ -1802,16 +1802,16 @@ float TrainInertiaHistory[64];
 unsigned int TrainInertiaHistoryIndex;
 
 // GLOBAL: LEGOLAND 0x004d88f4
-unsigned char DAT_004d88f4[0x80];
+unsigned char ShadeClampTable[0x80];
 
 // GLOBAL: LEGOLAND 0x004d8974
-unsigned char DAT_004d8974[0x40];
+unsigned char ShadeClampTableTop[0x40];
 
 // GLOBAL: LEGOLAND 0x004d89b4
 unsigned int DAT_004d89b4[4];
 
 // GLOBAL: LEGOLAND 0x004d89c4
-void *DAT_004d89c4;
+void *ShadeClamp;
 
 // GLOBAL: LEGOLAND 0x004d89c8
 void *LtxFileTable[30];
@@ -5431,7 +5431,7 @@ struct Train *DerivTrain;
 struct CurveWalker DerivTrainWalker;
 
 // GLOBAL: LEGOLAND 0x004b5634
-float FLOAT_004b5634;
+float ScalarDerivThirdDiffWeight;
 
 // GLOBAL: LEGOLAND 0x004b559c
 float TrainCarSeatX[3];
@@ -5470,37 +5470,37 @@ int DAT_00638110;
 int DAT_00638108;
 
 // GLOBAL: LEGOLAND 0x004b5600
-int **DAT_004b5600[2];
+int **ClipVertexLists[2];
 
 // GLOBAL: LEGOLAND 0x004b5610
-float DAT_004b5610;
+float DerivThirdDiffWeight;
 
 // GLOBAL: LEGOLAND 0x004b5614
-float DAT_004b5614;
+float Deriv4PointFirstOffset;
 
 // GLOBAL: LEGOLAND 0x004b5618
-float DAT_004b5618[3];
+float Deriv4PointOffsets[3];
 
 // GLOBAL: LEGOLAND 0x004b5624
-float DAT_004b5624;
+float Deriv4PointFirstWeight;
 
 // GLOBAL: LEGOLAND 0x004b5628
-float DAT_004b5628[3];
+float Deriv4PointWeights[3];
 
 // GLOBAL: LEGOLAND 0x004d83c4
-int DAT_004d83c4[0x100];
+int ClipVertexPool[0x100];
 
 // GLOBAL: LEGOLAND 0x004d87c4
-int *DAT_004d87c4;
+int *ClipVertexPoolNext;
 
 // GLOBAL: LEGOLAND 0x004d884c
-int *DAT_004d884c[32];
+int *ClipVertsIn[32];
 
 // GLOBAL: LEGOLAND 0x004d88cc
-struct FloatArray **DAT_004d88cc[5];
+struct FloatArray **DifferenceTableRows[5];
 
 // GLOBAL: LEGOLAND 0x004b5660
-float DAT_004b5660[4][2];
+float RK4Coefficients[4][2];
 
 // GLOBAL: LEGOLAND 0x004dd644
 struct Struct1e40 *DAT_004dd644;
@@ -5557,7 +5557,7 @@ int DAT_00610904[64];
 unsigned int DAT_00610a10;
 
 // GLOBAL: LEGOLAND 0x0060f900
-int DAT_0060f900;
+int FilledTriangleCount;
 
 // GLOBAL: LEGOLAND 0x0060f904
 int CoasterShadeTableCount;
@@ -5575,7 +5575,7 @@ int DAT_00611644;
 int DAT_00615f68;
 
 // GLOBAL: LEGOLAND 0x004dcbc8
-int DAT_004dcbc8;
+int LmsDrawCycles;
 
 // GLOBAL: LEGOLAND 0x004d83bc
 int TrainStepCycles;

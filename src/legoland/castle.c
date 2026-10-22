@@ -1814,6 +1814,7 @@ struct PlaneSet {
     float p[4][3];
 };
 
+/* Sets the four screen clip planes to the rectangle x0..x1, y0..y1. */
 // FUNCTION: LEGOLAND 0x0041ef20
 void SetClipRect(int a, int b, int c, int d) {
     struct RectI r;
@@ -1825,6 +1826,9 @@ void SetClipRect(int a, int b, int c, int d) {
     SetClipPlanesFromRect((int *)&r, ClipPlanes);
 }
 
+/* Clips a triangle against the screen planes it is not already inside of: code bits 1|2 = inside both x planes, 4|8
+ * = inside both y planes (0xf: no clipping). n = number of interpolated vertex fields. Returns the clipped
+ * polygon's vertex list, the vertex count in *out. */
 // FUNCTION: LEGOLAND 0x0041ef60
 void *ClipTriangle(void *verts, int *out, unsigned int code, int n) {
     int sel = 0;
@@ -1833,7 +1837,7 @@ void *ClipTriangle(void *verts, int *out, unsigned int code, int n) {
         *out = 3;
         return verts;
     }
-    FUN_0041f030(n + 1);
+    SetClipVertexFormat(n + 1);
     if ((char)(code & 3) < 3) {
         sel = 1;
     }
@@ -1851,10 +1855,11 @@ void *ClipTriangle(void *verts, int *out, unsigned int code, int n) {
     return out;
 }
 
+/* Clipped vertices are 28 bytes (7 ints); fields 0..n are interpolated at the new vertices. */
 // FUNCTION: LEGOLAND 0x0041f030
-void FUN_0041f030(unsigned int param) {
-    DAT_004b5608 = 0x1c;
-    DAT_004b560c = param;
+void SetClipVertexFormat(unsigned int param) {
+    ClipVertexStride = 0x1c;
+    ClipVertexLastField = param;
 }
 
 union FloatBits {
@@ -1867,6 +1872,8 @@ struct FDist {
     unsigned int sign;
 };
 
+/* One Sutherland-Hodgman pass: clips polygon src (n vertices) against plane pl (inside where pl[2] - (v[2] * pl[0]
+ * + v[1] * pl[1]) >= 0) into dst, taking new vertices from *cursor. Returns the new vertex count. */
 // FUNCTION: LEGOLAND 0x0041f050
 int ClipPolygonToPlane(int n, int **src, int **dst, int **cursor, float *pl) {
     struct FDist m, pm;
@@ -1894,11 +1901,11 @@ int ClipPolygonToPlane(int n, int **src, int **dst, int **cursor, float *pl) {
         case 0x40000000:
             t = pm.mag.f / (pm.mag.f + m.mag.f);
             *dst++ = prev;
-            for (k = 0; k <= DAT_004b560c; k++) {
+            for (k = 0; k <= ClipVertexLastField; k++) {
                 pool[k] = prev[k] + (int)((cur[k] - prev[k]) * t);
             }
             *dst++ = pool;
-            pool = (int *)((char *)pool + DAT_004b5608);
+            pool = (int *)((char *)pool + ClipVertexStride);
             count += 2;
             break;
         case 0xc0000000:
@@ -1907,11 +1914,11 @@ int ClipPolygonToPlane(int n, int **src, int **dst, int **cursor, float *pl) {
             break;
         case 0x80000000:
             t = m.mag.f / (pm.mag.f + m.mag.f);
-            for (k = 0; k <= DAT_004b560c; k++) {
+            for (k = 0; k <= ClipVertexLastField; k++) {
                 pool[k] = cur[k] + (int)((prev[k] - cur[k]) * t);
             }
             *dst++ = pool;
-            pool = (int *)((char *)pool + DAT_004b5608);
+            pool = (int *)((char *)pool + ClipVertexStride);
             count++;
             break;
         }
@@ -1920,16 +1927,18 @@ int ClipPolygonToPlane(int n, int **src, int **dst, int **cursor, float *pl) {
     return count;
 }
 
+/* Clips a polygon against nPlanes planes, ping-ponging between the two ClipVertexLists; NULL (count 0) when nothing
+ * is left. */
 // FUNCTION: LEGOLAND 0x0041f2b0
 int **ClipPolygonToPlanes(int n, int **verts, int *outCount, int nPlanes, float *planes) {
     int i;
 
     for (i = 0; i < n; i++) {
-        DAT_004d884c[i] = verts[i];
+        ClipVertsIn[i] = verts[i];
     }
-    DAT_004d87c4 = DAT_004d83c4;
+    ClipVertexPoolNext = ClipVertexPool;
     for (i = 0; i < nPlanes; i++) {
-        n = ClipPolygonToPlane(n, DAT_004b5600[i & 1], DAT_004b5600[(i - 1) & 1], &DAT_004d87c4, planes);
+        n = ClipPolygonToPlane(n, ClipVertexLists[i & 1], ClipVertexLists[(i - 1) & 1], &ClipVertexPoolNext, planes);
         if (n == 0) {
             *outCount = 0;
             return NULL;
@@ -1937,7 +1946,7 @@ int **ClipPolygonToPlanes(int n, int **verts, int *outCount, int nPlanes, float 
         planes += 3;
     }
     *outCount = n;
-    return DAT_004b5600[i & 1];
+    return ClipVertexLists[i & 1];
 }
 
 struct Pair {
@@ -1945,11 +1954,13 @@ struct Pair {
     unsigned int field_4;
 };
 
+/* ClipPolygonToPlanes with a PlaneSet. */
 // FUNCTION: LEGOLAND 0x0041f350
 int **ClipPolygonToPlaneSet(int param1, int **param2, int *param3, struct PlaneSet *param4) {
     return ClipPolygonToPlanes(param1, param2, param3, param4->count, param4->p[0]);
 }
 
+/* The four planes of rectangle r = {y0, x0, y1, x1}: x >= x0, x <= x1, y >= y0, y <= y1. */
 // FUNCTION: LEGOLAND 0x0041f380
 void SetClipPlanesFromRect(const int *r, struct PlaneSet *out) {
     out->count = 4;
@@ -1967,6 +1978,8 @@ void SetClipPlanesFromRect(const int *r, struct PlaneSet *out) {
     out->p[3][2] = -(float)r[2];
 }
 
+/* Forward difference table of fn sampled at n + 1 points spaced b around a: row k holds the k-th differences
+ * (vector version; the rows share one VecMath scratch block). */
 // FUNCTION: LEGOLAND 0x0041f3e0
 struct FloatArray ***BuildVecDifferenceTable(void (*fn)(float, struct FloatArray *), struct VecMath *ar, int n, float a, float b) {
     int cnt = n + 1;
@@ -1980,29 +1993,32 @@ struct FloatArray ***BuildVecDifferenceTable(void (*fn)(float, struct FloatArray
         return NULL;
     }
     for (i = 0; i <= n; i++) {
-        DAT_004d88cc[i] = blk;
+        DifferenceTableRows[i] = blk;
         blk += cnt - i;
     }
     a -= (n >> 1) * b;
     for (i = 0; i <= n; i++) {
-        fn(a, DAT_004d88cc[0][i]);
+        fn(a, DifferenceTableRows[0][i]);
         a += b;
     }
     for (k = 1; k <= n; k++) {
         for (j = 0; j < n - k + 1; j++) {
-            ar->sub(DAT_004d88cc[k - 1][j + 1], DAT_004d88cc[k - 1][j], DAT_004d88cc[k][j]);
+            ar->sub(DifferenceTableRows[k - 1][j + 1], DifferenceTableRows[k - 1][j], DifferenceTableRows[k][j]);
         }
     }
-    return DAT_004d88cc;
+    return DifferenceTableRows;
 }
 
+/* Releases a vector difference table's scratch block. */
 // FUNCTION: LEGOLAND 0x0041f4c0
-unsigned int FUN_0041f4c0(struct FloatArray ***param1, struct VecMath *param2, int param3) {
+unsigned int FreeVecDifferenceTable(struct FloatArray ***param1, struct VecMath *param2, int param3) {
     int n = param3 + 1;
     int tri = ((n + 1) * n) >> 1;
     return ((unsigned int (*)(struct FloatArray **, unsigned int))param2->release)(*param1, tri);
 }
 
+/* Derivative of fn at b from its difference table with spacing c / 2 (central first differences corrected by the
+ * third differences, weight 1/6). Used for the train's slope and inertia. */
 // FUNCTION: LEGOLAND 0x0041f4e0
 int VecDerivative(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d) {
     struct VecMath *ar = a;
@@ -2021,16 +2037,18 @@ int VecDerivative(void (*fn)(float, struct FloatArray *), struct VecMath *a, flo
     }
     ar->add(t[1][1], t[1][2], p);
     ar->add(t[3][0], t[3][1], q);
-    ar->scale(q, DAT_004b5610);
+    ar->scale(q, DerivThirdDiffWeight);
     ar->add(p, q, d);
     ar->scale(d, 0.5f / c);
     ar->release(h, 2);
-    FUN_0041f4c0(t, ar, 4);
+    FreeVecDifferenceTable(t, ar, 4);
     return 1;
 }
 
+/* Derivative of fn at b by the 4-point rule over b +- c/2, b +- c/6: (f(b-3d) - 27 f(b-d) + 27 f(b+d) - f(b+3d)) /
+ * 48d with d = c/6. */
 // FUNCTION: LEGOLAND 0x0041f5a0
-int FUN_0041f5a0(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d) {
+int VecDerivative4Point(void (*fn)(float, struct FloatArray *), struct VecMath *a, float b, float c, struct FloatArray *d) {
     struct VecMath *ar = a;
     struct FloatArray **h;
     struct FloatArray *q;
@@ -2041,11 +2059,11 @@ int FUN_0041f5a0(void (*fn)(float, struct FloatArray *), struct VecMath *a, floa
     h = ar->alloc(2);
     q = h[1];
     r = d;
-    fn(DAT_004b5614 * c + b, r);
-    ar->scale(r, DAT_004b5624);
+    fn(Deriv4PointFirstOffset * c + b, r);
+    ar->scale(r, Deriv4PointFirstWeight);
     for (i = 0; i <= 2; i++) {
-        fn(c * DAT_004b5618[i] + b, q);
-        ar->scale(q, DAT_004b5628[i]);
+        fn(c * Deriv4PointOffsets[i] + b, q);
+        ar->scale(q, Deriv4PointWeights[i]);
         ar->add(q, r, r);
     }
     ar->scale(r, 1.0f / c);
@@ -2053,6 +2071,7 @@ int FUN_0041f5a0(void (*fn)(float, struct FloatArray *), struct VecMath *a, floa
     return 1;
 }
 
+/* Scalar version of BuildVecDifferenceTable (one MemAlloc block: row pointers, then the triangle). */
 // FUNCTION: LEGOLAND 0x0041f650
 float **BuildDifferenceTable(double (*fn)(float), int n, float a, float b) {
     int cnt = n + 1;
@@ -2085,11 +2104,13 @@ float **BuildDifferenceTable(double (*fn)(float), int n, float a, float b) {
     return t;
 }
 
+/* Frees a difference table. */
 // FUNCTION: LEGOLAND 0x0041f710
-void FUN_0041f710(void *param) {
+void FreeDifferenceTable(void *param) {
     MemFree(param);
 }
 
+/* Scalar version of VecDerivative. */
 // FUNCTION: LEGOLAND 0x0041f720
 int ScalarDerivative(double (*fn)(float), float p2, float p3, float *out) {
     float **r;
@@ -2099,12 +2120,13 @@ int ScalarDerivative(double (*fn)(float), float p2, float p3, float *out) {
     if (!r) {
         return 0;
     }
-    p3 = ((r[1][2] + r[1][1]) - (r[3][1] + r[3][0]) * FLOAT_004b5634) * 0.5f / p3;
-    FUN_0041f710(r);
+    p3 = ((r[1][2] + r[1][1]) - (r[3][1] + r[3][0]) * ScalarDerivThirdDiffWeight) * 0.5f / p3;
+    FreeDifferenceTable(r);
     *out = p3;
     return 1;
 }
 
+/* Test function for the derivatives: (e^x, 2 e^x, 2 e^2x). */
 // FUNCTION: LEGOLAND 0x0041f790
 void ExpTestCurve(float x, struct FloatArray *out) {
     double e;
@@ -2115,11 +2137,13 @@ void ExpTestCurve(float x, struct FloatArray *out) {
     out->data[2] = (float)(2.0 * exp(2.0 * x));
 }
 
+/* log(x) (test function for ScalarDerivative). */
 // FUNCTION: LEGOLAND 0x0041f7e0
 double LogFloat(float param) {
     return log(param);
 }
 
+/* Debug test of ScalarDerivative and VecDerivative; nothing uses the results. */
 // FUNCTION: LEGOLAND 0x0041f7f0
 void TestNumericDerivatives(void) {
     float buf;
@@ -2132,6 +2156,7 @@ void TestNumericDerivatives(void) {
     VecDerivative(ExpTestCurve, &x, 3.0f, 0.01f, &y);
 }
 
+/* Steps the walker to the next curve stretch, moving on to the next piece's first stretch at the end of a piece. */
 // FUNCTION: LEGOLAND 0x0041f850
 struct SegBlob *CurveWalkerNext(struct CurveWalker *cursor) {
     struct SegBlob *result = cursor->node->next;
@@ -2144,6 +2169,7 @@ struct SegBlob *CurveWalkerNext(struct CurveWalker *cursor) {
     return result;
 }
 
+/* Steps the walker to the previous curve stretch, moving back to the previous piece's last stretch. */
 // FUNCTION: LEGOLAND 0x0041f880
 void CurveWalkerPrev(struct CurveWalker *walker) {
     struct SegBlob *node = walker->node->prev;
@@ -2161,9 +2187,11 @@ void CurveWalkerPrev(struct CurveWalker *walker) {
     } while (walker->node->next != NULL);
 }
 
+/* Span filler (FlatSpanFillers[0]): fills the rows of a scan-converted triangle with one colour from its shade
+ * table, no depth test. Counts FilledTriangleCount. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041f8d0
-__declspec(naked) void FUN_0041f8d0(void) {
+__declspec(naked) void FillSpansFlat(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -2193,9 +2221,9 @@ __declspec(naked) void FUN_0041f8d0(void) {
         mov dword ptr [ebp - 0xc], eax
         mov eax, dword ptr [CoasterSurfacePitch]
         mov dword ptr [ebp - 8], eax
-        mov eax, dword ptr [DAT_0060f900]
+        mov eax, dword ptr [FilledTriangleCount]
         inc eax
-        mov dword ptr [DAT_0060f900], eax
+        mov dword ptr [FilledTriangleCount], eax
         mov eax, dword ptr [ebp + 0xc]
         mov eax, dword ptr [eax]
         mov ax, word ptr [ebx + eax*2]
@@ -2282,9 +2310,10 @@ L41f9ee:
     }
 }
 
+/* Flat span filler that writes the interpolated depth without testing it. Not referenced. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041fa10
-__declspec(naked) void FUN_0041fa10(void) {
+__declspec(naked) void FillSpansFlatWriteZ(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -2314,9 +2343,9 @@ __declspec(naked) void FUN_0041fa10(void) {
         mov eax, dword ptr [ebp + 0xc]
         mov ebx, dword ptr [eax + 4]
         mov dword ptr [ebp + 0xc], ebx
-        mov ebx, dword ptr [DAT_0060f900]
+        mov ebx, dword ptr [FilledTriangleCount]
         inc ebx
-        mov dword ptr [DAT_0060f900], ebx
+        mov dword ptr [FilledTriangleCount], ebx
         mov ebx, dword ptr [ebp + 8]
         mov eax, dword ptr [eax]
         mov ebx, dword ptr [ebx*4 + CoasterShadeTables]
@@ -2431,9 +2460,11 @@ L41fb84:
     }
 }
 
+/* Span filler (FlatSpanFillers[1]): flat colour, writing a pixel only where the 16-bit interpolated depth is >= the
+ * depth buffer's, and then the depth too. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041fba0
-__declspec(naked) void FUN_0041fba0(void) {
+__declspec(naked) void FillSpansFlatZ(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -2463,9 +2494,9 @@ __declspec(naked) void FUN_0041fba0(void) {
         mov eax, dword ptr [ebp + 0xc]
         mov ebx, dword ptr [eax + 4]
         mov dword ptr [ebp + 0xc], ebx
-        mov ebx, dword ptr [DAT_0060f900]
+        mov ebx, dword ptr [FilledTriangleCount]
         inc ebx
-        mov dword ptr [DAT_0060f900], ebx
+        mov dword ptr [FilledTriangleCount], ebx
         mov ebx, dword ptr [ebp + 8]
         mov eax, dword ptr [eax]
         mov ebx, dword ptr [ebx*4 + CoasterShadeTables]
@@ -2583,24 +2614,27 @@ L41fd1a:
     }
 }
 
+/* Builds the 192-byte shade clamp table: ShadeClamp[i] = i clamped to 0..63 for i in -64..127. */
 // FUNCTION: LEGOLAND 0x0041fd30
-void FUN_0041fd30(void) {
+void InitShadeClampTable(void) {
     int i;
     for (i = 0; i < 16; i++) {
-        ((unsigned int *)DAT_004d88f4)[i] = 0;
+        ((unsigned int *)ShadeClampTable)[i] = 0;
     }
-    DAT_004d89c4 = &DAT_004d88f4[0x40];
+    ShadeClamp = &ShadeClampTable[0x40];
     for (i = 0x40; i <= 0x7f; i++) {
-        DAT_004d88f4[i] = (unsigned char)(i - 0x40);
+        ShadeClampTable[i] = (unsigned char)(i - 0x40);
     }
     for (i = 0; i < 16; i++) {
-        ((unsigned int *)DAT_004d8974)[i] = 0x3f3f3f3f;
+        ((unsigned int *)ShadeClampTableTop)[i] = 0x3f3f3f3f;
     }
 }
 
+/* Span filler (GouraudSpanFillers[0]): interpolates the shade along each span, clamps it through ShadeClamp and
+ * looks the colour up in the triangle's shade table; no depth test. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041fd80
-__declspec(naked) void FUN_0041fd80(void) {
+__declspec(naked) void FillSpansGouraud(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -2632,9 +2666,9 @@ __declspec(naked) void FUN_0041fd80(void) {
         mov eax, dword ptr [ebp + 8]
         mov eax, dword ptr [eax*4 + CoasterShadeTables]
         mov dword ptr [DAT_004d89b4 + 0xc], eax
-        mov eax, dword ptr [DAT_0060f900]
+        mov eax, dword ptr [FilledTriangleCount]
         inc eax
-        mov dword ptr [DAT_0060f900], eax
+        mov dword ptr [FilledTriangleCount], eax
         mov eax, dword ptr [ecx + esi*8 - 4]
         lea eax, [eax + eax*2]
         shl eax, 4
@@ -2728,7 +2762,7 @@ L41fecb:
         mov eax, ecx
         and ecx, 0xffff
         and eax, 0xffff0000
-        add ecx, dword ptr [DAT_004d89c4]
+        add ecx, dword ptr [ShadeClamp]
         cmp edx, dword ptr [ebp + 0x10]
         jne L41ff27
         xor edx, edx
@@ -2778,9 +2812,10 @@ L41ff64:
     }
 }
 
+/* Span filler (GouraudSpanFillers[1]): Gouraud shading with the depth test of FillSpansFlatZ. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0041ff80
-__declspec(naked) void FUN_0041ff80(void) {
+__declspec(naked) void FillSpansGouraudZ(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -2811,9 +2846,9 @@ __declspec(naked) void FUN_0041ff80(void) {
         mov eax, dword ptr [ebp + 8]
         mov eax, dword ptr [eax*4 + CoasterShadeTables]
         mov dword ptr [DAT_004d89b4 + 0xc], eax
-        mov eax, dword ptr [DAT_0060f900]
+        mov eax, dword ptr [FilledTriangleCount]
         inc eax
-        mov dword ptr [DAT_0060f900], eax
+        mov dword ptr [FilledTriangleCount], eax
         mov eax, dword ptr [ecx + esi*8 - 4]
         lea eax, [eax + eax*2]
         shl eax, 4
@@ -2928,7 +2963,7 @@ L42010e:
         and eax, 0xffffff
         xor edx, edx
         sar ecx, 0x10
-        add ecx, dword ptr [DAT_004d89c4]
+        add ecx, dword ptr [ShadeClamp]
         cmp edx, dword ptr [ebp + 0x10]
         jne L420184
         push ebp
@@ -3001,6 +3036,8 @@ L4201e4:
 }
 
 #pragma optimize("", off)
+/* Simpson integration of fn over [a, b] (floats passed as bits), doubling the number of intervals until two
+ * estimates agree to tol (relative). */
 // FUNCTION: LEGOLAND 0x00420200
 float IntegrateSimpson(float (*fn)(unsigned int), unsigned int a, unsigned int b, float tol) {
     int it2;
@@ -3037,6 +3074,7 @@ float IntegrateSimpson(float (*fn)(unsigned int), unsigned int a, unsigned int b
 }
 #pragma optimize("", on)
 
+/* One classic 4th-order Runge-Kutta step of size c from time *p (coefficients RK4Coefficients); advances *p. */
 // FUNCTION: LEGOLAND 0x00420310
 void IntegratorStepRK4(struct Integrator *ar, float *p, float c) {
     struct FloatArray **h;
@@ -3055,27 +3093,30 @@ void IntegratorStepRK4(struct Integrator *ar, float *p, float c) {
     ar->load(ar, v0);
     ar->load(ar, v1);
     for (i = 0; i <= 3; i++) {
-        ar->math.blend(v0, 1.0f, v2, DAT_004b5660[i][0], v3);
+        ar->math.blend(v0, 1.0f, v2, RK4Coefficients[i][0], v3);
         ar->store(ar, v3);
-        ar->deriv(ar, *p + c * DAT_004b5660[i][0], v2);
+        ar->deriv(ar, *p + c * RK4Coefficients[i][0], v2);
         ar->math.scale(v2, c);
-        ar->math.axpy(v2, DAT_004b5660[i][1], v1);
+        ar->math.axpy(v2, RK4Coefficients[i][1], v1);
     }
     ar->store(ar, v1);
     *p += c;
     ar->math.release(h, 4);
 }
 
+/* Default integrator store: copies param into the state array. */
 // FUNCTION: LEGOLAND 0x004203d0
 void IntegratorStoreState(struct Integrator *self, struct FloatArray *param) {
     self->math.copy(param, self->state);
 }
 
+/* Default integrator load: copies the state array into param. */
 // FUNCTION: LEGOLAND 0x004203f0
 unsigned int IntegratorLoadState(struct Integrator *self, struct FloatArray *param) {
     return ((unsigned int (*)(void *, struct FloatArray *))self->math.copy)(self->state, param);
 }
 
+/* Sets up an integrator for 2-value states with the default load/store. */
 // FUNCTION: LEGOLAND 0x00420410
 void InitIntegrator(struct Integrator *param, unsigned int count) {
     struct Integrator *host = param;
@@ -3084,6 +3125,8 @@ void InitIntegrator(struct Integrator *param, unsigned int count) {
     host->load = IntegratorLoadState;
 }
 
+/* Loads the coaster's palette (Rollercoaster.lpt), the object and texture name lists, then every .lms model, .lfm
+ * material file and .ltx texture named in them. */
 // FUNCTION: LEGOLAND 0x00420440
 void LoadRollercoasterFiles(void) {
     char buf[256];
@@ -3114,6 +3157,7 @@ void LoadRollercoasterFiles(void) {
     }
 }
 
+/* SetCurrentDirectoryA unless param is NULL. */
 // FUNCTION: LEGOLAND 0x00420530
 unsigned int SetCurrentDirectoryIfNotNull(const char *param) {
     if (param == NULL) {
@@ -3122,6 +3166,8 @@ unsigned int SetCurrentDirectoryIfNotNull(const char *param) {
     return SetCurrentDirectoryA(param);
 }
 
+/* Reads a whole file from RollerCoaster/RollerCoaster/CreatedData into a new block (size in *sizeOut); NULL on any
+ * failure. */
 // FUNCTION: LEGOLAND 0x00420550
 void *LoadCreatedDataFile(const char *fileName, unsigned int *sizeOut) {
     HANDLE hFile;
@@ -3166,6 +3212,7 @@ void *LoadCreatedDataFile(const char *fileName, unsigned int *sizeOut) {
     return buffer;
 }
 
+/* Loads name.lms and turns its six section offsets into pointers. */
 // FUNCTION: LEGOLAND 0x00420640
 struct LmsFile *LoadLmsFile(const char *name) {
     char buffer[256];
@@ -3177,14 +3224,15 @@ struct LmsFile *LoadLmsFile(const char *name) {
         *(UINT_PTR *)&f->field_c += (UINT_PTR)f;
         *(UINT_PTR *)&f->field_14 += (UINT_PTR)f;
         *(UINT_PTR *)&f->field_10 += (UINT_PTR)f;
-        *(UINT_PTR *)&f->field_18 += (UINT_PTR)f;
-        *(UINT_PTR *)&f->field_20 += (UINT_PTR)f;
-        *(UINT_PTR *)&f->field_28 += (UINT_PTR)f;
+        *(UINT_PTR *)&f->flat_tris += (UINT_PTR)f;
+        *(UINT_PTR *)&f->gouraud_tris += (UINT_PTR)f;
+        *(UINT_PTR *)&f->tex_tris += (UINT_PTR)f;
         return f;
     }
     return 0;
 }
 
+/* The loaded .lms of the named coaster object. */
 // FUNCTION: LEGOLAND 0x004206b0
 struct LmsFile *GetLmsByName(const char *s) {
     unsigned int index = FindCoasterObjLine(s);
@@ -3194,6 +3242,7 @@ struct LmsFile *GetLmsByName(const char *s) {
     return 0;
 }
 
+/* Loads name.lfm (the model's per-triangle material records). */
 // FUNCTION: LEGOLAND 0x004206d0
 struct LmsRec *LoadLfmFile(const char *name, unsigned int *param2) {
     char buffer[256];
@@ -3202,6 +3251,7 @@ struct LmsRec *LoadLfmFile(const char *name, unsigned int *param2) {
     return LoadCreatedDataFile(buffer, param2);
 }
 
+/* The loaded .lfm of the named coaster object. */
 // FUNCTION: LEGOLAND 0x00420710
 struct LmsRec *GetLfmByName(const char *s) {
     unsigned int index = FindCoasterObjLine(s);
@@ -3211,6 +3261,7 @@ struct LmsRec *GetLfmByName(const char *s) {
     return 0;
 }
 
+/* Size of the named object's .lfm. */
 // FUNCTION: LEGOLAND 0x00420730
 unsigned int GetLfmSizeByName(const char *s) {
     unsigned int index = FindCoasterObjLine(s);
@@ -3220,6 +3271,7 @@ unsigned int GetLfmSizeByName(const char *s) {
     return 0;
 }
 
+/* Loads name.ltx (a texture). */
 // FUNCTION: LEGOLAND 0x00420750
 void *LoadLtxFile(const char *name) {
     char buffer[256];
@@ -3228,27 +3280,32 @@ void *LoadLtxFile(const char *name) {
     return LoadCreatedDataFile(buffer, 0);
 }
 
+/* The loaded .ltx at index param. */
 // FUNCTION: LEGOLAND 0x00420780
 void *GetLtxFileTableEntry(unsigned int param) {
     return LtxFileTable[param];
 }
 
+/* Index of the named texture in the coaster's texture list (the LtxFileTable index). */
 // FUNCTION: LEGOLAND 0x00420790
-unsigned int FUN_00420790(const char *param) {
+unsigned int FindLtxIndexByName(const char *param) {
     return FindCoasterTxtLine(param);
 }
 
+/* Loads Rollercoaster.lpt: a count, then the palette's 24-bit colours. */
 // FUNCTION: LEGOLAND 0x004207a0
 int *LoadRollercoasterLpt(void) {
     // STRING: LEGOLAND 0x004b56e0
     return LoadCreatedDataFile("Rollercoaster.lpt", 0);
 }
 
+/* The loaded palette (Rollercoaster.lpt). */
 // FUNCTION: LEGOLAND 0x004207c0
 int *GetRollercoasterLpt(void) {
     return RollercoasterLpt;
 }
 
+/* Palette index of the 24-bit colour key, or -1. */
 // FUNCTION: LEGOLAND 0x004207d0
 int FindRollercoasterLptEntry(unsigned int key) {
     int *table = RollercoasterLpt;
@@ -3263,9 +3320,11 @@ int FindRollercoasterLptEntry(unsigned int key) {
     return -1;
 }
 
+/* Draws an LmsFile's flat triangles from the transformed vertices: back-face culls each, then RasteriseTriangle
+ * with FlatSpanFillers and the triangle's colour from the .lfm. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420810
-__declspec(naked) void FUN_00420810(void) {
+__declspec(naked) void DrawLmsFlatTriangles(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -3294,7 +3353,7 @@ __declspec(naked) void FUN_00420810(void) {
         lea edx, [ebp - 0x94]
         cmp eax, ecx
         mov dword ptr [ebp - 0x1c], edx
-        mov dword ptr [ebp - 0x14], offset DAT_004b5648
+        mov dword ptr [ebp - 0x14], offset FlatSpanFillers
         mov dword ptr [ebp + 0x10], ecx
         jle L4209f1
         mov dword ptr [ebp - 0xc], ecx
@@ -3400,7 +3459,7 @@ L42099a:
         lea ecx, [ebp - 0x4c]
         push ecx
         push 2
-        call FUN_0042a2f0
+        call RasteriseTriangle
         add esp, 8
         jmp L4209d6
 L4209d3:
@@ -3424,11 +3483,11 @@ L4209f1:
         pop edx
         pop eax
         mov edx, dword ptr [ebp - 8]
-        mov eax, dword ptr [DAT_004dcbc8]
+        mov eax, dword ptr [LmsDrawCycles]
         add eax, edx
         pop edi
         pop esi
-        mov dword ptr [DAT_004dcbc8], eax
+        mov dword ptr [LmsDrawCycles], eax
         pop ebx
         mov esp, ebp
         pop ebp
@@ -3436,9 +3495,10 @@ L4209f1:
     }
 }
 
+/* Draws an LmsFile's Gouraud triangles (GouraudSpanFillers). */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420a20
-__declspec(naked) void FUN_00420a20(void) {
+__declspec(naked) void DrawLmsGouraudTriangles(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -3464,7 +3524,7 @@ __declspec(naked) void FUN_00420a20(void) {
         mov dword ptr [ebp - 0x24], eax
         mov eax, dword ptr [ebp + 8]
         lea ecx, [ebp - 0x98]
-        mov dword ptr [ebp - 0x18], offset DAT_004b5658
+        mov dword ptr [ebp - 0x18], offset GouraudSpanFillers
         mov dword ptr [ebp - 0x20], ecx
         mov ecx, dword ptr [eax + 0x24]
         cmp ecx, edx
@@ -3578,7 +3638,7 @@ L420b5f:
         push ecx
         push 3
         mov dword ptr [ebp - 0x4c], eax
-        call FUN_0042a2f0
+        call RasteriseTriangle
         add esp, 8
 L420bf2:
         mov eax, dword ptr [ebp + 8]
@@ -3600,11 +3660,11 @@ L420c10:
         pop edx
         pop eax
         mov edx, dword ptr [ebp - 4]
-        mov eax, dword ptr [DAT_004dcbc8]
+        mov eax, dword ptr [LmsDrawCycles]
         add eax, edx
         pop edi
         pop esi
-        mov dword ptr [DAT_004dcbc8], eax
+        mov dword ptr [LmsDrawCycles], eax
         pop ebx
         mov esp, ebp
         pop ebp
@@ -3612,9 +3672,10 @@ L420c10:
     }
 }
 
+/* Draws an LmsFile's textured triangles (TexturedSpanFillers). */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420c40
-__declspec(naked) void FUN_00420c40(void) {
+__declspec(naked) void DrawLmsTexturedTriangles(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -3643,7 +3704,7 @@ __declspec(naked) void FUN_00420c40(void) {
         mov ecx, dword ptr [eax + 0x2c]
         cmp ecx, esi
         mov dword ptr [ebp - 0x24], edx
-        mov dword ptr [ebp - 0x18], offset DAT_004b5f50
+        mov dword ptr [ebp - 0x18], offset TexturedSpanFillers
         mov dword ptr [ebp - 0x10], esi
         jle L420e5f
         mov dword ptr [ebp - 0xc], esi
@@ -3771,7 +3832,7 @@ L420dd1:
         lea edx, [ebp - 0x50]
         push edx
         push 4
-        call FUN_0042a2f0
+        call RasteriseTriangle
         add esp, 8
 L420e41:
         mov eax, dword ptr [ebp + 8]
@@ -3793,11 +3854,11 @@ L420e5f:
         pop edx
         pop eax
         mov eax, dword ptr [ebp - 8]
-        mov ecx, dword ptr [DAT_004dcbc8]
+        mov ecx, dword ptr [LmsDrawCycles]
         add ecx, eax
         pop edi
         pop esi
-        mov dword ptr [DAT_004dcbc8], ecx
+        mov dword ptr [LmsDrawCycles], ecx
         pop ebx
         mov esp, ebp
         pop ebp
@@ -3805,6 +3866,9 @@ L420e5f:
     }
 }
 
+/* Draws a coaster model at position c with rotation d: builds the model-to-screen matrix, transforms the vertices,
+ * then draws the flat, Gouraud and textured triangle lists into the locked coaster surface. Adds its rdtsc cycles
+ * to LmsDrawCycles. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00420e90
 __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b, void *c, void *d, unsigned int e) {
@@ -3877,9 +3941,9 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         pop edx
         pop eax
         mov eax, dword ptr [ebp - 4]
-        mov ecx, dword ptr [DAT_004dcbc8]
+        mov ecx, dword ptr [LmsDrawCycles]
         add ecx, eax
-        mov dword ptr [DAT_004dcbc8], ecx
+        mov dword ptr [LmsDrawCycles], ecx
         lea ecx, [ebp - 0x1c]
         push ecx
         call GetCoasterSurface
@@ -3890,15 +3954,15 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         push ebx
         push edi
         push esi
-        call FUN_00420810
+        call DrawLmsFlatTriangles
         push ebx
         push edi
         push esi
-        call FUN_00420a20
+        call DrawLmsGouraudTriangles
         push ebx
         push edi
         push esi
-        call FUN_00420c40
+        call DrawLmsTexturedTriangles
         lea edx, [ebp - 0x1c]
         push edx
         call FUN_00423790
@@ -3913,19 +3977,20 @@ L420fa7:
     }
 }
 
+/* Screen rectangle of the model's bounding box at the given position and basis. */
 // FUNCTION: LEGOLAND 0x00420fb0
 unsigned int GetLmsBoxScreenRect(struct LmsFile *param_1, unsigned int *param_2, unsigned int *param_3, struct RectI *param_4) {
     return GetBoxScreenRect(param_1->box, param_2, param_3, param_4);
 }
 
 // GLOBAL: LEGOLAND 0x004b5648
-void *DAT_004b5648[2] = {FUN_0041f8d0, FUN_0041fba0};
+void *FlatSpanFillers[2] = {FillSpansFlat, FillSpansFlatZ};
 
 // GLOBAL: LEGOLAND 0x004b5658
-void *DAT_004b5658[2] = {FUN_0041fd80, FUN_0041ff80};
+void *GouraudSpanFillers[2] = {FillSpansGouraud, FillSpansGouraudZ};
 
 // GLOBAL: LEGOLAND 0x004b5700
-float DAT_004b5700[6][3] = {
+float BoxFaceNormals[6][3] = {
     {0.0f, 0.0f, -1.0f},
     {0.0f, 0.0f, 1.0f},
     {1.0f, 0.0f, 0.0f},
@@ -3967,16 +4032,18 @@ BoxFace DAT_004b5808[12] = {
 };
 
 // GLOBAL: LEGOLAND 0x004b58c8
-struct BoxSolid DAT_004b58c8 = {8, 0, 12, NULL, DAT_004b5700, NULL, DAT_004b5748, 12};
+struct BoxSolid BoxSolidTemplate = {8, 0, 12, NULL, BoxFaceNormals, NULL, DAT_004b5748, 12};
 
 // GLOBAL: LEGOLAND 0x004b5f50
-void *DAT_004b5f50[2] = {FUN_00428860, FUN_00428860};
+void *TexturedSpanFillers[2] = {FillSpansTexturedZ, FillSpansTexturedZ};
 
+/* Makes a BoxSolid from BoxSolidTemplate: a box +-w by +-h from z = -d up to 0; with xverts, also transforms the
+ * corners. */
 // FUNCTION: LEGOLAND 0x00420fd0
 void InitBoxSolidToOrigin(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d) {
     int i;
 
-    *box = DAT_004b58c8;
+    *box = BoxSolidTemplate;
     box->verts = verts;
     box->xverts = xverts;
     box->verts[0].x = w;
@@ -4013,11 +4080,12 @@ void InitBoxSolidToOrigin(struct BoxSolid *box, struct FVec3 *verts, struct FVec
     }
 }
 
+/* Like InitBoxSolidToOrigin but centred: z from -d to d. */
 // FUNCTION: LEGOLAND 0x00421130
 void InitBoxSolidCentred(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d) {
     int i;
 
-    *box = DAT_004b58c8;
+    *box = BoxSolidTemplate;
     box->verts = verts;
     box->xverts = xverts;
     box->verts[0].x = w;
@@ -4054,6 +4122,7 @@ void InitBoxSolidCentred(struct BoxSolid *box, struct FVec3 *verts, struct FVec3
     }
 }
 
+/* out = a + b. */
 // FUNCTION: LEGOLAND 0x004212a0
 void FloatArrayAdd(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out) {
     int i;
@@ -4064,6 +4133,7 @@ void FloatArrayAdd(struct FloatArray *a, struct FloatArray *b, struct FloatArray
     }
 }
 
+/* out = a - b. */
 // FUNCTION: LEGOLAND 0x004212e0
 void FloatArraySub(struct FloatArray *a, struct FloatArray *b, struct FloatArray *out) {
     int i;
@@ -4073,11 +4143,13 @@ void FloatArraySub(struct FloatArray *a, struct FloatArray *b, struct FloatArray
     }
 }
 
+/* dst = src. */
 // FUNCTION: LEGOLAND 0x00421320
 void CopyFloatArray(struct FloatArray *src, struct FloatArray *dst) {
     memcpy(dst, src, sizeof(struct FloatArray));
 }
 
+/* arr *= f. */
 // FUNCTION: LEGOLAND 0x00421340
 void FloatArrayScale(struct FloatArray *arr, float f) {
     int i;
@@ -4086,6 +4158,7 @@ void FloatArrayScale(struct FloatArray *arr, float f) {
     }
 }
 
+/* Largest absolute element. */
 // FUNCTION: LEGOLAND 0x00421360
 float FloatArrayMaxAbs(struct FloatArray *arr) {
     float max = FLOAT_004ab390;
@@ -4099,6 +4172,7 @@ float FloatArrayMaxAbs(struct FloatArray *arr) {
     return max;
 }
 
+/* out = s * a + t * b. */
 // FUNCTION: LEGOLAND 0x004213a0
 void BlendFloatArrays(struct FloatArray *a, float s, struct FloatArray *b, float t, struct FloatArray *out) {
     int i;
@@ -4110,6 +4184,7 @@ void BlendFloatArrays(struct FloatArray *a, float s, struct FloatArray *b, float
     out->count = a->count;
 }
 
+/* Zeroes size elements. */
 // FUNCTION: LEGOLAND 0x00421400
 void ZeroIntBuffer(struct FloatArray *buf, int size) {
     int i;
@@ -4121,6 +4196,7 @@ void ZeroIntBuffer(struct FloatArray *buf, int size) {
     buf->count = size;
 }
 
+/* out += f * a. */
 // FUNCTION: LEGOLAND 0x00421430
 void FloatArrayAddScaled(struct FloatArray *a, float f, struct FloatArray *out) {
     int i;
@@ -4130,6 +4206,7 @@ void FloatArrayAddScaled(struct FloatArray *a, float f, struct FloatArray *out) 
     }
 }
 
+/* Fills VecMathOps with the FloatArray functions and the scratch pool's pointer table. */
 // FUNCTION: LEGOLAND 0x00421470
 void InitVecMathOps(void) {
     struct FloatArray **table;
@@ -4155,6 +4232,7 @@ void InitVecMathOps(void) {
     }
 }
 
+/* Takes param_1 arrays from the scratch stack. */
 // FUNCTION: LEGOLAND 0x004214f0
 struct FloatArray **AllocVecScratch(unsigned int param_1) {
     unsigned int index = VecScratchTop;
@@ -4162,29 +4240,34 @@ struct FloatArray **AllocVecScratch(unsigned int param_1) {
     return &VecScratchPool[index];
 }
 
+/* Gives param_2 arrays back to the scratch stack (LIFO). */
 // FUNCTION: LEGOLAND 0x00421510
 void FreeVecScratch(struct FloatArray **param_1, unsigned int param_2) {
     VecScratchTop = VecScratchTop - param_2;
 }
 
+/* dest = VecMathOps with dimension value. */
 // FUNCTION: LEGOLAND 0x00421540
 void InitVecMath(struct VecMath *dest, unsigned int value) {
     VecMathOps.dim = value;
     memcpy(dest, &VecMathOps, sizeof(struct VecMath));
 }
 
+/* Draws a seated visitor (the castle visitor's draw method). */
 // FUNCTION: LEGOLAND 0x00421560
 unsigned int DrawCastleVisitor(struct CastleVisitor *param_2, struct CarXform *param_1) {
     FUN_00425c40();
     return DrawLmsModel(param_2->lms, param_2->field_8, param_1, &param_1->m, 0);
 }
 
+/* Puts the visitor in the seat. */
 // FUNCTION: LEGOLAND 0x00421590
 void SeatCastleVisitor(struct CastleVisitor *arg1, struct TrainSeat *arg2) {
     SetTrainSeatOccupant(arg2, arg1);
     arg1->seat = arg2;
 }
 
+/* Takes the visitor out of its seat. */
 // FUNCTION: LEGOLAND 0x004215b0
 void UnseatCastleVisitor(struct CastleVisitor *param_1) {
     struct TrainSeat *temp = param_1->seat;
@@ -4192,6 +4275,8 @@ void UnseatCastleVisitor(struct CastleVisitor *param_1) {
     param_1->seat = 0;
 }
 
+/* Allocates a castle visitor for a bloke: the sitting man/girl model and a copy of its materials recoloured for the
+ * bloke (flags 1 when that fails). */
 // FUNCTION: LEGOLAND 0x004215d0
 struct CastleVisitor *CreateCastleVisitor(struct BlokeInfo *a1) {
     struct CastleVisitor *self = MemAlloc(sizeof(struct CastleVisitor), 0, 0, 0);
@@ -4216,6 +4301,8 @@ struct CastleVisitor *CreateCastleVisitor(struct BlokeInfo *a1) {
     return self;
 }
 
+/* Copies the sitting model's .lfm and swaps the template chest/face textures for the bloke's, and the template
+ * leg/arm colours for the bloke's. */
 // FUNCTION: LEGOLAND 0x00421660
 struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
     struct LmsFile *lms;
@@ -4250,8 +4337,8 @@ struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
         return 0;
     }
     for (i = 0, nm = p->chest; i < 2; i++) {
-        namePairs[i].key = FUN_00420790(*names++);
-        namePairs[i].val = FUN_00420790(nm);
+        namePairs[i].key = FindLtxIndexByName(*names++);
+        namePairs[i].val = FindLtxIndexByName(nm);
         nm += 0x14;
     }
     cp = &p->leg;
@@ -4261,9 +4348,9 @@ struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
         cp++;
     }
     memcpy(dst, src, size);
-    for (i = 0; i < lms->field_2c; i++) {
+    for (i = 0; i < lms->tex_count; i++) {
         unsigned int key;
-        r = lms->field_28 + i;
+        r = lms->tex_tris + i;
         key = src[r->idx].key;
         for (k = 0; k <= 1; k++) {
             if (namePairs[k].key == key) {
@@ -4273,9 +4360,9 @@ struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
         }
         dst[r->idx].key = key;
     }
-    for (i = 0; i < lms->field_1c; i++) {
+    for (i = 0; i < lms->flat_count; i++) {
         unsigned int key;
-        r = lms->field_18 + i;
+        r = lms->flat_tris + i;
         key = src[r->idx].key;
         for (k = 0; k <= 1; k++) {
             if (colPairs[k].key == key) {
@@ -4285,9 +4372,9 @@ struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
         }
         dst[r->idx].key = key;
     }
-    for (i = 0; i < lms->field_24; i++) {
+    for (i = 0; i < lms->gouraud_count; i++) {
         unsigned int key;
-        r = lms->field_20 + i;
+        r = lms->gouraud_tris + i;
         key = src[r->idx].key;
         for (k = 0; k <= 1; k++) {
             if (colPairs[k].key == key) {
@@ -4300,6 +4387,7 @@ struct LmsRec *BuildCastleVisitorModel(struct BlokeInfo *p) {
     return dst;
 }
 
+/* Fills CastleVisitorInfo with the bloke's sex, leg and arm colours and chest and face textures. */
 // FUNCTION: LEGOLAND 0x00421890
 struct BlokeInfo *GetBlokeAppearance(struct BlokeSex0 *bloke) {
     CastleVisitorInfo.bloke = bloke;
@@ -5468,9 +5556,9 @@ __declspec(naked) void FUN_00423350(int n, struct RecIdx *idx, struct RecSrc *sr
         mov dword ptr [ebp + 8], eax
         mov eax, dword ptr [CoasterSurfaceBits]
         mov dword ptr [ebp - 0x10], eax
-        mov eax, dword ptr [DAT_0060f900]
+        mov eax, dword ptr [FilledTriangleCount]
         inc eax
-        mov dword ptr [DAT_0060f900], eax
+        mov dword ptr [FilledTriangleCount], eax
         mov eax, dword ptr [esi + edx*8 - 4]
         lea eax, [eax + eax*2]
         shl eax, 4
@@ -5600,7 +5688,7 @@ __declspec(naked) void FUN_004234e0(void *param1) {
         xor eax, eax
         mov dword ptr [ebp - 0x4c], 1
         cmp ecx, eax
-        mov dword ptr [ebp - 0x14], offset DAT_004b5658
+        mov dword ptr [ebp - 0x14], offset GouraudSpanFillers
         mov dword ptr [ebp - 0x10], eax
         jle L4236ad
         mov dword ptr [ebp - 0xc], eax
@@ -5717,7 +5805,7 @@ L423650:
         push 3
         mov eax, dword ptr [edx]
         mov dword ptr [ebp - 0x48], eax
-        call FUN_0042a2f0
+        call RasteriseTriangle
         add esp, 8
 L42368f:
         mov edx, dword ptr [ebp + 8]
@@ -5790,7 +5878,7 @@ void FPURestoreControlWord(unsigned short control_word) {
 // FUNCTION: LEGOLAND 0x00423740
 void FUN_00423740(void) {
     BuildCoasterShadeTables();
-    FUN_0041fd30();
+    InitShadeClampTable();
 }
 
 // FUNCTION: LEGOLAND 0x00423760
@@ -6700,11 +6788,11 @@ void FUN_00424e70(struct CastleState *owner) {
 // FUNCTION: LEGOLAND 0x00424e80
 void RecordCastleFrameCounters(void) {
     DAT_00610804[DAT_00610a10 & 0x3f] = DAT_0060f908;
-    DAT_00610500[DAT_00610a10 & 0x3f] = DAT_0060f900;
+    DAT_00610500[DAT_00610a10 & 0x3f] = FilledTriangleCount;
     DAT_00610400[DAT_00610a10 & 0x3f] = DAT_0060f8fc;
     DAT_00610704[DAT_00610a10 & 0x3f] = DAT_00611644;
     DAT_00610604[DAT_00610a10 & 0x3f] = DAT_00615f68;
-    DAT_006100f8[DAT_00610a10 & 0x3f] = DAT_004dcbc8;
+    DAT_006100f8[DAT_00610a10 & 0x3f] = LmsDrawCycles;
     DAT_0060fdf8[DAT_00610a10 & 0x3f] = TrainStepCycles;
     DAT_0060fef8[DAT_00610a10 & 0x3f] = DAT_0060f910;
     DAT_0060fbf8[DAT_00610a10 & 0x3f] = DAT_00615fc4;
@@ -6712,11 +6800,11 @@ void RecordCastleFrameCounters(void) {
     DAT_0060fcf8[DAT_00610a10 & 0x3f] = DAT_00615fcc;
     DAT_00610904[DAT_00610a10 & 0x3f] = DAT_00610704[DAT_00610a10 & 0x3f] + DAT_00610400[DAT_00610a10 & 0x3f] + DAT_0060fdf8[DAT_00610a10 & 0x3f] + DAT_00610604[DAT_00610a10 & 0x3f] + DAT_006100f8[DAT_00610a10 & 0x3f] + DAT_0060fef8[DAT_00610a10 & 0x3f];
     DAT_0060f908 = 0;
-    DAT_0060f900 = 0;
+    FilledTriangleCount = 0;
     DAT_0060f8fc = 0;
     DAT_00611644 = 0;
     DAT_00615f68 = 0;
-    DAT_004dcbc8 = 0;
+    LmsDrawCycles = 0;
     TrainStepCycles = 0;
     DAT_0060f910 = 0;
     DAT_00615fc4 = 0;
@@ -9175,7 +9263,7 @@ unsigned int LowestSetBitIndex(unsigned int param_1) {
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00428860
-__declspec(naked) void FUN_00428860(void) {
+__declspec(naked) void FillSpansTexturedZ(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -9246,11 +9334,11 @@ __declspec(naked) void FUN_00428860(void) {
         mov ecx, dword ptr [esi + 0xc]
         mov dword ptr [DAT_00612160 + 0xc], ecx
         lea ecx, [eax + edi]
-        mov eax, dword ptr [DAT_0060f900]
+        mov eax, dword ptr [FilledTriangleCount]
         shl edx, cl
         dec edx
         inc eax
-        mov dword ptr [DAT_0060f900], eax
+        mov dword ptr [FilledTriangleCount], eax
         mov eax, dword ptr [ebp - 8]
         mov dword ptr [DAT_00612160 + 0x14], edx
         mov edx, dword ptr [ebp + 0x18]
@@ -10377,7 +10465,7 @@ void InitCurveVecMath(void) {
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x0042a2f0
-__declspec(naked) void FUN_0042a2f0(void) {
+__declspec(naked) void RasteriseTriangle(void) {
     __asm {
         push ebp
         mov ebp, esp
