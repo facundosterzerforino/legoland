@@ -1245,7 +1245,7 @@ void JungleCruiseDCalcCursor(struct Element *param_1, struct Point *param_2) {
 
     BasicObjectDCalcCursor(param_1, param_2);
     DefaultCursor(&DAT_0082ae20);
-    memcpy(DAT_0082ae20.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
+    memcpy(DAT_0082ae20.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
     for (; p1 != NULL; p1 = p1->next) {
         if (p1->owner.id == QueryObj.id) {
             DAT_0082ae20.tile_x = p1->tile.pos.x;
@@ -1327,7 +1327,7 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
         fake.ride = ActiveJungleCruiseRide;
         IncrementObjectCount(ActiveJungleCruiseRide);
         IncrementObjectCount(ActiveJungleCruiseRide);
-        memcpy(DAT_0082ae20.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
+        memcpy(DAT_0082ae20.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
         path = JunglePathList;
         while (path != NULL) {
             if (path->owner.id == tile.id) {
@@ -1783,7 +1783,7 @@ void InitJungleCruiseWater(Element *obj) {
 void JungleCruiseWaterSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = ActiveJungleCruiseRide;
-    ActiveJungleCruiseRide->footprint = DAT_004b7478;
+    ActiveJungleCruiseRide->footprint = JungleCruiseDefaultFootprint;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
@@ -1801,7 +1801,7 @@ void JungleCruiseWaterCalcCursor(Element *obj, int *param_2, unsigned int param_
     struct MapRect rect;
 
     n = 0;
-    memcpy(EditCursor.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
+    memcpy(EditCursor.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
     mask = FUN_00436fb0(EditCursor.tile_x, EditCursor.tile_y, &owner);
     EditCursor.field_1830 = n;
@@ -1909,7 +1909,7 @@ void JungleCruiseWaterDCalcCursor(struct Element *param_1, int *coords) {
         }
     }
     ride = JungleRideList;
-    memcpy(&QueryClass->footprint, &DAT_004b7478, sizeof(DAT_004b7478));
+    memcpy(&QueryClass->footprint, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
     BasicObjectDCalcCursor(param_1, (struct Point *)coords);
     for (; ride != NULL; ride = ride->next) {
         if ((tile.pos.x == ride->cur_x && tile.pos.y == ride->cur_y) || (tile.pos.x == ride->next_x && tile.pos.y == ride->next_y)) {

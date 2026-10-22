@@ -1692,22 +1692,22 @@ void DrawMapTiles(struct Point *pos, RECT *clip) {
         if ((frame & 0xff) == 0) {
             ox = ov->x - dx;
             oy = ov->y - dy;
-            PrintSpriteSimple(BridgesData->sprites[(frame + 2) & 0xff], ox + DAT_004b9218,
-                oy + DAT_004b921c);
+            PrintSpriteSimple(BridgesData->sprites[(frame + 2) & 0xff], ox + Bridge0SpriteOffsetX,
+                oy + Bridge0SpriteOffsetY);
             k = (ov->field_10 + 4) & 0xff;
             if (BridgesData->count > k) {
                 sprite = BridgesData->sprites[k];
-                SortSprite(sprite, ox + DAT_00805f40, oy + DAT_00805f44, (short)sprite->height + oy + DAT_00805f44, 0, 0);
+                SortSprite(sprite, ox + Bridge0OverlayOffsetX, oy + Bridge0OverlayOffsetY, (short)sprite->height + oy + Bridge0OverlayOffsetY, 0, 0);
             }
         } else if ((frame & 0xff) == 1) {
             ox = ov->x - dx;
             oy = ov->y - dy;
-            PrintSpriteSimple(BridgesData->sprites[(frame + 2) & 0xff], ox + DAT_004b9210,
-                oy + DAT_004b9214);
+            PrintSpriteSimple(BridgesData->sprites[(frame + 2) & 0xff], ox + Bridge1SpriteOffsetX,
+                oy + Bridge1SpriteOffsetY);
             k = (ov->field_10 + 4) & 0xff;
             if (BridgesData->count > k) {
                 sprite = BridgesData->sprites[k];
-                SortSprite(sprite, ox + DAT_00801a60, oy + DAT_00801a64, (short)sprite->height + oy + DAT_00801a64, 0, 0);
+                SortSprite(sprite, ox + Bridge1OverlayOffsetX, oy + Bridge1OverlayOffsetY, (short)sprite->height + oy + Bridge1OverlayOffsetY, 0, 0);
             }
         }
     }
@@ -2129,38 +2129,38 @@ LEGO_EXPORT void *GetObjectClassAndInstance(int *coords, unsigned short *out) {
 void SetBridgeParamsByName(const char *param_1) {
     // STRING: LEGOLAND 0x004b9c14
     if (strcmp(param_1, "CASTLE BRIDGES") == 0) {
-        DAT_004b9210 = 4;
-        DAT_004b9214 = 0x6d;
-        DAT_004b9218 = 0x3b;
-        DAT_004b921c = 0x6d;
-        DAT_00801a60 = 0;
-        DAT_00801a64 = 0;
-        DAT_00805f40 = 0;
-        DAT_00805f44 = 0;
+        Bridge1SpriteOffsetX = 4;
+        Bridge1SpriteOffsetY = 0x6d;
+        Bridge0SpriteOffsetX = 0x3b;
+        Bridge0SpriteOffsetY = 0x6d;
+        Bridge1OverlayOffsetX = 0;
+        Bridge1OverlayOffsetY = 0;
+        Bridge0OverlayOffsetX = 0;
+        Bridge0OverlayOffsetY = 0;
         return;
     }
     // STRING: LEGOLAND 0x004b9c00
     if (strcmp(param_1, "EXPLORER BRIDGES") == 0) {
-        DAT_004b9214 = 0x6a;
-        DAT_004b921c = 0x6a;
-        DAT_004b9210 = 1;
-        DAT_004b9218 = 0x40;
-        DAT_00801a60 = 0xe;
-        DAT_00801a64 = 0x89;
-        DAT_00805f40 = 0x86;
-        DAT_00805f44 = 0x89;
+        Bridge1SpriteOffsetY = 0x6a;
+        Bridge0SpriteOffsetY = 0x6a;
+        Bridge1SpriteOffsetX = 1;
+        Bridge0SpriteOffsetX = 0x40;
+        Bridge1OverlayOffsetX = 0xe;
+        Bridge1OverlayOffsetY = 0x89;
+        Bridge0OverlayOffsetX = 0x86;
+        Bridge0OverlayOffsetY = 0x89;
         return;
     }
     // STRING: LEGOLAND 0x004b9bf0
     if (strcmp(param_1, "WESTERN BRIDGES") == 0) {
-        DAT_004b9210 = 2;
-        DAT_004b9214 = 0x5b;
-        DAT_004b921c = 0x5b;
-        DAT_004b9218 = 0x3e;
-        DAT_00801a60 = 0xe;
-        DAT_00801a64 = 0x79;
-        DAT_00805f40 = 0x85;
-        DAT_00805f44 = 0x79;
+        Bridge1SpriteOffsetX = 2;
+        Bridge1SpriteOffsetY = 0x5b;
+        Bridge0SpriteOffsetY = 0x5b;
+        Bridge0SpriteOffsetX = 0x3e;
+        Bridge1OverlayOffsetX = 0xe;
+        Bridge1OverlayOffsetY = 0x79;
+        Bridge0OverlayOffsetX = 0x85;
+        Bridge0OverlayOffsetY = 0x79;
     }
 }
 

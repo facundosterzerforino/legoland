@@ -163,8 +163,8 @@ void UpdatePathSceneryPercent(void) {
                 coord.y++;
             }
         }
-        DAT_00667d00 = total;
-        DAT_00667d04 = matched;
+        PathEdgeSquareTotal = total;
+        PathEdgeScenerySquares = matched;
         if (total != 0) {
             PathSceneryPercent = (matched * 100) / total;
             return;

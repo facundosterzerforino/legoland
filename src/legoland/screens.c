@@ -418,7 +418,7 @@ int FUN_00458c00(void) {
 
     if (DAT_00667c64 == 0) {
         // STRING: LEGOLAND 0x004b9160
-        DAT_00667c40 = "SFX";
+        AdvisorDebugStage = "SFX";
         UpdateSound();
         ReadGameButtons();
         FrameCounter = FrameCounter + 1;
@@ -460,7 +460,7 @@ void GameProc(void) {
     struct HoverInfo saved;
 
     // STRING: LEGOLAND 0x004b91e4
-    DAT_00667c40 = "AI";
+    AdvisorDebugStage = "AI";
     HandleRideAI();
     DoMapAI();
     ControlPeople();
@@ -469,16 +469,16 @@ void GameProc(void) {
         CheckWorkerOnMouseStatus(0);
     }
     // STRING: LEGOLAND 0x004b91d4
-    DAT_00667c40 = "ProcessStuff";
+    AdvisorDebugStage = "ProcessStuff";
     ProcessBuildingTimes();
     ProcessDamage();
     saved.type = Hover.type;
     SetPointer(5);
     // STRING: LEGOLAND 0x004b91cc
-    DAT_00667c40 = "Zoning";
+    AdvisorDebugStage = "Zoning";
     ResetHitInfo();
     // STRING: LEGOLAND 0x004b91c0
-    DAT_00667c40 = "Rendering";
+    AdvisorDebugStage = "Rendering";
     PushRenderingStatusAndLockVideoSurface();
     RenderView();
     if ((saved.type & 0x100) != 0 || (GamePad & 0x1000) != 0) {
@@ -489,7 +489,7 @@ void GameProc(void) {
     FUN_0046f100(0x2c3);
     UpdateEditModeButtonSprites();
     // STRING: LEGOLAND 0x004b91b0
-    DAT_00667c40 = "In Game Help";
+    AdvisorDebugStage = "In Game Help";
     ProcessInGameHelp();
     DrawPopUpInfo();
     RenderIcons2(0x2c3, 0, 0);
@@ -564,10 +564,10 @@ void GameProc(void) {
         DAT_00667c48 = 1;
     }
     // STRING: LEGOLAND 0x004b91a4
-    DAT_00667c40 = "Appraisals";
+    AdvisorDebugStage = "Appraisals";
     CheckAppraisalDue();
     // STRING: LEGOLAND 0x004b9194
-    DAT_00667c40 = "Appraisals Over";
+    AdvisorDebugStage = "Appraisals Over";
     UpdateFocussedIconPtr();
     if ((GamePad & 0x1000) == 0 && DAT_00667c48 == 0) {
         if (FocussedIconPtr != NULL && DAT_00668954 == 0) {
@@ -586,7 +586,7 @@ void GameProc(void) {
     }
     RenderingComplete();
     // STRING: LEGOLAND 0x004b9180
-    DAT_00667c40 = "Exiting GameProc";
+    AdvisorDebugStage = "Exiting GameProc";
 }
 
 // One frame of the map screen: draws the map, the interface background and the icons. While the

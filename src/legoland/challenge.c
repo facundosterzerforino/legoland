@@ -152,7 +152,7 @@ struct Image *LoadBmpImage(const char *param_1, unsigned char param_2) {
 
 // FUNCTION: LEGOLAND 0x00443710
 unsigned int GetLoadedTextureCount(void) {
-    return DAT_00665e8c;
+    return LoadedTextureCount;
 }
 
 // FUNCTION: LEGOLAND 0x00443720
@@ -169,12 +169,12 @@ void LoadTextureBitmaps(struct LocFile *param_1, const char *param_2) {
             // STRING: LEGOLAND 0x004b7d3c
             DBPrintf("Failed to load texture %s", filename);
         } else {
-            LoadTextureNode(image, DAT_00665e8c);
-            TextureSizes[DAT_00665e8c * 2] = image->width;
-            TextureSizes[DAT_00665e8c * 2 + 1] = image->height;
+            LoadTextureNode(image, LoadedTextureCount);
+            TextureSizes[LoadedTextureCount * 2] = image->width;
+            TextureSizes[LoadedTextureCount * 2 + 1] = image->height;
             KillImage(image);
         }
-        DAT_00665e8c = DAT_00665e8c + 1;
+        LoadedTextureCount = LoadedTextureCount + 1;
     }
 }
 
@@ -397,12 +397,12 @@ void SetAdvisorVidAnim(struct AnimHandle *handle) {
     if (handle->open_cb != NULL) {
         handle->open_cb(handle);
     }
-    current = (struct AnimHandle *)DAT_00665f5c;
+    current = (struct AnimHandle *)CurrentAdvisorAnim;
     if (current != NULL) {
         AVIStreamGetFrameClose(current->getframe);
-        ((struct AnimHandle *)DAT_00665f5c)->getframe = NULL;
+        ((struct AnimHandle *)CurrentAdvisorAnim)->getframe = NULL;
     }
-    DAT_00665f5c = handle;
+    CurrentAdvisorAnim = handle;
     if (handle != NULL) {
         handle->getframe = AVIStreamGetFrameOpen(handle->stream, &DAT_004b7d70);
     }
@@ -418,33 +418,33 @@ unsigned int RenderAdvisorIcon(struct IconNode *param_1) {
     state.ptr = param_1;
     state.field_8 = 0;
     if (IsScriptStopped() == 0) {
-        anim = (struct AnimHandle *)DAT_00665f5c;
+        anim = (struct AnimHandle *)CurrentAdvisorAnim;
         if (anim != NULL) {
             if (AdvisorAnimFrame >= anim->length) {
                 if (anim->callback != NULL) {
                     anim->callback();
-                    anim = (struct AnimHandle *)DAT_00665f5c;
+                    anim = (struct AnimHandle *)CurrentAdvisorAnim;
                 }
-                if (DAT_00665f60 == NULL) {
-                    DAT_00665f60 = anim;
+                if (NextAdvisorAnim == NULL) {
+                    NextAdvisorAnim = anim;
                 }
                 // STRING: LEGOLAND 0x004b7dc4
-                DAT_00667c40 = "SetVidAnim";
-                SetAdvisorVidAnim((struct AnimHandle *)DAT_00665f60);
-                anim = (struct AnimHandle *)DAT_00665f5c;
-                DAT_00665f60 = NULL;
+                AdvisorDebugStage = "SetVidAnim";
+                SetAdvisorVidAnim((struct AnimHandle *)NextAdvisorAnim);
+                anim = (struct AnimHandle *)CurrentAdvisorAnim;
+                NextAdvisorAnim = NULL;
             }
             // STRING: LEGOLAND 0x004b7db4
-            DAT_00667c40 = "AVI GetFrame";
+            AdvisorDebugStage = "AVI GetFrame";
             frame = (struct AviFrame *)AVIStreamGetFrame(anim->getframe, AdvisorAnimFrame);
             // STRING: LEGOLAND 0x004b7da8
-            DAT_00667c40 = "BltAdvisor";
+            AdvisorDebugStage = "BltAdvisor";
             PushRenderingStatusAndLockVideoSurface();
             FUN_004659a0(frame, param_1->x, param_1->y);
             PopRenderingStatus();
             AdvisorAnimFrame++;
             // STRING: LEGOLAND 0x004b7d98
-            DAT_00667c40 = "Exit Advisor";
+            AdvisorDebugStage = "Exit Advisor";
             if ((int)MousePos.x >= param_1->x && (int)MousePos.y >= param_1->y &&
                 (int)MousePos.x < frame->width + param_1->x && (int)MousePos.y < frame->height + param_1->y) {
                 Hover.type = state.type;
@@ -499,22 +499,22 @@ unsigned int GetNextAdvisorAnimState(unsigned int param_1) {
 void *OnAdvisorAnimEnd(void) {
     unsigned int handle;
 
-    if (DAT_00665fec == DAT_00665fe8) {
-        DAT_00665fec = GetNextAdvisorAnimState(DAT_00665fe8);
+    if (NextAdvisorAnimState == AdvisorAnimState) {
+        NextAdvisorAnimState = GetNextAdvisorAnimState(AdvisorAnimState);
     }
-    handle = DAT_00665fec;
-    DAT_00665fe8 = handle;
-    DAT_0081c088 = DAT_0081c09c;
-    DAT_0081c09c = 0;
-    DAT_00665f60 = GetAdvisorAnimForState(handle);
-    return DAT_00665f60;
+    handle = NextAdvisorAnimState;
+    AdvisorAnimState = handle;
+    AdvisorAnimStateParam = NextAdvisorAnimStateParam;
+    NextAdvisorAnimStateParam = 0;
+    NextAdvisorAnim = GetAdvisorAnimForState(handle);
+    return NextAdvisorAnim;
 }
 
 // FUNCTION: LEGOLAND 0x00444070
 void SetNextAdvisorAnimState(unsigned int param_1, unsigned int param_2) {
-    DAT_00665fec = param_1;
-    DAT_0081c09c = param_2;
-    DAT_0081c088 = 0;
+    NextAdvisorAnimState = param_1;
+    NextAdvisorAnimStateParam = param_2;
+    AdvisorAnimStateParam = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00444090
@@ -893,8 +893,8 @@ void SetReportVisitorCountGoal(unsigned int param_1, unsigned int param_2) {
 void SetReportVisitorHappinessGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= 0x1000000;
-        DAT_00666050 = param_1;
-        DAT_00666054 = param_2;
+        ReportVisitorHappinessGoal = param_1;
+        ReportVisitorHappinessMax = param_2;
     } else {
         ReportFlags &= 0xfeffffff;
     }
@@ -904,8 +904,8 @@ void SetReportVisitorHappinessGoal(unsigned int param_1, unsigned int param_2) {
 void SetReportVisitorFullnessGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= 0x4000000;
-        DAT_00666050 = param_1;
-        DAT_00666054 = param_2;
+        ReportVisitorHappinessGoal = param_1;
+        ReportVisitorHappinessMax = param_2;
     } else {
         ReportFlags &= 0xfbffffff;
     }
@@ -2407,7 +2407,7 @@ s1:
             }
             if (ReportFlags & 0x1000000) {
                 total++;
-                ok = d70_p2 >= DAT_00666050;
+                ok = d70_p2 >= ReportVisitorHappinessGoal;
                 if (ok) {
                     lpass++;
                 } else {
@@ -2428,15 +2428,15 @@ s1:
                 recs[i].arg = 0;
                 recs[i].bar = 1;
                 recs[i].value = d70_p2;
-                recs[i].goal = DAT_00666050;
-                recs[i].max = DAT_00666054;
+                recs[i].goal = ReportVisitorHappinessGoal;
+                recs[i].max = ReportVisitorHappinessMax;
                 recs[i].nids = 0;
                 i++;
                 y += 0x18;
             }
             if (ReportFlags & 0x4000000) {
                 total++;
-                ok = d70_p3 >= DAT_00666050;
+                ok = d70_p3 >= ReportVisitorHappinessGoal;
                 if (ok) {
                     lpass++;
                 } else {
@@ -2458,8 +2458,8 @@ s1:
                 recs[i].arg = 0;
                 recs[i].bar = 1;
                 recs[i].value = d70_p3;
-                recs[i].goal = DAT_00666050;
-                recs[i].max = DAT_00666054;
+                recs[i].goal = ReportVisitorHappinessGoal;
+                recs[i].max = ReportVisitorHappinessMax;
                 recs[i].nids = 0;
                 i++;
                 y += 0x18;

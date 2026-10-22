@@ -676,7 +676,7 @@ struct Footprint DAT_004b7248;
 unsigned char DAT_004b72e4[0x190];
 
 // GLOBAL: LEGOLAND 0x004b7478
-struct Footprint DAT_004b7478;
+struct Footprint JungleCruiseDefaultFootprint;
 
 // GLOBAL: LEGOLAND 0x004b7618
 struct FXItem SPACE_TOWER_SFX[1];
@@ -818,16 +818,16 @@ unsigned int BrickCount;
 unsigned int UnlimitedBricks;
 
 // GLOBAL: LEGOLAND 0x004b9210
-int DAT_004b9210;
+int Bridge1SpriteOffsetX;
 
 // GLOBAL: LEGOLAND 0x004b9214
-int DAT_004b9214;
+int Bridge1SpriteOffsetY;
 
 // GLOBAL: LEGOLAND 0x004b9218
-int DAT_004b9218;
+int Bridge0SpriteOffsetX;
 
 // GLOBAL: LEGOLAND 0x004b921c
-int DAT_004b921c;
+int Bridge0SpriteOffsetY;
 
 // GLOBAL: LEGOLAND 0x004b9220
 LEGO_EXPORT unsigned int BGFullUpdate;
@@ -2387,7 +2387,7 @@ unsigned int RenderItemCount;
 unsigned int RenderItem2Count;
 
 // GLOBAL: LEGOLAND 0x00665e8c
-unsigned int DAT_00665e8c;
+unsigned int LoadedTextureCount;
 
 // GLOBAL: LEGOLAND 0x00665eec
 int AdvisorAnimFrame;
@@ -2396,10 +2396,10 @@ int AdvisorAnimFrame;
 unsigned int AviAnimOpenCount;
 
 // GLOBAL: LEGOLAND 0x00665f5c
-void *DAT_00665f5c;
+void *CurrentAdvisorAnim;
 
 // GLOBAL: LEGOLAND 0x00665f60
-void *DAT_00665f60;
+void *NextAdvisorAnim;
 
 // GLOBAL: LEGOLAND 0x00665f64
 unsigned int DAT_00665f64;
@@ -2411,10 +2411,10 @@ unsigned int DAT_00665f68;
 unsigned int DAT_00665f6c;
 
 // GLOBAL: LEGOLAND 0x00665fe8
-unsigned int DAT_00665fe8;
+unsigned int AdvisorAnimState;
 
 // GLOBAL: LEGOLAND 0x00665fec
-unsigned int DAT_00665fec;
+unsigned int NextAdvisorAnimState;
 
 // GLOBAL: LEGOLAND 0x00665ff8
 unsigned int ReportFlags;
@@ -2483,10 +2483,10 @@ int ReportFoodStallClassCountGoal;
 int ReportFoodStallClassCountMax;
 
 // GLOBAL: LEGOLAND 0x00666050
-int DAT_00666050;
+int ReportVisitorHappinessGoal;
 
 // GLOBAL: LEGOLAND 0x00666054
-int DAT_00666054;
+int ReportVisitorHappinessMax;
 
 // GLOBAL: LEGOLAND 0x00666058
 int ReportPowerSupplyGoal;
@@ -2666,7 +2666,7 @@ struct Sprite *MapSpannerSprite;
 int DAT_00667c3c;
 
 // GLOBAL: LEGOLAND 0x00667c40
-const char *DAT_00667c40;
+const char *AdvisorDebugStage;
 
 // GLOBAL: LEGOLAND 0x00667c48
 unsigned int DAT_00667c48;
@@ -2789,10 +2789,10 @@ int SceneryCoveredSquares;
 int DAT_00667cfc;
 
 // GLOBAL: LEGOLAND 0x00667d00
-int DAT_00667d00;
+int PathEdgeSquareTotal;
 
 // GLOBAL: LEGOLAND 0x00667d04
-int DAT_00667d04;
+int PathEdgeScenerySquares;
 
 // GLOBAL: LEGOLAND 0x00667d08
 int PathSceneryPercent;
@@ -4115,13 +4115,13 @@ unsigned int DAT_007cb394;
 struct Sprite *FreePlayTickSprite;
 
 // GLOBAL: LEGOLAND 0x007cb39c
-struct PanelNode *DAT_007cb39c;
+struct PanelNode *FreePlayPanelList4;
 
 // GLOBAL: LEGOLAND 0x007cb3a0
 unsigned int FreePlayCostTotal;
 
 // GLOBAL: LEGOLAND 0x007cb3a4
-struct PanelNode *DAT_007cb3a4;
+struct PanelNode *FreePlayPanelList2;
 
 // GLOBAL: LEGOLAND 0x007cb3a8
 struct Sprite *FreePlayDown4Sprite;
@@ -4136,7 +4136,7 @@ struct Sprite *FreePlayDown3Sprite;
 struct Sprite *FreePlayDown1Sprite;
 
 // GLOBAL: LEGOLAND 0x007cb3b8
-struct PanelNode *DAT_007cb3b8;
+struct PanelNode *FreePlayPanelList3;
 
 // GLOBAL: LEGOLAND 0x007cb3bc
 struct Element *DAT_007cb3bc;
@@ -4154,7 +4154,7 @@ struct Sprite *FreePlayUp4Sprite;
 struct Sprite *FreePlayUp3Sprite;
 
 // GLOBAL: LEGOLAND 0x007cb3d0
-struct PanelNode *DAT_007cb3d0;
+struct PanelNode *FreePlayPanelList1;
 
 // GLOBAL: LEGOLAND 0x007cb3d4
 struct Sprite *FreePlayCoverSprite;
@@ -4538,10 +4538,10 @@ struct Element *OverlayILFHandle;
 struct DeferredSprite DAT_00801420[100];
 
 // GLOBAL: LEGOLAND 0x00801a60
-int DAT_00801a60;
+int Bridge1OverlayOffsetX;
 
 // GLOBAL: LEGOLAND 0x00801a64
-int DAT_00801a64;
+int Bridge1OverlayOffsetY;
 
 // GLOBAL: LEGOLAND 0x00801a68
 struct Element **MapObjectElements;
@@ -4574,10 +4574,10 @@ int ObjectPartKey[256];
 LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 
 // GLOBAL: LEGOLAND 0x00805f40
-int DAT_00805f40;
+int Bridge0OverlayOffsetX;
 
 // GLOBAL: LEGOLAND 0x00805f44
-int DAT_00805f44;
+int Bridge0OverlayOffsetY;
 
 // GLOBAL: LEGOLAND 0x00805f48
 unsigned int DAT_00805f48;
@@ -4893,7 +4893,7 @@ struct Sprite *PreviousPageSprite;
 struct Sprite *PreviousPageLitSprite;
 
 // GLOBAL: LEGOLAND 0x0081c088
-unsigned int DAT_0081c088;
+unsigned int AdvisorAnimStateParam;
 
 // GLOBAL: LEGOLAND 0x0081c08c
 void *AdBlinkAnim;
@@ -4908,7 +4908,7 @@ void *AdLRAnim;
 void *AdPhoneDownAnim;
 
 // GLOBAL: LEGOLAND 0x0081c09c
-unsigned int DAT_0081c09c;
+unsigned int NextAdvisorAnimStateParam;
 
 // GLOBAL: LEGOLAND 0x0081c0a0
 void *AdPhoneAnim;

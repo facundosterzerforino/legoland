@@ -362,17 +362,17 @@ LEGO_EXPORT void Add2FreePlayPanelLists(struct Sprite *a, char **name, char *nam
     struct PanelNode *node = (struct PanelNode *)malloc(sizeof(struct PanelNode));
 
     if (type == 200) {
-        cur = DAT_007cb3d0;
-        head = &DAT_007cb3d0;
+        cur = FreePlayPanelList1;
+        head = &FreePlayPanelList1;
     } else if (type == 300) {
-        cur = DAT_007cb39c;
-        head = &DAT_007cb39c;
+        cur = FreePlayPanelList4;
+        head = &FreePlayPanelList4;
     } else if (type == 400) {
-        cur = DAT_007cb3b8;
-        head = &DAT_007cb3b8;
+        cur = FreePlayPanelList3;
+        head = &FreePlayPanelList3;
     } else if (type == 500) {
-        cur = DAT_007cb3a4;
-        head = &DAT_007cb3a4;
+        cur = FreePlayPanelList2;
+        head = &FreePlayPanelList2;
     }
     node->buffer2 = malloc(strlen(name2) + 1);
     strcpy(node->buffer2, name2);
@@ -436,19 +436,19 @@ LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) {
     if (e == 0xc8) {
         sprite = FreePlayDown1Sprite;
         sprite2 = FreePlayUp1Sprite;
-        list = DAT_007cb3d0;
+        list = FreePlayPanelList1;
     } else if (e == 0x1f4) {
         sprite = FreePlayDown2Sprite;
         sprite2 = FreePlayUp2Sprite;
-        list = DAT_007cb3a4;
+        list = FreePlayPanelList2;
     } else if (e == 0x190) {
         sprite = FreePlayDown3Sprite;
         sprite2 = FreePlayUp3Sprite;
-        list = DAT_007cb3b8;
+        list = FreePlayPanelList3;
     } else if (e == 0x12c) {
         sprite = FreePlayDown4Sprite;
         sprite2 = FreePlayUp4Sprite;
-        list = DAT_007cb39c;
+        list = FreePlayPanelList4;
     }
     if (list == NULL) {
         InsertIcon(b - 3, 0x15, 7, FreePlayCoverSprite);
@@ -501,17 +501,17 @@ void FreeFreePlayPanel(int arg) {
     RemoveIconGroup((unsigned short)(arg + 6));
 
     if (arg == 0xc8) {
-        cur = DAT_007cb3d0;
-        head = &DAT_007cb3d0;
+        cur = FreePlayPanelList1;
+        head = &FreePlayPanelList1;
     } else if (arg == 0x12c) {
-        cur = DAT_007cb39c;
-        head = &DAT_007cb39c;
+        cur = FreePlayPanelList4;
+        head = &FreePlayPanelList4;
     } else if (arg == 0x190) {
-        cur = DAT_007cb3b8;
-        head = &DAT_007cb3b8;
+        cur = FreePlayPanelList3;
+        head = &FreePlayPanelList3;
     } else if (arg == 0x1f4) {
-        cur = DAT_007cb3a4;
-        head = &DAT_007cb3a4;
+        cur = FreePlayPanelList2;
+        head = &FreePlayPanelList2;
     } else {
         return;
     }

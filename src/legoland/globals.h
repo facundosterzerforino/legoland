@@ -930,7 +930,7 @@ extern struct Footprint DAT_004b7248;
 // 0x004b72e4
 extern unsigned char DAT_004b72e4[0x190];
 // 0x004b7478
-extern struct Footprint DAT_004b7478;
+extern struct Footprint JungleCruiseDefaultFootprint;
 // 0x004b7618
 extern struct FXItem SPACE_TOWER_SFX[1];
 // 0x004b76b8
@@ -1018,13 +1018,13 @@ extern unsigned int BrickCount;
 // 0x004b90fc
 extern unsigned int UnlimitedBricks;
 // 0x004b9210
-extern int DAT_004b9210;
+extern int Bridge1SpriteOffsetX;
 // 0x004b9214
-extern int DAT_004b9214;
+extern int Bridge1SpriteOffsetY;
 // 0x004b9218
-extern int DAT_004b9218;
+extern int Bridge0SpriteOffsetX;
 // 0x004b921c
-extern int DAT_004b921c;
+extern int Bridge0SpriteOffsetY;
 // 0x004b9220
 extern LEGO_EXPORT unsigned int BGFullUpdate;
 // 0x004b9228
@@ -2043,15 +2043,15 @@ extern unsigned int RenderItemCount;
 // 0x00655a50
 extern unsigned int RenderItem2Count;
 // 0x00665e8c
-extern unsigned int DAT_00665e8c;
+extern unsigned int LoadedTextureCount;
 // 0x00665eec
 extern int AdvisorAnimFrame;
 // 0x00665f48
 extern unsigned int AviAnimOpenCount;
 // 0x00665f5c
-extern void *DAT_00665f5c;
+extern void *CurrentAdvisorAnim;
 // 0x00665f60
-extern void *DAT_00665f60;
+extern void *NextAdvisorAnim;
 // 0x00665f64
 extern unsigned int DAT_00665f64;
 // 0x00665f68
@@ -2059,9 +2059,9 @@ extern unsigned int DAT_00665f68;
 // 0x00665f6c
 extern unsigned int DAT_00665f6c;
 // 0x00665fe8
-extern unsigned int DAT_00665fe8;
+extern unsigned int AdvisorAnimState;
 // 0x00665fec
-extern unsigned int DAT_00665fec;
+extern unsigned int NextAdvisorAnimState;
 // 0x00665ff8
 extern unsigned int ReportFlags;
 // 0x00665ffc
@@ -2107,9 +2107,9 @@ extern int ReportFoodStallClassCountGoal;
 // 0x0066604c
 extern int ReportFoodStallClassCountMax;
 // 0x00666050
-extern int DAT_00666050;
+extern int ReportVisitorHappinessGoal;
 // 0x00666054
-extern int DAT_00666054;
+extern int ReportVisitorHappinessMax;
 // 0x00666058
 extern int ReportPowerSupplyGoal;
 // 0x0066605c
@@ -2243,7 +2243,7 @@ extern long LastMapClickX;
 // 0x00667c74
 extern long LastMapClickY;
 // 0x00667c64
-extern const char *DAT_00667c40;
+extern const char *AdvisorDebugStage;
 // 0x00667c48
 extern unsigned int DAT_00667c48;
 // 0x00667c4c
@@ -2309,9 +2309,9 @@ extern int SceneryCoveredSquares;
 // 0x00667cfc
 extern int DAT_00667cfc;
 // 0x00667d00
-extern int DAT_00667d00;
+extern int PathEdgeSquareTotal;
 // 0x00667d04
-extern int DAT_00667d04;
+extern int PathEdgeScenerySquares;
 // 0x00667d08
 extern int PathSceneryPercent;
 // 0x00667d0c
@@ -3222,11 +3222,11 @@ extern unsigned int DAT_007cb394;
 // 0x007cb398
 extern struct Sprite *FreePlayTickSprite;
 // 0x007cb39c
-extern struct PanelNode *DAT_007cb39c;
+extern struct PanelNode *FreePlayPanelList4;
 // 0x007cb3a0
 extern unsigned int FreePlayCostTotal;
 // 0x007cb3a4
-extern struct PanelNode *DAT_007cb3a4;
+extern struct PanelNode *FreePlayPanelList2;
 // 0x007cb3a8
 extern struct Sprite *FreePlayDown4Sprite;
 // 0x007cb3ac
@@ -3236,7 +3236,7 @@ extern struct Sprite *FreePlayDown3Sprite;
 // 0x007cb3b4
 extern struct Sprite *FreePlayDown1Sprite;
 // 0x007cb3b8
-extern struct PanelNode *DAT_007cb3b8;
+extern struct PanelNode *FreePlayPanelList3;
 // 0x007cb3bc
 extern struct Element *DAT_007cb3bc;
 // 0x007cb3c0
@@ -3248,7 +3248,7 @@ extern struct Sprite *FreePlayUp4Sprite;
 // 0x007cb3cc
 extern struct Sprite *FreePlayUp3Sprite;
 // 0x007cb3d0
-extern struct PanelNode *DAT_007cb3d0;
+extern struct PanelNode *FreePlayPanelList1;
 // 0x007cb3d4
 extern struct Sprite *FreePlayCoverSprite;
 // 0x007cb3e0
@@ -3503,9 +3503,9 @@ extern struct Element *OverlayILFHandle;
 // 0x00801420
 extern struct DeferredSprite DAT_00801420[100];
 // 0x00801a60
-extern int DAT_00801a60;
+extern int Bridge1OverlayOffsetX;
 // 0x00801a64
-extern int DAT_00801a64;
+extern int Bridge1OverlayOffsetY;
 // 0x00801a68
 extern struct Element **MapObjectElements; /* the level's object classes */
 // 0x00801a6c
@@ -3527,9 +3527,9 @@ extern int DAT_00801b28;
 // 0x00801f40
 extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 // 0x00805f40
-extern int DAT_00805f40;
+extern int Bridge0OverlayOffsetX;
 // 0x00805f44
-extern int DAT_00805f44;
+extern int Bridge0OverlayOffsetY;
 // 0x00805f48
 extern unsigned int DAT_00805f48;
 // 0x00805f60
@@ -3744,7 +3744,7 @@ extern struct Sprite *PreviousPageSprite;
 // 0x0081c084
 extern struct Sprite *PreviousPageLitSprite;
 // 0x0081c088
-extern unsigned int DAT_0081c088;
+extern unsigned int AdvisorAnimStateParam;
 // 0x0081c08c
 extern void *AdBlinkAnim;
 // 0x0081c090
@@ -3754,7 +3754,7 @@ extern void *AdLRAnim;
 // 0x0081c098
 extern void *AdPhoneDownAnim;
 // 0x0081c09c
-extern unsigned int DAT_0081c09c;
+extern unsigned int NextAdvisorAnimStateParam;
 // 0x0081c0a0
 extern void *AdPhoneAnim;
 // 0x0081c0a4
