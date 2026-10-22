@@ -833,11 +833,6 @@ void InitTrainIntegrator(struct Train *self) {
     self->motion.kind = 2;
 }
 
-struct BisectPair {
-    float p;
-    unsigned int q;
-};
-
 struct BisectOut {
     float p;
     unsigned int q;
