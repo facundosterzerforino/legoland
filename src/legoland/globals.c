@@ -519,17 +519,31 @@ unsigned int DAT_004b5cc8;
 // GLOBAL: LEGOLAND 0x004b5cf4
 char RollerCoasterSavePath[32] = "RollerCoaster\\RollerCoaster.sav";
 
+/* the piece class methods live in castle.c and take castle.c-local views of struct PathSeg */
+void CastleFillOpenEnd();
+void CastleSetHeights();
+struct SegBlob *CastleGetCurve();
+void SquareTrackFillOpenEnd();
+void SquareTrackSetHeights();
+void HeightTrackFillOpenEnd();
+void HeightTrackSetHeights();
+struct Struct4286e0Element *GetTrackPieceCurve();
+void TrackPieceOnAdd();
+void TrackPieceOnRemove();
+void AddRollerCoasterPath2x2();
+void RemoveRollerCoasterPath2x2();
+
 // GLOBAL: LEGOLAND 0x004b5d20
-struct PieceClass SquareTrackPieceClass;
+struct PieceClass SquareTrackPieceClass = {0, 0, 0, {0xf, 0, 0}, {0xf, 0, 0}, (void (*)(struct PathSeg *))SquareTrackFillOpenEnd, (unsigned int (*)(struct PathSeg *, float))SquareTrackSetHeights, (struct SegBlob * (*)(struct PathSeg *)) GetTrackPieceCurve, (void (*)(struct PathSeg *))TrackPieceOnAdd, (void (*)(struct PathSeg *))TrackPieceOnRemove, 0};
 
 // GLOBAL: LEGOLAND 0x004b5d58
-struct PieceClass HeightTrack25PieceClass;
+struct PieceClass HeightTrack25PieceClass = {1, 25, 25, {0xf, 0, 0}, {0xf, 0, 0}, (void (*)(struct PathSeg *))HeightTrackFillOpenEnd, (unsigned int (*)(struct PathSeg *, float))HeightTrackSetHeights, (struct SegBlob * (*)(struct PathSeg *)) GetTrackPieceCurve, (void (*)(struct PathSeg *))TrackPieceOnAdd, (void (*)(struct PathSeg *))TrackPieceOnRemove, 0};
 
 // GLOBAL: LEGOLAND 0x004b5d90
-struct PieceClass HeightTrack2PieceClass;
+struct PieceClass HeightTrack2PieceClass = {1, 2, 2, {0xf, 0, 0}, {0xf, 0, 0}, (void (*)(struct PathSeg *))HeightTrackFillOpenEnd, (unsigned int (*)(struct PathSeg *, float))HeightTrackSetHeights, (struct SegBlob * (*)(struct PathSeg *)) GetTrackPieceCurve, (void (*)(struct PathSeg *))TrackPieceOnAdd, (void (*)(struct PathSeg *))TrackPieceOnRemove, 0};
 
 // GLOBAL: LEGOLAND 0x004b5dc8
-struct PieceClass HeightTrackPathPieceClass;
+struct PieceClass HeightTrackPathPieceClass = {1, 15, 15, {0xf, 0, 0}, {0xf, 0, 0}, (void (*)(struct PathSeg *))HeightTrackFillOpenEnd, (unsigned int (*)(struct PathSeg *, float))HeightTrackSetHeights, (struct SegBlob * (*)(struct PathSeg *)) GetTrackPieceCurve, (void (*)(struct PathSeg *))AddRollerCoasterPath2x2, (void (*)(struct PathSeg *))RemoveRollerCoasterPath2x2, 1};
 
 // GLOBAL: LEGOLAND 0x004b5e00
 float DAT_004b5e00[4][3] = {{1.0f, 0.0f, 0.0f}, {2.0f, 1.0f, 0.0f}, {1.0f, 2.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
@@ -5267,7 +5281,7 @@ struct Element *CastleObjElement;
 struct CastleState CastleCoaster;
 
 // GLOBAL: LEGOLAND 0x004b5b48
-struct PieceClass CastlePieceClass;
+struct PieceClass CastlePieceClass = {1, 0, 0, {2, 0, 0}, {4, 0, 0}, (void (*)(struct PathSeg *))CastleFillOpenEnd, (unsigned int (*)(struct PathSeg *, float))CastleSetHeights, (struct SegBlob * (*)(struct PathSeg *)) CastleGetCurve};
 
 // GLOBAL: LEGOLAND 0x00829bf8
 struct Ride *CastleCoasterRide;
