@@ -556,7 +556,7 @@ unsigned int DAT_004b5ef4[4][2] = {{0, 3}, {2, 3}, {2, 1}, {0, 1}};
 unsigned int DAT_004b5f14[4][2] = {{0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc00000}, {0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc00000}};
 
 // GLOBAL: LEGOLAND 0x004b5f60
-unsigned char DAT_004b5f60[0x20];
+unsigned char RailTubeMesh[0x20];
 
 // GLOBAL: LEGOLAND 0x004b6150
 struct LmsFile DAT_004b6150 = {0};
@@ -576,7 +576,7 @@ float DAT_004b6398[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 4
 // GLOBAL: LEGOLAND 0x004b63c8
 float DAT_004b63c8[4][3] = {{10.0f, 0.0f, 0.0f}, {0.0f, 10.0f, 0.0f}, {-10.0f, 0.0f, 0.0f}, {0.0f, -10.0f, 0.0f}};
 // GLOBAL: LEGOLAND 0x004b6408
-int DAT_004b6408[3] = {0, 2, 1};
+int WheelCurvePairs[3] = {0, 2, 1};
 
 // GLOBAL: LEGOLAND 0x004ab490
 float FLOAT_004ab490;
@@ -1916,7 +1916,7 @@ struct KeyValuePair ElementPieceClasses[11] = {0};
 Vector3 DAT_006116e0[4] = {0};
 
 // GLOBAL: LEGOLAND 0x00611710
-unsigned int DAT_00611710[16] = {0};
+unsigned int RailDrawOrder[16] = {0};
 
 // GLOBAL: LEGOLAND 0x00611750
 Vector3 DAT_00611750[4] = {0};
@@ -1940,7 +1940,7 @@ unsigned char DAT_00611960[0x800];
 unsigned int DAT_00612160[6];
 
 // GLOBAL: LEGOLAND 0x00612178
-char DAT_00612178[1];
+char RailSplitPoints[1];
 
 // GLOBAL: LEGOLAND 0x006122a0
 float DAT_006122a0[90][3];
@@ -1961,19 +1961,19 @@ struct Cursor JungleCruiseCursors[4];
 int DAT_006159c8[90][4];
 
 // GLOBAL: LEGOLAND 0x00615f6c
-unsigned int DAT_00615f6c;
+unsigned int RailSplitCount;
 
 // GLOBAL: LEGOLAND 0x00615f70
 unsigned int DAT_00615f70[4];
 
 // GLOBAL: LEGOLAND 0x00615f80
-struct CurveWalker *DAT_00615f80;
+struct CurveWalker *ArcLengthWalker;
 
 // GLOBAL: LEGOLAND 0x00615ff0
-int DAT_00615ff0;
+int ArcLengthCurvePair;
 
 // GLOBAL: LEGOLAND 0x00615ff4
-float DAT_00615ff4;
+float ArcLengthDepth;
 
 // GLOBAL: LEGOLAND 0x004b5f80
 struct CastleFloatEnt DAT_004b5f80[3][4];
@@ -1994,16 +1994,16 @@ int DAT_00615fc8;
 int DAT_00615fcc;
 
 // GLOBAL: LEGOLAND 0x00615fd0
-float DAT_00615fd0;
+float RangeRadius;
 
 // GLOBAL: LEGOLAND 0x00615fd8
-float DAT_00615fd8;
+float RangeRadiusSq;
 
 // GLOBAL: LEGOLAND 0x00615fdc
-float DAT_00615fdc;
+float RangeOuterSq;
 
 // GLOBAL: LEGOLAND 0x00615fe0
-float DAT_00615fe0;
+float RangeInnerSq;
 
 // GLOBAL: LEGOLAND 0x00615fe4
 int DAT_00615fe4;
@@ -2015,19 +2015,19 @@ int DAT_00615fe8;
 int DAT_00615fec;
 
 // GLOBAL: LEGOLAND 0x00615f8c
-float *DAT_00615f8c;
+float *RangeCentre;
 
 // GLOBAL: LEGOLAND 0x004b63fc
-int (*DAT_004b63fc)(float (*fn)(unsigned int), float lo, float hi, float *out);
+int (*RangeRootFinder)(float (*fn)(unsigned int), float lo, float hi, float *out);
 
 // GLOBAL: LEGOLAND 0x00615f84
-struct CurveWalker *DAT_00615f84;
+struct CurveWalker *RangeWalker;
 
 // GLOBAL: LEGOLAND 0x00615f90
 int DAT_00615f90;
 
 // GLOBAL: LEGOLAND 0x00615fd4
-float DAT_00615fd4;
+float RangeDepth;
 
 // GLOBAL: LEGOLAND 0x00615f98
 struct VecMath CurveVecMath;
@@ -5214,10 +5214,10 @@ struct Sprite *ZBalloon2Sprite;
 void *CoasterPieceToRemove;
 
 // GLOBAL: LEGOLAND 0x0081ce00
-struct Cursor DAT_0081ce00[8];
+struct Cursor FreeSpotCursors[8];
 
 // GLOBAL: LEGOLAND 0x00828fe0
-unsigned int DAT_00828fe0[2];
+unsigned int TrackPieceCurves[2];
 
 // GLOBAL: LEGOLAND 0x00829980
 void *BasicTilesData;
@@ -5253,7 +5253,7 @@ void (*lego_rsqrtf_impl)(void);
 float CastleLightBias;
 
 // GLOBAL: LEGOLAND 0x00829a64
-struct Ride *DAT_00829a64;
+struct Ride *HeightTrack2Ride;
 
 // GLOBAL: LEGOLAND 0x00829a80
 struct Footprint CastleCoasterFootprint;
@@ -5273,7 +5273,7 @@ struct PieceClass CastlePieceClass;
 struct Ride *CastleCoasterRide;
 
 // GLOBAL: LEGOLAND 0x00829bfc
-struct Ride *DAT_00829bfc;
+struct Ride *HeightTrack25Ride;
 
 // GLOBAL: LEGOLAND 0x00829c00
 struct Element *CastleDummyElement;
@@ -5282,7 +5282,7 @@ struct Element *CastleDummyElement;
 struct Sprite *CastleMatteSprite;
 
 // GLOBAL: LEGOLAND 0x00829c08
-struct Ride *DAT_00829c08;
+struct Ride *SquareTrackRide;
 
 // GLOBAL: LEGOLAND 0x00829c34
 struct Ride *CastleDummyRide;

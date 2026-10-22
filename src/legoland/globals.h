@@ -850,7 +850,7 @@ extern unsigned int DAT_004b5ef4[4][2];
 // 0x004b5f14
 extern unsigned int DAT_004b5f14[4][2];
 // 0x004b5f60
-extern unsigned char DAT_004b5f60[0x20];
+extern unsigned char RailTubeMesh[0x20];
 // 0x004b61e0
 extern struct CastleFloatEnt DAT_004b61e0[8];
 
@@ -863,7 +863,7 @@ extern float DAT_004b6398[4][3];
 // 0x004b63c8
 extern float DAT_004b63c8[4][3];
 // 0x004b6408
-extern int DAT_004b6408[3];
+extern int WheelCurvePairs[3];
 // 0x004ab490
 extern float FLOAT_004ab490;
 // 0x004ab494
@@ -1744,7 +1744,7 @@ extern struct KeyValuePair ElementPieceClasses[11];
 // 0x006116e0
 extern Vector3 DAT_006116e0[4];
 // 0x00611710
-extern unsigned int DAT_00611710[16];
+extern unsigned int RailDrawOrder[16];
 // 0x00611750
 extern Vector3 DAT_00611750[4];
 // 0x00611780
@@ -1760,7 +1760,7 @@ extern unsigned char DAT_00611960[0x800];
 // 0x00612160
 extern unsigned int DAT_00612160[6];
 // 0x00612178
-extern char DAT_00612178[1];
+extern char RailSplitPoints[1];
 // 0x006122a0
 extern float DAT_006122a0[90][3];
 // 0x00614858
@@ -1773,27 +1773,27 @@ extern struct Cursor JungleCruiseCursors[4];
 // 0x006159c8
 extern int DAT_006159c8[90][4];
 // 0x00615f6c
-extern unsigned int DAT_00615f6c;
+extern unsigned int RailSplitCount;
 // 0x00615f70
 extern unsigned int DAT_00615f70[4];
 // 0x00615f84
-extern struct CurveWalker *DAT_00615f84;
+extern struct CurveWalker *RangeWalker;
 extern int DAT_00615fc4;
 extern int DAT_00615fc8;
 extern int DAT_00615fcc;
-extern float DAT_00615fd0;
-extern float DAT_00615fd8;
-extern float DAT_00615fdc;
-extern float DAT_00615fe0;
+extern float RangeRadius;
+extern float RangeRadiusSq;
+extern float RangeOuterSq;
+extern float RangeInnerSq;
 extern int DAT_00615fe4;
 extern int DAT_00615fe8;
 extern int DAT_00615fec;
-extern float *DAT_00615f8c;
-extern int (*DAT_004b63fc)(float (*fn)(unsigned int), float lo, float hi, float *out);
+extern float *RangeCentre;
+extern int (*RangeRootFinder)(float (*fn)(unsigned int), float lo, float hi, float *out);
 
-extern struct CurveWalker *DAT_00615f80;
-extern int DAT_00615ff0;
-extern float DAT_00615ff4;
+extern struct CurveWalker *ArcLengthWalker;
+extern int ArcLengthCurvePair;
+extern float ArcLengthDepth;
 extern struct CastleFloatEnt DAT_004b5f80[3][4];
 // 0x004b6150
 extern struct LmsFile DAT_004b6150; /* the castle cursor's mesh */
@@ -1801,7 +1801,7 @@ extern struct CastleFloatEnt DAT_00612210[3][4];
 // 0x00615f90
 extern int DAT_00615f90;
 // 0x00615fd4
-extern float DAT_00615fd4;
+extern float RangeDepth;
 // 0x00615f98
 extern struct VecMath CurveVecMath;
 // 0x00616000
@@ -3958,9 +3958,9 @@ extern struct Sprite *ZBalloon2Sprite;
 // 0x0081cdec
 extern void *CoasterPieceToRemove;
 // 0x0081ce00
-extern struct Cursor DAT_0081ce00[8];
+extern struct Cursor FreeSpotCursors[8];
 // 0x00828fe0
-extern unsigned int DAT_00828fe0[2];
+extern unsigned int TrackPieceCurves[2];
 // 0x00829980
 extern void *BasicTilesData;
 // 0x00829990
@@ -3984,7 +3984,7 @@ extern void (*lego_rsqrtf_impl)(void);
 // 0x00829a60
 extern float CastleLightBias;
 // 0x00829a64
-extern struct Ride *DAT_00829a64;
+extern struct Ride *HeightTrack2Ride;
 
 // 0x00829a80
 extern struct Footprint CastleCoasterFootprint;
@@ -3998,14 +3998,14 @@ extern struct PieceClass CastlePieceClass;
 // 0x00829bf8
 extern struct Ride *CastleCoasterRide;
 // 0x00829bfc
-extern struct Ride *DAT_00829bfc;
+extern struct Ride *HeightTrack25Ride;
 
 // 0x00829c00
 extern struct Element *CastleDummyElement;
 // 0x00829c04
 extern struct Sprite *CastleMatteSprite;
 // 0x00829c08
-extern struct Ride *DAT_00829c08;
+extern struct Ride *SquareTrackRide;
 
 // 0x00829c34
 extern struct Ride *CastleDummyRide;
