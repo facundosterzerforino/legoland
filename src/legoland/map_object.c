@@ -2202,7 +2202,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
         return 0xfffffffd;
     }
     LoadInProgress = 1;
-    FUN_00459880();
+    ResetCoverageCounters();
     RES_ReadFile(file, &len, 4);
     RES_ReadFile(file, namebuf, len);
     RES_ReadFile(file, &len, 4);
@@ -2234,14 +2234,14 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
             col++;
         }
     }
-    DAT_00801a68 = malloc(DAT_00801b28 * sizeof(*DAT_00801a68));
+    MapObjectElements = malloc(DAT_00801b28 * sizeof(*MapObjectElements));
     for (i = 0; i < DAT_00801b28; i++) {
         DrawWatchSprite();
         RES_ReadFile(file, &len, 4);
         RES_ReadFile(file, strbuf, len);
         strbuf[len] = 0;
         LLIDB_FindElement(strbuf, &elem, 0);
-        DAT_00801a68[i] = elem;
+        MapObjectElements[i] = elem;
         LLIDB_LoadData((void *)elem);
         if (elem->data != 0) {
             elem->flags = elem->flags | 4;
@@ -2256,8 +2256,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
         DrawWatchSprite();
         RES_ReadFile(file, &idx, 4);
         RES_ReadFile(file, &pos, 8);
-        DAT_00801a68[idx]->ride->footprint.next = NULL;
-        obj = DAT_00801a68[idx];
+        MapObjectElements[idx]->ride->footprint.next = NULL;
+        obj = MapObjectElements[idx];
         PutObjOnMap(obj->ride, obj, &pos);
         i++;
     }
@@ -2634,7 +2634,7 @@ unsigned int UnloadBaseMap(void) {
     if (MapDataLoaded == 0) {
         return 0;
     }
-    FUN_00459880();
+    ResetCoverageCounters();
     row = 0;
     if (lpConfig->height > 0) {
         do {
@@ -2667,7 +2667,7 @@ unsigned int UnloadBaseMap(void) {
             i = i + 1;
         } while (i < count);
     }
-    free(DAT_00801a68);
+    free(MapObjectElements);
     i = 0;
     if (0 < DAT_00801a74) {
         do {

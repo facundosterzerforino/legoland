@@ -664,8 +664,8 @@ unsigned int ScriptEventRideVisitors(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046ad00
 unsigned int ScriptEventSceneryCoverage(struct ObjectiveEvent *arg) {
-    if (DAT_00667cf8 < (int)arg->field_14) {
-        QueueCoverSquaresHint(arg, 2, arg->field_14 - DAT_00667cf8);
+    if (SceneryCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 2, arg->field_14 - SceneryCoveredSquares);
         return 0;
     }
     return 1;
@@ -673,9 +673,9 @@ unsigned int ScriptEventSceneryCoverage(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046ad30
 unsigned int ScriptEventPathScenery(struct ObjectiveEvent *arg) {
-    FUN_00459970();
-    if (DAT_00667d08 < (int)arg->field_14) {
-        QueuePathSceneryHint(arg, arg->field_14 - DAT_00667d08);
+    UpdatePathSceneryPercent();
+    if (PathSceneryPercent < (int)arg->field_14) {
+        QueuePathSceneryHint(arg, arg->field_14 - PathSceneryPercent);
         return 0;
     }
     return 1;
@@ -683,8 +683,8 @@ unsigned int ScriptEventPathScenery(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046ad60
 unsigned int ScriptEventRideCoverage(struct ObjectiveEvent *arg) {
-    if (DAT_00667ce4 < (int)arg->field_14) {
-        QueueCoverSquaresHint(arg, 1, arg->field_14 - DAT_00667ce4);
+    if (RideCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 1, arg->field_14 - RideCoveredSquares);
         return 0;
     }
     return 1;
@@ -692,8 +692,8 @@ unsigned int ScriptEventRideCoverage(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046ad90
 unsigned int ScriptEventShopCoverage(struct ObjectiveEvent *arg) {
-    if (DAT_00667ce8 < (int)arg->field_14) {
-        QueueCoverSquaresHint(arg, 4, arg->field_14 - DAT_00667ce8);
+    if (ShopCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 4, arg->field_14 - ShopCoveredSquares);
         return 0;
     }
     return 1;
@@ -701,8 +701,8 @@ unsigned int ScriptEventShopCoverage(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046adc0
 unsigned int ScriptEventFoodCoverage(struct ObjectiveEvent *arg) {
-    if (DAT_00667cec < (int)arg->field_14) {
-        QueueCoverSquaresHint(arg, 5, arg->field_14 - DAT_00667cec);
+    if (FoodCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 5, arg->field_14 - FoodCoveredSquares);
         return 0;
     }
     return 1;
@@ -710,8 +710,8 @@ unsigned int ScriptEventFoodCoverage(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046adf0
 unsigned int ScriptEventTotalCoverage(struct ObjectiveEvent *arg) {
-    if (DAT_00667ce0 < (int)arg->field_14) {
-        QueueCoverSquaresHint(arg, 0, arg->field_14 - DAT_00667ce0);
+    if (TotalCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 0, arg->field_14 - TotalCoveredSquares);
         return 0;
     }
     return 1;

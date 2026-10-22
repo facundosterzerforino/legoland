@@ -291,8 +291,8 @@ LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprit
 // FUNCTION: LEGOLAND 0x0046d740
 LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
     DAT_006688a8 = param_1;
-    DAT_006688ac = param_2;
-    DAT_006688b0 = param_3;
+    NewGroupRenderFunc = param_2;
+    NewGroupEventHandler = param_3;
 }
 
 // FUNCTION: LEGOLAND 0x0046d760
@@ -1443,12 +1443,12 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(void *param_1, struct InfoSource *
             icon->field_24 = DAT_006688a8;
             icon->flags = icon->flags | 4;
         }
-        if (DAT_006688ac != 0) {
-            icon->render_func = DAT_006688ac;
+        if (NewGroupRenderFunc != 0) {
+            icon->render_func = NewGroupRenderFunc;
             icon->flags = icon->flags | 8;
         }
-        if (DAT_006688b0 != 0) {
-            icon->event_handler = DAT_006688b0;
+        if (NewGroupEventHandler != 0) {
+            icon->event_handler = NewGroupEventHandler;
             icon->flags = icon->flags | 2;
         }
     }
@@ -1480,12 +1480,12 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(void *param_1, struct InfoSource *s
             icon->field_24 = DAT_006688a8;
             icon->flags = icon->flags | 4;
         }
-        if (DAT_006688ac != 0) {
-            icon->render_func = DAT_006688ac;
+        if (NewGroupRenderFunc != 0) {
+            icon->render_func = NewGroupRenderFunc;
             icon->flags = icon->flags | 8;
         }
-        if (DAT_006688b0 != 0) {
-            icon->event_handler = DAT_006688b0;
+        if (NewGroupEventHandler != 0) {
+            icon->event_handler = NewGroupEventHandler;
             icon->flags = icon->flags | 2;
         }
     }

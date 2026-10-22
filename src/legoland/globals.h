@@ -2045,7 +2045,7 @@ extern unsigned int RenderItem2Count;
 // 0x00665e8c
 extern unsigned int DAT_00665e8c;
 // 0x00665eec
-extern int DAT_00665eec;
+extern int AdvisorAnimFrame;
 // 0x00665f48
 extern unsigned int AviAnimOpenCount;
 // 0x00665f5c
@@ -2293,19 +2293,19 @@ extern unsigned int DAT_00667cd8;
 // 0x00667cdc
 extern unsigned int DAT_00667cdc;
 // 0x00667ce0
-extern int DAT_00667ce0;
+extern int TotalCoveredSquares;
 // 0x00667ce4
-extern int DAT_00667ce4;
+extern int RideCoveredSquares;
 // 0x00667ce8
-extern int DAT_00667ce8;
+extern int ShopCoveredSquares;
 // 0x00667cec
-extern int DAT_00667cec;
+extern int FoodCoveredSquares;
 // 0x00667cf0
-extern int DAT_00667cf0;
+extern int Type3CoveredSquares;
 // 0x00667cf4
-extern int DAT_00667cf4;
+extern int PathSquareCount;
 // 0x00667cf8
-extern int DAT_00667cf8;
+extern int SceneryCoveredSquares;
 // 0x00667cfc
 extern int DAT_00667cfc;
 // 0x00667d00
@@ -2313,11 +2313,11 @@ extern int DAT_00667d00;
 // 0x00667d04
 extern int DAT_00667d04;
 // 0x00667d08
-extern int DAT_00667d08;
+extern int PathSceneryPercent;
 // 0x00667d0c
-extern int DAT_00667d0c;
+extern int PathSceneryDirty;
 // 0x00667d10
-extern unsigned int DAT_00667d10;
+extern unsigned int PathSceneryLastUpdate;
 // 0x00667d3c
 extern int DAT_00667d3c;
 // 0x00667d40
@@ -2489,9 +2489,9 @@ extern struct IconNode DefaultIconNode;
 // 0x006688a8
 extern void *DAT_006688a8;
 // 0x006688ac
-extern void *DAT_006688ac;
+extern void *NewGroupRenderFunc;
 // 0x006688b0
-extern void *DAT_006688b0;
+extern void *NewGroupEventHandler;
 // 0x006688b4
 extern unsigned int LastScrollIconTick;
 // 0x006688b8
@@ -2656,7 +2656,7 @@ extern unsigned int DAT_00668ec0;
 // 0x00668ed8
 extern struct InterfaceResearchNode *ResearchList;
 // 0x00668ee0
-extern int DAT_00668ee0;
+extern int AviAudioNeedsAcm;
 // 0x00668ee8
 extern struct AcmHeader AviAcmStreamHeader;
 // 0x00668f3c
@@ -2668,7 +2668,7 @@ extern void *AviSoundBuffer;
 // 0x00668f4c
 extern unsigned int AviAudioBitsPerSample;
 // 0x00668f50
-extern unsigned int DAT_00668f50;
+extern unsigned int AviSoundBufferSlotCount;
 // 0x00668f54
 extern int AviAcmDstOffset;
 // 0x00668f58
@@ -2690,7 +2690,7 @@ extern void *AviAcmDstBase;
 // 0x00668f90
 extern unsigned int AviSamplesPerFrame;
 // 0x00668f9c
-extern int DAT_00668f9c;
+extern int AviAudioReady;
 // 0x00668fa0
 extern unsigned int AviSoundBufferSlot;
 extern unsigned int AviOpenCount;
@@ -3507,7 +3507,7 @@ extern int DAT_00801a60;
 // 0x00801a64
 extern int DAT_00801a64;
 // 0x00801a68
-extern struct Element **DAT_00801a68; /* the level's object classes */
+extern struct Element **MapObjectElements; /* the level's object classes */
 // 0x00801a6c
 extern int *DAT_00801a6c;
 // 0x00801a70

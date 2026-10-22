@@ -2390,7 +2390,7 @@ unsigned int RenderItem2Count;
 unsigned int DAT_00665e8c;
 
 // GLOBAL: LEGOLAND 0x00665eec
-int DAT_00665eec;
+int AdvisorAnimFrame;
 
 // GLOBAL: LEGOLAND 0x00665f48
 unsigned int AviAnimOpenCount;
@@ -2765,25 +2765,25 @@ unsigned int DAT_00667cd8;
 unsigned int DAT_00667cdc;
 
 // GLOBAL: LEGOLAND 0x00667ce0
-int DAT_00667ce0;
+int TotalCoveredSquares;
 
 // GLOBAL: LEGOLAND 0x00667ce4
-int DAT_00667ce4;
+int RideCoveredSquares;
 
 // GLOBAL: LEGOLAND 0x00667ce8
-int DAT_00667ce8;
+int ShopCoveredSquares;
 
 // GLOBAL: LEGOLAND 0x00667cec
-int DAT_00667cec;
+int FoodCoveredSquares;
 
 // GLOBAL: LEGOLAND 0x00667cf0
-int DAT_00667cf0;
+int Type3CoveredSquares;
 
 // GLOBAL: LEGOLAND 0x00667cf4
-int DAT_00667cf4;
+int PathSquareCount;
 
 // GLOBAL: LEGOLAND 0x00667cf8
-int DAT_00667cf8;
+int SceneryCoveredSquares;
 
 // GLOBAL: LEGOLAND 0x00667cfc
 int DAT_00667cfc;
@@ -2795,13 +2795,13 @@ int DAT_00667d00;
 int DAT_00667d04;
 
 // GLOBAL: LEGOLAND 0x00667d08
-int DAT_00667d08;
+int PathSceneryPercent;
 
 // GLOBAL: LEGOLAND 0x00667d0c
-int DAT_00667d0c;
+int PathSceneryDirty;
 
 // GLOBAL: LEGOLAND 0x00667d10
-unsigned int DAT_00667d10;
+unsigned int PathSceneryLastUpdate;
 
 // GLOBAL: LEGOLAND 0x00667d3c
 int DAT_00667d3c;
@@ -3044,10 +3044,10 @@ struct IconNode DefaultIconNode;
 void *DAT_006688a8;
 
 // GLOBAL: LEGOLAND 0x006688ac
-void *DAT_006688ac;
+void *NewGroupRenderFunc;
 
 // GLOBAL: LEGOLAND 0x006688b0
-void *DAT_006688b0;
+void *NewGroupEventHandler;
 
 // GLOBAL: LEGOLAND 0x006688b4
 unsigned int LastScrollIconTick;
@@ -3296,7 +3296,7 @@ unsigned int DAT_00668ec0;
 struct InterfaceResearchNode *ResearchList;
 
 // GLOBAL: LEGOLAND 0x00668ee0
-int DAT_00668ee0;
+int AviAudioNeedsAcm;
 
 // GLOBAL: LEGOLAND 0x00668ee8
 struct AcmHeader AviAcmStreamHeader;
@@ -3314,7 +3314,7 @@ void *AviSoundBuffer;
 unsigned int AviAudioBitsPerSample;
 
 // GLOBAL: LEGOLAND 0x00668f50
-unsigned int DAT_00668f50;
+unsigned int AviSoundBufferSlotCount;
 
 // GLOBAL: LEGOLAND 0x00668f54
 int AviAcmDstOffset;
@@ -3347,7 +3347,7 @@ void *AviAcmDstBase;
 unsigned int AviSamplesPerFrame;
 
 // GLOBAL: LEGOLAND 0x00668f9c
-int DAT_00668f9c;
+int AviAudioReady;
 
 // GLOBAL: LEGOLAND 0x00668fa0
 unsigned int AviSoundBufferSlot;
@@ -4544,7 +4544,7 @@ int DAT_00801a60;
 int DAT_00801a64;
 
 // GLOBAL: LEGOLAND 0x00801a68
-struct Element **DAT_00801a68;
+struct Element **MapObjectElements;
 
 // GLOBAL: LEGOLAND 0x00801a6c
 int *DAT_00801a6c;

@@ -393,7 +393,7 @@ void SetAdvisorVidAnim(struct AnimHandle *handle) {
     DAT_00665f68 = 0;
     DAT_00665f6c = 0;
     DAT_00665f64 = 0;
-    DAT_00665eec = 0;
+    AdvisorAnimFrame = 0;
     if (handle->open_cb != NULL) {
         handle->open_cb(handle);
     }
@@ -420,7 +420,7 @@ unsigned int RenderAdvisorIcon(struct IconNode *param_1) {
     if (IsScriptStopped() == 0) {
         anim = (struct AnimHandle *)DAT_00665f5c;
         if (anim != NULL) {
-            if (DAT_00665eec >= anim->length) {
+            if (AdvisorAnimFrame >= anim->length) {
                 if (anim->callback != NULL) {
                     anim->callback();
                     anim = (struct AnimHandle *)DAT_00665f5c;
@@ -436,13 +436,13 @@ unsigned int RenderAdvisorIcon(struct IconNode *param_1) {
             }
             // STRING: LEGOLAND 0x004b7db4
             DAT_00667c40 = "AVI GetFrame";
-            frame = (struct AviFrame *)AVIStreamGetFrame(anim->getframe, DAT_00665eec);
+            frame = (struct AviFrame *)AVIStreamGetFrame(anim->getframe, AdvisorAnimFrame);
             // STRING: LEGOLAND 0x004b7da8
             DAT_00667c40 = "BltAdvisor";
             PushRenderingStatusAndLockVideoSurface();
             FUN_004659a0(frame, param_1->x, param_1->y);
             PopRenderingStatus();
-            DAT_00665eec++;
+            AdvisorAnimFrame++;
             // STRING: LEGOLAND 0x004b7d98
             DAT_00667c40 = "Exit Advisor";
             if ((int)MousePos.x >= param_1->x && (int)MousePos.y >= param_1->y &&
