@@ -18,8 +18,10 @@
 #include "print_sprite.h"
 #include "render3d.h"
 
+/* Plays the entrance sound attached to the arriving visitor and, when the entrance fee is nonzero, plays the money
+ * sound at the entrance tile. */
 // FUNCTION: LEGOLAND 0x0042d970
-void FUN_0042d970(TileId *tile, struct Bloke *arg) {
+void PlayEntranceArrivalSounds(TileId *tile, struct Bloke *arg) {
     struct SampleSource config;
 
     config.type = 1;
@@ -234,7 +236,7 @@ void Entrance1Update(Element *elem) {
         case 1:
             if (bloke->field_36 == 1) {
                 AddBricks(MapStats.entrance_fee);
-                FUN_0042d970(&node->tile, bloke);
+                PlayEntranceArrivalSounds(&node->tile, bloke);
                 table = ENTRANCE_DEST_RIGHT;
                 bloke->dest.x = (x0 << 8) - 0x80;
             } else {

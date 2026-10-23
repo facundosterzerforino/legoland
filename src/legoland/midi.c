@@ -94,8 +94,10 @@ unsigned int ReadMidiEventStatus(struct MidiTrack *track) {
     return b;
 }
 
+/* Processes MIDI events due at the song time, sends supported channel messages and applies tempo changes. Returns
+ * zero when the track is inactive or finished, one while waiting for a later event. */
 // FUNCTION: LEGOLAND 0x00480330
-unsigned int FUN_00480330(struct MidiTrack *track) {
+unsigned int ProcessMidiTrackEvents(struct MidiTrack *track) {
     int ev;
     unsigned int len;
 
@@ -179,7 +181,7 @@ void __stdcall MidiTimerCallback(unsigned int p1, unsigned int p2, unsigned int 
     if (midi != NULL && midi->playing == 1) {
         midi->song_time += midi->time_step;
         for (i = 0; i < midi->trackCount; i++) {
-            busy |= FUN_00480330((struct MidiTrack *)midi->trackArray[i]);
+            busy |= ProcessMidiTrackEvents((struct MidiTrack *)midi->trackArray[i]);
         }
         if (busy == 0) {
             midi->playing = 0;

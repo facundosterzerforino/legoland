@@ -681,8 +681,10 @@ void SetPopUpOkCloseIconSprites(void) {
     SetIconSprite((struct IconNode *)CBCloseIcon, CBCloseSprite);
 }
 
+/* Draws the variable-width popup footer, positions the OK and Close icons, draws its label, and refreshes their
+ * idle sprites when the mouse leaves the button area. */
 // FUNCTION: LEGOLAND 0x00471d90
-void FUN_00471d90(void) {
+void DrawInfoPopupFooter(void) {
     int iVar1;
     short sVar2;
     char *str;
@@ -867,8 +869,10 @@ void DrawNewObjectPopup(void) {
     }
 }
 
+/* Temporarily configures the query class and cursor for the popup object, runs its cursor setup and buildability
+ * test, then restores the previous query state. */
 // FUNCTION: LEGOLAND 0x004723f0
-int FUN_004723f0(void) {
+int IsPopupObjectBuildable(void) {
     int result;
     unsigned int local_8[2];
     struct Cursor local_cursor;
@@ -1162,7 +1166,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         last_x = PopUpDeleteIcon->x;
     }
     if (can_delete != 0) {
-        if (FUN_004723f0() != 0) {
+        if (IsPopupObjectBuildable() != 0) {
             DeleteObjectIcon->flags = 0xfffffbff & DeleteObjectIcon->flags;
             DeleteObjectIcon->x = icon_x - 0x4e;
             DeleteObjectIcon->y = icon_y;
@@ -1201,7 +1205,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         SetPopUpIconSprites();
     }
     if (DAT_007fdfa4 != 0) {
-        FUN_00471d90();
+        DrawInfoPopupFooter();
     }
     FUN_00472090();
 }

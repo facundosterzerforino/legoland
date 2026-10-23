@@ -88,7 +88,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
     icon = (struct IconNode *)LoadSpriteIcon("GoBack_on_SavedGame.lls", 4, 0x1c2, 0x13, 7);
     icon->flags |= 0x6002;
     if (DAT_007cb324) {
-        icon->event_handler = (void *)FUN_0048fb80;
+        icon->event_handler = (void *)ReturnToTitleClicked;
         icon->string_id = 0x26;
         icon->string = GetString(0x26);
     } else {
@@ -648,7 +648,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct IconNode *sprite) {
     rc.right = rc.left + 0xd7;
     if (count != zero) {
         name = TempProfile.name;
-        center_x = FUN_00491e40(name, 2, rc, 1);
+        center_x = DrawCenteredTextAndGetRightEdge(name, 2, rc, 1);
     } else {
         center_x = (rc.right + rc.left) >> 1;
     }

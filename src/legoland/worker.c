@@ -249,8 +249,10 @@ WorkOrder *CreateMechanicWorkOrder(Element *element, int *coords, int mode) {
     return order;
 }
 
+/* Returns a fixed-point point centered on the longer dimension of the first work-order footprint, on its top or
+ * left edge, translated by the order origin. */
 // FUNCTION: LEGOLAND 0x00499a70
-Point FUN_00499a70(WorkOrder *order) {
+Point GetWorkOrderApproachPoint(WorkOrder *order) {
     Footprint *fp = order->footprints;
     int x0 = fp->x0;
     int y0 = fp->y0;
@@ -293,7 +295,7 @@ void AssignMechanicToWorkOrder(Bloke *worker, WorkOrder *order) {
 
     worker->order = order;
     if (order->type == 1) {
-        goal = FUN_00499a70(order);
+        goal = GetWorkOrderApproachPoint(order);
         worker->goal.x = goal.x;
     } else {
         worker->goal.x = (order->step_x + order->pos.x + order->footprints->x0) * 0x100;
@@ -1259,8 +1261,10 @@ LEGO_EXPORT int SetGardenerWorkOrderAtPostion(Bloke *worker, int x, int y) {
     return 1;
 }
 
+/* Searches the twelve configured offsets for an object below its class durability whose repair flags permit work
+ * and whose anchor is not already marked for repair. */
 // FUNCTION: LEGOLAND 0x0049b350
-MapElement *FUN_0049b350(Bloke *worker, int x, int y) {
+MapElement *FindNearbyRepairTarget(Bloke *worker, int x, int y) {
     const int *offset;
     MapElement *tile;
     MapElement *target;
@@ -1302,7 +1306,7 @@ LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y) {
 
     order = GetMechanicWorkOrderAt(x, y);
     if (order == NULL) {
-        target = FUN_0049b350(worker, x, y);
+        target = FindNearbyRepairTarget(worker, x, y);
         if (target != NULL) {
             struct Point at;
             el = target->field_0;

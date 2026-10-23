@@ -489,7 +489,7 @@ void GameProc(void) {
     }
     saved = Hover;
     PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit.type);
-    FUN_0046f100(0x2c3);
+    RenderIconsExceptId(0x2c3);
     UpdateEditModeButtonSprites();
     // STRING: LEGOLAND 0x004b91b0
     AdvisorDebugStage = "In Game Help";

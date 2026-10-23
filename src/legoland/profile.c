@@ -75,7 +75,7 @@ LEGO_EXPORT void InitListProfiles(void) {
     ((struct IconNode *)AcceptIcon)->flags |= 0x400;
     ((struct IconNode *)AcceptIcon)->event_handler = (void *)AcceptProfileClick;
     OkKeyHandler = AcceptProfileClick;
-    CancelKeyHandler = FUN_004920a0;
+    CancelKeyHandler = CancelProfileSelectionClicked;
     strcpy(DAT_007cb340, GetString(0x84));
 
     for (; node != NULL; node = node->next) {
@@ -149,7 +149,7 @@ LEGO_EXPORT void EnterNewProfileCheckBoxIcons(struct IconNode *param_1) {
     PopUpCloseIcon->string = GetString(4);
     PopUpCloseIcon->flags |= 0x2000;
     PopUpCloseIcon->flags |= 0x4002;
-    PopUpCloseIcon->event_handler = (void *)FUN_004920a0;
+    PopUpCloseIcon->event_handler = (void *)CancelProfileSelectionClicked;
     CancelKeyHandler = PopUpCloseIcon->event_handler;
 }
 

@@ -64,8 +64,10 @@ struct Point GetAnimLayoutOffset(struct AnimLayout *layout, int seg, int step) {
     return sum;
 }
 
+/* Builds the next rider destination from the tower animation layout and ride origin, starts movement, and
+ * increments the layout waypoint index. */
 // FUNCTION: LEGOLAND 0x0043a820
-void FUN_0043a820(struct AnimEntry *param_1, struct RideNode *param_2) {
+void MoveSpaceTowerRiderToNextWaypoint(struct AnimEntry *param_1, struct RideNode *param_2) {
     struct Bloke *bloke;
     struct Ride *ride;
     struct Point base;
@@ -85,8 +87,10 @@ void FUN_0043a820(struct AnimEntry *param_1, struct RideNode *param_2) {
     param_2->rider->field_38++;
 }
 
+/* Advances the rider through the current layout entry and its waypoints, advancing the action when the selected
+ * entry range is complete. */
 // FUNCTION: LEGOLAND 0x0043a8c0
-void FUN_0043a8c0(struct RideNode *param_1) {
+void AdvanceSpaceTowerRiderLayout(struct RideNode *param_1) {
     struct Bloke *bloke;
     struct AnimLayout *layout;
     struct AnimEntry *entry;
@@ -108,7 +112,7 @@ void FUN_0043a8c0(struct RideNode *param_1) {
         }
     }
     if ((int)bloke->field_38 != entry->count) {
-        FUN_0043a820(entry, param_1);
+        MoveSpaceTowerRiderToNextWaypoint(entry, param_1);
     }
 }
 
@@ -143,8 +147,10 @@ void UpdateSpaceTowerSeat(struct SpaceTowerSeat *seat) {
     }
 }
 
+/* Clears the four seat active flags and states, then activates seats whose two rider slots are occupied and resets
+ * their motion state. */
 // FUNCTION: LEGOLAND 0x0043a9b0
-void FUN_0043a9b0(struct SpaceTowerCar *arg) {
+void SyncSpaceTowerSeatsFromOccupancy(struct SpaceTowerCar *arg) {
     int i;
 
     for (i = 0; i < 4; i++) {
@@ -186,7 +192,7 @@ void StartSpaceTowerCar(struct SpaceTowerCar *arg) {
     arg->var_c |= 1;
     arg->var_3 = tmp;
     arg->var_10 = 0;
-    FUN_0043a9b0(arg);
+    SyncSpaceTowerSeatsFromOccupancy(arg);
     PlaySpaceTowerSfx((unsigned char *)arg);
 }
 
@@ -307,8 +313,10 @@ unsigned int TakeRandomSpaceTowerSlot(struct RideNode *param_1, struct SpaceTowe
     return slot;
 }
 
+/* Returns the projected screen Y of a tower seat base, offsetting the ride tile by two tiles according to the seat
+ * index and subtracting vertical scroll. */
 // FUNCTION: LEGOLAND 0x0043ad00
-int FUN_0043ad00(unsigned char *param_1, int param_2) {
+int GetSpaceTowerSeatScreenY(unsigned char *param_1, int param_2) {
     int y;
     int x;
     struct Point p;
@@ -385,7 +393,7 @@ void DrawSpaceTowerSeatSprite(struct SpaceTowerCar *param_1, int param_2, unsign
 void RenderSpaceTowerSeat(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     DrawSpaceTowerSeatSprite(param_1, param_2, param_3);
     if ((param_1->seats[param_2].flags & 1) != 0) {
-        FUN_0043ad00((unsigned char *)param_1, param_2);
+        GetSpaceTowerSeatScreenY((unsigned char *)param_1, param_2);
         if (param_1->seats[param_2].rider_slot0 != NULL) {
             IP_RenderBlokeIn3DNow(param_1->seats[param_2].rider_slot0->rider);
         }
@@ -851,7 +859,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 bloke->field_58 = 0;
                 bloke->param_action++;
                 obj->var_2++;
-                FUN_0043a9b0(obj);
+                SyncSpaceTowerSeatsFromOccupancy(obj);
                 if ((short)(char)obj->var_2 == SpaceTowerRideObj->seats) {
                     StartSpaceTowerCar(obj);
                 }
@@ -866,7 +874,7 @@ void SpaceTowerUpdate(struct Element *param_1) {
                 break;
             case 2:
             case 7:
-                FUN_0043a8c0(node);
+                AdvanceSpaceTowerRiderLayout(node);
                 break;
             case 8:
                 bloke->dest.x = (((signed char)ride->field_24 + x) << 8) + 0x80;
