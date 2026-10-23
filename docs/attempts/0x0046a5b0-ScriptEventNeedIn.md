@@ -26,3 +26,12 @@ produce the same 75.56; they do not restore the original loop reloads.
 No variant retained, no volatile added. The original signed-y difference
 remains documented; avoid treating the current unsigned comparison as proof
 of the original type.
+
+## 2026-10-23 Opus 5.5
+
+The whole difference is loop invariants. The original hoists `arg->field_28` (into the dead `arg` parameter
+slot) and `arg->field_34`, but reloads `GameMap` inside the inner loop. Ours hoists `GameMap` and
+strength-reduces `&GameMap[y]` into a pointer that steps by 4 (one extra frame slot). With a signed `y`, clean C
+gives 75.56. These score 74.44-76.67 and none changes the hoisting: `?:` lookup, `GameMap[y] + x`, while
+loops, unsigned count, `int count[1]`, and a `struct Point p` copy for the lookup (76.67, still hoisted). A
+`volatile` count gives 50. The same hoisting difference affects ScriptEventClearArea and GetPathMask5x5.
