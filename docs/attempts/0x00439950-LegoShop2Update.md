@@ -1,14 +1,15 @@
 # LegoShop2Update (0x00439950, `src/legoland/shops.c`)
 
-**Current: verify 75.11%, harness 78.40%.** Kind: C.
+**Current: verify 46.68%** (75.11% before the behaviour fix below, by the maintainer's decision). Kind: C.
 
-## Behaviour bug in the current C
+## Behaviour bug (fixed 2026-10-23)
 
 Case 3 (pick a browse spot), `r == 2`: the original sets `dest = ((x - 3) << 8, y << 8)` (0x4399fd: `add ebp,-3;
-shl ebp,8; mov [esi+0x24],ebp; shl edi,8; jmp 0x439b07`, which joins after case 1's `sub edi,0x80`). Ours
-writes `(y << 8) - 0x80`. Case 5 `r == 2` (the same spot) already uses `y << 8`. The fixed C scores harness
+shl ebp,8; mov [esi+0x24],ebp; shl edi,8; jmp 0x439b07`, which joins after case 1's `sub edi,0x80`). The C before the fix
+wrote `(y << 8) - 0x80`. Case 5 `r == 2` (the same spot) already uses `y << 8`. The fixed C scores harness
 46.70-48.86: with one less use of `y`, MSVC swaps the x/y registers (ebp/edi), and that shift spreads through every
-case. The fix is not landed yet. It needs a source form that keeps x in ebp and y in edi.
+case. Landed 2026-10-23 at verify 46.68% (correct behaviour takes priority). Next step: find a form that keeps x in
+ebp and y in edi.
 
 ## Original structure (for the next attempt)
 

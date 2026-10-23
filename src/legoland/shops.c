@@ -340,11 +340,11 @@ void LegoShop2Update(Element *obj) {
     int r;
 
     while (node != NULL) {
-        bloke = node->rider;
-        tile = &node->tile;
-        y = tile->pos.y + ride->y;
-        x = tile->pos.x + ride->x;
         next = node->next;
+        tile = &node->tile;
+        bloke = node->rider;
+        x = tile->pos.x + ride->x;
+        y = tile->pos.y + ride->y;
         if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
@@ -373,8 +373,9 @@ void LegoShop2Update(Element *obj) {
             case 3:
                 r = rand() % 3;
                 if (r == 2) {
+                    /* (x - 3, y): the same spot case 5 puts the visitor back on */
                     x = (x - 3) << 8;
-                    y = (y << 8) - 0x80;
+                    y <<= 8;
                     bloke->dest.x = x;
                     bloke->dest.y = y;
                 } else if (r == 1) {
