@@ -52,12 +52,14 @@ struct AnimHandle {
 
 #include "image_sprite.h"
 
+/* Loads an uncompressed 8-bit BMP and its palette into an Image; copies bottom-up rows
+ * into tightly packed top-down pixels. Returns 0 after cleanup on failure. */
 // FUNCTION: LEGOLAND 0x004434d0
 unsigned int LoadBmpIntoImage(struct Image *param_1) {
     char header[0xe];
     char info[0x2c];
     char *path;
-    register struct ResFile *file;
+    struct ResFile *file;
     unsigned int offbits;
     int pixel_offset;
     unsigned int row_size;
@@ -129,6 +131,9 @@ unsigned int LoadBmpIntoImage(struct Image *param_1) {
                 dst = dst + 1;
             }
         }
+        free(pixels);
+        RES_CloseFile(file);
+        return 1;
     }
     free(pixels);
     RES_CloseFile(file);

@@ -25,3 +25,7 @@
 - Make `dst` a value that is read back from `param_1->data` after the NULL check, so it is spilled like the original's `[esp+0x10]` (the original stores the malloc result and writes `param_1->data` without reloading it).
 - Compute `src` as `pixels + row_size` in the same statement as the `RES_SetFilePointer(file, pixel_offset)` setup, to change which pointer gets the parameter slot.
 - Use the 8-bit branch (`cmp word ptr [esp+0x42], 8`) as the `if` body with `dst`/`src` declared inside a block, which may move the spill decisions.
+
+## 2026-10-23 agent notes (89.71% -> 91.10%)
+
+Keep separate successful cleanup paths for the 8-bit copy branch and the fallback; MSVC6 cross-jumps their free/RES_CloseFile tails differently from one shared source cleanup. Removed the no-op register storage specifier. Bottom-up BMP pixel copying and ownership behaviour unchanged. Remaining mismatch is the inner copy loop's pointer/index register allocation. Tested indexed, pointer, countdown and do/while forms; none improved further.
