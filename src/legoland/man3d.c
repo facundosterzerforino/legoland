@@ -526,7 +526,7 @@ L43fd74:
         push ecx
         push 0x40
         mov byte ptr [ebp + 0xc], al
-        call FUN_00486280
+        call GetOrCreateColorRamp
         mov edx, dword ptr [esi + 8]
         add esp, 8
         mov dword ptr [edi + edx + 8], eax

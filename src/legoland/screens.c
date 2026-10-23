@@ -69,7 +69,7 @@ void CloseFrontEndScreen(void) {
     if (DAT_0080ff80.unk4 != 0xffffffff) {
         switch (DAT_0080ff80.unk4) {
         case 0:
-            FUN_0048d230();
+            LoadCurrentProfileFromList();
             UpdateSoundVols();
             DeleteProfileList();
             KillListProfileSprite();
@@ -322,8 +322,9 @@ void UnloadMap(void) {
 // FUNCTION: LEGOLAND 0x00458bb0
 void SetMapLoaded(unsigned int param_1) { MapLoaded = param_1; }
 
+/* Selects front-end mode, invalidates the previous screen, and requests initial screen zero. */
 // FUNCTION: LEGOLAND 0x00458bc0
-void FUN_00458bc0(void) {
+void SelectInitialFrontEndScreen(void) {
     EditMode.unk4 = 2;
     DAT_0080ff80.unk4 = 0xffffffff;
     DAT_0080ff80.unk8 = 0;
@@ -340,8 +341,10 @@ void MarkLevelComplete(void) {
     UpDateCurrentProfile();
 }
 
+/* Processes pending map-screen and level changes, dispatches the active game/front-end/map screen, and updates
+ * input and sound. Returns zero when application mode is zero. */
 // FUNCTION: LEGOLAND 0x00458c00
-int FUN_00458c00(void) {
+int UpdateApplicationFrame(void) {
     char path[256];
 
     SpeechStreamUpdate();
@@ -642,8 +645,9 @@ void RenderMapScreenFrame(void) {
     RenderingComplete();
 }
 
+/* Closes the front-end screen when the application is in front-end mode. */
 // FUNCTION: LEGOLAND 0x004594e0
-void FUN_004594e0(void) {
+void CloseActiveApplicationScreen(void) {
     switch (EditMode.unk4) {
     case 2:
         CloseFrontEndScreen();
@@ -666,8 +670,10 @@ void InitDefaultProfile(void) {
     CurrentProfile.fx_volume = 0x4b;
 }
 
+/* Initializes shared game resources, runs the application frame loop, then releases controllers, graphics,
+ * visitors, sound and input. */
 // FUNCTION: LEGOLAND 0x00459520
-void FUN_00459520(void) {
+void RunGameApplication(void) {
     HMODULE ir50;
     MSG msg;
 
@@ -716,7 +722,7 @@ void FUN_00459520(void) {
     DrawWatchSprite();
     CreateObjectClasses();
     DrawWatchSprite();
-    FUN_00458bc0();
+    SelectInitialFrontEndScreen();
     DrawWatchSprite();
     // STRING: LEGOLAND 0x004b91e8
     ir50 = LoadLibraryA("Ir50_32.dll");
@@ -725,9 +731,9 @@ void FUN_00459520(void) {
     DrawWatchSprite();
     UnloadWatchSprite();
     ResumeMusicThread();
-    while (FUN_00458c00() != 0) {
+    while (UpdateApplicationFrame() != 0) {
     }
-    FUN_004594e0();
+    CloseActiveApplicationScreen();
     SpeechCloseFile();
     if (SPRITE_TitleScreenBk != NULL) {
         KillSprite(SPRITE_TitleScreenBk);

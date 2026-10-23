@@ -992,7 +992,7 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
             TryPlayAdviceSpeech(3);
             return 0;
         }
-        FUN_0045e300(element, pos);
+        RemovePathsUnderObjectFootprint(element, pos);
         FUN_0045d770(&EditCursor);
         result = BuildObject(element, &pos->x);
     }
@@ -1203,7 +1203,7 @@ LEGO_EXPORT void EraseMechanicOrder(WorkOrder *order) {
         }
     }
     if (order->type == 1) {
-        FUN_0045e4a0(order->element, &order->pos);
+        SetObjectFootprintMapTiles(order->element, &order->pos);
     }
     FreeMechanicWorkOrder(order);
 }
@@ -1214,7 +1214,7 @@ LEGO_EXPORT void EraseGardenerOrder(WorkOrder *order) {
         NewLongTermAction(order->worker, 0x10);
     }
     if (order->type == 1) {
-        FUN_0045e4a0(order->element, &order->pos);
+        SetObjectFootprintMapTiles(order->element, &order->pos);
     }
     FreeGardenerWorkOrder(order);
 }

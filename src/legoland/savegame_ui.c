@@ -124,7 +124,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
     }
     OkKeyHandler = AcceptIcon->event_handler;
 
-    FUN_0048d470();
+    SaveProfileKeyHandlers();
     DeleteSavedGameList();
     LoadSavedGamesList(CurrentProfile.profile_slot);
 
@@ -704,7 +704,7 @@ unsigned char NewSaveGameOkClicked(struct IconNode *icon, unsigned int a2, unsig
             sprintf(buf, "%s%d", GetString(0x87), *(unsigned int *)&CurrentProfile.save_slot & 0xff);
             strcpy(TempProfile.name, buf);
             TempProfile.name_len = (unsigned char)strlen(buf);
-            FUN_0048d490();
+            RestoreProfileKeyHandlers();
             return 1;
         }
         SpeechCloseFile();
@@ -713,7 +713,7 @@ unsigned char NewSaveGameOkClicked(struct IconNode *icon, unsigned int a2, unsig
         DAT_0080ff80.unk4 = 0xffffffff;
         DAT_00798700 = 0;
         DAT_004bef9c = 1;
-        FUN_0048d490();
+        RestoreProfileKeyHandlers();
     }
     return 1;
 }
@@ -731,7 +731,7 @@ unsigned char NewSaveGameCloseClicked(struct IconNode *icon, unsigned char flags
         InitSavedGameScreen();
         DAT_00798700 = 0;
         DAT_004bef9c = 1;
-        FUN_0048d490();
+        RestoreProfileKeyHandlers();
     }
     return 1;
 }

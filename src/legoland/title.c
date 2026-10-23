@@ -40,7 +40,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string_id = 7;
     icon->string = GetString(7);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048feb0;
+    icon->event_handler = TitleNewGameHandler;
     if (FUN_0048fc30() == 0) {
         // STRING: LEGOLAND 0x004bf548
         icon->alt_sprite = LoadSprite("Dark_New_On_Title.lls", 4);
@@ -49,14 +49,14 @@ LEGO_EXPORT void InitTitleScreen(void) {
     } else {
         icon->alt_sprite = NULL;
     }
-    OkKeyHandler = FUN_0048feb0;
+    OkKeyHandler = TitleNewGameHandler;
 
     // STRING: LEGOLAND 0x004bf534
     icon = LoadSpriteIcon("Free_on_Title.lls", 4, 0x9a, 8, 7);
     icon->string_id = 8;
     icon->string = GetString(8);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048ff20;
+    icon->event_handler = TitleFreePlayHandler;
     if (FUN_0048fc30() == 0) {
         icon->flags |= 0x400;
     }
@@ -66,7 +66,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string_id = 10;
     icon->string = GetString(10);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048ff70;
+    icon->event_handler = TitleRegistrationHandler;
 
     // STRING: LEGOLAND 0x004bf50c
     icon = LoadSpriteIcon("Exit_On_Title.lls", 4, 0x1e1, 0x13, 7);
@@ -88,7 +88,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string_id = 0x2bf;
     icon->string = GetString(0x2bf);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048ffe0;
+    icon->event_handler = TitleMovieHandler;
     DAT_0080ff80.unk0 = 0x898;
 }
 
@@ -103,8 +103,10 @@ unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2) 
     return 1;
 }
 
+/* Handles the title screen New button: closes speech and title graphics, marks a new game, and opens the
+ * level-selection screen. */
 // FUNCTION: LEGOLAND 0x0048feb0
-unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
+unsigned char TitleNewGameHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         SpeechCloseFile();
         DAT_006687b0 = 4;
@@ -119,8 +121,9 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
     return 1;
 }
 
+/* Handles the title screen Free Play button: closes speech and switches the front end to the free-play screen. */
 // FUNCTION: LEGOLAND 0x0048ff20
-unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
+unsigned char TitleFreePlayHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         SpeechCloseFile();
         DAT_006687b0 = 4;
@@ -131,8 +134,9 @@ unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
     return 1;
 }
 
+/* Handles the title screen registration button by selecting front-end screen zero. */
 // FUNCTION: LEGOLAND 0x0048ff70
-unsigned char FUN_0048ff70(unsigned int param_1, unsigned int param_2) {
+unsigned char TitleRegistrationHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         DAT_0080ff80.unk8 = 0;
@@ -149,8 +153,9 @@ void KillTitleScreenBkSpriteAndRemoveIconGroup7(void) {
     RemoveIconGroup(7);
 }
 
+/* Handles the title screen movie button: saves the current screen state and requests front-end screen nine. */
 // FUNCTION: LEGOLAND 0x0048ffe0
-unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
+unsigned char TitleMovieHandler(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         SaveScreenState(&DAT_007cb30c, &TitleSavedScreenMode, &TitleSavedEditMode);

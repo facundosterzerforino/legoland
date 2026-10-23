@@ -85,7 +85,7 @@ LEGO_EXPORT void InitListProfiles(void) {
             str = GetString(0);
             icon->flags |= 0x6002;
             icon->string = str;
-            icon->event_handler = (void *)FUN_0048d390;
+            icon->event_handler = (void *)ProfileSelectHandler;
             icon->field_18p = &node->data;
             icon->slot = node->slot;
         } else {
@@ -506,8 +506,10 @@ LEGO_EXPORT void PrintProfileDetails(void) {
     }
 }
 
+/* Finds the selected profile slot in the profile list and copies its name, settings, progress and saved state into
+ * the current profile. */
 // FUNCTION: LEGOLAND 0x0048d230
-void FUN_0048d230(void) {
+void LoadCurrentProfileFromList(void) {
     struct ProfileNode *node = (struct ProfileNode *)ProfileListHead;
 
     while (node != NULL) {
@@ -547,8 +549,9 @@ unsigned char AcceptProfileClick(unsigned int dummy, unsigned char arg_0) {
     return 1;
 }
 
+/* Handles selection of a profile icon: copies its slot to the current profile and clears the free-play selection. */
 // FUNCTION: LEGOLAND 0x0048d390
-unsigned char FUN_0048d390(struct IconNode *profile, unsigned char param_2) {
+unsigned char ProfileSelectHandler(struct IconNode *profile, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
         CurrentProfile.profile_slot = profile->field_1cb;
         ClearFreePlaySelection();
@@ -593,14 +596,16 @@ unsigned char DeletePopUpCancelHandler(unsigned int param_1, unsigned int param_
     return 1;
 }
 
+/* Saves the current OK and Cancel key handlers in the profile screen save slots. */
 // FUNCTION: LEGOLAND 0x0048d470
-void FUN_0048d470(void) {
+void SaveProfileKeyHandlers(void) {
     DAT_007986f8 = OkKeyHandler;
     DAT_007986f4 = CancelKeyHandler;
 }
 
+/* Restores the OK and Cancel key handlers saved by the profile screen. */
 // FUNCTION: LEGOLAND 0x0048d490
-void FUN_0048d490(void) {
+void RestoreProfileKeyHandlers(void) {
     OkKeyHandler = DAT_007986f8;
     CancelKeyHandler = DAT_007986f4;
 }

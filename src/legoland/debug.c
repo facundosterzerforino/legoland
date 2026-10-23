@@ -57,7 +57,7 @@ static const char ShutdownTraceMessage[] = "Finished shutting stuff down";
 
 // GameMain: the game's top level. Opens the log, checks the CD, opens the three resource volumes,
 // starts graphics and input, loads the shared pointer sprites and registers the build-menu
-// elements, runs the game (FUN_00459520), then shuts everything down again.
+// elements, runs the game (RunGameApplication), then shuts everything down again.
 // Returns 0 on a normal exit, 1 if any start-up step failed.
 // Still differs: the "open the three volumes" loop ends with a signed `jl` here and an unsigned `jb` in
 // the original (docs/attempts/0x0047f880-GameMain.md).
@@ -129,7 +129,7 @@ int GameMain(void) {
     LLIDB_RegisterNewElement(SceneryMenuName, 0, 0x200);
     LLIDB_RegisterNewElement(ShopsMenuName, 0, 0x200);
 
-    FUN_00459520();
+    RunGameApplication();
 
     KillHostSystemGPU();
 

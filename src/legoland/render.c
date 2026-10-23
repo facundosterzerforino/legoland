@@ -58,8 +58,10 @@ struct TextureDesc {
     /* 0x10 */ struct TextureFrame **frame_table;
 };
 
+/* Builds the per-channel packed-pixel lookup table used to combine red, green and blue intensities for the current
+ * display format. */
 // FUNCTION: LEGOLAND 0x004860f0
-void FUN_004860f0(void) {
+void InitPackedColorLookupTable(void) {
     int i;
     unsigned int n;
     unsigned int sh;
@@ -134,8 +136,10 @@ void FreeCursorCache(void) {
     }
 }
 
+/* Returns a cached color ramp for the RGB key, or allocates and caches a ramp interpolating from black through the
+ * key color to white. */
 // FUNCTION: LEGOLAND 0x00486280
-void *FUN_00486280(int param_1, void *param_2) {
+void *GetOrCreateColorRamp(int param_1, void *param_2) {
     struct CursorKey *key = (struct CursorKey *)param_2;
     struct TextureFrame *frame;
     void *cached;

@@ -300,8 +300,10 @@ int MeasureTextHeight(const char *text, int font, int width) {
     return (rc.bottom - rc.top) + 1;
 }
 
+/* Measures word-wrapped text at the supplied width, translates the rectangle to the requested position, and draws
+ * it clipped to the sprite clip rectangle. */
 // FUNCTION: LEGOLAND 0x00455220
-void FUN_00455220(int x, int y, const char *text, int font, int width) {
+void DrawWrappedTextAt(int x, int y, const char *text, int font, int width) {
     RECT rc;
     HDC hdc;
     HRGN region;
@@ -560,8 +562,10 @@ struct TextCell *FindTextCellBySprite(struct Sprite *sprite, int *out_index) {
     return NULL;
 }
 
+/* Looks up the sprite's text cell, fills its background, draws the formatted text, and sets the sprite color key to
+ * the nearest background color. */
 // FUNCTION: LEGOLAND 0x00455a50
-int FUN_00455a50(struct Sprite *sprite) {
+int RenderTextCellSprite(struct Sprite *sprite) {
     RECT rc = {0};
     struct TextCell *cell;
     HDC hdc;
@@ -614,7 +618,7 @@ struct TextCell *CreateTextCell(char *name, int width, int height, int font, uns
     cell->bg_color = bg_color;
     cell->text_color = text_color;
     cell->font = font;
-    cell->sprite = CreateFunctionBasedSprite(FUN_00455a50, (unsigned short)width, (unsigned short)height);
+    cell->sprite = CreateFunctionBasedSprite(RenderTextCellSprite, (unsigned short)width, (unsigned short)height);
     cell->sprite->flags = cell->sprite->flags | 0x40;
     return cell;
 }

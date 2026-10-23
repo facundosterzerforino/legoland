@@ -36,8 +36,9 @@ void LoadLegoShop1MatteSpriteAndMoneySFX(struct Element *obj) {
     LoadMoneySFX();
 }
 
+/* Adds the current path graphics to every tile in the shop footprint translated by the supplied origin. */
 // FUNCTION: LEGOLAND 0x00439230
-void FUN_00439230(struct Ride *area, struct Point *origin) {
+void AddShopFootprintPathGraphics(struct Ride *area, struct Point *origin) {
     int xend = area->footprint.x1 + origin->x;
     int x = area->footprint.x0 + origin->x;
     int y = area->footprint.y0 + origin->y;
@@ -61,8 +62,9 @@ void FUN_00439230(struct Ride *area, struct Point *origin) {
     } while (x <= xend);
 }
 
+/* Removes roller-coaster paths from every tile in the shop footprint translated by the supplied origin. */
 // FUNCTION: LEGOLAND 0x004392b0
-void FUN_004392b0(struct Ride *area, struct Point *origin) {
+void RemoveShopFootprintCoasterPaths(struct Ride *area, struct Point *origin) {
     int xend = area->footprint.x1 + origin->x;
     int x = area->footprint.x0 + origin->x;
     int y = area->footprint.y0 + origin->y;
@@ -90,7 +92,7 @@ void FUN_004392b0(struct Ride *area, struct Point *origin) {
 void LegoShop1AddObject(struct Element *obj, void *param_2) {
     struct Ride *building = obj->ride;
     AddBasicObject(obj, param_2);
-    FUN_00439230((struct Ride *)building, param_2);
+    AddShopFootprintPathGraphics((struct Ride *)building, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x00439350
@@ -103,7 +105,7 @@ void LegoShop1RemoveObject(struct Element *obj, TileId coords, void *cursor) {
 
     local.x = coords.pos.x;
     local.y = coords.pos.y;
-    FUN_004392b0((struct Ride *)ride, &local);
+    RemoveShopFootprintCoasterPaths((struct Ride *)ride, &local);
 }
 
 // FUNCTION: LEGOLAND 0x004393a0
@@ -477,7 +479,7 @@ void LoadLegMediaShopMaskSpritesAndMoneySFX(struct Element *obj) {
 void LegoMediaShopAddObject(struct Element *obj, void *param_2) {
     struct Ride *building = obj->ride;
     AddBasicObject(obj, param_2);
-    FUN_00439230((struct Ride *)building, param_2);
+    AddShopFootprintPathGraphics((struct Ride *)building, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x00439c90
@@ -490,7 +492,7 @@ void LegoMediaShopRemoveObject(struct Element *obj, TileId coords, void *cursor)
 
     local.x = coords.pos.x;
     local.y = coords.pos.y;
-    FUN_004392b0((struct Ride *)ride, &local);
+    RemoveShopFootprintCoasterPaths((struct Ride *)ride, &local);
 }
 
 // FUNCTION: LEGOLAND 0x00439ce0

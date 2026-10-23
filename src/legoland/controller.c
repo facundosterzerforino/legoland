@@ -176,8 +176,10 @@ void UpdateEditSelection(void) {
     }
 }
 
+/* Initializes the selection drag from the queried object footprint or current mouse tile, sets the drag end to the
+ * mouse tile, and consumes a pending left click. */
 // FUNCTION: LEGOLAND 0x00452390
-void FUN_00452390(void) {
+void BeginTileSelectionDrag(void) {
     struct Ride *cls;
 
     if (EditMode.unk0 == 2 && QueryClass != NULL) {
@@ -347,7 +349,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
                     MouseClickFlags = MouseClickFlags & 0xffffffee;
                 }
             } else {
-                FUN_00452390();
+                BeginTileSelectionDrag();
             }
             UpdateEditSelection();
         }
