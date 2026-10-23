@@ -935,7 +935,7 @@ void GiveRewardObject(struct Element *object, unsigned int a, unsigned int b) {
             }
         }
     }
-    DAT_0066871c = 1;
+    BuildMenuRefreshPending = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469980
@@ -972,8 +972,10 @@ void CountObjectTheme(struct Element *arg) {
     }
 }
 
+/* Makes a valid object researchable by clearing available/buildable flag 2 and setting research-menu flag 0x10000;
+ * counts its theme and requests a build-menu refresh. */
 // FUNCTION: LEGOLAND 0x00469a80
-void FUN_00469a80(struct Element *object) {
+void MakeObjectResearchable(struct Element *object) {
     unsigned int flags;
 
     if (object != NULL) {
@@ -983,7 +985,7 @@ void FUN_00469a80(struct Element *object) {
             CountObjectTheme(object);
         }
     }
-    DAT_0066871c = 1;
+    BuildMenuRefreshPending = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469ab0
@@ -996,7 +998,7 @@ void TakeRewardObject(struct Element *object) {
             object->flags = flags & 0xfffefffd;
         }
     }
-    DAT_0066871c = 1;
+    BuildMenuRefreshPending = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469ae0
@@ -1024,9 +1026,10 @@ int ScriptEventGive(struct ObjectiveEvent *event) {
     return 1;
 }
 
+/* Objective event handler that makes its element researchable and reports immediate completion. */
 // FUNCTION: LEGOLAND 0x00469b50
-int FUN_00469b50(struct ObjectiveEvent *event) {
-    FUN_00469a80(event->element);
+int ScriptEventMakeResearchable(struct ObjectiveEvent *event) {
+    MakeObjectResearchable(event->element);
     return 1;
 }
 

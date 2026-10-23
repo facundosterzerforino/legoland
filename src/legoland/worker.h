@@ -115,7 +115,7 @@ void FreeAllWorkOrdersAndWorkers(void);
 
 struct MapRect;
 void MarkTilesUnderWorkers(struct MapRect *rect);
-Bloke *FUN_00499c40(int *coords);
+Bloke *FindNearestIdleGardener(int *coords);
 void AssignGardenerToWorkOrder(Bloke *worker, WorkOrder *order);
 WorkOrder *CreateGardenerWorkOrder(Element *element, int *coords, int mode);
 struct Point;

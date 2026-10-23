@@ -12,6 +12,6 @@ LEGO_EXPORT void UseBricks(unsigned int param_1);
 LEGO_EXPORT int GetBrickCount(void);
 void SetBrickCount(unsigned int param_1);
 int IsFootprintClear(struct Point off);
-void FUN_00457a70(void);
+void ProcessMapEditing(void);
 int SaveCurrency(void);
 int LoadCurrency(void);

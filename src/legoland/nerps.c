@@ -1004,7 +1004,7 @@ EventHandler ScriptEventHandlers[70] = {
     NULL,
     NULL,
     (EventHandler)ScriptEventGive,
-    (EventHandler)FUN_00469b50,
+    (EventHandler)ScriptEventMakeResearchable,
     (EventHandler)ScriptEventTake,
     (EventHandler)ObjectiveEventAddBricks,
     (EventHandler)ObjectiveEventSetBricks,
@@ -1124,9 +1124,9 @@ void RunLevelScript(void) {
             prev = node;
             node = next;
         }
-        if (DAT_0066871c != 0) {
+        if (BuildMenuRefreshPending != 0) {
             UpdateMenu();
-            DAT_0066871c = 0;
+            BuildMenuRefreshPending = 0;
             ShowNewObjectsInfo();
         }
         if (ScriptPurgePending != 0) {

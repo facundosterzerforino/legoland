@@ -33,7 +33,7 @@ unsigned int MechanicsHutAddObject(struct Element *param1, int *param2) {
 // FUNCTION: LEGOLAND 0x0043d2c0
 void MechanicsHutRemoveObject(Element *obj, unsigned int tile, struct Cursor *cursor) {
     StandardRemoveObject(obj, *(TileId *)&tile, cursor);
-    FUN_0043d7c0(obj->ride, tile, 0);
+    DetachWorkersFromRemovedHome(obj->ride, tile, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043d2f0
@@ -207,8 +207,11 @@ struct RideSpriteInfo *GetMechanicsHutSpriteInfo(struct Element *ptr, unsigned s
     return &MechanicsHutSpriteInfo;
 }
 
+/* Detaches the workers attached to a removed home tile. Active workers are unlinked/freed from the home list, moved
+ * to the home entrance, and returned to gardener/mechanic idle according to flag; pending workers are unlinked and
+ * marked with field_36 = 100. */
 // FUNCTION: LEGOLAND 0x0043d7c0
-void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag) {
+void DetachWorkersFromRemovedHome(struct Ride *hut, unsigned int tile, int flag) {
     struct RideNode *node;
     struct RideNode *next;
     struct Bloke *bloke;

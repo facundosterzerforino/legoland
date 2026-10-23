@@ -34,7 +34,7 @@ unsigned int PottingShedAddObject(struct Element *param_1, int *param_2) {
 // FUNCTION: LEGOLAND 0x0043ced0
 void PottingShedRemoveObject(Element *obj, unsigned int tile, struct Cursor *cursor) {
     StandardRemoveObject(obj, *(TileId *)&tile, cursor);
-    FUN_0043d7c0(obj->ride, tile, 1);
+    DetachWorkersFromRemovedHome(obj->ride, tile, 1);
 }
 
 // FUNCTION: LEGOLAND 0x0043cf00

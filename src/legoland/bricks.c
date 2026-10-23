@@ -109,8 +109,10 @@ int IsFootprintClear(struct Point off) {
     return 1;
 }
 
+/* Processes map query, demolition, and construction modes: resolves the hovered object/work order, updates cursors,
+ * handles individual or rectangular edits, and opens object information on an unconsumed query click. */
 // FUNCTION: LEGOLAND 0x00457a70
-void FUN_00457a70(void) {
+void ProcessMapEditing(void) {
     struct Element *roads;
     struct Element *zebra;
     struct Point pt;

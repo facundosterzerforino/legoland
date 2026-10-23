@@ -91,7 +91,7 @@ void PostPendingObjectiveHints(void);
 void PlaceObjectAtTile(struct Element *a, void *b);
 int ScriptEventPlace(struct ObjectiveEvent *event);
 int ScriptEventGive(struct ObjectiveEvent *event);
-int FUN_00469b50(struct ObjectiveEvent *event);
+int ScriptEventMakeResearchable(struct ObjectiveEvent *event);
 int ScriptEventTake(struct ObjectiveEvent *event);
 int ObjectiveEventAddBricks(struct ObjectiveEvent *event);
 int ObjectiveEventSetBricks(struct ObjectiveEvent *event);

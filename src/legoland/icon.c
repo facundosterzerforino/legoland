@@ -343,7 +343,7 @@ void ScrollIconRegion(struct InterfacePanel *r, int param_2, int param_3) {
         }
     }
 
-    dy = FUN_0046dd10(0xffff, (short)((r->clip_top - r->content_top) - param_3), (short)(r->content_top + param_3), r->group, param_3);
+    dy = GetIconScrollSnapOffset(0xffff, (short)((r->clip_top - r->content_top) - param_3), (short)(r->content_top + param_3), r->group, param_3);
     l = r->content_left;
     dx = param_2;
     t = r->content_top;
@@ -531,8 +531,11 @@ LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, sho
     }
 }
 
+/* Finds the next eligible icon edge in the requested vertical scroll direction and returns the offset needed to
+ * align it with the reference edge. Filters icon IDs with the supplied mask and skips flag-1 icons; returns zero
+ * when no snap is needed. */
 // FUNCTION: LEGOLAND 0x0046dd10
-int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5) {
+int GetIconScrollSnapOffset(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5) {
     struct IconNode *best = NULL;
     struct IconNode *node = IconListHead;
     int extreme;
@@ -725,11 +728,11 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
     }
     if (((struct Ride *)node->field_8)->element->flags & 0x20000) {
         if (node->y < 0x3e) {
-            DAT_006688b8 = DAT_006688b8 | 1;
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags | 1;
             return 0;
         }
         if (0x156 < node->height + node->y) {
-            DAT_006688b8 = DAT_006688b8 | 2;
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags | 2;
         }
     }
     return 0;
@@ -778,14 +781,14 @@ LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
     if (GetBlink() != 0) {
-        if ((DAT_006688b8 & 2) != 0 && (char)node->field_18 == 2) {
+        if ((NewObjectScrollHintFlags & 2) != 0 && (char)node->field_18 == 2) {
             PrintSprite(SideScrollDownLitSprite, node->x, node->y, 0, (int *)&ctx);
-            DAT_006688b8 = DAT_006688b8 & 0xfffffffd;
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags & 0xfffffffd;
             return 0;
         }
-        if ((DAT_006688b8 & 1) != 0 && (char)node->field_18 == 1) {
+        if ((NewObjectScrollHintFlags & 1) != 0 && (char)node->field_18 == 1) {
             PrintSprite(SideScrollUpLitSprite, node->x, node->y, 0, (int *)&ctx);
-            DAT_006688b8 = DAT_006688b8 & 0xfffffffe;
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags & 0xfffffffe;
         }
     }
     return 0;
@@ -1033,7 +1036,7 @@ int RenderBlinkingIcon(struct IconNode *node) {
 LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(struct InterfacePanel *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
     struct IconNode *icon;
 
-    DAT_006688b8 = 0;
+    NewObjectScrollHintFlags = 0;
     AddFullScreenIcon(param_6 + 6);
     icon = InsertIcon(param_2 - 3, 0x20, param_6, IfSidebar1Sprite);
     icon->render_func = (void *)RenderGBarSprite;
@@ -1069,46 +1072,48 @@ LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(struct InterfacePanel *par
     return icon;
 }
 
+/* Moves build-side-panel icons by the supplied pixel step while opening or closing. Reserves/releases the 121-pixel
+ * map viewport strip and adjusts scroll; destroys the panel group once fully closed. */
 // FUNCTION: LEGOLAND 0x0046ec50
-void FUN_0046ec50(char param) {
-    char saved_mode = DAT_007fdd80;
+void AnimateBuildSidePanel(char param) {
+    char saved_mode = BuildSidePanelState;
     struct IconNode *node = IconListHead;
 
-    if (DAT_007fdd80 == 2 || DAT_007fdd80 == 3) {
+    if (BuildSidePanelState == 2 || BuildSidePanelState == 3) {
         return;
     }
     while (node != NULL) {
         short id = (short)node->id;
         if (id == 0xd2 || id == 0xd5 || id == 0xd6 || id == 0xd7) {
-            if (DAT_007fdd80 == 0) {
+            if (BuildSidePanelState == 0) {
                 int old = node->x;
                 node->x += param;
                 if ((char)node->field_18 == 0xa && node->x >= 3) {
                     node->x = 0;
                     param = (char)node->x - (char)old;
-                    DAT_007fdd8c = 3;
+                    BuildSidePanelOriginX = 3;
                     saved_mode = 3;
                     lpConfig->view_x = 0x79;
                     ScrollX = ScrollX + 0x7900;
                     lpConfig->view_width = 0x207;
                     BGFullUpdate = 1;
-                    DAT_007fdd88 = 1;
+                    BuildSidePanelViewportReserved = 1;
                 }
-            } else if (DAT_007fdd80 == 1) {
-                if (DAT_007fdd88 != 0) {
+            } else if (BuildSidePanelState == 1) {
+                if (BuildSidePanelViewportReserved != 0) {
                     lpConfig->view_x = 0;
                     ScrollX = ScrollX - 0x7900;
                     lpConfig->view_width = 0x280;
-                    DAT_007fdd88 = 0;
+                    BuildSidePanelViewportReserved = 0;
                     BGFullUpdate = 1;
                     return;
                 }
                 if ((char)node->field_18 == 0xa) {
                     int diff = (int)(short)node->x - (int)param;
                     if (diff < -0x7a) {
-                        DAT_007fdd80 = 2;
+                        BuildSidePanelState = 2;
                         saved_mode = 2;
-                        DAT_007fdd8c = 0x86;
+                        BuildSidePanelOriginX = 0x86;
                         DestroyIconGroup(0xd2);
                         break;
                     }
@@ -1121,7 +1126,7 @@ void FUN_0046ec50(char param) {
         node = node->next;
     }
 
-    DAT_007fdd80 = saved_mode;
+    BuildSidePanelState = saved_mode;
 }
 
 // FUNCTION: LEGOLAND 0x0046ee00
@@ -1180,7 +1185,7 @@ LEGO_EXPORT void RenderIcons(void) {
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
     }
-    FUN_0046ec50(elapsed * 5 / 33);
+    AnimateBuildSidePanel(elapsed * 5 / 33);
     RenderIconsLastTicks = GetTicks();
     while (node) {
         if ((node->flags & 0x400) == 0) {
@@ -1245,12 +1250,12 @@ void RenderIconsExceptId(short param_1) {
     struct IconNode *node;
     int elapsed;
 
-    elapsed = GetTicks() - DAT_006688cc;
+    elapsed = GetTicks() - RenderIconsExceptIdLastTicks;
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
     }
-    FUN_0046ec50(elapsed * 5 / 0x21);
-    DAT_006688cc = GetTicks();
+    AnimateBuildSidePanel(elapsed * 5 / 0x21);
+    RenderIconsExceptIdLastTicks = GetTicks();
     node = IconListHead;
     StoreClipping();
     SetClippingToScreenRect(0);
@@ -1542,8 +1547,11 @@ void UnloadGBarSprites(void) {
     }
 }
 
+/* Creates an icon panel for all database object classes whose parent element equals kind. Lays out matching entries
+ * vertically or horizontally from flags, adjusts panel bounds, destroys an empty group, and returns the number of
+ * children found. */
 // FUNCTION: LEGOLAND 0x0046f9a0
-int FUN_0046f9a0(int id, struct Element *kind, int param_3, int param_4, unsigned int flags, int param_6) {
+int CreateChildObjectIconPanel(int id, struct Element *kind, int param_3, int param_4, unsigned int flags, int param_6) {
     int found;
     int i;
     int total;

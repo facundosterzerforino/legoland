@@ -506,7 +506,7 @@ void ClampPopUpInfoPosition(int param_1) {
             x = 5;
         }
     }
-    if (x < 0x82 && DAT_007fdd80 != 2) {
+    if (x < 0x82 && BuildSidePanelState != 2) {
         x = 0x82;
     }
     if (y < 0x25) {

@@ -588,15 +588,17 @@ void FUN_0048b6c0(void) {
     return;
 }
 
+/* Normalizes unlocked profile level flags to 1, ensures the first level is unlocked, and records the highest
+ * nonzero level slot (zero-based) for the progress-screen default selection. */
 // FUNCTION: LEGOLAND 0x0048b6d0
-void FUN_0048b6d0(void) {
+void UpdateUnlockedLevelSelection(void) {
     int i;
 
     CurrentProfile.flags[4] = 1;
     for (i = 0; i < 15; i++) {
         if (CurrentProfile.flags[4 + i] != 0) {
             CurrentProfile.flags[4 + i] = 1;
-            DAT_007cb394 = i;
+            HighestUnlockedLevelIndex = i;
         }
     }
 }

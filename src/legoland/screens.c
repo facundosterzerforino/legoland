@@ -485,7 +485,7 @@ void GameProc(void) {
     PushRenderingStatusAndLockVideoSurface();
     RenderView();
     if ((saved.type & 0x100) != 0 || (GamePad & 0x1000) != 0) {
-        FUN_00457a70();
+        ProcessMapEditing();
     }
     saved = Hover;
     PrintSprite(InterfaceBgSprite, 0, 0, 0, &hit.type);

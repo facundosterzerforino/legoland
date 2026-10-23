@@ -335,8 +335,10 @@ WorkOrder *FindWorkOrderForWorker(WorkOrder *list, Bloke *worker) {
     return result;
 }
 
+/* Returns the idle gardener (long-term action 16) with minimum squared distance from the supplied tile coordinates,
+ * or NULL when none is idle. Converts bloke fixed-point positions to tiles before comparing. */
 // FUNCTION: LEGOLAND 0x00499c40
-Bloke *FUN_00499c40(int *coords) {
+Bloke *FindNearestIdleGardener(int *coords) {
     Bloke *current = GardenerList;
     Bloke *best = NULL;
     int minDist = 0x7fffffff;
@@ -986,7 +988,7 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
         result = order != NULL;
         if (result != 0) {
             SetObjRectFlags(element, pos, 0x800);
-            worker = FUN_00499c40(&pos->x);
+            worker = FindNearestIdleGardener(&pos->x);
             if (worker != NULL) {
                 AssignGardenerToWorkOrder(worker, order);
             }

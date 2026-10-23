@@ -2977,8 +2977,9 @@ char BriefingFileName[128];
 // GLOBAL: LEGOLAND 0x0066869c
 char HintsFileName[128];
 
+/* Object reward/availability change requires rebuilding the menu and updating new-object information. */
 // GLOBAL: LEGOLAND 0x0066871c
-unsigned int DAT_0066871c;
+unsigned int BuildMenuRefreshPending;
 
 // GLOBAL: LEGOLAND 0x00668720
 unsigned int ScriptStringCount;
@@ -3085,8 +3086,9 @@ void *NewGroupEventHandler;
 // GLOBAL: LEGOLAND 0x006688b4
 unsigned int LastScrollIconTick;
 
+/* Bits 1/2 indicate new object icons clipped above/below the build panel, for scroll-arrow hints. */
 // GLOBAL: LEGOLAND 0x006688b8
-unsigned int DAT_006688b8;
+unsigned int NewObjectScrollHintFlags;
 
 // GLOBAL: LEGOLAND 0x006688bc
 int PowerDemandBarPos;
@@ -3100,8 +3102,9 @@ int DAT_006688c4;
 // GLOBAL: LEGOLAND 0x006688c8
 unsigned int RenderIconsLastTicks;
 
+/* Previous tick for the build-panel animation in the icon renderer that excludes one ID. */
 // GLOBAL: LEGOLAND 0x006688cc
-unsigned int DAT_006688cc;
+unsigned int RenderIconsExceptIdLastTicks;
 
 // GLOBAL: LEGOLAND 0x006688d0
 unsigned int GBarSpritesLoaded;
@@ -4151,8 +4154,9 @@ struct IconNode *DeleteIcon;
 // GLOBAL: LEGOLAND 0x007cb380
 struct IconNode *DAT_007cb380[5];
 
+/* Highest unlocked profile level slot, zero-based; used to choose the progress-screen level. */
 // GLOBAL: LEGOLAND 0x007cb394
-unsigned int DAT_007cb394;
+unsigned int HighestUnlockedLevelIndex;
 
 // GLOBAL: LEGOLAND 0x007cb398
 struct Sprite *FreePlayTickSprite;
@@ -4322,17 +4326,21 @@ struct Sprite *IfOptionsIconSprite;
 // GLOBAL: LEGOLAND 0x007fdd70
 struct IconNode *DAT_007fdd70[4];
 
+/* Build panel slide state: 0 opening, 1 closing, 2 closed, 3 open. */
 // GLOBAL: LEGOLAND 0x007fdd80
-unsigned char DAT_007fdd80;
+unsigned char BuildSidePanelState;
 
+/* Newly constructed build panel must begin offscreen and slide into view. */
 // GLOBAL: LEGOLAND 0x007fdd84
-unsigned int DAT_007fdd84;
+unsigned int BuildSidePanelSlideInPending;
 
+/* Map viewport currently reserves the 121-pixel strip occupied by the open build panel. */
 // GLOBAL: LEGOLAND 0x007fdd88
-unsigned int DAT_007fdd88;
+unsigned int BuildSidePanelViewportReserved;
 
+/* Build panel horizontal origin/position byte (3 open; 0x86 encodes the closed negative offset). */
 // GLOBAL: LEGOLAND 0x007fdd8c
-unsigned char DAT_007fdd8c;
+unsigned char BuildSidePanelOriginX;
 
 // GLOBAL: LEGOLAND 0x007fdda0
 unsigned char KeyboardState[256];

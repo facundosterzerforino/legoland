@@ -16,4 +16,4 @@ void RenderMechanicsHut(Element *obj, unsigned int param_2, unsigned int param_3
 void KillMechHutMaskSprite();
 void MechanicsHutSetEditMode();
 struct RideSpriteInfo *GetMechanicsHutSpriteInfo(struct Element *ptr, unsigned short arg2);
-void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag);
+void DetachWorkersFromRemovedHome(struct Ride *hut, unsigned int tile, int flag);

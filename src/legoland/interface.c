@@ -498,12 +498,12 @@ LEGO_EXPORT int InitGameInterface(int a) {
     CastleThemeCount = 0;
     WesternThemeCount = 0;
     ResetMoveAWorkerStruct();
-    DAT_007fdd80 = 2;
-    DAT_007fdd8c = 0x86;
+    BuildSidePanelState = 2;
+    BuildSidePanelOriginX = 0x86;
     lpConfig->view_x = 0;
     lpConfig->view_width = 0x280;
-    DAT_007fdd84 = 1;
-    DAT_007fdd88 = 0;
+    BuildSidePanelSlideInPending = 1;
+    BuildSidePanelViewportReserved = 0;
     SelectedBuildTheme = 5;
     DestroyIconGroup(0xd2);
     ShowProfileObjectiveIcons();
@@ -522,10 +522,10 @@ void UnloadGameInterface(void) {
         DAT_00668e9c = NULL;
         RemoveIconRange(0xd2);
         UnLoad_PopUpInfo();
-        DAT_007fdd80 = 2;
-        DAT_007fdd84 = 1;
-        DAT_007fdd88 = 0;
-        DAT_007fdd8c = 0x86;
+        BuildSidePanelState = 2;
+        BuildSidePanelSlideInPending = 1;
+        BuildSidePanelViewportReserved = 0;
+        BuildSidePanelOriginX = 0x86;
     }
 }
 
@@ -672,8 +672,8 @@ unsigned char LegolandThemeIconHandler(struct IconNode *param_1, unsigned char f
                 DeselectThemeIcon();
                 LegolandThemeDeselected = 1;
                 SelectedBuildTheme = 5;
-                DAT_007fdd80 = 1;
-                DAT_007fdd84 = 1;
+                BuildSidePanelState = 1;
+                BuildSidePanelSlideInPending = 1;
             }
         } while (0);
     }
@@ -708,8 +708,8 @@ unsigned char AdventurersThemeIconHandler(struct IconNode *param_1, unsigned cha
         DeselectThemeIcon();
         AdventurersThemeDeselected = 1;
         SelectedBuildTheme = 5;
-        DAT_007fdd80 = 1;
-        DAT_007fdd84 = 1;
+        BuildSidePanelState = 1;
+        BuildSidePanelSlideInPending = 1;
     }
     return 1;
 }
@@ -748,8 +748,8 @@ unsigned char CastleThemeIconHandler(struct IconNode *param_1, unsigned char fla
             DeselectThemeIcon();
             CastleThemeDeselected = 1;
             SelectedBuildTheme = 5;
-            DAT_007fdd80 = 1;
-            DAT_007fdd84 = 1;
+            BuildSidePanelState = 1;
+            BuildSidePanelSlideInPending = 1;
         }
     }
     return 1;
@@ -789,8 +789,8 @@ unsigned char WesternThemeIconHandler(struct IconNode *param_1, unsigned char fl
             DeselectThemeIcon();
             WesternThemeDeselected = 1;
             SelectedBuildTheme = 5;
-            DAT_007fdd80 = 1;
-            DAT_007fdd84 = 1;
+            BuildSidePanelState = 1;
+            BuildSidePanelSlideInPending = 1;
         }
     }
     return 1;
@@ -989,9 +989,9 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
         return 0;
     }
     panel_arg = param_2;
-    if (DAT_007fdd84 == 1) {
+    if (BuildSidePanelSlideInPending == 1) {
         panel_arg = 0xffffff86;
-        DAT_007fdd80 = 0;
+        BuildSidePanelState = 0;
     }
     icon = SetupInterfacePanelIcons(panel, panel_arg, param_3, 1, param_4, param_1);
     panel->icon = icon;
@@ -1052,7 +1052,7 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     } else {
         RedrawObjectList(panel, 0, BuildPanelScrollOffsets[*(unsigned int *)&BuildPanelScrollIndex & 0xff]);
     }
-    DAT_007fdd84 = 0;
+    BuildSidePanelSlideInPending = 0;
     return 1;
 }
 
@@ -1197,7 +1197,7 @@ LEGO_EXPORT void EnableSidePanelIcons(void) {
 void RestoreBuildMenuAfterLoad(void) {
     if (SelectedBuildTheme != 5) {
         TestMenu(&BuildThemeNames[SelectedBuildTheme * 5]);
-        DAT_007fdd8c = 3;
+        BuildSidePanelOriginX = 3;
     }
 }
 

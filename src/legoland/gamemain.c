@@ -236,13 +236,17 @@ struct GameMainNode *GetPathNodeAt(struct Point *pos, int *result) {
     return node;
 }
 
+/* A-star axis-change penalty: returns zero when previous and next axis masks overlap, otherwise four. Used in
+ * addition to tile step cost for eligible path nodes. */
 // FUNCTION: LEGOLAND 0x00477980
-unsigned int FUN_00477980(unsigned int param_1, unsigned int param_2) {
+unsigned int GetPathAxisTurnCost(unsigned int param_1, unsigned int param_2) {
     return ((param_1 & param_2) != 0 ? 0xfffffffc : 0u) + 4;
 }
 
+/* Axis mask between two tile positions for A-star turn costs: 1 for vertical, 2 for horizontal, zero for coincident
+ * or diagonal positions. */
 // FUNCTION: LEGOLAND 0x004779a0
-int FUN_004779a0(int x0, int y0, int x1, int y1) {
+int GetPathStepAxisMask(int x0, int y0, int x1, int y1) {
     int dx = x0 - x1;
     int dy = y0 - y1;
 
@@ -366,7 +370,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                 if (nb->step_cost != -1) {
                     if (nb->field_20 && (unsigned)nb->field_20 != 1) {
                         cur_y = cur->y;
-                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->x, cur_y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur_y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
                     } else {
                         cost = cur->path_cost + nb->step_cost;
                     }
@@ -375,7 +379,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                             AddToClosedList((struct GameMainNode *)nb);
                         } else {
                             cur_x2 = cur->x;
-                            nb->field_24 = FUN_004779a0(cur_x2, cur->y, nb->x, nb->y);
+                            nb->field_24 = GetPathStepAxisMask(cur_x2, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
@@ -395,18 +399,18 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             if (IsInMapBounds(pos.x, pos.y)) {
                 nb = GetPathNodeAt(&pos, &result);
                 cur_x = cur->x;
-                nb->field_24 = FUN_004779a0(cur_x, cur->y, nb->x, nb->y);
+                nb->field_24 = GetPathStepAxisMask(cur_x, cur->y, nb->x, nb->y);
                 if (nb->step_cost != -1) {
                     if (!(0 != nb->field_20 && nb->field_20 != 1)) {
                         cost = cur->path_cost + nb->step_cost;
                     } else {
-                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
                     }
                     if (result == 0) {
                         if (NULL != best && cost > best->path_cost) {
                             AddToClosedList((struct GameMainNode *)nb);
                         } else {
-                            nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
+                            nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
@@ -426,18 +430,18 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             pos.y = cur->y + 1;
             if (IsInMapBounds(pos.x, pos.y)) {
                 nb = GetPathNodeAt(&pos, &result);
-                nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
+                nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
                 if (nb->step_cost != -1) {
                     if (!(nb->field_20 != 0 && nb->field_20 != 1)) {
                         cost = cur->path_cost + nb->step_cost;
                     } else {
-                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
                     }
                     if (result == 0) {
                         if (NULL != best && cost > best->path_cost) {
                             AddToClosedList((struct GameMainNode *)nb);
                         } else {
-                            nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
+                            nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;
@@ -456,10 +460,10 @@ void FindMapPathAStar(int x, int y, int a, int b) {
             pos.y = cur->y;
             if (IsInMapBounds(pos.x, pos.y)) {
                 nb = GetPathNodeAt(&pos, &result);
-                nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
+                nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
                 if (nb->step_cost != -1) {
                     if (0 != nb->field_20 && nb->field_20 != 1) {
-                        cost = FUN_00477980(cur->field_24, FUN_004779a0(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
                     } else {
                         cost = cur->path_cost + nb->step_cost;
                     }
@@ -467,7 +471,7 @@ void FindMapPathAStar(int x, int y, int a, int b) {
                         if (best != NULL && cost > best->path_cost) {
                             AddToClosedList((struct GameMainNode *)nb);
                         } else {
-                            nb->field_24 = FUN_004779a0(cur->x, cur->y, nb->x, nb->y);
+                            nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
                             nb->parent = cur;
                             nb->path_cost = cost;
                             nb->field_1c = nb->heuristic + cost;

@@ -2423,7 +2423,7 @@ extern char BriefingFileName[128];
 // 0x0066869c
 extern char HintsFileName[128];
 // 0x0066871c
-extern unsigned int DAT_0066871c;
+extern unsigned int BuildMenuRefreshPending;
 // 0x00668720
 extern unsigned int ScriptStringCount;
 // 0x00668724
@@ -2493,7 +2493,7 @@ extern void *NewGroupEventHandler;
 // 0x006688b4
 extern unsigned int LastScrollIconTick;
 // 0x006688b8
-extern unsigned int DAT_006688b8;
+extern unsigned int NewObjectScrollHintFlags;
 // 0x006688bc
 extern int PowerDemandBarPos;
 // 0x006688c0
@@ -2503,7 +2503,7 @@ extern int DAT_006688c4;
 // 0x006688c8
 extern unsigned int RenderIconsLastTicks;
 // 0x006688cc
-extern unsigned int DAT_006688cc;
+extern unsigned int RenderIconsExceptIdLastTicks;
 // 0x006688d0
 extern unsigned int GBarSpritesLoaded;
 // 0x006688d4
@@ -3216,7 +3216,7 @@ extern struct IconNode *DeleteIcon;
 // 0x007cb380
 extern struct IconNode *DAT_007cb380[5];
 // 0x007cb394
-extern unsigned int DAT_007cb394;
+extern unsigned int HighestUnlockedLevelIndex;
 // 0x007cb398
 extern struct Sprite *FreePlayTickSprite;
 // 0x007cb39c
@@ -3331,13 +3331,13 @@ extern struct Sprite *IfOptionsIconSprite;
 // 0x007fdd70
 extern struct IconNode *DAT_007fdd70[4];
 // 0x007fdd80
-extern unsigned char DAT_007fdd80;
+extern unsigned char BuildSidePanelState;
 // 0x007fdd84
-extern unsigned int DAT_007fdd84;
+extern unsigned int BuildSidePanelSlideInPending;
 // 0x007fdd88
-extern unsigned int DAT_007fdd88;
+extern unsigned int BuildSidePanelViewportReserved;
 // 0x007fdd8c
-extern unsigned char DAT_007fdd8c;
+extern unsigned char BuildSidePanelOriginX;
 // 0x007fdda0
 extern unsigned char KeyboardState[256];
 // 0x007fdea4

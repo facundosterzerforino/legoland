@@ -26,10 +26,10 @@ LEGO_EXPORT void InitProgressScreen(void) {
         lpConfig->level = 1;
     }
     if (DAT_00798660 == 0) {
-        FUN_0048b6d0();
+        UpdateUnlockedLevelSelection();
         if (MapStats.level_end == 0) {
             if (DAT_00798668 == 0) {
-                lpConfig->level = DAT_007cb394 + 1;
+                lpConfig->level = HighestUnlockedLevelIndex + 1;
             }
         }
         if (MapStats.level_end == 1 && (int)lpConfig->level <= 0xf) {
@@ -285,7 +285,7 @@ void InitTutorialScreen(void) {
         i++;
         mapping++;
         entry++;
-    } while ((INT_PTR)mapping < (INT_PTR)&DAT_007cb394);
+    } while ((INT_PTR)mapping < (INT_PTR)&HighestUnlockedLevelIndex);
 }
 
 // FUNCTION: LEGOLAND 0x0048bf90

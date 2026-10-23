@@ -80,7 +80,7 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node);
 void ScrollIconRegion(struct InterfacePanel *r, int param_2, int param_3);
 unsigned char ScrollIconRegionForward(struct IconNode *icon, unsigned char buttons, int a3, int a4);
 unsigned char ScrollIconRegionBack(struct IconNode *icon, unsigned char buttons, int a3, int a4);
-int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
+int GetIconScrollSnapOffset(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 LEGO_EXPORT int RenderBoxIcon(struct IconNode *node);
 LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node);
 LEGO_EXPORT int RenderGBarSprite(struct IconNode *node);
