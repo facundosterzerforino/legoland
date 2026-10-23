@@ -370,14 +370,17 @@ LEGO_EXPORT void UnMute_FX(void) {
     SfxMuted = 0;
 }
 
+/* Makes subsequently started sample instances pause immediately after playback starts; used while loading the level
+ * script. */
 // FUNCTION: LEGOLAND 0x00492980
-void FUN_00492980(void) {
-    DAT_007988c8 = 1;
+void EnablePauseNewSamples(void) {
+    PauseNewSamples = 1;
 }
 
+/* Stops automatically pausing new sample instances; does not itself resume existing instances. */
 // FUNCTION: LEGOLAND 0x00492990
-void FUN_00492990(void) {
-    DAT_007988c8 = 0;
+void DisablePauseNewSamples(void) {
+    PauseNewSamples = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004929a0

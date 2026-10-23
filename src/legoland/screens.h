@@ -10,7 +10,7 @@ void UnloadMap(void);
 void SetMapLoaded(unsigned int param_1);
 void MarkLevelComplete(void);
 void RunGameApplication(void);
-void FUN_004597e0(int param0, const char *param1);
+void SetLevelEndScreenFile(int param0, const char *param1);
 void EndLevel(unsigned int a1);
 void RenderFrontEndScreen(unsigned char param_1);
 void GameProc(void);

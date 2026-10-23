@@ -1216,7 +1216,7 @@ unsigned char AppraisalNextPageClicked(unsigned int param_1, unsigned int param_
     AppraisalPageChanged = 1;
     PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
     SpeechCloseFile();
-    DAT_006687b0 = 4;
+    SpeechDelayFrames = 4;
     if (AppraisalPage < AppraisalPageCount - 1) {
         AppraisalPage = AppraisalPage + 1;
     }
@@ -1234,7 +1234,7 @@ unsigned char AppraisalPrevPageClicked(unsigned int param_1, unsigned char param
             AppraisalPage = AppraisalPage - 1;
         }
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         UpdateAppraisalPageButtons();
     }
     return 1;
@@ -4911,7 +4911,7 @@ int CheckAppraisalDue(void) {
         PauseGameTimer();
         PauseAllSamples();
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         DAT_0066609c = RunAppraisal();
         if (DAT_0066609c != 0) {
             v = MapStats.appraisal_streak;
@@ -4946,5 +4946,5 @@ int CheckAppraisalDue(void) {
 void ConfigureAppraisal(unsigned int param_1, const char *param_2) {
     MapStats.appraisal_fail_limit = param_1;
     ResetAppraisalStreak();
-    FUN_004597e0(0, param_2);
+    SetLevelEndScreenFile(0, param_2);
 }

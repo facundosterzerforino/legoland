@@ -66,8 +66,8 @@ void CloseFrontEndScreen(void) {
         SPRITE_TitleScreenBk = NULL;
     }
     RemoveIconGroup(7);
-    if (DAT_0080ff80.unk4 != 0xffffffff) {
-        switch (DAT_0080ff80.unk4) {
+    if (FrontEndScreenMode.unk4 != 0xffffffff) {
+        switch (FrontEndScreenMode.unk4) {
         case 0:
             LoadCurrentProfileFromList();
             UpdateSoundVols();
@@ -94,11 +94,11 @@ void CloseFrontEndScreen(void) {
 LEGO_EXPORT void InitScreens(unsigned char param_1) {
     int id = (char)param_1;
 
-    if (DAT_0080ff80.unk4 != (unsigned int)id) {
+    if (FrontEndScreenMode.unk4 != (unsigned int)id) {
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         CloseFrontEndScreen();
-        DAT_0080ff80.unk0 = 0;
+        FrontEndScreenMode.unk0 = 0;
         switch (id) {
         case 0:
             InitListProfiles();
@@ -136,7 +136,7 @@ LEGO_EXPORT void InitScreens(unsigned char param_1) {
         default:
             break;
         }
-        DAT_0080ff80.unk4 = id;
+        FrontEndScreenMode.unk4 = id;
     }
     if (SPRITE_TitleScreenBk != 0) {
         RenderFrontEndScreen(param_1);
@@ -150,13 +150,13 @@ void RenderFrontEndScreen(unsigned char param_1) {
     PrintSprite(SPRITE_TitleScreenBk, 0, 0, 0, 0);
     if (DAT_00668e38 != 0) {
         RenderIcons2(7, 0xe, 0);
-        if (DAT_0080ff80.unk8 == 6) {
+        if (FrontEndScreenMode.unk8 == 6) {
             RenderIcons2(0x1c, 0x23, 0);
         }
     } else {
         RenderIcons();
     }
-    switch (DAT_0080ff80.unk8) {
+    switch (FrontEndScreenMode.unk8) {
     case 0:
         PrintProfileDetails();
         break;
@@ -326,8 +326,8 @@ void SetMapLoaded(unsigned int param_1) { MapLoaded = param_1; }
 // FUNCTION: LEGOLAND 0x00458bc0
 void SelectInitialFrontEndScreen(void) {
     EditMode.unk4 = 2;
-    DAT_0080ff80.unk4 = 0xffffffff;
-    DAT_0080ff80.unk8 = 0;
+    FrontEndScreenMode.unk4 = 0xffffffff;
+    FrontEndScreenMode.unk8 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00458be0
@@ -401,7 +401,7 @@ int UpdateApplicationFrame(void) {
     switch (EditMode.unk4) {
     case 2:
         SetPointer(5);
-        InitScreens(DAT_0080ff80.unk8 & 0xff);
+        InitScreens(FrontEndScreenMode.unk8 & 0xff);
         break;
     case 3:
         if (SamplesPaused != 0) {
@@ -440,15 +440,15 @@ int UpdateApplicationFrame(void) {
                 UnloadMap();
                 DAT_00668e38 = 1;
                 EditMode.unk4 = 2;
-                DAT_0080ff80.unk4 = 0xffffffff;
-                DAT_0080ff80.unk8 = 6;
+                FrontEndScreenMode.unk4 = 0xffffffff;
+                FrontEndScreenMode.unk8 = 6;
                 UpdateSpeechPlayback();
                 return 1;
             }
             DAT_00668e38 = 0;
             EditMode.unk4 = 2;
-            DAT_0080ff80.unk4 = 0xffffffff;
-            DAT_0080ff80.unk8 = 1;
+            FrontEndScreenMode.unk4 = 0xffffffff;
+            FrontEndScreenMode.unk8 = 1;
             UnloadMap();
         }
         UpdateSpeechPlayback();
@@ -778,13 +778,15 @@ void ShowLevelEndScreens(char *s) {
     if (LoadIntervalReport(buffer) != 0) {
         DAT_00668e38 = 1;
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 7;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 7;
     }
 }
 
+/* Sets one of the two level-end screen filenames (nonzero selector: result 1; zero: result 2). Copies at most 255
+ * characters plus NUL, or clears the name for NULL. */
 // FUNCTION: LEGOLAND 0x004597e0
-void FUN_004597e0(int param0, const char *param1) {
+void SetLevelEndScreenFile(int param0, const char *param1) {
     char *buffer;
 
     if (param0) {

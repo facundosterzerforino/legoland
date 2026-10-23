@@ -333,20 +333,20 @@ LEGO_EXPORT void KillListProfileSprite(void) {
 LEGO_EXPORT void CloseFontEndCheckBox(void) {
     RemoveIconGroup(0xE);
     KillFrontEndCheckBoxSprite();
-    DAT_004bef9c = 1;
+    FrontEndInputEnabled = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0048cc30
 unsigned char DeleteIconHandler(void *param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        if (DAT_0080ff80.unk8 == 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        if (FrontEndScreenMode.unk8 == 0) {
             InitProfileCheckBoxIcons(param_1);
         }
-        if (DAT_0080ff80.unk8 == 4) {
+        if (FrontEndScreenMode.unk8 == 4) {
             InitDeletePopUp(param_1);
         }
         DeletePopUpShown = 1;
-        DAT_004bef9c = 0;
+        FrontEndInputEnabled = 0;
     }
     return 1;
 }
@@ -542,9 +542,9 @@ unsigned char AcceptProfileClick(unsigned int dummy, unsigned char arg_0) {
             NewProfilePopUpShown = 0;
         }
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_0080ff80.unk8 = 1;
+        FrontEndScreenMode.unk8 = 1;
     }
     return 1;
 }
@@ -552,7 +552,7 @@ unsigned char AcceptProfileClick(unsigned int dummy, unsigned char arg_0) {
 /* Handles selection of a profile icon: copies its slot to the current profile and clears the free-play selection. */
 // FUNCTION: LEGOLAND 0x0048d390
 unsigned char ProfileSelectHandler(struct IconNode *profile, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 0x2) != 0) {
         CurrentProfile.profile_slot = profile->field_1cb;
         ClearFreePlaySelection();
     }
@@ -561,12 +561,12 @@ unsigned char ProfileSelectHandler(struct IconNode *profile, unsigned char param
 
 // FUNCTION: LEGOLAND 0x0048d3c0
 unsigned char SelectEmptyProfileSlotClick(struct IconNode *profile, unsigned int param_2) {
-    if (DAT_004bef9c != 0) {
+    if (FrontEndInputEnabled != 0) {
         if (param_2 & 0x2) {
             CurrentProfile.profile_slot = profile->field_1cb;
             NewProfilePopUpShown = 1;
             InitNewProfilePoPUp(profile);
-            DAT_004bef9c = 0;
+            FrontEndInputEnabled = 0;
         }
     }
     return 1;
@@ -580,8 +580,8 @@ unsigned char ConfirmDeleteProfileClick(unsigned int arg0, unsigned int arg1) {
             DeletePopUpShown = 0;
             RemoveProfile(CurrentProfile.profile_slot);
             CurrentProfile.profile_slot = 0;
-            DAT_0080ff80.unk4 = 0xffffffff;
-            DAT_0080ff80.unk8 = 0;
+            FrontEndScreenMode.unk4 = 0xffffffff;
+            FrontEndScreenMode.unk8 = 0;
         }
     }
     return 1;

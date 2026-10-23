@@ -141,7 +141,7 @@ int ScriptCmdPermanent(struct CommandArgs *param_1, unsigned int param_2) {
         return 0;
     }
     SetScriptObjectiveKind(2);
-    FUN_00478650(param_1, param_2);
+    SetScriptObjectivePurgeFlag(param_1, param_2);
     return 1;
 }
 
@@ -154,7 +154,7 @@ int ScriptCmdReminder(struct CommandArgs *param_1, unsigned int param_2) {
         return 0;
     }
     SetScriptObjectiveKind(3);
-    FUN_00478650(param_1, param_2);
+    SetScriptObjectivePurgeFlag(param_1, param_2);
     return 1;
 }
 
@@ -232,7 +232,7 @@ unsigned int ScriptCmdEnable(struct CommandArgs *param_1, unsigned int param_2, 
     if (CheckScriptCommand(param_1, param_2, 5, 1) == 0) {
         return 0;
     }
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         name = GetScriptArg1(param_1, param_2);
         if (EnableObjectClass(name) != 0) {
             GiveRewardObject(ElemID(name), 0, 1);
@@ -248,7 +248,7 @@ int ScriptCmdCurrency(struct CommandArgs *arg, int argc) {
         if (CheckScriptCommand(arg, argc, 5, 1) == 0) {
             return 0;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             SetBrickCount(atoi(arg->arg1));
             return 1;
         }
@@ -265,7 +265,7 @@ int ScriptCmdHappinessEnv(char **argv, int argc) {
         if (CheckScriptCommand(argv, argc, 5, 5) == 0) {
             return 0;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             out = &MapStats.mood_threshold0;
             argv++;
             do {
@@ -297,7 +297,7 @@ int ScriptCmdLookAt(struct CommandArgs *param_1, int param_2) {
     ParseIntPair(local, args, 1);
     local[0] <<= 8;
     local[1] <<= 8;
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         b = local[1];
         a = local[0];
         GetTileDimensions(&w, &h);
@@ -321,7 +321,7 @@ int ScriptCmdBriefingFile(struct CommandArgs *param_1, int param_2) {
         if (param_2 >= 1) {
             name = param_1->arg1;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             SetBriefingFile(name);
             return 1;
         }
@@ -340,7 +340,7 @@ int ScriptCmdHintsFile(struct CommandArgs *param_1, int param_2) {
         if (param_2 >= 1) {
             name = param_1->arg1;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             SetHintsFileName(name);
             return 1;
         }
@@ -362,7 +362,7 @@ int ScriptCmdWorkers(struct CommandArgs *arg, int argc) {
     }
     v1 = atoi(arg->arg1);
     v2 = atoi(arg->arg2);
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         if (v1 >= 0) {
             lpConfig->gardeners_enabled = v1 != 0;
         }
@@ -389,7 +389,7 @@ int ScriptCmdGardener(struct CommandArgs *arg, int argc) {
         if (argc < 3 || (count = atoi(arg->arg3)) < 1) {
             count = 1;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             while (count != 0) {
                 GenerateGardener(coords, 0);
                 count--;
@@ -415,7 +415,7 @@ int ScriptCmdMechanic(struct CommandArgs *arg, int argc) {
         if (argc < 3 || (count = atoi(arg->arg3)) < 1) {
             count = 1;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             while (count != 0) {
                 GenerateMechanic(coords, 0);
                 count--;
@@ -1066,7 +1066,7 @@ int ScriptCmdThemeIcon(struct CommandArgs *arg, int argc) {
     } else {
         v3 = 1;
     }
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         SetObjectiveCounter(v2, v3);
     } else {
         NewScriptThemeIconEvent(v2, v3);
@@ -1091,7 +1091,7 @@ int ScriptCmdAddFlag(char **argv, int argc) {
     } else {
         v2 = 1;
     }
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         AddObjectiveCounter(v1, v2);
     } else {
         NewScriptAddFlagEvent(v1, v2);
@@ -1119,7 +1119,7 @@ int ScriptCmdBridges(struct CommandArgs *arg, int argc) {
     } else {
         v2 = 1;
     }
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         ScriptOpenBridge(v1, v2);
     } else {
         NewScriptBridgesEvent(v1, v2);
@@ -1146,8 +1146,8 @@ int ScriptCmdEndScreens(struct CommandArgs *arg, int argc) {
         if (argc >= 3) {
             strcat(buf, arg->arg3);
         }
-        if (DAT_00669054 == 1) {
-            FUN_004597e0(v, buf);
+        if (ScriptSectionTypeMask == 1) {
+            SetLevelEndScreenFile(v, buf);
         }
     }
     return 1;
@@ -1302,7 +1302,7 @@ int ScriptCmdPlace(struct CommandArgs *arg, int argc) {
         v = 0;
     }
     if (id != 0) {
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             PlaceObjectAtTile(id, coords);
         } else {
             NewScriptPlaceEvent(id, coords, v);
@@ -1350,7 +1350,7 @@ int ScriptCmdGlue(struct CommandArgs *arg, int argc) {
             return 0;
         }
         ParseRect(rect, (char **)arg, 1);
-        if (DAT_00669054 == 4) {
+        if (ScriptSectionTypeMask == 4) {
             NewScriptGlueEvent((struct Vec4 *)rect);
             return 1;
         }
@@ -1385,7 +1385,7 @@ int ScriptCmdFmv(struct CommandArgs *arg, int argc) {
     if (CheckScriptCommand(arg, argc, 5, 1) == 0) {
         return 0;
     }
-    if (DAT_00669054 == 4) {
+    if (ScriptSectionTypeMask == 4) {
         NewScriptFmvEvent(arg->arg1);
     } else {
         SetPendingMovie(arg->arg1);
@@ -1429,7 +1429,7 @@ int ScriptCmdFeature(struct CommandArgs *arg, int argc) {
         if (index == -1) {
             return 0;
         }
-        if (DAT_00669054 == 4) {
+        if (ScriptSectionTypeMask == 4) {
             NewScriptFeatureEvent(index, v);
             return 1;
         }
@@ -1470,7 +1470,7 @@ int ScriptCmdReport(struct CommandArgs *arg, int argc) {
         if (index == -1) {
             return 0;
         }
-        if (DAT_00669054 == 4) {
+        if (ScriptSectionTypeMask == 4) {
             if (is_off == 0) {
                 NewScriptReportEvent(index, v2, v3);
                 return 1;
@@ -1523,7 +1523,7 @@ int ScriptCmdCapacityScale(struct CommandArgs *arg, int argc) {
     if (index == -1) {
         return 0;
     }
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         SetClassPercent(index, value);
     } else {
         NewScriptCapacityScaleEvent(index, value);
@@ -1545,7 +1545,7 @@ int ScriptCmdCapacityCap(struct CommandArgs *arg, int argc) {
         if (index == -1) {
             return 0;
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             SetClassLimit(index, v);
             return 1;
         }
@@ -1601,7 +1601,7 @@ int ScriptCmdMaxCapacity(struct CommandArgs *arg, int argc) {
             return 0;
         }
         v = atoi(arg->arg1);
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             MapStats.capacity_max = v;
             return 1;
         }
@@ -1621,7 +1621,7 @@ int ScriptCmdMinCapacity(struct CommandArgs *arg, int argc) {
         return 0;
     }
     value = atoi(arg->arg1);
-    if (DAT_00669054 == 1) {
+    if (ScriptSectionTypeMask == 1) {
         MapStats.capacity_min = value;
     } else {
         NewScriptCapacityEvent(0, value);
@@ -1638,7 +1638,7 @@ int ScriptCmdEntranceFee(struct CommandArgs *arg, int argc) {
             return 0;
         }
         v = atoi(arg->arg1);
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             MapStats.entrance_fee = v;
             return 1;
         }
@@ -1666,7 +1666,7 @@ int ScriptCmdFlashButton(char **argv, int argc) {
                 mask |= atoi(argv[i]);
             }
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             SetButtonFlashMask(mask, 1);
         } else {
             NewScriptFlashButtonEvent(mask, 1);
@@ -1697,7 +1697,7 @@ int ScriptCmdFlashButtonOff(char **argv, int argc) {
                 mask |= atoi(argv[i]);
             }
         }
-        if (DAT_00669054 == 1) {
+        if (ScriptSectionTypeMask == 1) {
             SetButtonFlashMask(mask, 0);
         } else {
             NewScriptFlashButtonEvent(mask, 0);
@@ -1735,11 +1735,11 @@ int LoadLevelScript(const char *param_1) {
     int result;
     int v1;
 
-    FUN_00492980();
+    EnablePauseNewSamples();
     LLIDB_ClearOnLevel();
     ResetLevelScriptState();
     result = ParseScriptFile(param_1, LevelScriptCommands, 0x5d, 0);
-    FUN_00492990();
+    DisablePauseNewSamples();
     v1 = (result >= 0) - 1;
     return v1 & 2;
 }

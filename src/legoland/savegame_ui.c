@@ -92,7 +92,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
         icon->string_id = 0x26;
         icon->string = GetString(0x26);
     } else {
-        icon->event_handler = (void *)FUN_0048db10;
+        icon->event_handler = (void *)SavedGameReturnToOptionsClicked;
         icon->string_id = 0x28;
         icon->string = GetString(0x28);
     }
@@ -196,9 +196,9 @@ LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
 
 // FUNCTION: LEGOLAND 0x0048d970
 unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags) {
-    if (DAT_004bef9c != 0 && (flags & 2) && CurrentProfile.save_slot != 0) {
+    if (FrontEndInputEnabled != 0 && (flags & 2) && CurrentProfile.save_slot != 0) {
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         if (LoadDateIntoTempProfile(CurrentProfile.profile_slot, CurrentProfile.save_slot & 0xff) != 0) {
             CurrentProfile.field_45 = TempProfile.field_24;
@@ -222,9 +222,9 @@ unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags) {
 
 // FUNCTION: LEGOLAND 0x0048da50
 unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4) {
-    if (DAT_004bef9c == 0) {
+    if (FrontEndInputEnabled == 0) {
         unsigned char r = NewSaveGameOkClicked(0, flags, a3, a4);
-        if (DAT_0080ff80.unk4 != 0xffffffff) {
+        if (FrontEndScreenMode.unk4 != 0xffffffff) {
             return r;
         }
         DAT_00668e38 = 0;
@@ -235,7 +235,7 @@ unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned
         }
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         StoreNewSaveGameToDisk();
         DAT_00668e38 = 0;
         RemoveIconGroup(7);
@@ -244,15 +244,17 @@ unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned
     EditMode.unk4 = 3;
     SetDefaultMouseHandlers();
     ResumeGameTimer();
-    DAT_004bef9c = 1;
+    FrontEndInputEnabled = 1;
     return 1;
 }
 
+/* Saved-game screen cancel/back callback when opened from options: on an enabled click plays the button sound and
+ * requests front-end screen 5 (options). */
 // FUNCTION: LEGOLAND 0x0048db10
-unsigned char FUN_0048db10(int param1, unsigned char flags) {
-    if (DAT_004bef9c != 0 && (flags & 0x2)) {
+unsigned char SavedGameReturnToOptionsClicked(int param1, unsigned char flags) {
+    if (FrontEndInputEnabled != 0 && (flags & 0x2)) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_0080ff80.unk8 = 5;
+        FrontEndScreenMode.unk8 = 5;
     }
     return 1;
 }
@@ -562,7 +564,7 @@ unsigned char DeletePopUpOkHandler(unsigned int a1, unsigned int a2) {
         CloseFontEndCheckBox();
         DeletePopUpShown = 0;
         RemoveSaveGame(CurrentProfile.save_slot);
-        DAT_0080ff80.unk4 = 0xffffffffu;
+        FrontEndScreenMode.unk4 = 0xffffffffu;
         CurrentProfile.save_slot = 0;
     }
     return 1;
@@ -570,7 +572,7 @@ unsigned char DeletePopUpOkHandler(unsigned int a1, unsigned int a2) {
 
 // FUNCTION: LEGOLAND 0x0048e4a0
 unsigned char SavedGameSlotClicked(struct IconNode *icon, unsigned int flags, unsigned int a3, unsigned int a4) {
-    if (DAT_004bef9c != 0 && (flags & 2)) {
+    if (FrontEndInputEnabled != 0 && (flags & 2)) {
         if (LoadMode != 0) {
             CurrentProfile.save_slot = icon->field_1cb;
         } else {
@@ -582,7 +584,7 @@ unsigned char SavedGameSlotClicked(struct IconNode *icon, unsigned int flags, un
 
 // FUNCTION: LEGOLAND 0x0048e4f0
 unsigned char SaveSlotClicked(struct IconNode *icon, unsigned int a2, unsigned int a3, unsigned int a4) {
-    if (DAT_004bef9c != 0) {
+    if (FrontEndInputEnabled != 0) {
         if ((a2 & 2) == 0 || LoadMode != 0) {
             return 1;
         }
@@ -593,7 +595,7 @@ unsigned char SaveSlotClicked(struct IconNode *icon, unsigned int a2, unsigned i
             SetTempProfileName(icon->field_18p);
         }
         DAT_00798700 = 1;
-        DAT_004bef9c = 0;
+        FrontEndInputEnabled = 0;
     }
     return 1;
 }
@@ -690,11 +692,11 @@ unsigned char NewSaveGameOkClicked(struct IconNode *icon, unsigned int a2, unsig
             return 1;
         }
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         StoreNewSaveGameToDisk();
-        DAT_0080ff80.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk4 = 0xffffffff;
         DAT_00798700 = 0;
-        DAT_004bef9c = 1;
+        FrontEndInputEnabled = 1;
         RestoreProfileKeyHandlers();
     }
     return 1;
@@ -712,7 +714,7 @@ unsigned char NewSaveGameCloseClicked(struct IconNode *icon, unsigned char flags
         RemoveIconGroup(7);
         InitSavedGameScreen();
         DAT_00798700 = 0;
-        DAT_004bef9c = 1;
+        FrontEndInputEnabled = 1;
         RestoreProfileKeyHandlers();
     }
     return 1;
@@ -808,6 +810,6 @@ int VolumePercentToMarker(int param) {
 
 // FUNCTION: LEGOLAND 0x0048eb20
 void SaveOptionsMouseHandlers(void) {
-    DAT_00798740 = OkKeyHandler;
-    DAT_0079873c = CancelKeyHandler;
+    OptionsSavedOkKeyHandler = OkKeyHandler;
+    OptionsSavedCancelKeyHandler = CancelKeyHandler;
 }

@@ -892,7 +892,7 @@ unsigned int ScriptEventCheckFlag(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046b100
 unsigned int ScriptEventSelectTheme(struct ObjectiveEvent *arg) {
-    if (arg->field_1c == DAT_004baff8) {
+    if (arg->field_1c == SelectedBuildTheme) {
         return 1;
     }
     if (IsObjectiveHintDue() != 0) {
@@ -903,7 +903,7 @@ unsigned int ScriptEventSelectTheme(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046b130
 unsigned int ScriptEventSelectTab(struct ObjectiveEvent *arg) {
-    if (DAT_004baff8 != 5) {
+    if (SelectedBuildTheme != 5) {
         if (arg->field_1c != 0 && DAT_00668e34 != 0) {
             return 1;
         }
@@ -1324,7 +1324,7 @@ unsigned int RepeatCurrentObjective(void) {
     if (CurrentScriptSection != 0) {
         if (DAT_00668614 != 0) {
             PostObjectiveMessage(PercentSFormat, ScriptStringTable[DAT_00668614]);
-            DAT_00668618 = 1;
+            AdvisorRepeatPending = 1;
             return 1;
         }
         PostScriptSectionIntro(CurrentScriptSection, 1);
@@ -2295,7 +2295,7 @@ unsigned int UnloadLevelData(void) {
     FreeScriptStrings();
     FreeAllScriptLists();
     ClearAdvisorHelp();
-    FUN_0046ce00();
+    ResetAdvisorMessageTimers();
     return 1;
 }
 
@@ -2402,9 +2402,11 @@ unsigned int LoadScripts(void) {
     return 1;
 }
 
+/* Resets objective hint timing, the advisor clear time, and the last level-script polling time when unloading level
+ * data. */
 // FUNCTION: LEGOLAND 0x0046ce00
-void FUN_0046ce00(void) {
+void ResetAdvisorMessageTimers(void) {
     ResetObjectiveHintTimer();
     AdvisorHelpClearTime = 0;
-    DAT_007fe054 = 0;
+    LastLevelScriptRunTime = 0;
 }

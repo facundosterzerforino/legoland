@@ -85,5 +85,5 @@ LEGO_EXPORT void Load_Interface_ControlIcons(void);
 LEGO_EXPORT void Load_Interface_ThemeIcons(void);
 LEGO_EXPORT void UnLoad_Interface_ControlIcons(void);
 LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void);
-void FUN_00475f10(void);
-void FUN_00475f40(void);
+void RestoreBuildMenuAfterLoad(void);
+void SelectMatchingBuildElement(void);

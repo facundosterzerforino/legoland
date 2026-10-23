@@ -480,7 +480,7 @@ char CancelProfileSelectionClicked(unsigned int param1, unsigned char flags) {
     if ((flags & 0x2) != 0 && (void *)ScanForProfiles != 0) {
         RemoveIconGroup(0x15);
         CloseFontEndCheckBox();
-        DAT_0080ff80.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk4 = 0xffffffff;
         NewProfilePopUpShown = 0;
         CurrentProfile.profile_slot = 0;
     }

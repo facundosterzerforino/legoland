@@ -96,6 +96,6 @@ void NewScriptSelectModeEvent(unsigned char param_1, unsigned int param_2);
 void NewScriptForeverEvent(unsigned char param_1);
 void FreeAllScriptLists(void);
 unsigned int UnloadLevelData(void);
-void FUN_0046ce00(void);
+void ResetAdvisorMessageTimers(void);
 unsigned int SaveScripts(void);
 unsigned int LoadScripts(void);

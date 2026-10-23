@@ -472,8 +472,9 @@ int CalcDistanceVolume(int param_1) {
     return result;
 }
 
+/* Converts a horizontal screen offset to DirectSound pan by multiplying by four and clamping to -10000..10000. */
 // FUNCTION: LEGOLAND 0x00496570
-int FUN_00496570(int value) {
+int ScreenOffsetToSamplePan(int value) {
     value = value * 4;
     if (value > 10000) {
         return 10000;
@@ -493,7 +494,7 @@ int SetSampleVolumeAndPan(struct Sample *sample, int x, int y) {
 
     x = x - (lpConfig->view_width >> 1);
     y = y - (lpConfig->view_height >> 1);
-    vol = FUN_00496570(x);
+    vol = ScreenOffsetToSamplePan(x);
     dim = lpConfig->view_width;
     if (x < -(int)dim >> 1) {
         x = x + (dim >> 1);
@@ -901,7 +902,7 @@ LEGO_EXPORT struct Sample *PlayInstanceOfSample(void *def, unsigned int looping,
         KillPlayableSample(sample);
         return 0;
     }
-    if (DAT_007988c8 != 0) {
+    if (PauseNewSamples != 0) {
         PauseSingleSample(sample);
     }
     return sample;
@@ -984,7 +985,7 @@ void FadeOutSpeechAndEffects(int param_1, int param_2) {
     }
     PauseAllSamples();
     SpeechCloseFile();
-    DAT_006687b0 = 4;
+    SpeechDelayFrames = 4;
     CurrentProfile.speech_volume = savedC4;
     CurrentProfile.fx_volume = savedCC;
     UpdateSoundVols();

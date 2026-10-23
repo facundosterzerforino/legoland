@@ -356,7 +356,7 @@ void FUN_00457a70(void) {
                     }
                     MapBatchUpdate = 0;
                 } else if (WorkOrderBuildObject(EditMode.unk8->element, (Point *)&EditCursor.tile_x)) {
-                    FUN_00475f40();
+                    SelectMatchingBuildElement();
                     ScriptDirtyCategories |= 2;
                 }
             } else {

@@ -961,29 +961,36 @@ int mouse_granularity;
 // GLOBAL: LEGOLAND 0x004bad58
 struct KeyMapping CheatKeyMap[0x3c];
 
+/* Four fixed-width theme names passed to the element database when constructing the build menu. */
 // GLOBAL: LEGOLAND 0x004bafa8
-unsigned int DAT_004bafa8[20];
+unsigned int BuildThemeNames[20];
 
+/* Selected build-theme index: 0 common/Legoland, 1 western, 2 castle, 3 adventurers, 5 none. */
 // GLOBAL: LEGOLAND 0x004baff8
-unsigned int DAT_004baff8;
+unsigned int SelectedBuildTheme;
 
+/* Fixed-width build-category names used to order the themed object menu. */
 // GLOBAL: LEGOLAND 0x004baffc
-char DAT_004baffc[4][0x14];
+char BuildCategoryNames[4][0x14];
 
 // GLOBAL: LEGOLAND 0x004bb04c
 int InterfaceIconPos[18];
 
+/* Legoland theme icon is in its deselected state when nonzero. */
 // GLOBAL: LEGOLAND 0x004bb094
-unsigned int DAT_004bb094;
+unsigned int LegolandThemeDeselected;
 
+/* Castle theme icon is in its deselected state when nonzero. */
 // GLOBAL: LEGOLAND 0x004bb098
-unsigned int DAT_004bb098;
+unsigned int CastleThemeDeselected;
 
+/* Western theme icon is in its deselected state when nonzero. */
 // GLOBAL: LEGOLAND 0x004bb09c
-unsigned int DAT_004bb09c;
+unsigned int WesternThemeDeselected;
 
+/* Adventurers theme icon is in its deselected state when nonzero. */
 // GLOBAL: LEGOLAND 0x004bb0a0
-unsigned int DAT_004bb0a0;
+unsigned int AdventurersThemeDeselected;
 
 // GLOBAL: LEGOLAND 0x004bb0a4
 struct TrackElemPair DAT_004bb0a4[29];
@@ -1006,8 +1013,9 @@ int DAT_004bb5a0;
 // GLOBAL: LEGOLAND 0x004bb5a4
 int DAT_004bb5a4;
 
+/* Script objective kind selecting the initial event flag (1, 2, or 4). */
 // GLOBAL: LEGOLAND 0x004bb5ac
-unsigned int DAT_004bb5ac;
+unsigned int ScriptObjectiveKind;
 
 // GLOBAL: LEGOLAND 0x004bb5b0
 unsigned int ScriptConditionActive;
@@ -1123,8 +1131,9 @@ unsigned int DAT_004bed40;
 // GLOBAL: LEGOLAND 0x004bed44
 unsigned int DAT_004bed44;
 
+/* Allows front-end click handlers; disabled while a confirmation checkbox/dialog owns input. */
 // GLOBAL: LEGOLAND 0x004bef9c
-unsigned int DAT_004bef9c;
+unsigned int FrontEndInputEnabled;
 
 // GLOBAL: LEGOLAND 0x004bf670
 unsigned int DAT_004bf670;
@@ -2958,8 +2967,9 @@ unsigned int ScriptDirtyCategories;
 // GLOBAL: LEGOLAND 0x00668614
 unsigned int DAT_00668614;
 
+/* Repeated-objective request allowing the next advisor message to bypass its ordinary delay. */
 // GLOBAL: LEGOLAND 0x00668618
-unsigned int DAT_00668618;
+unsigned int AdvisorRepeatPending;
 
 // GLOBAL: LEGOLAND 0x0066861c
 char BriefingFileName[128];
@@ -3015,14 +3025,17 @@ unsigned int CurrentHelpKind;
 // GLOBAL: LEGOLAND 0x006687a8
 unsigned int HelpRequested;
 
+/* Explicit speech request bypasses the normal delay/debounce checks and is consumed at playback. */
 // GLOBAL: LEGOLAND 0x006687ac
-unsigned int DAT_006687ac;
+unsigned int SpeechImmediateRequest;
 
+/* Frame countdown before normal help speech processing resumes after a screen transition. */
 // GLOBAL: LEGOLAND 0x006687b0
-unsigned int DAT_006687b0;
+unsigned int SpeechDelayFrames;
 
+/* Help speech is waiting for its 500 ms debounce interval; checked by volume controls. */
 // GLOBAL: LEGOLAND 0x006687b4
-unsigned int DAT_006687b4;
+unsigned int SpeechDebouncePending;
 
 // GLOBAL: LEGOLAND 0x006687bc
 void *OkKeyHandler;
@@ -3240,14 +3253,17 @@ unsigned int DAT_00668e38;
 // GLOBAL: LEGOLAND 0x00668e3c
 void *DAT_00668e3c;
 
+/* Linked list of parent and child object classes used to construct build-panel icons. */
 // GLOBAL: LEGOLAND 0x00668e40
-struct InterfaceListNode *DAT_00668e40;
+struct InterfaceListNode *BuildObjectList;
 
+/* Per-theme build/research panel vertical scroll offsets. */
 // GLOBAL: LEGOLAND 0x00668e44
-int DAT_00668e44[8];
+int BuildPanelScrollOffsets[8];
 
+/* Scroll-offset index for the active panel: theme index for build, theme plus four for research. */
 // GLOBAL: LEGOLAND 0x00668e64
-unsigned char DAT_00668e64;
+unsigned char BuildPanelScrollIndex;
 
 // GLOBAL: LEGOLAND 0x00668e68
 struct Sprite *InterfaceBgSprite;
@@ -3306,8 +3322,9 @@ unsigned int DAT_00668eb4;
 // GLOBAL: LEGOLAND 0x00668eb8
 struct IconNode *ScriptEndIcon;
 
+/* Set while the in-game interface icon groups are loaded. */
 // GLOBAL: LEGOLAND 0x00668ebc
-unsigned int DAT_00668ebc;
+unsigned int GameInterfaceLoaded;
 
 // GLOBAL: LEGOLAND 0x00668ec0
 unsigned int DAT_00668ec0;
@@ -3406,11 +3423,13 @@ char DAT_00668fd0[128];
 // GLOBAL: LEGOLAND 0x00669050
 unsigned char CurrentObjectiveEventFlags;
 
+/* Current script section type bitmask used to gate allowed commands. */
 // GLOBAL: LEGOLAND 0x00669054
-unsigned int DAT_00669054;
+unsigned int ScriptSectionTypeMask;
 
+/* Current script section name supplied with its type mask. */
 // GLOBAL: LEGOLAND 0x00669058
-char DAT_00669058[0x40];
+char ScriptSectionName[0x40];
 
 // GLOBAL: LEGOLAND 0x00669098
 unsigned int NextScriptSectionId;
@@ -3784,11 +3803,13 @@ void *SavedGameList;
 // GLOBAL: LEGOLAND 0x00798738
 int DAT_00798738;
 
+/* Saved cancel-key callback restored when leaving the options-related screen. */
 // GLOBAL: LEGOLAND 0x0079873c
-void *DAT_0079873c;
+void *OptionsSavedCancelKeyHandler;
 
+/* Saved OK-key callback restored when leaving the options-related screen. */
 // GLOBAL: LEGOLAND 0x00798740
-void *DAT_00798740;
+void *OptionsSavedOkKeyHandler;
 
 // GLOBAL: LEGOLAND 0x00798748
 struct IconNode *SpeechVolumeMarkerIcon;
@@ -3868,8 +3889,9 @@ unsigned int SoundAvailable;
 // GLOBAL: LEGOLAND 0x007988c4
 unsigned int SfxMuted;
 
+/* When set, newly played sample instances are immediately paused. */
 // GLOBAL: LEGOLAND 0x007988c8
-unsigned int DAT_007988c8;
+unsigned int PauseNewSamples;
 
 // GLOBAL: LEGOLAND 0x007988cc
 void *SampleListHead;
@@ -4091,7 +4113,7 @@ struct IconNode *TitleNextPageIcon;
 struct EditState TitleSavedEditMode; /* EditMode saved by SaveScreenState */
 
 // GLOBAL: LEGOLAND 0x007cb300
-struct ScreenMode TitleSavedScreenMode; /* DAT_0080ff80 saved */
+struct ScreenMode TitleSavedScreenMode; /* FrontEndScreenMode saved */
 
 // GLOBAL: LEGOLAND 0x007cb30c
 unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
@@ -4456,8 +4478,9 @@ RECT ScreenRect;
 // GLOBAL: LEGOLAND 0x007fe040
 unsigned int AdvisorHelpFlags;
 
+/* Active advisor message may clear early when a nonzero-type objective event is pending. */
 // GLOBAL: LEGOLAND 0x007fe044
-unsigned int DAT_007fe044;
+unsigned int AdvisorClearOnObjectiveEvent;
 
 // GLOBAL: LEGOLAND 0x007fe048
 char *AdvisorHelpText;
@@ -4468,8 +4491,9 @@ unsigned int AdvisorHelpStartTime;
 // GLOBAL: LEGOLAND 0x007fe050
 unsigned int AdvisorHelpClearTime;
 
+/* Last game timer value at which the periodic level-script poll ran. */
 // GLOBAL: LEGOLAND 0x007fe054
-unsigned int DAT_007fe054;
+unsigned int LastLevelScriptRunTime;
 
 // GLOBAL: LEGOLAND 0x007fe114
 unsigned char LegolandCommonThemeCount;
@@ -4630,8 +4654,9 @@ LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // GLOBAL: LEGOLAND 0x0080ff78
 LEGO_EXPORT unsigned char NEWFLC_PauseType;
 
+/* Current front-end screen transition/mode state, saved separately around title and options screens. */
 // GLOBAL: LEGOLAND 0x0080ff80
-struct ScreenMode DAT_0080ff80;
+struct ScreenMode FrontEndScreenMode;
 
 // GLOBAL: LEGOLAND 0x0080ffa0
 struct ScreenState CurrentProfile;

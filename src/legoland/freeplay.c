@@ -182,11 +182,11 @@ unsigned char FreePlayStartIconHandler(unsigned int param_1, unsigned int param_
         return 0;
     }
 
-    if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 0x2) != 0) {
         CurrentProfile.field_45 = 2;
         LoadWatchSprite(0x127, 0x170);
         SpeechCloseFile();
-        DAT_006687b0 = 0x4;
+        SpeechDelayFrames = 0x4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         StartFreePlayGame();
         CleanUpFreePlay();

@@ -1220,8 +1220,8 @@ int ScriptEventInterval(struct ObjectiveEvent *arg) {
     if (LoadIntervalReport(arg->text) != 0) {
         EditMode.unk4 = 2;
         DAT_00668e38 = 1;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 7;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 7;
         return 1;
     }
     retries = arg->field_1c;

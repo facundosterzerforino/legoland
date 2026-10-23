@@ -667,8 +667,10 @@ LEGO_EXPORT int Handle_RndWalk_TileSpecifics(Bloke *bloke, unsigned int x, unsig
     return 0;
 }
 
+/* While walking until a path, stops low-level movement at a tile centre with suitable path/RF flags and a usable
+ * path node. Requires no tile crossing and no bloke flag 4. Returns 1 when stopped. */
 // FUNCTION: LEGOLAND 0x00483b60
-int FUN_00483b60(Bloke *bloke, unsigned int x, unsigned int y) {
+int TryStopBlokeAtLinkedPath(Bloke *bloke, unsigned int x, unsigned int y) {
     Point *pos;
     short mapFlags;
     short rf;
@@ -778,7 +780,7 @@ void BlokeActionWalkUntilPath(Bloke *bloke) {
     d.x += bloke->pos.x;
     d.y += bloke->pos.y;
     if (CheckPassThroughTile(bloke, d.x, d.y) == 0) {
-        if (FUN_00483b60(bloke, d.x, d.y) == 0) {
+        if (TryStopBlokeAtLinkedPath(bloke, d.x, d.y) == 0) {
             if (TurnRandomlyIfBlocked(bloke, d) == 0) {
                 HandleTileEnterLeave(bloke, d.x, d.y);
                 bloke->pos = d;

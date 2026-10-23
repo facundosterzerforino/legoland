@@ -30,7 +30,7 @@ int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int
 void ResetLevelScriptState(void);
 void SetScriptSectionType(char *param_1, unsigned int param_2);
 void SetScriptObjectiveKind(unsigned int param_1);
-void FUN_00478650(struct CommandArgs *param_1, unsigned int param_2);
+void SetScriptObjectivePurgeFlag(struct CommandArgs *param_1, unsigned int param_2);
 int HasEnoughScriptArgs(void *param_1, unsigned int param_2, unsigned int param_3);
 int IsScriptCommandAllowed(void *param_1, unsigned int param_2, unsigned int param_3);
 void ParseRect(int *param_1, char **param_2, int param_3);

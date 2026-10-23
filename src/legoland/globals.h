@@ -1098,20 +1098,20 @@ struct KeyMapping {
 // 0x004bad58
 extern struct KeyMapping CheatKeyMap[0x3c];
 // 0x004bafa8
-extern unsigned int DAT_004bafa8[20];
+extern unsigned int BuildThemeNames[20];
 // 0x004baff8
-extern unsigned int DAT_004baff8;
+extern unsigned int SelectedBuildTheme;
 // 0x004baffc
-extern char DAT_004baffc[4][0x14];
+extern char BuildCategoryNames[4][0x14];
 // 0x004bb094
 extern int InterfaceIconPos[18];
-extern unsigned int DAT_004bb094;
+extern unsigned int LegolandThemeDeselected;
 // 0x004bb098
-extern unsigned int DAT_004bb098;
+extern unsigned int CastleThemeDeselected;
 // 0x004bb09c
-extern unsigned int DAT_004bb09c;
+extern unsigned int WesternThemeDeselected;
 // 0x004bb0a0
-extern unsigned int DAT_004bb0a0;
+extern unsigned int AdventurersThemeDeselected;
 // 0x004bb0a4
 extern struct TrackElemPair DAT_004bb0a4[29];
 // 0x004bb18c
@@ -1129,7 +1129,7 @@ extern int DAT_004bb5a0;
 // 0x004bb5a4
 extern int DAT_004bb5a4;
 // 0x004bb5ac
-extern unsigned int DAT_004bb5ac;
+extern unsigned int ScriptObjectiveKind;
 // 0x004bb5b0
 extern unsigned int ScriptConditionActive;
 // 0x004bb5b4
@@ -1177,7 +1177,7 @@ extern unsigned int DAT_004bed40;
 // 0x004bed44
 extern unsigned int DAT_004bed44;
 // 0x004bef9c
-extern unsigned int DAT_004bef9c;
+extern unsigned int FrontEndInputEnabled;
 // 0x004bf670
 extern unsigned int DAT_004bf670;
 // 0x004bf774
@@ -2417,7 +2417,7 @@ extern unsigned int ScriptDirtyCategories;
 // 0x00668614
 extern unsigned int DAT_00668614;
 // 0x00668618
-extern unsigned int DAT_00668618;
+extern unsigned int AdvisorRepeatPending;
 // 0x0066861c
 extern char BriefingFileName[128];
 // 0x0066869c
@@ -2455,11 +2455,11 @@ extern unsigned int CurrentHelpKind;
 // 0x006687a8
 extern unsigned int HelpRequested;
 // 0x006687ac
-extern unsigned int DAT_006687ac;
+extern unsigned int SpeechImmediateRequest;
 // 0x006687b0
-extern unsigned int DAT_006687b0;
+extern unsigned int SpeechDelayFrames;
 // 0x006687b4
-extern unsigned int DAT_006687b4;
+extern unsigned int SpeechDebouncePending;
 // 0x006687bc
 extern void *OkKeyHandler;
 // 0x006687c0
@@ -2605,11 +2605,11 @@ extern unsigned int DAT_00668e38;
 // 0x00668e3c
 extern void *DAT_00668e3c;
 // 0x00668e40
-extern struct InterfaceListNode *DAT_00668e40;
+extern struct InterfaceListNode *BuildObjectList;
 // 0x00668e44
-extern int DAT_00668e44[8];
+extern int BuildPanelScrollOffsets[8];
 // 0x00668e64
-extern unsigned char DAT_00668e64;
+extern unsigned char BuildPanelScrollIndex;
 // 0x00668e68
 extern struct Sprite *InterfaceBgSprite;
 // 0x00668e6c
@@ -2649,7 +2649,7 @@ extern unsigned int DAT_00668eb4;
 // 0x00668eb8
 extern struct IconNode *ScriptEndIcon;
 // 0x00668ebc
-extern unsigned int DAT_00668ebc;
+extern unsigned int GameInterfaceLoaded;
 extern unsigned int DAT_00668ec0;
 // 0x00668ed8
 extern struct InterfaceResearchNode *ResearchList;
@@ -2713,9 +2713,9 @@ extern char DAT_00668fd0[128];
 // 0x00669050
 extern unsigned char CurrentObjectiveEventFlags;
 // 0x00669054
-extern unsigned int DAT_00669054;
+extern unsigned int ScriptSectionTypeMask;
 // 0x00669058
-extern char DAT_00669058[0x40];
+extern char ScriptSectionName[0x40];
 // 0x00669098
 extern unsigned int NextScriptSectionId;
 // 0x004bc0ec
@@ -2969,9 +2969,9 @@ extern void *SavedGameList;
 // 0x00798738
 extern int DAT_00798738;
 // 0x0079873c
-extern void *DAT_0079873c;
+extern void *OptionsSavedCancelKeyHandler;
 // 0x00798740
-extern void *DAT_00798740;
+extern void *OptionsSavedOkKeyHandler;
 // 0x00798748
 extern struct IconNode *SpeechVolumeMarkerIcon;
 // 0x0079874c
@@ -3025,7 +3025,7 @@ extern unsigned int SoundAvailable;
 // 0x007988c4
 extern unsigned int SfxMuted;
 // 0x007988c8
-extern unsigned int DAT_007988c8;
+extern unsigned int PauseNewSamples;
 // 0x007988cc
 extern void *SampleListHead;
 // 0x0079a694
@@ -3190,7 +3190,7 @@ extern struct IconNode *TitleNextPageIcon;
 // 0x007cb2f0
 extern struct EditState TitleSavedEditMode; /* EditMode saved by SaveScreenState */
 // 0x007cb300
-extern struct ScreenMode TitleSavedScreenMode; /* DAT_0080ff80 saved */
+extern struct ScreenMode TitleSavedScreenMode; /* FrontEndScreenMode saved */
 // 0x007cb30c
 extern unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
 // 0x007cb310
@@ -3433,7 +3433,7 @@ extern RECT ScreenRect;
 // 0x007fe040
 extern unsigned int AdvisorHelpFlags;
 // 0x007fe044
-extern unsigned int DAT_007fe044;
+extern unsigned int AdvisorClearOnObjectiveEvent;
 // 0x007fe048
 extern char *AdvisorHelpText;
 // 0x007fe04c
@@ -3441,7 +3441,7 @@ extern unsigned int AdvisorHelpStartTime;
 // 0x007fe050
 extern unsigned int AdvisorHelpClearTime;
 // 0x007fe054
-extern unsigned int DAT_007fe054;
+extern unsigned int LastLevelScriptRunTime;
 // 0x007fe114
 extern unsigned char LegolandCommonThemeCount;
 // 0x007fe115
@@ -3548,7 +3548,7 @@ extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // 0x0080ff78
 extern LEGO_EXPORT unsigned char NEWFLC_PauseType;
 // 0x0080ff80
-extern struct ScreenMode DAT_0080ff80;
+extern struct ScreenMode FrontEndScreenMode;
 // 0x0080ffa0
 extern struct ScreenState CurrentProfile;
 // 0x008100c0

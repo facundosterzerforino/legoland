@@ -89,16 +89,16 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string = GetString(0x2bf);
     icon->flags |= 0x6002;
     icon->event_handler = TitleMovieHandler;
-    DAT_0080ff80.unk0 = 0x898;
+    FrontEndScreenMode.unk0 = 0x898;
 }
 
 // FUNCTION: LEGOLAND 0x0048fe20
 unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         LoadMode = 1;
         DAT_007cb324 = 1;
-        DAT_0080ff80.unk8 = 4;
+        FrontEndScreenMode.unk8 = 4;
     }
     return 1;
 }
@@ -107,15 +107,15 @@ unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2) 
  * level-selection screen. */
 // FUNCTION: LEGOLAND 0x0048feb0
 unsigned char TitleNewGameHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         CurrentProfile.field_45 = 1;
         RemoveIconGroup(7);
         KillTitleScreenSprites();
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk8 = 6;
+        FrontEndScreenMode.unk8 = 6;
         MapStats.level_end = 0;
     }
     return 1;
@@ -124,11 +124,11 @@ unsigned char TitleNewGameHandler(unsigned int param_1, unsigned int param_2) {
 /* Handles the title screen Free Play button: closes speech and switches the front end to the free-play screen. */
 // FUNCTION: LEGOLAND 0x0048ff20
 unsigned char TitleFreePlayHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_0080ff80.unk8 = 3;
+        FrontEndScreenMode.unk8 = 3;
         return 2;
     }
     return 1;
@@ -137,9 +137,9 @@ unsigned char TitleFreePlayHandler(unsigned int param_1, unsigned int param_2) {
 /* Handles the title screen registration button by selecting front-end screen zero. */
 // FUNCTION: LEGOLAND 0x0048ff70
 unsigned char TitleRegistrationHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_0080ff80.unk8 = 0;
+        FrontEndScreenMode.unk8 = 0;
     }
     return 1;
 }
@@ -156,12 +156,12 @@ void KillTitleScreenBkSpriteAndRemoveIconGroup7(void) {
 /* Handles the title screen movie button: saves the current screen state and requests front-end screen nine. */
 // FUNCTION: LEGOLAND 0x0048ffe0
 unsigned char TitleMovieHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         SaveScreenState(&DAT_007cb30c, &TitleSavedScreenMode, &TitleSavedEditMode);
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 9;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 9;
         DAT_00668e38 = 1;
     }
     return 1;
@@ -169,7 +169,7 @@ unsigned char TitleMovieHandler(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00490050
 unsigned char AdvertGoBackHandler(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillTitleScreenBkSpriteAndRemoveIconGroup7();
         RestoreScreenState(&DAT_007cb30c, &TitleSavedScreenMode, &TitleSavedEditMode);
@@ -179,7 +179,7 @@ unsigned char AdvertGoBackHandler(unsigned int param_1, unsigned char param_2) {
 
 // FUNCTION: LEGOLAND 0x00490090
 unsigned char PlayBillundAvi(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf58c
         PlayMovie("Billund.avi", 1, 1);
@@ -190,7 +190,7 @@ unsigned char PlayBillundAvi(unsigned int param_1, unsigned char param_2) {
 
 // FUNCTION: LEGOLAND 0x004900d0
 unsigned char PlayWindsorAvi(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf598
         PlayMovie("Windsor.avi", 1, 1);
@@ -201,7 +201,7 @@ unsigned char PlayWindsorAvi(unsigned int param_1, unsigned char param_2) {
 
 // FUNCTION: LEGOLAND 0x00490110
 unsigned char PlayCaliforniaAvi(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf5a4
         PlayMovie("California.avi", 1, 1);
@@ -263,10 +263,10 @@ void KillCertificateScreen(void) {
 
 // FUNCTION: LEGOLAND 0x004902c0
 unsigned char CertificateGoBackHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillCertificateScreen();
-        DAT_0080ff80.unk8 = 1;
+        FrontEndScreenMode.unk8 = 1;
         DAT_00798770 = 0;
     }
     return 1;
@@ -274,7 +274,7 @@ unsigned char CertificateGoBackHandler(unsigned int param_1, unsigned int param_
 
 // FUNCTION: LEGOLAND 0x00490300
 unsigned char CertificatePrintHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         if (CertificatePrintResultTimer == 0 && DAT_0079876c == 0) {
             DAT_0079876c = 2;
@@ -334,7 +334,7 @@ void RenderCertificateScreen(void) {
             DAT_0079876c = DAT_0079876c + -1;
             if (DAT_0079876c == 0) {
                 SpeechCloseFile();
-                DAT_006687b0 = 4;
+                SpeechDelayFrames = 4;
                 CertificatePrintResultTimer = PrintCertificateWithCurrentDate() ? 0x8c : -0x8c;
             }
         } else if (0 < CertificatePrintResultTimer) {
@@ -527,7 +527,7 @@ unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char par
             SetPendingMovie(DAT_004d8bb0);
         }
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         ResumeGameTimer();
         ResumeAllSamples();
         ClearAdvisorHelp();
@@ -790,8 +790,8 @@ unsigned int ShowIntervalScreen(const char *a, const char *b) {
         }
         DAT_00668e38 = 1;
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 7;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 7;
         if (DAT_00668e9c != 0) {
             ((struct IconNode *)DAT_00668e9c)->flags &= 0xfffffbff;
         }

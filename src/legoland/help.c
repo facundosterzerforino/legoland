@@ -40,38 +40,42 @@ LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned
     AdvisorHelpText = (char *)malloc(strlen(param_1) + 1);
     strcpy(AdvisorHelpText, param_1);
     AdvisorHelpStartTime = GetGameTimer();
-    DAT_007fe044 = param_2;
+    AdvisorClearOnObjectiveEvent = param_2;
     UpdateScriptEndIcon((void *)0);
     return 1;
 }
 
+/* Whether the next advisor message may be shown: accepts an expired clear timer, a nonzero-type pending objective
+ * event, or a repeated-objective request; consumes the repeat request on success. */
 // FUNCTION: LEGOLAND 0x0046cee0
-unsigned int FUN_0046cee0(void) {
+unsigned int CanShowNextAdvisorMessage(void) {
     unsigned int result = GetGameTimer() - AdvisorHelpClearTime;
     if ((int)result >= 0) {
-        DAT_00668618 = 0;
+        AdvisorRepeatPending = 0;
         return 1;
     }
     if (DAT_00668724 != NULL) {
         if (((struct ObjectiveEvent *)DAT_00668724)->type == 0) {
-            if (DAT_00668618 == 0) {
+            if (AdvisorRepeatPending == 0) {
                 return 0;
             }
         }
     } else {
-        if (DAT_00668618 == 0) {
+        if (AdvisorRepeatPending == 0) {
             return 0;
         }
     }
-    DAT_00668618 = 0;
+    AdvisorRepeatPending = 0;
     return 1;
 }
 
+/* Clears the active advisor message after 30000 game-time units, or when its clear-on-event flag is set and a
+ * nonzero-type objective event is pending. */
 // FUNCTION: LEGOLAND 0x0046cf20
-unsigned int FUN_0046cf20(void) {
+unsigned int ShouldClearAdvisorMessage(void) {
     int diff = (int)(GetGameTimer() - AdvisorHelpStartTime);
 
-    if (diff > 0x7530 || (DAT_007fe044 != 0 && DAT_00668724 != NULL && ((struct ObjectiveEvent *)DAT_00668724)->type != 0)) {
+    if (diff > 0x7530 || (AdvisorClearOnObjectiveEvent != 0 && DAT_00668724 != NULL && ((struct ObjectiveEvent *)DAT_00668724)->type != 0)) {
         return 1;
     }
     return 0;
@@ -83,14 +87,14 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
 
     PostPendingObjectiveHints();
 
-    delta = (int)(GetGameTimer() - DAT_007fe054);
+    delta = (int)(GetGameTimer() - LastLevelScriptRunTime);
     if (delta > 0xc8) {
         RunLevelScript();
-        DAT_007fe054 = GetGameTimer();
+        LastLevelScriptRunTime = GetGameTimer();
     }
 
     if ((AdvisorHelpFlags & 0x1) != 0) {
-        if (FUN_0046cf20() != 0) {
+        if (ShouldClearAdvisorMessage() != 0) {
             ClearAdvisorHelp();
             AdvisorHelpClearTime = GetGameTimer();
         } else {
@@ -98,7 +102,7 @@ LEGO_EXPORT void ProcessInGameHelp(void) {
             AdvisorHelpClearTime = GetGameTimer();
         }
     } else {
-        if (FUN_0046cee0() != 0) {
+        if (CanShowNextAdvisorMessage() != 0) {
             ShowNextObjectiveMessage();
         }
     }
@@ -166,21 +170,21 @@ void UpdateSpeechPlayback(void) {
     if (HelpRequested == 0) {
         CurrentHelpKey = 0xffffffff;
     }
-    if (DAT_006687ac == 0 && DAT_006687b0 != 0) {
-        DAT_006687b0 = DAT_006687b0 - 1;
+    if (SpeechImmediateRequest == 0 && SpeechDelayFrames != 0) {
+        SpeechDelayFrames = SpeechDelayFrames - 1;
         return;
     }
     if ((int)CurrentHelpKind < 3 && HelpRequested != 0) {
         unsigned int prev = HelpChanged;
         HelpRequested = 0;
         if (prev != 0) {
-            if (GetTickCount() - HelpShownTick < 500 && DAT_006687ac == 0) {
-                DAT_006687b4 = 1;
+            if (GetTickCount() - HelpShownTick < 500 && SpeechImmediateRequest == 0) {
+                SpeechDebouncePending = 1;
                 return;
             }
-            DAT_006687b4 = 0;
+            SpeechDebouncePending = 0;
             HelpChanged = 0;
-            DAT_006687ac = 0;
+            SpeechImmediateRequest = 0;
             HelpShownTick = GetTickCount();
             SpeechCloseFile();
             if (CurrentHelpKey != 0xffffffff) {
@@ -230,7 +234,7 @@ unsigned int PlaySpeech(unsigned int a1) {
             HelpShownTick = GetTickCount();
             CurrentHelpKind = 0;
             HelpChanged = 1;
-            DAT_006687ac = 1;
+            SpeechImmediateRequest = 1;
             ClearAdvicePriority();
             HelpRequested = 1;
             UpdateSpeechPlayback();

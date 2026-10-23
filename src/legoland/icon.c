@@ -374,7 +374,7 @@ void ScrollIconRegion(struct InterfacePanel *r, int param_2, int param_3) {
     r->field_14 = r->field_14 + dx;
     content_bottom = r->content_bottom;
     r->content_bottom = content_bottom + dy;
-    DAT_00668e44[DAT_00668e64] = DAT_00668e44[DAT_00668e64] + dy;
+    BuildPanelScrollOffsets[BuildPanelScrollIndex] = BuildPanelScrollOffsets[BuildPanelScrollIndex] + dy;
     field_0 = r->group;
     MoveIcons(0xffff, field_0, (short)dx, (short)dy);
 }
@@ -443,7 +443,7 @@ unsigned char ScrollIconRegionBack(struct IconNode *icon, unsigned char buttons,
 void ScrollActiveIconRegionForward(void) {
     unsigned int v;
     struct IconNode *icon;
-    if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
+    if (EditMode.unk4 == 2 && FrontEndScreenMode.unk8 == 3) {
         int field = CONTROLLERBUFFER->x;
         if (field < 0xb2) {
             v = 0xc8;
@@ -469,7 +469,7 @@ void ScrollActiveIconRegionForward(void) {
 void ScrollActiveIconRegionBack(void) {
     unsigned int v;
     struct IconNode *icon;
-    if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
+    if (EditMode.unk4 == 2 && FrontEndScreenMode.unk8 == 3) {
         int field = CONTROLLERBUFFER->x;
         if (field < 0xb2) {
             v = 0xc8;

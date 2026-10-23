@@ -83,8 +83,10 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
     worker->pos.y = pt[1] << 8;
 }
 
+/* Handles a worker drop on its matching home building (potting shed or mechanics hut), setting its position/action
+ * and playing the drop sound. Also returns true for a path-control object without assigning a work order. */
 // FUNCTION: LEGOLAND 0x00470270
-int FUN_00470270(void) {
+int TryDropWorkerOnHomeOrPath(void) {
     unsigned int v = Hover.data.value & 0xffff;
     int x = v & 0xff;
     int y = v >> 8;
@@ -122,8 +124,10 @@ int FUN_00470270(void) {
     return ride->element == (Element *)PathControlHandle;
 }
 
+/* Looks up the hovered gardener/mechanic work order. On success optionally returns its footprint corner in tile
+ * coordinates and plays the corresponding worker drop sound. */
 // FUNCTION: LEGOLAND 0x00470410
-WorkOrder *FUN_00470410(Point *out) {
+WorkOrder *FindHoveredWorkerOrder(Point *out) {
     WorkOrder *order;
     unsigned int v = Hover.data.value & 0xffff;
     int x = v & 0xff;
@@ -149,8 +153,10 @@ WorkOrder *FUN_00470410(Point *out) {
     return NULL;
 }
 
+/* Creates a repair order for the hovered durable object if its worker type is enabled and no order is already
+ * flagged. Marks tile flag 0x4000, optionally returns the order footprint corner, and plays the drop sound. */
 // FUNCTION: LEGOLAND 0x004704b0
-WorkOrder *FUN_004704b0(Point *out) {
+WorkOrder *CreateHoveredWorkerRepairOrder(Point *out) {
     unsigned int v = Hover.data.value & 0xffff;
     struct Point pos;
     MapElement *elem;
@@ -216,17 +222,17 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
             DAT_00668954 = 0;
             for (;;) {
                 if (Hover.type == 0x103) {
-                    if (FUN_00470270()) {
+                    if (TryDropWorkerOnHomeOrPath()) {
                         DAT_00668954 = 0;
                         return;
                     }
-                    order = FUN_00470410((Point *)pt);
+                    order = FindHoveredWorkerOrder((Point *)pt);
                     if (order != NULL) {
                         x = pt[0];
                         DAT_00668954 = 0;
                         isOrder = 1;
                     } else {
-                        order = FUN_004704b0((Point *)pt);
+                        order = CreateHoveredWorkerRepairOrder((Point *)pt);
                         if (order == NULL) {
                             break;
                         }

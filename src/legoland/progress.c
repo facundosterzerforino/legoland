@@ -45,8 +45,8 @@ LEGO_EXPORT void InitProgressScreen(void) {
         DAT_00668e38 = 1;
         SPRITE_TitleScreenBk = NULL;
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 8;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 8;
         GamePad &= ~0x20;
         return;
     }
@@ -147,7 +147,7 @@ unsigned char ProgressLevelClicked(unsigned char *arg0, unsigned int arg1, unsig
         ProgressScreenTables.last_clicked = arg0[0x18];
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         lpConfig->level = arg0[0x18] + 1;
-        DAT_0080ff80.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk4 = 0xffffffff;
     }
     return 1;
 }
@@ -159,7 +159,7 @@ unsigned char ProgressPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
             CancelKeyHandler = 0;
             OkKeyHandler = 0;
             SpeechCloseFile();
-            DAT_006687b0 = 4;
+            SpeechDelayFrames = 4;
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
             KillProgressScreenSprites();
             if ((int)lpConfig->level <= 0xf) {
@@ -177,8 +177,8 @@ unsigned char ProgressPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
                 GamePad &= ~0x20;
                 DAT_00798668 = 0;
                 EditMode.unk4 = 2;
-                DAT_0080ff80.unk4 = 0xffffffff;
-                DAT_0080ff80.unk8 = 8;
+                FrontEndScreenMode.unk4 = 0xffffffff;
+                FrontEndScreenMode.unk8 = 8;
                 DAT_00668e38 = 1;
             }
         } while (0);
@@ -294,7 +294,7 @@ unsigned char TutorialPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
         CancelKeyHandler = 0;
         OkKeyHandler = 0;
         SpeechCloseFile();
-        DAT_006687b0 = 4;
+        SpeechDelayFrames = 4;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillTutorialScreenSprites();
         LoadWatchSprite(0x186, 0x18b);
@@ -340,7 +340,7 @@ unsigned char ToggleProgressTutorialScreenClicked(void *param1, unsigned char pa
     if (param2 & 2) {
         DAT_00798660 = 0;
         DAT_00798668 = 1;
-        DAT_0080ff80.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk4 = 0xffffffff;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         if (ProgressShowsTutorials != 0) {
             KillTutorialScreenSprites();

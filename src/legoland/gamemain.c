@@ -643,8 +643,8 @@ void ResetLevelScriptState(void) {
     NEWFLC_Repeat = 0;
     NEWFLC_BuffSize = 1;
     NEWFLC_CheckDuplicate = 1;
-    DAT_00669054 = 0;
-    DAT_004bb5ac = 1;
+    ScriptSectionTypeMask = 0;
+    ScriptObjectiveKind = 1;
     CurrentObjectiveEventFlags = 0;
     CurrentScriptSection = 0;
     NextScriptSectionId = 0;
@@ -686,13 +686,13 @@ void ResetLevelScriptState(void) {
 
 // FUNCTION: LEGOLAND 0x004785d0
 void SetScriptSectionType(char *param_1, unsigned int param_2) {
-    strcpy(DAT_00669058, param_1);
-    DAT_00669054 = param_2;
+    strcpy(ScriptSectionName, param_1);
+    ScriptSectionTypeMask = param_2;
 }
 
 // FUNCTION: LEGOLAND 0x00478610
 void SetScriptObjectiveKind(unsigned int param_1) {
-    DAT_004bb5ac = param_1;
+    ScriptObjectiveKind = param_1;
     switch (param_1) {
     case 1:
         CurrentObjectiveEventFlags = 1;
@@ -709,8 +709,10 @@ void SetScriptObjectiveKind(unsigned int param_1) {
     }
 }
 
+/* For a script command with an argument, sets current objective flag 8 when arg1 is PURGE (case insensitive),
+ * otherwise clears it. Leaves the flags unchanged when there is no argument. */
 // FUNCTION: LEGOLAND 0x00478650
-void FUN_00478650(struct CommandArgs *param_1, unsigned int param_2) {
+void SetScriptObjectivePurgeFlag(struct CommandArgs *param_1, unsigned int param_2) {
     if (param_2 == 0) {
         return;
     }
@@ -729,7 +731,7 @@ int HasEnoughScriptArgs(void *param_1, unsigned int param_2, unsigned int param_
 
 // FUNCTION: LEGOLAND 0x004786a0
 int IsScriptCommandAllowed(void *param_1, unsigned int param_2, unsigned int param_3) {
-    return (DAT_00669054 & param_3) != 0;
+    return (ScriptSectionTypeMask & param_3) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x004786c0

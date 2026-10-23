@@ -16,7 +16,7 @@ LEGO_EXPORT void KillSaveScreenSprites(void);
 LEGO_EXPORT void DeleteSavedGameList(void);
 LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot);
 LEGO_EXPORT char LoadSavedGamesList(unsigned char profile);
-unsigned char FUN_0048db10(int param1, unsigned char flags);
+unsigned char SavedGameReturnToOptionsClicked(int param1, unsigned char flags);
 unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4);
 unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags);
 unsigned char DeletePopUpOkHandler(unsigned int a1, unsigned int a2);
