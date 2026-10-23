@@ -147,8 +147,7 @@ void UpdateSpaceTowerSeat(struct SpaceTowerSeat *seat) {
     }
 }
 
-/* Clears the four seat active flags and states, then activates seats whose two rider slots are occupied and resets
- * their motion state. */
+/* Clears all four seat states, then activates each seat with at least one occupied rider slot and resets its motion state. */
 // FUNCTION: LEGOLAND 0x0043a9b0
 void SyncSpaceTowerSeatsFromOccupancy(struct SpaceTowerCar *arg) {
     int i;

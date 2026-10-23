@@ -1,6 +1,6 @@
 # HTBubbleHelp (0x004557c0, `src/legoland/text.c`)
 
-**Best: 76.47%**
+**Best: 100.00% (verified)**
 
 ## What still differs
 
@@ -29,3 +29,7 @@ in the harness. Removing register (no change) and the redundant cell_h
 copy, reading the cached height directly, gives 98.54. The only remaining
 harness hunk is our epilogue beyond the reported original extent.
 No padding, volatile, assembly, or copied data added.
+
+Full per-function verification of the rectangle fix: **76.47% -> 100.00%**,
+with no other function regressions. Harness-only epilogue differences do not
+remain in reccmp.

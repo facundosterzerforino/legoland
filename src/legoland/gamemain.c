@@ -578,6 +578,8 @@ int ParseScriptFile(const char *name, struct ScriptCommand *commands, int count,
     return 0;
 }
 
+/* Reads resource-script lines, strips hash comments, tokenizes them and dispatches matching or default command
+ * handlers. Counts zero-status failures and optionally calls the final check handler. */
 // FUNCTION: LEGOLAND 0x00478280
 int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int count, int flags) {
     char line[1024];
@@ -591,14 +593,14 @@ int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int
     char found;
     struct ScriptCommand *cmd;
 
-    DAT_00668fcc = 0;
+    ScriptResourceLineNumber = 0;
     cmd = commands;
     r = 0;
     // STRING: LEGOLAND 0x004bbdcc
     if (strcmp(cmd->name, "none") == 0)
         deflt = cmd->fn;
     while (ReadResFileLine(file, line, 1024)) {
-        DAT_00668fcc++;
+        ScriptResourceLineNumber++;
         DrawWatchSprite();
         p = strchr(line, '#');
         if (p)
