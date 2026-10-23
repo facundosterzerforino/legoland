@@ -371,16 +371,24 @@ void LegoShop2Update(Element *obj) {
                 bloke->param_action++;
                 break;
             case 3:
+                /* walk to one of three browse spots: (x - 3, y), (x - 1, y - 2) or (x - 3, y - 2.5);
+                 * case 5 puts the visitor back on the same three */
                 r = rand() % 3;
                 if (r == 2) {
-                    /* (x - 3, y): the same spot case 5 puts the visitor back on */
                     x = (x - 3) << 8;
                     y <<= 8;
                     bloke->dest.x = x;
                     bloke->dest.y = y;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->low_level_action = 7;
+                    bloke->target_dir = dir + 0x10;
+                    NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
+                    bloke->param_action++;
+                    break;
                 } else if (r == 1) {
-                    bloke->dest.x = (x << 8) - 0x100;
+                    x = (x << 8) - 0x100;
                     y = (y - 2) << 8;
+                    bloke->dest.x = x;
                     bloke->dest.y = y;
                 } else {
                     x = (x - 3) << 8;
@@ -400,18 +408,24 @@ void LegoShop2Update(Element *obj) {
             case 5:
                 r = rand() % 3;
                 if (r == 2) {
-                    bloke->pos.x = (x - 3) << 8;
-                    bloke->pos.y = y << 8;
+                    x = (x - 3) << 8;
+                    y <<= 8;
+                    bloke->pos.x = x;
+                    bloke->pos.y = y;
                     bloke->field_58 = rand() % 50;
                     bloke->param_action = 8;
                 } else if (r == 1) {
-                    bloke->pos.x = (x << 8) - 0x100;
-                    bloke->pos.y = (y - 2) << 8;
+                    x = (x << 8) - 0x100;
+                    y = (y - 2) << 8;
+                    bloke->pos.x = x;
+                    bloke->pos.y = y;
                     bloke->field_58 = rand() % 50;
                     bloke->param_action = 8;
                 } else {
-                    bloke->pos.x = (x - 3) << 8;
-                    bloke->pos.y = (y << 8) - 0x280;
+                    x = (x - 3) << 8;
+                    y = (y << 8) - 0x280;
+                    bloke->pos.x = x;
+                    bloke->pos.y = y;
                     bloke->param_action = 9;
                 }
                 break;
@@ -446,8 +460,8 @@ void LegoShop2Update(Element *obj) {
                 break;
             case 11:
                 x <<= 8;
-                bloke->dest.x = x;
                 y <<= 8;
+                bloke->dest.x = x;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
