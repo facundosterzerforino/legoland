@@ -5514,7 +5514,7 @@ L4231c6:
 // FUNCTION: LEGOLAND 0x00423200
 void RecordDepthSpans(int n, int x, struct RecIdx *idx, struct RecSrc *src) {
     short *p = (short *)DepthSpanRecordEnd;
-    struct RecBuf *saved = (struct RecBuf *)p;
+    struct RecBuf *saved = DepthSpanRecordEnd;
     int i;
 
     DepthSpanRecordCount++;
