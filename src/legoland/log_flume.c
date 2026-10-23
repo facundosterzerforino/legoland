@@ -2617,7 +2617,7 @@ struct RideSpriteInfo *GetLogFlumeTrackSpriteInfo(struct Element *unused, TileId
     struct LLS *lls;
     int idx;
 
-    DAT_004c74d8.id = tile.id;
+    LogFlumeTrackSpriteInfo.id = tile.id;
     entry = FindFlumePieceAtTile((struct SubBuf *)&tile);
     if (entry != NULL) {
         if (entry->flags10d & 4) {
@@ -2625,19 +2625,19 @@ struct RideSpriteInfo *GetLogFlumeTrackSpriteInfo(struct Element *unused, TileId
         }
         idx = GetFlumeTrackSpriteIndex((struct FlumeEntry *)entry);
         spr = LogFlumeImageList->sprites[(unsigned char)idx];
-        DAT_004c74d8.sprite = spr;
-        DAT_004c74d8.x = LogFlumeImageList->offset_x[(unsigned char)idx] >> 1;
-        DAT_004c74d8.y = LogFlumeImageList->offset_y[(unsigned char)idx] >> 1;
-        DAT_004c74d8.field_10 = 0;
+        LogFlumeTrackSpriteInfo.sprite = spr;
+        LogFlumeTrackSpriteInfo.x = LogFlumeImageList->offset_x[(unsigned char)idx] >> 1;
+        LogFlumeTrackSpriteInfo.y = LogFlumeImageList->offset_y[(unsigned char)idx] >> 1;
+        LogFlumeTrackSpriteInfo.field_10 = 0;
         lls = GetLLSForSprite((struct Sprite *)spr);
         if (lls != NULL) {
             LLSStop(lls);
             LLSSetFrame(lls, entry->parent->submode);
         }
-        ((struct Sprite *)DAT_004c74d8.sprite)->flags |= 0x2000;
-        DAT_004c74d8.field_10 = 0;
+        ((struct Sprite *)LogFlumeTrackSpriteInfo.sprite)->flags |= 0x2000;
+        LogFlumeTrackSpriteInfo.field_10 = 0;
     }
-    return &DAT_004c74d8;
+    return &LogFlumeTrackSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0040ca30
@@ -2671,8 +2671,8 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
     int idx;
 
     RenderItems2_New();
-    DAT_004c8d74 = NULL;
-    DAT_004ca5ac = NULL;
+    FlumeCornerBarrelsLowWeight = NULL;
+    FlumeCornerBarrelsHighWeight = NULL;
     /* sort the slots at this corner into the lists drawn before / after the corner sprite */
     for (i = 0; i < par->count; i++) {
         slot = &par->slots[i];
@@ -2687,9 +2687,9 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
                 }
             }
             if (w <= DOUBLE_004ab398) {
-                RenderItem2_AddItem(&DAT_004c8d74, slot, 0);
+                RenderItem2_AddItem(&FlumeCornerBarrelsLowWeight, slot, 0);
             } else {
-                RenderItem2_AddItem(&DAT_004ca5ac, slot, 0);
+                RenderItem2_AddItem(&FlumeCornerBarrelsHighWeight, slot, 0);
             }
             count++;
         }
@@ -2704,30 +2704,30 @@ int RenderLogFlumeCorner(struct FlumeEntry *entry, int arg) {
         thisX = entry->tile.pos.x;
         if (entry->submode == 0) {
             if (next->tile.pos.x != thisX) {
-                DrawFlumeBarrelList(&DAT_004c8d74, entry);
+                DrawFlumeBarrelList(&FlumeCornerBarrelsLowWeight, entry);
                 if (spr != NULL) {
                     PrintSprite(spr, pos.x, pos.y, arg, 0);
                 }
-                DrawFlumeBarrelList(&DAT_004ca5ac, entry);
+                DrawFlumeBarrelList(&FlumeCornerBarrelsHighWeight, entry);
             } else {
-                DrawFlumeBarrelList(&DAT_004ca5ac, entry);
+                DrawFlumeBarrelList(&FlumeCornerBarrelsHighWeight, entry);
                 if (spr != NULL) {
                     PrintSprite(spr, pos.x, pos.y, 0, 0);
                 }
-                DrawFlumeBarrelList(&DAT_004c8d74, entry);
+                DrawFlumeBarrelList(&FlumeCornerBarrelsLowWeight, entry);
             }
         } else if (next->tile.pos.x != thisX) {
-            DrawFlumeBarrelList(&DAT_004ca5ac, entry);
+            DrawFlumeBarrelList(&FlumeCornerBarrelsHighWeight, entry);
             if (spr != NULL) {
                 PrintSprite(spr, pos.x, pos.y, 0, 0);
             }
-            DrawFlumeBarrelList(&DAT_004c8d74, entry);
+            DrawFlumeBarrelList(&FlumeCornerBarrelsLowWeight, entry);
         } else {
-            DrawFlumeBarrelList(&DAT_004c8d74, entry);
+            DrawFlumeBarrelList(&FlumeCornerBarrelsLowWeight, entry);
             if (spr != NULL) {
                 PrintSprite(spr, pos.x, pos.y, 0, 0);
             }
-            DrawFlumeBarrelList(&DAT_004ca5ac, entry);
+            DrawFlumeBarrelList(&FlumeCornerBarrelsHighWeight, entry);
         }
         idx = GetFlumeTrackSpriteIndex((struct FlumeEntry *)entry);
         pos = GetFlumePieceScreenPos(entry);
@@ -4101,13 +4101,13 @@ struct RideSpriteInfo *GetFlumePieceSpriteInfo(struct Element *arg1, TileId arg2
     struct FlumeEntry *entry = FindFlumeSubEntryByTile(&arg2);
     if (entry != NULL) {
         DrawFlumeTrackEnds((struct FlumeEntry *)entry, 0);
-        DAT_004cbe58.id = arg2.id;
-        DAT_004cbe58.sprite = src->layer;
-        DAT_004cbe58.x = src->field_14;
-        DAT_004cbe58.y = src->field_18;
-        DAT_004cbe58.field_10 = 0;
+        FlumePieceSpriteInfo.id = arg2.id;
+        FlumePieceSpriteInfo.sprite = src->layer;
+        FlumePieceSpriteInfo.x = src->field_14;
+        FlumePieceSpriteInfo.y = src->field_18;
+        FlumePieceSpriteInfo.field_10 = 0;
     }
-    return &DAT_004cbe58;
+    return &FlumePieceSpriteInfo;
 }
 
 // FUNCTION: LEGOLAND 0x0040edb0

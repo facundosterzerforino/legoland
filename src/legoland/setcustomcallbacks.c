@@ -200,7 +200,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
         iface->cb_8c = EaterySetEditMode;
         iface->cb_pre_render = FoodcartDrinkUpdate;
         iface->cb_9c = EateryRemoveObject;
-        iface->cb_b0 = FUN_0042e830;
+        iface->cb_b0 = RenderFoodStallCustomers;
     }
     // STRING: LEGOLAND 0x004b8944
     else if (_stricmp("FOODCART FOOD", head->name) == 0) {
@@ -209,7 +209,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
         iface->cb_8c = EaterySetEditMode;
         iface->cb_pre_render = FoodcartFoodUpdate;
         iface->cb_9c = EateryRemoveObject;
-        iface->cb_b0 = FUN_0042e830;
+        iface->cb_b0 = RenderFoodStallCustomers;
     }
     // STRING: LEGOLAND 0x004b8930
     else if (_stricmp("FOODCART ICECREAM", head->name) == 0) {
@@ -218,7 +218,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
         iface->cb_8c = EaterySetEditMode;
         iface->cb_pre_render = FoodcartIcecreamUpdate;
         iface->cb_9c = EateryRemoveObject;
-        iface->cb_b0 = FUN_0042e830;
+        iface->cb_b0 = RenderFoodStallCustomers;
     }
     // STRING: LEGOLAND 0x004b8920
     else if (_stricmp("OCTOPUS CAFE", head->name) == 0) {
@@ -271,7 +271,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct Element *head) {
         iface->cb_8c = EaterySetEditMode;
         iface->cb_9c = EateryRemoveObject;
         iface->cb_pre_render = SharkCafeUpdate;
-        iface->cb_b0 = FUN_0042e830;
+        iface->cb_b0 = RenderFoodStallCustomers;
     }
     // STRING: LEGOLAND 0x004b83dc
     else if (_stricmp("SHARK CAFE BROLLY", head->name) == 0) {

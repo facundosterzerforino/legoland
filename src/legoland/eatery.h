@@ -63,7 +63,7 @@ void LoadFoodcartIcecreamResources(struct Element *obj);
 void UnloadFoodcartIcecreamResources();
 void LoadFoodcartFoodResources(struct Element *obj);
 void UnloadFoodcartFoodResources();
-void FUN_0042e830(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value);
+void RenderFoodStallCustomers(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value);
 void LoadCastleBBQResources(struct Element *obj);
 void UnloadCastleBBQResources();
 void EaterySetEditMode(struct Element *arg);

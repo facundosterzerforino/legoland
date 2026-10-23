@@ -352,8 +352,10 @@ void SetRandomGoldPanTime(struct RideNode *param) {
     param->rider->field_58 = value + 15;
 }
 
+/* Gold rush: one tick of a visitor panning at a wash slot (pan animation, facing direction 1). When field_58 runs
+ * out, releases the slot and moves on to the next step. */
 // FUNCTION: LEGOLAND 0x00407250
-void FUN_00407250(struct RideNode *ref) {
+void GoldRushWashPan(struct RideNode *ref) {
     struct Bloke *b = ref->rider;
 
     b->flags |= 0x100;
@@ -423,7 +425,7 @@ void GoldRushUpdate(struct Element *elem) {
                 b->param_action++;
                 break;
             case 6:
-                FUN_00407250((struct RideNode *)node);
+                GoldRushWashPan((struct RideNode *)node);
                 break;
             case 7:
                 FUN_00407170((struct RideNode *)node, t);

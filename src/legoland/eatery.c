@@ -293,8 +293,10 @@ void LoadFoodcartFoodResources(struct Element *obj) {
 // FUNCTION: LEGOLAND 0x0042e820
 void UnloadFoodcartFoodResources(void) { KillMoneySFX(); }
 
+/* Render callback (cb_b0) of the foodcart drink/food/icecream stalls and the shark cafe: draws every customer
+ * standing on the rendered tile. */
 // FUNCTION: LEGOLAND 0x0042e830
-void FUN_0042e830(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
+void RenderFoodStallCustomers(struct Element *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
     struct Ride *owner = arg->ride;
     struct RideNode *node = owner->riders;
     if (node == NULL) {

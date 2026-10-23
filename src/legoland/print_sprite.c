@@ -133,8 +133,10 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
     return result;
 }
 
+/* Bounding rectangle {x0, y0, x1, y1} of a sprite: (0, 0, w-1, h-1) for a plain sprite, the union of the parts
+ * (with their offsets) for a sprite group (flags & 0x8000). */
 // FUNCTION: LEGOLAND 0x004855d0
-void FUN_004855d0(struct Sprite *sprite, int *out) {
+void GetSpriteExtent(struct Sprite *sprite, int *out) {
     int xoff;
     int yoff;
     int i;

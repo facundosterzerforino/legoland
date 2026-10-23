@@ -535,7 +535,7 @@ void GameProc(void) {
                 SetPointer(8);
                 break;
             case 0x306:
-                HTBubbleHelpWithMood(&help_rect, GetVisitorName(Hover.ptr), 2, FUN_00482cb0(Hover.ptr));
+                HTBubbleHelpWithMood(&help_rect, GetVisitorName(Hover.ptr), 2, GetBlokeMoodIconIndex(Hover.ptr));
                 SetPointer(8);
                 PauseHoveredBloke(Hover.ptr);
                 break;

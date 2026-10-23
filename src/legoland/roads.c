@@ -424,7 +424,7 @@ void DecRoadTileOccupancy(unsigned int param_1, unsigned int param_2) {
 void LoadDrivingSchoolRoadsResources(struct Element *head) {
     struct Element **handle = &head;
 
-    DAT_0082c684 = head->data;
+    DrivingSchoolRoadsClass = head->data;
     // STRING: LEGOLAND 0x004b4c94
     if (LLIDB_FindElement("DSCHOOL LIGHTS", handle, 0) == 0) {
         DrivingSchoolLightsData = LLIDB_LoadData(head);
@@ -458,7 +458,7 @@ void UnloadDrivingSchoolRoadsResources(void) {
 // FUNCTION: LEGOLAND 0x00413ad0
 void DrivingSchoolRoadsSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0082c684;
+    EditMode.unk8 = DrivingSchoolRoadsClass;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&DAT_004b4bf0);
     EditCursor.field_1828 |= 8;

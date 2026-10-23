@@ -1365,7 +1365,7 @@ extern struct Cursor DAT_004c5ca0;
 // 0x004c74d4
 extern struct Ride *LogFlumeSpecialCorner4Ride;
 // 0x004c74d8
-extern struct RideSpriteInfo DAT_004c74d8;
+extern struct RideSpriteInfo LogFlumeTrackSpriteInfo;
 // 0x004c8d2c
 extern struct Sprite *LogFlumeFc2M1Sprite;
 // 0x004c8d38
@@ -1384,8 +1384,8 @@ extern struct Cursor DAT_004c8d78;
 extern struct Ride *LogFlumeDropRide;
 // 0x004c8d70
 extern struct Sprite *LogFlumeFc4MSprite;
-extern struct RenderItemNode *DAT_004c8d74;
-extern struct RenderItemNode *DAT_004ca5ac;
+extern struct RenderItemNode *FlumeCornerBarrelsLowWeight;
+extern struct RenderItemNode *FlumeCornerBarrelsHighWeight;
 // 0x004ca5b0
 extern struct Cursor DAT_004ca5b0;
 // 0x004cbe08
@@ -1421,7 +1421,7 @@ extern struct Sprite *LogFlumeBarrelMatteSprite;
 // 0x004cbe50
 extern struct SpriteSet *LogFlumeTrackEndyList;
 // 0x004cbe58
-extern struct RideSpriteInfo DAT_004cbe58;
+extern struct RideSpriteInfo FlumePieceSpriteInfo;
 // 0x004cbe84
 extern struct FlumeEntry *FlumeEntryList;
 // 0x004cbe88
@@ -4064,7 +4064,7 @@ extern struct DSMapEntry *DSchoolMappingData;
 struct RoadLights;
 extern struct RoadLights *DrivingSchoolLightsData;
 // 0x0082c684
-extern void *DAT_0082c684;
+extern void *DrivingSchoolRoadsClass;
 // 0x0082c688
 extern void *DAT_0082c688;
 // 0x0082c690

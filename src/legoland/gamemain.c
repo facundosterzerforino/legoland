@@ -194,7 +194,7 @@ struct GameMainNode *GetPathNodeAt(struct Point *pos, int *result) {
     }
     flags = tile->flags;
     if ((flags & 0x10) || (tile->field_10 & 1)) {
-        if (FUN_00482b60(pos)) {
+        if (IsPathPointLinked(pos)) {
             node->field_20 = 1;
         } else {
             node->field_20 = 0;

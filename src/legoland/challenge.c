@@ -1162,7 +1162,7 @@ int GetLinkedObjectPercent(void) {
                     coord.x = obj->field_4 + ix;
                     coord.y = obj->field_5 + iy;
                     total = total + 1;
-                    if (FUN_00482b60(&coord) != 0) {
+                    if (IsPathPointLinked(&coord) != 0) {
                         linked = linked + 1;
                     } else {
                         // STRING: LEGOLAND 0x004b8124

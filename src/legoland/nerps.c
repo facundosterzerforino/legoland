@@ -412,7 +412,7 @@ unsigned int ScriptEventLink(struct ObjectiveEvent *arg) {
             if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                 total++;
                 blocked++;
-            } else if (FUN_00482b60(&pt) == 0) {
+            } else if (IsPathPointLinked(&pt) == 0) {
                 total++;
             }
             node = node->next;
@@ -433,7 +433,7 @@ unsigned int ScriptEventLink(struct ObjectiveEvent *arg) {
                 if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                     total++;
                     blocked++;
-                } else if (FUN_00482b60(&pt) == 0) {
+                } else if (IsPathPointLinked(&pt) == 0) {
                     total++;
                 }
             }

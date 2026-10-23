@@ -34,8 +34,10 @@ void UpdatePathLinks(int force) {
     UpdateConnectedNodes(&Entrance1Point);
 }
 
+/* True when the path node at the point has bit 1 of field_20 set after refreshing the path links (UpdatePathLinks):
+ * used by the linked-objects report, ScriptEventLink and GetLinkedObjectPercent. */
 // FUNCTION: LEGOLAND 0x00482b60
-int FUN_00482b60(Point *pos) {
+int IsPathPointLinked(Point *pos) {
     BestNode *node = FindBestNodeAtPoint(pos);
     if (node != NULL) {
         UpdatePathLinks(PathUpdateNeeded);
@@ -76,8 +78,10 @@ void RandomiseBlokeName(Bloke *bloke) {
     bloke->last_name_index = roll % 0x6b;
 }
 
+/* Mood icon for a visitor's hover bubble (HTBubbleHelpWithMood): fixed icons for long-term actions 3, 11/12 and 13,
+ * otherwise from the mood against MapStats.mood_threshold1/3. */
 // FUNCTION: LEGOLAND 0x00482cb0
-int FUN_00482cb0(Bloke *bloke) {
+int GetBlokeMoodIconIndex(Bloke *bloke) {
     switch (bloke->action) {
     case 3:
         return 4;

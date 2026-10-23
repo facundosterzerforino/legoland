@@ -1401,7 +1401,7 @@ struct Cursor LogFlumeCursor;
 struct Ride *LogFlumeSpecialCorner4Ride;
 
 // GLOBAL: LEGOLAND 0x004c74d8
-struct RideSpriteInfo DAT_004c74d8;
+struct RideSpriteInfo LogFlumeTrackSpriteInfo;
 
 // GLOBAL: LEGOLAND 0x004c8d2c
 struct Sprite *LogFlumeFc2M1Sprite;
@@ -1431,10 +1431,10 @@ struct Ride *LogFlumeDropRide;
 struct Sprite *LogFlumeFc4MSprite;
 
 // GLOBAL: LEGOLAND 0x004c8d74
-struct RenderItemNode *DAT_004c8d74;
+struct RenderItemNode *FlumeCornerBarrelsLowWeight;
 
 // GLOBAL: LEGOLAND 0x004ca5ac
-struct RenderItemNode *DAT_004ca5ac;
+struct RenderItemNode *FlumeCornerBarrelsHighWeight;
 
 // GLOBAL: LEGOLAND 0x004ca5b0
 struct Cursor DAT_004ca5b0;
@@ -1473,7 +1473,7 @@ struct Sprite *LogFlumeEnta3MSprite;
 struct SpriteSet *LogFlumeTrackEndyList;
 
 // GLOBAL: LEGOLAND 0x004cbe58
-struct RideSpriteInfo DAT_004cbe58;
+struct RideSpriteInfo FlumePieceSpriteInfo;
 
 // GLOBAL: LEGOLAND 0x004cbe70
 struct RenderItemNode *FlumeRiderRenderList;
@@ -5372,7 +5372,7 @@ struct DSMapEntry *DSchoolMappingData;
 struct RoadLights *DrivingSchoolLightsData;
 
 // GLOBAL: LEGOLAND 0x0082c684
-void *DAT_0082c684;
+void *DrivingSchoolRoadsClass;
 
 // GLOBAL: LEGOLAND 0x0082c688
 void *DAT_0082c688;

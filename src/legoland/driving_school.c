@@ -369,13 +369,13 @@ void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3
             }
             DAT_0082f760.tile_x = queue->x;
             DAT_0082f760.tile_y = queue->y;
-            StandardRemoveObject((Element *)((struct DSObjClass *)DAT_0082c684)->element, *(TileId *)&queue->id, &DAT_0082f760);
+            StandardRemoveObject((Element *)((struct DSObjClass *)DrivingSchoolRoadsClass)->element, *(TileId *)&queue->id, &DAT_0082f760);
             RemoveRoadEntry(queue->x, queue->y);
         }
         queue = next;
     }
 
-    AddBricks(((struct DSObjClass *)DAT_0082c684)->cost * 5);
+    AddBricks(((struct DSObjClass *)DrivingSchoolRoadsClass)->cost * 5);
 
     while (blokes != NULL) {
         nextBloke = blokes->next;
