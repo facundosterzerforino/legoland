@@ -1252,7 +1252,7 @@ void FUN_0040a580(struct FlumeEntry *param) {
         p = (struct Particle *)((unsigned char *)param->slots + 0xc);
         do {
             p->node = node;
-            d = FUN_004112c0();
+            d = GetFlumeEdgeMidBottomLeft();
             p->x = d.field1;
             p->y = d.field2;
             p->z = 0;
@@ -5351,8 +5351,11 @@ void LogFlume_GetInterfaces(struct Element *flume, struct Ride *vtbl) {
     }
 }
 
+/* Screen offset (3w, h) of the log flume footprint, w/h = GetTileDimensions: the middle of the top-right edge. With
+ * the other three GetFlumeEdgeMid* points it gives the ends of the straight and corner paths built by
+ * InitLogFlumeShapes. */
 // FUNCTION: LEGOLAND 0x00411220
-struct FlumeDims FUN_00411220(void) {
+struct FlumeDims GetFlumeEdgeMidTopRight(void) {
     int dim1;
     int dim2;
     struct FlumeDims result;
@@ -5368,8 +5371,9 @@ struct FlumeDims FUN_00411220(void) {
     return result;
 }
 
+/* Screen offset (3w, 3h): middle of the footprint's bottom-right edge (see GetFlumeEdgeMidTopRight). */
 // FUNCTION: LEGOLAND 0x00411250
-struct FlumeDims FUN_00411250(void) {
+struct FlumeDims GetFlumeEdgeMidBottomRight(void) {
     int dim1;
     int dim2;
     int val1;
@@ -5393,8 +5397,9 @@ struct FlumeDims FUN_00411250(void) {
     return result;
 }
 
+/* Screen offset (w, h): middle of the footprint's top-left edge (see GetFlumeEdgeMidTopRight). */
 // FUNCTION: LEGOLAND 0x00411290
-struct FlumeDims FUN_00411290(void) {
+struct FlumeDims GetFlumeEdgeMidTopLeft(void) {
     int dim1;
     int dim2;
     struct FlumeDims result;
@@ -5410,8 +5415,10 @@ struct FlumeDims FUN_00411290(void) {
     return result;
 }
 
+/* Screen offset (w, 3h): middle of the footprint's bottom-left edge (see GetFlumeEdgeMidTopRight). Also the start
+ * position of an entrance's log particles. */
 // FUNCTION: LEGOLAND 0x004112c0
-struct FlumeDims FUN_004112c0(void) {
+struct FlumeDims GetFlumeEdgeMidBottomLeft(void) {
     int dim1;
     int dim2;
     struct FlumeDims result;
@@ -5461,51 +5468,51 @@ void InitLogFlumeShapes(void) {
     dy = h >> 2;
     dx = w >> 2;
 
-    DAT_004c2b58.count = 2;
-    DAT_004c2b58.pts = DAT_004cbe38;
-    DAT_004c2b58.pts[0] = FUN_00411220();
-    DAT_004c2b58.pts[1] = FUN_004112c0();
+    FlumeStraightShape0.count = 2;
+    FlumeStraightShape0.pts = FlumeStraightShape0Points;
+    FlumeStraightShape0.pts[0] = GetFlumeEdgeMidTopRight();
+    FlumeStraightShape0.pts[1] = GetFlumeEdgeMidBottomLeft();
 
-    DAT_004c2b00.count = 2;
-    DAT_004c2b00.pts = DAT_004c8d58;
-    DAT_004c2b00.pts[0] = FUN_00411250();
-    DAT_004c2b00.pts[1] = FUN_00411290();
+    FlumeStraightShape1.count = 2;
+    FlumeStraightShape1.pts = FlumeStraightShape1Points;
+    FlumeStraightShape1.pts[0] = GetFlumeEdgeMidBottomRight();
+    FlumeStraightShape1.pts[1] = GetFlumeEdgeMidTopLeft();
 
-    DAT_004c2be8.count = 4;
-    DAT_004c2be8.pts = DAT_004cbde8;
-    DAT_004c2be8.pts[0] = FUN_00411220();
-    DAT_004c2be8.pts[3] = FUN_00411250();
-    DAT_004c2be8.pts[1].field1 = DAT_004c2be8.pts[0].field1 - dx;
-    DAT_004c2be8.pts[1].field2 = DAT_004c2be8.pts[0].field2 + dy;
-    DAT_004c2be8.pts[2].field1 = DAT_004c2be8.pts[3].field1 - dx;
-    DAT_004c2be8.pts[2].field2 = DAT_004c2be8.pts[3].field2 - dy;
+    FlumeCornerShape0.count = 4;
+    FlumeCornerShape0.pts = FlumeCornerShape0Points;
+    FlumeCornerShape0.pts[0] = GetFlumeEdgeMidTopRight();
+    FlumeCornerShape0.pts[3] = GetFlumeEdgeMidBottomRight();
+    FlumeCornerShape0.pts[1].field1 = FlumeCornerShape0.pts[0].field1 - dx;
+    FlumeCornerShape0.pts[1].field2 = FlumeCornerShape0.pts[0].field2 + dy;
+    FlumeCornerShape0.pts[2].field1 = FlumeCornerShape0.pts[3].field1 - dx;
+    FlumeCornerShape0.pts[2].field2 = FlumeCornerShape0.pts[3].field2 - dy;
 
-    DAT_004c2bc0.count = 4;
-    DAT_004c2bc0.pts = DAT_004c2b30;
-    DAT_004c2bc0.pts[0] = FUN_00411250();
-    DAT_004c2bc0.pts[3] = FUN_004112c0();
-    DAT_004c2bc0.pts[1].field1 = DAT_004c2bc0.pts[0].field1 - dx;
-    DAT_004c2bc0.pts[1].field2 = DAT_004c2bc0.pts[0].field2 - dy;
-    DAT_004c2bc0.pts[2].field1 = DAT_004c2bc0.pts[3].field1 + dx;
-    DAT_004c2bc0.pts[2].field2 = DAT_004c2bc0.pts[3].field2 - dy;
+    FlumeCornerShape1.count = 4;
+    FlumeCornerShape1.pts = FlumeCornerShape1Points;
+    FlumeCornerShape1.pts[0] = GetFlumeEdgeMidBottomRight();
+    FlumeCornerShape1.pts[3] = GetFlumeEdgeMidBottomLeft();
+    FlumeCornerShape1.pts[1].field1 = FlumeCornerShape1.pts[0].field1 - dx;
+    FlumeCornerShape1.pts[1].field2 = FlumeCornerShape1.pts[0].field2 - dy;
+    FlumeCornerShape1.pts[2].field1 = FlumeCornerShape1.pts[3].field1 + dx;
+    FlumeCornerShape1.pts[2].field2 = FlumeCornerShape1.pts[3].field2 - dy;
 
-    DAT_004c2c10.count = 4;
-    DAT_004c2c10.pts = DAT_004c2bc8;
-    DAT_004c2c10.pts[0] = FUN_004112c0();
-    DAT_004c2c10.pts[3] = FUN_00411290();
-    DAT_004c2c10.pts[1].field1 = DAT_004c2c10.pts[0].field1 + dx;
-    DAT_004c2c10.pts[1].field2 = DAT_004c2c10.pts[0].field2 - dy;
-    DAT_004c2c10.pts[2].field1 = DAT_004c2c10.pts[3].field1 + dx;
-    DAT_004c2c10.pts[2].field2 = DAT_004c2c10.pts[3].field2 + dy;
+    FlumeCornerShape2.count = 4;
+    FlumeCornerShape2.pts = FlumeCornerShape2Points;
+    FlumeCornerShape2.pts[0] = GetFlumeEdgeMidBottomLeft();
+    FlumeCornerShape2.pts[3] = GetFlumeEdgeMidTopLeft();
+    FlumeCornerShape2.pts[1].field1 = FlumeCornerShape2.pts[0].field1 + dx;
+    FlumeCornerShape2.pts[1].field2 = FlumeCornerShape2.pts[0].field2 - dy;
+    FlumeCornerShape2.pts[2].field1 = FlumeCornerShape2.pts[3].field1 + dx;
+    FlumeCornerShape2.pts[2].field2 = FlumeCornerShape2.pts[3].field2 + dy;
 
-    DAT_004c2c08.count = 4;
-    DAT_004c2c08.pts = DAT_004c2b78;
-    DAT_004c2c08.pts[0] = FUN_00411290();
-    DAT_004c2c08.pts[3] = FUN_00411220();
-    DAT_004c2c08.pts[1].field1 = DAT_004c2c08.pts[0].field1 + dx;
-    DAT_004c2c08.pts[1].field2 = DAT_004c2c08.pts[0].field2 + dy;
-    DAT_004c2c08.pts[2].field1 = DAT_004c2c08.pts[3].field1 - dx;
-    DAT_004c2c08.pts[2].field2 = DAT_004c2c08.pts[3].field2 + dy;
+    FlumeCornerShape3.count = 4;
+    FlumeCornerShape3.pts = FlumeCornerShape3Points;
+    FlumeCornerShape3.pts[0] = GetFlumeEdgeMidTopLeft();
+    FlumeCornerShape3.pts[3] = GetFlumeEdgeMidTopRight();
+    FlumeCornerShape3.pts[1].field1 = FlumeCornerShape3.pts[0].field1 + dx;
+    FlumeCornerShape3.pts[1].field2 = FlumeCornerShape3.pts[0].field2 + dy;
+    FlumeCornerShape3.pts[2].field1 = FlumeCornerShape3.pts[3].field1 - dx;
+    FlumeCornerShape3.pts[2].field2 = FlumeCornerShape3.pts[3].field2 + dy;
 }
 
 // FUNCTION: LEGOLAND 0x00411650
@@ -5563,13 +5570,13 @@ int AdvanceFlumeMover(struct FlumeSlot *mover) {
     switch (node->mode) {
     case 1:
         if (node->submode == 1) {
-            shape = &DAT_004c2b00;
+            shape = &FlumeStraightShape1;
             if (dir == 3) {
                 rev = 1;
             }
         }
         if (node->submode == 0) {
-            shape = &DAT_004c2b58;
+            shape = &FlumeStraightShape0;
             if (dir == 1) {
                 rev = 1;
             }
@@ -5577,25 +5584,25 @@ int AdvanceFlumeMover(struct FlumeSlot *mover) {
         break;
     case 2:
         if (node->submode == 3) {
-            shape = &DAT_004c2c08;
+            shape = &FlumeCornerShape3;
             if (dir == 7) {
                 rev = 1;
             }
         }
         if (node->submode == 0) {
-            shape = &DAT_004c2be8;
+            shape = &FlumeCornerShape0;
             if (dir == 1) {
                 rev = 1;
             }
         }
         if (node->submode == 1) {
-            shape = &DAT_004c2bc0;
+            shape = &FlumeCornerShape1;
             if (dir == 3) {
                 rev = 1;
             }
         }
         if (node->submode == 2) {
-            shape = &DAT_004c2c10;
+            shape = &FlumeCornerShape2;
             if (dir == 5) {
                 rev = 1;
             }

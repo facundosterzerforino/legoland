@@ -109,8 +109,8 @@ void UpdateEditSelection(void) {
             max_y = DragStartTileY;
         }
         /* both arms end in the same stores; the compiler merges them into one tail */
-        if (DAT_0080ff6c != NULL) {
-            cls = DAT_0080ff6c;
+        if (DragRemoveClass != NULL) {
+            cls = DragRemoveClass;
             FootprintWidth = cls->footprint.x1 - cls->footprint.x0 + 1;
             FootprintHeight = cls->footprint.y1 - cls->footprint.y0 + 1;
             SelectionRect.x0 = min_x;

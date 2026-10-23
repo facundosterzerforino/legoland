@@ -49,40 +49,40 @@ GUID NullGuid = {0x00000000, 0x0000, 0x0000, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 struct Point DAT_004b4860;
 
 // GLOBAL: LEGOLAND 0x004c2b00
-struct FlumeShape DAT_004c2b00;
+struct FlumeShape FlumeStraightShape1;
 
 // GLOBAL: LEGOLAND 0x004c2b30
-struct FlumeDims DAT_004c2b30[4];
+struct FlumeDims FlumeCornerShape1Points[4];
 
 // GLOBAL: LEGOLAND 0x004c2b58
-struct FlumeShape DAT_004c2b58;
+struct FlumeShape FlumeStraightShape0;
 
 // GLOBAL: LEGOLAND 0x004c2b78
-struct FlumeDims DAT_004c2b78[4];
+struct FlumeDims FlumeCornerShape3Points[4];
 
 // GLOBAL: LEGOLAND 0x004c2bc0
-struct FlumeShape DAT_004c2bc0;
+struct FlumeShape FlumeCornerShape1;
 
 // GLOBAL: LEGOLAND 0x004c2bc8
-struct FlumeDims DAT_004c2bc8[4];
+struct FlumeDims FlumeCornerShape2Points[4];
 
 // GLOBAL: LEGOLAND 0x004c2be8
-struct FlumeShape DAT_004c2be8;
+struct FlumeShape FlumeCornerShape0;
 
 // GLOBAL: LEGOLAND 0x004c2c08
-struct FlumeShape DAT_004c2c08;
+struct FlumeShape FlumeCornerShape3;
 
 // GLOBAL: LEGOLAND 0x004c2c10
-struct FlumeShape DAT_004c2c10;
+struct FlumeShape FlumeCornerShape2;
 
 // GLOBAL: LEGOLAND 0x004c8d58
-struct FlumeDims DAT_004c8d58[2];
+struct FlumeDims FlumeStraightShape1Points[2];
 
 // GLOBAL: LEGOLAND 0x004cbde8
-struct FlumeDims DAT_004cbde8[4];
+struct FlumeDims FlumeCornerShape0Points[4];
 
 // GLOBAL: LEGOLAND 0x004cbe38
-struct FlumeDims DAT_004cbe38[2];
+struct FlumeDims FlumeStraightShape0Points[2];
 
 // GLOBAL: LEGOLAND 0x0066b638
 struct ColorLutEntry ColorLut[256];
@@ -804,8 +804,10 @@ char NextBlokeLetter = 0;
 // GLOBAL: LEGOLAND 0x004b8348
 char *PTR_DAT_004b8348[8] = {0};
 
+/* Long-term (high-level) action handlers, indexed by bloke->action (NewLongTermAction / DoHighLevelAI).
+ * 26 entries in the original: visitors 0-15, workers 16-25 (idle, build, repair, picked up). */
 // GLOBAL: LEGOLAND 0x004b8368
-void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *) = {0};
+void (*BlokeLongTermActionTable[26])(struct Bloke *) = {0};
 
 // Persistent VWIN32 handle for EjectCdDrive; invalid until opened and invalidated after closing.
 // GLOBAL: LEGOLAND 0x004b85c4
@@ -2741,7 +2743,7 @@ void *GameMapRawBlock;
 unsigned int LoadInProgress;
 
 // GLOBAL: LEGOLAND 0x00667ca4
-unsigned int DAT_00667ca4;
+unsigned int LevelBaseTileId;
 
 // GLOBAL: LEGOLAND 0x00667ca8
 LEGO_EXPORT void *OverlayList;
@@ -2773,11 +2775,13 @@ int DAT_00667cd0;
 // GLOBAL: LEGOLAND 0x00667cd4
 int DAT_00667cd4;
 
+/* Set while many objects are built/removed at once (drag removal, UnloadMap): per-object sounds and
+ * CalculateMapRenderOrder are skipped and MapBatchChanged records that something changed. */
 // GLOBAL: LEGOLAND 0x00667cd8
-unsigned int DAT_00667cd8;
+unsigned int MapBatchUpdate;
 
 // GLOBAL: LEGOLAND 0x00667cdc
-unsigned int DAT_00667cdc;
+unsigned int MapBatchChanged;
 
 // GLOBAL: LEGOLAND 0x00667ce0
 int TotalCoveredSquares;
@@ -2818,8 +2822,9 @@ int PathSceneryDirty;
 // GLOBAL: LEGOLAND 0x00667d10
 unsigned int PathSceneryLastUpdate;
 
+/* Number of rectangles in RectList (AddRectToRectList / SubtractRectFromRectList). */
 // GLOBAL: LEGOLAND 0x00667d3c
-int DAT_00667d3c;
+int RectListCount;
 
 // GLOBAL: LEGOLAND 0x00667d40
 unsigned int DAT_00667d40;
@@ -3465,7 +3470,7 @@ void *ClassRideList;
 struct InfoNode *DAT_0066924c;
 
 // GLOBAL: LEGOLAND 0x00669250
-int DAT_00669250;
+int DirSearchWaveCount;
 
 // GLOBAL: LEGOLAND 0x00669254
 unsigned int AdjacentNodeCount;
@@ -3483,10 +3488,10 @@ void *BestNodeList;
 struct DirNode *DirSearchNodeList;
 
 // GLOBAL: LEGOLAND 0x0066b454
-struct DirNode *DAT_0066b454;
+struct DirNode *DirSearchGoalNode;
 
 // GLOBAL: LEGOLAND 0x0066b458
-struct DirNode *DAT_0066b458;
+struct DirNode *DirPathNodeList;
 
 // GLOBAL: LEGOLAND 0x0066b460
 struct Point Entrance1Point; /* park entrance tile */
@@ -4572,7 +4577,7 @@ struct MapTileSet **MapTileSets;
 int DAT_00801a74;
 
 // GLOBAL: LEGOLAND 0x00801a80
-struct MapRect DAT_00801a80[10];
+struct MapRect RectList[10];
 
 // GLOBAL: LEGOLAND 0x00801b20
 unsigned int DAT_00801b20;
@@ -4614,7 +4619,7 @@ struct Element *CastleObjElem;
 unsigned int DAT_0080ff68;
 
 // GLOBAL: LEGOLAND 0x0080ff6c
-void *DAT_0080ff6c;
+void *DragRemoveClass;
 
 // GLOBAL: LEGOLAND 0x0080ff70
 unsigned int MapScreenClosePending;

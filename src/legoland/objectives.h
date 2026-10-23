@@ -52,7 +52,7 @@ void SetObjectiveCounter(int index, signed char value);
 unsigned char AddObjectiveCounter(int index, unsigned char value);
 char GetObjectiveCounter(int index);
 void FUN_004688e0(void);
-void FUN_004688f0(int index, unsigned char param_2);
+void ScriptOpenBridge(int index, unsigned char param_2);
 struct ObjectiveEvent *AllocObjectiveEvent(unsigned int type, int sort_key);
 void FreeObjectiveEvent(struct ObjectiveEvent *node);
 void FreeObjectiveEventList(struct ObjectiveEvent *node);

@@ -116,7 +116,7 @@ int AdvanceFlumeMover(struct FlumeSlot *mover);
 void UpdateFlumeDropSlot(struct FlumeSlot *m);
 void GetFlumePieceFootprint(struct FlumeEntry *entry, struct Footprint **out, TileId *tile);
 
-struct FlumeDims FUN_004112c0(void);
+struct FlumeDims GetFlumeEdgeMidBottomLeft(void);
 
 void DropUnlinkedFlumeNeighbours(struct FlumeEntry *a, struct LinkList *list);
 void AddFlumeScore(struct FlumeEntry *param_1, unsigned int param_2);

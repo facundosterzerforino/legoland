@@ -194,7 +194,7 @@ void FUN_00457a70(void) {
         pt.x = v & 0xff;
         pt.y = v >> 8;
         DAT_00810144 = 0;
-        if (DAT_0080ff6c != NULL && (DAT_0080ff6c == PathControlObject || DAT_0080ff6c == HedgeObjectClass)) {
+        if (DragRemoveClass != NULL && (DragRemoveClass == PathControlObject || DragRemoveClass == HedgeObjectClass)) {
             GamePad |= 0x800;
         } else {
             GamePad &= ~0x800;
@@ -215,7 +215,7 @@ void FUN_00457a70(void) {
                 DAT_00667c5c = 0;
                 GamePad &= ~0x400;
                 if (!(MouseClickFlags & 2)) {
-                    DAT_0080ff6c = NULL;
+                    DragRemoveClass = NULL;
                 }
             }
         } else {
@@ -233,9 +233,9 @@ void FUN_00457a70(void) {
             SetPointer(1);
         }
         if (MouseClickFlags & 0x11) {
-            if (DAT_0080ff6c != NULL && (((struct Ride *)DAT_0080ff6c)->flags & 0x2000000)) {
-                DAT_00667cd8 = 1;
-                DAT_00667cdc = 0;
+            if (DragRemoveClass != NULL && (((struct Ride *)DragRemoveClass)->flags & 0x2000000)) {
+                MapBatchUpdate = 1;
+                MapBatchChanged = 0;
                 for (y = SelectionRect.y0; y <= SelectionRect.y1; y += DAT_00813a3c) {
                     for (x = SelectionRect.x0; x <= SelectionRect.x1; x += DAT_00813a38) {
                         QueryCursor.field_1414[4] = 0;
@@ -250,18 +250,18 @@ void FUN_00457a70(void) {
                             QueryObj.pos.x = QueryCursor.tile_x = tile->field_4;
                             QueryObj.pos.y = QueryCursor.tile_y = tile->field_5;
                             if ((tile->flags & 0x88) && !(tile->flags & 0x40) &&
-                                tile->field_0 == (struct Element *)((struct Ride *)DAT_0080ff6c)->element) {
-                                RemObjFromMap((struct Ride *)DAT_0080ff6c, ((struct Ride *)DAT_0080ff6c)->element, QueryObj,
+                                tile->field_0 == (struct Element *)((struct Ride *)DragRemoveClass)->element) {
+                                RemObjFromMap((struct Ride *)DragRemoveClass, ((struct Ride *)DragRemoveClass)->element, QueryObj,
                                     &QueryCursor);
                             }
                         }
                     }
                 }
-                if (DAT_00667cdc != 0) {
+                if (MapBatchChanged != 0) {
                     PlayInstanceOfSample(GameFX[FX_PUNCH].sample, 0, 1, 0);
                     CalculateMapRenderOrder();
                 }
-                DAT_00667cd8 = 0;
+                MapBatchUpdate = 0;
             } else if (IsCursorBuildable(&QueryCursor)) {
                 if (Hover.type == 0x10c) {
                     ClearObjectEntrances((struct Element *)((WorkOrder *)Hover.ptr)->element, &((WorkOrder *)Hover.ptr)->pos.x);
@@ -289,10 +289,10 @@ void FUN_00457a70(void) {
         if (!(GamePad & 0x1000) && Hover.type == 0x103) {
             if (QueryClass->flags & 0x2000000) {
                 GamePad |= 0x400;
-                DAT_0080ff6c = QueryClass;
+                DragRemoveClass = QueryClass;
             } else {
                 GamePad &= ~0x400;
-                DAT_0080ff6c = NULL;
+                DragRemoveClass = NULL;
             }
         }
         if (RightClickFlags & 2) {
@@ -318,8 +318,8 @@ void FUN_00457a70(void) {
         if (MouseClickFlags & 0x11) {
             if (IsCursorBuildable(&EditCursor)) {
                 if (EditMode.unk8->flags & 0x2000000) {
-                    DAT_00667cd8 = 1;
-                    DAT_00667cdc = 0;
+                    MapBatchUpdate = 1;
+                    MapBatchChanged = 0;
                     if (EditMode.unk8 == PathControlObject) {
                         for (y = SelectionRect.y0; y <= SelectionRect.y1; y += FootprintHeight) {
                             for (x = SelectionRect.x0; x <= SelectionRect.x1; x += FootprintWidth) {
@@ -348,13 +348,13 @@ void FUN_00457a70(void) {
                             }
                         }
                     }
-                    DAT_00667cd8 = 0;
-                    if (DAT_00667cdc != 0) {
+                    MapBatchUpdate = 0;
+                    if (MapBatchChanged != 0) {
                         PlayAppropriateBuildEffect((struct Ride *)EditMode.unk8, NULL);
                         PlayInstanceOfSample(GameFX[FX_PUNCH].sample, 0, 1, 0);
                         CalculateMapRenderOrder();
                     }
-                    DAT_00667cd8 = 0;
+                    MapBatchUpdate = 0;
                 } else if (WorkOrderBuildObject(EditMode.unk8->element, (Point *)&EditCursor.tile_x)) {
                     FUN_00475f40();
                     ScriptDirtyCategories |= 2;
@@ -389,7 +389,7 @@ void FUN_00457a70(void) {
             DAT_00667c5c = 0;
             GamePad &= ~0x400;
             if (!(MouseClickFlags & 2)) {
-                DAT_0080ff6c = NULL;
+                DragRemoveClass = NULL;
             }
             break;
         }

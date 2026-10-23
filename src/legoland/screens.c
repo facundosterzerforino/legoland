@@ -302,9 +302,9 @@ void UnloadMap(void) {
         DelObjectList();
         FreeBlokeCounters();
         FreeAllObjectClassInstances();
-        DAT_00667cd8 = 1;
+        MapBatchUpdate = 1;
         UnloadLevelData();
-        DAT_00667cd8 = 0;
+        MapBatchUpdate = 0;
         SetBricksLimited(0);
         ClearObjInstanceTable();
         DestroyAllBlokes();
@@ -537,19 +537,19 @@ void GameProc(void) {
             case 0x306:
                 HTBubbleHelpWithMood(&help_rect, GetVisitorName(Hover.ptr), 2, FUN_00482cb0(Hover.ptr));
                 SetPointer(8);
-                FUN_00450a40(Hover.ptr);
+                PauseHoveredBloke(Hover.ptr);
                 break;
             case 0x307:
                 HTBubbleHelp(&help_rect, GetString(0x90), 2);
                 ShowHelpById(0x90);
                 SetPointer(8);
-                FUN_00450a40(Hover.ptr);
+                PauseHoveredBloke(Hover.ptr);
                 break;
             case 0x308:
                 HTBubbleHelp(&help_rect, GetString(0x92), 2);
                 ShowHelpById(0x92);
                 SetPointer(8);
-                FUN_00450a40(Hover.ptr);
+                PauseHoveredBloke(Hover.ptr);
                 break;
             default:
                 SetPointer(7);

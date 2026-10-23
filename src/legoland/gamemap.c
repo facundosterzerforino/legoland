@@ -242,13 +242,13 @@ LEGO_EXPORT void RemObjFromMap(struct Ride *obj, struct Element *classid, TileId
     if (classid == CastleObjElem) {
         CastlePlacedFlag = 0;
     }
-    if (DAT_00667cd8 == 0) {
+    if (MapBatchUpdate == 0) {
         blk.f8 = tile.pos.x;
         blk.f0 = 2;
         blk.fc = tile.pos.y;
         PlayInstanceOfSample(GameFX[FX_PUNCH].sample, 0, 1, &blk);
     } else {
-        DAT_00667cdc = 1;
+        MapBatchChanged = 1;
     }
     RemoveObjectsPowerStats(classid, tile);
     obj->cb_9c(classid, tile, cursor);

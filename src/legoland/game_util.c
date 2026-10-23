@@ -1120,7 +1120,7 @@ int ScriptCmdBridges(struct CommandArgs *arg, int argc) {
         v2 = 1;
     }
     if (DAT_00669054 == 1) {
-        FUN_004688f0(v1, v2);
+        ScriptOpenBridge(v1, v2);
     } else {
         NewScriptBridgesEvent(v1, v2);
     }

@@ -288,13 +288,13 @@ void FreeDirPathNodes(void) {
     struct DirNode *node;
     struct DirNode *next;
 
-    node = DAT_0066b458;
+    node = DirPathNodeList;
     while (node != NULL) {
         next = node->next;
         free(node);
         node = next;
     }
-    DAT_0066b458 = NULL;
+    DirPathNodeList = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00482240
@@ -330,7 +330,7 @@ void AddPTPSearchNode(int x, int y, struct DirNode *parent) {
     node->parent = parent;
     node->x = x;
     node->y = y;
-    DAT_00669250++;
+    DirSearchWaveCount++;
     PathVisitedBits[word_index] |= 1u << (x & 0x1f);
 }
 
@@ -340,8 +340,8 @@ struct DirNode *AllocDirNode(unsigned int x, unsigned int y) {
 
     node = malloc(sizeof(struct DirNode));
     if (node != NULL) {
-        node->next = DAT_0066b458;
-        DAT_0066b458 = node;
+        node->next = DirPathNodeList;
+        DirPathNodeList = node;
         node->x = x;
         node->y = y;
     }
@@ -396,7 +396,7 @@ int FUN_00482430(void) {
     struct PathLink *p4;
     int dir;
 
-    cur = (struct PathLink *)DAT_0066b454;
+    cur = (struct PathLink *)DirSearchGoalNode;
     p3 = 0;
     p2 = 0;
     p4 = 0;
@@ -444,17 +444,17 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
     FreeDirPathNodes();
     ClearDirSearchGrid();
 
-    DAT_00669250 = 0;
-    DAT_0066b454 = 0;
+    DirSearchWaveCount = 0;
+    DirSearchGoalNode = 0;
     AddPTPSearchNode(start_x, start_y, 0);
 
-    while (DAT_00669250 != 0) {
-        wave = DAT_00669250;
+    while (DirSearchWaveCount != 0) {
+        wave = DirSearchWaveCount;
         node = DirSearchNodeList;
-        DAT_00669250 = 0;
+        DirSearchWaveCount = 0;
         while (wave-- != 0) {
             if (node->x == goal_x && node->y == goal_y) {
-                DAT_0066b454 = node;
+                DirSearchGoalNode = node;
                 if (FUN_00482430()) {
                     out->x = goal->x;
                     out->y = goal->y;
@@ -462,8 +462,8 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
                     FreeDirPathNodes();
                     return 2;
                 }
-                out->x = (DAT_0066b458->x << 8) + 0x80;
-                out->y = (DAT_0066b458->y << 8) + 0x80;
+                out->x = (DirPathNodeList->x << 8) + 0x80;
+                out->y = (DirPathNodeList->y << 8) + 0x80;
                 FreeDirNodeList();
                 FreeDirPathNodes();
                 return 1;
@@ -512,7 +512,7 @@ void AddWorkerSearchNode(int x, int y, struct DirNode *parent) {
     node->parent = parent;
     node->x = x;
     node->y = y;
-    DAT_00669250++;
+    DirSearchWaveCount++;
     PathVisitedBits[word_index] |= 1u << (x & 0x1f);
 }
 
@@ -534,17 +534,17 @@ int WorkerSuggestNextMove(int *a, int *b, int *out) {
     FreeDirPathNodes();
     ClearDirSearchGrid();
 
-    DAT_00669250 = 0;
-    DAT_0066b454 = 0;
+    DirSearchWaveCount = 0;
+    DirSearchGoalNode = 0;
     AddWorkerSearchNode(start_x, start_y, 0);
 
-    while (DAT_00669250 != 0) {
-        wave = DAT_00669250;
+    while (DirSearchWaveCount != 0) {
+        wave = DirSearchWaveCount;
         node = DirSearchNodeList;
-        DAT_00669250 = 0;
+        DirSearchWaveCount = 0;
         while (wave-- != 0) {
             if (node->x == goal_x && node->y == goal_y) {
-                DAT_0066b454 = node;
+                DirSearchGoalNode = node;
                 if (FUN_00482430()) {
                     out[0] = b[0];
                     out[1] = b[1];
@@ -552,8 +552,8 @@ int WorkerSuggestNextMove(int *a, int *b, int *out) {
                     FreeDirPathNodes();
                     return 2;
                 }
-                out[0] = (DAT_0066b458->x << 8) + 0x80;
-                out[1] = (DAT_0066b458->y << 8) + 0x80;
+                out[0] = (DirPathNodeList->x << 8) + 0x80;
+                out[1] = (DirPathNodeList->y << 8) + 0x80;
                 FreeDirNodeList();
                 FreeDirPathNodes();
                 return 1;

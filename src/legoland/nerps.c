@@ -251,7 +251,7 @@ unsigned int ScriptEventAddFlag(struct ObjectiveEvent *arg) {
 
 // FUNCTION: LEGOLAND 0x0046a460
 unsigned int ScriptEventBridges(struct ObjectiveEvent *arg) {
-    FUN_004688f0(arg->field_14, arg->field_1c);
+    ScriptOpenBridge(arg->field_14, arg->field_1c);
     return 1;
 }
 

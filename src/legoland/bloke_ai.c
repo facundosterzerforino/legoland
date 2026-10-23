@@ -29,8 +29,11 @@ LEGO_EXPORT void NewLongTermAction(Bloke *bloke, unsigned short action) {
     DoHighLevelAI(bloke);
 }
 
+/* Picks a random LLIDB element (start at a random index, skip up to 31 matches) whose flags have 0x14 set and whose
+ * object type is neither 0 nor 5 (food). Used for the three favourite attractions of a new visitor; NULL when the
+ * whole database was walked without a match. */
 // FUNCTION: LEGOLAND 0x0044e790
-Element *FUN_0044e790(void) {
+Element *PickRandomFavouriteAttraction(void) {
     Element *element;
     Ride *ride;
     int count;
@@ -87,8 +90,10 @@ LEGO_EXPORT int IsFavouriteFood(Bloke *bloke, Element *food) {
     return bloke->favourite_food == food;
 }
 
+/* Same walk as PickRandomFavouriteAttraction, but only accepts objects of type 5 (food outlets): the new visitor's
+ * favourite food. */
 // FUNCTION: LEGOLAND 0x0044e890
-Element *FUN_0044e890(void) {
+Element *PickRandomFavouriteFood(void) {
     Element *element;
     Ride *ride;
     int count;
@@ -152,10 +157,10 @@ LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
         NextBlokeLetter = 'A';
     }
     RandomiseBlokeName(bloke);
-    bloke->favourite_attraction_0 = FUN_0044e790();
-    bloke->favourite_attraction_1 = FUN_0044e790();
-    bloke->favourite_attraction_2 = FUN_0044e790();
-    bloke->favourite_food = FUN_0044e890();
+    bloke->favourite_attraction_0 = PickRandomFavouriteAttraction();
+    bloke->favourite_attraction_1 = PickRandomFavouriteAttraction();
+    bloke->favourite_attraction_2 = PickRandomFavouriteAttraction();
+    bloke->favourite_food = PickRandomFavouriteFood();
     NewLongTermAction(bloke, 2);
 }
 
@@ -439,8 +444,9 @@ void BlokeAILeavePark(Bloke *bloke) {
     }
 }
 
+/* Long-term action 1: just switch the low-level action to BlokeActionRandomWalk (4). */
 // FUNCTION: LEGOLAND 0x0044f170
-void FUN_0044f170(Bloke *bloke) {
+void BlokeAIRandomWalk(Bloke *bloke) {
     bloke->low_level_action = 4;
 }
 
@@ -1045,8 +1051,11 @@ void BlokeAIGoToBrolly(Bloke *bloke) {
     NewLongTermAction(bloke, 6);
 }
 
+/* Long-term action 14, entered from PauseHoveredBloke while the cursor is over a visitor: face direction 4, blokes
+ * with character 1 play animation 2 once, then BlokeActionWaitWhileHovered (low-level 13). When that ends, workers
+ * go back to their idle action (16/17), everyone else to wandering (6). */
 // FUNCTION: LEGOLAND 0x00450250
-void FUN_00450250(Bloke *bloke) {
+void BlokeAIStopWhileHovered(Bloke *bloke) {
     int state;
 
     switch (bloke->param_action) {
@@ -1088,8 +1097,10 @@ void FUN_00450250(Bloke *bloke) {
     }
 }
 
+/* Long-term action 20: the worker version of BlokeAIStopWhileHovered (face direction 4, wait while hovered, then
+ * back to Gardener_Idle / Mechanic_Idle). */
 // FUNCTION: LEGOLAND 0x00450330
-void FUN_00450330(Bloke *bloke) {
+void WorkerAIStopWhileHovered(Bloke *bloke) {
     int state;
 
     switch (bloke->param_action) {
@@ -1156,8 +1167,10 @@ void FaceBlokeTowardsFootprint(Bloke *bloke, Footprint *box) {
     bloke->dir = 1;
 }
 
+/* Long-term action 15, started by UpdateBlokeMoodFromSurroundings next to a type 3 object: face the target object's
+ * footprint, wait 10-41 ticks, count the visit with IncrementBlokeCounter, then wander. */
 // FUNCTION: LEGOLAND 0x00450450
-void FUN_00450450(Bloke *bloke) {
+void BlokeAIStopAtObject(Bloke *bloke) {
     Ride *ride;
 
     switch (bloke->param_action) {
@@ -1184,7 +1197,7 @@ void FUN_00450450(Bloke *bloke) {
 LEGO_EXPORT void DoHighLevelAI(Bloke *bloke) {
     void (*fn)(Bloke *);
 
-    fn = PTR_Bloke_DoNothing_004b8368[bloke->action];
+    fn = BlokeLongTermActionTable[bloke->action];
     if (fn != 0) {
         fn(bloke);
     }
@@ -1201,8 +1214,12 @@ int ArePointsOrthogonallyAdjacent(Point *a, Point *b) {
     return d.x + d.y == 1;
 }
 
+/* Every 16 ticks per visitor (ControlPeople): scans the 9x9 tiles around the visitor and sums the value of each
+ * object type in range (reduced by how often this visitor already used it), applying the sums as mood deltas 2-7.
+ * Also may redirect a wandering visitor to an adjacent food outlet or type 1 object it finds attractive, or start
+ * BlokeAIStopAtObject next to a type 3 object. */
 // FUNCTION: LEGOLAND 0x00450530
-void FUN_00450530(Bloke *bloke) {
+void UpdateBlokeMoodFromSurroundings(Bloke *bloke) {
     MapElement *element;
     Ride *cls;
     int counter;
@@ -1334,7 +1351,7 @@ LEGO_EXPORT void ControlPeople(void) {
             UpdateBlokeTimeInPark(bloke);
             if ((++bloke->field_5c & 0xf) == 0) {
                 ApplyMoodDelta(bloke, 8, 1);
-                FUN_00450530(bloke);
+                UpdateBlokeMoodFromSurroundings(bloke);
             }
             if (bloke->low_level_action == 0) {
                 DoHighLevelAI(bloke);
@@ -1346,8 +1363,11 @@ LEGO_EXPORT void ControlPeople(void) {
     }
 }
 
+/* Called while the cursor hovers a visitor (screens.c help code): an idle visitor is stopped (flags |= 8, long-term
+ * action 14 = BlokeAIStopWhileHovered); for workers only field_54 is reset, which delays
+ * BlokeActionRandomWalkDelayed by 50 frames. */
 // FUNCTION: LEGOLAND 0x00450a40
-void FUN_00450a40(Bloke *bloke) {
+void PauseHoveredBloke(Bloke *bloke) {
     int state;
 
     if ((bloke->flags & 0x28) != 0) {

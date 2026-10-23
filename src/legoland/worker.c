@@ -769,8 +769,9 @@ LEGO_EXPORT void Gardener_Idle(Bloke *worker) {
     AssignGardenerWorkOrder(worker);
 }
 
+/* Long-term action 24: a gardener held by the mouse (PickUpWorker); waits in low-level action 14. */
 // FUNCTION: LEGOLAND 0x0049a4a0
-void FUN_0049a4a0(Bloke *worker) {
+void Gardener_OnMouse(Bloke *worker) {
     worker->low_level_action = 0xe;
 }
 
@@ -780,8 +781,9 @@ LEGO_EXPORT void Mechanic_Idle(Bloke *worker) {
     TakeMechanicWorkOrder(worker);
 }
 
+/* Long-term action 25: a mechanic held by the mouse (PickUpWorker); waits in low-level action 14. */
 // FUNCTION: LEGOLAND 0x0049a4d0
-void FUN_0049a4d0(Bloke *worker) {
+void Mechanic_OnMouse(Bloke *worker) {
     worker->low_level_action = 0xe;
 }
 
@@ -998,7 +1000,7 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
         FUN_0045d770(&EditCursor);
         result = BuildObject(element, &pos->x);
     }
-    if (result != 0 && DAT_00667cd8 == 0) {
+    if (result != 0 && MapBatchUpdate == 0) {
         source.x = pos->x;
         source.type = 2;
         source.y = pos->y;

@@ -82,7 +82,7 @@ LEGO_EXPORT void AddObjectToMap(Element *param_1, TileId param_2, int param_3) {
         }
         rect = *rect.next;
     }
-    if (DAT_00667cd8 == 0 && LoadInProgress == 0) {
+    if (MapBatchUpdate == 0 && LoadInProgress == 0) {
         CalculateMapRenderOrder();
     }
 }
@@ -571,10 +571,10 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
     if (editObj == CastleObjElem) {
         CastlePlacedFlag = 1;
     }
-    if (DAT_00667cd8 == 0) {
+    if (MapBatchUpdate == 0) {
         PlayAppropriateBuildEffect((struct Ride *)obj, coords);
     } else {
-        DAT_00667cdc = 1;
+        MapBatchChanged = 1;
     }
     if (obj->flags & 0x80000) {
         if (AddObjectToBuildList((struct Ride *)obj, packed) == 0) {
@@ -595,7 +595,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
             effect = GetEntrance1Point();
             FindMapPathAStar(out.x, out.y, effect->x, effect->y);
         }
-        if (DAT_00667cd8 == 0) {
+        if (MapBatchUpdate == 0) {
             CalculateMapRenderOrder();
         }
     } else {
@@ -816,9 +816,9 @@ LEGO_EXPORT void RemoveObjectFromMap(TileId coords) {
         }
         next = rect.next;
     } while (next != 0);
-    if (DAT_00667cd8 == 0) {
+    if (MapBatchUpdate == 0) {
         CalculateMapRenderOrder();
-        DAT_00667cdc = 1;
+        MapBatchChanged = 1;
     }
 }
 
@@ -978,7 +978,7 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
         if (param_3 != 0) {
             GetOrAddPathCursor(cursor);
         }
-        sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
+        sprite = (struct Sprite *)TileSpriteArray[LevelBaseTileId];
         size = sprite->height;
         pts = (struct Cursor *)cursor;
         pts->count = 0;
@@ -1391,7 +1391,7 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         return;
     }
     pts = (struct Cursor *)cursor;
-    size = ((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height;
+    size = ((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height;
     for (i = 0; i < (int)pts->count; i++) {
         GetTileBounds((struct Point *)&cursor->tile_x, screen);
         bx = (short)pts->xpts[i] + screen[0];
@@ -1490,14 +1490,17 @@ LEGO_EXPORT void GetTileDimensions(int *width, int *height) {
     struct Sprite *sprite;
     int size;
 
-    sprite = TileSpriteArray[DAT_00667ca4];
+    sprite = TileSpriteArray[LevelBaseTileId];
     size = (short)sprite->height;
     *height = size;
     *width = size * 2;
 }
 
+/* Opens bridge `index` (0-3): for every overlay whose high byte of field_10 is index + 1, lays a 2x10 (type 0) or
+ * 10x2 (type 1) strip of path tiles under it, then sets MapStats.bridge_open[index] so the bridge overlay is drawn.
+ * Used by the bridges script event and the :DIGGER cheat (all four). */
 // FUNCTION: LEGOLAND 0x00460560
-void FUN_00460560(int index) {
+void OpenBridge(int index) {
     struct Overlay *ov;
     struct Point pt;
     int sc[2];
@@ -1549,7 +1552,7 @@ void FUN_00460560(int index) {
             }
         }
     }
-    MapStats.field_3e0[index] = 1;
+    MapStats.bridge_open[index] = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
@@ -1585,9 +1588,9 @@ void DrawMapTiles(struct Point *pos, RECT *clip) {
     dx = pos->x - clip->left;
     dy = pos->y - clip->top;
     SetClipping(clip);
-    dbl = (short)(((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height * 2);
+    dbl = (short)(((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height * 2);
     half_x = (dbl + 1) >> 1;
-    size = ((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height;
+    size = ((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height;
     sx = pos->x / dbl;
     half_y = (size + 1) >> 1;
     mx = pos->x % dbl;
@@ -1691,7 +1694,7 @@ void DrawMapTiles(struct Point *pos, RECT *clip) {
         }
         PrintSpriteSimple(ov->sprite, ov->x - dx, ov->y - dy);
         frame = ov->field_10;
-        if ((frame & 0xff00) == 0 || MapStats.field_3e0[(frame >> 8) - 1] == 0) {
+        if ((frame & 0xff00) == 0 || MapStats.bridge_open[(frame >> 8) - 1] == 0) {
             continue;
         }
         if ((frame & 0xff) == 0) {
@@ -1829,7 +1832,7 @@ void DrawPathTilesInRect(struct Point *param_1, int *param_2) {
     int ix;
     int iy;
 
-    size = ((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height;
+    size = ((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height;
     dbl = (short)(size * 2);
     half_x = (dbl + 1) >> 1;
     half_y = (size + 1) >> 1;
@@ -2216,7 +2219,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
     LLIDB_FindElement(namebuf, &elem, 0);
     LevelTileMapHandle = elem;
     tilemap = (struct TileMap *)LLIDB_LoadData((void *)elem);
-    DAT_00667ca4 = *(unsigned int *)tilemap[0].tiles;
+    LevelBaseTileId = *(unsigned int *)tilemap[0].tiles;
     RES_ReadFile(file, &len, 4);
     RES_ReadFile(file, namebuf, len);
     namebuf[len] = 0;
@@ -2310,7 +2313,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
             case 0x40:
                 while (runlen--) {
                     if (prev & 0x20) {
-                        GameMap[cury][curx].field_a = (unsigned short)DAT_00667ca4;
+                        GameMap[cury][curx].field_a = (unsigned short)LevelBaseTileId;
                         pos.x = curx;
                         pos.y = cury;
                         if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
@@ -2337,7 +2340,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
             case 0x80:
                 while (runlen--) {
                     if (prev & 0x20) {
-                        GameMap[cury][curx].field_a = (unsigned short)DAT_00667ca4;
+                        GameMap[cury][curx].field_a = (unsigned short)LevelBaseTileId;
                         pos.x = curx;
                         pos.y = cury;
                         if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {

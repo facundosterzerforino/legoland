@@ -308,10 +308,10 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
             } else if (_memicmp(":DIGGER", &CheatKeyBuffer[0xd], 7) == 0) {
                 // STRING: LEGOLAND 0x004bae00
                 DBPrintf("CHEAT:Set Switch 1\n");
-                FUN_00460560(0);
-                FUN_00460560(1);
-                FUN_00460560(2);
-                FUN_00460560(3);
+                OpenBridge(0);
+                OpenBridge(1);
+                OpenBridge(2);
+                OpenBridge(3);
                 // STRING: LEGOLAND 0x004badf0
             } else if (memcmp(":SHOWCAPACITY", &CheatKeyBuffer[7], 0xd) == 0) {
                 MapStats.show_capacity = 1;

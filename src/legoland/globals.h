@@ -494,7 +494,7 @@ struct MapStats {
     /* 0x3d4 */ int power_demand;
     /* 0x3d8 */ unsigned int unpowered_demand;
     /* 0x3dc */ int unpowered_count;
-    /* 0x3e0 */ int field_3e0[4];
+    /* 0x3e0 */ int bridge_open[4]; /* set by OpenBridge; DrawMapTiles draws the bridge overlays */
 };
 
 struct FortRect {
@@ -582,40 +582,40 @@ extern float FLOAT_004ab550;
 extern struct Point DAT_004b4860;
 
 // 0x004c2b00
-extern struct FlumeShape DAT_004c2b00;
+extern struct FlumeShape FlumeStraightShape1;
 
 // 0x004c2b30
-extern struct FlumeDims DAT_004c2b30[4];
+extern struct FlumeDims FlumeCornerShape1Points[4];
 
 // 0x004c2b58
-extern struct FlumeShape DAT_004c2b58;
+extern struct FlumeShape FlumeStraightShape0;
 
 // 0x004c2b78
-extern struct FlumeDims DAT_004c2b78[4];
+extern struct FlumeDims FlumeCornerShape3Points[4];
 
 // 0x004c2bc0
-extern struct FlumeShape DAT_004c2bc0;
+extern struct FlumeShape FlumeCornerShape1;
 
 // 0x004c2bc8
-extern struct FlumeDims DAT_004c2bc8[4];
+extern struct FlumeDims FlumeCornerShape2Points[4];
 
 // 0x004c2be8
-extern struct FlumeShape DAT_004c2be8;
+extern struct FlumeShape FlumeCornerShape0;
 
 // 0x004c2c08
-extern struct FlumeShape DAT_004c2c08;
+extern struct FlumeShape FlumeCornerShape3;
 
 // 0x004c2c10
-extern struct FlumeShape DAT_004c2c10;
+extern struct FlumeShape FlumeCornerShape2;
 
 // 0x004c8d58
-extern struct FlumeDims DAT_004c8d58[2];
+extern struct FlumeDims FlumeStraightShape1Points[2];
 
 // 0x004cbde8
-extern struct FlumeDims DAT_004cbde8[4];
+extern struct FlumeDims FlumeCornerShape0Points[4];
 
 // 0x004cbe38
-extern struct FlumeDims DAT_004cbe38[2];
+extern struct FlumeDims FlumeStraightShape0Points[2];
 
 // 0x0066b638
 extern struct ColorLutEntry ColorLut[256];
@@ -997,7 +997,7 @@ extern char NextBlokeLetter;
 // 0x004b8348
 extern char *PTR_DAT_004b8348[8];
 // 0x004b8368
-extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
+extern void (*BlokeLongTermActionTable[26])(struct Bloke *);
 // Persistent Windows 95 VWIN32 device handle used by the CD ejection path.
 // 0x004b85c4
 extern HANDLE VWin32DeviceHandle;
@@ -2265,7 +2265,7 @@ extern void *GameMapRawBlock;
 // 0x00667ca0
 extern unsigned int LoadInProgress;
 // 0x00667ca4
-extern unsigned int DAT_00667ca4;
+extern unsigned int LevelBaseTileId;
 // 0x00667ca8
 extern LEGO_EXPORT void *OverlayList;
 // 0x00667cac
@@ -2287,9 +2287,9 @@ extern int DAT_00667cd0;
 // 0x00667cd4
 extern int DAT_00667cd4;
 // 0x00667cd8
-extern unsigned int DAT_00667cd8;
+extern unsigned int MapBatchUpdate;
 // 0x00667cdc
-extern unsigned int DAT_00667cdc;
+extern unsigned int MapBatchChanged;
 // 0x00667ce0
 extern int TotalCoveredSquares;
 // 0x00667ce4
@@ -2317,7 +2317,7 @@ extern int PathSceneryDirty;
 // 0x00667d10
 extern unsigned int PathSceneryLastUpdate;
 // 0x00667d3c
-extern int DAT_00667d3c;
+extern int RectListCount;
 // 0x00667d40
 extern unsigned int DAT_00667d40;
 // 0x00667d44
@@ -2758,7 +2758,7 @@ extern void *ClassRideList;
 // 0x0066924c
 extern struct InfoNode *DAT_0066924c;
 // 0x00669250
-extern int DAT_00669250;
+extern int DirSearchWaveCount;
 // 0x00669254
 extern unsigned int AdjacentNodeCount;
 // 0x004bcec0
@@ -2772,9 +2772,9 @@ extern void *BestNodeList;
 // 0x0066b450
 extern struct DirNode *DirSearchNodeList;
 // 0x0066b454
-extern struct DirNode *DAT_0066b454;
+extern struct DirNode *DirSearchGoalNode;
 // 0x0066b458
-extern struct DirNode *DAT_0066b458;
+extern struct DirNode *DirPathNodeList;
 // 0x0066b460
 extern struct Point Entrance1Point;
 // 0x0066b468
@@ -3513,7 +3513,7 @@ extern struct MapTileSet **MapTileSets; /* the level's tile object sets */
 // 0x00801a74
 extern int DAT_00801a74;
 // 0x00801a80
-extern struct MapRect DAT_00801a80[10];
+extern struct MapRect RectList[10];
 // 0x00801b20
 extern unsigned int DAT_00801b20;
 // 0x00801b24
@@ -3541,7 +3541,7 @@ extern struct Element *CastleObjElem;
 // 0x0080ff68
 extern unsigned int DAT_0080ff68;
 // 0x0080ff6c
-extern void *DAT_0080ff6c;
+extern void *DragRemoveClass;
 extern unsigned int MapScreenClosePending;
 // 0x0080ff74
 extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;

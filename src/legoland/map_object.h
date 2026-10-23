@@ -59,7 +59,7 @@ LEGO_EXPORT void CalcBasicObjectCursor(struct Element *obj, int *a2, unsigned in
 LEGO_EXPORT void GetTileDimensions(int *width, int *height);
 LEGO_EXPORT int Get_XScroll(void);
 LEGO_EXPORT int Get_YScroll(void);
-void FUN_00460560(int index);
+void OpenBridge(int index);
 void DrawPathTile(int *coords, unsigned int x, unsigned int y, unsigned int param_4);
 void ClampScrollPosition(int param_1, int param_2, int param_3, int param_4);
 LEGO_EXPORT void MouseScrollMap(void);

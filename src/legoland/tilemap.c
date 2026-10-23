@@ -117,7 +117,7 @@ LEGO_EXPORT unsigned int LoadMapTiles(void) {
     LLIDB_LoadData((void *)handle);
     LLIDB_FindElement("BASIC TILES 1", &handle, 0);
     DAT_00801a6c = handle->data;
-    DAT_00667ca4 = *(unsigned int *)DAT_00801a6c;
+    LevelBaseTileId = *(unsigned int *)DAT_00801a6c;
     DAT_008003f8 = 0;
     DAT_00801b20 = 1;
     DAT_0080ff60 = 2;
@@ -167,7 +167,7 @@ unsigned int UnloadMapTiles(void) {
 
 // FUNCTION: LEGOLAND 0x0045acc0
 LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out) {
-    struct Sprite *sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
+    struct Sprite *sprite = (struct Sprite *)TileSpriteArray[LevelBaseTileId];
     short size = sprite->height;
 
     out[0] = (short)(((short)(size * 2) + 1) >> 1) * ((ref->x - ref->y) - 1) + lpConfig->view_x - (ScrollX >> 8);
@@ -178,7 +178,7 @@ LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out) {
 
 // FUNCTION: LEGOLAND 0x0045ad60
 LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out) {
-    struct Sprite *sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
+    struct Sprite *sprite = (struct Sprite *)TileSpriteArray[LevelBaseTileId];
     short size = sprite->height;
     int y;
 
@@ -217,7 +217,7 @@ void DrawMarkedTileHighlights(void) {
     SetClipping(&clip);
 
     /* Scroll position -> first visible map tile (same maths as the map renderers). */
-    tile_h = ((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height;
+    tile_h = ((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height;
     dbl = (short)(tile_h * 2);
     size = tile_h;
     scroll_x = ScrollX >> 8;
@@ -381,8 +381,8 @@ LEGO_EXPORT void RenderView(void) {
     SetClipping(&rect);
 
     /* Scroll position -> first map tile of the view (same maths as DrawMarkedTileHighlights). */
-    h = ((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height;
-    w = (short)(((struct Sprite *)TileSpriteArray[DAT_00667ca4])->height * 2);
+    h = ((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height;
+    w = (short)(((struct Sprite *)TileSpriteArray[LevelBaseTileId])->height * 2);
     px = ScrollX >> 8;
     q = px / w;
     hw = (w + 1) >> 1;
@@ -700,7 +700,7 @@ LEGO_EXPORT void PointToIsoPlane(int *pt, int *out) {
     int rem_y;
     int quadrant;
 
-    tile_h = (short)TileSpriteArray[DAT_00667ca4]->height;
+    tile_h = (short)TileSpriteArray[LevelBaseTileId]->height;
     tile_w = tile_h * 2;
     half_w = (tile_w + 1) >> 1;
     half_h = (tile_h + 1) >> 1;
@@ -759,7 +759,7 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out
     int ix;
     int iy;
 
-    sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
+    sprite = (struct Sprite *)TileSpriteArray[LevelBaseTileId];
     if (sprite == NULL) {
         return 0xffffffff;
     }
@@ -790,7 +790,7 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
     int ry;
     int sel;
 
-    sprite = (struct Sprite *)TileSpriteArray[DAT_00667ca4];
+    sprite = (struct Sprite *)TileSpriteArray[LevelBaseTileId];
     if (sprite == NULL) {
         return 0xffffffff;
     }
@@ -1619,40 +1619,40 @@ void SubtractRectFromRectList(struct MapRect *param) {
     struct MapRect old;
 
     i = 0;
-    if (i < DAT_00667d3c) {
-        cur = DAT_00801a80;
+    if (i < RectListCount) {
+        cur = RectList;
         do {
             if (IntersectMapRect(&r, param, cur) != 0) {
                 old = *cur;
-                DAT_00667d3c--;
-                if (i < DAT_00667d3c) {
-                    *cur = DAT_00801a80[DAT_00667d3c];
+                RectListCount--;
+                if (i < RectListCount) {
+                    *cur = RectList[RectListCount];
                 }
                 i--;
                 cur--;
                 if (old.y0 < r.y0) {
-                    slot = &DAT_00801a80[DAT_00667d3c++];
+                    slot = &RectList[RectListCount++];
                     slot->x0 = old.x0;
                     slot->y0 = old.y0;
                     slot->x1 = old.x1;
                     slot->y1 = r.y0 - 1;
                 }
                 if (old.x0 < r.x0) {
-                    slot = &DAT_00801a80[DAT_00667d3c++];
+                    slot = &RectList[RectListCount++];
                     slot->x0 = old.x0;
                     slot->y0 = r.y0;
                     slot->x1 = r.x0 - 1;
                     slot->y1 = r.y1;
                 }
                 if (r.x1 < old.x1) {
-                    slot = &DAT_00801a80[DAT_00667d3c++];
+                    slot = &RectList[RectListCount++];
                     slot->y0 = r.y0;
                     slot->x0 = r.x1 + 1;
                     slot->x1 = old.x1;
                     slot->y1 = r.y1;
                 }
                 if (r.y1 < old.y1) {
-                    slot = &DAT_00801a80[DAT_00667d3c++];
+                    slot = &RectList[RectListCount++];
                     slot->y0 = r.y1 + 1;
                     slot->x0 = old.x0;
                     slot->x1 = old.x1;
@@ -1661,7 +1661,7 @@ void SubtractRectFromRectList(struct MapRect *param) {
             }
             cur++;
             i++;
-        } while (i < DAT_00667d3c);
+        } while (i < RectListCount);
     }
 }
 
@@ -1671,13 +1671,13 @@ int AddRectToRectList(struct MapRect *param) {
     struct MapRect *cur;
 
     SubtractRectFromRectList(param);
-    idx = DAT_00667d3c;
-    cur = &DAT_00801a80[idx];
+    idx = RectListCount;
+    cur = &RectList[idx];
     cur->x0 = param->x0;
     cur->y0 = param->y0;
     cur->x1 = param->x1;
     idx = idx + 1;
-    DAT_00667d3c = idx;
+    RectListCount = idx;
     cur->y1 = param->y1;
     return idx;
 }
@@ -1711,7 +1711,7 @@ void FUN_0045d770(struct Cursor *param_1) {
         return;
     }
 
-    DAT_00667d3c = 0;
+    RectListCount = 0;
     rect.x0 = found->footprint.x0 + found->tile_x;
     rect.y0 = found->footprint.y0 + found->tile_y;
     rect.x1 = found->footprint.x1 + found->tile_x;
@@ -1739,9 +1739,9 @@ void FUN_0045d770(struct Cursor *param_1) {
     }
 
     /* re-lay path tiles over every collected rectangle */
-    for (i = 0; i < DAT_00667d3c; i++) {
-        for (pt.y = DAT_00801a80[i].y0; pt.y <= DAT_00801a80[i].y1; pt.y++) {
-            for (pt.x = DAT_00801a80[i].x0; pt.x <= DAT_00801a80[i].x1; pt.x++) {
+    for (i = 0; i < RectListCount; i++) {
+        for (pt.y = RectList[i].y0; pt.y <= RectList[i].y1; pt.y++) {
+            for (pt.x = RectList[i].x0; pt.x <= RectList[i].x1; pt.x++) {
                 RemoveObjectAtPoint(&pt);
                 GameMap[pt.y][pt.x].field_10 &= 0xfc;
                 AddPathTileGFX(&pt, *(unsigned short *)PathSprite);

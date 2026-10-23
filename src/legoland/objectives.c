@@ -89,10 +89,12 @@ char GetObjectiveCounter(int index) {
 // FUNCTION: LEGOLAND 0x004688e0
 void FUN_004688e0(void) {}
 
+/* Script bridges event (ScriptEventBridges, game_util): OpenBridge(index) for a valid index (< 4). The second
+ * argument is not used. */
 // FUNCTION: LEGOLAND 0x004688f0
-void FUN_004688f0(int index, unsigned char param_2) {
+void ScriptOpenBridge(int index, unsigned char param_2) {
     if (index < 4) {
-        FUN_00460560(index);
+        OpenBridge(index);
     }
 }
 

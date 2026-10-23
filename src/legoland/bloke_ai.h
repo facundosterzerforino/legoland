@@ -21,9 +21,9 @@ int FUN_0044f360(struct Ride *ride, TileId *tile);
 LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke);
 int PutBlokeOnRide(struct Bloke *bloke, struct Ride *ride, int wait);
 LEGO_EXPORT void PushLongTermAction(struct Bloke *bloke);
-void FUN_00450530(struct Bloke *bloke);
+void UpdateBlokeMoodFromSurroundings(struct Bloke *bloke);
 
-void FUN_00450a40(struct Bloke *bloke);
+void PauseHoveredBloke(struct Bloke *bloke);
 LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke);
 LEGO_EXPORT void ControlPeople(void);
 void SaveBuildObjList(void);
