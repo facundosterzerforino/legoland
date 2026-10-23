@@ -849,9 +849,6 @@ extern int DAT_004b5ee0[5];
 extern unsigned int DAT_004b5ef4[4][2];
 // 0x004b5f14
 extern unsigned int DAT_004b5f14[4][2];
-// 0x004b5f60
-struct EdgeMesh;
-extern struct EdgeMesh RailTubeMesh;
 // 0x004b61e0
 extern struct CastleFloatEnt TrackTieShape[8];
 
