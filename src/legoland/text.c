@@ -470,18 +470,19 @@ LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font) {
     }
 }
 
+/* Finds or builds a cached tooltip text cell, clamps its rectangle to the screen,
+ * and draws the framed bubble above or below the supplied anchor rectangle. */
 // FUNCTION: LEGOLAND 0x004557c0
 LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
     RECT box;
     RECT frame;
     struct TextCell *cell;
     HDC hdc;
-    register HGDIOBJ old_font;
+    HGDIOBJ old_font;
     unsigned int block_color;
     int text_h;
     int cx;
 
-    int cell_h;
     box.left = 0;
     box.top = 0;
     box.right = 0;
@@ -503,9 +504,8 @@ LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
         } else {
             box.left = 0;
             box.top = 0;
-            cell_h = cell->height;
             box.right = cell->width;
-            box.bottom = cell_h;
+            box.bottom = cell->height;
             text_h = cell->height;
         }
         cx = (rect->right + rect->left) >> 1;
@@ -516,12 +516,11 @@ LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
         }
         {
             int width = box.right - box.left;
-            int right;
             box.left = cx - (width >> 1);
-            right = ((width + 1) >> 1) + cx;
+            box.right = ((width + 1) >> 1) + cx;
             if (box.left < 0) {
                 box.left = 0;
-            } else if (right >= (int)(unsigned int)lpConfig->screen_width) {
+            } else if (box.right >= (int)(unsigned int)lpConfig->screen_width) {
                 box.left = (unsigned int)lpConfig->screen_width - width;
             }
             box.right = width + box.left;
