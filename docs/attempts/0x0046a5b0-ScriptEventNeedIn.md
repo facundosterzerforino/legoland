@@ -16,3 +16,13 @@
 ## Ideas not tried yet
 
 - 
+
+## Inline-helper checks
+
+Refreshed baseline: harness 76.40, full verify 75.14. Removing the dead
+count expression and making y signed scores 75.56 in the harness. A normal
+static __inline tile lookup, or an inline counting helper taking &count,
+produce the same 75.56; they do not restore the original loop reloads.
+No variant retained, no volatile added. The original signed-y difference
+remains documented; avoid treating the current unsigned comparison as proof
+of the original type.

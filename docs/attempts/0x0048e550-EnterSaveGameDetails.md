@@ -1,6 +1,6 @@
 # EnterSaveGameDetails (0x0048e550, `src/legoland/savegame_ui.c`)
 
-**Best: 84.10%**
+**Best: 100.00% (verified)**
 
 ## What still differs
 
@@ -37,3 +37,10 @@ Tried: enlarging the two-byte cursor buffer (8/12/16/20) worsens the match;
 RECT zero initialization also worsens it. Mouse-x local, explicit right bound,
 operand swapping, and fx/fy assignment order did not improve the best.
 No padding, volatile, or asm introduced.
+
+## Current verified result
+
+Full verifier: **100.00%**, improved from 90.91%, with no other per-function
+regressions. The four harness-only ecx/edx differences are normalized by
+reccmp. The apparently unused 16-byte frame region is the shared RECT, not
+padding and not an oversized cursor string.

@@ -10,6 +10,8 @@
 
 #include <windows.h>
 
+/* Allocates and resets the controller buffer, initializes mouse/key masks and default tile footprint values, and
+ * marks controllers initialized. */
 // FUNCTION: LEGOLAND 0x00451e70
 LEGO_EXPORT int SetupControllers(void) {
     if (ControllersInitialized != 0) {

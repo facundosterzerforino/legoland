@@ -533,6 +533,8 @@ int ApplySampleVolume(struct Sample *sample) {
     return 1;
 }
 
+/* Updates an active sample using its source type: non-positional volume, a rider position, a tile center, or a
+ * screen position adjusted by the scroll offset. */
 // FUNCTION: LEGOLAND 0x004966a0
 int UpdateSampleVolume(struct Sample *sample) {
     int coord[2];

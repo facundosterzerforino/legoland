@@ -568,6 +568,8 @@ void RenderLegoMediaShop(struct Element *obj, unsigned int param2, unsigned int 
     PrintSprite(LegMediaShopMask1Sprite, pos.x, pos.y, param1, 0);
 }
 
+/* Advances the LEGO Media shop visitor state machine: enters, chooses a browsing position, buys an item, and walks
+ * back out before removing the ride node. */
 // FUNCTION: LEGOLAND 0x00439ef0
 void LegoMediaShopUpdate(Element *obj) {
     Ride *ride = obj->ride;

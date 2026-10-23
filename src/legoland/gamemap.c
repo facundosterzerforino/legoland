@@ -130,6 +130,8 @@ void ResetPathSceneryTimer(void) {
     PathSceneryLastUpdate = GetGameTimer();
 }
 
+/* Periodically counts scenery along the perimeter of each path rectangle and updates the total, matched count and
+ * coverage percentage. */
 // FUNCTION: LEGOLAND 0x00459970
 void UpdatePathSceneryPercent(void) {
     int now;
