@@ -124,7 +124,7 @@ LEGO_EXPORT void Load_Interface_ControlIcons(void) {
 // FUNCTION: LEGOLAND 0x004743b0
 LEGO_EXPORT void UnLoad_Interface_ControlIcons(void) {
     if (InterfaceControlIconsLoaded != 0) {
-        memset(DAT_007fdd70, 0, sizeof(DAT_007fdd70));
+        memset(ThemeIcons, 0, sizeof(ThemeIcons));
         InterfaceControlIconsLoaded = 0;
         KillSprite(InterfaceBgSprite);
         InterfaceBgSprite = NULL;
@@ -290,7 +290,7 @@ unsigned char DefaultOkKeyHandler(unsigned int dummy, unsigned char flags) {
 unsigned char DefaultCancelKeyHandler(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
     if ((flags & 2) != 0) {
         if (TryClosePopUp() == 0) {
-            if (DAT_00668954 != 0) {
+            if (WorkerOnMouseActive != 0) {
                 CheckWorkerOnMouseStatus(1);
             } else {
                 return InterfaceOptionsClicked(a, flags, c, d);
@@ -330,18 +330,18 @@ int SaveObjectiveIcons(void) {
     int i;
 
     for (i = 0; i < 4; i++) {
-        if (((struct IconNode *)DAT_007fdd70[i])->flags & 0x400) {
-            DAT_00668e20[i] = 0;
+        if (((struct IconNode *)ThemeIcons[i])->flags & 0x400) {
+            SavedThemeIconEnabled[i] = 0;
         } else {
-            DAT_00668e20[i] = 1;
+            SavedThemeIconEnabled[i] = 1;
         }
     }
-    return SaveGameWrite(DAT_00668e20, 0x10) != 0;
+    return SaveGameWrite(SavedThemeIconEnabled, 0x10) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00474970
 int LoadObjectiveIcons(void) {
-    return SaveGameRead(DAT_00668e20, 0x10) != 0;
+    return SaveGameRead(SavedThemeIconEnabled, 0x10) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00474990
@@ -349,10 +349,10 @@ void RestoreObjectiveIcons(void) {
     int i;
 
     for (i = 0; i < 4; i++) {
-        if (DAT_00668e20[i] != 0) {
-            ((struct IconNode *)DAT_007fdd70[i])->flags &= 0xfffffbff;
+        if (SavedThemeIconEnabled[i] != 0) {
+            ((struct IconNode *)ThemeIcons[i])->flags &= 0xfffffbff;
         } else {
-            ((struct IconNode *)DAT_007fdd70[i])->flags |= 0x400;
+            ((struct IconNode *)ThemeIcons[i])->flags |= 0x400;
         }
     }
 }
@@ -419,7 +419,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string = GetString(0x5e);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)LegolandThemeIconHandler;
-        DAT_007fdd70[0] = (struct IconNode *)icon;
+        ThemeIcons[0] = (struct IconNode *)icon;
 
         icon = InsertIcon((short)InterfaceIconPos[2], (short)InterfaceIconPos[3], 0x9a, WesternThemeOffSprite);
         WesternThemeIcon = icon;
@@ -427,21 +427,21 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->string = GetString(0x5f);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)WesternThemeIconHandler;
-        DAT_007fdd70[1] = (struct IconNode *)icon;
+        ThemeIcons[1] = (struct IconNode *)icon;
 
         icon = InsertIcon((short)InterfaceIconPos[4], (short)InterfaceIconPos[5], 0x9a, CastleThemeOffSprite);
         icon->string_id = 0x60;
         icon->string = GetString(0x60);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)CastleThemeIconHandler;
-        DAT_007fdd70[2] = (struct IconNode *)icon;
+        ThemeIcons[2] = (struct IconNode *)icon;
 
         icon = InsertIcon((short)InterfaceIconPos[6], (short)InterfaceIconPos[7], 0x9a, AdventurersThemeOffSprite);
         icon->string_id = 0x61;
         icon->string = GetString(0x61);
         icon->flags |= 0x6002;
         icon->event_handler = (void *)AdventurersThemeIconHandler;
-        DAT_007fdd70[3] = (struct IconNode *)icon;
+        ThemeIcons[3] = (struct IconNode *)icon;
 
         // STRING: LEGOLAND 0x004bb48c
         bar = LoadSpriteIcon("Bar_Energy.lls", 4, 0x180, 6, 0x9a);
@@ -624,7 +624,7 @@ unsigned char ToggleMapScreen(unsigned int a, unsigned char flags) {
 // FUNCTION: LEGOLAND 0x00475120
 unsigned char InterfaceOptionsClicked(unsigned int a, unsigned int flags, unsigned int c, unsigned int d) {
     if ((flags & 2) != 0 && EditMode.unk4 != 1) {
-        if (DAT_00668954 == 0) {
+        if (WorkerOnMouseActive == 0) {
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
             GamePad = (GamePad & 0xffff00ff) | ((GamePad & 0xff00) & 0xeb00);
             EditMode.unk0 = 0;
@@ -645,7 +645,7 @@ unsigned char LegolandThemeIconHandler(struct IconNode *param_1, unsigned char f
     unsigned int saved_ff8;
     int result;
 
-    saved_e34 = DAT_00668e34;
+    saved_e34 = ResearchTabSelected;
     saved_ff8 = SelectedBuildTheme;
     if (EditMode.unk4 != 1 && (flags & 2) != 0) {
         do {
@@ -654,7 +654,7 @@ unsigned char LegolandThemeIconHandler(struct IconNode *param_1, unsigned char f
             PlayInstanceOfSample(GameFX[FX_THEME_CLICK].sample, 0, 1, 0);
             if (SelectedBuildTheme != 0) {
                 SelectedBuildTheme = 0;
-                DAT_00668e34 = 0;
+                ResearchTabSelected = 0;
                 result = TestMenu(BuildThemeNames);
                 if (result == 1) {
                     DeselectThemeIcon();
@@ -664,7 +664,7 @@ unsigned char LegolandThemeIconHandler(struct IconNode *param_1, unsigned char f
                 } else {
                     SelectedBuildTheme = saved_ff8;
                     if (saved_ff8 != 5) {
-                        DAT_00668e34 = saved_e34;
+                        ResearchTabSelected = saved_e34;
                         TestMenu(&BuildThemeNames[saved_ff8 * 5]);
                     }
                 }
@@ -685,14 +685,14 @@ unsigned char AdventurersThemeIconHandler(struct IconNode *param_1, unsigned cha
     unsigned int saved_e34;
     int result;
 
-    saved_e34 = DAT_00668e34;
+    saved_e34 = ResearchTabSelected;
     if (EditMode.unk4 != 1 && (flags & 2) != 0) {
         GamePad = GamePad & 0xffffebff;
         EditMode.unk0 = 0;
         PlayInstanceOfSample(GameFX[FX_THEME_CLICK].sample, 0, 1, 0);
         if (SelectedBuildTheme != 3) {
             SelectedBuildTheme = 3;
-            DAT_00668e34 = 0;
+            ResearchTabSelected = 0;
             result = TestMenu(&BuildThemeNames[15]);
             if (result == 1) {
                 DeselectThemeIcon();
@@ -701,7 +701,7 @@ unsigned char AdventurersThemeIconHandler(struct IconNode *param_1, unsigned cha
                 AdventurersThemeDeselected = 0;
                 return 1;
             }
-            DAT_00668e34 = saved_e34;
+            ResearchTabSelected = saved_e34;
             TestMenu(&BuildThemeNames[SelectedBuildTheme * 5]);
             return 1;
         }
@@ -720,7 +720,7 @@ unsigned char CastleThemeIconHandler(struct IconNode *param_1, unsigned char fla
     int saved_ff8;
     int result;
 
-    saved_e34 = DAT_00668e34;
+    saved_e34 = ResearchTabSelected;
     saved_ff8 = SelectedBuildTheme;
     SelectedBuildTheme = saved_ff8;
     if (EditMode.unk4 != 1 && (flags & 2) != 0) {
@@ -729,7 +729,7 @@ unsigned char CastleThemeIconHandler(struct IconNode *param_1, unsigned char fla
         PlayInstanceOfSample(GameFX[FX_THEME_CLICK].sample, 0, 1, 0);
         if (SelectedBuildTheme != 2) {
             SelectedBuildTheme = 2;
-            DAT_00668e34 = 0;
+            ResearchTabSelected = 0;
             result = TestMenu(&BuildThemeNames[10]);
             if (result == 1) {
                 DeselectThemeIcon();
@@ -740,7 +740,7 @@ unsigned char CastleThemeIconHandler(struct IconNode *param_1, unsigned char fla
             }
             SelectedBuildTheme = saved_ff8;
             if (saved_ff8 != 5) {
-                DAT_00668e34 = saved_e34;
+                ResearchTabSelected = saved_e34;
                 TestMenu(&BuildThemeNames[saved_ff8 * 5]);
                 return 1;
             }
@@ -761,7 +761,7 @@ unsigned char WesternThemeIconHandler(struct IconNode *param_1, unsigned char fl
     int saved_ff8;
     int result;
 
-    saved_e34 = DAT_00668e34;
+    saved_e34 = ResearchTabSelected;
     saved_ff8 = SelectedBuildTheme;
     SelectedBuildTheme = saved_ff8;
     if (EditMode.unk4 != 1 && (flags & 2) != 0) {
@@ -770,7 +770,7 @@ unsigned char WesternThemeIconHandler(struct IconNode *param_1, unsigned char fl
         PlayInstanceOfSample(GameFX[FX_THEME_CLICK].sample, 0, 1, 0);
         if (SelectedBuildTheme != 1) {
             SelectedBuildTheme = 1;
-            DAT_00668e34 = 0;
+            ResearchTabSelected = 0;
             result = TestMenu(&BuildThemeNames[5]);
             if (result == 1) {
                 DeselectThemeIcon();
@@ -781,7 +781,7 @@ unsigned char WesternThemeIconHandler(struct IconNode *param_1, unsigned char fl
             }
             SelectedBuildTheme = saved_ff8;
             if (saved_ff8 != 5) {
-                DAT_00668e34 = saved_e34;
+                ResearchTabSelected = saved_e34;
                 TestMenu(&BuildThemeNames[saved_ff8 * 5]);
                 return 1;
             }
@@ -859,7 +859,7 @@ LEGO_EXPORT void InsertChildIntoList(struct Ride *param_1) {
         }
         current = current->next;
     }
-    if (DAT_00668e34 != 0) {
+    if (ResearchTabSelected != 0) {
         InsertObjectSortedByCost(param_1);
     }
     free(node);
@@ -1328,7 +1328,7 @@ void DrawFlashingButtons(void) {
 void SetObjectiveIconShown(int index, int value) {
     struct IconNode *obj;
 
-    obj = (struct IconNode *)DAT_007fdd70[index];
+    obj = (struct IconNode *)ThemeIcons[index];
     if (obj != NULL) {
         if (value != 0) {
             obj->flags &= 0xfffffbff;
@@ -1347,7 +1347,7 @@ void ShowProfileObjectiveIcons(void) {
     unsigned int counter;
 
     flags = CurrentProfile.flags;
-    items = (struct IconNode **)DAT_007fdd70;
+    items = (struct IconNode **)ThemeIcons;
     counter = 4;
     while (counter != 0) {
         if (*flags != 0) {

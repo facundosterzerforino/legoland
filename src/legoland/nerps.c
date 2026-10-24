@@ -904,10 +904,10 @@ unsigned int ScriptEventSelectTheme(struct ObjectiveEvent *arg) {
 // FUNCTION: LEGOLAND 0x0046b130
 unsigned int ScriptEventSelectTab(struct ObjectiveEvent *arg) {
     if (SelectedBuildTheme != 5) {
-        if (arg->field_1c != 0 && DAT_00668e34 != 0) {
+        if (arg->field_1c != 0 && ResearchTabSelected != 0) {
             return 1;
         }
-        if (arg->field_1c == 0 && DAT_00668e34 == 0) {
+        if (arg->field_1c == 0 && ResearchTabSelected == 0) {
             return 1;
         }
     }
@@ -2072,8 +2072,8 @@ void AppendSectionRewards(struct NerpsListNode *arg) {
 void FreeAllScriptLists(void) {
     FreeObjectiveEventList(ObjectiveEventList);
     ObjectiveEventList = NULL;
-    FreeObjectiveEventList(DAT_00668724);
-    DAT_00668724 = NULL;
+    FreeObjectiveEventList(ObjectiveMessageQueue);
+    ObjectiveMessageQueue = NULL;
     FreeObjectiveEventList(ScriptEventList);
     ScriptEventList = NULL;
     FreeScriptSectionList((struct NerpsListNode *)ScriptSectionList);

@@ -72,7 +72,7 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     unsigned int *puVar3;
     int iVar2;
 
-    puVar3 = (unsigned int *)&DAT_007fdec0;
+    puVar3 = (unsigned int *)&PopUpInfoHover;
     for (iVar2 = 0x40; iVar2 != 0; iVar2 = iVar2 + -1) {
         *puVar3 = 0;
         puVar3 = puVar3 + 1;
@@ -368,10 +368,10 @@ void RemoveAllNewObjects(void) {
 // FUNCTION: LEGOLAND 0x00471510
 LEGO_EXPORT void ResetInfoStruct(void) {
     PopUpInfoRide = 0;
-    DAT_007fdf8c = 0;
-    DAT_007fdf84 = 0;
-    DAT_007fdf9c = 0;
-    DAT_007fdfa0 = 0;
+    PopUpInfoBloke = 0;
+    PopUpInfoTile = 0;
+    PopUpInfoSubjectType = 0;
+    PopUpInfoState = 0;
     DAT_007fdfa4 = 0;
     PopUpInfoResizePending = 0;
     DAT_007fdf98 = 0;
@@ -382,7 +382,7 @@ LEGO_EXPORT void ResetInfoStruct(void) {
 
 // FUNCTION: LEGOLAND 0x00471550
 LEGO_EXPORT void PopInfoSizeMayChange(void) {
-    if (DAT_007fdfa0 != 0) {
+    if (PopUpInfoState != 0) {
         PopUpInfoResizePending = 1;
     }
 }
@@ -541,14 +541,14 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
         iVar4 = (unsigned char *)&GameMap[y][x];
     }
     ResetInfoStruct();
-    DAT_007fdfa0 = 1;
+    PopUpInfoState = 1;
     PopUpInfoResizePending = 1;
     PopUpInfoX = param_4;
     PopUpInfoY = param_5;
     DAT_007fdf88 = (unsigned short)t.data.value;
-    DAT_007fdec0.type = t.type;
-    DAT_007fdec0.ptr = t.ptr;
-    DAT_007fdec0.data.value = t.data.value;
+    PopUpInfoHover.type = t.type;
+    PopUpInfoHover.ptr = t.ptr;
+    PopUpInfoHover.data.value = t.data.value;
     switch (t.type) {
     case 0x307:
         if ((short)t.ptr->action != 5) {
@@ -562,10 +562,10 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
         }
         if (((struct Element *)t.ptr != PathControlHandle) && ((struct Element *)t.ptr != Entrance1Handle)) {
             PopUpInfoRide = ((struct Element *)t.ptr)->ride;
-            DAT_007fdf84 = iVar4;
+            PopUpInfoTile = iVar4;
             if (PopUpInfoRide->element == PottingShedHandle) {
-                DAT_007fdfa0 = 0;
-                DAT_007fdf9c = 10;
+                PopUpInfoState = 0;
+                PopUpInfoSubjectType = 10;
                 param_4 = iVar4[4];
                 (&param_4)[1] = iVar4[5];
                 if (BuyGardener() == 0) {
@@ -575,8 +575,8 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
                 return;
             }
             if (PopUpInfoRide->element == MechanicsHutHandle) {
-                DAT_007fdfa0 = 0;
-                DAT_007fdf9c = 0x14;
+                PopUpInfoState = 0;
+                PopUpInfoSubjectType = 0x14;
                 param_4 = iVar4[4];
                 (&param_4)[1] = iVar4[5];
                 if (BuyMechanic() == 0) {
@@ -585,13 +585,13 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
                 GenerateMechanic((int *)&param_4, 1);
                 return;
             }
-            DAT_007fdf9c = 0x103;
+            PopUpInfoSubjectType = 0x103;
             return;
         }
         break;
     case 0x306:
-        DAT_007fdf9c = t.type;
-        DAT_007fdf8c = t.ptr;
+        PopUpInfoSubjectType = t.type;
+        PopUpInfoBloke = t.ptr;
         DAT_007fdf90 = t.ptr->person->field_1c;
         DAT_007fdf94 = t.ptr->person->field_20;
         return;
@@ -620,7 +620,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
 
 // FUNCTION: LEGOLAND 0x00471bf0
 void ClearNewObjectsList(void) {
-    if (DAT_007fdfa0 != 2) {
+    if (PopUpInfoState != 2) {
         NewObjects.current = 0;
         NewObjects.count = 0;
     }
@@ -665,8 +665,8 @@ void RemoveNewObject(void *param) {
             if (NewObjects.current >= (int)NewObjects.count) {
                 NewObjects.current = NewObjects.count - 1;
             }
-            if (NewObjects.count == 0 && DAT_007fdfa0 == 2) {
-                DAT_007fdfa0 = 0;
+            if (NewObjects.count == 0 && PopUpInfoState == 2) {
+                PopUpInfoState = 0;
             }
         }
     }
@@ -676,7 +676,7 @@ void RemoveNewObject(void *param) {
 void ShowNewObjectsInfo(void) {
     if (NewObjects.count != 0) {
         ResetInfoStruct();
-        DAT_007fdfa0 = 2;
+        PopUpInfoState = 2;
     }
 }
 
@@ -886,11 +886,11 @@ int IsPopupObjectBuildable(void) {
     unsigned int v;
 
     saved_class = QueryClass;
-    v = DAT_007fdec0.data.value & 0xffff;
+    v = PopUpInfoHover.data.value & 0xffff;
     memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
     local_8[0] = v & 0xff;
     local_8[1] = v >> 8;
-    cls = ((struct Element *)DAT_007fdec0.ptr)->ride;
+    cls = ((struct Element *)PopUpInfoHover.ptr)->ride;
     QueryCursor.tile_y = v >> 8;
     QueryClass = cls;
     QueryCursor.tile_x = v & 0xff;
@@ -949,10 +949,10 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     buf_b[0] = 0;
     memset(buf_b + 1, 0, 255);
     ride = (struct Ride *)PopUpInfoRide;
-    bloke = (struct Bloke *)DAT_007fdf8c;
+    bloke = (struct Bloke *)PopUpInfoBloke;
     GetNearestColour(0xda, 0xc6, 0x96);
     DAT_0066895c = 0;
-    if (DAT_007fdfa0 == 2) {
+    if (PopUpInfoState == 2) {
         DrawNewObjectPopup();
         return;
     }
@@ -960,30 +960,30 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         ResetInfoStruct();
         return;
     }
-    if (DAT_007fdfa0 == 0) {
+    if (PopUpInfoState == 0) {
         return;
     }
     if (MapRightClickFlags & 2) {
         ResetInfoStruct();
         return;
     }
-    switch (DAT_007fdf9c) {
+    switch (PopUpInfoSubjectType) {
     case 0x103:
         sprintf(buf_a, (char *)PercentSFormat, ride->name);
         // STRING: LEGOLAND 0x004bad44
-        sprintf(buf_b, "%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
+        sprintf(buf_b, "%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, PopUpInfoTile[0x11]), GetString(0x77), GetObjSalvageValue(ride, PopUpInfoTile[0x11]));
         if (MapStats.power_enabled != 0) {
             power = FindObjectsPower(ride);
             if (power < 0) {
                 // STRING: LEGOLAND 0x004bad3c
                 sprintf(tmp, "\n%s %d", GetString(0x78), -power);
-                if (DAT_007fdf84[0xd] & 1) {
+                if (PopUpInfoTile[0xd] & 1) {
                     // STRING: LEGOLAND 0x004bad38
                     strcat(tmp, "\n");
                     strcat(tmp, GetString(0x7a));
                 }
             } else if (power != 0) {
-                if (DAT_007fdf84[0x11] >= ride->durability >> 2) {
+                if (PopUpInfoTile[0x11] >= ride->durability >> 2) {
                     sprintf(tmp, "\n%s %d", GetString(0x79), power);
                 } else {
                     // STRING: LEGOLAND 0x004bad34
@@ -997,7 +997,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         if (ride->durability != 0) {
             repairable = 1;
         }
-        if (!(DAT_007fdf84[0xc] & 0x40)) {
+        if (!(PopUpInfoTile[0xc] & 0x40)) {
             can_delete = 1;
         }
         break;
@@ -1006,20 +1006,20 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         // STRING: LEGOLAND 0x004bad2c
         sprintf(buf_b, "%s : %d", GetString(0x93), GetMechanicCount());
         // STRING: LEGOLAND 0x004bad1c
-        sprintf(tmp, "\n%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
+        sprintf(tmp, "\n%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, PopUpInfoTile[0x11]), GetString(0x77), GetObjSalvageValue(ride, PopUpInfoTile[0x11]));
         strcat(buf_b, tmp);
         add_mechanic = 1;
-        if (!(DAT_007fdf84[0xc] & 0x40)) {
+        if (!(PopUpInfoTile[0xc] & 0x40)) {
             can_delete = 1;
         }
         break;
     case 0xa:
         sprintf(buf_a, (char *)PercentSFormat, ride->name);
         sprintf(buf_b, "%s : %d", GetString(0x91), GetGardenerCount());
-        sprintf(tmp, "\n%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
+        sprintf(tmp, "\n%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, PopUpInfoTile[0x11]), GetString(0x77), GetObjSalvageValue(ride, PopUpInfoTile[0x11]));
         strcat(buf_b, tmp);
         add_gardener = 1;
-        if (!(DAT_007fdf84[0xc] & 0x40)) {
+        if (!(PopUpInfoTile[0xc] & 0x40)) {
             can_delete = 1;
         }
         break;
@@ -1031,8 +1031,8 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     case 0x10b:
         info = PopUpInfoData;
         if (info->field_18 != 0 && info->field_1c->field_60 >= 0x6b) {
-            DAT_007fdec0.type = 0x104;
-            PopUpInfoSetUp(DAT_007fdec0, PopUpInfoX, PopUpInfoY);
+            PopUpInfoHover.type = 0x104;
+            PopUpInfoSetUp(PopUpInfoHover, PopUpInfoX, PopUpInfoY);
             return;
         }
         sprintf(buf_a, (char *)PercentSFormat, *(char **)info->field_4);
@@ -1042,8 +1042,8 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     case 0x10c:
         info = PopUpInfoData;
         if (info->field_18 != 0 && info->field_1c->field_60 >= 0x6b) {
-            DAT_007fdec0.type = 0x104;
-            PopUpInfoSetUp(DAT_007fdec0, PopUpInfoX, PopUpInfoY);
+            PopUpInfoHover.type = 0x104;
+            PopUpInfoSetUp(PopUpInfoHover, PopUpInfoX, PopUpInfoY);
             return;
         }
         sprintf(buf_a, (char *)PercentSFormat, *(char **)info->field_4);
@@ -1055,13 +1055,13 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             ResetInfoStruct();
             return;
         }
-        sprintf(buf_a, GetVisitorName(DAT_007fdf8c));
+        sprintf(buf_a, GetVisitorName(PopUpInfoBloke));
         sprintf(buf_b, DAT_004d8bb0);
         DAT_007fdf98 = 1;
         break;
     }
     if (0 != PopUpInfoResizePending) {
-        if (DAT_007fdf9c == 0x306) {
+        if (PopUpInfoSubjectType == 0x306) {
             PopupInfoLineCount = 2;
         } else {
             name_lines = CountPopUpTextWidthSteps(buf_a, 0x40, 0x14, 0xb0, 0x20, 1);
@@ -1094,7 +1094,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         PrintTextBox(buf_b, tl.x, tl.y, br.x - tl.x, br.y - tl.y, 2, 0x10, 0xff0000, 0xffffff);
     }
     PopRenderingStatus();
-    if (DAT_007fdf9c == 0x306) {
+    if (PopUpInfoSubjectType == 0x306) {
         mood = GetBlokeMood(bloke);
         hunger = GetBlokeHungerLevel(bloke);
         tl.x = x + 0xc;
@@ -1126,9 +1126,9 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     }
     if (repairable != 0 || DAT_0066895c != 0) {
         if (repairable != 0) {
-            frac = (float)DAT_007fdf84[0x11] / ride->durability;
+            frac = (float)PopUpInfoTile[0x11] / ride->durability;
         } else {
-            target = DAT_007fdec0.data.tile;
+            target = PopUpInfoHover.data.tile;
             entry_index = 0;
             for (entry = BuildObjArray;; entry++, entry_index++) {
                 if ((INT_PTR)&entry->coords >= (INT_PTR)&ButtonRepeatDelay) {
@@ -1143,8 +1143,8 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             }
             frac = (float)BuildObjArray[entry_index].elapsed / GetBuildTime(PopUpInfoRide);
             if (frac == 1.0f) {
-                DAT_007fdec0.type = 0x103;
-                PopUpInfoSetUp(DAT_007fdec0, PopUpInfoX, PopUpInfoY);
+                PopUpInfoHover.type = 0x103;
+                PopUpInfoSetUp(PopUpInfoHover, PopUpInfoX, PopUpInfoY);
                 return;
             }
         }
@@ -1233,7 +1233,7 @@ unsigned char ClosePopUpEventHandler(void *param1, unsigned char param2, unsigne
 
 // FUNCTION: LEGOLAND 0x00473130
 unsigned int TryClosePopUp(void) {
-    if (DAT_007fdfa0 != 0) {
+    if (PopUpInfoState != 0) {
         ClosePopUpEventHandler(NULL, 0x2, 0, 0);
         return 1;
     } else {
@@ -1243,7 +1243,7 @@ unsigned int TryClosePopUp(void) {
 
 // FUNCTION: LEGOLAND 0x00473160
 unsigned int HandlePopUpOkKey(void) {
-    unsigned int state = DAT_007fdfa0;
+    unsigned int state = PopUpInfoState;
 
     if (state == 1) {
         ResetInfoStruct();
@@ -1281,12 +1281,12 @@ unsigned char PopUpOkEventHandler(void *param_1, unsigned char flags) {
     SetPopUpOkCloseIconSprites();
     SetIconSprite(param_1, PUOKOnSprite);
     if ((flags & 2) != 0) {
-        v = DAT_007fdec0.data.value & 0xffff;
+        v = PopUpInfoHover.data.value & 0xffff;
         saved_class = QueryClass;
         memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
         local_8[0] = v & 0xff;
         local_8[1] = v >> 8;
-        cls = ((struct Element *)DAT_007fdec0.ptr)->ride;
+        cls = ((struct Element *)PopUpInfoHover.ptr)->ride;
         QueryCursor.tile_y = local_8[1];
         QueryObj.pos.y = (unsigned char)local_8[1];
         QueryClass = cls;
@@ -1359,8 +1359,8 @@ unsigned char AddGardenerEventHandler(void *param_1, unsigned char param_2) {
     if (GardenerCount < 0xf) {
         SetIconSprite(param_1, PuAddGardenerOnSprite);
         if ((param_2 & 2) != 0) {
-            local_8[0] = DAT_007fdf84[4];
-            local_8[1] = DAT_007fdf84[5];
+            local_8[0] = PopUpInfoTile[4];
+            local_8[1] = PopUpInfoTile[5];
             if (BuyGardener() != 0) {
                 GenerateGardener(local_8, 1);
             }
@@ -1377,8 +1377,8 @@ unsigned char AddMechanicsEventHandler(void *param_1, unsigned char param_2) {
     if (MechanicCount < 0xf) {
         SetIconSprite(param_1, PuAddMechanicsOnSprite);
         if ((param_2 & 2) != 0) {
-            local_8[0] = DAT_007fdf84[4];
-            local_8[1] = DAT_007fdf84[5];
+            local_8[0] = PopUpInfoTile[4];
+            local_8[1] = PopUpInfoTile[5];
             if (BuyMechanic() != 0) {
                 GenerateMechanic(local_8, 1);
             }
@@ -1392,7 +1392,7 @@ unsigned char DeleteWorkOrderEventHandler(void *param_1, unsigned char param_2) 
     SetPopUpIconSprites();
     SetIconSprite(param_1, PuDeleteObjectOnSprite);
     if ((param_2 & 2) != 0) {
-        if (DAT_007fdf9c == 0x10b) {
+        if (PopUpInfoSubjectType == 0x10b) {
             SetObjRectFlags(PopUpInfoData->field_4, (struct Point *)&PopUpInfoData->field_8, 0);
             RemoveGardenersWorkOrderAt(PopUpInfoData->field_8, PopUpInfoData->field_c);
             ResetInfoStruct();

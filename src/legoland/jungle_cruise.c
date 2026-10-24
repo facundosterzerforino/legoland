@@ -923,46 +923,46 @@ void JungleCruiseMonkeyFishCalcCursor(Element *obj, int *param_2, unsigned int p
         if (IsCursorBuildable(&EditCursor) != 0) {
             memcpy(&fp, EditCursor.field_1414, sizeof(fp));
             fp.v[1] += 5;
-            DefaultCursor(&DAT_00616180[row * 4]);
-            DefaultCursor(&DAT_00616180[row * 4 + 1]);
-            DefaultCursor(&DAT_00616180[row * 4 + 2]);
-            DefaultCursor(&DAT_00616180[row * 4 + 3]);
-            memcpy(DAT_00616180[row * 4].field_1414, &fp, sizeof(fp));
-            memcpy(DAT_00616180[row * 4 + 1].field_1414, &fp, sizeof(fp));
-            memcpy(DAT_00616180[row * 4 + 2].field_1414, &fp, sizeof(fp));
-            memcpy(DAT_00616180[row * 4 + 3].field_1414, &fp, sizeof(fp));
-            ResetCursorBuildable(&DAT_00616180[row * 4]);
-            ResetCursorBuildable(&DAT_00616180[row * 4 + 1]);
-            ResetCursorBuildable(&DAT_00616180[row * 4 + 2]);
-            ResetCursorBuildable(&DAT_00616180[row * 4 + 3]);
-            DAT_00616180[row * 4].field_1828 = 0x2034;
-            DAT_00616180[row * 4 + 1].field_1828 = 0x2034;
-            DAT_00616180[row * 4 + 2].field_1828 = 0x2034;
-            DAT_00616180[row * 4 + 3].field_1828 = 0x2034;
+            DefaultCursor(&JungleCruiseMonkeyFishCursors[row * 4]);
+            DefaultCursor(&JungleCruiseMonkeyFishCursors[row * 4 + 1]);
+            DefaultCursor(&JungleCruiseMonkeyFishCursors[row * 4 + 2]);
+            DefaultCursor(&JungleCruiseMonkeyFishCursors[row * 4 + 3]);
+            memcpy(JungleCruiseMonkeyFishCursors[row * 4].field_1414, &fp, sizeof(fp));
+            memcpy(JungleCruiseMonkeyFishCursors[row * 4 + 1].field_1414, &fp, sizeof(fp));
+            memcpy(JungleCruiseMonkeyFishCursors[row * 4 + 2].field_1414, &fp, sizeof(fp));
+            memcpy(JungleCruiseMonkeyFishCursors[row * 4 + 3].field_1414, &fp, sizeof(fp));
+            ResetCursorBuildable(&JungleCruiseMonkeyFishCursors[row * 4]);
+            ResetCursorBuildable(&JungleCruiseMonkeyFishCursors[row * 4 + 1]);
+            ResetCursorBuildable(&JungleCruiseMonkeyFishCursors[row * 4 + 2]);
+            ResetCursorBuildable(&JungleCruiseMonkeyFishCursors[row * 4 + 3]);
+            JungleCruiseMonkeyFishCursors[row * 4].field_1828 = 0x2034;
+            JungleCruiseMonkeyFishCursors[row * 4 + 1].field_1828 = 0x2034;
+            JungleCruiseMonkeyFishCursors[row * 4 + 2].field_1828 = 0x2034;
+            JungleCruiseMonkeyFishCursors[row * 4 + 3].field_1828 = 0x2034;
             if ((mask & 1) != 0) {
-                DAT_00616180[n].tile_x = EditCursor.tile_x;
-                DAT_00616180[n].tile_y = EditCursor.tile_y - (row * 5 + 5);
+                JungleCruiseMonkeyFishCursors[n].tile_x = EditCursor.tile_x;
+                JungleCruiseMonkeyFishCursors[n].tile_y = EditCursor.tile_y - (row * 5 + 5);
                 n++;
             }
             if ((mask & 2) != 0) {
-                DAT_00616180[n].tile_x = EditCursor.tile_x + 5;
-                DAT_00616180[n].tile_y = EditCursor.tile_y - row * 5;
+                JungleCruiseMonkeyFishCursors[n].tile_x = EditCursor.tile_x + 5;
+                JungleCruiseMonkeyFishCursors[n].tile_y = EditCursor.tile_y - row * 5;
                 n++;
             }
             if ((mask & 4) != 0) {
-                DAT_00616180[n].tile_x = EditCursor.tile_x;
-                DAT_00616180[n].tile_y = EditCursor.tile_y - row * 5 + 5;
+                JungleCruiseMonkeyFishCursors[n].tile_x = EditCursor.tile_x;
+                JungleCruiseMonkeyFishCursors[n].tile_y = EditCursor.tile_y - row * 5 + 5;
                 n++;
             }
             if ((mask & 8) != 0) {
-                DAT_00616180[n].tile_x = EditCursor.tile_x - 5;
-                DAT_00616180[n].tile_y = EditCursor.tile_y - row * 5;
+                JungleCruiseMonkeyFishCursors[n].tile_x = EditCursor.tile_x - 5;
+                JungleCruiseMonkeyFishCursors[n].tile_y = EditCursor.tile_y - row * 5;
                 n++;
             }
             if (n != 0) {
-                EditCursor.next = &DAT_00616180[0];
+                EditCursor.next = &JungleCruiseMonkeyFishCursors[0];
                 for (i = 1; i < n; i++) {
-                    DAT_00616180[i - 1].next = &DAT_00616180[i];
+                    JungleCruiseMonkeyFishCursors[i - 1].next = &JungleCruiseMonkeyFishCursors[i];
                 }
             }
         }
@@ -1828,48 +1828,48 @@ void JungleCruiseWaterCalcCursor(Element *obj, int *param_2, unsigned int param_
             result = CheckForPeople(&rect);
             if (result != -1) {
                 if (result != 1) {
-                    DefaultCursor(&DAT_00629c58[0]);
-                    DefaultCursor(&DAT_00629c58[1]);
-                    DefaultCursor(&DAT_00629c58[2]);
-                    DefaultCursor(&DAT_00629c58[3]);
-                    memcpy(DAT_00629c58[0].field_1414, EditCursor.field_1414, 20);
-                    memcpy(DAT_00629c58[1].field_1414, EditCursor.field_1414, 20);
-                    memcpy(DAT_00629c58[2].field_1414, EditCursor.field_1414, 20);
-                    memcpy(DAT_00629c58[3].field_1414, EditCursor.field_1414, 20);
-                    ResetCursorBuildable(&DAT_00629c58[0]);
-                    ResetCursorBuildable(&DAT_00629c58[1]);
-                    ResetCursorBuildable(&DAT_00629c58[2]);
-                    ResetCursorBuildable(&DAT_00629c58[3]);
+                    DefaultCursor(&JungleCruiseWaterCursors[0]);
+                    DefaultCursor(&JungleCruiseWaterCursors[1]);
+                    DefaultCursor(&JungleCruiseWaterCursors[2]);
+                    DefaultCursor(&JungleCruiseWaterCursors[3]);
+                    memcpy(JungleCruiseWaterCursors[0].field_1414, EditCursor.field_1414, 20);
+                    memcpy(JungleCruiseWaterCursors[1].field_1414, EditCursor.field_1414, 20);
+                    memcpy(JungleCruiseWaterCursors[2].field_1414, EditCursor.field_1414, 20);
+                    memcpy(JungleCruiseWaterCursors[3].field_1414, EditCursor.field_1414, 20);
+                    ResetCursorBuildable(&JungleCruiseWaterCursors[0]);
+                    ResetCursorBuildable(&JungleCruiseWaterCursors[1]);
+                    ResetCursorBuildable(&JungleCruiseWaterCursors[2]);
+                    ResetCursorBuildable(&JungleCruiseWaterCursors[3]);
                     x = EditCursor.tile_x;
                     y = EditCursor.tile_y;
-                    DAT_00629c58[0].field_1828 = 0x2034;
-                    DAT_00629c58[1].field_1828 = 0x2034;
-                    DAT_00629c58[2].field_1828 = 0x2034;
-                    DAT_00629c58[3].field_1828 = 0x2034;
+                    JungleCruiseWaterCursors[0].field_1828 = 0x2034;
+                    JungleCruiseWaterCursors[1].field_1828 = 0x2034;
+                    JungleCruiseWaterCursors[2].field_1828 = 0x2034;
+                    JungleCruiseWaterCursors[3].field_1828 = 0x2034;
                     if ((mask & 1) != 0) {
-                        DAT_00629c58[0].tile_x = x;
-                        DAT_00629c58[0].tile_y = y - 5;
+                        JungleCruiseWaterCursors[0].tile_x = x;
+                        JungleCruiseWaterCursors[0].tile_y = y - 5;
                         n = 1;
                     }
                     if ((mask & 2) != 0) {
-                        DAT_00629c58[n].tile_x = x + 5;
-                        DAT_00629c58[n].tile_y = y;
+                        JungleCruiseWaterCursors[n].tile_x = x + 5;
+                        JungleCruiseWaterCursors[n].tile_y = y;
                         n++;
                     }
                     if ((mask & 4) != 0) {
-                        DAT_00629c58[n].tile_x = x;
-                        DAT_00629c58[n].tile_y = y + 5;
+                        JungleCruiseWaterCursors[n].tile_x = x;
+                        JungleCruiseWaterCursors[n].tile_y = y + 5;
                         n++;
                     }
                     if ((mask & 8) != 0) {
-                        DAT_00629c58[n].tile_x = x - 5;
-                        DAT_00629c58[n].tile_y = y;
+                        JungleCruiseWaterCursors[n].tile_x = x - 5;
+                        JungleCruiseWaterCursors[n].tile_y = y;
                         n++;
                     }
                     if (n != 0) {
-                        EditCursor.next = &DAT_00629c58[0];
+                        EditCursor.next = &JungleCruiseWaterCursors[0];
                         if (n > 1) {
-                            c = &DAT_00629c58[1];
+                            c = &JungleCruiseWaterCursors[1];
                             n--;
                             do {
                                 c[-1].next = c;

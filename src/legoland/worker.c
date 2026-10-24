@@ -1051,9 +1051,9 @@ void RenderWorkOrderMarkers(int mechanics) {
                 for (pt.x = r.x0; pt.x <= r.x1; pt.x++) {
                     GetTileBounds(&pt, bounds);
                     if (order->assigned != 0) {
-                        PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *DAT_00801a6c], bounds[0], bounds[1], colour, 0);
+                        PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *BasicTiles1Data], bounds[0], bounds[1], colour, 0);
                     } else {
-                        PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *DAT_00801a6c], bounds[0], bounds[1], 1, 0);
+                        PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *BasicTiles1Data], bounds[0], bounds[1], 1, 0);
                     }
                 }
             }

@@ -1179,7 +1179,7 @@ extern unsigned int DAT_004bed44;
 // 0x004bef9c
 extern unsigned int FrontEndInputEnabled;
 // 0x004bf670
-extern unsigned int DAT_004bf670;
+extern unsigned int IntervalPageFirstLine;
 // 0x004bf774
 extern unsigned int MusicEnabled;
 // 0x004bf778
@@ -1379,7 +1379,7 @@ extern struct Sprite *LogFlumeEntranceLayer;
 // 0x004c8d68
 extern struct Sprite *LogFlumeFc3M3Sprite;
 // 0x004c8d78
-extern struct Cursor DAT_004c8d78;
+extern struct Cursor LogFlumeEntranceCursor;
 // 0x004c8d6c
 extern struct Ride *LogFlumeDropRide;
 // 0x004c8d70
@@ -1617,11 +1617,11 @@ extern struct Footprint BoatingSchoolFootprint;
 // 0x004cc08c
 extern unsigned int BoatingSchoolAnimTick;
 // 0x004cc090
-extern struct Cursor DAT_004cc090[4];
+extern struct Cursor BoatingSchoolMermaidCursors[4];
 // 0x004d2164
 extern struct MermaidNode *MermaidList;
 // 0x004d2168
-extern struct Cursor DAT_004d2168[4];
+extern struct Cursor BoatingSchoolWaterCursors[4];
 // 0x004d823c
 extern struct PathNode *BoatPathList;
 // 0x004d8240
@@ -1765,7 +1765,7 @@ extern float CurvePlotWorldPoints[90][3];
 extern struct CastleFloatEnt TrackTieVerts[8];
 
 // 0x00616180
-extern struct Cursor DAT_00616180[8];
+extern struct Cursor JungleCruiseMonkeyFishCursors[8];
 // 0x00622320
 extern struct Cursor JungleCruiseCursors[4];
 // 0x006159c8
@@ -1924,7 +1924,7 @@ extern struct Footprint JungleCruiseFootprint;
 // 0x00629c54
 extern int JungleCruiseStep;
 // 0x00629c58
-extern struct Cursor DAT_00629c58[4];
+extern struct Cursor JungleCruiseWaterCursors[4];
 // 0x0062fd2c
 extern struct JunglePath *JunglePathList;
 // 0x0062fd30
@@ -2243,7 +2243,7 @@ extern long LastMapClickY;
 // 0x00667c64
 extern const char *AdvisorDebugStage;
 // 0x00667c48
-extern unsigned int DAT_00667c48;
+extern unsigned int MouseClickConsumed;
 // 0x00667c4c
 extern int LevelScriptLoadResult;
 extern unsigned int GameStartPending;
@@ -2427,7 +2427,7 @@ extern unsigned int BuildMenuRefreshPending;
 // 0x00668720
 extern unsigned int ScriptStringCount;
 // 0x00668724
-extern struct ObjectiveEvent *DAT_00668724;
+extern struct ObjectiveEvent *ObjectiveMessageQueue;
 // 0x00668728
 extern struct ObjectiveEvent *ObjectiveEventList;
 // 0x0066872c
@@ -2569,7 +2569,7 @@ extern struct Sprite *PuAddMechanicsOnSprite;
 // 0x00668950
 extern struct Sprite *PuAddMechanicsSprite;
 // 0x00668954
-extern unsigned int DAT_00668954;
+extern unsigned int WorkerOnMouseActive;
 // 0x00668958
 extern struct Sprite *PopUpSpritesLoaded;
 // 0x0066895c
@@ -2597,9 +2597,9 @@ extern unsigned char PrevKeyState[0x3b];
 // 0x00668de4
 extern unsigned char CheatKeyState[0x3b];
 // 0x00668e20
-extern unsigned int DAT_00668e20[4];
+extern unsigned int SavedThemeIconEnabled[4];
 // 0x00668e34
-extern unsigned int DAT_00668e34;
+extern unsigned int ResearchTabSelected;
 // 0x00668e38
 extern unsigned int DAT_00668e38;
 // 0x00668e3c
@@ -2995,7 +2995,7 @@ extern char IntervalMovieName[0x100];
 // 0x00798878
 extern unsigned int IntervalScreenIsBriefing;
 // 0x0079887c
-extern unsigned int DAT_0079887c;
+extern unsigned int IntervalTextLastLine;
 // 0x00798880
 extern unsigned int IntervalHintCount;
 // 0x00798884
@@ -3329,7 +3329,7 @@ extern struct Sprite *IfMapiconSprite;
 // 0x007fdd60
 extern struct Sprite *IfOptionsIconSprite;
 // 0x007fdd70
-extern struct IconNode *DAT_007fdd70[4];
+extern struct IconNode *ThemeIcons[4];
 // 0x007fdd80
 extern unsigned char BuildSidePanelState;
 // 0x007fdd84
@@ -3359,11 +3359,11 @@ extern struct Ride *PopUpInfoRide;
 // 0x007fdf80
 extern struct InfoObjData *PopUpInfoData;
 // 0x007fdf84
-extern unsigned char *DAT_007fdf84;
+extern unsigned char *PopUpInfoTile;
 // 0x007fdf88
 extern unsigned short DAT_007fdf88;
 // 0x007fdf8c
-extern void *DAT_007fdf8c; /* object the info popup is showing */
+extern void *PopUpInfoBloke; /* object the info popup is showing */
 // 0x007fdf90
 extern unsigned int DAT_007fdf90;
 // 0x007fdf94
@@ -3371,9 +3371,9 @@ extern unsigned int DAT_007fdf94;
 // 0x007fdf98
 extern unsigned int DAT_007fdf98;
 // 0x007fdf9c
-extern int DAT_007fdf9c;
+extern int PopUpInfoSubjectType;
 // 0x007fdfa0
-extern unsigned int DAT_007fdfa0;
+extern unsigned int PopUpInfoState;
 // 0x007fdfa4
 extern unsigned int DAT_007fdfa4;
 // 0x007fdfa8
@@ -3507,7 +3507,7 @@ extern int Bridge1OverlayOffsetY;
 // 0x00801a68
 extern struct Element **MapObjectElements; /* the level's object classes */
 // 0x00801a6c
-extern int *DAT_00801a6c;
+extern int *BasicTiles1Data;
 // 0x00801a70
 extern struct MapTileSet **MapTileSets; /* the level's tile object sets */
 // 0x00801a74

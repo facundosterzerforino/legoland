@@ -414,13 +414,13 @@ char ReadCheatKey(void) {
 // FUNCTION: LEGOLAND 0x00474190
 void SaveInputState(void) {
     SaveGameWrite(&SelectedBuildTheme, 4);
-    SaveGameWrite(&DAT_00668e34, 4);
+    SaveGameWrite(&ResearchTabSelected, 4);
     SaveGameWrite(&BuildSidePanelState, 16);
 }
 
 // FUNCTION: LEGOLAND 0x004741c0
 void LoadInputState(void) {
     SaveGameRead(&SelectedBuildTheme, 4);
-    SaveGameRead(&DAT_00668e34, 4);
+    SaveGameRead(&ResearchTabSelected, 4);
     SaveGameRead(&BuildSidePanelState, 16);
 }

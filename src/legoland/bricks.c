@@ -400,8 +400,8 @@ void ProcessMapEditing(void) {
         RenderCursor(&QueryCursor);
         break;
     }
-    if ((MapLeftClickFlags & 2) && DAT_00667c48 == 0 && EditMode.unk0 == 0 && DAT_00668954 == 0) {
+    if ((MapLeftClickFlags & 2) && MouseClickConsumed == 0 && EditMode.unk0 == 0 && WorkerOnMouseActive == 0) {
         PopUpInfoSetUp(Hover, MousePos.x, MousePos.y);
-        DAT_00667c48 = 1;
+        MouseClickConsumed = 1;
     }
 }

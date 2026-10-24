@@ -220,7 +220,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
     unsigned int pressed;
     struct Point mp;
 
-    DAT_00667c48 = 0;
+    MouseClickConsumed = 0;
     held = CONTROLLERBUFFER->buttons;
     pressed = (PrevHeldButtons ^ held) & held;
     released = ~pressed & (PrevHeldButtons ^ held);
@@ -344,7 +344,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
                 DragEndTileX = MouseTileX;
                 DragEndTileY = MouseTileY;
                 if ((MouseClickFlags & 2) != 0) {
-                    DAT_00667c48 = 1;
+                    MouseClickConsumed = 1;
                     MouseClickFlags = MouseClickFlags | 0x11;
                     GamePad = GamePad & 0xffffefff;
                 } else {

@@ -1157,7 +1157,7 @@ LEGO_EXPORT int LoadGame(char *path) {
     RestoreBuildMenuAfterLoad();
     SetMapLoaded(1);
     DAT_00810140 = 1;
-    DAT_00667c48 = 1;
+    MouseClickConsumed = 1;
     EditMode.unk0 = 0;
     GamePad &= ~0x1000;
     RepostScriptIntro();

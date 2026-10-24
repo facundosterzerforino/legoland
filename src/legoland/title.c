@@ -443,11 +443,11 @@ unsigned int LoadIntervalReport(const char *param_1) {
     // STRING: LEGOLAND 0x004bf678
     sprintf(buffer, "Intervals\\%s", param_1);
     result = ReadResourceLines(buffer, (void **)IntervalTextLines, 100);
-    DAT_0079887c = result;
+    IntervalTextLastLine = result;
     if (result != 0) {
-        DAT_004bf670 = 1;
+        IntervalPageFirstLine = 1;
         result = result - 1;
-        DAT_0079887c = result;
+        IntervalTextLastLine = result;
     }
     return result;
 }
@@ -464,10 +464,10 @@ void LoadIntervalHints(const char *param_1) {
 
 // FUNCTION: LEGOLAND 0x00490850
 void FreeIntervalReport(void) {
-    if (DAT_0079887c != 0) {
+    if (IntervalTextLastLine != 0) {
         free(IntervalTextLines[0]);
     }
-    DAT_0079887c = 0;
+    IntervalTextLastLine = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00490880
@@ -563,18 +563,18 @@ void PlayIntervalHintSpeech(unsigned int param_1) {
 
 // FUNCTION: LEGOLAND 0x00490aa0
 void ShowIntervalReportPage(void) {
-    if ((int)DAT_004bf670 <= 1) {
-        DAT_004bf670 = 1;
+    if ((int)IntervalPageFirstLine <= 1) {
+        IntervalPageFirstLine = 1;
         TitlePreviousPageIcon->flags = TitlePreviousPageIcon->flags | 0x400;
     } else {
         TitlePreviousPageIcon->flags = TitlePreviousPageIcon->flags & 0xfffffbff;
     }
-    if ((int)(DAT_004bf670 + 0xe) > (int)DAT_0079887c) {
+    if ((int)(IntervalPageFirstLine + 0xe) > (int)IntervalTextLastLine) {
         TitleNextPageIcon->flags |= 0x400;
     } else {
         TitleNextPageIcon->flags &= 0xfffffbff;
     }
-    PlayIntervalReportSpeech((int)DAT_004bf670 / 0xe);
+    PlayIntervalReportSpeech((int)IntervalPageFirstLine / 0xe);
 }
 
 // FUNCTION: LEGOLAND 0x00490b20
@@ -585,7 +585,7 @@ unsigned char IntervalNextPageHandler(unsigned int param_1, unsigned int param_2
             return IntervalScreenCloseHandler(0, param_2, 0, 0);
         }
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_004bf670 = DAT_004bf670 + 0xe;
+        IntervalPageFirstLine = IntervalPageFirstLine + 0xe;
         ShowIntervalReportPage();
     }
     return 1;
@@ -596,7 +596,7 @@ unsigned char IntervalPreviousPageHandler(unsigned int param_1, unsigned int par
     SetIconSprite(TitlePreviousPageIcon, PreviousPageLitSprite);
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_004bf670 -= 14;
+        IntervalPageFirstLine -= 14;
         ShowIntervalReportPage();
     }
     return 1;
@@ -680,7 +680,7 @@ void InitIntervalScreen(void) {
     TitlePreviousPageIcon->flags |= 0x2000;
     TitlePreviousPageIcon->flags |= 0x4002;
     TitlePreviousPageIcon->event_handler = (void *)IntervalPreviousPageHandler;
-    DAT_004bf670 = 1;
+    IntervalPageFirstLine = 1;
     ShowIntervalReportPage();
 }
 
@@ -762,9 +762,9 @@ void RenderIntervalScreen(void) {
     PrintIntervalLine(IntervalTextLines[0], 10, 0x45, 0x27, 1);
     y = 0x6b;
     n = 0;
-    line = &IntervalTextLines[DAT_004bf670];
-    idx = DAT_004bf670;
-    while (n < 0xe && idx <= (int)DAT_0079887c) {
+    line = &IntervalTextLines[IntervalPageFirstLine];
+    idx = IntervalPageFirstLine;
+    while (n < 0xe && idx <= (int)IntervalTextLastLine) {
         PrintIntervalLine(*line, 10, y, 0x16, 0);
         n = n + 1;
         idx = idx + 1;

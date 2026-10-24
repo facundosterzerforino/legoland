@@ -116,8 +116,8 @@ LEGO_EXPORT unsigned int LoadMapTiles(void) {
     LLIDB_FindElement("MAPPING 1", &handle, 0);
     LLIDB_LoadData((void *)handle);
     LLIDB_FindElement("BASIC TILES 1", &handle, 0);
-    DAT_00801a6c = handle->data;
-    LevelBaseTileId = *(unsigned int *)DAT_00801a6c;
+    BasicTiles1Data = handle->data;
+    LevelBaseTileId = *(unsigned int *)BasicTiles1Data;
     DAT_008003f8 = 0;
     DAT_00801b20 = 1;
     DAT_0080ff60 = 2;
@@ -283,7 +283,7 @@ void DrawMarkedTileHighlights(void) {
                 tile.field_10 = 0;
             }
             if (tile.field_10 & 2) {
-                PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *DAT_00801a6c], x, y, 0xff6868, 0);
+                PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *BasicTiles1Data], x, y, 0xff6868, 0);
             }
             cell.x++;
             row--;
@@ -298,7 +298,7 @@ void DrawMarkedTileHighlights(void) {
                 tile.field_10 = 0;
             }
             if (tile.field_10 & 2) {
-                PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *DAT_00801a6c], x + half_x, y + half_y, 0xff6868, 0);
+                PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *BasicTiles1Data], x + half_x, y + half_y, 0xff6868, 0);
             }
             cell.x++;
             cell.y--;

@@ -468,7 +468,7 @@ void GameProc(void) {
     DoMapAI();
     ControlPeople();
     ControlWorkers();
-    if (DAT_00668954 != 0) {
+    if (WorkerOnMouseActive != 0) {
         CheckWorkerOnMouseStatus(0);
     }
     // STRING: LEGOLAND 0x004b91d4
@@ -564,7 +564,7 @@ void GameProc(void) {
     }
     if (Hover.type == 5 && (MouseClickFlags & 2) != 0) {
         ClearAdvisorHelp();
-        DAT_00667c48 = 1;
+        MouseClickConsumed = 1;
     }
     // STRING: LEGOLAND 0x004b91a4
     AdvisorDebugStage = "Appraisals";
@@ -572,13 +572,13 @@ void GameProc(void) {
     // STRING: LEGOLAND 0x004b9194
     AdvisorDebugStage = "Appraisals Over";
     UpdateFocussedIconPtr();
-    if ((GamePad & 0x1000) == 0 && DAT_00667c48 == 0) {
-        if (FocussedIconPtr != NULL && DAT_00668954 == 0) {
+    if ((GamePad & 0x1000) == 0 && MouseClickConsumed == 0) {
+        if (FocussedIconPtr != NULL && WorkerOnMouseActive == 0) {
             SetPointer(6);
         }
         CheckFocussedIcon();
     }
-    if (DAT_00668954 != 0) {
+    if (WorkerOnMouseActive != 0) {
         RenderWorkerOnMouse();
     }
     PopRenderingStatus();

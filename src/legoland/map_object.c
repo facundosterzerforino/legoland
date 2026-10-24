@@ -1375,7 +1375,7 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
                     tilept.y = cursor->tile_y + y;
                     GetTileBounds(&tilept, screen);
                     if (cursor->field_1828 & 6) {
-                        PrintSprite(TileSpriteArray[(DAT_0080ff60 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
+                        PrintSprite(TileSpriteArray[(DAT_0080ff60 & 0xff) + *(int *)BasicTiles1Data], screen[0], screen[1], 0, 0);
                     } else {
                         if (tilept.x >= 0 && tilept.x < lpConfig->width && tilept.y >= 0 && tilept.y < lpConfig->height) {
                             tile = &GameMap[tilept.y][tilept.x];
@@ -1383,11 +1383,11 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
                             tile = 0;
                         }
                         if (tile == 0 || (tile->flags & 0x8f8)) {
-                            PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0xff0000, 0);
+                            PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *(int *)BasicTiles1Data], screen[0], screen[1], 0xff0000, 0);
                         } else if (cursor->pad_1428[0] & 0xc) {
-                            PrintSprite(TileSpriteArray[(DAT_008003f8 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
+                            PrintSprite(TileSpriteArray[(DAT_008003f8 & 0xff) + *(int *)BasicTiles1Data], screen[0], screen[1], 0, 0);
                         } else {
-                            PrintSprite(TileSpriteArray[(DAT_00801b20 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
+                            PrintSprite(TileSpriteArray[(DAT_00801b20 & 0xff) + *(int *)BasicTiles1Data], screen[0], screen[1], 0, 0);
                         }
                     }
                 }

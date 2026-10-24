@@ -54,8 +54,8 @@ unsigned int CanShowNextAdvisorMessage(void) {
         AdvisorRepeatPending = 0;
         return 1;
     }
-    if (DAT_00668724 != NULL) {
-        if (((struct ObjectiveEvent *)DAT_00668724)->type == 0) {
+    if (ObjectiveMessageQueue != NULL) {
+        if (((struct ObjectiveEvent *)ObjectiveMessageQueue)->type == 0) {
             if (AdvisorRepeatPending == 0) {
                 return 0;
             }
@@ -75,7 +75,7 @@ unsigned int CanShowNextAdvisorMessage(void) {
 unsigned int ShouldClearAdvisorMessage(void) {
     int diff = (int)(GetGameTimer() - AdvisorHelpStartTime);
 
-    if (diff > 0x7530 || (AdvisorClearOnObjectiveEvent != 0 && DAT_00668724 != NULL && ((struct ObjectiveEvent *)DAT_00668724)->type != 0)) {
+    if (diff > 0x7530 || (AdvisorClearOnObjectiveEvent != 0 && ObjectiveMessageQueue != NULL && ((struct ObjectiveEvent *)ObjectiveMessageQueue)->type != 0)) {
         return 1;
     }
     return 0;
@@ -117,7 +117,7 @@ void ShowFocusedIconHelp(void) {
     struct IconNode *icon;
 
     icon = (struct IconNode *)FocussedIconPtr;
-    if (icon != NULL && (icon->flags & 0x2000) != 0 && DAT_00668954 == 0) {
+    if (icon != NULL && (icon->flags & 0x2000) != 0 && WorkerOnMouseActive == 0) {
         int y = MousePos.y;
         int x = MousePos.x;
         rect.left = x;

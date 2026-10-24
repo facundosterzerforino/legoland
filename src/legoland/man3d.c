@@ -613,7 +613,7 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
             __asm {fldcw word ptr[PersonRenderFpuControlWord]} DrawPersonMesh(person);
             __asm { fldcw word ptr [SavedFPUControlWord] }
             if (MousePixelCovered != 0) {
-                if (DAT_00668954 != 0 && person->bloke == GetWorkerOnMouse()) {
+                if (WorkerOnMouseActive != 0 && person->bloke == GetWorkerOnMouse()) {
                     return;
                 }
                 switch (person->character) {

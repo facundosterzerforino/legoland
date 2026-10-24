@@ -187,7 +187,7 @@ void InsertObjectiveMessageSorted(struct ObjectiveEvent *event) {
     struct ObjectiveEvent *prev;
     int key;
 
-    node = DAT_00668724;
+    node = ObjectiveMessageQueue;
     prev = NULL;
     if (node != NULL) {
         key = event->sort_key;
@@ -204,7 +204,7 @@ void InsertObjectiveMessageSorted(struct ObjectiveEvent *event) {
         }
     }
     if (prev == NULL) {
-        DAT_00668724 = event;
+        ObjectiveMessageQueue = event;
         event->next = NULL;
     }
 }
@@ -244,7 +244,7 @@ void ShowNextObjectiveMessage(void) {
     struct ObjectiveEvent *event;
     char *at;
 
-    event = DAT_00668724;
+    event = ObjectiveMessageQueue;
     if (event != NULL) {
         at = strchr(event->text, 0x40);
         if (at != NULL) {
@@ -256,7 +256,7 @@ void ShowNextObjectiveMessage(void) {
         }
         if (DisplayAdvisorHelp(event->text, event->type == 0, 0) != 0) {
             SetNextAdvisorAnimState(5, 0);
-            DAT_00668724 = DAT_00668724->next;
+            ObjectiveMessageQueue = ObjectiveMessageQueue->next;
             FreeObjectiveEvent(event);
         }
     }

@@ -17,8 +17,8 @@
 
 // FUNCTION: LEGOLAND 0x004700c0
 unsigned int IsBlokeHovered(void *object) {
-    if (DAT_007fdf9c == 0x306) {
-        if (DAT_007fdf8c == object) {
+    if (PopUpInfoSubjectType == 0x306) {
+        if (PopUpInfoBloke == object) {
             return 1;
         }
     }
@@ -40,7 +40,7 @@ void PickUpWorker(unsigned int type, Bloke *worker) {
     WorkerOldX = WorkerOnMouse->pos.x;
     WorkerOldY = WorkerOnMouse->pos.y;
     WorkerOnMouse->dir = 5;
-    DAT_00668954 = 1;
+    WorkerOnMouseActive = 1;
     if (WorkerOnMouseType == 0x307) {
         ClearAGardenersWorkList(WorkerOnMouse);
         NewLongTermAction(WorkerOnMouse, 0x18);
@@ -218,18 +218,18 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
 
     if (!(MapRightClickFlags & 2) && a == 0) {
         if (MapLeftClickFlags & 2) {
-            DAT_00667c48 = 1;
-            DAT_00668954 = 0;
+            MouseClickConsumed = 1;
+            WorkerOnMouseActive = 0;
             for (;;) {
                 if (Hover.type == 0x103) {
                     if (TryDropWorkerOnHomeOrPath()) {
-                        DAT_00668954 = 0;
+                        WorkerOnMouseActive = 0;
                         return;
                     }
                     order = FindHoveredWorkerOrder((Point *)pt);
                     if (order != NULL) {
                         x = pt[0];
-                        DAT_00668954 = 0;
+                        WorkerOnMouseActive = 0;
                         isOrder = 1;
                     } else {
                         order = CreateHoveredWorkerRepairOrder((Point *)pt);
@@ -237,7 +237,7 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                             break;
                         }
                         x = pt[0];
-                        DAT_00668954 = 0;
+                        WorkerOnMouseActive = 0;
                         isOrder = 1;
                     }
                 } else {
@@ -252,19 +252,19 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                     if (pt[1] < lpConfig->height) {
                         elem = &GameMap[pt[1]][x];
                         if (elem != NULL && (elem->field_10 & 2)) {
-                            DAT_00668954 = 1;
+                            WorkerOnMouseActive = 1;
                             if (WorkerOnMouseType == 0x307 && (elem->flags & 0x800)) {
-                                DAT_00668954 = 0;
+                                WorkerOnMouseActive = 0;
                             } else {
                                 SetWorkersPositionAtMouse();
                                 return;
                             }
-                        } else if (DAT_00668954 != 0) {
+                        } else if (WorkerOnMouseActive != 0) {
                             SetWorkersPositionAtMouse();
                             return;
                         }
                     } else {
-                        DAT_00668954 = 1;
+                        WorkerOnMouseActive = 1;
                         SetWorkersPositionAtMouse();
                         return;
                     }
@@ -286,19 +286,19 @@ LEGO_EXPORT void CheckWorkerOnMouseStatus(int a) {
                 if (result == 0) {
                     break;
                 }
-                if (DAT_00668954 != 0) {
+                if (WorkerOnMouseActive != 0) {
                     SetWorkersPositionAtMouse();
                 }
                 return;
             }
-            DAT_00668954 = 1;
+            WorkerOnMouseActive = 1;
             SetWorkersPositionAtMouse();
             return;
         }
     } else {
         ResetWorkersOldCoords();
     }
-    if (DAT_00668954 != 0) {
+    if (WorkerOnMouseActive != 0) {
         SetWorkersPositionAtMouse();
     }
 }
@@ -330,7 +330,7 @@ LEGO_EXPORT void ResetWorkersOldCoords(void) {
 
 // FUNCTION: LEGOLAND 0x00470930
 LEGO_EXPORT void ResetMoveAWorkerStruct(void) {
-    DAT_00668954 = 0;
+    WorkerOnMouseActive = 0;
     WorkerOnMouse = NULL;
     WorkerOnMouseType = 0;
 }

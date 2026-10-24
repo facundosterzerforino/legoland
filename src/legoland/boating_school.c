@@ -1303,48 +1303,48 @@ void BoatingSchoolMermaidCalcCursor(Element *obj, int *param_2, unsigned int par
     if (IsCursorBuildable(&EditCursor) == 0) {
         return;
     }
-    DefaultCursor(&DAT_004cc090[0]);
-    DefaultCursor(&DAT_004cc090[1]);
-    DefaultCursor(&DAT_004cc090[2]);
-    DefaultCursor(&DAT_004cc090[3]);
-    memcpy(DAT_004cc090[0].field_1414, EditCursor.field_1414, 20);
-    memcpy(DAT_004cc090[1].field_1414, EditCursor.field_1414, 20);
-    memcpy(DAT_004cc090[2].field_1414, EditCursor.field_1414, 20);
-    memcpy(DAT_004cc090[3].field_1414, EditCursor.field_1414, 20);
-    ResetCursorBuildable(&DAT_004cc090[0]);
-    ResetCursorBuildable(&DAT_004cc090[1]);
-    ResetCursorBuildable(&DAT_004cc090[2]);
-    ResetCursorBuildable(&DAT_004cc090[3]);
+    DefaultCursor(&BoatingSchoolMermaidCursors[0]);
+    DefaultCursor(&BoatingSchoolMermaidCursors[1]);
+    DefaultCursor(&BoatingSchoolMermaidCursors[2]);
+    DefaultCursor(&BoatingSchoolMermaidCursors[3]);
+    memcpy(BoatingSchoolMermaidCursors[0].field_1414, EditCursor.field_1414, 20);
+    memcpy(BoatingSchoolMermaidCursors[1].field_1414, EditCursor.field_1414, 20);
+    memcpy(BoatingSchoolMermaidCursors[2].field_1414, EditCursor.field_1414, 20);
+    memcpy(BoatingSchoolMermaidCursors[3].field_1414, EditCursor.field_1414, 20);
+    ResetCursorBuildable(&BoatingSchoolMermaidCursors[0]);
+    ResetCursorBuildable(&BoatingSchoolMermaidCursors[1]);
+    ResetCursorBuildable(&BoatingSchoolMermaidCursors[2]);
+    ResetCursorBuildable(&BoatingSchoolMermaidCursors[3]);
     x = EditCursor.tile_x;
     y = EditCursor.tile_y;
-    DAT_004cc090[0].field_1828 = 0x2034;
-    DAT_004cc090[1].field_1828 = 0x2034;
-    DAT_004cc090[2].field_1828 = 0x2034;
-    DAT_004cc090[3].field_1828 = 0x2034;
+    BoatingSchoolMermaidCursors[0].field_1828 = 0x2034;
+    BoatingSchoolMermaidCursors[1].field_1828 = 0x2034;
+    BoatingSchoolMermaidCursors[2].field_1828 = 0x2034;
+    BoatingSchoolMermaidCursors[3].field_1828 = 0x2034;
     if ((mask & 1) != 0) {
-        DAT_004cc090[0].tile_x = x;
-        DAT_004cc090[0].tile_y = y - 5;
+        BoatingSchoolMermaidCursors[0].tile_x = x;
+        BoatingSchoolMermaidCursors[0].tile_y = y - 5;
         n = 1;
     }
     if ((mask & 2) != 0) {
-        DAT_004cc090[n].tile_x = x + 5;
-        DAT_004cc090[n].tile_y = y;
+        BoatingSchoolMermaidCursors[n].tile_x = x + 5;
+        BoatingSchoolMermaidCursors[n].tile_y = y;
         n++;
     }
     if ((mask & 4) != 0) {
-        DAT_004cc090[n].tile_x = x;
-        DAT_004cc090[n].tile_y = y + 5;
+        BoatingSchoolMermaidCursors[n].tile_x = x;
+        BoatingSchoolMermaidCursors[n].tile_y = y + 5;
         n++;
     }
     if ((mask & 8) != 0) {
-        DAT_004cc090[n].tile_x = x - 5;
-        DAT_004cc090[n].tile_y = y;
+        BoatingSchoolMermaidCursors[n].tile_x = x - 5;
+        BoatingSchoolMermaidCursors[n].tile_y = y;
         n++;
     }
     if (n != 0) {
-        EditCursor.next = &DAT_004cc090[0];
+        EditCursor.next = &BoatingSchoolMermaidCursors[0];
         if (n > 1) {
-            c = &DAT_004cc090[1];
+            c = &BoatingSchoolMermaidCursors[1];
             n--;
             do {
                 c[-1].next = c;
@@ -1547,48 +1547,48 @@ void BoatingSchoolWaterCalcCursor(Element *obj, int *param_2, unsigned int param
             result = CheckForPeople(&rect);
             if (result != -1) {
                 if (result != 1) {
-                    DefaultCursor(&DAT_004d2168[0]);
-                    DefaultCursor(&DAT_004d2168[1]);
-                    DefaultCursor(&DAT_004d2168[2]);
-                    DefaultCursor(&DAT_004d2168[3]);
-                    memcpy(DAT_004d2168[0].field_1414, EditCursor.field_1414, 20);
-                    memcpy(DAT_004d2168[1].field_1414, EditCursor.field_1414, 20);
-                    memcpy(DAT_004d2168[2].field_1414, EditCursor.field_1414, 20);
-                    memcpy(DAT_004d2168[3].field_1414, EditCursor.field_1414, 20);
-                    ResetCursorBuildable(&DAT_004d2168[0]);
-                    ResetCursorBuildable(&DAT_004d2168[1]);
-                    ResetCursorBuildable(&DAT_004d2168[2]);
-                    ResetCursorBuildable(&DAT_004d2168[3]);
+                    DefaultCursor(&BoatingSchoolWaterCursors[0]);
+                    DefaultCursor(&BoatingSchoolWaterCursors[1]);
+                    DefaultCursor(&BoatingSchoolWaterCursors[2]);
+                    DefaultCursor(&BoatingSchoolWaterCursors[3]);
+                    memcpy(BoatingSchoolWaterCursors[0].field_1414, EditCursor.field_1414, 20);
+                    memcpy(BoatingSchoolWaterCursors[1].field_1414, EditCursor.field_1414, 20);
+                    memcpy(BoatingSchoolWaterCursors[2].field_1414, EditCursor.field_1414, 20);
+                    memcpy(BoatingSchoolWaterCursors[3].field_1414, EditCursor.field_1414, 20);
+                    ResetCursorBuildable(&BoatingSchoolWaterCursors[0]);
+                    ResetCursorBuildable(&BoatingSchoolWaterCursors[1]);
+                    ResetCursorBuildable(&BoatingSchoolWaterCursors[2]);
+                    ResetCursorBuildable(&BoatingSchoolWaterCursors[3]);
                     x = EditCursor.tile_x;
                     y = EditCursor.tile_y;
-                    DAT_004d2168[0].field_1828 = 0x2034;
-                    DAT_004d2168[1].field_1828 = 0x2034;
-                    DAT_004d2168[2].field_1828 = 0x2034;
-                    DAT_004d2168[3].field_1828 = 0x2034;
+                    BoatingSchoolWaterCursors[0].field_1828 = 0x2034;
+                    BoatingSchoolWaterCursors[1].field_1828 = 0x2034;
+                    BoatingSchoolWaterCursors[2].field_1828 = 0x2034;
+                    BoatingSchoolWaterCursors[3].field_1828 = 0x2034;
                     if ((mask & 1) != 0) {
-                        DAT_004d2168[0].tile_x = x;
-                        DAT_004d2168[0].tile_y = y - 5;
+                        BoatingSchoolWaterCursors[0].tile_x = x;
+                        BoatingSchoolWaterCursors[0].tile_y = y - 5;
                         n = 1;
                     }
                     if ((mask & 2) != 0) {
-                        DAT_004d2168[n].tile_x = x + 5;
-                        DAT_004d2168[n].tile_y = y;
+                        BoatingSchoolWaterCursors[n].tile_x = x + 5;
+                        BoatingSchoolWaterCursors[n].tile_y = y;
                         n++;
                     }
                     if ((mask & 4) != 0) {
-                        DAT_004d2168[n].tile_x = x;
-                        DAT_004d2168[n].tile_y = y + 5;
+                        BoatingSchoolWaterCursors[n].tile_x = x;
+                        BoatingSchoolWaterCursors[n].tile_y = y + 5;
                         n++;
                     }
                     if ((mask & 8) != 0) {
-                        DAT_004d2168[n].tile_x = x - 5;
-                        DAT_004d2168[n].tile_y = y;
+                        BoatingSchoolWaterCursors[n].tile_x = x - 5;
+                        BoatingSchoolWaterCursors[n].tile_y = y;
                         n++;
                     }
                     if (n != 0) {
-                        EditCursor.next = &DAT_004d2168[0];
+                        EditCursor.next = &BoatingSchoolWaterCursors[0];
                         if (n > 1) {
-                            c = &DAT_004d2168[1];
+                            c = &BoatingSchoolWaterCursors[1];
                             n--;
                             do {
                                 c[-1].next = c;

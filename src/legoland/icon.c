@@ -1388,20 +1388,20 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
     if (icon != NULL) {
         if ((icon->flags & 2) != 0 && icon->event_handler != NULL) {
             unsigned int buttons;
-            if ((OkKeyState & 7) != 0 && DAT_00668954 == 0) {
+            if ((OkKeyState & 7) != 0 && WorkerOnMouseActive == 0) {
                 return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
                     icon, OkKeyState, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
             }
             buttons = MouseClickFlags;
-            DAT_00667c48 = 1;
+            MouseClickConsumed = 1;
             return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
                 icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
         }
         {
             unsigned int buttons = OkKeyState;
-            if ((OkKeyState & 7) == 0 || DAT_00668954 != 0) {
+            if ((OkKeyState & 7) == 0 || WorkerOnMouseActive != 0) {
                 buttons = MouseClickFlags;
-                DAT_00667c48 = 1;
+                MouseClickConsumed = 1;
             }
             return DefaultIconEventHandler(icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
         }

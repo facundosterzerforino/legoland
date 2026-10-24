@@ -1151,8 +1151,9 @@ unsigned int DAT_004bed44;
 // GLOBAL: LEGOLAND 0x004bef9c
 unsigned int FrontEndInputEnabled;
 
+/* First interval report line on the current page (14 lines per page, lines start at 1). */
 // GLOBAL: LEGOLAND 0x004bf670
-unsigned int DAT_004bf670;
+unsigned int IntervalPageFirstLine;
 
 // GLOBAL: LEGOLAND 0x004bf774
 unsigned int MusicEnabled;
@@ -1447,7 +1448,7 @@ struct Element *LogFlumeSpecialCorner3Element;
 struct Sprite *LogFlumeEntranceLayer;
 
 // GLOBAL: LEGOLAND 0x004c8d78
-struct Cursor DAT_004c8d78;
+struct Cursor LogFlumeEntranceCursor;
 
 // GLOBAL: LEGOLAND 0x004c8d68
 struct Sprite *LogFlumeFc3M3Sprite;
@@ -1817,13 +1818,13 @@ struct Footprint BoatingSchoolFootprint;
 unsigned int BoatingSchoolAnimTick;
 
 // GLOBAL: LEGOLAND 0x004cc090
-struct Cursor DAT_004cc090[4];
+struct Cursor BoatingSchoolMermaidCursors[4];
 
 // GLOBAL: LEGOLAND 0x004d2164
 struct MermaidNode *MermaidList;
 
 // GLOBAL: LEGOLAND 0x004d2168
-struct Cursor DAT_004d2168[4];
+struct Cursor BoatingSchoolWaterCursors[4];
 
 // GLOBAL: LEGOLAND 0x004d823c
 struct PathNode *BoatPathList;
@@ -2000,7 +2001,7 @@ unsigned char DAT_006139c8[0xe90] = {0};
 struct CastleFloatEnt TrackTieVerts[8] = {0};
 
 // GLOBAL: LEGOLAND 0x00616180
-struct Cursor DAT_00616180[8];
+struct Cursor JungleCruiseMonkeyFishCursors[8];
 
 // GLOBAL: LEGOLAND 0x00622320
 struct Cursor JungleCruiseCursors[4];
@@ -2261,7 +2262,7 @@ struct Footprint JungleCruiseFootprint;
 int JungleCruiseStep;
 
 // GLOBAL: LEGOLAND 0x00629c58
-struct Cursor DAT_00629c58[4];
+struct Cursor JungleCruiseWaterCursors[4];
 
 // GLOBAL: LEGOLAND 0x0062fd2c
 struct JunglePath *JunglePathList;
@@ -2717,8 +2718,9 @@ int DAT_00667c3c;
 // GLOBAL: LEGOLAND 0x00667c40
 const char *AdvisorDebugStage;
 
+/* Cleared by ReadGameButtons every frame; set once something has handled this frame's mouse click, so GameProc skips the focussed icon. */
 // GLOBAL: LEGOLAND 0x00667c48
-unsigned int DAT_00667c48;
+unsigned int MouseClickConsumed;
 
 /* Return value of the last LoadLevelScript call; not read elsewhere. */
 // GLOBAL: LEGOLAND 0x00667c4c
@@ -3012,8 +3014,9 @@ unsigned int BuildMenuRefreshPending;
 // GLOBAL: LEGOLAND 0x00668720
 unsigned int ScriptStringCount;
 
+/* Advisor messages from objectives, sorted by sort_key; ShowNextObjectiveMessage pops the head. */
 // GLOBAL: LEGOLAND 0x00668724
-struct ObjectiveEvent *DAT_00668724;
+struct ObjectiveEvent *ObjectiveMessageQueue;
 
 // GLOBAL: LEGOLAND 0x00668728
 struct ObjectiveEvent *ObjectiveEventList;
@@ -3231,7 +3234,7 @@ struct Sprite *PuAddMechanicsOnSprite;
 struct Sprite *PuAddMechanicsSprite;
 
 // GLOBAL: LEGOLAND 0x00668954
-unsigned int DAT_00668954;
+unsigned int WorkerOnMouseActive;
 
 // GLOBAL: LEGOLAND 0x00668958
 struct Sprite *PopUpSpritesLoaded;
@@ -3274,10 +3277,11 @@ unsigned char PrevKeyState[0x3b];
 unsigned char CheatKeyState[0x3b];
 
 // GLOBAL: LEGOLAND 0x00668e20
-unsigned int DAT_00668e20[4];
+unsigned int SavedThemeIconEnabled[4];
 
+/* Build menu tab: 0 = Build, nonzero = Research (ScriptTabNames; SELECTTAB events wait for it). Saved with the game. */
 // GLOBAL: LEGOLAND 0x00668e34
-unsigned int DAT_00668e34;
+unsigned int ResearchTabSelected;
 
 // GLOBAL: LEGOLAND 0x00668e38
 unsigned int DAT_00668e38;
@@ -3885,7 +3889,7 @@ char IntervalMovieName[0x100];
 unsigned int IntervalScreenIsBriefing;
 
 // GLOBAL: LEGOLAND 0x0079887c
-unsigned int DAT_0079887c;
+unsigned int IntervalTextLastLine;
 
 // GLOBAL: LEGOLAND 0x00798880
 unsigned int IntervalHintCount;
@@ -4363,8 +4367,9 @@ struct Sprite *IfMapiconSprite;
 // GLOBAL: LEGOLAND 0x007fdd60
 struct Sprite *IfOptionsIconSprite;
 
+/* Theme icons in ScriptThemeNames order: Legoland, Western, Castle, Adventurers. */
 // GLOBAL: LEGOLAND 0x007fdd70
-struct IconNode *DAT_007fdd70[4];
+struct IconNode *ThemeIcons[4];
 
 /* Build panel slide state: 0 opening, 1 closing, 2 closed, 3 open. */
 // GLOBAL: LEGOLAND 0x007fdd80
@@ -4398,7 +4403,7 @@ struct Sprite *IFullSprite;
 struct Sprite *ObjectNoRepair1Sprite;
 
 // GLOBAL: LEGOLAND 0x007fdec0
-struct HoverInfo DAT_007fdec0;
+struct HoverInfo PopUpInfoHover;
 
 // GLOBAL: LEGOLAND 0x007fdecc
 int PopUpInfoX;
@@ -4416,13 +4421,13 @@ struct Ride *PopUpInfoRide;
 struct InfoObjData *PopUpInfoData;
 
 // GLOBAL: LEGOLAND 0x007fdf84
-unsigned char *DAT_007fdf84;
+unsigned char *PopUpInfoTile;
 
 // GLOBAL: LEGOLAND 0x007fdf88
 unsigned short DAT_007fdf88;
 
 // GLOBAL: LEGOLAND 0x007fdf8c
-void *DAT_007fdf8c;
+void *PopUpInfoBloke;
 
 // GLOBAL: LEGOLAND 0x007fdf90
 unsigned int DAT_007fdf90;
@@ -4433,11 +4438,13 @@ unsigned int DAT_007fdf94;
 // GLOBAL: LEGOLAND 0x007fdf98
 unsigned int DAT_007fdf98;
 
+/* Hover type of the pop-up subject (0x103 object, 0x306 visitor, ...); 10 and 0x14 mark a potting shed / mechanics hut click that bought a worker. */
 // GLOBAL: LEGOLAND 0x007fdf9c
-int DAT_007fdf9c;
+int PopUpInfoSubjectType;
 
+/* 0 = no pop-up, 1 = object/visitor info pop-up, 2 = new objects pop-up. */
 // GLOBAL: LEGOLAND 0x007fdfa0
-unsigned int DAT_007fdfa0;
+unsigned int PopUpInfoState;
 
 // GLOBAL: LEGOLAND 0x007fdfa4
 unsigned int DAT_007fdfa4;
@@ -4643,7 +4650,7 @@ int Bridge1OverlayOffsetY;
 struct Element **MapObjectElements;
 
 // GLOBAL: LEGOLAND 0x00801a6c
-int *DAT_00801a6c;
+int *BasicTiles1Data;
 
 // GLOBAL: LEGOLAND 0x00801a70
 struct MapTileSet **MapTileSets;
