@@ -11,7 +11,7 @@ struct Cursor;
 
 LEGO_EXPORT void RestoreBaseMap(int tile_x, int row_y);
 LEGO_EXPORT void AdjustTileRFFlags(int *param_1);
-void FUN_0045d770(struct Cursor *param_1);
+void LayCursorPathFootprint(struct Cursor *param_1);
 LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out);
 LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
 LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count);

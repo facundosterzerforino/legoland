@@ -1062,7 +1062,7 @@ void PlaceObjectAtTile(struct Element *a, void *b) {
     EditCursor.tile_x = centre.x;
     EditCursor.tile_y = centre.y;
     cls->cb_90(a, &centre, 0x8f8);
-    FUN_0045d770(&EditCursor);
+    LayCursorPathFootprint(&EditCursor);
     PutObjOnMap(a->ride, a, (struct Point *)&EditCursor.tile_x);
     SetBricksLimited(1);
 }

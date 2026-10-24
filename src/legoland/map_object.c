@@ -146,8 +146,12 @@ LEGO_EXPORT void SetObjRectFlags(Element *editObj, struct Point *pos, unsigned s
     memcpy(&EditCursor, saved, 0x60d * sizeof(unsigned int));
 }
 
+/* Places an object on the map for BuildObject: positions the class cursor at the tile centre (cb_90), removes
+ * whatever lies under every footprint of the cursor chain (parts without flag 0x3000), then stamps those tiles with
+ * the element, anchor id and flags (plus 0x8000 for class flag 0x800000) and field_10 = 2. EditCursor is saved and
+ * restored. */
 // FUNCTION: LEGOLAND 0x0045e080
-void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
+void StampObjectFootprintOnMap(Element *editObj, struct Point *pos, unsigned short flags) {
     struct Ride *obj;
     TileId coords;
     struct Cursor *node;
@@ -582,7 +586,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         }
         UseBricks(GetObjCost(obj));
         if (FUN_0045eab0((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
-            FUN_0045e080(editObj, (struct Point *)coords, 0x20);
+            StampObjectFootprintOnMap(editObj, (struct Point *)coords, 0x20);
         } else {
             SetObjRectFlags(editObj, (struct Point *)coords, 0x20);
         }
@@ -601,7 +605,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
     } else {
         UseBricks(GetObjCost(obj));
         if (FUN_0045eab0((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
-            FUN_0045e080(editObj, (struct Point *)coords, 0);
+            StampObjectFootprintOnMap(editObj, (struct Point *)coords, 0);
         }
         GetObjectEntrancePos(obj, &out);
         out.x = out.x + coords[0];
@@ -1134,8 +1138,11 @@ LEGO_EXPORT void CalcBasicObjectCursor(struct Element *obj, int *a2, unsigned in
     ValidateCursor(&EditCursor, obj->data);
 }
 
+/* Draws one animated cursor outline segment on a 16-bit surface: dir 0 a vertical run upwards, dir 1/2 an isometric
+ * 2:1 diagonal to the left/right, two pixels thick, cycling a 16-step two-colour pattern with FrameNumber (marching
+ * ants). Clipped to SPRITE_ClipRect. */
 // FUNCTION: LEGOLAND 0x0045fad0
-void FUN_0045fad0(struct VideoArg *surface, int dir, int px, int py, unsigned char *color, int count) {
+void DrawCursorMarchingLine(struct VideoArg *surface, int dir, int px, int py, unsigned char *color, int count) {
     POINT pt;
     int flip;
     unsigned short c1;
@@ -1222,8 +1229,9 @@ void FUN_0045fad0(struct VideoArg *surface, int dir, int px, int py, unsigned ch
     }
 }
 
+/* Dashed variant of DrawCursorMarchingLine: a 32-step pattern with transparent gaps, one dash of each colour. */
 // FUNCTION: LEGOLAND 0x0045fca0
-void FUN_0045fca0(struct VideoArg *surface, int dir, int px, int py, unsigned char *color, int count) {
+void DrawCursorDashedMarchingLine(struct VideoArg *surface, int dir, int px, int py, unsigned char *color, int count) {
     POINT pt;
     int flip;
     unsigned short c1;
@@ -1408,25 +1416,25 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         if (cursor->field_1828 & 0x20) {
             switch (pts->fpts[i] & 3) {
             case 0:
-                FUN_0045fca0(&surf, 0, bx, by, pat, lpConfig->field_18);
+                DrawCursorDashedMarchingLine(&surf, 0, bx, by, pat, lpConfig->field_18);
                 break;
             case 1:
-                FUN_0045fca0(&surf, 1, bx, by, pat, size);
+                DrawCursorDashedMarchingLine(&surf, 1, bx, by, pat, size);
                 break;
             case 2:
-                FUN_0045fca0(&surf, 2, bx, by, pat, size);
+                DrawCursorDashedMarchingLine(&surf, 2, bx, by, pat, size);
                 break;
             }
         } else {
             switch (pts->fpts[i] & 3) {
             case 0:
-                FUN_0045fad0(&surf, 0, bx, by, pat, lpConfig->field_18);
+                DrawCursorMarchingLine(&surf, 0, bx, by, pat, lpConfig->field_18);
                 break;
             case 1:
-                FUN_0045fad0(&surf, 1, bx, by, pat, size);
+                DrawCursorMarchingLine(&surf, 1, bx, by, pat, size);
                 break;
             case 2:
-                FUN_0045fad0(&surf, 2, bx, by, pat, size);
+                DrawCursorMarchingLine(&surf, 2, bx, by, pat, size);
                 break;
             }
         }

@@ -548,8 +548,10 @@ LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
     ResetCursorBuildable(cursor);
 }
 
+/* Render order helper: takes the pending entry for column param[0], returns the row to resume from in param[1] (0
+ * when none) and clears the entry. */
 // FUNCTION: LEGOLAND 0x0045a3e0
-void FUN_0045a3e0(int *param) {
+void PopRenderOrderColumnStart(int *param) {
     struct MapRenderOrderEntry *entry;
     int i;
 
@@ -563,8 +565,10 @@ void FUN_0045a3e0(int *param) {
     param[1] = 0;
 }
 
+/* Render order helper: takes the pending entry recorded for the anchor tile id and returns its column and resume
+ * row in param_2 (map width/height when none), clearing the entry. */
 // FUNCTION: LEGOLAND 0x0045a430
-void FUN_0045a430(short param_1, int *param_2) {
+void PopRenderOrderEntryForAnchor(short param_1, int *param_2) {
     struct MapRenderOrderEntry *entry;
     int i;
 
@@ -625,26 +629,29 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
             if (pt.x == ride->footprint.x1 + ox) {
                 *link = origin->anchor.id;
                 link = &origin->next.id;
-                FUN_0045a430(cell->anchor.id, &pt.x);
+                PopRenderOrderEntryForAnchor(cell->anchor.id, &pt.x);
             } else if (pt.x == lpConfig->width - 1) {
                 *link = origin->anchor.id;
                 link = &origin->next.id;
-                FUN_0045a430(cell->anchor.id, &pt.x);
+                PopRenderOrderEntryForAnchor(cell->anchor.id, &pt.x);
             } else {
                 pt.x++;
-                FUN_0045a3e0(&pt.x);
+                PopRenderOrderColumnStart(&pt.x);
             }
         }
         while (pt.y >= lpConfig->height) {
             pt.x++;
-            FUN_0045a3e0(&pt.x);
+            PopRenderOrderColumnStart(&pt.x);
         }
     }
     *link = 0;
 }
 
+/* Builds the map render order chain for the full map view (RenderFullMap): scans columns top to bottom and links
+ * object anchor tiles through their next ids, resuming columns interrupted by objects (like
+ * CalculateMapRenderOrder). */
 // FUNCTION: LEGOLAND 0x0045a660
-void FUN_0045a660(void) {
+void CalculateFullMapRenderOrder(void) {
     unsigned short *link; /* where the next anchor tile of the chain is written */
     MapElement *cell;
     MapElement *origin;
@@ -690,19 +697,19 @@ void FUN_0045a660(void) {
             if (pt.x == ride->footprint.x1 + ox) {
                 *link = origin->anchor.id;
                 link = &origin->next.id;
-                FUN_0045a430(cell->anchor.id, &pt.x);
+                PopRenderOrderEntryForAnchor(cell->anchor.id, &pt.x);
             } else if (pt.x == lpConfig->width - 1) {
                 *link = origin->anchor.id;
                 link = &origin->next.id;
-                FUN_0045a430(cell->anchor.id, &pt.x);
+                PopRenderOrderEntryForAnchor(cell->anchor.id, &pt.x);
             } else {
                 pt.x++;
-                FUN_0045a3e0(&pt.x);
+                PopRenderOrderColumnStart(&pt.x);
             }
         }
         while (pt.y >= lpConfig->height) {
             pt.x++;
-            FUN_0045a3e0(&pt.x);
+            PopRenderOrderColumnStart(&pt.x);
         }
     }
     *link = 0;

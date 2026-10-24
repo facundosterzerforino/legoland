@@ -146,8 +146,10 @@ void LoadObjectClassAliasElements(struct Element *cls) {
     } while (slot < &ObjClassAliasTable[5].aliases);
 }
 
+/* Hard-coded class data fixes applied while loading object data: entrance offsets (and 10 seats for the water
+ * block) for the Water Works Shower, Water Block and Elephant Fountain. */
 // FUNCTION: LEGOLAND 0x00480aa0
-void FUN_00480aa0(struct Element *names, struct Ride *info) {
+void ApplyWaterWorksClassOverrides(struct Element *names, struct Ride *info) {
     // STRING: LEGOLAND 0x004bce90
     if (_stricmp(names->name, "Water Works Shower") == 0) {
         info->x = 1;
@@ -375,7 +377,7 @@ LEGO_EXPORT int LoadObjectLibrary(void *object, const char *name) {
 
     obj = (struct Ride *)object;
     _splitpath(name, 0, 0, fname, 0);
-    NewObjectPtr = &DAT_007fd610;
+    NewObjectPtr = &NewObjectLibraryNode;
     // STRING: LEGOLAND 0x004bcea4
     sprintf(path, ".\\dlls\\%s.dll", fname);
     ((struct LibraryNode *)NewObjectPtr)->module = LoadLibraryExA(path, 0, 0);
@@ -480,8 +482,9 @@ LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
     }
 }
 
+/* Frees every ClassRideList node and clears tile flag 0x400 across the whole map. */
 // FUNCTION: LEGOLAND 0x00481170
-void FUN_00481170(void) {
+void ResetClassRideList(void) {
     struct MapElement *cell;
     void *next;
     int x;
@@ -517,7 +520,7 @@ LEGO_EXPORT void BuildObjInfoList(void) {
     int best;
     struct Point at;
 
-    FUN_00481170();
+    ResetClassRideList();
     for (pos.y = 0; pos.y < lpConfig->height; pos.y++) {
         for (pos.x = 0; pos.x < lpConfig->width; pos.x++) {
             if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
@@ -829,8 +832,10 @@ struct BestNode *FindBestNodeAtPixel(int *param_1) {
     return 0;
 }
 
+/* Collects the best-path nodes bordering rectangle param_1 {x0, y0, x1, y1} into AdjacentNodes, one NULL-terminated
+ * run per side (above, below, left, right); AdjacentNodeCount counts the nodes. */
 // FUNCTION: LEGOLAND 0x00481810
-void FUN_00481810(int *param_1) {
+void CollectAdjacentNodesBySide(int *param_1) {
     struct BestNode *found;
     void **out;
     int count;
@@ -991,7 +996,7 @@ void MergeBestNode(struct BestNode *node) {
     int i;
 
     for (;;) {
-        FUN_00481810((int *)&node->x_min);
+        CollectAdjacentNodesBySide((int *)&node->x_min);
         i = 0;
         for (cur = AdjacentNodes[i]; cur != 0; cur = AdjacentNodes[++i]) {
             if (cur->x_min == node->x_min && ((struct BestNode *)AdjacentNodes[i])->x_max == node->x_max) {

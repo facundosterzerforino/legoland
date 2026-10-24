@@ -422,7 +422,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         DAT_007fdd70[0] = (struct IconNode *)icon;
 
         icon = InsertIcon((short)InterfaceIconPos[2], (short)InterfaceIconPos[3], 0x9a, WesternThemeOffSprite);
-        DAT_00668e3c = icon;
+        WesternThemeIcon = icon;
         icon->string_id = 0x5f;
         icon->string = GetString(0x5f);
         icon->flags |= 0x6002;

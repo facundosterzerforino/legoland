@@ -297,7 +297,7 @@ void StartLevelGame(void) {
 // FUNCTION: LEGOLAND 0x00458b20
 void UnloadMap(void) {
     if (MapLoaded != 0) {
-        FUN_00481170();
+        ResetClassRideList();
         DestroyIconGroup(0xd2);
         DelObjectList();
         FreeBlokeCounters();

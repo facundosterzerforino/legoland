@@ -999,7 +999,7 @@ LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos) {
             return 0;
         }
         RemovePathsUnderObjectFootprint(element, pos);
-        FUN_0045d770(&EditCursor);
+        LayCursorPathFootprint(&EditCursor);
         result = BuildObject(element, &pos->x);
     }
     if (result != 0 && MapBatchUpdate == 0) {

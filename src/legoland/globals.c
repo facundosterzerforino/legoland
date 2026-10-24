@@ -564,7 +564,7 @@ unsigned int DAT_004b5f14[4][2] = {{0x3fc00000, 0x3f000000}, {0x3f000000, 0x3fc0
 struct EdgeMesh RailTubeMesh;
 
 // GLOBAL: LEGOLAND 0x004b6010
-unsigned short DAT_004b6010[16][8]; /* SupportPostModel's 16 triangles */
+unsigned short SupportPostModelTriangles[16][8]; /* SupportPostModel's 16 triangles */
 
 // GLOBAL: LEGOLAND 0x004b6110
 float DAT_004b6110[16];
@@ -579,7 +579,7 @@ struct CastleFloatEnt TrackTieShape[8] = {0}; /* a unit box; c holds z as float 
 float DAT_004b6240[12];
 
 // GLOBAL: LEGOLAND 0x004b6270
-unsigned short DAT_004b6270[8][8]; /* TrackTieModel's 8 triangles */
+unsigned short TrackTieModelTriangles[8][8]; /* TrackTieModel's 8 triangles */
 
 // GLOBAL: LEGOLAND 0x004b62f0
 unsigned int DAT_004b62f0[4];
@@ -3283,7 +3283,7 @@ unsigned int DAT_00668e34;
 unsigned int DAT_00668e38;
 
 // GLOBAL: LEGOLAND 0x00668e3c
-void *DAT_00668e3c;
+void *WesternThemeIcon;
 
 /* Linked list of parent and child object classes used to construct build-panel icons. */
 // GLOBAL: LEGOLAND 0x00668e40
@@ -4259,8 +4259,9 @@ unsigned char PrintListPool[0x32000];
 // GLOBAL: LEGOLAND 0x007fd600
 struct SortNode *SortCursor;
 
+/* Library node filled while an object DLL is loaded (NewObjectPtr points here). */
 // GLOBAL: LEGOLAND 0x007fd610
-struct LibraryNode DAT_007fd610;
+struct LibraryNode NewObjectLibraryNode;
 
 // GLOBAL: LEGOLAND 0x007fd620
 LEGO_EXPORT void *NewObjectPtr;

@@ -223,7 +223,7 @@ LEGO_EXPORT void RenderFullMap(void) {
         struct MapElement *obj;
         struct Overlay *node;
 
-        FUN_0045a660();
+        CalculateFullMapRenderOrder();
         memset(MapSpannerMarks, 0, 0x2000); /* all 32 rows, MapSpannerMarksLastRow included */
         MapViewX = 0;
         MapViewY = 0x20;

@@ -2603,7 +2603,7 @@ extern unsigned int DAT_00668e34;
 // 0x00668e38
 extern unsigned int DAT_00668e38;
 // 0x00668e3c
-extern void *DAT_00668e3c;
+extern void *WesternThemeIcon;
 // 0x00668e40
 extern struct InterfaceListNode *BuildObjectList;
 // 0x00668e44
@@ -3260,7 +3260,7 @@ extern unsigned char PrintListPool[0x32000];
 // 0x007fd600
 extern struct SortNode *SortCursor;
 // 0x007fd610
-extern struct LibraryNode DAT_007fd610;
+extern struct LibraryNode NewObjectLibraryNode;
 // 0x007fd620
 extern LEGO_EXPORT void *NewObjectPtr;
 // 0x007fd624

@@ -45,8 +45,8 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
 LEGO_EXPORT void UnLoadObjectLibrary(void *library);
 LEGO_EXPORT void SetStandardCallbacks(struct Ride *table);
 LEGO_EXPORT int LoadObjectLibrary(void *obj, const char *name);
-void FUN_00480aa0(struct Element *names, struct Ride *info);
-void FUN_00481170(void);
+void ApplyWaterWorksClassOverrides(struct Element *names, struct Ride *info);
+void ResetClassRideList(void);
 void *GetBestNodeList(void);
 LEGO_EXPORT void SetEditObject(struct Ride *obj);
 struct BestNode *AddBestNode(void);

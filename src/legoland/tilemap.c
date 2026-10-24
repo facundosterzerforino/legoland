@@ -1690,8 +1690,10 @@ struct PathItem {
     /* 0x10 */ struct PathItem *next;
 };
 
+/* For a cursor chain with a part flagged 0x1000: lays path tiles over that part's footprint minus the footprints of
+ * the parts before it (rect list), then fills the footprint interior with path graphics. */
 // FUNCTION: LEGOLAND 0x0045d770
-void FUN_0045d770(struct Cursor *param_1) {
+void LayCursorPathFootprint(struct Cursor *param_1) {
     struct Cursor *cur;
     struct Cursor *found;
     struct Footprint *item;
