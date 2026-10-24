@@ -253,13 +253,13 @@ LEGO_EXPORT void InitFreePlayLists(void) {
         if (sprite == 0) {
             continue;
         }
-        if (DAT_007cb3bc->name == legoland->name || DAT_007cb3bc->name == common->name) {
+        if (LoadedObjDescElement->name == legoland->name || LoadedObjDescElement->name == common->name) {
             Add2FreePlayPanelLists(sprite, &t1->name, t4, t2, t3, 200);
-        } else if (DAT_007cb3bc->name == adventurers->name) {
+        } else if (LoadedObjDescElement->name == adventurers->name) {
             Add2FreePlayPanelLists(sprite, &t1->name, t4, t2, t3, 300);
-        } else if (DAT_007cb3bc->name == castle->name) {
+        } else if (LoadedObjDescElement->name == castle->name) {
             Add2FreePlayPanelLists(sprite, &t1->name, t4, t2, t3, 400);
-        } else if (DAT_007cb3bc->name == western->name) {
+        } else if (LoadedObjDescElement->name == western->name) {
             Add2FreePlayPanelLists(sprite, &t1->name, t4, t2, t3, 500);
         } else {
             KillSprite(sprite);

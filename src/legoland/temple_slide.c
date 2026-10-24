@@ -107,8 +107,8 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
 
             struct Point off2;
 
-            off1.x = DAT_004cbfc8;
-            off1.y = DAT_004cbfcc[0];
+            off1.x = TempleSlideDrawOffsetX;
+            off1.y = TempleSlideDrawOffsetY[0];
             AdjustOffsetForViewMode(&off1);
             off2.x = DAT_004cbf88;
             off2.y = DAT_004cbf8c;
@@ -148,8 +148,8 @@ void TempleSlideLoad(struct Element *arg) {
         // STRING: LEGOLAND 0x004b4f64
         "Zbuffers\\tempslide.bnv");
     GetLLSForSprite((struct Sprite *)ActiveTempleSlideRide->layer);
-    DAT_004cbfc8 = 0;
-    DAT_004cbfcc[0] = 1;
+    TempleSlideDrawOffsetX = 0;
+    TempleSlideDrawOffsetY[0] = 1;
     DAT_004cbf88 = 13;
     DAT_004cbf8c = 93;
     TempSlideMatteSprite = LoadSprite(
@@ -355,9 +355,9 @@ void TempleSlideUpdate(Element *obj) {
                 cx = (lpConfig->view_x - sx) + tw;
                 sy = Get_YScroll();
                 cy = cy + (lpConfig->view_y - sy);
-                cx = cx - DAT_004cbfc8 / 2 - coords.x;
+                cx = cx - TempleSlideDrawOffsetX / 2 - coords.x;
                 bloke->flags |= 0x80;
-                cy = cy - DAT_004cbfcc[0] / 2 - coords.y;
+                cy = cy - TempleSlideDrawOffsetY[0] / 2 - coords.y;
                 off[0] = cx * 2;
                 off[1] = cy * 2;
                 bloke->person->sprite = ZTempSlideSprite;
@@ -494,7 +494,7 @@ LEGO_EXPORT int LoadTempleSlide(struct Element *obj) {
         struct BNVRef *path;
 
         if (render->field_30 != 0) {
-            render->sprite = (struct Sprite *)DAT_004cbfcc[render->field_30];
+            render->sprite = (struct Sprite *)TempleSlideDrawOffsetY[render->field_30];
         } else {
             render->field_2c = 0;
             node->person->field_30 = 0;

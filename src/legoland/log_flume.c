@@ -3079,8 +3079,8 @@ unsigned int SetFlumeEditCursor(void *param_1, unsigned int *param_2) {
     SetEditCursorFootPrint(param_2);
     FlumeNeighbourCursor1.field_1828 = 0x2034;
     FlumeNeighbourCursor2.field_1828 = 0x2034;
-    DAT_004c4468.field_1828 = 0x2034;
-    DAT_004c5ca0.field_1828 = 0x2034;
+    FlumeConnectionCursor1.field_1828 = 0x2034;
+    FlumeConnectionCursor2.field_1828 = 0x2034;
     return 0x2034;
 }
 
@@ -3092,17 +3092,17 @@ void BuildFlumeConnectionCursors(unsigned int *res) {
     struct Cursor *cur = NULL;
     int n;
 
-    DAT_004c4468.next = &DAT_004c5ca0;
-    memcpy(&DAT_004c4468.footprint, &LogFlumeFootprint, sizeof(struct Footprint));
-    DAT_004c4468.footprint.x1 = LogFlumeFootprint.x1 - 1;
-    DAT_004c4468.footprint.y1 = DAT_004c4468.footprint.y1 - 1;
-    DAT_004c5ca0.next = NULL;
-    DAT_004c5ca0.footprint = DAT_004c4468.footprint;
+    FlumeConnectionCursor1.next = &FlumeConnectionCursor2;
+    memcpy(&FlumeConnectionCursor1.footprint, &LogFlumeFootprint, sizeof(struct Footprint));
+    FlumeConnectionCursor1.footprint.x1 = LogFlumeFootprint.x1 - 1;
+    FlumeConnectionCursor1.footprint.y1 = FlumeConnectionCursor1.footprint.y1 - 1;
+    FlumeConnectionCursor2.next = NULL;
+    FlumeConnectionCursor2.footprint = FlumeConnectionCursor1.footprint;
     for (n = 2; n != 0; n--) {
         if (cur == NULL) {
-            cur = &DAT_004c4468;
+            cur = &FlumeConnectionCursor1;
         } else {
-            cur = &DAT_004c5ca0;
+            cur = &FlumeConnectionCursor2;
         }
         if (flags & 1) {
             cur->tile_x = res[1];
@@ -3207,7 +3207,7 @@ unsigned int LogFlumePieceCalcCursor(struct Ride *param_1, int *param_2, unsigne
     u.t.pos.y = (unsigned char)EditCursor.tile_y;
     param_5(u.t, buf);
     BuildFlumeConnectionCursors(buf);
-    EditCursor.next = &DAT_004c4468;
+    EditCursor.next = &FlumeConnectionCursor1;
     cost = GetObjCost((struct Ride *)param_1);
     if (GetBrickCount() < cost) {
         SetCursorBlocked(&EditCursor, 2);

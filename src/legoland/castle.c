@@ -6921,24 +6921,24 @@ void RecordCastleFrameCounters(void) {
     FilledTriangleHistory[CastleCounterFrame & 0x3f] = FilledTriangleCount;
     EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] = EdgeMeshDrawCycles;
     DAT_00610704[CastleCounterFrame & 0x3f] = DAT_00611644;
-    DAT_00610604[CastleCounterFrame & 0x3f] = DAT_00615f68;
+    SupportPostCycleHistory[CastleCounterFrame & 0x3f] = SupportPostDrawCycles;
     LmsDrawCycleHistory[CastleCounterFrame & 0x3f] = LmsDrawCycles;
     TrainStepCycleHistory[CastleCounterFrame & 0x3f] = TrainStepCycles;
     DepthClearCycleHistory[CastleCounterFrame & 0x3f] = DepthClearCycles;
     DAT_0060fbf8[CastleCounterFrame & 0x3f] = DAT_00615fc4;
-    DAT_006101f8[CastleCounterFrame & 0x3f] = DAT_00615fc8;
+    BisectRootStepHistory[CastleCounterFrame & 0x3f] = BisectRootStepCount;
     DAT_0060fcf8[CastleCounterFrame & 0x3f] = DAT_00615fcc;
-    TotalCastleCycleHistory[CastleCounterFrame & 0x3f] = DAT_00610704[CastleCounterFrame & 0x3f] + EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] + TrainStepCycleHistory[CastleCounterFrame & 0x3f] + DAT_00610604[CastleCounterFrame & 0x3f] + LmsDrawCycleHistory[CastleCounterFrame & 0x3f] + DepthClearCycleHistory[CastleCounterFrame & 0x3f];
+    TotalCastleCycleHistory[CastleCounterFrame & 0x3f] = DAT_00610704[CastleCounterFrame & 0x3f] + EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] + TrainStepCycleHistory[CastleCounterFrame & 0x3f] + SupportPostCycleHistory[CastleCounterFrame & 0x3f] + LmsDrawCycleHistory[CastleCounterFrame & 0x3f] + DepthClearCycleHistory[CastleCounterFrame & 0x3f];
     DepthSpanRecordCount = 0;
     FilledTriangleCount = 0;
     EdgeMeshDrawCycles = 0;
     DAT_00611644 = 0;
-    DAT_00615f68 = 0;
+    SupportPostDrawCycles = 0;
     LmsDrawCycles = 0;
     TrainStepCycles = 0;
     DepthClearCycles = 0;
     DAT_00615fc4 = 0;
-    DAT_00615fc8 = 0;
+    BisectRootStepCount = 0;
     DAT_00615fcc = 0;
 }
 #pragma optimize("", on)
@@ -9814,7 +9814,7 @@ void PlotCurvePoints(struct SegBlob *curve, float *off) {
 }
 
 /* Builds the rail tube along one side of a stretch: at each split point a hexagonal ring (radius 1.8) around the
- * side's position, oriented by its tangent. Times itself into DAT_00615f68. */
+ * side's position, oriented by its tangent. Times itself into SupportPostDrawCycles. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00428cb0
 __declspec(naked) void BuildRailTubeMesh(void *p, unsigned int a, unsigned int b, unsigned int c, const char *name) {
@@ -9964,10 +9964,10 @@ L428e2a:
         pop edx
         pop eax
         mov edx, dword ptr [ebp - 4]
-        mov eax, dword ptr [DAT_00615f68]
+        mov eax, dword ptr [SupportPostDrawCycles]
         add eax, edx
         pop edi
-        mov dword ptr [DAT_00615f68], eax
+        mov dword ptr [SupportPostDrawCycles], eax
         pop esi
         mov eax, offset RailTubeMesh
         pop ebx
@@ -10207,7 +10207,7 @@ void DrawSupportPost(struct FVec3 *pos, struct FVec3 *basis) {
         pop edx
         pop eax
     }
-    DAT_00615f68 += t;
+    SupportPostDrawCycles += t;
     zero[0] = 0.0f;
     zero[1] = 0.0f;
     zero[2] = 0.0f;
@@ -10609,7 +10609,7 @@ int BisectRoot(float (*fn)(unsigned int), float lo, float hi, float *out) {
     int n;
 
     DAT_00615fc4++;
-    DAT_00615fc8++;
+    BisectRootStepCount++;
     n = 1;
     fa = fn(*(unsigned int *)&lo);
     {
@@ -10627,7 +10627,7 @@ int BisectRoot(float (*fn)(unsigned int), float lo, float hi, float *out) {
             lo = mid;
             fa = fb;
         }
-        DAT_00615fc8++;
+        BisectRootStepCount++;
         n++;
     }
     *out = (lo + hi) * 0.5f;

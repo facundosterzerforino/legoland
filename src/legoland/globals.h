@@ -873,7 +873,7 @@ extern char CarouselBlokeBoxName[12]; /* "BlokeBox??", the seat number goes at +
 // 0x004b64d8
 extern struct FXItem CAROUSSEL_SFX[2];
 // 0x004b65c0
-extern int DAT_004b65c0[8];
+extern int EarthSlideQueueOffsets[8];
 // 0x004b6638
 extern char DAT_004b6638[4];
 // 0x004b6654
@@ -899,13 +899,13 @@ extern int OctopusCafeSpotOffsets[0x29];
 // 0x004b6a34
 extern int DAT_004b6a34[4];
 // 0x004b6a44
-extern int DAT_004b6a44[0xd];
+extern int OctopusCafeSpotIndices[0xd];
 // 0x004b6a78
 extern int DAT_004b6a78[0x30];
 // 0x004b6b38
 extern int OctopusCafeChairOffsets[0x2c];
 // 0x004b6be8
-extern int DAT_004b6be8[0x5c];
+extern int OctopusCafeChairIndices[0x5c];
 // 0x004b6d58
 extern unsigned char DAT_004b6d58[0x120];
 // 0x004b7260
@@ -1147,7 +1147,7 @@ extern unsigned int ScriptReportNames;
 // 0x004bb688
 extern unsigned int ScriptHapFactorNames;
 // 0x004bb6bc
-extern unsigned int DAT_004bb6bc;
+extern unsigned int ScriptCapacityClassNames;
 // 0x004bb6d4
 extern unsigned int ScriptFlashButtonNames;
 // 0x004bb6f8
@@ -1359,9 +1359,9 @@ extern struct Element *LogFlumeTrackElement;
 // 0x004c74f8
 extern struct Cursor LogFlumeCursor;
 // 0x004c4468
-extern struct Cursor DAT_004c4468;
+extern struct Cursor FlumeConnectionCursor1;
 // 0x004c5ca0
-extern struct Cursor DAT_004c5ca0;
+extern struct Cursor FlumeConnectionCursor2;
 // 0x004c74d4
 extern struct Ride *LogFlumeSpecialCorner4Ride;
 // 0x004c74d8
@@ -1561,9 +1561,9 @@ extern struct BinVFile *TempleSlideBinVs[3];
 // 0x004cbfc4
 extern void *TempSlideBinV;
 // 0x004cbfc8
-extern int DAT_004cbfc8;
+extern int TempleSlideDrawOffsetX;
 // 0x004cbfcc
-extern int DAT_004cbfcc[1];
+extern int TempleSlideDrawOffsetY[1];
 // 0x004cbfd0
 extern struct Sprite *ZTempSlideSprite;
 // 0x004cbfd4
@@ -1777,7 +1777,7 @@ extern unsigned int DAT_00615f70[4];
 // 0x00615f84
 extern struct CurveWalker *RangeWalker;
 extern int DAT_00615fc4;
-extern int DAT_00615fc8;
+extern int BisectRootStepCount;
 extern int DAT_00615fcc;
 extern float RangeRadius;
 extern float RangeRadiusSq;
@@ -1835,7 +1835,7 @@ extern struct Sprite *CarouselEntranceMatteSprite;
 // 0x00616070
 extern struct Sprite *CarouselEntranceMatte2Sprite;
 // 0x00616078
-extern int DAT_00616078;
+extern int CarouselDrawOffsetX;
 // 0x0061607c
 extern int DAT_0061607c;
 // 0x00616080
@@ -1964,7 +1964,7 @@ extern struct Ride *SpinningBarrelsRide;
 // 0x0062fde0
 extern struct Sprite *SpinningBarrelsLayer;
 // 0x0062fdd8
-extern struct Point DAT_0062fdd8;
+extern struct Point SpinningBarrelsDrawOffset;
 // 0x0062fde8
 extern void *SpinningBarrelsBNV;
 // 0x0062fdf0
@@ -2004,7 +2004,7 @@ extern struct PlaneRideNode *PlaneRideNodeList;
 // 0x0062fea0
 extern int DialogListScrollY;
 // 0x0062fea4
-extern int DAT_0062fea4;
+extern int DialogSliderDragging;
 // 0x0062fea8
 extern int *AltManTexturesB;
 // 0x0062feac
@@ -3236,7 +3236,7 @@ extern struct Sprite *FreePlayDown1Sprite;
 // 0x007cb3b8
 extern struct PanelNode *FreePlayPanelList3;
 // 0x007cb3bc
-extern struct Element *DAT_007cb3bc;
+extern struct Element *LoadedObjDescElement;
 // 0x007cb3c0
 extern struct Sprite *FreePlayUp2Sprite;
 // 0x007cb3c4
@@ -3282,7 +3282,7 @@ extern int DAT_007fdb84;
 // 0x007fdb88
 extern unsigned int SelectElementMask;
 // 0x007fdba0
-extern char DAT_007fdba0[0x100];
+extern char ObjDescSpriteName[0x100];
 
 // 0x007fdca0
 extern int SelectedElementIndex;
@@ -3554,7 +3554,7 @@ extern struct ScreenState CurrentProfile;
 // 0x008100c0
 extern char LevelEndMovieName[0x80];
 // 0x00810140
-extern unsigned int DAT_00810140;
+extern unsigned int LevelLoadedFromSave;
 // 0x00810144
 extern unsigned int DAT_00810144;
 // 0x00810148
@@ -3782,9 +3782,9 @@ extern char FileDialogSelectedName[512];
 // 0x0081cae0
 extern struct Sprite *ZoomerSprite;
 // 0x0081cae8
-extern int DAT_0081cae8;
+extern int PlaneRideDrawOffsetX;
 // 0x0081caec
-extern int DAT_0081caec;
+extern int PlaneRideDrawOffsetY;
 // 0x0081caf0
 extern struct Ride *PottingShedRide;
 // 0x0081caf4
@@ -4211,7 +4211,7 @@ extern int EdgeMeshDrawCycleHistory[64];
 extern int DAT_00610704[64];
 
 // 0x00610604
-extern int DAT_00610604[64];
+extern int SupportPostCycleHistory[64];
 
 // 0x006100f8
 extern int LmsDrawCycleHistory[64];
@@ -4226,7 +4226,7 @@ extern int DepthClearCycleHistory[64];
 extern int DAT_0060fbf8[64];
 
 // 0x006101f8
-extern int DAT_006101f8[64];
+extern int BisectRootStepHistory[64];
 
 // 0x0060fcf8
 extern int DAT_0060fcf8[64];
@@ -4253,7 +4253,7 @@ extern int EdgeMeshDrawCycles;
 extern int DAT_00611644;
 
 // 0x00615f68
-extern int DAT_00615f68;
+extern int SupportPostDrawCycles;
 
 // 0x004dcbc8
 extern int LmsDrawCycles;

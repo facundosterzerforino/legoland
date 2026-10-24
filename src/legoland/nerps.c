@@ -2289,7 +2289,7 @@ unsigned int SaveScripts(void) {
 // FUNCTION: LEGOLAND 0x0046cb20
 unsigned int UnloadLevelData(void) {
     CurrentObjectivePromptIndex = 0;
-    if (DAT_00810140 != 0) {
+    if (LevelLoadedFromSave != 0) {
         UnloadSaveGameMap();
     } else {
         UnloadBaseMap();

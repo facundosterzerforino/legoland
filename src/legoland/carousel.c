@@ -127,7 +127,7 @@ void LoadCarouselResources(struct Element *param_1) {
     CarouselLayer = ActiveCarouselRide->layer;
     CarouselLayer->flags |= 0x2000;
     GetLayer(ActiveCarouselRide->layer, &layer, 0);
-    DAT_00616078 = layer.x + -0x58;
+    CarouselDrawOffsetX = layer.x + -0x58;
     DAT_0061607c = layer.y + -0xcd;
     // STRING: LEGOLAND 0x004b65a4
     ZCarouselSprite = LoadSprite("z_Carousel.lls", 1);
@@ -399,7 +399,7 @@ void CarouselUpdate(struct Element *param_1) {
                 screen.y = (x + y) * tile_h >> 9;
                 y = lpConfig->view_x - (short)Get_XScroll() + screen.x;
                 x = screen.y + (lpConfig->view_y - (short)Get_YScroll());
-                in_path[0] = (y - DAT_00616078 / 2 - coords.x) * 2;
+                in_path[0] = (y - CarouselDrawOffsetX / 2 - coords.x) * 2;
                 in_path[1] = (x - DAT_0061607c / 2 - coords.y) * 2;
                 bloke->person->sprite = CarouselRiderSprite;
                 bloke->person->field_30 = 1;
@@ -574,7 +574,7 @@ void RenderCarousel(struct Element *param_1, unsigned int param_2, unsigned int 
                 if (bloke->flags & 0x80) {
                     struct Point view;
 
-                    view.x = DAT_00616078;
+                    view.x = CarouselDrawOffsetX;
                     view.y = DAT_0061607c;
                     person = bloke->person;
                     person->offset.x = bloke->screen_x;

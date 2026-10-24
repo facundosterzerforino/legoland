@@ -115,7 +115,7 @@ void RenderSpinningBarrels(Element *obj, void *param_2, void *param_3, TileId *t
             if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
                 bloke = riders->rider;
                 person = bloke->person;
-                seat = DAT_0062fdd8;
+                seat = SpinningBarrelsDrawOffset;
                 person->offset.x = bloke->screen_x;
                 person->offset.y = bloke->screen_y;
                 AdjustBlokePosition(&person->offset);
@@ -217,8 +217,8 @@ void SpinningBarrelsRideLoad(struct Element *elem) {
     StopLayerPlaying(SpinningBarrelsLayer, 2);
     LLSSetFrame(GetLLSForLayer(SpinningBarrelsLayer, 2), 0);
     GetLayer(SpinningBarrelsRide->layer, &layer, 3);
-    DAT_0062fdd8.x = layer.x - 103;
-    DAT_0062fdd8.y = layer.y - 55;
+    SpinningBarrelsDrawOffset.x = layer.x - 103;
+    SpinningBarrelsDrawOffset.y = layer.y - 55;
     // STRING: LEGOLAND 0x004b78e4
     SpinningBarrelsEntranceMatteSprite = LoadSprite("SpinningBarrelsEntranceMatte.lls", 1);
     // STRING: LEGOLAND 0x004b78c0
@@ -496,8 +496,8 @@ void SpinningBarrelsUpdate(struct Element *elem) {
                 iv12 >>= 9;
                 iv13 >>= 9;
                 view_x = lpConfig->view_x;
-                coords[0] = ((((unsigned int)view_x - Get_XScroll()) + iv12) - DAT_0062fdd8.x / 2 - sc.x) * 2;
-                coords[1] = ((iv13 + ((unsigned int)lpConfig->view_y - Get_YScroll())) - DAT_0062fdd8.y / 2 - sc.y) * 2;
+                coords[0] = ((((unsigned int)view_x - Get_XScroll()) + iv12) - SpinningBarrelsDrawOffset.x / 2 - sc.x) * 2;
+                coords[1] = ((iv13 + ((unsigned int)lpConfig->view_y - Get_YScroll())) - SpinningBarrelsDrawOffset.y / 2 - sc.y) * 2;
                 bloke->person->sprite = SpinningBarrelsRiderSprites[1];
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617922.25f, -1618065.75f);

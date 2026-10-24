@@ -172,8 +172,8 @@ void RenderPlaneRide(struct Element *element, unsigned int param_2, unsigned int
                     bloke = r->rider;
                     if (bloke->flags & 0x80) {
                         person = bloke->person;
-                        off2.x = DAT_0081cae8;
-                        off2.y = DAT_0081caec;
+                        off2.x = PlaneRideDrawOffsetX;
+                        off2.y = PlaneRideDrawOffsetY;
                         person->offset.x = bloke->screen_x;
                         person->offset.y = bloke->screen_y;
                         AdjustBlokePosition(&person->offset);
@@ -220,8 +220,8 @@ void PlaneRideLoad(Element *input) {
     Zoomer0ffBinV = LoadBinV("Zbuffers\\Zoomer0ff.bnv");
     // STRING: LEGOLAND 0x004b7a14
     PlaneRideRiderSprite = ZoomerSprite = LoadSprite("z_Zoomer.lls", 1);
-    DAT_0081cae8 = -10;
-    DAT_0081caec = -0x6b;
+    PlaneRideDrawOffsetX = -10;
+    PlaneRideDrawOffsetY = -0x6b;
     PlaneRideBinVs[0] = ZoomerideBinV;
     PlaneRideBinVs[1] = Zoomer0nBinV;
     PlaneRideBinVs[2] = Zoomer0ffBinV;
@@ -512,8 +512,8 @@ void PlaneRideUpdate(struct Element *elem) {
                 x = (x + y) * th >> 9;
                 ox = lpConfig->view_x - (short)Get_XScroll() + d;
                 x = x + (lpConfig->view_y - (short)Get_YScroll());
-                coords[0] = (ox - DAT_0081cae8 / 2 - sc.x) * 2;
-                coords[1] = (x - DAT_0081caec / 2 - sc.y) * 2;
+                coords[0] = (ox - PlaneRideDrawOffsetX / 2 - sc.x) * 2;
+                coords[1] = (x - PlaneRideDrawOffsetY / 2 - sc.y) * 2;
                 bloke->flags |= 0x80;
                 bloke->person->sprite = PlaneRideRiderSprite;
                 bloke->person->field_30 = 1;

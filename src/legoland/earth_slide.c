@@ -111,8 +111,8 @@ void GetEarthSlideQueuePosition(struct Ride *param_1, unsigned char *param_2, in
     int i;
 
     if (q == NULL) {
-        param_3[0] = (x + DAT_004b65c0[0]) * 0x100;
-        param_3[1] = (DAT_004b65c0[1] + y) * 0x100;
+        param_3[0] = (x + EarthSlideQueueOffsets[0]) * 0x100;
+        param_3[1] = (EarthSlideQueueOffsets[1] + y) * 0x100;
         return;
     }
     i = 0;
@@ -120,8 +120,8 @@ void GetEarthSlideQueuePosition(struct Ride *param_1, unsigned char *param_2, in
         q = q->next;
         i++;
     } while (q != NULL);
-    param_3[0] = (DAT_004b65c0[i * 2] + x) * 0x100;
-    param_3[1] = (DAT_004b65c0[i * 2 + 1] + y) * 0x100;
+    param_3[0] = (EarthSlideQueueOffsets[i * 2] + x) * 0x100;
+    param_3[1] = (EarthSlideQueueOffsets[i * 2 + 1] + y) * 0x100;
 }
 
 // FUNCTION: LEGOLAND 0x0042cf40
@@ -152,7 +152,7 @@ void AdvanceEarthSlideQueue(struct EarthNode *param_1) {
         DequeueEarthRider(param_1);
         q = param_1->queue_head;
         if (q != NULL) {
-            tbl = &DAT_004b65c0[1];
+            tbl = &EarthSlideQueueOffsets[1];
             x = EarthSlideRide->x + *(unsigned char *)param_1;
             y.y = EarthSlideRide->y + *((unsigned char *)param_1 + 1);
             do {

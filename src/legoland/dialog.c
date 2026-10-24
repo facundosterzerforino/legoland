@@ -28,8 +28,8 @@ int DialogSlider(RECT *rc, int min, int max, int value, int step) {
     RenderBlock(rc->left, rc->top + pos - 1, rc->right - rc->left, 3, GetNearestColour(0xff, 0, 0));
     if ((MouseClickFlags & 4) && MousePos.x >= rc->left && MousePos.x <= rc->right &&
         MousePos.y >= rc->top && MousePos.y <= rc->bottom) {
-        DAT_0062fea4 = 1;
-    } else if (!DAT_0062fea4) {
+        DialogSliderDragging = 1;
+    } else if (!DialogSliderDragging) {
         return value;
     }
     if (MouseClickFlags & 4) {
@@ -41,7 +41,7 @@ int DialogSlider(RECT *rc, int min, int max, int value, int step) {
         }
         return (pos - rc->top) * (max - min) / (rc->bottom - rc->top);
     }
-    DAT_0062fea4 = 0;
+    DialogSliderDragging = 0;
     return value;
 }
 
@@ -68,7 +68,7 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
     clip.right = box->right + box->left - 9;
     clip.bottom = box->top + box->bottom - 9;
     retry = 0;
-    DAT_0062fea4 = 0;
+    DialogSliderDragging = 0;
     if (!flag) {
         DialogListScrollY = 0;
     }
@@ -120,7 +120,7 @@ int ListBoxDialog(char **names, char *title, struct Sprite *bg, RECT *box, void 
                 if (my >= items[i].top) {
                     if (my <= items[i].bottom) {
                         sel = i;
-                        if (!DAT_0062fea4 && (MouseClickFlags & 2)) {
+                        if (!DialogSliderDragging && (MouseClickFlags & 2)) {
                             return i;
                         }
                         break;

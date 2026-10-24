@@ -507,7 +507,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
     SelectedBuildTheme = 5;
     DestroyIconGroup(0xd2);
     ShowProfileObjectiveIcons();
-    if (DAT_00810140 != 0) {
+    if (LevelLoadedFromSave != 0) {
         RestoreObjectiveIcons();
     }
 }

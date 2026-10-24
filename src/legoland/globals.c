@@ -613,7 +613,7 @@ char CarouselBlokeBoxName[12] = "BlokeBox??";
 struct FXItem CAROUSSEL_SFX[2];
 
 // GLOBAL: LEGOLAND 0x004b65c0
-int DAT_004b65c0[8] = {0, 4, 0, 3, 0, 2, 0, 1};
+int EarthSlideQueueOffsets[8] = {0, 4, 0, 3, 0, 2, 0, 1};
 
 // GLOBAL: LEGOLAND 0x004b6638
 char DAT_004b6638[4] = ".";
@@ -654,7 +654,7 @@ int OctopusCafeSpotOffsets[0x29];
 int DAT_004b6a34[4];
 
 // GLOBAL: LEGOLAND 0x004b6a44
-int DAT_004b6a44[0xd];
+int OctopusCafeSpotIndices[0xd];
 
 // GLOBAL: LEGOLAND 0x004b6a78
 int DAT_004b6a78[0x30];
@@ -663,7 +663,7 @@ int DAT_004b6a78[0x30];
 int OctopusCafeChairOffsets[0x2c];
 
 // GLOBAL: LEGOLAND 0x004b6be8
-int DAT_004b6be8[0x5c];
+int OctopusCafeChairIndices[0x5c];
 
 // GLOBAL: LEGOLAND 0x004b6d58
 unsigned char DAT_004b6d58[0x120];
@@ -1057,7 +1057,7 @@ unsigned int ScriptReportNames;
 unsigned int ScriptHapFactorNames;
 
 // GLOBAL: LEGOLAND 0x004bb6bc
-unsigned int DAT_004bb6bc;
+unsigned int ScriptCapacityClassNames;
 
 /* Start of the 9 button names matched by the script FLASHBUTTON command (bit index = name index). */
 // GLOBAL: LEGOLAND 0x004bb6d4
@@ -1415,10 +1415,10 @@ struct Ride *LogFlumeSpecialCorner1Ride;
 struct Element *LogFlumeCsaw2Element;
 
 // GLOBAL: LEGOLAND 0x004c4468
-struct Cursor DAT_004c4468;
+struct Cursor FlumeConnectionCursor1;
 
 // GLOBAL: LEGOLAND 0x004c5ca0
-struct Cursor DAT_004c5ca0;
+struct Cursor FlumeConnectionCursor2;
 
 // GLOBAL: LEGOLAND 0x004c74f4
 struct Element *LogFlumeTrackElement;
@@ -1730,10 +1730,10 @@ struct BinVFile *TempleSlideBinVs[3];
 void *TempSlideBinV;
 
 // GLOBAL: LEGOLAND 0x004cbfc8
-int DAT_004cbfc8;
+int TempleSlideDrawOffsetX;
 
 // GLOBAL: LEGOLAND 0x004cbfcc
-int DAT_004cbfcc[1];
+int TempleSlideDrawOffsetY[1];
 
 // GLOBAL: LEGOLAND 0x004cbfd0
 struct Sprite *ZTempSlideSprite;
@@ -2037,7 +2037,7 @@ struct CastleFloatEnt DAT_00612210[3][4] = {0};
 int DAT_00615fc4;
 
 // GLOBAL: LEGOLAND 0x00615fc8
-int DAT_00615fc8;
+int BisectRootStepCount;
 
 // GLOBAL: LEGOLAND 0x00615fcc
 int DAT_00615fcc;
@@ -2130,7 +2130,7 @@ struct Sprite *CarouselEntranceMatteSprite;
 struct Sprite *CarouselEntranceMatte2Sprite;
 
 // GLOBAL: LEGOLAND 0x00616078
-int DAT_00616078;
+int CarouselDrawOffsetX;
 
 // GLOBAL: LEGOLAND 0x0061607c
 int DAT_0061607c;
@@ -2322,7 +2322,7 @@ struct Ride *SpinningBarrelsRide;
 struct Sprite *SpinningBarrelsLayer;
 
 // GLOBAL: LEGOLAND 0x0062fdd8
-struct Point DAT_0062fdd8;
+struct Point SpinningBarrelsDrawOffset;
 
 // GLOBAL: LEGOLAND 0x0062fde8
 void *SpinningBarrelsBNV;
@@ -2382,7 +2382,7 @@ struct PlaneRideNode *PlaneRideNodeList;
 int DialogListScrollY;
 
 // GLOBAL: LEGOLAND 0x0062fea4
-int DAT_0062fea4;
+int DialogSliderDragging;
 
 // GLOBAL: LEGOLAND 0x0062fea8
 int *AltManTexturesB;
@@ -4231,7 +4231,7 @@ struct Sprite *FreePlayDown1Sprite;
 struct PanelNode *FreePlayPanelList3;
 
 // GLOBAL: LEGOLAND 0x007cb3bc
-struct Element *DAT_007cb3bc;
+struct Element *LoadedObjDescElement;
 
 // GLOBAL: LEGOLAND 0x007cb3c0
 struct Sprite *FreePlayUp2Sprite;
@@ -4302,7 +4302,7 @@ int DAT_007fdb84;
 unsigned int SelectElementMask;
 
 // GLOBAL: LEGOLAND 0x007fdba0
-char DAT_007fdba0[0x100];
+char ObjDescSpriteName[0x100];
 
 // GLOBAL: LEGOLAND 0x007fdca0
 int SelectedElementIndex;
@@ -4729,8 +4729,9 @@ struct ScreenState CurrentProfile;
 // GLOBAL: LEGOLAND 0x008100c0
 char LevelEndMovieName[0x80];
 
+/* Set by LoadGame, cleared by LoadBaseMap: the current level came from a saved game. */
 // GLOBAL: LEGOLAND 0x00810140
-unsigned int DAT_00810140;
+unsigned int LevelLoadedFromSave;
 
 // GLOBAL: LEGOLAND 0x00810144
 unsigned int DAT_00810144;
@@ -5068,10 +5069,10 @@ char FileDialogSelectedName[512];
 struct Sprite *ZoomerSprite;
 
 // GLOBAL: LEGOLAND 0x0081cae8
-int DAT_0081cae8;
+int PlaneRideDrawOffsetX;
 
 // GLOBAL: LEGOLAND 0x0081caec
-int DAT_0081caec;
+int PlaneRideDrawOffsetY;
 
 // GLOBAL: LEGOLAND 0x0081caf0
 struct Ride *PottingShedRide;
@@ -5653,7 +5654,7 @@ int EdgeMeshDrawCycleHistory[64];
 int DAT_00610704[64];
 
 // GLOBAL: LEGOLAND 0x00610604
-int DAT_00610604[64];
+int SupportPostCycleHistory[64];
 
 // GLOBAL: LEGOLAND 0x006100f8
 int LmsDrawCycleHistory[64];
@@ -5668,7 +5669,7 @@ int DepthClearCycleHistory[64];
 int DAT_0060fbf8[64];
 
 // GLOBAL: LEGOLAND 0x006101f8
-int DAT_006101f8[64];
+int BisectRootStepHistory[64];
 
 // GLOBAL: LEGOLAND 0x0060fcf8
 int DAT_0060fcf8[64];
@@ -5696,8 +5697,9 @@ int EdgeMeshDrawCycles;
 // GLOBAL: LEGOLAND 0x00611644
 int DAT_00611644;
 
+/* DrawSupportPost cycle count for this frame; RecordCastleFrameCounters stores it in the SupportPostCycleHistory ring and clears it. */
 // GLOBAL: LEGOLAND 0x00615f68
-int DAT_00615f68;
+int SupportPostDrawCycles;
 
 // GLOBAL: LEGOLAND 0x004dcbc8
 int LmsDrawCycles;

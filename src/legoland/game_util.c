@@ -1518,7 +1518,7 @@ int ScriptCmdCapacityScale(struct CommandArgs *arg, int argc) {
     if (CheckScriptCommand(arg, argc, 5, 2) == 0) {
         return 0;
     }
-    index = FindStringNoCase(arg->arg1, &DAT_004bb6bc, 6);
+    index = FindStringNoCase(arg->arg1, &ScriptCapacityClassNames, 6);
     value = atoi(arg->arg2);
     if (index == -1) {
         return 0;
@@ -1540,7 +1540,7 @@ int ScriptCmdCapacityCap(struct CommandArgs *arg, int argc) {
         if (CheckScriptCommand(arg, argc, 5, 2) == 0) {
             return 0;
         }
-        index = FindStringNoCase(arg->arg1, &DAT_004bb6bc, 6);
+        index = FindStringNoCase(arg->arg1, &ScriptCapacityClassNames, 6);
         v = atoi(arg->arg2);
         if (index == -1) {
             return 0;

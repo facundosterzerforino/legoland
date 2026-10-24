@@ -2634,7 +2634,7 @@ fail: /* shared exit; also taken when the overlay-tile stream ends early */
     RES_CloseFile(file);
     MapDataLoaded = 1;
     LoadInProgress = 0;
-    DAT_00810140 = 0;
+    LevelLoadedFromSave = 0;
     StartOverlayAnims();
     return 1;
 }
@@ -3013,7 +3013,7 @@ void PrintCapacityStats(void) {
             capped = MapStats.classes[i].limit * 100;
         }
         // STRING: LEGOLAND 0x004b9c6c
-        sprintf(buf, "[%s x %d]: Cap %d  x %d%% = %.2f (Capped %d) = %.2f", ((char **)&DAT_004bb6bc)[i], MapStats.classes[i].built, MapStats.classes[i].capacity, MapStats.classes[i].percent,
+        sprintf(buf, "[%s x %d]: Cap %d  x %d%% = %.2f (Capped %d) = %.2f", ((char **)&ScriptCapacityClassNames)[i], MapStats.classes[i].built, MapStats.classes[i].capacity, MapStats.classes[i].percent,
             (double)((float)prod * DAT_004ab518), MapStats.classes[i].limit, (double)((float)capped * DAT_004ab518));
         Print(SPRITE_ClipRect.left + 8, (i + 1) * 0x14 + SPRITE_ClipRect.top, buf, 2);
         total += capped;

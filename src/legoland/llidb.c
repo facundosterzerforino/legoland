@@ -974,18 +974,18 @@ struct Sprite *LoadObjDescFile(struct Element *elem, char **name2, int *key, cha
     RES_ReadFile(file, name, size);
     name[size] = '\0';
     if (name[0] != '\0') {
-        LLIDB_FindElement(name, &DAT_007cb3bc, 0);
+        LLIDB_FindElement(name, &LoadedObjDescElement, 0);
         RES_ReadFile(file, &size, 4);
         RES_ReadFile(file, name, size);
         RES_ReadFile(file, &size, 4);
         RES_ReadFile(file, name, size);
         name[size] = '\0';
         RES_ReadFile(file, &size, 4);
-        RES_ReadFile(file, DAT_007fdba0, size);
-        DAT_007fdba0[size] = '\0';
+        RES_ReadFile(file, ObjDescSpriteName, size);
+        ObjDescSpriteName[size] = '\0';
         sprite = NULL;
-        if (DAT_007fdba0[0] != '\0') {
-            sprite = LoadSprite(DAT_007fdba0, 4);
+        if (ObjDescSpriteName[0] != '\0') {
+            sprite = LoadSprite(ObjDescSpriteName, 4);
         }
         if (sprite == NULL) {
             // STRING: LEGOLAND 0x004bc34c

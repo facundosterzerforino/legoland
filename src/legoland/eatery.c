@@ -1965,9 +1965,9 @@ void OctopusCafeUpdate(Element *obj) {
             continue;
         case 6:
             /* walk to the chair */
-            spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            spot = OctopusCafeSpotIndices[(bloke->field_36 >> 1) * 4];
             bloke->pos = bloke->dest;
-            chair = DAT_004b6be8[bloke->field_36];
+            chair = OctopusCafeChairIndices[bloke->field_36];
             off.x = OctopusCafeChairOffsets[chair * 4];
             off.y = OctopusCafeChairOffsets[chair * 4 + 1];
             bloke->dest.x = OctopusCafeSpotOffsets[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
@@ -1986,10 +1986,10 @@ void OctopusCafeUpdate(Element *obj) {
             /* sit down on the chair */
             bloke->pos = bloke->dest;
             bloke->field_40 = 1;
-            chair = DAT_004b6be8[bloke->field_36];
+            chair = OctopusCafeChairIndices[bloke->field_36];
             off.x = OctopusCafeChairOffsets[chair * 4 + 2];
             off.y = OctopusCafeChairOffsets[chair * 4 + 3];
-            spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            spot = OctopusCafeSpotIndices[(bloke->field_36 >> 1) * 4];
             bloke->dest.x = OctopusCafeSpotOffsets[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
             bloke->dest.y = (tile->pos.y << 8) + OctopusCafeSpotOffsets[spot * 2 + 1] + 0x80 + off.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
@@ -2016,10 +2016,10 @@ void OctopusCafeUpdate(Element *obj) {
             bloke->flags &= ~0x100;
             bloke->height = 0;
             BlokeWalkAnim(bloke);
-            chair = DAT_004b6be8[bloke->field_36];
+            chair = OctopusCafeChairIndices[bloke->field_36];
             off.x = OctopusCafeChairOffsets[chair * 4];
             off.y = OctopusCafeChairOffsets[chair * 4 + 1];
-            spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            spot = OctopusCafeSpotIndices[(bloke->field_36 >> 1) * 4];
             bloke->dest.x = OctopusCafeSpotOffsets[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
             bloke->dest.y = (tile->pos.y << 8) + OctopusCafeSpotOffsets[spot * 2 + 1] + 0x80 + off.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
@@ -2029,7 +2029,7 @@ void OctopusCafeUpdate(Element *obj) {
             continue;
         case 12:
             bloke->field_40 = 0;
-            idx = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
+            idx = OctopusCafeSpotIndices[(bloke->field_36 >> 1) * 4];
             break;
         case 13:
         case 14:
