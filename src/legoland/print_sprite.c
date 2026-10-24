@@ -539,16 +539,16 @@ void SetRender3DTarget(unsigned char *param_1, unsigned int param_2, unsigned in
 
 // FUNCTION: LEGOLAND 0x00485f60
 void AllocZBuffer(void) {
-    DAT_0066be40 = 0x80;
-    DAT_0066be44 = 0x78;
-    DAT_00701e5c = malloc(0xf000);
-    DAT_0066be4c = DAT_0066be40 * 4;
+    ZBufferWidth = 0x80;
+    ZBufferHeight = 0x78;
+    ZBuffer = malloc(0xf000);
+    ZBufferStride = ZBufferWidth * 4;
 }
 
 // FUNCTION: LEGOLAND 0x00485fa0
 void FreeZBuffer(void) {
-    if (DAT_00701e5c != NULL) {
-        free(DAT_00701e5c);
+    if (ZBuffer != NULL) {
+        free(ZBuffer);
     }
 }
 
@@ -568,11 +568,11 @@ void FUN_00485fe0(struct Sprite *sprite, int x, int y) {
 
     __asm {
         push edi
-        mov eax, DAT_0066be40
-        imul DAT_0066be44
+        mov eax, ZBufferWidth
+        imul ZBufferHeight
         mov ecx, eax
         mov eax, 0
-        mov edi, DAT_00701e5c
+        mov edi, ZBuffer
         rep stosd
         pop edi
     }
@@ -585,8 +585,8 @@ void FUN_00485fe0(struct Sprite *sprite, int x, int y) {
     rect1.bottom = (short)sprite->height;
     rect2.left = x;
     rect2.top = y;
-    rect2.right = x + DAT_0066be40;
-    rect2.bottom = y + DAT_0066be44;
+    rect2.right = x + ZBufferWidth;
+    rect2.bottom = y + ZBufferHeight;
     if (IntersectRect(&rect1, &rect1, &rect2) == 0) {
         return;
     }
@@ -602,5 +602,5 @@ void FUN_00485fe0(struct Sprite *sprite, int x, int y) {
     } else {
         offsets[1] = 0;
     }
-    ZBufferHelper((unsigned int *)sprite->image->data, (int *)&rect1, offsets, DAT_00701e5c);
+    ZBufferHelper((unsigned int *)sprite->image->data, (int *)&rect1, offsets, ZBuffer);
 }

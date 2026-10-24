@@ -1317,10 +1317,10 @@ void DrawFlashingButtons(void) {
             coords = coords + 2;
             i = i + 1;
         } while ((INT_PTR)coords < (INT_PTR)&LegolandThemeDeselected);
-        if (played != 0 && DAT_00668ec0 == 0) {
+        if (played != 0 && ButtonFlashWasActive == 0) {
             PlayInstanceOfSample(GameFX[FX_WARNING].sample, 0, 1, 0);
         }
-        DAT_00668ec0 = played;
+        ButtonFlashWasActive = played;
     }
 }
 
@@ -1791,7 +1791,7 @@ int StartMovieAudio(struct MovieHandle *handle) {
         DAT_00668f88 = len_start;
         AviAudioReady = 1;
         UpdateAviAudioBuffer(0, 0);
-        KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)DAT_004bb4dc);
+        KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)AviAudioVolume);
         KLIBAUDIO_PlayAVISoundBuffer(AviSoundBuffer, 0);
         return 1;
     }
@@ -1935,7 +1935,7 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
     } while (0);
     if (play != 0) {
         KLIBAUDIO_PlayAVISoundBuffer(AviSoundBuffer, play_pos);
-        KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)DAT_004bb4dc);
+        KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)AviAudioVolume);
     }
     return 1;
 }

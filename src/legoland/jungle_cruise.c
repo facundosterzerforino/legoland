@@ -1495,8 +1495,8 @@ void JungleCruiseUpdate(void) {
                 }
             }
             bloke->flags |= 8;
-            bloke->dest.x = ((JungleCruiseRide->x + tile.pos.x) << 8) + DAT_004b7290[4 - slot].x;
-            bloke->dest.y = ((JungleCruiseRide->y + tile.pos.y) << 8) + DAT_004b7290[4 - slot].y;
+            bloke->dest.x = ((JungleCruiseRide->x + tile.pos.x) << 8) + JungleCruiseQueueOffsets[4 - slot].x;
+            bloke->dest.y = ((JungleCruiseRide->y + tile.pos.y) << 8) + JungleCruiseQueueOffsets[4 - slot].y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->target_dir = dir + 0x10;
             bloke->low_level_action = 7;

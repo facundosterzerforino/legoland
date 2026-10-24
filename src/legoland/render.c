@@ -484,7 +484,7 @@ L486864:
         cmp esi, edi
         jg L4868d9
 L486881:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp + 0x10]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -772,7 +772,7 @@ L486b9e:
         cmp esi, edi
         jg L486c13
 L486bbb:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp + 0x10]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -1251,7 +1251,7 @@ L48713d:
         cmp esi, edi
         jg L4871f8
 L487168:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp - 0x14]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -1664,7 +1664,7 @@ L48765d:
         cmp esi, edi
         jg L487718
 L487688:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp - 0x14]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -1993,7 +1993,7 @@ L487a09:
         cmp esi, edi
         jg L487a6a
 L487a26:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp + 0x10]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -2221,7 +2221,7 @@ L487c90:
         cmp esi, edi
         jg L487cf1
 L487cad:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp + 0x10]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -2640,7 +2640,7 @@ L488143:
         cmp esi, edi
         jg L4881e1
 L488166:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp - 0x10]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -2994,7 +2994,7 @@ L48855a:
         cmp esi, edi
         jg L4885f8
 L48857d:
-        mov ebx, dword ptr [DAT_00701e5c]
+        mov ebx, dword ptr [ZBuffer]
         mov ecx, dword ptr [ebp - 0x10]
         lea ebx, [ebx + eax*4]
         shl ecx, 9
@@ -3180,7 +3180,7 @@ void InitZBufferImageSprite(void) {
 
 // FUNCTION: LEGOLAND 0x00488820
 unsigned int FUN_00488820(unsigned int x, unsigned int y) {
-    unsigned int *row = (unsigned int *)(DAT_00701e5c + DAT_0066be4c * y);
+    unsigned int *row = (unsigned int *)(ZBuffer + ZBufferStride * y);
     return row[x] >> 0x18;
 }
 

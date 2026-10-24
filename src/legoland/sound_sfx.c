@@ -637,7 +637,7 @@ void ReloadCurrentInteractiveMusicTheme(void) {
 
 /* Creates segment n from the file IMT_LOAD read into memory, then frees the file. */
 #define IMT_GET(n, name, seg) \
-    DAT_0079a6b0++; \
+    ImtGetCount++; \
     desc.dwSize = sizeof(desc); \
     desc.dwValidData = DMUS_OBJ_CLASS | DMUS_OBJ_NAME | DMUS_OBJ_MEMORY; \
     desc.guidClass = CLSID_DirectMusicSegment; \
@@ -646,7 +646,7 @@ void ReloadCurrentInteractiveMusicTheme(void) {
     wcscpy(desc.wszName, name); \
     hr = DMusicLoader->vtable->GetObject(DMusicLoader, &desc, &IID_IDirectMusicSegment, (void **)&(seg)); \
     if (hr != S_OK) { \
-        DBPrintf(IMT_MSG_GET_FAILED, DAT_0079a6b0, hr, GetLastError()); \
+        DBPrintf(IMT_MSG_GET_FAILED, ImtGetCount, hr, GetLastError()); \
     } \
     free(MusicFileData[n])
 

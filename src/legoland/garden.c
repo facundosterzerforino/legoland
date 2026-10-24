@@ -143,7 +143,7 @@ struct RideSpriteInfo *GetHedgeSpriteInfo(struct Element *unused, TileId tile) {
 // FUNCTION: LEGOLAND 0x00432870
 void LoadFlowerImages(struct Element *param) {
     struct Ride *temp = param->ride;
-    DAT_0081cd04 = temp;
+    FlowersRide = temp;
     temp->flags |= 0x404;
     // STRING: LEGOLAND 0x004b7124
     if (LLIDB_FindElement("FLOWERS 1", &FlowerImagesHandle, 0) != 0) {
@@ -159,7 +159,7 @@ void UnloadFlowerImages(void) {
 
 // FUNCTION: LEGOLAND 0x004328c0
 void FlowersSetEditMode(void) {
-    void *var = DAT_0081cd04;
+    void *var = FlowersRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);

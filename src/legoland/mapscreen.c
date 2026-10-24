@@ -30,14 +30,14 @@ struct MapPoint {
 
 // FUNCTION: LEGOLAND 0x004562c0
 void SaveMouseHandlers(void) {
-    DAT_00667c10 = OkKeyHandler;
-    DAT_00667c28 = CancelKeyHandler;
+    SavedOkKeyHandler = OkKeyHandler;
+    SavedCancelKeyHandler = CancelKeyHandler;
 }
 
 // FUNCTION: LEGOLAND 0x004562e0
 void RestoreMouseHandlers(void) {
-    OkKeyHandler = DAT_00667c10;
-    CancelKeyHandler = DAT_00667c28;
+    OkKeyHandler = SavedOkKeyHandler;
+    CancelKeyHandler = SavedCancelKeyHandler;
 }
 
 // FUNCTION: LEGOLAND 0x00456300

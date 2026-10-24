@@ -335,7 +335,7 @@ struct Sprite *DAT_004b4850;
 struct FlumeTemplate DAT_004b4858;
 
 // GLOBAL: LEGOLAND 0x004b4bd0
-unsigned char DAT_004b4bd0[0x14];
+unsigned char DrivingSchoolPumpsFootprint[0x14];
 
 // GLOBAL: LEGOLAND 0x004b4bf0
 unsigned int DAT_004b4bf0[5];
@@ -376,11 +376,13 @@ char *TempleSlidePathNames[4] = {
     "manbox04",
 };
 
+/* Per-lane BNV path frame at which a temple slide rider starts sliding (speed 0x18). */
 // GLOBAL: LEGOLAND 0x004b4f18
-signed char DAT_004b4f18[4] = {0x40, 0x45, 0x3f, 0x3c};
+signed char TempleSlideStartFrames[4] = {0x40, 0x45, 0x3f, 0x3c};
 
+/* Per-lane BNV path frame at which a temple slide rider reaches the end of the slide. */
 // GLOBAL: LEGOLAND 0x004b4f1c
-signed char DAT_004b4f1c[4] = {0x51, 0x53, 0x53, 0x50};
+signed char TempleSlideEndFrames[4] = {0x51, 0x53, 0x53, 0x50};
 
 // GLOBAL: LEGOLAND 0x004b4fa8
 struct FXItem WATERWORKS_SFX[3];
@@ -680,8 +682,9 @@ struct BoatArc DAT_004b7188[4];
 // GLOBAL: LEGOLAND 0x004b71c8
 struct BoatArc DAT_004b71c8[4];
 
+/* Jungle cruise queue walk offsets (1/256 tile) from the ride origin, indexed 4 - slot. */
 // GLOBAL: LEGOLAND 0x004b7290
-struct Point DAT_004b7290[5];
+struct Point JungleCruiseQueueOffsets[5];
 
 // GLOBAL: LEGOLAND 0x004b7230
 struct Footprint DAT_004b7230;
@@ -710,8 +713,9 @@ struct SpaceTowerLayout SpaceTowerLayouts[8];
 // GLOBAL: LEGOLAND 0x004b7798
 struct SpaceTowerSeatData SpaceTowerSeats[4];
 
+/* Space tower seat offsets in tiles, indexed by the rider's seat (field_36). */
 // GLOBAL: LEGOLAND 0x004b77e8
-struct Point DAT_004b77e8[8];
+struct Point SpaceTowerSeatOffsets[8];
 
 // GLOBAL: LEGOLAND 0x004b78b4
 char BoxBlokeBnvName[] = "BoxBloke??";
@@ -854,8 +858,9 @@ LEGO_EXPORT unsigned int BGFullUpdate;
 // GLOBAL: LEGOLAND 0x004b9228
 struct FXItem GameFX[FX_COUNT];
 
+/* Direction (0-7) to direction-bit table used by Dir_To_Bit and Bit_To_Dir. */
 // GLOBAL: LEGOLAND 0x004b9550
-unsigned char DAT_004b9550[8];
+unsigned char DirectionBits[8];
 
 // GLOBAL: LEGOLAND 0x004b9558
 unsigned int DAT_004b9558[9] = {
@@ -1001,7 +1006,7 @@ struct TrackElemPair DAT_004bb0a4[29];
 unsigned int DAT_004bb18c[4];
 
 // GLOBAL: LEGOLAND 0x004bb4dc
-float DAT_004bb4dc;
+float AviAudioVolume;
 
 // GLOBAL: LEGOLAND 0x004bb4e0
 BITMAPINFOHEADER AviFrameFormat;
@@ -1037,8 +1042,9 @@ unsigned int DAT_004bb5e0;
 // GLOBAL: LEGOLAND 0x004bb5f4
 unsigned int DAT_004bb5f4;
 
+/* Start of the 25 report names matched by the script REPORT command. */
 // GLOBAL: LEGOLAND 0x004bb624
-unsigned int DAT_004bb624;
+unsigned int ScriptReportNames;
 
 // GLOBAL: LEGOLAND 0x004bb688
 unsigned int DAT_004bb688;
@@ -1046,8 +1052,9 @@ unsigned int DAT_004bb688;
 // GLOBAL: LEGOLAND 0x004bb6bc
 unsigned int DAT_004bb6bc;
 
+/* Start of the 9 button names matched by the script FLASHBUTTON command (bit index = name index). */
 // GLOBAL: LEGOLAND 0x004bb6d4
-unsigned int DAT_004bb6d4;
+unsigned int ScriptFlashButtonNames;
 
 // GLOBAL: LEGOLAND 0x004bb6f8
 struct ScriptCommand LevelScriptCommands[0x5d];
@@ -1584,8 +1591,9 @@ int MusicFileSizes[35];
 // GLOBAL: LEGOLAND 0x0079a69c
 void *DMusicNotificationEvent;
 
+/* Number of IMT_GET music segment loads, printed when one fails. */
 // GLOBAL: LEGOLAND 0x0079a6b0
-int DAT_0079a6b0;
+int ImtGetCount;
 
 // GLOBAL: LEGOLAND 0x007fe9a4
 int DAT_007fe9a4;
@@ -2569,8 +2577,9 @@ int ReportType4ClassCountMax;
 // GLOBAL: LEGOLAND 0x00666098
 unsigned int AppraisalDeadline;
 
+/* Result of the last RunAppraisal started by CheckAppraisalDue. */
 // GLOBAL: LEGOLAND 0x0066609c
-int DAT_0066609c;
+int LastAppraisalResult;
 
 // GLOBAL: LEGOLAND 0x006660a0
 int AppraisalPageCount;
@@ -2678,10 +2687,10 @@ int MapWorldWidth;
 int MapCenterOffsetY;
 
 // GLOBAL: LEGOLAND 0x00667c10
-void *DAT_00667c10;
+void *SavedOkKeyHandler;
 
 // GLOBAL: LEGOLAND 0x00667c28
-void *DAT_00667c28;
+void *SavedCancelKeyHandler;
 
 // GLOBAL: LEGOLAND 0x00667c2c
 struct Sprite *FullMapSprite;
@@ -2701,8 +2710,9 @@ const char *AdvisorDebugStage;
 // GLOBAL: LEGOLAND 0x00667c48
 unsigned int DAT_00667c48;
 
+/* Return value of the last LoadLevelScript call; not read elsewhere. */
 // GLOBAL: LEGOLAND 0x00667c4c
-int DAT_00667c4c;
+int LevelScriptLoadResult;
 
 // GLOBAL: LEGOLAND 0x00667c54
 LEGO_EXPORT TileId QueryObj;
@@ -2924,7 +2934,7 @@ int VideoSurfaceLocked;
 struct Sprite *CurrentPointerSprite;
 
 // GLOBAL: LEGOLAND 0x0066814c
-unsigned int DAT_0066814c;
+unsigned int CurrentPointerIndex;
 
 // GLOBAL: LEGOLAND 0x00668160
 unsigned int DAT_00668160;
@@ -3333,8 +3343,9 @@ struct IconNode *ScriptEndIcon;
 // GLOBAL: LEGOLAND 0x00668ebc
 unsigned int GameInterfaceLoaded;
 
+/* Whether a flashing button was lit last frame; FX_WARNING plays when one lights up again. */
 // GLOBAL: LEGOLAND 0x00668ec0
-unsigned int DAT_00668ec0;
+unsigned int ButtonFlashWasActive;
 
 // GLOBAL: LEGOLAND 0x00668ed8
 struct InterfaceResearchNode *ResearchList;
@@ -3562,16 +3573,16 @@ RECT ZBufferSavedSoftPrintClip;
 void *DAT_0066b630;
 
 // GLOBAL: LEGOLAND 0x0066be40
-unsigned int DAT_0066be40;
+unsigned int ZBufferWidth;
 
 // GLOBAL: LEGOLAND 0x0066be44
-unsigned int DAT_0066be44;
+unsigned int ZBufferHeight;
 
 // GLOBAL: LEGOLAND 0x0066be48
 unsigned int DAT_0066be48;
 
 // GLOBAL: LEGOLAND 0x0066be4c
-unsigned int DAT_0066be4c;
+unsigned int ZBufferStride;
 
 // GLOBAL: LEGOLAND 0x0066be50
 struct Image *ZBufferSourceImage;
@@ -3583,7 +3594,7 @@ unsigned short DAT_0066be54[0x4b002];
 unsigned int DAT_00701e58;
 
 // GLOBAL: LEGOLAND 0x00701e5c
-unsigned char *DAT_00701e5c;
+unsigned char *ZBuffer;
 
 // GLOBAL: LEGOLAND 0x00701e60
 unsigned int DAT_00701e60;
@@ -3760,10 +3771,10 @@ unsigned int NewProfilePopUpShown;
 unsigned int DAT_007986f0;
 
 // GLOBAL: LEGOLAND 0x007986f4
-void *DAT_007986f4;
+void *ProfileSavedCancelKeyHandler;
 
 // GLOBAL: LEGOLAND 0x007986f8
-void *DAT_007986f8;
+void *ProfileSavedOkKeyHandler;
 
 // GLOBAL: LEGOLAND 0x00798700
 unsigned int DAT_00798700;
@@ -4770,14 +4781,15 @@ unsigned long DAT_00813a18;
 // GLOBAL: LEGOLAND 0x00813a2c
 int DAT_00813a2c;
 
+/* Tile id of the object queried when a demolish drag starts (BeginTileSelectionDrag); not read elsewhere. */
 // GLOBAL: LEGOLAND 0x00813a34
-unsigned short DAT_00813a34;
+unsigned short DragQueryObjectId;
 
 // GLOBAL: LEGOLAND 0x00813a38
-unsigned int DAT_00813a38;
+unsigned int DragFootprintWidth;
 
 // GLOBAL: LEGOLAND 0x00813a3c
-unsigned int DAT_00813a3c;
+unsigned int DragFootprintHeight;
 
 // GLOBAL: LEGOLAND 0x00813a40
 LEGO_EXPORT unsigned int GamePad;
@@ -4884,20 +4896,21 @@ unsigned int OkKeyMask;
 // GLOBAL: LEGOLAND 0x00813adc
 unsigned int OkKeyState;
 
+/* GetTicks() of the last mouse movement or GamePad 0x10 input; after 2000 ms without one ReadGameButtons sets GamePad 0x200. */
 // GLOBAL: LEGOLAND 0x00813ae0
-unsigned int DAT_00813ae0;
+unsigned int LastPointerActivityTicks;
 
 // GLOBAL: LEGOLAND 0x00813af0
-int DAT_00813af0;
+int DragFootprintX0;
 
 // GLOBAL: LEGOLAND 0x00813af4
-int DAT_00813af4;
+int DragFootprintY0;
 
 // GLOBAL: LEGOLAND 0x00813af8
-int DAT_00813af8;
+int DragFootprintX1;
 
 // GLOBAL: LEGOLAND 0x00813afc
-int DAT_00813afc;
+int DragFootprintY1;
 
 // GLOBAL: LEGOLAND 0x00813b00
 LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
@@ -5005,8 +5018,9 @@ unsigned int ViewportRight;
 // GLOBAL: LEGOLAND 0x0081c8dc
 unsigned int ViewportBottom;
 
+/* Name chosen in the file list dialog; also the directory it enters when a folder is picked. */
 // GLOBAL: LEGOLAND 0x0081c8e0
-char DAT_0081c8e0[512];
+char FileDialogSelectedName[512];
 
 // GLOBAL: LEGOLAND 0x0081cae0
 struct Sprite *ZoomerSprite;
@@ -5120,7 +5134,7 @@ struct Point DAT_0081cb80[3][16];
 struct SpriteSet *JungleCruiseBoats;
 
 // GLOBAL: LEGOLAND 0x0081cd04
-void *DAT_0081cd04;
+void *FlowersRide;
 
 // GLOBAL: LEGOLAND 0x0081cd08
 void *HedgeObjectClass;
@@ -5670,7 +5684,8 @@ int ExceptionReportStarted;
 int DAT_004b8a88 = 0x10;
 
 // GLOBAL: LEGOLAND 0x004b8a8c
-int DAT_004b8a8c = 0x800;
+int StackDumpMaxWords = 0x800;
 
+/* Stack words per line in the exception log stack dump. */
 // GLOBAL: LEGOLAND 0x004b8a90
-int DAT_004b8a90 = 8;
+int StackDumpWordsPerLine = 8;

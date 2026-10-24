@@ -4912,8 +4912,8 @@ int CheckAppraisalDue(void) {
         PauseAllSamples();
         SpeechCloseFile();
         SpeechDelayFrames = 4;
-        DAT_0066609c = RunAppraisal();
-        if (DAT_0066609c != 0) {
+        LastAppraisalResult = RunAppraisal();
+        if (LastAppraisalResult != 0) {
             v = MapStats.appraisal_streak;
             if (v > 0) {
                 MapStats.appraisal_streak = v + 1;

@@ -279,7 +279,7 @@ void StartLevelGame(void) {
         sprintf(buf, "objlist%d.txt", lpConfig->level);
         SetBricksLimited(0);
         ResetMapAI();
-        DAT_00667c4c = LoadLevelScript(buf);
+        LevelScriptLoadResult = LoadLevelScript(buf);
         SetBricksLimited(1);
         AllocBlokeCounters(lpConfig->max_blokes);
         ResetEditState();

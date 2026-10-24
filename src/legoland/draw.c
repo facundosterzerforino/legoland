@@ -82,8 +82,8 @@ LEGO_EXPORT void KillHostSystemGPU(void) {
 
 // FUNCTION: LEGOLAND 0x00463850
 LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
-    unsigned int old = DAT_0066814c;
-    DAT_0066814c = param_1;
+    unsigned int old = CurrentPointerIndex;
+    CurrentPointerIndex = param_1;
     CurrentPointerSprite = PointerSprites[param_1];
     return old;
 }

@@ -186,15 +186,15 @@ void BeginTileSelectionDrag(void) {
 
     if (EditMode.unk0 == 2 && QueryClass != NULL) {
         cls = QueryClass;
-        DAT_00813a34 = QueryObj.id;
-        DAT_00813af0 = cls->footprint.v[0];
-        DAT_00813af8 = cls->footprint.v[2];
-        DAT_00813af4 = cls->footprint.v[1];
-        DAT_00813afc = cls->footprint.v[3];
-        DAT_00813a38 = (DAT_00813af8 - DAT_00813af0) + 1;
-        DAT_00813a3c = (DAT_00813afc - DAT_00813af4) + 1;
-        DragStartTileX = QueryObj.pos.x + DAT_00813af0;
-        DragStartTileY = QueryObj.pos.y + DAT_00813af4;
+        DragQueryObjectId = QueryObj.id;
+        DragFootprintX0 = cls->footprint.v[0];
+        DragFootprintX1 = cls->footprint.v[2];
+        DragFootprintY0 = cls->footprint.v[1];
+        DragFootprintY1 = cls->footprint.v[3];
+        DragFootprintWidth = (DragFootprintX1 - DragFootprintX0) + 1;
+        DragFootprintHeight = (DragFootprintY1 - DragFootprintY0) + 1;
+        DragStartTileX = QueryObj.pos.x + DragFootprintX0;
+        DragStartTileY = QueryObj.pos.y + DragFootprintY0;
         DragEndTileX = MouseTileX;
         DragEndTileY = MouseTileY;
     } else {
@@ -310,7 +310,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
                 if (CONTROLLERBUFFER->delta_x != 0 ||
                     CONTROLLERBUFFER->delta_y != 0 || (GamePad & 0x10) != 0) {
                     GamePad = GamePad | 8;
-                    DAT_00813ae0 = GetTicks();
+                    LastPointerActivityTicks = GetTicks();
                 }
                 ScreenToMapRef(&MousePos.x, &mp.x, 0);
                 if (MouseTileX != mp.x || MouseTileY != mp.y) {
@@ -357,7 +357,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
         }
     }
     now = GetTicks();
-    if (now - DAT_00813ae0 >= 2000) {
+    if (now - LastPointerActivityTicks >= 2000) {
         GamePad = GamePad | 0x200;
         return;
     }

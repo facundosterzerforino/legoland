@@ -1463,9 +1463,9 @@ int ScriptCmdReport(struct CommandArgs *arg, int argc) {
         // STRING: LEGOLAND 0x004bc0d8
         if (_stricmp(arg->arg1, "HAPPY_VIS") == 0) {
             // STRING: LEGOLAND 0x004bc0cc
-            index = FindStringNoCase("Happpy_Vis", &DAT_004bb624, 0x19);
+            index = FindStringNoCase("Happpy_Vis", &ScriptReportNames, 0x19);
         } else {
-            index = FindStringNoCase(arg->arg1, &DAT_004bb624, 0x19);
+            index = FindStringNoCase(arg->arg1, &ScriptReportNames, 0x19);
         }
         if (index == -1) {
             return 0;
@@ -1659,7 +1659,7 @@ int ScriptCmdFlashButton(char **argv, int argc) {
             return 0;
         }
         for (i = 1; i <= argc; i++) {
-            index = FindStringNoCase(argv[i], &DAT_004bb6d4, 9);
+            index = FindStringNoCase(argv[i], &ScriptFlashButtonNames, 9);
             if (index != -1) {
                 mask |= 1 << index;
             } else {
@@ -1690,7 +1690,7 @@ int ScriptCmdFlashButtonOff(char **argv, int argc) {
             mask = 0xffffffff;
         }
         for (i = 1; i <= argc; i++) {
-            index = FindStringNoCase(argv[i], &DAT_004bb6d4, 9);
+            index = FindStringNoCase(argv[i], &ScriptFlashButtonNames, 9);
             if (index != -1) {
                 mask |= 1 << index;
             } else {

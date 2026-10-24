@@ -843,8 +843,8 @@ void SpaceTowerUpdate(struct Element *param_1) {
             case 3:
                 seat = bloke->field_36;
                 coord_y = node->tile.pos.y;
-                bloke->dest.x = (x + DAT_004b77e8[seat].x) << 8;
-                bloke->dest.y = (DAT_004b77e8[seat].y + coord_y) << 8;
+                bloke->dest.x = (x + SpaceTowerSeatOffsets[seat].x) << 8;
+                bloke->dest.y = (SpaceTowerSeatOffsets[seat].y + coord_y) << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->low_level_action = 7;
                 bloke->target_dir = dir + 0x10;

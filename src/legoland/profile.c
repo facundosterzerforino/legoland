@@ -599,13 +599,13 @@ unsigned char DeletePopUpCancelHandler(unsigned int param_1, unsigned int param_
 /* Saves the current OK and Cancel key handlers in the profile screen save slots. */
 // FUNCTION: LEGOLAND 0x0048d470
 void SaveProfileKeyHandlers(void) {
-    DAT_007986f8 = OkKeyHandler;
-    DAT_007986f4 = CancelKeyHandler;
+    ProfileSavedOkKeyHandler = OkKeyHandler;
+    ProfileSavedCancelKeyHandler = CancelKeyHandler;
 }
 
 /* Restores the OK and Cancel key handlers saved by the profile screen. */
 // FUNCTION: LEGOLAND 0x0048d490
 void RestoreProfileKeyHandlers(void) {
-    OkKeyHandler = DAT_007986f8;
-    CancelKeyHandler = DAT_007986f4;
+    OkKeyHandler = ProfileSavedOkKeyHandler;
+    CancelKeyHandler = ProfileSavedCancelKeyHandler;
 }

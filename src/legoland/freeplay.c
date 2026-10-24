@@ -160,7 +160,7 @@ void StartFreePlayGame(void) {
     MarkGameTimer();
     CastlePlacedFlag = 0;
     ResetMapAI();
-    DAT_00667c4c = LoadLevelScript(buf);
+    LevelScriptLoadResult = LoadLevelScript(buf);
     SetBricksLimited(0);
     GiveSelectedFreePlayObjects();
     AllocBlokeCounters(lpConfig->max_blokes);

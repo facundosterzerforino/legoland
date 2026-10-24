@@ -25,11 +25,11 @@ void DrivingSchoolPumpsSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = eax_temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(DAT_004b4bd0);
+    SetEditCursorFootPrint(DrivingSchoolPumpsFootprint);
     EditCursor.field_1828 = EditCursor.field_1828 | 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4bd0, 0x14);
+    memcpy(DAT_0082f760.field_1414, DrivingSchoolPumpsFootprint, 0x14);
     DAT_0082f760.field_1828 = 0x34;
 }
 

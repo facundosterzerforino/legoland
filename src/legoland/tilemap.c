@@ -849,7 +849,7 @@ LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int par
 
 // FUNCTION: LEGOLAND 0x0045c010
 LEGO_EXPORT unsigned char Dir_To_Bit(unsigned char param) {
-    return DAT_004b9550[param & 7];
+    return DirectionBits[param & 7];
 }
 
 // FUNCTION: LEGOLAND 0x0045c020
@@ -857,7 +857,7 @@ LEGO_EXPORT unsigned char Bit_To_Dir(unsigned char bit) {
     unsigned char result;
 
     for (result = 0; result < 8; result++) {
-        if (DAT_004b9550[result] & bit) {
+        if (DirectionBits[result] & bit) {
             return result;
         }
     }

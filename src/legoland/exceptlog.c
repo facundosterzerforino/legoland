@@ -111,18 +111,18 @@ int stackdump(void *exc_info, const char *filename) {
         __try {
             sp = (DWORD *)ctx->Esp;
             /* original reads the stack base from fs:[4] (inline asm); not expressible in pure C */
-            limit = sp + DAT_004b8a8c;
+            limit = sp + StackDumpMaxWords;
             bufend = buf + sizeof(buf) - maxlen;
             out = buf;
             while ((next = sp + 1) <= limit) {
-                if (count % DAT_004b8a90 == 0) {
+                if (count % StackDumpWordsPerLine == 0) {
                     // STRING: LEGOLAND 0x004b8ad8
                     out += wsprintfA(out, "%08x: ", sp);
                 }
                 // STRING: LEGOLAND 0x004b8ad4
                 sep = " ";
                 count++;
-                if (count % DAT_004b8a90 == 0 || sp + 2 > limit) {
+                if (count % StackDumpWordsPerLine == 0 || sp + 2 > limit) {
                     sep = "\r\n";
                 }
                 // STRING: LEGOLAND 0x004b8acc

@@ -717,7 +717,7 @@ extern struct Sprite *DAT_004b4850;
 // 0x004b4858
 extern struct FlumeTemplate DAT_004b4858;
 // 0x004b4bd0
-extern unsigned char DAT_004b4bd0[0x14];
+extern unsigned char DrivingSchoolPumpsFootprint[0x14];
 // 0x004b4bf0
 extern unsigned int DAT_004b4bf0[5];
 // 0x004b4c04
@@ -744,9 +744,9 @@ extern char BoxBlokeBnvName[];
 // 0x004b4f08
 extern char *TempleSlidePathNames[4];
 // 0x004b4f18
-extern signed char DAT_004b4f18[4];
+extern signed char TempleSlideStartFrames[4];
 // 0x004b4f1c
-extern signed char DAT_004b4f1c[4];
+extern signed char TempleSlideEndFrames[4];
 // 0x004b4fa8
 extern struct FXItem WATERWORKS_SFX[3];
 // 0x004b5118
@@ -920,7 +920,7 @@ extern struct BoatArc DAT_004b7188[4];
 // 0x004b71c8
 extern struct BoatArc DAT_004b71c8[4];
 // 0x004b7290
-extern struct Point DAT_004b7290[5];
+extern struct Point JungleCruiseQueueOffsets[5];
 // 0x004b7230
 extern struct Footprint DAT_004b7230;
 // 0x004b7248
@@ -940,7 +940,7 @@ extern struct SpaceTowerLayout SpaceTowerLayouts[8];
 // 0x004b7798
 extern struct SpaceTowerSeatData SpaceTowerSeats[4];
 // 0x004b77e8
-extern struct Point DAT_004b77e8[8];
+extern struct Point SpaceTowerSeatOffsets[8];
 // 0x004b79d0
 extern char PlaneRideManboxName[];
 extern struct FXItem PlaneRideFX[2];
@@ -1030,7 +1030,7 @@ extern struct FXItem GameFX[FX_COUNT];
 // 0x004b95f0
 extern struct DeferredSprite *PTR_DAT_004b95f0;
 // 0x004b9550
-extern unsigned char DAT_004b9550[8];
+extern unsigned char DirectionBits[8];
 // 0x004b9558
 extern unsigned int DAT_004b9558[9];
 // 0x004b957c
@@ -1117,7 +1117,7 @@ extern struct TrackElemPair DAT_004bb0a4[29];
 // 0x004bb18c
 extern unsigned int DAT_004bb18c[4];
 // 0x004bb4dc
-extern float DAT_004bb4dc;
+extern float AviAudioVolume;
 // 0x004bb4e0
 extern BITMAPINFOHEADER AviFrameFormat;
 // 0x004bb588
@@ -1143,13 +1143,13 @@ extern unsigned int DAT_004bb5e0;
 // 0x004bb5f4
 extern unsigned int DAT_004bb5f4;
 // 0x004bb624
-extern unsigned int DAT_004bb624;
+extern unsigned int ScriptReportNames;
 // 0x004bb688
 extern unsigned int DAT_004bb688;
 // 0x004bb6bc
 extern unsigned int DAT_004bb6bc;
 // 0x004bb6d4
-extern unsigned int DAT_004bb6d4;
+extern unsigned int ScriptFlashButtonNames;
 // 0x004bb6f8
 extern struct ScriptCommand LevelScriptCommands[0x5d];
 // 0x004bcba4
@@ -1477,7 +1477,7 @@ extern int MusicFileSizes[35];
 // 0x0079a69c
 extern void *DMusicNotificationEvent;
 // 0x0079a6b0
-extern int DAT_0079a6b0;
+extern int ImtGetCount;
 // 0x007fe9a4
 extern int DAT_007fe9a4;
 // 0x007fea14
@@ -2143,7 +2143,7 @@ extern int ReportType4ClassCountMax;
 // 0x00666098
 extern unsigned int AppraisalDeadline;
 // 0x0066609c
-extern int DAT_0066609c;
+extern int LastAppraisalResult;
 // 0x006660a0
 extern int AppraisalPageCount;
 // 0x006660a4
@@ -2215,9 +2215,9 @@ extern int MapWorldWidth;
 // 0x00667c20
 extern int MapCenterOffsetY;
 // 0x00667c10
-extern void *DAT_00667c10;
+extern void *SavedOkKeyHandler;
 // 0x00667c28
-extern void *DAT_00667c28;
+extern void *SavedCancelKeyHandler;
 // 0x00667c2c
 extern struct Sprite *FullMapSprite;
 // 0x00667c30
@@ -2245,7 +2245,7 @@ extern const char *AdvisorDebugStage;
 // 0x00667c48
 extern unsigned int DAT_00667c48;
 // 0x00667c4c
-extern int DAT_00667c4c;
+extern int LevelScriptLoadResult;
 extern unsigned int DAT_00667c64;
 extern unsigned int SamplesPaused;
 // 0x00667c7c
@@ -2385,7 +2385,7 @@ extern int VideoSurfaceLocked;
 // 0x00668148
 extern struct Sprite *CurrentPointerSprite;
 // 0x0066814c
-extern unsigned int DAT_0066814c;
+extern unsigned int CurrentPointerIndex;
 // 0x00668160
 extern unsigned int DAT_00668160;
 // 0x00668164
@@ -2650,7 +2650,7 @@ extern unsigned int DAT_00668eb4;
 extern struct IconNode *ScriptEndIcon;
 // 0x00668ebc
 extern unsigned int GameInterfaceLoaded;
-extern unsigned int DAT_00668ec0;
+extern unsigned int ButtonFlashWasActive;
 // 0x00668ed8
 extern struct InterfaceResearchNode *ResearchList;
 // 0x00668ee0
@@ -2804,13 +2804,13 @@ extern RECT ZBufferSavedSoftPrintClip;
 // 0x0066b630
 extern void *DAT_0066b630;
 // 0x0066be40
-extern unsigned int DAT_0066be40;
+extern unsigned int ZBufferWidth;
 // 0x0066be44
-extern unsigned int DAT_0066be44;
+extern unsigned int ZBufferHeight;
 // 0x0066be48
 extern unsigned int DAT_0066be48;
 // 0x0066be4c
-extern unsigned int DAT_0066be4c;
+extern unsigned int ZBufferStride;
 // 0x0066be50
 extern struct Image *ZBufferSourceImage;
 // 0x0066be54
@@ -2818,7 +2818,7 @@ extern unsigned short DAT_0066be54[0x4b002];
 // 0x00701e58
 extern unsigned int DAT_00701e58;
 // 0x00701e5c
-extern unsigned char *DAT_00701e5c;
+extern unsigned char *ZBuffer;
 // 0x00701e60
 extern unsigned int DAT_00701e60;
 // 0x00701e64
@@ -2935,9 +2935,9 @@ extern unsigned int NewProfilePopUpShown;
 // 0x007986f0
 extern unsigned int DAT_007986f0;
 // 0x007986f4
-extern void *DAT_007986f4;
+extern void *ProfileSavedCancelKeyHandler;
 // 0x007986f8
-extern void *DAT_007986f8;
+extern void *ProfileSavedOkKeyHandler;
 // 0x00798700
 extern unsigned int DAT_00798700;
 // 0x00798704
@@ -3623,11 +3623,11 @@ extern unsigned long DAT_00813a18;
 // 0x00813a2c
 extern int DAT_00813a2c;
 // 0x00813a34
-extern unsigned short DAT_00813a34;
+extern unsigned short DragQueryObjectId;
 // 0x00813a38
-extern unsigned int DAT_00813a38;
+extern unsigned int DragFootprintWidth;
 // 0x00813a3c
-extern unsigned int DAT_00813a3c;
+extern unsigned int DragFootprintHeight;
 // 0x00813a40
 extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44
@@ -3697,15 +3697,15 @@ extern unsigned int OkKeyMask;
 // 0x00813adc
 extern unsigned int OkKeyState;
 // 0x00813ae0
-extern unsigned int DAT_00813ae0;
+extern unsigned int LastPointerActivityTicks;
 // 0x00813af0
-extern int DAT_00813af0;
+extern int DragFootprintX0;
 // 0x00813af4
-extern int DAT_00813af4;
+extern int DragFootprintY0;
 // 0x00813af8
-extern int DAT_00813af8;
+extern int DragFootprintX1;
 // 0x00813afc
-extern int DAT_00813afc;
+extern int DragFootprintY1;
 // 0x00813b00
 extern LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 // Root of the last CDFS volume found by FindCdDriveWithVolume (four bytes, including NUL).
@@ -3778,7 +3778,7 @@ extern unsigned int ViewportRight;
 // 0x0081c8dc
 extern unsigned int ViewportBottom;
 // 0x0081c8e0
-extern char DAT_0081c8e0[512];
+extern char FileDialogSelectedName[512];
 // 0x0081cae0
 extern struct Sprite *ZoomerSprite;
 // 0x0081cae8
@@ -3854,7 +3854,7 @@ extern struct Point DAT_0081cb80[3][16];
 // 0x0081cd00
 extern struct SpriteSet *JungleCruiseBoats;
 // 0x0081cd04
-extern void *DAT_0081cd04;
+extern void *FlowersRide;
 // 0x0081cd08
 extern void *HedgeObjectClass;
 // 0x0081cd0c
@@ -4293,9 +4293,9 @@ extern int ExceptionReportStarted;
 // 0x004b8a88
 extern int DAT_004b8a88;
 // 0x004b8a8c
-extern int DAT_004b8a8c;
+extern int StackDumpMaxWords;
 // 0x004b8a90
-extern int DAT_004b8a90;
+extern int StackDumpWordsPerLine;
 // 0x004b42a0
 extern int DAT_004b42a0[3];
 // 0x004b42ac

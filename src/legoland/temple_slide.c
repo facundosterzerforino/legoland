@@ -377,16 +377,16 @@ void TempleSlideUpdate(Element *obj) {
                 BlokeSetFrame(bloke, bloke->frame);
                 if (bloke->path != NULL) {
                     f = BNVPath_GetDFrame(bloke->path);
-                    if (f == DAT_004b4f18[bloke->field_36]) {
+                    if (f == TempleSlideStartFrames[bloke->field_36]) {
                         BlokeWalkAnim(bloke);
                         bloke->field_44 = bloke->speed;
                         bloke->speed = 0x18;
-                    } else if (f == DAT_004b4f1c[bloke->field_36]) {
+                    } else if (f == TempleSlideEndFrames[bloke->field_36]) {
                         bloke->field_35 = 1;
                         bloke->param_action = 5;
                         free(bloke->path);
                         bloke->path = NULL;
-                    } else if (f >= DAT_004b4f18[bloke->field_36] && f <= (int)DAT_004b4f1c[bloke->field_36]) {
+                    } else if (f >= TempleSlideStartFrames[bloke->field_36] && f <= (int)TempleSlideEndFrames[bloke->field_36]) {
                         BlokeSetFrame(bloke, 0);
                     }
                 }

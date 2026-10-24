@@ -350,7 +350,7 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
             if (nodes[r]->attrib & 0x10) {
                 chdirFlag = 1;
             }
-            result = DAT_0081c8e0;
+            result = FileDialogSelectedName;
             strcpy(result, names[r]);
         } else {
             result = 0;
@@ -368,7 +368,7 @@ char *FileSelectDialog(char *title, struct Sprite *bg, RECT *box, char *path) {
             _chdir(cwd);
             return result;
         }
-        _chdir(DAT_0081c8e0);
+        _chdir(FileDialogSelectedName);
         chdirFlag = 0;
         tail = 0;
         count = 0;

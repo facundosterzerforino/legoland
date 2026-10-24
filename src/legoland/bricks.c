@@ -238,8 +238,8 @@ void ProcessMapEditing(void) {
             if (DragRemoveClass != NULL && (((struct Ride *)DragRemoveClass)->flags & 0x2000000)) {
                 MapBatchUpdate = 1;
                 MapBatchChanged = 0;
-                for (y = SelectionRect.y0; y <= SelectionRect.y1; y += DAT_00813a3c) {
-                    for (x = SelectionRect.x0; x <= SelectionRect.x1; x += DAT_00813a38) {
+                for (y = SelectionRect.y0; y <= SelectionRect.y1; y += DragFootprintHeight) {
+                    for (x = SelectionRect.x0; x <= SelectionRect.x1; x += DragFootprintWidth) {
                         QueryCursor.field_1414[4] = 0;
                         QueryCursor.tile_x = x;
                         QueryCursor.tile_y = y;
