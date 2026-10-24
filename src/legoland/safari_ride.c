@@ -179,7 +179,7 @@ void SafariRideLoad(struct Element *a1) {
     // STRING: LEGOLAND 0x004b4d5c
     SafariRunBNV = LoadBinV("Zbuffers\\Safarirun.bnv");
     // STRING: LEGOLAND 0x004b4d44
-    DAT_004cbf04[0] = LoadBinV("Zbuffers\\Safarion.bnv");
+    SafariOnBNV[0] = LoadBinV("Zbuffers\\Safarion.bnv");
     // STRING: LEGOLAND 0x004b4d2c
     SafariOffBNV = LoadBinV("Zbuffers\\Safarioff.bnv");
     // STRING: LEGOLAND 0x004b4d1c
@@ -191,9 +191,9 @@ void SafariRideLoad(struct Element *a1) {
     HideLayer(SafariLayer, 0);
     StopLayerPlaying(SafariLayer, 0);
     LLSSetFrame(GetLLSForLayer(SafariLayer, 0), 0);
-    DAT_004cbef8 = SafariRunBNV;
-    DAT_004cbefc = DAT_004cbf04[0];
-    DAT_004cbf00 = SafariOffBNV;
+    SafariPathRunBNV = SafariRunBNV;
+    SafariPathOnBNV = SafariOnBNV[0];
+    SafariPathOffBNV = SafariOffBNV;
     SafariRiderSprite = ZSafariSprite;
     Load_FXList(SAFARI_SFX, 1);
 }
@@ -203,9 +203,9 @@ void SafariRideUnload(struct Element *a1) {
     SafariRide = a1->ride;
     FreeAllSafariNodes();
     Kill_FXList(SAFARI_SFX, 1);
-    FreeBinV(DAT_004cbef8);
-    FreeBinV(DAT_004cbefc);
-    FreeBinV(DAT_004cbf00);
+    FreeBinV(SafariPathRunBNV);
+    FreeBinV(SafariPathOnBNV);
+    FreeBinV(SafariPathOffBNV);
     KillSprite(SafariRiderSprite);
 }
 
@@ -398,7 +398,7 @@ void SafariRideUpdate(Element *obj) {
                 node->rider->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
                 sprintf(SafariManboxName + 6, "%02d", (GetSafariRiderIndex((struct RideNode *)node, &node->tile.id) >> 1) + 1);
-                node->rider->path = NewBNVPath(DAT_004cbefc, 1, SafariManboxName, -1617787.0f, -1618006.0f, coords);
+                node->rider->path = NewBNVPath(SafariPathOnBNV, 1, SafariManboxName, -1617787.0f, -1618006.0f, coords);
                 UpdateBlokeFromBNVPath(bloke, node->rider->path);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 bloke->param_action++;
@@ -442,7 +442,7 @@ void SafariRideUpdate(Element *obj) {
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);
                 bloke->field_35 = 2;
                 sprintf(SafariManboxName + 6, "%02d", (bloke->field_36 >> 1) + 1);
-                node->rider->path = NewBNVPath(DAT_004cbf00, 2, SafariManboxName, -1617787.0f, -1618006.0f, coords2);
+                node->rider->path = NewBNVPath(SafariPathOffBNV, 2, SafariManboxName, -1617787.0f, -1618006.0f, coords2);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
@@ -571,7 +571,7 @@ LEGO_EXPORT int LoadSafariRide(struct Element *arg) {
     while (list != NULL) {
         car = list->person;
         if (car->field_30 != 0) {
-            car->sprite = DAT_004cbf04[car->field_30];
+            car->sprite = SafariOnBNV[car->field_30];
         } else {
             car->sprite = NULL;
             list->person->field_30 = 0;
@@ -579,7 +579,7 @@ LEGO_EXPORT int LoadSafariRide(struct Element *arg) {
         data = list->rider;
         tc = data->bnv;
         if (tc != NULL) {
-            tc->file = (&DAT_004cbef8)[tc->index];
+            tc->file = (&SafariPathRunBNV)[tc->index];
         }
         list = list->next;
     }

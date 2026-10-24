@@ -877,8 +877,8 @@ void BoatingSchoolUpdate(void) {
                 }
             }
             bloke->flags |= 8;
-            bloke->dest.x = ((BoatingSchoolRide->x + tile.pos.x) << 8) + DAT_004b5290[4 - slot].x;
-            bloke->dest.y = ((BoatingSchoolRide->y + tile.pos.y) << 8) + DAT_004b5290[4 - slot].y;
+            bloke->dest.x = ((BoatingSchoolRide->x + tile.pos.x) << 8) + BoatingSchoolQueueOffsets[4 - slot].x;
+            bloke->dest.y = ((BoatingSchoolRide->y + tile.pos.y) << 8) + BoatingSchoolQueueOffsets[4 - slot].y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->target_dir = dir + 0x10;
             bloke->low_level_action = 7;

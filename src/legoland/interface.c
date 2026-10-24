@@ -1640,7 +1640,7 @@ int PlayMovieFrames(struct MovieHandle *handle, void *param_2, int param_3) {
                 break;
             }
             if ((CancelKeyState & 7) != 0) {
-                DAT_00668fb0 = 1;
+                MovieSkipRequested = 1;
                 break;
             }
             if ((KeyboardState[0x39] & 0x80) != 0) {
@@ -1786,9 +1786,9 @@ int StartMovieAudio(struct MovieHandle *handle) {
     if (handle->audio_stream != NULL && AviSoundBuffer != NULL) {
         start = AVIStreamStart(handle->audio_stream);
         len_start = AVIStreamLength(handle->audio_stream) + AVIStreamStart(handle->audio_stream);
-        DAT_00668f58 = start;
+        AviAudioStartSample = start;
         AviAudioSamplePos = start;
-        DAT_00668f88 = len_start;
+        AviAudioEndSample = len_start;
         AviAudioReady = 1;
         UpdateAviAudioBuffer(0, 0);
         KLIBAUDIO_SetAVIVolume(AviSoundBuffer, (int)AviAudioVolume);
@@ -1855,7 +1855,7 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
         count = loops;
         do {
             dst = (char *)KLIBAUDIO_LockAVISoundBuffer(AviSoundBuffer, AviSoundBytesPerFrame * AviSoundBufferSlot, AviSoundBytesPerFrame);
-            if (AviAudioSamplePos < DAT_00668f88 && AviAudioSamplePos >= 0) {
+            if (AviAudioSamplePos < AviAudioEndSample && AviAudioSamplePos >= 0) {
                 if (AviAudioNeedsAcm != 0) {
                     produced = 0;
                     if (AviAcmDstBytes != 0) {
@@ -1864,7 +1864,7 @@ int UpdateAviAudioBuffer(unsigned int param_1, int param_2) {
                             rem = AviSoundBytesPerFrame - AviAcmDstBytes;
                             AviAcmDstBytes = 0;
                             AviAcmDstOffset = 0;
-                            if (AviAudioSamplePos >= DAT_00668f88) {
+                            if (AviAudioSamplePos >= AviAudioEndSample) {
                                 if (AviAudioBitsPerSample == 8) {
                                     memset(dst + (AviSoundBytesPerFrame - rem), 0x80, rem);
                                 } else {
@@ -1952,8 +1952,8 @@ int PlayMovie(char *filename, unsigned int param_2, int param_3) {
     rect[2] = 0x140;
     rect[3] = 0xf0;
     if (param_3 != 0) {
-        DAT_00668fb0 = 0;
-    } else if (DAT_00668fb0 != 0) {
+        MovieSkipRequested = 0;
+    } else if (MovieSkipRequested != 0) {
         return 0;
     }
     if (lpConfig->field_40 == 0) {

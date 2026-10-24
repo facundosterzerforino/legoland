@@ -1473,10 +1473,10 @@ void DrawPopUpMessage(void) {
 
         y = PopUpMessageY;
         x = PopUpMessageX;
-        /* the bar: left end, DAT_00668964 centre pieces, right end */
+        /* the bar: left end, PopUpMessageCentrePieces centre pieces, right end */
         PrintSprite(CBBGLeftSprite, x, y, 0, (int *)&ctx);
         x += 0x7a;
-        for (i = 0; i < DAT_00668964; i++) {
+        for (i = 0; i < PopUpMessageCentrePieces; i++) {
             PrintSprite(CBBGCentreSprite, x, y, 0, (int *)&ctx);
             x += 0x20;
         }
@@ -1490,7 +1490,7 @@ void DrawPopUpMessage(void) {
         CBCloseIcon->y = (short)PopUpMessageY + 3;
         rc.left = PopUpMessageX + 0xc;
         rc.top = PopUpMessageY + 6;
-        rc.right = rc.left + DAT_00668964 * 0x14 + 0x7a;
+        rc.right = rc.left + PopUpMessageCentrePieces * 0x14 + 0x7a;
         rc.bottom = rc.top + 0x1b;
         PrintTextBox(PopUpMessageText, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 1, 5, 0xff0000, 0xffffff);
         /* hit box of the bar: outside it, reset the OK/close icons */

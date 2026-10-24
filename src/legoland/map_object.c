@@ -1793,16 +1793,16 @@ void DrawDeferredSprites(void) {
     int i;
 
     i = 0;
-    PTR_DAT_004b95f0 = DAT_00801420;
-    if (DAT_00667d44 > 0) {
+    DeferredSpriteCursor = DeferredSprites;
+    if (DeferredSpriteCount > 0) {
         do {
-            PrintSprite(PTR_DAT_004b95f0->sprite, PTR_DAT_004b95f0->x, PTR_DAT_004b95f0->y, PTR_DAT_004b95f0->flags, 0);
+            PrintSprite(DeferredSpriteCursor->sprite, DeferredSpriteCursor->x, DeferredSpriteCursor->y, DeferredSpriteCursor->flags, 0);
             i++;
-            PTR_DAT_004b95f0++;
-        } while (i < DAT_00667d44);
+            DeferredSpriteCursor++;
+        } while (i < DeferredSpriteCount);
     }
-    DAT_00667d44 = 0;
-    PTR_DAT_004b95f0 = DAT_00801420;
+    DeferredSpriteCount = 0;
+    DeferredSpriteCursor = DeferredSprites;
 }
 
 // FUNCTION: LEGOLAND 0x00461080
@@ -2228,7 +2228,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
     OverlayILF = LLIDB_LoadData((void *)elem);
     RES_ReadFile(file, &lpConfig->width, 2);
     RES_ReadFile(file, &lpConfig->height, 2);
-    if (RES_ReadFile(file, &DAT_00801b28, 4) != 4) {
+    if (RES_ReadFile(file, &MapObjectElementCount, 4) != 4) {
         RES_CloseFile(file);
         MapDataLoaded = 1;
         LoadInProgress = 0;
@@ -2242,8 +2242,8 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
             col++;
         }
     }
-    MapObjectElements = malloc(DAT_00801b28 * sizeof(*MapObjectElements));
-    for (i = 0; i < DAT_00801b28; i++) {
+    MapObjectElements = malloc(MapObjectElementCount * sizeof(*MapObjectElements));
+    for (i = 0; i < MapObjectElementCount; i++) {
         DrawWatchSprite();
         RES_ReadFile(file, &len, 4);
         RES_ReadFile(file, strbuf, len);
@@ -3083,10 +3083,10 @@ int IsRideWearDue(void) {
         return 0;
     }
     curr = GetGameTimerFrames();
-    diff = curr - DAT_00667d58;
+    diff = curr - LastRideWearFrame;
     quotient = 0x168 / (int)MapStats.ride_wear;
     if (diff > quotient) {
-        DAT_00667d58 = GetGameTimerFrames();
+        LastRideWearFrame = GetGameTimerFrames();
         return 1;
     }
     return 0;
@@ -3095,7 +3095,7 @@ int IsRideWearDue(void) {
 // FUNCTION: LEGOLAND 0x00463560
 void ResetDamageTimer(void) {
     DAT_00667d54 = GetGameTimer();
-    DAT_00667d58 = GetGameTimerFrames();
+    LastRideWearFrame = GetGameTimerFrames();
 }
 
 // FUNCTION: LEGOLAND 0x00463580

@@ -406,7 +406,7 @@ struct Footprint DAT_004b5260;
 struct Footprint DAT_004b5278;
 
 // GLOBAL: LEGOLAND 0x004b5290
-struct Point DAT_004b5290[6];
+struct Point BoatingSchoolQueueOffsets[6];
 
 // GLOBAL: LEGOLAND 0x004b52c0
 struct FXItem PTR_s_Boat_Noise_wav[2];
@@ -900,7 +900,7 @@ int DAT_004b95e8;
 int DAT_004b95ec;
 
 // GLOBAL: LEGOLAND 0x004b95f0
-struct DeferredSprite *PTR_DAT_004b95f0;
+struct DeferredSprite *DeferredSpriteCursor;
 
 // GLOBAL: LEGOLAND 0x004b95f4
 int DAT_004b95f4;
@@ -1331,7 +1331,7 @@ struct Sprite *LogFlumeHup1M1Sprite;
 struct Sprite *LogFlumeHup1M2Sprite;
 
 // GLOBAL: LEGOLAND 0x004c2aa8
-struct Footprint DAT_004c2aa8;
+struct Footprint LogFlumeEntrancePieceFootprint;
 
 // GLOBAL: LEGOLAND 0x004c2aa0
 struct Ride *LogFlumeSpecialCorner2Ride;
@@ -1622,17 +1622,18 @@ struct Sprite *ZSafariSprite;
 // GLOBAL: LEGOLAND 0x0082c670
 struct Point DAT_0082c670;
 
+/* Safari BNV per rider path index (0 run, 1 on, 2 off), read as an array starting here. */
 // GLOBAL: LEGOLAND 0x004cbef8
-void *DAT_004cbef8;
+void *SafariPathRunBNV;
 
 // GLOBAL: LEGOLAND 0x004cbefc
-void *DAT_004cbefc;
+void *SafariPathOnBNV;
 
 // GLOBAL: LEGOLAND 0x004cbf00
-void *DAT_004cbf00;
+void *SafariPathOffBNV;
 
 // GLOBAL: LEGOLAND 0x004cbf04
-void *DAT_004cbf04[1];
+void *SafariOnBNV[1];
 
 // GLOBAL: LEGOLAND 0x004cbf08
 struct Sprite *SafariRiderSprite;
@@ -1981,7 +1982,7 @@ unsigned int DAT_00612160[6];
 char RailSplitPoints[1];
 
 // GLOBAL: LEGOLAND 0x006122a0
-float DAT_006122a0[90][3];
+float CurvePlotWorldPoints[90][3];
 
 // GLOBAL: LEGOLAND 0x006139c8
 unsigned char DAT_006139c8[0xe90] = {0};
@@ -1996,7 +1997,7 @@ struct Cursor DAT_00616180[8];
 struct Cursor JungleCruiseCursors[4];
 
 // GLOBAL: LEGOLAND 0x006159c8
-int DAT_006159c8[90][4];
+int CurvePlotScreenPoints[90][4];
 
 // GLOBAL: LEGOLAND 0x00615f6c
 unsigned int RailSplitCount;
@@ -2744,8 +2745,9 @@ unsigned int SamplesPaused;
 // GLOBAL: LEGOLAND 0x00667c7c
 unsigned int MapLoaded;
 
+/* Set by SavedGameLoadClicked; UpdateApplicationFrame then loads the chosen save game and clears it. */
 // GLOBAL: LEGOLAND 0x00667c80
-unsigned int DAT_00667c80;
+unsigned int SaveGameLoadPending;
 
 // GLOBAL: LEGOLAND 0x00667c88
 struct Sprite *Arrow02Sprite;
@@ -2849,11 +2851,12 @@ unsigned int PathSceneryLastUpdate;
 // GLOBAL: LEGOLAND 0x00667d3c
 int RectListCount;
 
+/* RenderView draws the path tile overlay while demolishing or placing path. */
 // GLOBAL: LEGOLAND 0x00667d40
-unsigned int DAT_00667d40;
+unsigned int ShowPathTileOverlay;
 
 // GLOBAL: LEGOLAND 0x00667d44
-int DAT_00667d44;
+int DeferredSpriteCount;
 
 // GLOBAL: LEGOLAND 0x00667d48
 unsigned int DAT_00667d48;
@@ -2867,8 +2870,9 @@ unsigned int MapDataLoaded;
 // GLOBAL: LEGOLAND 0x00667d54
 unsigned int DAT_00667d54;
 
+/* Game timer frame of the last ride wear tick (IsRideWearDue). */
 // GLOBAL: LEGOLAND 0x00667d58
-int DAT_00667d58;
+int LastRideWearFrame;
 
 // GLOBAL: LEGOLAND 0x00667d60
 int LastWatchDrawTicks;
@@ -3229,7 +3233,7 @@ int DAT_0066895c;
 unsigned int DAT_00668960;
 
 // GLOBAL: LEGOLAND 0x00668964
-int DAT_00668964;
+int PopUpMessageCentrePieces;
 
 // GLOBAL: LEGOLAND 0x00668968
 char PopUpMessageText[0x400];
@@ -3375,7 +3379,7 @@ unsigned int AviSoundBufferSlotCount;
 int AviAcmDstOffset;
 
 // GLOBAL: LEGOLAND 0x00668f58
-unsigned int DAT_00668f58;
+unsigned int AviAudioStartSample;
 
 // GLOBAL: LEGOLAND 0x00668f5c
 void *AviAcmStream;
@@ -3393,7 +3397,7 @@ WAVEFORMATEX AviPcmFormat;
 void *AviAudioStream;
 
 // GLOBAL: LEGOLAND 0x00668f88
-int DAT_00668f88;
+int AviAudioEndSample;
 
 // GLOBAL: LEGOLAND 0x00668f8c
 void *AviAcmDstBase;
@@ -3416,8 +3420,9 @@ unsigned int AviSoundBufferFrames;
 // GLOBAL: LEGOLAND 0x00668fac
 unsigned int PerfCounterState;
 
+/* Set when Cancel interrupts a movie; PlayMovie then skips further movies until a call with param_3 resets it. */
 // GLOBAL: LEGOLAND 0x00668fb0
-unsigned int DAT_00668fb0;
+unsigned int MovieSkipRequested;
 
 // GLOBAL: LEGOLAND 0x00668fb4
 unsigned int AviAcmDstBytes;
@@ -3618,10 +3623,11 @@ float ReciprocalTable[100];
 int ScaledReciprocalTable[100];
 
 // GLOBAL: LEGOLAND 0x00798190
-void *DAT_00798190[256];
+void *TextureNodes[256];
 
+/* Set once InitZBufferImageSprite has run; also the end marker of the 256 texture node slots before it. */
 // GLOBAL: LEGOLAND 0x00798590
-void *DAT_00798590;
+void *ZBufferImageSpriteReady;
 
 // GLOBAL: LEGOLAND 0x00798598
 DDSURFACEDESC SavedSurfaceDesc;
@@ -3768,7 +3774,7 @@ unsigned int DeletePopUpShown;
 unsigned int NewProfilePopUpShown;
 
 // GLOBAL: LEGOLAND 0x007986f0
-unsigned int DAT_007986f0;
+unsigned int TempProfileNameSet;
 
 // GLOBAL: LEGOLAND 0x007986f4
 void *ProfileSavedCancelKeyHandler;
@@ -3851,7 +3857,7 @@ int CertificatePrintResultTimer;
 unsigned int DAT_0079876c;
 
 // GLOBAL: LEGOLAND 0x00798770
-unsigned int DAT_00798770;
+unsigned int CertificateScreenActive;
 
 // GLOBAL: LEGOLAND 0x00798777
 char DAT_00798777;
@@ -4137,8 +4143,9 @@ struct ScreenMode TitleSavedScreenMode; /* FrontEndScreenMode saved */
 // GLOBAL: LEGOLAND 0x007cb30c
 unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
 
+/* The saved-game screen was opened from the exit check box Save button, so Accept saves. */
 // GLOBAL: LEGOLAND 0x007cb310
-unsigned int DAT_007cb310;
+unsigned int SavedGameScreenFromExitDialog;
 
 // GLOBAL: LEGOLAND 0x007cb314
 char SavedSpeechVolume;
@@ -4225,8 +4232,9 @@ struct Sprite *FreePlayCoverSprite;
 // GLOBAL: LEGOLAND 0x007cb3e0
 struct ObjTableEntry ObjInstanceTable[128];
 
+/* Instance counts of ObjInstanceTable, viewed 2 bytes into each entry. */
 // GLOBAL: LEGOLAND 0x007cb3e2
-struct ObjTableEntry DAT_007cb3e2[128];
+struct ObjTableEntry ObjInstanceTableCounts[128];
 
 // GLOBAL: LEGOLAND 0x007cb5e0
 struct ObjTableEntry DAT_007cb5e0;
@@ -4603,8 +4611,9 @@ struct Element *LevelTileMapHandle;
 // GLOBAL: LEGOLAND 0x00801410
 struct Element *OverlayILFHandle;
 
+/* Sprites queued during map drawing and printed afterwards by DrawDeferredSprites. */
 // GLOBAL: LEGOLAND 0x00801420
-struct DeferredSprite DAT_00801420[100];
+struct DeferredSprite DeferredSprites[100];
 
 // GLOBAL: LEGOLAND 0x00801a60
 int Bridge1OverlayOffsetX;
@@ -4634,7 +4643,7 @@ unsigned int DAT_00801b20;
 LEGO_EXPORT unsigned int ObjectPartCount;
 
 // GLOBAL: LEGOLAND 0x00801b28
-int DAT_00801b28;
+int MapObjectElementCount;
 
 // GLOBAL: LEGOLAND 0x00801b40
 int ObjectPartKey[256];
@@ -5597,13 +5606,13 @@ int SplitPointCount;
 float FLOAT_004ab438;
 
 // GLOBAL: LEGOLAND 0x00610804
-int DAT_00610804[64];
+int DepthSpanRecordHistory[64];
 
 // GLOBAL: LEGOLAND 0x00610500
-int DAT_00610500[64];
+int FilledTriangleHistory[64];
 
 // GLOBAL: LEGOLAND 0x00610400
-int DAT_00610400[64];
+int EdgeMeshDrawCycleHistory[64];
 
 // GLOBAL: LEGOLAND 0x00610704
 int DAT_00610704[64];
@@ -5612,13 +5621,13 @@ int DAT_00610704[64];
 int DAT_00610604[64];
 
 // GLOBAL: LEGOLAND 0x006100f8
-int DAT_006100f8[64];
+int LmsDrawCycleHistory[64];
 
 // GLOBAL: LEGOLAND 0x0060fdf8
-int DAT_0060fdf8[64];
+int TrainStepCycleHistory[64];
 
 // GLOBAL: LEGOLAND 0x0060fef8
-int DAT_0060fef8[64];
+int DepthClearCycleHistory[64];
 
 // GLOBAL: LEGOLAND 0x0060fbf8
 int DAT_0060fbf8[64];
@@ -5630,10 +5639,11 @@ int DAT_006101f8[64];
 int DAT_0060fcf8[64];
 
 // GLOBAL: LEGOLAND 0x00610904
-int DAT_00610904[64];
+int TotalCastleCycleHistory[64];
 
+/* Frame index of the castle profiling history rings (RecordCastleFrameCounters, & 0x3f). */
 // GLOBAL: LEGOLAND 0x00610a10
-unsigned int DAT_00610a10;
+unsigned int CastleCounterFrame;
 
 // GLOBAL: LEGOLAND 0x0060f900
 int FilledTriangleCount;
@@ -5641,8 +5651,9 @@ int FilledTriangleCount;
 // GLOBAL: LEGOLAND 0x0060f904
 int CoasterShadeTableCount;
 
+/* Single white shade ramp used for every coaster shade table when their allocation fails. */
 // GLOBAL: LEGOLAND 0x00579878
-char DAT_00579878[0x80];
+char CoasterFallbackShadeRamp[0x80];
 
 // GLOBAL: LEGOLAND 0x0060f8fc
 int EdgeMeshDrawCycles;

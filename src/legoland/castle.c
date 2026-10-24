@@ -5387,9 +5387,9 @@ void BuildCoasterShadeTables(void) {
     CoasterShadeTableCount = n;
     CoasterShadeTableData = MemAlloc(n << 7, 0, 0, 0);
     if (CoasterShadeTableData == NULL) {
-        BuildShadeRamp(0xffffff, DAT_00579878);
+        BuildShadeRamp(0xffffff, CoasterFallbackShadeRamp);
         for (i = 0; i < 1024; i++) {
-            CoasterShadeTables[i] = DAT_00579878;
+            CoasterShadeTables[i] = CoasterFallbackShadeRamp;
         }
         return;
     }
@@ -6914,18 +6914,18 @@ void OnCoasterRingOpened(struct CastleState *owner) {
  * rings and resets them. */
 // FUNCTION: LEGOLAND 0x00424e80
 void RecordCastleFrameCounters(void) {
-    DAT_00610804[DAT_00610a10 & 0x3f] = DepthSpanRecordCount;
-    DAT_00610500[DAT_00610a10 & 0x3f] = FilledTriangleCount;
-    DAT_00610400[DAT_00610a10 & 0x3f] = EdgeMeshDrawCycles;
-    DAT_00610704[DAT_00610a10 & 0x3f] = DAT_00611644;
-    DAT_00610604[DAT_00610a10 & 0x3f] = DAT_00615f68;
-    DAT_006100f8[DAT_00610a10 & 0x3f] = LmsDrawCycles;
-    DAT_0060fdf8[DAT_00610a10 & 0x3f] = TrainStepCycles;
-    DAT_0060fef8[DAT_00610a10 & 0x3f] = DepthClearCycles;
-    DAT_0060fbf8[DAT_00610a10 & 0x3f] = DAT_00615fc4;
-    DAT_006101f8[DAT_00610a10 & 0x3f] = DAT_00615fc8;
-    DAT_0060fcf8[DAT_00610a10 & 0x3f] = DAT_00615fcc;
-    DAT_00610904[DAT_00610a10 & 0x3f] = DAT_00610704[DAT_00610a10 & 0x3f] + DAT_00610400[DAT_00610a10 & 0x3f] + DAT_0060fdf8[DAT_00610a10 & 0x3f] + DAT_00610604[DAT_00610a10 & 0x3f] + DAT_006100f8[DAT_00610a10 & 0x3f] + DAT_0060fef8[DAT_00610a10 & 0x3f];
+    DepthSpanRecordHistory[CastleCounterFrame & 0x3f] = DepthSpanRecordCount;
+    FilledTriangleHistory[CastleCounterFrame & 0x3f] = FilledTriangleCount;
+    EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] = EdgeMeshDrawCycles;
+    DAT_00610704[CastleCounterFrame & 0x3f] = DAT_00611644;
+    DAT_00610604[CastleCounterFrame & 0x3f] = DAT_00615f68;
+    LmsDrawCycleHistory[CastleCounterFrame & 0x3f] = LmsDrawCycles;
+    TrainStepCycleHistory[CastleCounterFrame & 0x3f] = TrainStepCycles;
+    DepthClearCycleHistory[CastleCounterFrame & 0x3f] = DepthClearCycles;
+    DAT_0060fbf8[CastleCounterFrame & 0x3f] = DAT_00615fc4;
+    DAT_006101f8[CastleCounterFrame & 0x3f] = DAT_00615fc8;
+    DAT_0060fcf8[CastleCounterFrame & 0x3f] = DAT_00615fcc;
+    TotalCastleCycleHistory[CastleCounterFrame & 0x3f] = DAT_00610704[CastleCounterFrame & 0x3f] + EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] + TrainStepCycleHistory[CastleCounterFrame & 0x3f] + DAT_00610604[CastleCounterFrame & 0x3f] + LmsDrawCycleHistory[CastleCounterFrame & 0x3f] + DepthClearCycleHistory[CastleCounterFrame & 0x3f];
     DepthSpanRecordCount = 0;
     FilledTriangleCount = 0;
     EdgeMeshDrawCycles = 0;
@@ -9789,25 +9789,25 @@ void PlotCurvePoints(struct SegBlob *curve, float *off) {
     int k = 0;
 
     for (i = 0; i < 30; i++) {
-        curve->vt->pos(curve, t, DAT_006122a0[k]);
-        DAT_006122a0[k][0] += off[0];
-        DAT_006122a0[k][1] += off[1];
-        DAT_006122a0[k][2] += off[2];
+        curve->vt->pos(curve, t, CurvePlotWorldPoints[k]);
+        CurvePlotWorldPoints[k][0] += off[0];
+        CurvePlotWorldPoints[k][1] += off[1];
+        CurvePlotWorldPoints[k][2] += off[2];
         k++;
-        curve->vt->side_a_pos(curve, t, DAT_006122a0[k]);
-        DAT_006122a0[k][0] += off[0];
-        DAT_006122a0[k][1] += off[1];
-        DAT_006122a0[k][2] += off[2];
+        curve->vt->side_a_pos(curve, t, CurvePlotWorldPoints[k]);
+        CurvePlotWorldPoints[k][0] += off[0];
+        CurvePlotWorldPoints[k][1] += off[1];
+        CurvePlotWorldPoints[k][2] += off[2];
         k++;
-        curve->vt->side_b_pos(curve, t, DAT_006122a0[k]);
-        DAT_006122a0[k][0] += off[0];
-        DAT_006122a0[k][1] += off[1];
-        DAT_006122a0[k][2] += off[2];
+        curve->vt->side_b_pos(curve, t, CurvePlotWorldPoints[k]);
+        CurvePlotWorldPoints[k][0] += off[0];
+        CurvePlotWorldPoints[k][1] += off[1];
+        CurvePlotWorldPoints[k][2] += off[2];
         k++;
         t = t + step;
     }
-    ProjectCastlePoints(DAT_006122a0, DAT_006159c8, 0x5a);
-    PlotClippedPoints(&DAT_006159c8[0][0], 0x5a, -1);
+    ProjectCastlePoints(CurvePlotWorldPoints, CurvePlotScreenPoints, 0x5a);
+    PlotClippedPoints(&CurvePlotScreenPoints[0][0], 0x5a, -1);
 }
 
 /* Builds the rail tube along one side of a stretch: at each split point a hexagonal ring (radius 1.8) around the

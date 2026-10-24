@@ -277,7 +277,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     PopUpCloseIcon->flags |= 0x4002;
     PopUpCloseIcon->event_handler = (void *)ExitCheckBoxCloseClicked;
     DAT_007cb318 = 0;
-    DAT_007cb310 = 0;
+    SavedGameScreenFromExitDialog = 0;
     CancelKeyHandler = ExitCheckBoxCloseClicked;
 }
 
@@ -352,7 +352,7 @@ unsigned char ExitCheckBoxSaveClicked(unsigned int param_1, unsigned int param_2
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         ExitCheckBoxShown = 0;
         CloseFontEndCheckBox();
-        DAT_007cb310 = 1;
+        SavedGameScreenFromExitDialog = 1;
         LoadMode = 0;
         DAT_007cb324 = 0;
         FrontEndScreenMode.unk8 = 4;

@@ -2981,9 +2981,9 @@ void GetFlumePieceFootprint(struct FlumeEntry *entry, struct Footprint **out, Ti
     if (cur->link28 == (struct FlumeEntry *)-1) {
         tile->pos.x = cur->parent->tile.pos.x;
         tile->pos.y = cur->parent->tile.pos.y;
-        DAT_004c2aa8 = LogFlumeEntranceRide->footprint;
-        DAT_004c2aa8.x1 = DAT_004c2aa8.x0 + (LogFlumeFootprint.x1 - LogFlumeFootprint.x0) * 2;
-        *out = &DAT_004c2aa8;
+        LogFlumeEntrancePieceFootprint = LogFlumeEntranceRide->footprint;
+        LogFlumeEntrancePieceFootprint.x1 = LogFlumeEntrancePieceFootprint.x0 + (LogFlumeFootprint.x1 - LogFlumeFootprint.x0) * 2;
+        *out = &LogFlumeEntrancePieceFootprint;
         return;
     }
     r = cur->ride;

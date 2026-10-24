@@ -762,7 +762,7 @@ extern struct Footprint DAT_004b5260;
 // 0x004b5278
 extern struct Footprint DAT_004b5278;
 // 0x004b5290
-extern struct Point DAT_004b5290[6];
+extern struct Point BoatingSchoolQueueOffsets[6];
 // 0x004b52c0
 extern struct FXItem PTR_s_Boat_Noise_wav[2];
 // 0x004b53c0
@@ -1028,7 +1028,7 @@ extern LEGO_EXPORT unsigned int BGFullUpdate;
 // 0x004b9228
 extern struct FXItem GameFX[FX_COUNT];
 // 0x004b95f0
-extern struct DeferredSprite *PTR_DAT_004b95f0;
+extern struct DeferredSprite *DeferredSpriteCursor;
 // 0x004b9550
 extern unsigned char DirectionBits[8];
 // 0x004b9558
@@ -1301,7 +1301,7 @@ extern struct Sprite *LogFlumeHup1M1Sprite;
 // 0x004c2a98
 extern struct Sprite *LogFlumeHup1M2Sprite;
 // 0x004c2aa8
-extern struct Footprint DAT_004c2aa8;
+extern struct Footprint LogFlumeEntrancePieceFootprint;
 // 0x004c2aa0
 extern struct Ride *LogFlumeSpecialCorner2Ride;
 // 0x004c2abc
@@ -1497,13 +1497,13 @@ extern struct Sprite *ZSafariSprite;
 // 0x0082c670
 extern struct Point DAT_0082c670;
 // 0x004cbef8
-extern void *DAT_004cbef8;
+extern void *SafariPathRunBNV;
 // 0x004cbefc
-extern void *DAT_004cbefc;
+extern void *SafariPathOnBNV;
 // 0x004cbf00
-extern void *DAT_004cbf00;
+extern void *SafariPathOffBNV;
 // 0x004cbf04
-extern void *DAT_004cbf04[1];
+extern void *SafariOnBNV[1];
 // 0x004cbf08
 extern struct Sprite *SafariRiderSprite;
 // 0x004cbf0c
@@ -1760,7 +1760,7 @@ extern unsigned int DAT_00612160[6];
 // 0x00612178
 extern char RailSplitPoints[1];
 // 0x006122a0
-extern float DAT_006122a0[90][3];
+extern float CurvePlotWorldPoints[90][3];
 // 0x00614858
 extern struct CastleFloatEnt TrackTieVerts[8];
 
@@ -1769,7 +1769,7 @@ extern struct Cursor DAT_00616180[8];
 // 0x00622320
 extern struct Cursor JungleCruiseCursors[4];
 // 0x006159c8
-extern int DAT_006159c8[90][4];
+extern int CurvePlotScreenPoints[90][4];
 // 0x00615f6c
 extern unsigned int RailSplitCount;
 // 0x00615f70
@@ -2251,7 +2251,7 @@ extern unsigned int SamplesPaused;
 // 0x00667c7c
 extern unsigned int MapLoaded;
 // 0x00667c80
-extern unsigned int DAT_00667c80;
+extern unsigned int SaveGameLoadPending;
 // 0x00667c88
 extern struct Sprite *Arrow02Sprite;
 // 0x00667c8c
@@ -2319,9 +2319,9 @@ extern unsigned int PathSceneryLastUpdate;
 // 0x00667d3c
 extern int RectListCount;
 // 0x00667d40
-extern unsigned int DAT_00667d40;
+extern unsigned int ShowPathTileOverlay;
 // 0x00667d44
-extern int DAT_00667d44;
+extern int DeferredSpriteCount;
 // 0x00667d48
 extern unsigned int DAT_00667d48;
 // 0x00667d4c
@@ -2331,7 +2331,7 @@ extern unsigned int MapDataLoaded;
 // 0x00667d54
 extern unsigned int DAT_00667d54;
 // 0x00667d58
-extern int DAT_00667d58;
+extern int LastRideWearFrame;
 // 0x00667d60
 extern int LastWatchDrawTicks;
 // 0x00667d68
@@ -2577,7 +2577,7 @@ extern int DAT_0066895c;
 // 0x00668960
 extern unsigned int DAT_00668960;
 // 0x00668964
-extern int DAT_00668964;
+extern int PopUpMessageCentrePieces;
 // 0x00668968
 extern char PopUpMessageText[0x400];
 // 0x00668d68
@@ -2670,7 +2670,7 @@ extern unsigned int AviSoundBufferSlotCount;
 // 0x00668f54
 extern int AviAcmDstOffset;
 // 0x00668f58
-extern unsigned int DAT_00668f58;
+extern unsigned int AviAudioStartSample;
 // 0x00668f5c
 extern void *AviAcmStream;
 // 0x00668f60
@@ -2682,7 +2682,7 @@ extern WAVEFORMATEX AviPcmFormat;
 // 0x00668f84
 extern void *AviAudioStream;
 // 0x00668f88
-extern int DAT_00668f88;
+extern int AviAudioEndSample;
 // 0x00668f8c
 extern void *AviAcmDstBase;
 // 0x00668f90
@@ -2697,7 +2697,7 @@ extern unsigned int AviSoundBufferFrames;
 // 0x00668fac
 extern unsigned int PerfCounterState;
 // 0x00668fb0
-extern unsigned int DAT_00668fb0;
+extern unsigned int MovieSkipRequested;
 // 0x00668fb4
 extern unsigned int AviAcmDstBytes;
 // 0x00668fb8
@@ -2834,9 +2834,9 @@ extern float ReciprocalTable[100];
 // 0x00798000
 extern int ScaledReciprocalTable[100];
 // 0x00798190
-extern void *DAT_00798190[256];
+extern void *TextureNodes[256];
 // 0x00798590
-extern void *DAT_00798590;
+extern void *ZBufferImageSpriteReady;
 // 0x00798598
 extern DDSURFACEDESC SavedSurfaceDesc;
 // 0x00798608
@@ -2933,7 +2933,7 @@ extern unsigned int DeletePopUpShown;
 // 0x007986e8
 extern unsigned int NewProfilePopUpShown;
 // 0x007986f0
-extern unsigned int DAT_007986f0;
+extern unsigned int TempProfileNameSet;
 // 0x007986f4
 extern void *ProfileSavedCancelKeyHandler;
 // 0x007986f8
@@ -2987,7 +2987,7 @@ extern int CertificatePrintResultTimer;
 // 0x0079876c
 extern unsigned int DAT_0079876c;
 // 0x00798770
-extern unsigned int DAT_00798770;
+extern unsigned int CertificateScreenActive;
 // 0x00798777
 extern char DAT_00798777;
 // 0x00798778
@@ -3194,7 +3194,7 @@ extern struct ScreenMode TitleSavedScreenMode; /* FrontEndScreenMode saved */
 // 0x007cb30c
 extern unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
 // 0x007cb310
-extern unsigned int DAT_007cb310;
+extern unsigned int SavedGameScreenFromExitDialog;
 // 0x007cb314
 extern char SavedSpeechVolume;
 // 0x007cb315
@@ -3252,7 +3252,7 @@ extern struct Sprite *FreePlayCoverSprite;
 // 0x007cb3e0
 extern struct ObjTableEntry ObjInstanceTable[128];
 // 0x007cb3e2
-extern struct ObjTableEntry DAT_007cb3e2[128];
+extern struct ObjTableEntry ObjInstanceTableCounts[128];
 // 0x007cb5e0
 extern struct ObjTableEntry DAT_007cb5e0;
 // 0x007cb600
@@ -3499,7 +3499,7 @@ extern struct Element *LevelTileMapHandle;
 // 0x00801410
 extern struct Element *OverlayILFHandle;
 // 0x00801420
-extern struct DeferredSprite DAT_00801420[100];
+extern struct DeferredSprite DeferredSprites[100];
 // 0x00801a60
 extern int Bridge1OverlayOffsetX;
 // 0x00801a64
@@ -3521,7 +3521,7 @@ extern LEGO_EXPORT unsigned int ObjectPartCount;
 // 0x00801b40
 extern int ObjectPartKey[256];
 // 0x00801b28
-extern int DAT_00801b28;
+extern int MapObjectElementCount;
 // 0x00801f40
 extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 // 0x00805f40
@@ -4199,13 +4199,13 @@ extern int SplitPointCount;
 extern float FLOAT_004ab438;
 
 // 0x00610804
-extern int DAT_00610804[64];
+extern int DepthSpanRecordHistory[64];
 
 // 0x00610500
-extern int DAT_00610500[64];
+extern int FilledTriangleHistory[64];
 
 // 0x00610400
-extern int DAT_00610400[64];
+extern int EdgeMeshDrawCycleHistory[64];
 
 // 0x00610704
 extern int DAT_00610704[64];
@@ -4214,13 +4214,13 @@ extern int DAT_00610704[64];
 extern int DAT_00610604[64];
 
 // 0x006100f8
-extern int DAT_006100f8[64];
+extern int LmsDrawCycleHistory[64];
 
 // 0x0060fdf8
-extern int DAT_0060fdf8[64];
+extern int TrainStepCycleHistory[64];
 
 // 0x0060fef8
-extern int DAT_0060fef8[64];
+extern int DepthClearCycleHistory[64];
 
 // 0x0060fbf8
 extern int DAT_0060fbf8[64];
@@ -4232,10 +4232,10 @@ extern int DAT_006101f8[64];
 extern int DAT_0060fcf8[64];
 
 // 0x00610904
-extern int DAT_00610904[64];
+extern int TotalCastleCycleHistory[64];
 
 // 0x00610a10
-extern unsigned int DAT_00610a10;
+extern unsigned int CastleCounterFrame;
 
 // 0x0060f900
 extern int FilledTriangleCount;
@@ -4244,7 +4244,7 @@ extern int FilledTriangleCount;
 extern int CoasterShadeTableCount;
 
 // 0x00579878
-extern char DAT_00579878[0x80];
+extern char CoasterFallbackShadeRamp[0x80];
 
 // 0x0060f8fc
 extern int EdgeMeshDrawCycles;

@@ -373,10 +373,10 @@ LEGO_EXPORT void RenderView(void) {
     DrawViewMapTiles();
     PrintBackground(DAT_00667cd0, DAT_00667cd4);
     if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == PathControlObject)) {
-        DAT_00667d40 = 1;
+        ShowPathTileOverlay = 1;
         DAT_00667d48 = (GetTickCount() & 0x100) ? 0xff : 0;
     } else {
-        DAT_00667d40 = 0;
+        ShowPathTileOverlay = 0;
     }
     SetClipping(&rect);
 
@@ -676,7 +676,7 @@ LEGO_EXPORT void RenderView(void) {
             DoBuildEffects(tile->field_0->ride, uid);
         }
     }
-    if (DAT_00667d40 != 0) {
+    if (ShowPathTileOverlay != 0) {
         PushRenderingStatusAndLockVideoSurface();
         DrawViewPathTiles();
         DrawDeferredSprites();

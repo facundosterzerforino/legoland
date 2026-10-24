@@ -104,7 +104,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
         AcceptIcon->flags |= 0x2000;
         AcceptIcon->flags |= 0x4002;
         AcceptIcon->flags |= 0x400;
-        if (DAT_007cb310) {
+        if (SavedGameScreenFromExitDialog) {
             AcceptIcon->event_handler = (void *)SaveGameScreenSaveHandler;
             AcceptIcon->string_id = 0x29;
             AcceptIcon->string = GetString(0x29);
@@ -207,7 +207,7 @@ unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags) {
             CurrentProfile.music_volume = TempProfile.music_volume;
             CurrentProfile.fx_volume = TempProfile.fx_volume;
             DAT_00667c64 = 1;
-            DAT_00667c80 = 1;
+            SaveGameLoadPending = 1;
         }
         RemoveIconGroup(7);
         KillSaveScreenSprites();
@@ -426,7 +426,7 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
         rc.right = rc.left + 0xae;
         rc.bottom = rc.top + 0x13;
         PrintSprite(RegCornerMaskSprite, selected->x, selected->y, 0, 0);
-        if (DAT_007986f0 != 0) {
+        if (TempProfileNameSet != 0) {
             NewPrintCent(GetString(0xc44), 2, rc, 1);
         } else {
             NewPrintCent(GetString(0x8c), 2, rc, 1);
@@ -542,14 +542,14 @@ LEGO_EXPORT void InitNewSaveGamePOPUP(struct IconNode *icon) {
     PopUpCloseIcon->flags |= 0x4002;
     PopUpCloseIcon->event_handler = (void *)NewSaveGameCloseClicked;
     CancelKeyHandler = PopUpCloseIcon->event_handler;
-    DAT_007986f0 = 0;
+    TempProfileNameSet = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0048e3d0
 void SetTempProfileName(const char *name) {
     strcpy(TempProfile.name, name);
     TempProfile.name_len = (unsigned char)strlen(name);
-    DAT_007986f0 = 1;
+    TempProfileNameSet = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0048e420

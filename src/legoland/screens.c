@@ -377,12 +377,12 @@ int UpdateApplicationFrame(void) {
         CastlePlacedFlag = 0;
         SamplesPaused = 1;
         PauseAllSamples();
-        if (DAT_00667c80 != 0) {
+        if (SaveGameLoadPending != 0) {
             DeletePlayableSamples(0);
             sprintf(path, "%s\\%dsave%d.sav", "profiles", CurrentProfile.profile_slot, *(unsigned int *)&CurrentProfile.save_slot & 0xff);
             LoadWatchSprite(0, 0);
             LoadGame(path);
-            DAT_00667c80 = 0;
+            SaveGameLoadPending = 0;
             UnloadWatchSprite();
             InitGameInterface(0);
             SetDefaultMouseHandlers();

@@ -267,7 +267,7 @@ unsigned char CertificateGoBackHandler(unsigned int param_1, unsigned int param_
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillCertificateScreen();
         FrontEndScreenMode.unk8 = 1;
-        DAT_00798770 = 0;
+        CertificateScreenActive = 0;
     }
     return 1;
 }
@@ -290,7 +290,7 @@ struct Sprite *InitCertificateScreen(void) {
 
     // STRING: LEGOLAND 0x004bf654
     SPRITE_TitleScreenBk = LoadSprite("CertificateScreen.lls", 0);
-    DAT_00798770 = 1;
+    CertificateScreenActive = 1;
 
     // STRING: LEGOLAND 0x004bf638
     icon = LoadSpriteIcon("GoBack_On_Certificate.lls", 4, 12, 14, 7);
@@ -318,7 +318,7 @@ struct Sprite *InitCertificateScreen(void) {
 void RenderCertificateScreen(void) {
     RECT rc;
     int hit[3] = {1};
-    if (DAT_00798770 != 0) {
+    if (CertificateScreenActive != 0) {
         rc.top = 0x102;
         rc.bottom = 0x130;
         rc.left = 0;

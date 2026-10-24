@@ -73,7 +73,7 @@ int AddObjInstance(const struct Point *pos) {
     for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
         if (entry->key == 0xffff) {
             ObjInstanceTable[index].key = (pos->x << 8) + pos->y;
-            DAT_007cb3e2[index].key = 0;
+            ObjInstanceTableCounts[index].key = 0;
             return 1;
         }
         index++;
@@ -109,7 +109,7 @@ int IncObjInstanceCount(const struct Point *pos) {
     target = (pos->x << 8) + pos->y;
     for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
-            DAT_007cb3e2[index].key++;
+            ObjInstanceTableCounts[index].key++;
             return 1;
         }
         index++;
@@ -127,7 +127,7 @@ unsigned short GetObjInstanceCount(const struct Point *pos) {
     target = (pos->x << 8) + pos->y;
     for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
-            return DAT_007cb3e2[index].key;
+            return ObjInstanceTableCounts[index].key;
         }
         index++;
     }

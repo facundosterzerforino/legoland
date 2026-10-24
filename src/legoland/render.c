@@ -3089,13 +3089,13 @@ void LoadTextureNode(struct Image *image, unsigned int index) {
     struct TextureNode *ptr = (struct TextureNode *)malloc(sizeof(struct TextureNode));
     if (ptr != 0) {
         BuildTextureNodeFromImage(image, ptr);
-        DAT_00798190[index] = ptr;
+        TextureNodes[index] = ptr;
     }
 }
 
 // FUNCTION: LEGOLAND 0x004886a0
 void FreeTextureNodes(void) {
-    struct TextureNode **slot = (struct TextureNode **)&DAT_00798190;
+    struct TextureNode **slot = (struct TextureNode **)&TextureNodes;
     do {
         if (*slot != 0) {
             free((*slot)->data_8);
@@ -3104,12 +3104,12 @@ void FreeTextureNodes(void) {
             *slot = 0;
         }
         slot++;
-    } while ((INT_PTR)slot < (INT_PTR)&DAT_00798590);
+    } while ((INT_PTR)slot < (INT_PTR)&ZBufferImageSpriteReady);
 }
 
 // FUNCTION: LEGOLAND 0x004886e0
 void FUN_004886e0(unsigned int index) {
-    FUN_00485f20(DAT_00798190[index]);
+    FUN_00485f20(TextureNodes[index]);
 }
 
 // FUNCTION: LEGOLAND 0x00488700
@@ -3166,7 +3166,7 @@ __declspec(naked) unsigned short FUN_00488730(unsigned int p1, unsigned int p2, 
 
 // FUNCTION: LEGOLAND 0x004887a0
 void InitZBufferImageSprite(void) {
-    DAT_00798590 = (void *)1;
+    ZBufferImageSpriteReady = (void *)1;
     ZBufferSourceImage = CreateSourceImage(DAT_004d8bb0, 0);
     ZBufferSourceImage->data = ZBufferImagePixels;
     ZBufferSourceImage->width = 0x280;
@@ -3194,7 +3194,7 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     unsigned int transp;
     int yy;
 
-    if (!DAT_00798590) {
+    if (!ZBufferImageSpriteReady) {
         InitZBufferImageSprite();
     }
     ZBufferSavedSurfaceDesc = CurrentSurfaceDesc;
