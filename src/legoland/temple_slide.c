@@ -271,34 +271,28 @@ void TempleSlideUpdate(Element *obj) {
     Ride *ride;
     Bloke *bloke;
     TileId *tile;
-    unsigned int x;
-    unsigned int y;
+    int x;
+    int y;
     unsigned char dir;
-    register int cy;
-    int cx;
-    register int f;
+    int f;
     short sx;
     short sy;
     int off[4];
     Point coords;
-    int dy;
-    int dx;
+    Point d;
     RideNode *next;
     int th;
     int tw;
     RideNode *node;
+    int t;
 
-    int target_dir;
-    int ptmp227;
-    node;
     ride = obj->ride;
     node = ride->riders;
     while (node != NULL) {
         next = node->next;
         tile = &node->tile;
         bloke = node->rider;
-        ptmp227 = ride->x;
-        x = ptmp227 + tile->pos.x;
+        x = ride->x + tile->pos.x;
         y = tile->pos.y + ride->y;
         if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
@@ -325,8 +319,7 @@ void TempleSlideUpdate(Element *obj) {
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->low_level_action = 7;
                     bloke->target_dir = dir + 0x10;
-                    target_dir = bloke->target_dir;
-                    NewDirForAction(bloke, (target_dir >> 5) + 3);
+                    NewDirForAction(bloke, (bloke->target_dir >> 5) + 3);
                     bloke->param_action = 3;
                 }
                 break;
@@ -345,20 +338,18 @@ void TempleSlideUpdate(Element *obj) {
                     int py = bloke->pos.y;
                     int px = bloke->pos.x;
                     GetTileDimensions(&tw, &th);
-                    cy = (px + py) * th;
-                    tw = (px - py) * tw;
-                    cy >>= 9;
-                    tw >>= 9;
+                    y = (px + py) * th >> 9;
+                    t = (px - py) * tw >> 9;
                 }
                 sx = Get_XScroll();
-                cx = (lpConfig->view_x - sx) + tw;
+                x = (lpConfig->view_x - sx) + t;
                 sy = Get_YScroll();
-                cy = cy + (lpConfig->view_y - sy);
-                cx = cx - TempleSlideDrawOffset.x / 2 - coords.x;
+                y += lpConfig->view_y - sy;
+                x = x - TempleSlideDrawOffset.x / 2 - coords.x;
                 bloke->flags |= 0x80;
-                cy = cy - TempleSlideDrawOffset.y / 2 - coords.y;
-                off[0] = cx * 2;
-                off[1] = cy * 2;
+                y = y - TempleSlideDrawOffset.y / 2 - coords.y;
+                off[0] = x * 2;
+                off[1] = y * 2;
                 bloke->person->sprite = ZTempSlideSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617664.875f, -1617913.0f);
@@ -401,26 +392,26 @@ void TempleSlideUpdate(Element *obj) {
                 bloke->speed = (unsigned char)bloke->field_44;
                 switch (bloke->field_36) {
                 case 0:
-                    dx = -0x280;
-                    dy = 0x700;
+                    d.x = -0x280;
+                    d.y = 0x700;
                     break;
                 case 1:
-                    dx = -0x180;
-                    dy = 0x180;
+                    d.x = -0x180;
+                    d.y = 0x180;
                     break;
                 case 2:
-                    dx = -0x180;
-                    dy = 0;
+                    d.x = -0x180;
+                    d.y = 0;
                     break;
                 case 3:
-                    dx = -0x280;
-                    dy = -0x500;
+                    d.x = -0x280;
+                    d.y = -0x500;
                     break;
                 }
                 x = ride->field_24 + tile->pos.x;
                 y = ride->field_25 + tile->pos.y;
-                bloke->pos.x = dx + (x << 8);
-                bloke->pos.y = dy + (y << 8);
+                bloke->pos.x = d.x + (x << 8);
+                bloke->pos.y = d.y + (y << 8);
                 bloke->dest.x = (x << 8) + 0x80;
                 bloke->dest.y = (y << 8) + 0x80;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
