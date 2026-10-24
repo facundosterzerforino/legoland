@@ -105,6 +105,7 @@ LEGO_EXPORT int SaveGame(char *filename) {
     int x;
     int n_elems;
     int tab_count;
+    int len;
     struct MapElement tile;
     struct FXSpriteList *tab[256];
 
@@ -150,7 +151,6 @@ LEGO_EXPORT int SaveGame(char *filename) {
     {
         struct Element *elem;
         int flags;
-        int len;
         unsigned int *fl;
         n_elems = LLIDB_GetCount();
         SavedElementCount = 0;
