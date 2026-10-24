@@ -26,3 +26,10 @@
 ## Ideas not tried yet
 
 - 
+
+## 2026-10-24 Opus 5.5 (analysis)
+Jump table check (raw tables from both exes): ours has 21 distinct case targets, the original 24. Cases 14, 28 and 29
+have bodies identical to 11, 21 and 16 in our C, so MSVC6 merges them; the original keeps each as its own block and
+only cross-jumps their common tails (checked with capstone: the constants are the same, so this is not a behaviour
+bug). The original's copies differ in which dest field is reloaded (case 14 passes dest.y from a register, case 28
+reloads both), so their source differs slightly. Rewrites of case 29 / case 14 (`x <<= 8` locals, field order): 74.8-77.16.

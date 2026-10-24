@@ -19,3 +19,7 @@
 ## Ideas not tried yet
 
 - Compute `loops = param_1 - param_2` through a temp so the allocator puts the difference in `esi`.
+
+## 2026-10-24 Opus 5.5 (no change: 97.69)
+The original pushes esi/edi only after the AviAudioReady/AviAudioStream test (shrink-wrapped early return). Removing
+the `do { } while (0)` (early return kept, or the body nested in `if (ready && stream) { ... } return 0;`): 96.26.

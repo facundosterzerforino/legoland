@@ -22,3 +22,8 @@
 
 - Reorder the branches (`s18 == 4/5` block before the `s18 == 2` block) to change which side gets the shared tail.
 - Write the layer-3 print once per branch with the `LLSSetFrame` before it moved, so the tail matches on both sides.
+
+## 2026-10-24 Opus 5.5 (no change: 97.36)
+The only structural diff: the s18 == 2 and s18 == 4/5 branches end with the same layer-3 PrintSprite. The original
+keeps the copy in the s18 == 2 branch and the 4/5 branch jumps back to it; ours keeps the later copy. A `goto` to a
+label on the first copy: 71.57. The chain as a switch (either 4/5 order): 43.22.

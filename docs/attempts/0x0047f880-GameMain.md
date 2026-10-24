@@ -36,3 +36,9 @@ The function is the plain C that was the `#else` branch again: 99.62%. Matching 
 Pointer-compare loop forms aimed at the `jb` (`&ResourceVolumes[i] < &ResourceVolumes[3]`, a `vol` pointer loop
 with `i` alongside, `i = vol - ResourceVolumes`, `&ResourceFileNames[i] < &ResourceFileNames[3]`) restructure
 the loop: harness 75-79.
+
+## 2026-10-24 Opus 5.5 (no change: 99.62)
+MSVC6 emits `jl` for `i < 3` here even with `unsigned int i` (it knows i in [0,3)), and an unsigned i turns the error
+guard (`cmp esi, edi; jle`) into `jbe` (99.24). Loop forms tried with int and unsigned: while, for without increment,
+`++i`, `i += 1`, `i <= 2`, a separate unsigned counter copied into i, `(unsigned)i < 3`, error loop with a cast or a
+reused index: all keep `jl`.
