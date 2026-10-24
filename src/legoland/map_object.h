@@ -89,4 +89,4 @@ LEGO_EXPORT void ProcessDamage(void);
 void DrawViewMapTiles(void);
 void DrawDeferredSprites(void);
 void DrawViewPathTiles(void);
-int FUN_0045ead0(struct Ride *obj);
+int IsObjectTypeNot0Or2(struct Ride *obj);

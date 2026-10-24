@@ -372,10 +372,11 @@ void ClearDirPoints(struct DirPoints *pts) {
     pts->mask = 0;
 }
 
+/* Empty in the original (does nothing). */
 /* Empty in the release build; called with both free-cell sets after every attach and removal (probably a stripped
  * debug display). */
 // FUNCTION: LEGOLAND 0x0041d1c0
-void FUN_0041d1c0(void *unused) {
+void Empty_0041d1c0(void *unused) {
 }
 
 /* Fills pts with the free cells around the given door of the piece. */
@@ -518,8 +519,8 @@ void AttachPathSegToCoaster(struct PathSeg *obj, struct PiecePlacement *ent) {
         OnCoasterRingClosed(owner);
     } else {
         PieceFillOpenEnd((struct PathSeg *)obj);
-        FUN_0041d1c0(&owner->next_spots);
-        FUN_0041d1c0(&owner->prev_spots);
+        Empty_0041d1c0(&owner->next_spots);
+        Empty_0041d1c0(&owner->prev_spots);
     }
     AddPathSegMapObject(obj);
     r = obj->ride->footprint.v;
@@ -676,8 +677,8 @@ void RemoveCoasterPiece(void *arg) {
             ResetCoasterHeightsForward((struct PathSeg *)owner->head);
             PieceFillOpenEnd((struct PathSeg *)owner->head);
         }
-        FUN_0041d1c0(&CastleCoaster.next_spots.mask);
-        FUN_0041d1c0(&CastleCoaster.prev_spots.mask);
+        Empty_0041d1c0(&CastleCoaster.next_spots.mask);
+        Empty_0041d1c0(&CastleCoaster.prev_spots.mask);
         ((struct PieceClass *)obj->cls)->on_remove(obj);
         MemFree(obj);
     }
@@ -1824,9 +1825,10 @@ unsigned int IsAreaListClear(short *pos, struct AreaNode *b) {
     return 1;
 }
 
+/* Does nothing but return 1. */
 /* Returns 1. */
 // FUNCTION: LEGOLAND 0x0041ef00
-int FUN_0041ef00(void) {
+int ReturnOne_0041ef00(void) {
     return 1;
 }
 
@@ -6039,9 +6041,10 @@ struct SegBlob *CastleGetCurve(void) {
     return CastleCurves;
 }
 
+/* Empty in the original (does nothing). */
 /* Empty. */
 // FUNCTION: LEGOLAND 0x004239a0
-void FUN_004239a0(void) {
+void Empty_004239a0(void) {
 }
 
 /* Map cell of the castle's next door (where the first track piece leaves it), relative to a. */
@@ -6340,7 +6343,7 @@ void *GetPlacedCastleCoaster(void) {
 // FUNCTION: LEGOLAND 0x00424150
 void CastleObjLoad(struct Element *param_1) {
     CastleCoasterPlaced = 0;
-    FUN_00477400();
+    ReturnOne_00477400();
     CastleObjElement = param_1;
     CastleCoasterRide = param_1->ride;
     if (CastleCoasterRide->layer != NULL) {
@@ -6354,7 +6357,7 @@ void CastleObjLoad(struct Element *param_1) {
     InitCoasterShading();
     InitCurveFunctionTable();
     InitTrackDrawing();
-    FUN_0041ef00();
+    ReturnOne_0041ef00();
     InitCurveVecMath();
     InitCastleCoaster();
     InitTrainVecMath();
@@ -6436,8 +6439,8 @@ void PlaceCastleCoaster(struct Element *obj, short *pt) {
     CastleCoaster.prev_spots.mask = 0;
     FindPathSegDoorAPoints((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.next_spots);
     FindPathSegDoorBPoints((struct PathSeg *)&CastleCoaster.piece, &CastleCoaster.prev_spots);
-    FUN_0041d1c0(&CastleCoaster.next_spots.mask);
-    FUN_0041d1c0(&CastleCoaster.prev_spots.mask);
+    Empty_0041d1c0(&CastleCoaster.next_spots.mask);
+    Empty_0041d1c0(&CastleCoaster.prev_spots.mask);
     PieceFillOpenEnd((struct PathSeg *)&CastleCoaster.piece.flags);
     PieceSetHeights((struct PathSeg *)&CastleCoaster.piece, 0);
     CreateCastleTrain((struct CastleState *)&CastleCoaster);
@@ -6494,7 +6497,7 @@ void RemoveCastleCoaster(struct Element *param_1, TileId param_2, struct Cursor 
         RemoveMapObjectIfEnabled(handle, tile, &cursor);
         RemoveCastleCoasterMapObjects(&CastleCoaster.piece.pos);
         CastleCoasterPlaced = 0;
-        FUN_004775f0();
+        Empty_004775f0();
         FreeMoviePool();
         SetCoasterPieceCount(0);
     }

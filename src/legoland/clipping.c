@@ -89,8 +89,9 @@ void UnlockAllFreePlayObjects(void) {
     }
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x0048a780
-void FUN_0048a780(void *arg) {
+void Empty_0048a780(void *arg) {
 }
 
 /* Runs after the free play lists are built: sends a click to every object icon whose entry is still selected

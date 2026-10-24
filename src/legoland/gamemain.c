@@ -673,7 +673,7 @@ void ResetLevelScriptState(void) {
     ClearBriefingAndHintsFileNames();
     SetDefaultMoodDeltas();
     SetDefaultClassLimits();
-    FUN_00476000();
+    ClearInterfaceSlotValues();
     ClearButtonFlashStates();
     SetPendingMovie(DAT_004d8bb0);
     ResetDamageTimer();

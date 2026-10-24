@@ -719,8 +719,9 @@ unsigned int ScriptEventTotalCoverage(struct ObjectiveEvent *arg) {
     return 1;
 }
 
+/* Does nothing but return 1. */
 // FUNCTION: LEGOLAND 0x0046ae20
-unsigned int FUN_0046ae20(void) {
+unsigned int ReturnOne_0046ae20(void) {
     return 1;
 }
 
@@ -933,8 +934,9 @@ unsigned int ScriptEventSelectMode(struct ObjectiveEvent *arg) {
     return 0;
 }
 
+/* Only forwards to ProcessUnimplementedObjective. */
 // FUNCTION: LEGOLAND 0x0046b1e0
-int FUN_0046b1e0(struct ObjectiveEvent *param_1) {
+int CallProcessUnimplementedObjective(struct ObjectiveEvent *param_1) {
     return ProcessUnimplementedObjective((struct ObjectiveEvent *)param_1);
 }
 
@@ -1055,7 +1057,7 @@ EventHandler ScriptEventHandlers[70] = {
     (EventHandler)ScriptEventShopCoverage,
     (EventHandler)ScriptEventFoodCoverage,
     (EventHandler)ScriptEventTotalCoverage,
-    (EventHandler)FUN_0046ae20,
+    (EventHandler)ReturnOne_0046ae20,
     (EventHandler)ScriptEventStudArea,
     (EventHandler)ScriptEventSave,
     (EventHandler)ScriptEventHappiness,
@@ -1069,7 +1071,7 @@ EventHandler ScriptEventHandlers[70] = {
     (EventHandler)ScriptEventSelectTheme,
     (EventHandler)ScriptEventSelectTab,
     (EventHandler)ScriptEventSelectMode,
-    (EventHandler)FUN_0046b1e0,
+    (EventHandler)CallProcessUnimplementedObjective,
     (EventHandler)ScriptEventForever,
 };
 

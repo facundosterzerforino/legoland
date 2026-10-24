@@ -15,4 +15,4 @@ struct Ride;
 LEGO_EXPORT void TempleSlide_GetInterfaces(struct Element *head, struct Ride *iface);
 
 struct TempleRide;
-void FUN_00417130(struct TempleRide *arg);
+void ClearTempleRideVar4AndFlag1(struct TempleRide *arg);

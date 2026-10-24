@@ -529,16 +529,18 @@ void GetObjectEntrancePos(struct Ride *obj, struct Point *out) {
     out->y = (obj->footprint.v[3] + obj->footprint.v[1]) / 2;
 }
 
+/* 1 when the class exists and its flag 0x200000 is clear, else 0. */
 // FUNCTION: LEGOLAND 0x0045eab0
-unsigned int FUN_0045eab0(struct Ride *obj) {
+unsigned int IsClassFlag200000Clear(struct Ride *obj) {
     if (obj != 0) {
         return (~obj->flags >> 21) & 1;
     }
     return 0;
 }
 
+/* 1 when the class exists and its type is neither 0 nor 2. */
 // FUNCTION: LEGOLAND 0x0045ead0
-int FUN_0045ead0(struct Ride *obj) {
+int IsObjectTypeNot0Or2(struct Ride *obj) {
     if (obj == 0 || obj->type == 0 || obj->type == 2) {
         return 0;
     }
@@ -547,7 +549,7 @@ int FUN_0045ead0(struct Ride *obj) {
 
 // FUNCTION: LEGOLAND 0x0045eaf0
 int FUN_0045eaf0(struct Ride *obj) {
-    if (FUN_0045ead0((struct Ride *)obj) != 0) {
+    if (IsObjectTypeNot0Or2((struct Ride *)obj) != 0) {
         return 1;
     }
     if (obj != 0 && obj->parent_element != 0 && (obj->parent_element->flags & 0x10) != 0 &&
@@ -585,7 +587,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
             return 0;
         }
         UseBricks(GetObjCost(obj));
-        if (FUN_0045eab0((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
+        if (IsClassFlag200000Clear((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
             StampObjectFootprintOnMap(editObj, (struct Point *)coords, 0x20);
         } else {
             SetObjRectFlags(editObj, (struct Point *)coords, 0x20);
@@ -604,7 +606,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         }
     } else {
         UseBricks(GetObjCost(obj));
-        if (FUN_0045eab0((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
+        if (IsClassFlag200000Clear((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
             StampObjectFootprintOnMap(editObj, (struct Point *)coords, 0);
         }
         GetObjectEntrancePos(obj, &out);
@@ -1049,7 +1051,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, void *param) {
     int y1;
     int x1;
     first = cursor;
-    if (FUN_0045ead0((struct Ride *)param) != 0 && (cursor->field_1828 & 0x4000) == 0) {
+    if (IsObjectTypeNot0Or2((struct Ride *)param) != 0 && (cursor->field_1828 & 0x4000) == 0) {
         GetOrAddPathCursor(cursor);
     }
     ResetCursorBuildable(cursor);
@@ -1105,7 +1107,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, void *param) {
                     }
                     if (obj != 0 && (obj->flags & 0x200000) == 0) {
                         SetCursorBlocked(cursor, 10);
-                    } else if (FUN_0045eab0((struct Ride *)param) == 0) {
+                    } else if (IsClassFlag200000Clear((struct Ride *)param) == 0) {
                         if (obj != 0) {
                             SetCursorBlocked(cursor, 6);
                         }

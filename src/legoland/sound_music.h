@@ -34,7 +34,7 @@ LEGO_EXPORT void Load_FXList(struct FXItem *list, int count);
 LEGO_EXPORT void Kill_FXList(struct FXItem *list, int count);
 void UpdateSound(void);
 void FadeOutSpeechAndEffects(int param_1, int param_2);
-void FUN_00496d10(struct Sample *sample);
+void SetSampleFlag20(struct Sample *sample);
 LEGO_EXPORT void AddSFX_Callback(struct Sample *entry, unsigned int delay, unsigned int (*callback)(struct Sample *self));
 LEGO_EXPORT int CountSamplesFromSource(struct SampleSource *source);
 LEGO_EXPORT LPDIRECTSOUNDBUFFER KLIBAUDIO_CreateAVISoundBuffer(LPWAVEFORMATEX format, unsigned int bytes);

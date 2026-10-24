@@ -881,8 +881,9 @@ LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) {
     }
 }
 
+/* Sets sample flag 0x20. */
 // FUNCTION: LEGOLAND 0x00496d10
-void FUN_00496d10(struct Sample *sample) {
+void SetSampleFlag20(struct Sample *sample) {
     sample->flags |= 0x20;
 }
 

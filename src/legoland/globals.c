@@ -1010,7 +1010,7 @@ unsigned int AdventurersThemeDeselected;
 struct TrackElemPair BuildElementNameMap[29];
 
 // GLOBAL: LEGOLAND 0x004bb18c
-unsigned int DAT_004bb18c[4];
+unsigned int InterfaceSlotValues[4];
 
 // GLOBAL: LEGOLAND 0x004bb4dc
 float AviAudioVolume;

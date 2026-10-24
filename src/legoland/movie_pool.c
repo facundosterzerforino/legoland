@@ -18,8 +18,9 @@ struct MoviePool {
     unsigned char pad_c[0xc - 0xc];
 };
 
+/* Does nothing but return 1. */
 // FUNCTION: LEGOLAND 0x00477400
-int FUN_00477400(void) {
+int ReturnOne_00477400(void) {
     return 1;
 }
 
@@ -80,8 +81,9 @@ void MemFree(void *param) {
     free(param);
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x004775f0
-void FUN_004775f0(void) {
+void Empty_004775f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00477600

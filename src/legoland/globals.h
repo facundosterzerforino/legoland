@@ -1115,7 +1115,7 @@ extern unsigned int AdventurersThemeDeselected;
 // 0x004bb0a4
 extern struct TrackElemPair BuildElementNameMap[29];
 // 0x004bb18c
-extern unsigned int DAT_004bb18c[4];
+extern unsigned int InterfaceSlotValues[4];
 // 0x004bb4dc
 extern float AviAudioVolume;
 // 0x004bb4e0

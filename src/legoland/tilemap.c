@@ -308,8 +308,9 @@ void DrawMarkedTileHighlights(void) {
     }
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x0045b170
-void FUN_0045b170(struct Point *pt) {
+void Empty_0045b170(struct Point *pt) {
 }
 
 /* RideSpriteInfo followed by one more zeroed word (RenderView local copy). */
@@ -438,7 +439,7 @@ LEGO_EXPORT void RenderView(void) {
         for (x = rect.left - w * 2 - rx; x < xlim; x += w) {
             tile = GetTile(pt.x, pt.y);
             if (tile != NULL) {
-                FUN_0045b170(&pt);
+                Empty_0045b170(&pt);
                 if (tile->flags & 0xa0) {
                     anchor = GetTile(tile->field_4, tile->field_5);
                     if ((anchor->flags & 0x400) == 0) {
@@ -458,7 +459,7 @@ LEGO_EXPORT void RenderView(void) {
                 tile = GetTile(pt.x, pt.y);
             }
             if (tile != NULL) {
-                FUN_0045b170(&pt);
+                Empty_0045b170(&pt);
                 if (tile->flags & 0xa0) {
                     anchor = GetTile(tile->field_4, tile->field_5);
                     if ((anchor->flags & 0x400) == 0) {

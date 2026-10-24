@@ -41,7 +41,7 @@ LEGO_EXPORT void ResetTempProfile(void) {
     memset(TempProfile.field_43, 0, 200);
     *(int *)&TempProfile.field_10b = 0;
     TempProfile.field_10b = 1;
-    FUN_0048a780(TempProfile.field_43);
+    Empty_0048a780(TempProfile.field_43);
 }
 
 // FUNCTION: LEGOLAND 0x00491360

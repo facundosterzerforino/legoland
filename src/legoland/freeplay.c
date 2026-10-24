@@ -50,7 +50,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     unsigned int i;
 
     DAT_00668e38 = 0;
-    FUN_0048b6c0();
+    Empty_0048b6c0();
     FreePlayCostTotal = 0;
     FreePlaySelectedCount = 0;
 
@@ -583,8 +583,9 @@ LEGO_EXPORT void CleanUpFreePlay(void) {
     FreeFreePlayPanel(0x1f4);
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x0048b6c0
-void FUN_0048b6c0(void) {
+void Empty_0048b6c0(void) {
     return;
 }
 

@@ -577,8 +577,9 @@ void TurnTowardsTargetDir(Bloke *bloke) {
     }
 }
 
+/* Sets bloke->frame to 2. */
 // FUNCTION: LEGOLAND 0x00483890
-void FUN_00483890(Bloke *bloke) {
+void SetBlokeFrame2(Bloke *bloke) {
     bloke->frame = 2;
 }
 
@@ -1124,7 +1125,7 @@ void BlokeActionPassThroughTile(Bloke *bloke) {
         return;
     }
     bloke->field_20++;
-    FUN_00483890(bloke);
+    SetBlokeFrame2(bloke);
 }
 
 // FUNCTION: LEGOLAND 0x004848e0

@@ -785,8 +785,9 @@ void DrawPopUpInfoBackground(void) {
     PrintSprite(PuBgLeftBtmSprite, cx, cy, 0, (int *)&ctx);
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x00472090
-void FUN_00472090(void) {
+void Empty_00472090(void) {
 }
 
 // Inlined in the original: the position is computed before the hide flag is cleared.
@@ -1212,7 +1213,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     if (DAT_007fdfa4 != 0) {
         DrawInfoPopupFooter();
     }
-    FUN_00472090();
+    Empty_00472090();
 }
 
 // FUNCTION: LEGOLAND 0x004730f0

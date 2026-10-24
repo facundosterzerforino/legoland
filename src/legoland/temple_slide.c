@@ -34,7 +34,7 @@ void AddSlideNode(TileId *key) {
         node->key = key->id;
         node->next = SlideNodeList;
         SlideNodeList = node;
-        FUN_00417130((struct TempleRide *)node);
+        ClearTempleRideVar4AndFlag1((struct TempleRide *)node);
     }
 }
 
@@ -77,8 +77,9 @@ struct SlideNode *FindSlideNode(void *arg) {
     return NULL;
 }
 
+/* Sets bit 0 of var_c. */
 // FUNCTION: LEGOLAND 0x00416f90
-void FUN_00416f90(struct TempleRide *arg) {
+void SetTempleRideFlag1(struct TempleRide *arg) {
     arg->var_c |= 1;
 }
 
@@ -127,8 +128,9 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
     RenderBlokeList((struct RenderItemNode **)&TempleSlideRiderRenderList);
 }
 
+/* Clears var_4 and bit 0 of var_c. */
 // FUNCTION: LEGOLAND 0x00417130
-void FUN_00417130(struct TempleRide *arg) {
+void ClearTempleRideVar4AndFlag1(struct TempleRide *arg) {
     arg->var_4 = 0;
     arg->var_c &= 0xfffffffe;
 }

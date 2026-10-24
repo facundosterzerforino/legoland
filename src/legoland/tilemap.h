@@ -34,5 +34,5 @@ LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1);
 LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1);
 unsigned int UnloadMapTiles(void);
 LEGO_EXPORT unsigned int LoadMapTiles(void);
-void FUN_0045b170(struct Point *pt);
+void Empty_0045b170(struct Point *pt);
 LEGO_EXPORT void RenderView(void);

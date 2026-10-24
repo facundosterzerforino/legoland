@@ -61,8 +61,9 @@ LEGO_EXPORT int GetBuildTime(Ride *objClass) {
     return cost;
 }
 
+/* Does nothing but return 0. */
 // FUNCTION: LEGOLAND 0x00450c70
-unsigned int FUN_00450c70(Ride *ride) {
+unsigned int ReturnZero_00450c70(Ride *ride) {
     return 0;
 }
 
@@ -138,7 +139,7 @@ LEGO_EXPORT void DoBuildEffects(Ride *ride, TileId coords) {
     int left;
     BuildObj *o;
 
-    if (FUN_00450c70(ride) && DAT_0066895c == 0) {
+    if (ReturnZero_00450c70(ride) && DAT_0066895c == 0) {
         pt.x = ride->footprint.x0 + coords.pos.x;
         pt.y = ride->footprint.y1 + coords.pos.y;
         GetTileBounds(&pt, b);

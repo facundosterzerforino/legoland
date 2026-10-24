@@ -59,7 +59,7 @@ unsigned char InterfaceOptionsClicked(unsigned int a, unsigned int flags, unsign
 LEGO_EXPORT void DelObjectList(void);
 LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int param_4);
 LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry);
-void FUN_00476000(void);
+void ClearInterfaceSlotValues(void);
 void ClearButtonFlashStates(void);
 void DrawFlashingButtons(void);
 void SetButtonFlashMask(int mask, unsigned int value);

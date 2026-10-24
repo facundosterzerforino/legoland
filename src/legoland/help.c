@@ -26,7 +26,7 @@ void ClearAdvisorHelp(void) {
         UpdateScriptEndIcon((void *)1);
     }
     AdvisorHelpFlags &= ~0x3;
-    FUN_00476000();
+    ClearInterfaceSlotValues();
     SetNextAdvisorAnimState(0, 0);
     SpeechStop();
 }

@@ -1214,7 +1214,8 @@ int CloseLogFile(void) {
     return 1;
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x0047f850
-void FUN_0047f850(void) {
+void Empty_0047f850(void) {
     return;
 }

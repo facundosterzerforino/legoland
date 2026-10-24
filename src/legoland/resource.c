@@ -199,7 +199,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     _splitpath(path, 0, 0, fname, 0);
     // STRING: LEGOLAND 0x004bde74
     DebugTrace("Attempting to open Resource %s", fname);
-    FUN_0047f850();
+    Empty_0047f850();
 
     name_len = strlen(fname);
     for (i = 0; i < 0x14; i++) {
@@ -224,14 +224,14 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     sprintf(res_path, ".\\volumes\\%s.res", fname);
     // STRING: LEGOLAND 0x004bde48
     DebugTrace("Trying to open from %s", res_path);
-    FUN_0047f850();
+    Empty_0047f850();
 
     volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
     if (INVALID_HANDLE_VALUE == volume->handle) {
         // STRING: LEGOLAND 0x004bde3c
         sprintf(res_path, "%s%s.res", CdDrivePath, fname);
         DebugTrace("Trying to open from %s", res_path);
-        FUN_0047f850();
+        Empty_0047f850();
         volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
     }
 

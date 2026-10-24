@@ -13,7 +13,7 @@ void MarkGameTimer(void);
 int GetGameTimerSinceMark(void);
 unsigned int OpenLogFile(const char *path);
 int CloseLogFile(void);
-void FUN_0047f850(void);
+void Empty_0047f850(void);
 LEGO_EXPORT void UnloadSaveGameMap(void);
 LEGO_EXPORT int LoadGame(char *path);
 int SkipSaveGameDword(void);

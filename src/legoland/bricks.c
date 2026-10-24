@@ -316,7 +316,7 @@ void ProcessMapEditing(void) {
         if (!(GamePad & 0x400) && EditMode.unk8 != NULL) {
             EditMode.unk8->cb_90(EditMode.unk8->element, &MousePos, 0x8f8);
         }
-        BuildCursorPtr(&EditCursor, 0x8f8, FUN_0045ead0(EditMode.unk8));
+        BuildCursorPtr(&EditCursor, 0x8f8, IsObjectTypeNot0Or2(EditMode.unk8));
         if (MouseClickFlags & 0x11) {
             if (IsCursorBuildable(&EditCursor)) {
                 if (EditMode.unk8->flags & 0x2000000) {

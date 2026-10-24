@@ -1226,7 +1226,7 @@ void SelectMatchingBuildElement(void) {
                 }
             }
             pair += 2;
-        } while (pair < (char **)&DAT_004bb18c[1]);
+        } while (pair < (char **)&InterfaceSlotValues[1]);
     }
     if (match != NULL && (match->flags & 2) != 0) {
         SetEditObject(match->data);
@@ -1237,20 +1237,22 @@ void SelectMatchingBuildElement(void) {
     GamePad = GamePad & 0xffffebff;
 }
 
+/* Stores value in slot index (0-3) of InterfaceSlotValues; nothing in the game reads those slots. */
 // FUNCTION: LEGOLAND 0x00475fe0
-void FUN_00475fe0(int index, unsigned int value) {
+void SetInterfaceSlotValue(int index, unsigned int value) {
     if (index < 0 || index >= 4) {
         return;
     }
-    DAT_004bb18c[index] = value;
+    InterfaceSlotValues[index] = value;
 }
 
+/* Zeroes the four InterfaceSlotValues. */
 // FUNCTION: LEGOLAND 0x00476000
-void FUN_00476000(void) {
+void ClearInterfaceSlotValues(void) {
     int i;
 
     for (i = 0; i < 4; i++) {
-        FUN_00475fe0(i, 0);
+        SetInterfaceSlotValue(i, 0);
     }
 }
 
@@ -1376,18 +1378,21 @@ LEGO_EXPORT void CloseCheckBoxRAndD(void) {}
 // FUNCTION: LEGOLAND 0x00476210
 LEGO_EXPORT void DisableRAndDIcons(void) {}
 
+/* Does nothing but return 1. */
 // FUNCTION: LEGOLAND 0x00476220
-unsigned char FUN_00476220(void) {
+unsigned char ReturnOne_00476220(void) {
     return 1;
 }
 
+/* Does nothing but return 1. */
 // FUNCTION: LEGOLAND 0x00476230
-unsigned char FUN_00476230(void) {
+unsigned char ReturnOne_00476230(void) {
     return 1;
 }
 
+/* Does nothing but return 1. */
 // FUNCTION: LEGOLAND 0x00476240
-unsigned char FUN_00476240(void) {
+unsigned char ReturnOne_00476240(void) {
     return 1;
 }
 
@@ -1971,17 +1976,17 @@ int PlayMovie(char *filename, unsigned int param_2, int param_3) {
             DebugTrace("Attempting to open Movie %s", path);
             handle = OpenAviMovie(path);
         }
-        FUN_0047f850();
+        Empty_0047f850();
         if (handle != NULL) {
             // STRING: LEGOLAND 0x004bb554
             DebugTrace("Movie openned OK (%s)", path);
-            FUN_0047f850();
+            Empty_0047f850();
             PauseAllSamples();
             StopInteractiveMusic();
             PushRenderingStatusAndUnlockVideoSurface();
             // STRING: LEGOLAND 0x004bb538
             DebugTrace("Attempting to play movie..");
-            FUN_0047f850();
+            Empty_0047f850();
             // STRING: LEGOLAND 0x004bb528
             DBPrintf("Starting Movie\n");
             result = PlayMovieFrames(handle, rect, param_2);
@@ -1989,7 +1994,7 @@ int PlayMovie(char *filename, unsigned int param_2, int param_3) {
             DBPrintf("Stopping Movie\n");
             // STRING: LEGOLAND 0x004bb508
             DebugTrace("Stopping movie");
-            FUN_0047f850();
+            Empty_0047f850();
             CloseAviMovie(handle);
             PopRenderingStatus();
             do {
