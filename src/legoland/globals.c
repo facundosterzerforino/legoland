@@ -1229,8 +1229,10 @@ struct CopterNode *CopterNodeList;
 // GLOBAL: LEGOLAND 0x004c11bc
 struct CountNode *DrivingSchoolCountList;
 
+/* Driving school cars keep to the left lane: they spawn on the left, turn right wide and left tight; the traffic
+ * light sprites in UpdateTrafficLights depend on it too. */
 // GLOBAL: LEGOLAND 0x004c11c0
-int DAT_004c11c0;
+int DrivingSchoolDriveOnLeft;
 
 // GLOBAL: LEGOLAND 0x004c11c4
 struct RideQueueEntry *RoadBfsFrontier;

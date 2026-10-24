@@ -734,7 +734,7 @@ void UpdateTrafficLights(void) {
         }
         TrafficLightPhase = (TrafficLightPhase + 1) & 3;
     }
-    if (DAT_004c11c0 != 0) {
+    if (DrivingSchoolDriveOnLeft != 0) {
         if (TrafficLightA != 0) {
             id = 6;
             ib = 1;

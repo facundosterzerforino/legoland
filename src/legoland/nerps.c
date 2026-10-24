@@ -38,7 +38,7 @@ void SetScriptFeature(unsigned int param_1, unsigned int param_2) {
         MapStats.field_188 = param_2;
         break;
     case 4:
-        MapStats.field_18c = param_2;
+        MapStats.power_enabled = param_2;
         break;
     case 5:
         MapStats.field_190 = param_2;

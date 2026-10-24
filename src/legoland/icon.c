@@ -816,7 +816,7 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
         fill1 = (node->width * MapStats.power_supply) / scale;
         fill2 = (node->width * MapStats.power_demand) / scale;
     }
-    if (node->sprite != NULL && MapStats.field_18c != 0) {
+    if (node->sprite != NULL && MapStats.power_enabled != 0) {
         StoreClipping();
         if (fill1 > EnergyBarSupplyWidth) {
             EnergyBarSupplyWidth += 6;
@@ -850,7 +850,7 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
         PrintSprite(BarPointerSprite, (node->x - BarPointerSprite->width / 2) + PowerDemandBarPos, node->height / 2 + node->y, 0, (int *)&ctx);
         return 0;
     }
-    if (MapStats.field_18c == 0) {
+    if (MapStats.power_enabled == 0) {
         PrintSprite(NoEnergySprite, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
     }
     return 0;

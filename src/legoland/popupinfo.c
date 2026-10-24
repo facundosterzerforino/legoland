@@ -967,7 +967,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         sprintf(buf_a, (char *)PercentSFormat, ride->name);
         // STRING: LEGOLAND 0x004bad44
         sprintf(buf_b, "%s %d\n%s %d", GetString(0x76), GetObjRepairCost(ride, DAT_007fdf84[0x11]), GetString(0x77), GetObjSalvageValue(ride, DAT_007fdf84[0x11]));
-        if (MapStats.field_18c != 0) {
+        if (MapStats.power_enabled != 0) {
             power = FindObjectsPower(ride);
             if (power < 0) {
                 // STRING: LEGOLAND 0x004bad3c

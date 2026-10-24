@@ -52,8 +52,11 @@ __int64 RotateOffset(int x, int y, int rot) {
     }
 }
 
+/* Queues the waypoints of a 90-degree right turn (direction + 2; directions 1/3/5/7 are N/E/S/W) for a driving
+ * school car: a wide arc through the far lane when cars drive on the left, a tight one otherwise. Advances the
+ * car's target tile and waypoint count. */
 // FUNCTION: LEGOLAND 0x00401080
-void FUN_00401080(struct NewBloke *b) {
+void AddDrivingSchoolRightTurnWaypoints(struct NewBloke *b) {
     struct Point local;
     unsigned int frame;
     union {
@@ -67,7 +70,7 @@ void FUN_00401080(struct NewBloke *b) {
     local.x = b->tx;
     local.y = b->ty;
     frame = b->f_bb;
-    if (DAT_004c11c0 != 0) {
+    if (DrivingSchoolDriveOnLeft != 0) {
         MovePointInDirection(&local, &local, b->f_ba);
         r.i = RotateOffset(104, 0, b->f_ba);
         b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
@@ -113,8 +116,10 @@ void FUN_00401080(struct NewBloke *b) {
     b->f_bb = frame + 1;
 }
 
+/* Mirror of AddDrivingSchoolRightTurnWaypoints for a left turn (direction - 2): tight when cars drive on the left,
+ * a wide arc otherwise. */
 // FUNCTION: LEGOLAND 0x00401320
-void FUN_00401320(struct NewBloke *b) {
+void AddDrivingSchoolLeftTurnWaypoints(struct NewBloke *b) {
     struct Point local;
     unsigned int frame;
     union {
@@ -128,7 +133,7 @@ void FUN_00401320(struct NewBloke *b) {
     local.x = b->tx;
     local.y = b->ty;
     frame = b->f_bb;
-    if (DAT_004c11c0 != 0) {
+    if (DrivingSchoolDriveOnLeft != 0) {
         r.i = RotateOffset(104, 0, b->f_ba);
         b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
         b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
@@ -213,7 +218,7 @@ void FUN_00401660(struct NewBloke *b) {
     local.x = b->tx;
     local.y = b->ty;
     frame = b->f_bb;
-    if (DAT_004c11c0 != 0) {
+    if (DrivingSchoolDriveOnLeft != 0) {
         r.i = RotateOffset(13, 40, b->f_ba);
         b->wp[frame].x = ((local.x << 8) + r.p.lo) << 8;
         b->wp[frame].y = ((local.y << 8) + r.p.hi) << 8;
@@ -443,7 +448,7 @@ int AddDrivingSchoolCar(unsigned short id, struct Bloke *bloke) {
     }
     b->id = id;
     b->bloke = bloke;
-    if (DAT_004c11c0 != 0) {
+    if (DrivingSchoolDriveOnLeft != 0) {
         b->px = e->x;
         b->fx = e->x << 16;
     } else {
@@ -482,7 +487,7 @@ int AddDrivingSchoolCar(unsigned short id, struct Bloke *bloke) {
     b->f_c4 = 0;
     b->f_be = 9000;
     b->f_c0 = 1200;
-    FUN_00401080(b);
+    AddDrivingSchoolRightTurnWaypoints(b);
     UpdateDrivingSchoolCarVelocity((struct NewBloke *)b);
     return 0;
 }
@@ -722,8 +727,11 @@ int GetQueueTurn(unsigned short id, struct PathPair *p, int dir) {
     return 0;
 }
 
+/* Nonzero when the junction lights let traffic in direction a1 go: TrafficLightA stops east/west (3/7),
+ * TrafficLightB stops north/south (1/5), and both clear (the short phases of UpdateTrafficLights) stops everyone.
+ * CanDrivingSchoolCarProceed proceeds on nonzero, so the earlier "Red" name had the meaning inverted. */
 // FUNCTION: LEGOLAND 0x00402340
-int IsTrafficLightRedForDir(int a1) {
+int IsTrafficLightGreenForDir(int a1) {
     if (TrafficLightA != 0) {
         if (a1 == 7 || a1 == 3)
             return 0;
@@ -737,8 +745,10 @@ int IsTrafficLightRedForDir(int a1) {
     return 1;
 }
 
+/* Whether a driving school car may carry out its pending turn: 0 when its tile has no route entry; otherwise the
+ * light state for its direction when the road tile ahead is a traffic-light junction (type 5), else 1. */
 // FUNCTION: LEGOLAND 0x00402390
-int FUN_00402390(struct NewBloke *param_1) {
+int CanDrivingSchoolCarProceed(struct NewBloke *param_1) {
     struct RideQueueEntry *iVar1;
     struct Point local;
 
@@ -751,7 +761,7 @@ int FUN_00402390(struct NewBloke *param_1) {
     StepPointByDirection((int *)&local, (int *)&local, DAT_004b4034[(unsigned int)param_1->f_b8]);
     iVar1 = FindRoadEntryAt(local.x, local.y);
     if ((iVar1 != 0) && ((iVar1->field_14 & 0xf) == 5)) {
-        return IsTrafficLightRedForDir(DAT_004b4034[(unsigned int)param_1->f_b8]);
+        return IsTrafficLightGreenForDir(DAT_004b4034[(unsigned int)param_1->f_b8]);
     }
     return 1;
 }
@@ -988,21 +998,21 @@ void UpdateDrivingSchoolCar(struct NewBloke *b) {
     }
     switch (b->f_c4) {
     case 1:
-        if (FUN_00402390(b) != 0) {
-            FUN_00401320(b);
+        if (CanDrivingSchoolCarProceed(b) != 0) {
+            AddDrivingSchoolLeftTurnWaypoints(b);
             b->f_c4 = 0;
         }
         break;
     case 2:
-        if (FUN_00402390(b) != 0) {
+        if (CanDrivingSchoolCarProceed(b) != 0) {
             b->f_c4 = 0;
             AddDrivingSchoolStraightWaypoint(b);
         }
         break;
     case 3:
-        if (FUN_00402390(b) != 0) {
+        if (CanDrivingSchoolCarProceed(b) != 0) {
             b->f_c4 = 0;
-            FUN_00401080(b);
+            AddDrivingSchoolRightTurnWaypoints(b);
         }
         break;
     case 4:
@@ -1010,7 +1020,7 @@ void UpdateDrivingSchoolCar(struct NewBloke *b) {
         b->f_c4 = 0;
         break;
     case 5:
-        FUN_00401320(b);
+        AddDrivingSchoolLeftTurnWaypoints(b);
         AddDrivingSchoolStraightWaypoint(b);
         b->f_c4 = 0;
         break;

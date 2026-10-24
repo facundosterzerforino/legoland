@@ -475,7 +475,7 @@ struct MapStats {
     /* 0x180 */ unsigned int ride_wear;
     /* 0x184 */ unsigned int field_184;
     /* 0x188 */ unsigned int field_188;
-    /* 0x18c */ unsigned int field_18c;
+    /* 0x18c */ unsigned int power_enabled; /* script feature 4 (SetScriptFeature): power supply and demand are simulated and shown */
     /* 0x190 */ unsigned int field_190;
     /* 0x194 */ unsigned int show_capacity;
     /* 0x198 */ char field_198[256];
@@ -1241,7 +1241,7 @@ extern struct CopterNode *CopterNodeList;
 // 0x004c11bc
 extern struct CountNode *DrivingSchoolCountList;
 // 0x004c11c0
-extern int DAT_004c11c0;
+extern int DrivingSchoolDriveOnLeft;
 // 0x004c11c4
 extern struct RideQueueEntry *RoadBfsFrontier;
 // 0x004c11c8

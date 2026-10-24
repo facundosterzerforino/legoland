@@ -141,8 +141,12 @@ void ClearBestNodeVisited(void) {
     }
 }
 
+/* Breadth-first search over path best-nodes, starting at the goal node and looking for the current node. Returns 1
+ * and stores in *out the node through which the current node is reached (the next node to walk into), or the
+ * current node itself when both are the same. Visited nodes get field_20 bit 1; returns 0 when the current node is
+ * already marked or unreachable. */
 // FUNCTION: LEGOLAND 0x00481f00
-int FUN_00481f00(struct BestNode *target, struct BestNode *start, struct BestNode **out) {
+int FindNextBestNodeToGoal(struct BestNode *target, struct BestNode *start, struct BestNode **out) {
     struct BestNode *a[1020];
     struct BestNode *b[1020];
     struct BestNode **cur = a;
@@ -217,7 +221,7 @@ LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Po
         return 2;
     }
     ClearBestNodeVisited();
-    if (!FUN_00481f00(start, end, &prev)) {
+    if (!FindNextBestNodeToGoal(start, end, &prev)) {
         return -1;
     }
     SetPathNodeDistanceSquared((struct PathQuery *)pos, (struct BestNode *)prev);
@@ -348,8 +352,11 @@ struct DirNode *AllocDirNode(unsigned int x, unsigned int y) {
     return node;
 }
 
+/* Waypoint lookahead on a found tile path: from node a with the next nodes b, c, d, returns 0 to head for b, 1 for
+ * c or 2 for d. A turn may only be cut diagonally when the tile beside the corner lacks field_10 bit 2 (or has flag
+ * 0x800). A straight run skips to c when d exists. */
 // FUNCTION: LEGOLAND 0x00482330
-int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, struct PathLink *d) {
+int GetPathWaypointSkip(struct PathLink *a, struct PathLink *b, struct PathLink *c, struct PathLink *d) {
     int cx, cy;
     int dx0, dy0, dx1, dy1;
     struct MapElement *e;
@@ -388,8 +395,11 @@ int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, str
     return 1;
 }
 
+/* After the direction search has reached DirSearchGoalNode: follows the prev links back to the start, pushes the
+ * waypoint chosen by GetPathWaypointSkip (one to three nodes ahead) onto DirPathNodeList, and returns nonzero when
+ * the goal is at most three nodes away, so callers head for the goal itself. */
 // FUNCTION: LEGOLAND 0x00482430
-int FUN_00482430(void) {
+int SelectNextDirPathWaypoint(void) {
     struct PathLink *cur;
     struct PathLink *p2;
     struct PathLink *p3;
@@ -409,7 +419,7 @@ int FUN_00482430(void) {
         p2 = cur;
         cur = cur->prev;
     }
-    dir = FUN_00482330(cur, p2, p3, p4);
+    dir = GetPathWaypointSkip(cur, p2, p3, p4);
     switch (dir) {
     case 0:
         if (p2 != 0) {
@@ -455,7 +465,7 @@ LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct
         while (wave-- != 0) {
             if (node->x == goal_x && node->y == goal_y) {
                 DirSearchGoalNode = node;
-                if (FUN_00482430()) {
+                if (SelectNextDirPathWaypoint()) {
                     out->x = goal->x;
                     out->y = goal->y;
                     FreeDirNodeList();
@@ -545,7 +555,7 @@ int WorkerSuggestNextMove(int *a, int *b, int *out) {
         while (wave-- != 0) {
             if (node->x == goal_x && node->y == goal_y) {
                 DirSearchGoalNode = node;
-                if (FUN_00482430()) {
+                if (SelectNextDirPathWaypoint()) {
                     out[0] = b[0];
                     out[1] = b[1];
                     FreeDirNodeList();

@@ -651,7 +651,7 @@ LEGO_EXPORT void RenderView(void) {
             if ((flags & 4) == 0) {
                 if ((flags & 0x200) && GetBlink()) {
                     color = 0xff0000;
-                } else if (MapStats.field_18c != 0 && (tile->flags & 0x100) && !GetBlink()) {
+                } else if (MapStats.power_enabled != 0 && (tile->flags & 0x100) && !GetBlink()) {
                     color = 0xffff;
                 }
             }

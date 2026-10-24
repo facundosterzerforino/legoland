@@ -1513,7 +1513,7 @@ unsigned int RunAppraisal(void) {
     TileId coord;
     struct MapElement *obj; /* render object being counted (0x400000 check) */
     struct Ride *ride; /* its class */
-    int objcount; /* render objects that FUN_0044f360 accepts */
+    int objcount; /* render objects that IsRideWorking accepts */
     int tiles; /* GetMapTileCount() (0x800000 check) */
     int *nidsp; /* &recs[k].nids of a continuation row, zeroed after its text is fetched */
     int chances; /* appraisals the park may still fail before it is closed */
@@ -2540,7 +2540,7 @@ s1:
                 for (obj = GetFirstRenderObject(); obj != NULL; obj = GetNextRenderObject(obj)) {
                     ride = obj->field_0->ride;
                     coord = obj->anchor;
-                    if (ride->type != 0 && ride->type != 2 && FUN_0044f360(obj->field_0->ride, &coord)) {
+                    if (ride->type != 0 && ride->type != 2 && IsRideWorking(obj->field_0->ride, &coord)) {
                         objcount++;
                     }
                 }

@@ -450,8 +450,11 @@ void BlokeAIRandomWalk(Bloke *bloke) {
     bloke->low_level_action = 4;
 }
 
+/* True when the tile containing pos (1/256-tile units) is the entrance of an instance of ride on one of the four
+ * orthogonally adjacent tiles: an object tile (flag 0x80) of that class whose anchor plus the class entrance offset
+ * (ride->x, ride->y) equals that tile. */
 // FUNCTION: LEGOLAND 0x0044f180
-int FUN_0044f180(Point *pos, Ride *ride) {
+int IsAtRideEntrance(Point *pos, Ride *ride) {
     MapElement *element;
     Point tile;
     int n;
@@ -515,8 +518,11 @@ int FUN_0044f180(Point *pos, Ride *ride) {
     return 0;
 }
 
+/* Whether the object instance at the tile can operate: false when the tile has flag 0x200 (drawn blinking red on
+ * the map) or, with the power feature enabled, flag 0x100. Visitors refuse a ride with "It's not working" when this
+ * fails. The ride argument is unused. */
 // FUNCTION: LEGOLAND 0x0044f360
-int FUN_0044f360(Ride *ride, TileId *tile) {
+int IsRideWorking(Ride *ride, TileId *tile) {
     MapElement *element;
     int x;
     int y;
@@ -531,7 +537,7 @@ int FUN_0044f360(Ride *ride, TileId *tile) {
     if ((element->flags & 0x200) != 0) {
         return 0;
     }
-    if (MapStats.field_18c != 0 && (element->flags & 0x100) != 0) {
+    if (MapStats.power_enabled != 0 && (element->flags & 0x100) != 0) {
         return 0;
     }
     return 1;
@@ -709,7 +715,7 @@ void BlokeAIWander(Bloke *bloke) {
         case -3:
         case -1:
         case 0:
-            if (FUN_0044f180(&bloke->goal, bloke->target->data) != 0) {
+            if (IsAtRideEntrance(&bloke->goal, bloke->target->data) != 0) {
                 Ride *ride;
                 int ox;
                 int oy;
@@ -808,7 +814,7 @@ void BlokeAIWander(Bloke *bloke) {
         bloke->param_action = 5;
         return;
     case 10:
-        if (FUN_0044f180(&bloke->pos, bloke->target->data) != 0) {
+        if (IsAtRideEntrance(&bloke->pos, bloke->target->data) != 0) {
             tile = GetObjectUID(&bloke->pos, bloke->target->data);
             if (IsRideFull(bloke->target->data, &tile) != 0) {
                 // STRING: LEGOLAND 0x004b8500
@@ -822,7 +828,7 @@ void BlokeAIWander(Bloke *bloke) {
                 bloke->param_action = 2;
                 return;
             }
-            if (FUN_0044f360(bloke->target->data, &tile) == 0) {
+            if (IsRideWorking(bloke->target->data, &tile) == 0) {
                 // STRING: LEGOLAND 0x004b84d4
                 sprintf(msg, "I can't go on this ride. It's not working");
                 LogBlokeAiMessage(msg);

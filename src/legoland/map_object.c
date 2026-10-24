@@ -2911,7 +2911,7 @@ LEGO_EXPORT void DoMapAI(void) {
                         if (tx == MapStats.scan_x && (ty = tile->field_5) == MapStats.scan_y) {
                             id.pos.x = tx;
                             id.pos.y = ty;
-                            if (FUN_0044f360(obj, (TileId *)&id) != 0) {
+                            if (IsRideWorking(obj, (TileId *)&id) != 0) {
                                 MapStats.classes[obj->type].scan_built++;
                                 MapStats.classes[obj->type].scan_salvage +=
                                     GetObjSalvageValue(obj, tile->durability_level);
