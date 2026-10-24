@@ -1219,7 +1219,7 @@ int ScriptEventFmv(struct ObjectiveEvent *arg) {
 int ScriptEventInterval(struct ObjectiveEvent *arg) {
     int retries;
 
-    FUN_00490600(0);
+    SetIntervalScreenIsBriefing(0);
     if (LoadIntervalReport(arg->text) != 0) {
         EditMode.unk4 = 2;
         DAT_00668e38 = 1;

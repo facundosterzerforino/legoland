@@ -534,7 +534,7 @@ unsigned char InterfaceBriefingClicked(void *context, unsigned int flags, const 
     if (EditMode.unk4 != 1) {
         if (flags & 2) {
             EditMode.unk0 = 0;
-            FUN_00490600(1);
+            SetIntervalScreenIsBriefing(1);
             ShowIntervalScreen(BriefingFileName, HintsFileName);
         }
     }

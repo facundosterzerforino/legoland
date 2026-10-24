@@ -380,8 +380,9 @@ unsigned char SaveGameScreenSaveHandler(unsigned int param_1, unsigned int param
     return 1;
 }
 
+/* Icon handler that only plays the button sound on a click and returns 1. No registration of it was found. */
 // FUNCTION: LEGOLAND 0x0048f5d0
-unsigned char FUN_0048f5d0(unsigned int param_1, unsigned int param_2) {
+unsigned char ClickSoundOnlyIconHandler(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
     }
@@ -648,7 +649,9 @@ void PlayPendingFrontEndSpeech(void) {
     }
 }
 
+/* Whether profile slot flags[9] is set. InitTitleScreen disables the Free Play button (and makes New Game blink)
+ * while it is clear. */
 // FUNCTION: LEGOLAND 0x0048fc30
-int FUN_0048fc30(void) {
+int IsFreePlayUnlocked(void) {
     return CurrentProfile.flags[9] != 0;
 }

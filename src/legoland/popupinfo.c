@@ -443,8 +443,11 @@ LEGO_EXPORT void InfoPrintCent(int len, char *text, int font, RECT rc, int flag)
     DeleteObject(region);
 }
 
+/* Measures word-wrapped centred text (DrawTextA DT_CALCRECT | DT_WORDBREAK | DT_CENTER, font param_6) at width
+ * param_4 and returns how many steps of (height + param_3, width + param_5) the pop-up must grow until the text
+ * height fits param_2. The memory DC is never deleted. */
 // FUNCTION: LEGOLAND 0x004717a0
-int FUN_004717a0(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+int CountPopUpTextGrowSteps(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
     HDC hdc;
     int iVar2;
     int iVar4;
@@ -473,8 +476,10 @@ int FUN_004717a0(const char *param_1, int param_2, int param_3, int param_4, int
     }
 }
 
+/* Measures single-line centred text (DT_CALCRECT | DT_CENTER, font param_6) and returns the extra width beyond
+ * param_4 in 32-pixel steps, rounded up (zero or negative when it fits). The memory DC is never deleted. */
 // FUNCTION: LEGOLAND 0x00471840
-int FUN_00471840(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+int CountPopUpTextWidthSteps(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
     HDC hdc;
     RECT local_10;
 
@@ -1059,8 +1064,8 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         if (DAT_007fdf9c == 0x306) {
             PopupInfoLineCount = 2;
         } else {
-            name_lines = FUN_00471840(buf_a, 0x40, 0x14, 0xb0, 0x20, 1);
-            info_lines = FUN_004717a0(buf_b, 0x40, 0x14, 0xb0, 0x20, 2);
+            name_lines = CountPopUpTextWidthSteps(buf_a, 0x40, 0x14, 0xb0, 0x20, 1);
+            info_lines = CountPopUpTextGrowSteps(buf_b, 0x40, 0x14, 0xb0, 0x20, 2);
             PopupInfoLineCount = info_lines;
             if (info_lines <= name_lines) {
                 PopupInfoLineCount = name_lines;

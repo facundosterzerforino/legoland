@@ -80,7 +80,7 @@ int ScriptCmdAges(struct CommandArgs *arg, int argc) {
     }
     if (argc == 1) {
         n1 = atoi(arg->arg1);
-        ScriptConditionActive = n1 <= CurrentProfile.field_20;
+        ScriptConditionActive = n1 <= CurrentProfile.age;
         return 1;
     }
     n1 = atoi(arg->arg1);
@@ -88,7 +88,7 @@ int ScriptCmdAges(struct CommandArgs *arg, int argc) {
     if (n1 > n2) {
         return 0;
     }
-    if (CurrentProfile.field_20 < n1 || (ScriptConditionActive = 1, CurrentProfile.field_20 > n2)) {
+    if (CurrentProfile.age < n1 || (ScriptConditionActive = 1, CurrentProfile.age > n2)) {
         ScriptConditionActive = 0;
     }
     return 1;

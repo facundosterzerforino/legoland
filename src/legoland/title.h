@@ -17,7 +17,7 @@ void InitAdvertScreen(void);
 void RenderCertificateScreen(void);
 void InitIntervalScreen(void);
 void RenderIntervalScreen(void);
-void FUN_00490600(unsigned int param_1);
+void SetIntervalScreenIsBriefing(unsigned int param_1);
 unsigned int LoadIntervalReport(const char *param_1);
 void SetPendingMovie(const char *param_1);
 void FreeIntervalReport(void);

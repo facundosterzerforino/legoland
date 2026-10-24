@@ -3846,8 +3846,9 @@ char DAT_00798777;
 // GLOBAL: LEGOLAND 0x00798778
 char IntervalMovieName[0x100];
 
+/* 1 while the interval screen shows the level briefing (accept button text 0x244), 0 for interval reports. */
 // GLOBAL: LEGOLAND 0x00798878
-unsigned int DAT_00798878;
+unsigned int IntervalScreenIsBriefing;
 
 // GLOBAL: LEGOLAND 0x0079887c
 unsigned int DAT_0079887c;

@@ -286,7 +286,7 @@ void StartLevelGame(void) {
         ClearObjInstanceTable();
         MapStats.level_end = 0;
         UpdateMenu();
-        FUN_00490600(1);
+        SetIntervalScreenIsBriefing(1);
         ShowIntervalScreen(BriefingFileName, 0);
         MapLoaded = 1;
         ResumeGameTimer();
@@ -774,7 +774,7 @@ void ShowLevelEndScreens(char *s) {
             MapStats.field_3ac = 1;
         }
     }
-    FUN_00490600(0);
+    SetIntervalScreenIsBriefing(0);
     if (LoadIntervalReport(buffer) != 0) {
         DAT_00668e38 = 1;
         EditMode.unk4 = 2;

@@ -22,7 +22,7 @@ unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *, unsigned int);
 void SaveScreenState(unsigned int *param_1, struct ScreenMode *param_2, struct EditState *param_3);
 unsigned int RestoreScreenState(unsigned int *param_1, struct ScreenMode *param_2, struct EditState *param_3);
 unsigned char ReturnToTitleClicked(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
-int FUN_0048fc30(void);
+int IsFreePlayUnlocked(void);
 LEGO_EXPORT void InitOptionScreen(void);
 LEGO_EXPORT void PrintExitCheckBox(void);
 LEGO_EXPORT void RenderScreen(void);

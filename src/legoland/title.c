@@ -41,7 +41,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string = GetString(7);
     icon->flags |= 0x6002;
     icon->event_handler = TitleNewGameHandler;
-    if (FUN_0048fc30() == 0) {
+    if (IsFreePlayUnlocked() == 0) {
         // STRING: LEGOLAND 0x004bf548
         icon->alt_sprite = LoadSprite("Dark_New_On_Title.lls", 4);
         icon->render_func = (void *)RenderBlinkIcon;
@@ -57,7 +57,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string = GetString(8);
     icon->flags |= 0x6002;
     icon->event_handler = TitleFreePlayHandler;
-    if (FUN_0048fc30() == 0) {
+    if (IsFreePlayUnlocked() == 0) {
         icon->flags |= 0x400;
     }
 
@@ -357,9 +357,11 @@ void RenderCertificateScreen(void) {
     }
 }
 
+/* Sets IntervalScreenIsBriefing: 1 right before the level briefing is shown (level/free play start, briefing
+ * button), 0 for mid-level interval reports and after the interval screen closes. */
 // FUNCTION: LEGOLAND 0x00490600
-void FUN_00490600(unsigned int param_1) {
-    DAT_00798878 = param_1;
+void SetIntervalScreenIsBriefing(unsigned int param_1) {
+    IntervalScreenIsBriefing = param_1;
 }
 
 // FUNCTION: LEGOLAND 0x00490610
@@ -519,7 +521,7 @@ unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char par
         SetDefaultMouseHandlers();
         FreeIntervalReport();
         FreeIntervalHints();
-        FUN_00490600(0);
+        SetIntervalScreenIsBriefing(0);
         if (IntervalMovieName[0] != 0) {
             SetPointer(0);
             PlayMovie(IntervalMovieName, 1, 1);
@@ -545,7 +547,7 @@ void PlayIntervalReportSpeech(unsigned int param_1) {
     SpeechCloseFile();
     SpeechLoadWavFile(buffer);
     SpeechPlay();
-    FUN_0046d390();
+    SetIntervalSpeechHelpKind();
 }
 
 // FUNCTION: LEGOLAND 0x00490a60
@@ -556,7 +558,7 @@ void PlayIntervalHintSpeech(unsigned int param_1) {
     SpeechCloseFile();
     SpeechLoadWavFile(buffer);
     SpeechPlay();
-    FUN_0046d390();
+    SetIntervalSpeechHelpKind();
 }
 
 // FUNCTION: LEGOLAND 0x00490aa0
@@ -641,7 +643,7 @@ void InitIntervalScreen(void) {
 
     // STRING: LEGOLAND 0x004bf694
     accept = LoadSpriteIcon("Accept_On_Report.lls", 4, 0x20a, 0x16c, 7);
-    if (DAT_00798878 != 0) {
+    if (IntervalScreenIsBriefing != 0) {
         accept->string_id = 0x244;
         accept->string = GetString(0x244);
     } else {

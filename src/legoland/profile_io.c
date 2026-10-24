@@ -35,7 +35,7 @@ LEGO_EXPORT void ResetTempProfile(void) {
     TempProfile.music_volume = 0x4b;
     TempProfile.fx_volume = 0x4b;
     TempProfile.name[0] = 0;
-    TempProfile.field_20 = 5;
+    TempProfile.age = 5;
     TempProfile.name_len = 0;
     memset(&TempProfile.field_34, 0, 15);
     memset(TempProfile.field_43, 0, 200);
@@ -181,7 +181,7 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
 
     memset(&temp, 0, sizeof(struct ProfileData));
     strcpy(temp.name, (char *)&CurrentProfile);
-    temp.field_20 = CurrentProfile.field_20;
+    temp.age = CurrentProfile.age;
     temp.speech_volume = CurrentProfile.speech_volume;
     temp.music_volume = CurrentProfile.music_volume;
     temp.fx_volume = CurrentProfile.fx_volume;
@@ -220,7 +220,7 @@ int WriteProfileSlotToFile(int slot) {
     }
     memset(&data, 0, sizeof(struct ProfileData));
     strcpy(data.name, node->data.name);
-    data.field_20 = node->data.field_20;
+    data.age = node->data.age;
     data.speech_volume = node->data.speech_volume;
     data.music_volume = node->data.music_volume;
     data.fx_volume = node->data.fx_volume;
@@ -287,7 +287,7 @@ LEGO_EXPORT void AddNodeToProfileList(int load, struct ProfileData *data, char s
     memset(node, 0, sizeof(struct ProfileNode));
     if (load != 0) {
         strcpy(node->data.name, data->name);
-        node->data.field_20 = data->field_20;
+        node->data.age = data->age;
         node->data.speech_volume = data->speech_volume;
         node->data.music_volume = data->music_volume;
         node->data.fx_volume = data->fx_volume;
@@ -447,17 +447,20 @@ int DrawCenteredTextAndGetRightEdge(char *text, int font, RECT rc, INT_PTR color
     return (rc.left + rc.right) / 2 + (measured.right - measured.left) / 2;
 }
 
+/* Age arrow handler for the profile being created: a click (flags & 2) decrements TempProfile.age (down arrow, icon
+ * field 0x18 == 2, minimum 1) or increments it (maximum 100). Returns 2 for press/hold flags 1 and 4. No
+ * registration of it was found. */
 // FUNCTION: LEGOLAND 0x00491f90
-unsigned char FUN_00491f90(struct RideState *state, unsigned char flags) {
+unsigned char ProfileAgeArrowClicked(struct RideState *state, unsigned char flags) {
     if ((flags & 0x2) != 0) {
         if (state->var_18 == 2) {
-            if (TempProfile.field_20 >= 2) {
-                TempProfile.field_20--;
+            if (TempProfile.age >= 2) {
+                TempProfile.age--;
                 return 1;
             }
         } else {
-            if (TempProfile.field_20 <= 99) {
-                TempProfile.field_20++;
+            if (TempProfile.age <= 99) {
+                TempProfile.age++;
                 return 1;
             }
         }

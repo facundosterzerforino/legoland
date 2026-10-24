@@ -389,8 +389,8 @@ struct ProfileData {
     /* 0x00 */ char name[0x1e];
     /* 0x1e */ unsigned char name_len;
     /* 0x1f */ unsigned char pad_1f;
-    /* 0x20 */ unsigned int field_20;
-    /* 0x24 */ unsigned char field_24;
+    /* 0x20 */ unsigned int age;
+    /* 0x24 */ unsigned char field_24; /* checked by the script AGES command */
     /* 0x25 */ unsigned char gap_25[3];
     /* 0x28 */ unsigned int speech_volume;
     /* 0x2c */ unsigned int music_volume;
@@ -419,7 +419,7 @@ struct ScreenMode {
 
 struct ScreenState {
     /* 0x00 */ unsigned char gap_0[0x20];
-    /* 0x20 */ unsigned int field_20;
+    /* 0x20 */ unsigned int age;
     /* 0x24 */ int speech_volume;
     /* 0x28 */ int music_volume;
     /* 0x2c */ int fx_volume;
@@ -2993,7 +2993,7 @@ extern char DAT_00798777;
 // 0x00798778
 extern char IntervalMovieName[0x100];
 // 0x00798878
-extern unsigned int DAT_00798878;
+extern unsigned int IntervalScreenIsBriefing;
 // 0x0079887c
 extern unsigned int DAT_0079887c;
 // 0x00798880

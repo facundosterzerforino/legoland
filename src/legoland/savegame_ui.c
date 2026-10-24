@@ -202,7 +202,7 @@ unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         if (LoadDateIntoTempProfile(CurrentProfile.profile_slot, CurrentProfile.save_slot & 0xff) != 0) {
             CurrentProfile.field_45 = TempProfile.field_24;
-            CurrentProfile.field_20 = TempProfile.field_20;
+            CurrentProfile.age = TempProfile.age;
             CurrentProfile.speech_volume = TempProfile.speech_volume;
             CurrentProfile.music_volume = TempProfile.music_volume;
             CurrentProfile.fx_volume = TempProfile.fx_volume;
@@ -740,7 +740,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     UnloadWatchSprite();
 
     TempProfile.field_24 = CurrentProfile.field_45;
-    TempProfile.field_20 = CurrentProfile.field_20;
+    TempProfile.age = CurrentProfile.age;
     TempProfile.speech_volume = CurrentProfile.speech_volume;
     TempProfile.music_volume = CurrentProfile.music_volume;
     TempProfile.fx_volume = CurrentProfile.fx_volume;

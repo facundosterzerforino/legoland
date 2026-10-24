@@ -22,7 +22,9 @@ void ShowHelpText(const char *param_1) {
     HelpRequested = 1;
 }
 
+/* Sets CurrentHelpKind to 5 when interval report/hint speech starts; UpdateSpeechPlayback only replays kinds 0-2,
+ * so hover help does not restart it. */
 // FUNCTION: LEGOLAND 0x0046d390
-void FUN_0046d390(void) {
+void SetIntervalSpeechHelpKind(void) {
     CurrentHelpKind = 5;
 }

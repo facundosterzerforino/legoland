@@ -169,7 +169,7 @@ void StartFreePlayGame(void) {
     ClearObjInstanceTable();
     UpdateMenu();
     UnloadWatchSprite();
-    FUN_00490600(1);
+    SetIntervalScreenIsBriefing(1);
     ShowIntervalScreen(BriefingFileName, 0);
     SetMapLoaded(1);
     ResumeGameTimer();
