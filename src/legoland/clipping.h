@@ -24,6 +24,6 @@ LEGO_EXPORT void StoreClipping(void);
 LEGO_EXPORT void RestoreClipping(void);
 void UnlockAllFreePlayObjects(void);
 void FUN_0048a780(void *arg);
-void FUN_0048a790(void);
+void RestoreFreePlaySelection(void);
 void ClearFreePlaySelection(void);
 unsigned int GetFreePlayObjectCost(const char *arg, struct ClipQueryResult **out);

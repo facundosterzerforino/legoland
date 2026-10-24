@@ -126,7 +126,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     FreePlayObjectList(0x190, 0x14c, 0x41, 0xec, 0x190);
     FreePlayObjectList(0x12c, 0x1dd, 0x41, 0xec, 0x12c);
 
-    FUN_0048a790();
+    RestoreFreePlaySelection();
 }
 
 // FUNCTION: LEGOLAND 0x0048ab60
@@ -327,7 +327,7 @@ unsigned char FreePlayObjectIconHandler(struct IconNode *icon, unsigned int para
         do {
             if (icon->field_18 == 0) {
                 if (CanAffordFreePlayObject((const char *)icon->field_1c, (struct Element *)icon->field_20p) != 0) {
-                    if (DAT_00798648 == 0) {
+                    if (FreePlayRestoringSelection == 0) {
                         PlayInstanceOfSample(GameFX[FX_CLICK1].sample, 0, 1, 0);
                     }
                     SelectFreePlayObject((const char *)icon->field_1c);

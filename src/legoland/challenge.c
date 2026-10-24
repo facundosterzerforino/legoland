@@ -680,10 +680,12 @@ int GetJungleCruiseScore(void) {
     return 0;
 }
 
+/* Report goal setter for script report ZONE_LL (ScriptReportNames index 0, the Legoland zone): nonzero arguments
+ * enable the report (ReportFlags bit 0x1) and store the goal; zero disables it. */
 // FUNCTION: LEGOLAND 0x004443b0
-unsigned int FUN_004443b0(unsigned int param_1, unsigned int param_2) {
+unsigned int SetReportLegolandZoneGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
-        DAT_00665ffc = param_1;
+        ReportLegolandZoneGoal = param_1;
         ReportFlags |= 1;
         return param_1;
     }
@@ -691,10 +693,12 @@ unsigned int FUN_004443b0(unsigned int param_1, unsigned int param_2) {
     return ReportFlags;
 }
 
+/* Report goal setter for script report ZONE_ADV (ScriptReportNames index 1, the Adventurer zone): nonzero arguments
+ * enable the report (ReportFlags bit 0x2) and store the goal; zero disables it. */
 // FUNCTION: LEGOLAND 0x004443e0
-unsigned int FUN_004443e0(unsigned int param_1, unsigned int param_2) {
+unsigned int SetReportAdventurerZoneGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
-        DAT_00666000 = param_1;
+        ReportAdventurerZoneGoal = param_1;
         ReportFlags |= 2;
         return param_1;
     }
@@ -702,10 +706,12 @@ unsigned int FUN_004443e0(unsigned int param_1, unsigned int param_2) {
     return ReportFlags;
 }
 
+/* Report goal setter for script report ZONE_MED (ScriptReportNames index 2, the Castle zone): nonzero arguments
+ * enable the report (ReportFlags bit 0x4) and store the goal; zero disables it. */
 // FUNCTION: LEGOLAND 0x00444410
-unsigned int FUN_00444410(unsigned int param_1, unsigned int param_2) {
+unsigned int SetReportCastleZoneGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
-        DAT_00666004 = param_1;
+        ReportCastleZoneGoal = param_1;
         ReportFlags |= 4;
         return param_1;
     }
@@ -713,11 +719,13 @@ unsigned int FUN_00444410(unsigned int param_1, unsigned int param_2) {
     return ReportFlags;
 }
 
+/* Report goal setter for script report ZONE_WES (ScriptReportNames index 3, the Western zone): nonzero arguments
+ * enable the report (ReportFlags bit 0x8) and store the goal; zero disables it. */
 // FUNCTION: LEGOLAND 0x00444440
-void FUN_00444440(unsigned int param_1, unsigned int param_2) {
+void SetReportWesternZoneGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= 8;
-        DAT_00666008 = param_1;
+        ReportWesternZoneGoal = param_1;
     } else {
         ReportFlags = (ReportFlags & 0xffffff00) | (ReportFlags & 0xf7);
     }
@@ -828,12 +836,14 @@ void SetReportType2ClassCountGoal(unsigned int param_1, unsigned int param_2) {
     }
 }
 
+/* Report goal setter for COV_SCENERY (ScriptReportNames index 14): nonzero arguments enable the report (ReportFlags
+ * 0x20000000) and store goal and maximum; zero disables it. */
 // FUNCTION: LEGOLAND 0x004446f0
-void FUN_004446f0(unsigned int param_1, unsigned int param_2) {
+void SetReportSceneryCoverageGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= 0x20000000;
-        DAT_00666080 = param_1;
-        DAT_00666084 = param_2;
+        ReportSceneryCoverageGoal = param_1;
+        ReportSceneryCoverageMax = param_2;
     } else {
         ReportFlags &= 0xdfffffff;
     }
@@ -927,12 +937,14 @@ void SetReportPowerSupplyGoal(unsigned int param_1, unsigned int param_2) {
     }
 }
 
+/* Report goal setter for WORKING_RIDES (ScriptReportNames index 23): nonzero arguments enable the report
+ * (ReportFlags 0x400000) and store goal and maximum; the appraisal counts working attractions against the goal. */
 // FUNCTION: LEGOLAND 0x00444930
-void FUN_00444930(unsigned int param_1, unsigned int param_2) {
+void SetReportWorkingRidesGoal(unsigned int param_1, unsigned int param_2) {
     if ((param_1 | param_2) != 0) {
         ReportFlags |= 0x400000;
-        DAT_00666060 = param_1;
-        DAT_00666064 = param_2;
+        ReportWorkingRidesGoal = param_1;
+        ReportWorkingRidesMax = param_2;
     } else {
         ReportFlags &= 0xffbfffff;
     }
@@ -2545,7 +2557,7 @@ s1:
                     }
                 }
                 total++;
-                ok = objcount >= DAT_00666060;
+                ok = objcount >= ReportWorkingRidesGoal;
                 if (ok) {
                     lpass++;
                 } else {
@@ -2566,8 +2578,8 @@ s1:
                 recs[i].arg = 0;
                 recs[i].bar = 1;
                 recs[i].value = objcount;
-                recs[i].goal = DAT_00666060;
-                recs[i].max = DAT_00666064;
+                recs[i].goal = ReportWorkingRidesGoal;
+                recs[i].max = ReportWorkingRidesMax;
                 recs[i].nids = 0;
                 i++;
                 y += 0x18;

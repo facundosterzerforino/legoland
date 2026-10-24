@@ -2468,16 +2468,16 @@ unsigned int NextAdvisorAnimState;
 unsigned int ReportFlags;
 
 // GLOBAL: LEGOLAND 0x00665ffc
-unsigned int DAT_00665ffc;
+unsigned int ReportLegolandZoneGoal;
 
 // GLOBAL: LEGOLAND 0x00666000
-int DAT_00666000;
+int ReportAdventurerZoneGoal;
 
 // GLOBAL: LEGOLAND 0x00666004
-int DAT_00666004;
+int ReportCastleZoneGoal;
 
 // GLOBAL: LEGOLAND 0x00666008
-int DAT_00666008;
+int ReportWesternZoneGoal;
 
 // GLOBAL: LEGOLAND 0x0066600c
 int CastleScoreGoal;
@@ -2543,10 +2543,10 @@ int ReportPowerSupplyGoal;
 int ReportPowerSupplyMax;
 
 // GLOBAL: LEGOLAND 0x00666060
-int DAT_00666060;
+int ReportWorkingRidesGoal;
 
 // GLOBAL: LEGOLAND 0x00666064
-int DAT_00666064;
+int ReportWorkingRidesMax;
 
 // GLOBAL: LEGOLAND 0x00666068
 int ReportMapTileCountGoal;
@@ -2567,10 +2567,10 @@ int ReportType2ClassCountGoal;
 int ReportType2ClassCountMax;
 
 // GLOBAL: LEGOLAND 0x00666080
-int DAT_00666080;
+int ReportSceneryCoverageGoal;
 
 // GLOBAL: LEGOLAND 0x00666084
-int DAT_00666084;
+int ReportSceneryCoverageMax;
 
 // GLOBAL: LEGOLAND 0x00666088
 int ReportType4ObjectCountGoal;
@@ -3580,13 +3580,13 @@ unsigned int DAT_0066b5ac;
 DDSURFACEDESC ZBufferSavedSurfaceDesc;
 
 // GLOBAL: LEGOLAND 0x0066b61c
-void *DAT_0066b61c;
+void *CurrentColorRamp;
 
 // GLOBAL: LEGOLAND 0x0066b620
 RECT ZBufferSavedSoftPrintClip;
 
 // GLOBAL: LEGOLAND 0x0066b630
-void *DAT_0066b630;
+void *CurrentTexture;
 
 // GLOBAL: LEGOLAND 0x0066be40
 unsigned int ZBufferWidth;
@@ -3674,8 +3674,9 @@ unsigned int SavedClipRight;
 // GLOBAL: LEGOLAND 0x0079863c
 unsigned int SavedClipBottom;
 
+/* Set while RestoreFreePlaySelection replays clicks; FreePlayObjectIconHandler then skips the click sound. */
 // GLOBAL: LEGOLAND 0x00798648
-unsigned int DAT_00798648;
+unsigned int FreePlayRestoringSelection;
 
 /* Free play Start icon: disabled (flag 0x400) until at least one object is selected. */
 // GLOBAL: LEGOLAND 0x0079864c

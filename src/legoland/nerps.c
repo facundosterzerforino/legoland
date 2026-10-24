@@ -73,10 +73,10 @@ unsigned int ScriptEventFeature(struct ObjectiveEvent *arg) {
 
 // GLOBAL: LEGOLAND 0x004b7e38
 void (*ReportGoalSetters[25])(unsigned int, unsigned int) = {
-    (void (*)(unsigned int, unsigned int))FUN_004443b0,
-    (void (*)(unsigned int, unsigned int))FUN_004443e0,
-    (void (*)(unsigned int, unsigned int))FUN_00444410,
-    FUN_00444440,
+    (void (*)(unsigned int, unsigned int))SetReportLegolandZoneGoal,
+    (void (*)(unsigned int, unsigned int))SetReportAdventurerZoneGoal,
+    (void (*)(unsigned int, unsigned int))SetReportCastleZoneGoal,
+    SetReportWesternZoneGoal,
     SetReportCastleScoreGoal,
     SetReportDrivingSchoolScoreGoal,
     SetReportLogFlumeScoreGoal,
@@ -87,7 +87,7 @@ void (*ReportGoalSetters[25])(unsigned int, unsigned int) = {
     SetReportLinkedObjectPercentGoal,
     SetReportType2ObjectCountGoal,
     SetReportType2ClassCountGoal,
-    FUN_004446f0,
+    SetReportSceneryCoverageGoal,
     SetReportFoodStallObjectCountGoal,
     SetReportFoodStallClassCountGoal,
     SetReportType4ObjectCountGoal,
@@ -96,7 +96,7 @@ void (*ReportGoalSetters[25])(unsigned int, unsigned int) = {
     SetReportVisitorHappinessGoal,
     SetReportVisitorFullnessGoal,
     SetReportPowerSupplyGoal,
-    FUN_00444930,
+    SetReportWorkingRidesGoal,
     SetReportMapTileCountGoal,
 };
 

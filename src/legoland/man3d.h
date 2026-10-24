@@ -165,7 +165,7 @@ LEGO_EXPORT void BlokeWalkWithPan(struct Bloke *bloke);
 LEGO_EXPORT void Render3DPerson(struct Person *person);
 void *Load3DDataFile(const char *param_1, const char *param_2);
 struct Bloke;
-void FUN_004401b0(struct Person *person, struct Bloke *bloke);
+void UpdatePersonFromBloke(struct Person *person, struct Bloke *bloke);
 void AddPersonToList(struct Person *person);
 void FUN_00440a30(struct Person *person);
 struct IntVec3;

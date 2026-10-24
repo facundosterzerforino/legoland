@@ -2063,13 +2063,13 @@ extern unsigned int NextAdvisorAnimState;
 // 0x00665ff8
 extern unsigned int ReportFlags;
 // 0x00665ffc
-extern unsigned int DAT_00665ffc;
+extern unsigned int ReportLegolandZoneGoal;
 // 0x00666000
-extern int DAT_00666000;
+extern int ReportAdventurerZoneGoal;
 // 0x00666004
-extern int DAT_00666004;
+extern int ReportCastleZoneGoal;
 // 0x00666008
-extern int DAT_00666008;
+extern int ReportWesternZoneGoal;
 // 0x0066600c
 extern int CastleScoreGoal;
 // 0x00666010
@@ -2113,9 +2113,9 @@ extern int ReportPowerSupplyGoal;
 // 0x0066605c
 extern int ReportPowerSupplyMax;
 // 0x00666060
-extern int DAT_00666060;
+extern int ReportWorkingRidesGoal;
 // 0x00666064
-extern int DAT_00666064;
+extern int ReportWorkingRidesMax;
 // 0x00666068
 extern int ReportMapTileCountGoal;
 // 0x0066606c
@@ -2129,9 +2129,9 @@ extern int ReportType2ClassCountGoal;
 // 0x0066607c
 extern int ReportType2ClassCountMax;
 // 0x00666080
-extern int DAT_00666080;
+extern int ReportSceneryCoverageGoal;
 // 0x00666084
-extern int DAT_00666084;
+extern int ReportSceneryCoverageMax;
 // 0x00666088
 extern int ReportType4ObjectCountGoal;
 // 0x0066608c
@@ -2798,11 +2798,11 @@ extern unsigned int DAT_0066b5ac;
 // 0x0066b5b0
 extern DDSURFACEDESC ZBufferSavedSurfaceDesc;
 // 0x0066b61c
-extern void *DAT_0066b61c;
+extern void *CurrentColorRamp;
 // 0x0066b620
 extern RECT ZBufferSavedSoftPrintClip;
 // 0x0066b630
-extern void *DAT_0066b630;
+extern void *CurrentTexture;
 // 0x0066be40
 extern unsigned int ZBufferWidth;
 // 0x0066be44
@@ -2860,7 +2860,7 @@ extern unsigned int SavedClipRight;
 // 0x0079863c
 extern unsigned int SavedClipBottom;
 // 0x00798648
-extern unsigned int DAT_00798648;
+extern unsigned int FreePlayRestoringSelection;
 // 0x0079864c
 extern struct IconNode *FreePlayStartIcon;
 // 0x00798650

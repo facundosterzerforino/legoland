@@ -93,10 +93,12 @@ void UnlockAllFreePlayObjects(void) {
 void FUN_0048a780(void *arg) {
 }
 
+/* Runs after the free play lists are built: sends a click to every object icon whose entry is still selected
+ * (ClipQueryResult field_c), restoring the previous selection with the click sound muted. */
 // FUNCTION: LEGOLAND 0x0048a790
-void FUN_0048a790(void) {
+void RestoreFreePlaySelection(void) {
     struct ClipNode *node = (struct ClipNode *)IconListHead;
-    DAT_00798648 = 1;
+    FreePlayRestoringSelection = 1;
 
     while (node != NULL) {
         unsigned short type = node->field_14;
@@ -110,7 +112,7 @@ void FUN_0048a790(void) {
         node = node->next;
     }
 
-    DAT_00798648 = 0;
+    FreePlayRestoringSelection = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0048a800

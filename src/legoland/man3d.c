@@ -131,8 +131,10 @@ LEGO_EXPORT struct Person *Find3DPersonFromBloke(struct Bloke *bloke) {
     return person;
 }
 
+/* Allocates a zeroed 3D person for bloke with the given character (character 1 gets a random variant bit) and fills
+ * in its default fields. */
 // FUNCTION: LEGOLAND 0x0043f8c0
-struct Person *FUN_0043f8c0(struct Bloke *param_1, unsigned int param_2) {
+struct Person *CreatePerson(struct Bloke *param_1, unsigned int param_2) {
     struct Person *person;
 
     person = malloc(sizeof(struct Person));
@@ -767,8 +769,11 @@ LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsign
     person->field_20 = y;
 }
 
+/* Copies a bloke's state to its 3D person: direction, screen position (isometric projection of the map position
+ * minus the scroll, plus the view offset, raised by half the bloke height), sort id and, unless bloke flag 0x100 is
+ * set, the animation frame. */
 // FUNCTION: LEGOLAND 0x004401b0
-void FUN_004401b0(struct Person *person, struct Bloke *bloke) {
+void UpdatePersonFromBloke(struct Person *person, struct Bloke *bloke) {
     struct Point pt;
     int x;
     int y;
@@ -808,7 +813,7 @@ LEGO_EXPORT void UpdatePerson(Bloke *bloke) {
     if (bloke->person == 0) {
         return;
     }
-    FUN_004401b0(bloke->person, bloke);
+    UpdatePersonFromBloke(bloke->person, bloke);
 }
 
 // FUNCTION: LEGOLAND 0x004402b0
@@ -851,7 +856,7 @@ LEGO_EXPORT void InitMan(void) {
     // STRING: LEGOLAND 0x004b7bb0
     const char *proj = "NewProject.txt";
 
-    FUN_00485fc0((DisplayPixelFormat == 2) + 5);
+    InitRender3D((DisplayPixelFormat == 2) + 5);
     ctx = GetLoadedTextureCount();
     // STRING: LEGOLAND 0x004b7cdc
     VisitorLocData = LoadLocFile("NewProject.loc", "visitor");
@@ -961,11 +966,11 @@ LEGO_EXPORT void UnInitMan(void) {
 LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
     struct Person *person;
 
-    person = FUN_0043f8c0(bloke, param_2);
+    person = CreatePerson(bloke, param_2);
     bloke->person = person;
     if (person != 0) {
         AddPersonToList(person);
-        FUN_004401b0(person, bloke);
+        UpdatePersonFromBloke(person, bloke);
         BlokeWalkAnim(bloke);
     }
 }
@@ -1266,7 +1271,7 @@ L440ad7:
         push eax
         push ecx
         push edx
-        call FUN_00485fe0
+        call LoadZBufferFromSprite
         mov ecx, dword ptr [edi + 0x64]
         mov edx, dword ptr [edi + 0x70]
         lea eax, [edi + 0x58]
@@ -1983,7 +1988,7 @@ L4412e4:
         je L441451
         mov ecx, dword ptr [esi + 8]
         push ecx
-        call FUN_004864e0
+        call SetCurrentColorRamp
         lea edx, [ebp - 0x16c]
         lea eax, [ebp - 0x188]
         push edx
@@ -2008,7 +2013,7 @@ L441451:
         push edx
         mov dword ptr [ebp - 0x160], eax
         mov dword ptr [ebp - 0x15c], ecx
-        call FUN_004886e0
+        call SetCurrentTextureByIndex
         lea eax, [ebp - 0x16c]
         lea ecx, [ebp - 0x188]
         push eax
@@ -2212,7 +2217,7 @@ L441682:
         je L441770
         mov ecx, dword ptr [esi + 8]
         push ecx
-        call FUN_004864e0
+        call SetCurrentColorRamp
         lea edx, [ebp - 0x16c]
         lea eax, [ebp - 0x188]
         push edx
@@ -2237,7 +2242,7 @@ L441770:
         push edx
         mov dword ptr [ebp - 0x160], eax
         mov dword ptr [ebp - 0x15c], ecx
-        call FUN_004886e0
+        call SetCurrentTextureByIndex
         lea eax, [ebp - 0x16c]
         lea ecx, [ebp - 0x188]
         push eax

@@ -40,8 +40,8 @@ LEGO_EXPORT void SortSprite(struct Sprite *sprite, unsigned int x, unsigned int 
 LEGO_EXPORT void SortPerson(struct Person *person, unsigned int param_2, void *param_3);
 LEGO_EXPORT void SortClippedSprite(struct Sprite *sprite, unsigned int x, unsigned int y, int key, RECT *clip, unsigned int param_6, struct HitInfo *hit);
 void PrintSpriteSimple(struct Sprite *param_1, unsigned int param_2, unsigned int param_3);
-void FUN_00485f20(void *ptr);
+void SetCurrentTexture(void *ptr);
 void SetRender3DTarget(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 void FreeZBuffer(void);
-void FUN_00485fc0(unsigned int param_1);
-void FUN_00485fe0(struct Sprite *sprite, int x, int y);
+void InitRender3D(unsigned int param_1);
+void LoadZBufferFromSprite(struct Sprite *sprite, int x, int y);

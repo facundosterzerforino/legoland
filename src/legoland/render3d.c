@@ -206,7 +206,7 @@ LEGO_EXPORT void Put3DBlokesOnRide2(struct Ride *ride, void *obj) {
         }
         while (node != NULL) {
             if (node->person != 0) {
-                FUN_004401b0((struct Person *)node->person, (struct Bloke *)node->rider);
+                UpdatePersonFromBloke((struct Person *)node->person, (struct Bloke *)node->rider);
             }
             node = (struct RideNode *)FindNextRiderAt(ride, (short *)obj);
             if (node == NULL) {

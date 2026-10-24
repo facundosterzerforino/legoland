@@ -524,9 +524,10 @@ void PrintSpriteSimple(struct Sprite *param_1, unsigned int param_2, unsigned in
     PrintSprite(param_1, param_2, param_3, 0, 0);
 }
 
+/* Sets the texture node the textured span drawers sample from. */
 // FUNCTION: LEGOLAND 0x00485f20
-void FUN_00485f20(void *ptr) {
-    DAT_0066b630 = ptr;
+void SetCurrentTexture(void *ptr) {
+    CurrentTexture = ptr;
 }
 
 // FUNCTION: LEGOLAND 0x00485f30
@@ -552,16 +553,21 @@ void FreeZBuffer(void) {
     }
 }
 
+/* Initialises the software 3D renderer for InitMan: stores the green channel bit count (6 when DisplayPixelFormat
+ * is 2, else 5) read by InitPackedColorLookupTable, builds that colour table, allocates the Z buffer and fills the
+ * reciprocal tables. */
 // FUNCTION: LEGOLAND 0x00485fc0
-void FUN_00485fc0(unsigned int param_1) {
+void InitRender3D(unsigned int param_1) {
     *(unsigned int *)&DAT_007cb5e0 = param_1;
     InitPackedColorLookupTable();
     AllocZBuffer();
     InitReciprocalTables();
 }
 
+/* Clears the Z buffer, then fills it from the sprite's 32-bit image data clipped to the Z buffer window at (x, y)
+ * (ZBufferHelper). With no sprite it only clears. */
 // FUNCTION: LEGOLAND 0x00485fe0
-void FUN_00485fe0(struct Sprite *sprite, int x, int y) {
+void LoadZBufferFromSprite(struct Sprite *sprite, int x, int y) {
     RECT rect1;
     RECT rect2;
     int offsets[2];

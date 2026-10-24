@@ -35,16 +35,16 @@ struct MusicLoader {
     struct MusicLoaderVtbl *vtable;
 };
 
-struct MusicContainer;
-struct MusicContainerVtbl {
+struct MusicStyle;
+struct MusicStyleVtbl {
     void *pad_0[3];
-    int(__stdcall *GetObject)(struct MusicContainer *self, const unsigned short *name, void **out);
+    int(__stdcall *GetObject)(struct MusicStyle *self, const unsigned short *name, void **out);
     void *pad_10[6];
-    int(__stdcall *EnumObject)(struct MusicContainer *self, const unsigned short *name, void **out);
+    int(__stdcall *EnumObject)(struct MusicStyle *self, const unsigned short *name, void **out);
 };
 
-struct MusicContainer {
-    struct MusicContainerVtbl *vtable;
+struct MusicStyle {
+    struct MusicStyleVtbl *vtable;
 };
 
 struct MusicSegment;
@@ -247,8 +247,10 @@ int LoadDirectMusicSegment(const char *file, const char *name, void **out) {
     return 0 <= result;
 }
 
+/* Gets the chord map called filename from a DirectMusic style: vtable slot 10 of IDirectMusicStyle is GetChordMap
+ * (slot 3, used by GetMusicBand, is GetBand). Exported like its neighbours; the game itself never calls it. */
 // FUNCTION: LEGOLAND 0x00496010
-int FUN_00496010(const char *filename, struct MusicContainer *container, void **out) {
+int GetMusicChordMap(const char *filename, struct MusicStyle *container, void **out) {
     unsigned short wide[512];
     int result;
 
@@ -265,7 +267,7 @@ int FUN_00496010(const char *filename, struct MusicContainer *container, void **
 }
 
 // FUNCTION: LEGOLAND 0x00496090
-LEGO_EXPORT int GetMusicBand(const char *filename, struct MusicContainer *container, void **out) {
+LEGO_EXPORT int GetMusicBand(const char *filename, struct MusicStyle *container, void **out) {
     unsigned short wide[512];
     int result;
 

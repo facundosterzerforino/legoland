@@ -195,9 +195,11 @@ void *GetOrCreateColorRamp(int param_1, void *param_2) {
     return frame;
 }
 
+/* Sets the colour ramp (from GetOrCreateColorRamp: a count, then 16-bit colours) that the shaded span drawers index
+ * by intensity; the person renderer passes it for materials with flag 0x2000. */
 // FUNCTION: LEGOLAND 0x004864e0
-void FUN_004864e0(void *param_1) {
-    DAT_0066b61c = param_1;
+void SetCurrentColorRamp(void *param_1) {
+    CurrentColorRamp = param_1;
 }
 
 // FUNCTION: LEGOLAND 0x00486540
@@ -492,7 +494,7 @@ L486881:
         cmp edx, dword ptr [ebx + ecx]
         jb L4868be
         mov dword ptr [ebx + ecx], edx
-        mov ebx, dword ptr [DAT_0066b61c]
+        mov ebx, dword ptr [CurrentColorRamp]
         mov ebx, dword ptr [ebx + 4]
         cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x22]
@@ -780,7 +782,7 @@ L486bbb:
         cmp edx, dword ptr [ebx + ecx]
         jb L486bf8
         mov dword ptr [ebx + ecx], edx
-        mov ebx, dword ptr [DAT_0066b61c]
+        mov ebx, dword ptr [CurrentColorRamp]
         mov ebx, dword ptr [ebx + 4]
         cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x22]
@@ -941,7 +943,7 @@ L486cd5:
         mov dword ptr [ebp - 8], edx
         mov dword ptr [ebp - 0x48], eax
         mov dword ptr [ebp - 0x70], ecx
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         mov edx, dword ptr [ebp - 4]
         and edx, 0xffff
@@ -953,7 +955,7 @@ L486cd5:
         shl eax, cl
         mov dword ptr [ebp - 0xc], eax
         shl dword ptr [ebp - 8], 6
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         mov edx, dword ptr [ebp - 0x54]
         and edx, 0xffff
@@ -965,7 +967,7 @@ L486cd5:
         shl eax, cl
         mov dword ptr [ebp - 0x64], eax
         shl dword ptr [ebp - 0x48], 6
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         mov edx, dword ptr [ebp - 0x5c]
         and edx, 0xffff
@@ -1259,7 +1261,7 @@ L487168:
         cmp edx, dword ptr [ebx + ecx]
         jb L4871c5
         mov dword ptr [ebx + ecx], edx
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         movzx edx, word ptr [ebp - 0x22]
         and edx, dword ptr [ebx + 0x10]
@@ -1672,7 +1674,7 @@ L487688:
         cmp edx, dword ptr [ebx + ecx]
         jb L4876e5
         mov dword ptr [ebx + ecx], edx
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         movzx edx, word ptr [ebp - 0x22]
         and edx, dword ptr [ebx + 0x10]
@@ -1776,7 +1778,7 @@ __declspec(naked) void FUN_004877b0(void) {
         push ebx
         push esi
         push edi
-        mov ebx, dword ptr [DAT_0066b61c]
+        mov ebx, dword ptr [CurrentColorRamp]
         mov ebx, dword ptr [ebx + 4]
         mov edx, dword ptr [ebp + 8]
         shl dword ptr [edx + 0x14], 6
@@ -2373,7 +2375,7 @@ L487daf:
         fld dword ptr [ecx + 0x10]
         fmul dword ptr [ebp - 0x14]
         fistp dword ptr [ebp - 0x44]
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         mov edx, dword ptr [ebp - 4]
         and edx, 0xffff
@@ -2384,7 +2386,7 @@ L487daf:
         and eax, 0xffff
         shl eax, cl
         mov dword ptr [ebp - 8], eax
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         mov edx, dword ptr [ebp - 0x58]
         and edx, 0xffff
@@ -2395,7 +2397,7 @@ L487daf:
         and eax, 0xffff
         shl eax, cl
         mov dword ptr [ebp - 0x54], eax
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         mov edx, dword ptr [ebp - 0x4c]
         and edx, 0xffff
@@ -2648,7 +2650,7 @@ L488166:
         cmp edx, dword ptr [ebx + ecx]
         jb L4881c0
         mov dword ptr [ebx + ecx], edx
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         movzx edx, word ptr [ebp - 0x26]
         shl edx, cl
@@ -3002,7 +3004,7 @@ L48857d:
         cmp edx, dword ptr [ebx + ecx]
         jb L4885d7
         mov dword ptr [ebx + ecx], edx
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov ecx, dword ptr [ebx]
         movzx edx, word ptr [ebp - 0x26]
         shl edx, cl
@@ -3107,9 +3109,10 @@ void FreeTextureNodes(void) {
     } while ((INT_PTR)slot < (INT_PTR)&ZBufferImageSpriteReady);
 }
 
+/* SetCurrentTexture for texture slot index (TextureNodes). */
 // FUNCTION: LEGOLAND 0x004886e0
-void FUN_004886e0(unsigned int index) {
-    FUN_00485f20(TextureNodes[index]);
+void SetCurrentTextureByIndex(unsigned int index) {
+    SetCurrentTexture(TextureNodes[index]);
 }
 
 /* Starts a mouse hit test for the next draw: clears the covered flag and points the mouse pixel address at point pt
@@ -3128,7 +3131,7 @@ __declspec(naked) unsigned short FUN_00488730(unsigned int p1, unsigned int p2, 
         mov ebp, esp
         push ecx
         push ebx
-        mov ebx, dword ptr [DAT_0066b630]
+        mov ebx, dword ptr [CurrentTexture]
         mov eax, dword ptr [ebx]
         dec eax
         mov ecx, dword ptr [ebp + 8]
@@ -3180,8 +3183,10 @@ void InitZBufferImageSprite(void) {
     ZBufferImageSprite->flags = ZBufferImageSprite->flags | 0x208;
 }
 
+/* Returns the top 8 bits of the Z buffer value at (x, y); GenerateNewImageFromZBuffer keeps the pixels whose depth
+ * is within its threshold. */
 // FUNCTION: LEGOLAND 0x00488820
-unsigned int FUN_00488820(unsigned int x, unsigned int y) {
+unsigned int GetZBufferDepth(unsigned int x, unsigned int y) {
     unsigned int *row = (unsigned int *)(ZBuffer + ZBufferStride * y);
     return row[x] >> 0x18;
 }
@@ -3219,13 +3224,13 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     SoftPrint_Clear();
     ptmp19 = local.off;
     SoftPrint_BltFast(param_2, &local.rect, ptmp19);
-    FUN_00485fe0(param_2, param_4, param_5);
+    LoadZBufferFromSprite(param_2, param_4, param_5);
     transp = GetTransparentColour();
     yy = 0;
     while (yy < h) {
         for (row = 0; row < w; row++) {
             unsigned short px;
-            if ((int)(FUN_00488820(row, yy) & 0xff) <= param_3) {
+            if ((int)(GetZBufferDepth(row, yy) & 0xff) <= param_3) {
                 px = ((unsigned short *)DAT_0066be54)[yy * w + row];
             } else {
                 px = transp;
