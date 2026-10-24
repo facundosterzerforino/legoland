@@ -3206,7 +3206,7 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     }
     ZBufferSavedSurfaceDesc = CurrentSurfaceDesc;
     ZBufferSavedSoftPrintClip = SoftPrintClip;
-    CurrentSurfaceDesc.lpSurface = DAT_0066be54;
+    CurrentSurfaceDesc.lpSurface = ZBufferRenderPixels;
     CurrentSurfaceDesc.dwWidth = w;
     CurrentSurfaceDesc.dwHeight = h;
     CurrentSurfaceDesc.lPitch = 2 * w;
@@ -3231,7 +3231,7 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
         for (row = 0; row < w; row++) {
             unsigned short px;
             if ((int)(GetZBufferDepth(row, yy) & 0xff) <= param_3) {
-                px = ((unsigned short *)DAT_0066be54)[yy * w + row];
+                px = ((unsigned short *)ZBufferRenderPixels)[yy * w + row];
             } else {
                 px = transp;
             }

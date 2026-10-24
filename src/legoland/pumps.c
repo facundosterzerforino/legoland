@@ -28,9 +28,9 @@ void DrivingSchoolPumpsSetEditMode(void) {
     SetEditCursorFootPrint(DrivingSchoolPumpsFootprint);
     EditCursor.field_1828 = EditCursor.field_1828 | 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DrivingSchoolPumpsFootprint, 0x14);
-    DAT_0082f760.field_1828 = 0x34;
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, DrivingSchoolPumpsFootprint, 0x14);
+    ExtraEditCursor1.field_1828 = 0x34;
 }
 
 // FUNCTION: LEGOLAND 0x00411aa0
@@ -169,12 +169,12 @@ void DrivingSchoolPumpsCalcCursor(Element *obj, int *screen, unsigned int param_
         return;
     }
     if (tile != NULL && IsCursorBuildable(&EditCursor)) {
-        EditCursor.next = &DAT_0082f760;
-        memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 0x14);
-        DAT_0082f760.field_1830 = 0;
-        DAT_0082f760.tile_x = tile->x;
-        DAT_0082f760.tile_y = tile->y;
-        DAT_0082f760.field_1828 = 0x2034;
+        EditCursor.next = &ExtraEditCursor1;
+        memcpy(ExtraEditCursor1.field_1414, RoadPieceFootprint, 0x14);
+        ExtraEditCursor1.field_1830 = 0;
+        ExtraEditCursor1.tile_x = tile->x;
+        ExtraEditCursor1.tile_y = tile->y;
+        ExtraEditCursor1.field_1828 = 0x2034;
         return;
     }
     EditCursor.field_1830 = 0;

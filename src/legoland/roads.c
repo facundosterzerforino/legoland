@@ -463,9 +463,9 @@ void DrivingSchoolRoadsSetEditMode(void) {
     SetEditCursorFootPrint(&RoadPieceFootprint);
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, &RoadPieceFootprint, 20);
-    DAT_0082f760.field_1828 = 0x34;
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, &RoadPieceFootprint, 20);
+    ExtraEditCursor1.field_1828 = 0x34;
 }
 
 /* Build and validate the driving-school road cursor, including its connection to an
@@ -546,12 +546,12 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
                 }
             }
             if (entry != NULL && IsCursorBuildable(&EditCursor) != 0) {
-                memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 20);
-                EditCursor.next = &DAT_0082f760;
-                DAT_0082f760.tile_x = entry->x;
-                DAT_0082f760.tile_y = entry->y;
-                DAT_0082f760.field_1830 = 0;
-                DAT_0082f760.field_1828 = 0x2034;
+                memcpy(ExtraEditCursor1.field_1414, RoadPieceFootprint, 20);
+                EditCursor.next = &ExtraEditCursor1;
+                ExtraEditCursor1.tile_x = entry->x;
+                ExtraEditCursor1.tile_y = entry->y;
+                ExtraEditCursor1.field_1830 = 0;
+                ExtraEditCursor1.field_1828 = 0x2034;
             } else {
                 EditCursor.field_1830 = 0;
             }

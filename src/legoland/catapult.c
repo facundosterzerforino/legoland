@@ -137,7 +137,7 @@ void RenderCatapult(struct Element *obj, int unused, int unused2, TileId *tile, 
             AdjustOffsetForViewMode(&off);
             PrintSprite(GetSpriteForLayer(CatapultLayer, 0), pos.x + off.x, pos.y + off.y, arg5, 0);
         }
-        lp = DAT_004b40a4;
+        lp = CatapultSlotLayers;
         fp = item->active;
         for (i = 4; i != 0; i--) {
             if (*fp & 1) {
@@ -217,7 +217,7 @@ void UpdateCatapultSlotAnimation(struct CatapultNode *node, unsigned int index) 
         if (++node->frame[index] >= 32) {
             node->active[index] = 0;
         }
-        LLSSetFrame(GetLLSForLayer(CatapultLayer, DAT_004b40a4[index]), node->frame[index]);
+        LLSSetFrame(GetLLSForLayer(CatapultLayer, CatapultSlotLayers[index]), node->frame[index]);
     }
 }
 

@@ -201,17 +201,17 @@ void Entrance1Update(Element *elem) {
         }
         switch (bloke->param_action) {
         case 0:
-            DAT_00616110 ^= 1;
+            Entrance1AlternateBit ^= 1;
             bloke->flags |= 8;
             if (bloke->pos.x <= (x0 << 8)) {
                 bloke->field_36 = 2;
                 bloke->param_action++;
-                bloke->field_3a = (rand() >> 8) + DAT_00616110 & 1;
+                bloke->field_3a = (rand() >> 8) + Entrance1AlternateBit & 1;
             }
             if (bloke->pos.x >= (x1 << 8)) {
                 bloke->field_36 = 1;
                 bloke->param_action++;
-                bloke->field_3a = (rand() >> 8) + DAT_00616110 & 1;
+                bloke->field_3a = (rand() >> 8) + Entrance1AlternateBit & 1;
             }
             if (bloke->field_36 == 1) {
                 bloke->dest.x = x1 << 8;

@@ -958,7 +958,7 @@ float BisectTrainSegmentEnd(struct Train *obj, float t) {
     hi = t;
     s.p = 0.0f;
     s.q = anim.count;
-    while (hi - lo > DAT_004ab418) {
+    while (hi - lo > CastleEpsilon) {
         t = (hi + lo) * 0.5f;
         PositionTrainCars(obj, anim.pos, &obj->walker);
         SetTrainEnergy((struct Train *)obj, anim.energy);
@@ -4862,7 +4862,7 @@ void SlopeCurveNormal(float *obj, float t, float *out) {
     v = t * obj[9];
     out[2] = (v * FLOAT_004ab43c + obj[10] * 2) * t + obj[11];
     Vec3Normalize(out);
-    if (fabs(out[1]) < DAT_004ab418) {
+    if (fabs(out[1]) < CastleEpsilon) {
         c = out[2];
         if (*(unsigned int *)&out[0] & 0x80000000) {
             out[2] = -out[0];
@@ -6925,9 +6925,9 @@ void RecordCastleFrameCounters(void) {
     LmsDrawCycleHistory[CastleCounterFrame & 0x3f] = LmsDrawCycles;
     TrainStepCycleHistory[CastleCounterFrame & 0x3f] = TrainStepCycles;
     DepthClearCycleHistory[CastleCounterFrame & 0x3f] = DepthClearCycles;
-    DAT_0060fbf8[CastleCounterFrame & 0x3f] = DAT_00615fc4;
+    BisectRootCallHistory[CastleCounterFrame & 0x3f] = BisectRootCallCount;
     BisectRootStepHistory[CastleCounterFrame & 0x3f] = BisectRootStepCount;
-    DAT_0060fcf8[CastleCounterFrame & 0x3f] = DAT_00615fcc;
+    WalkerRangeCallHistory[CastleCounterFrame & 0x3f] = WalkerRangeCallCount;
     TotalCastleCycleHistory[CastleCounterFrame & 0x3f] = DAT_00610704[CastleCounterFrame & 0x3f] + EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] + TrainStepCycleHistory[CastleCounterFrame & 0x3f] + SupportPostCycleHistory[CastleCounterFrame & 0x3f] + LmsDrawCycleHistory[CastleCounterFrame & 0x3f] + DepthClearCycleHistory[CastleCounterFrame & 0x3f];
     DepthSpanRecordCount = 0;
     FilledTriangleCount = 0;
@@ -6937,9 +6937,9 @@ void RecordCastleFrameCounters(void) {
     LmsDrawCycles = 0;
     TrainStepCycles = 0;
     DepthClearCycles = 0;
-    DAT_00615fc4 = 0;
+    BisectRootCallCount = 0;
     BisectRootStepCount = 0;
-    DAT_00615fcc = 0;
+    WalkerRangeCallCount = 0;
 }
 #pragma optimize("", on)
 
@@ -7251,8 +7251,8 @@ void SetTrackLighting(void) {
     unsigned int i2;
     unsigned int i3;
 
-    f = DAT_004b5cac;
-    f = f + DAT_0061164c;
+    f = TrackLightingBase;
+    f = f + TrackLightingOffset;
     f = f * 0.5f;
 
     i1 = TrackLightDir;
@@ -7260,17 +7260,17 @@ void SetTrackLighting(void) {
     i3 = DAT_004b5cb8;
     CastleLightDir = i1;
 
-    memcpy(&i1, &DAT_0061164c, sizeof(i1));
+    memcpy(&i1, &TrackLightingOffset, sizeof(i1));
     DAT_004b5ca4 = i2;
-    memcpy(&i2, &DAT_004b5cac, sizeof(i2));
+    memcpy(&i2, &TrackLightingBase, sizeof(i2));
     DAT_004b5ca8 = i3;
 
     DAT_00611648 = i1;
     DAT_004b5c9c = i2;
     CastleLightBias = f;
 
-    f = DAT_004b5cac;
-    f = f - DAT_0061164c;
+    f = TrackLightingBase;
+    f = f - TrackLightingOffset;
     f = f * 0.5f;
     CastleLightScale = f;
 }
@@ -7283,8 +7283,8 @@ void SetModelLighting(void) {
     unsigned int i2;
     unsigned int i3;
 
-    f = DAT_004b5cbc;
-    f = f + DAT_00611650;
+    f = ModelLightingBase;
+    f = f + ModelLightingOffset;
     f = f * 0.5f;
 
     i1 = ModelLightDir;
@@ -7292,9 +7292,9 @@ void SetModelLighting(void) {
     i3 = DAT_004b5cc8;
     CastleLightDir = i1;
 
-    memcpy(&i1, &DAT_00611650, sizeof(i1));
+    memcpy(&i1, &ModelLightingOffset, sizeof(i1));
     DAT_004b5ca4 = i2;
-    memcpy(&i2, &DAT_004b5cbc, sizeof(i2));
+    memcpy(&i2, &ModelLightingBase, sizeof(i2));
     DAT_004b5ca8 = i3;
 
     if (f == f) {
@@ -7303,8 +7303,8 @@ void SetModelLighting(void) {
         CastleLightBias = f;
     }
 
-    f = DAT_004b5cbc;
-    f = f - DAT_00611650;
+    f = ModelLightingBase;
+    f = f - ModelLightingOffset;
     f = f * 0.5f;
     CastleLightScale = f;
 }
@@ -10581,7 +10581,7 @@ float WalkerRangeFn(unsigned int x) {
     float *c;
     float d;
 
-    DAT_00615fcc++;
+    WalkerRangeCallCount++;
     GetWalkerPoint(RangeWalker, 1, x, (struct FVec3 *)v);
     c = RangeCentre;
     v[0] = v[0] - c[0];
@@ -10608,7 +10608,7 @@ int BisectRoot(float (*fn)(unsigned int), float lo, float hi, float *out) {
     float fa;
     int n;
 
-    DAT_00615fc4++;
+    BisectRootCallCount++;
     BisectRootStepCount++;
     n = 1;
     fa = fn(*(unsigned int *)&lo);

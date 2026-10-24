@@ -576,7 +576,7 @@ void LoadBoatingSchoolResources(Element *obj) {
     BoatingSchoolHullMaskSprite = LoadSprite("bs_hullmask.lls", 1);
     // STRING: LEGOLAND 0x004b52fc
     BoatingSchoolRailmSprite = LoadSprite("bs_railm.lls", 1);
-    lls = GetLLSForSprite((struct Sprite *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct Sprite *)BoatingSchoolRide->layer, 5)));
+    lls = GetLLSForSprite((struct Sprite *)(BoatingSchoolLayer5Sprite = (void *)GetSpriteForLayer((struct Sprite *)BoatingSchoolRide->layer, 5)));
     LLSStop(lls);
     LLSSetFrame(lls, lls->frame_count);
     BoatingSchoolFootprint = BoatingSchoolRide->footprint;
@@ -843,7 +843,7 @@ void BoatingSchoolUpdate(void) {
     struct SampleSource source2;
     struct Sample *sample;
 
-    lls = GetLLSForSprite((struct Sprite *)DAT_0082ae00);
+    lls = GetLLSForSprite((struct Sprite *)BoatingSchoolLayer5Sprite);
     if (++BoatingSchoolAnimTick == 0x50) {
         BoatingSchoolAnimTick = 0;
         UpdateBoatRides();

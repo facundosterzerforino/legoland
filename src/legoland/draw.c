@@ -2863,17 +2863,17 @@ LEGO_EXPORT int RenderingComplete(void) {
     __asm {
         pushad
         rdtsc
-        mov ebx, DAT_00813a18
+        mov ebx, LastFrameTickCount
         sub eax, ebx
-        mov DAT_00813a18, eax
+        mov LastFrameTickCount, eax
         add DAT_00813a2c, eax
         popad
     }
 #else
     {
         int tsc = (int)GetTickCount();
-        tsc -= DAT_00813a18;
-        DAT_00813a18 = tsc;
+        tsc -= LastFrameTickCount;
+        LastFrameTickCount = tsc;
         DAT_00813a2c += tsc;
     }
 #endif
@@ -2884,11 +2884,11 @@ LEGO_EXPORT int RenderingComplete(void) {
     __asm {
         pushad
         rdtsc
-        mov DAT_00813a18, eax
+        mov LastFrameTickCount, eax
         popad
     }
 #else
-    DAT_00813a18 = (int)GetTickCount();
+    LastFrameTickCount = (int)GetTickCount();
 #endif
     return result;
 }

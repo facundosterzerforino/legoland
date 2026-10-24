@@ -114,10 +114,10 @@ unsigned int LoadBmpIntoImage(struct Image *param_1) {
         RES_SetFilePointer(file, pixel_offset);
         x = 0;
         while (x < 0x100) {
-            DAT_0081c4c0[x] = 0;
+            BmpPalette[x] = 0;
             x++;
         }
-        RES_ReadFile(file, DAT_0081c4c0, *(int *)(info + 0x20) * 4);
+        RES_ReadFile(file, BmpPalette, *(int *)(info + 0x20) * 4);
         RES_SetFilePointer(file, offbits);
         RES_ReadFile(file, pixels, row_size);
         for (y = 0; y < param_1->height; y++) {
@@ -269,7 +269,7 @@ void BuildTextureNodeFromImage(struct Image *param_1, struct TextureNode *param_
                 index = src[x];
                 out[x] = index;
                 if (param_2->data_c[index] == 0) {
-                    param_2->data_c[index] = GetOrCreateColorRamp(0x40, &DAT_0081c4c0[index]);
+                    param_2->data_c[index] = GetOrCreateColorRamp(0x40, &BmpPalette[index]);
                 }
             }
         }

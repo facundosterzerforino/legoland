@@ -789,10 +789,10 @@ LEGO_EXPORT int LoadGame(char *path) {
     }
     {
         unsigned short *tab[256];
-        if (SaveGameRead(&DAT_007fdb84, 4) == 0) {
+        if (SaveGameRead(&SaveGameElementCount, 4) == 0) {
             goto fail;
         }
-        for (i = 0; i < DAT_007fdb84; i++) {
+        for (i = 0; i < SaveGameElementCount; i++) {
             DrawWatchSprite();
             if (SaveGameRead(&len, 4) == 0) {
                 goto fail;
@@ -804,7 +804,7 @@ LEGO_EXPORT int LoadGame(char *path) {
             if (LLIDB_FindElement(name, &u.e, 0) != 0) {
                 goto fail;
             }
-            DAT_007fd660[i] = u.e;
+            SaveGameElements[i] = u.e;
             LLIDB_LoadData(u.e);
             tab[i] = (u.e)->data;
         }
@@ -1180,8 +1180,8 @@ LEGO_EXPORT void UnloadSaveGameMap(void) {
         SavedElementTable = 0;
     }
 
-    for (i = 0; i < DAT_007fdb84; i++) {
-        LLIDB_UnLoadData(DAT_007fd660[i]);
+    for (i = 0; i < SaveGameElementCount; i++) {
+        LLIDB_UnLoadData(SaveGameElements[i]);
     }
 
     ClearGameMap();

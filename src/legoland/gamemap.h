@@ -66,7 +66,7 @@ struct TileMap {
     /* 0x04 */ short *tiles;
 };
 
-// The map edit cursor. EditCursor / QueryCursor / DAT_0082f760 are instances of
+// The map edit cursor. EditCursor / QueryCursor / ExtraEditCursor1 are instances of
 // this 0x1834-byte structure. Only the fields actually touched are named; the
 // gaps are explicit padding so the layout matches the original byte-for-byte.
 struct Cursor {

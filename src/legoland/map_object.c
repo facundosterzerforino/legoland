@@ -1883,9 +1883,9 @@ void DrawViewPathTiles(void) {
 void ClampScrollPosition(int param_1, int param_2, int param_3, int param_4) {
     int marginTopRight; /* DAT_004b95f4 / 2 */
     int marginBottomLeft; /* DAT_004b95f8 / 2 */
-    int marginTopLeft; /* DAT_004b95fc / 2 */
+    int marginTopLeft; /* ScrollMarginTopLeft / 2 */
     int marginBottomRight; /* DAT_004b9600 / 2 */
-    int marginTop; /* DAT_004b960c / 2 */
+    int marginTop; /* ScrollMarginTop / 2 */
     int marginBottom; /* DAT_004b9610 / 2 */
     int marginLeft; /* DAT_004b9608 / 2 */
     int maxX; /* DAT_004b9604 / 2, then the right clamp */
@@ -1903,9 +1903,9 @@ void ClampScrollPosition(int param_1, int param_2, int param_3, int param_4) {
 
     marginTopRight = DAT_004b95f4 >> 1;
     marginBottomLeft = DAT_004b95f8 >> 1;
-    marginTopLeft = DAT_004b95fc >> 1;
+    marginTopLeft = ScrollMarginTopLeft >> 1;
     marginBottomRight = DAT_004b9600 >> 1;
-    marginTop = DAT_004b960c >> 1;
+    marginTop = ScrollMarginTop >> 1;
     marginBottom = DAT_004b9610 >> 1;
     marginLeft = DAT_004b9608 >> 1;
     maxX = DAT_004b9604 >> 1;
@@ -2280,7 +2280,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
         i++;
     }
     RES_ReadFile(file, &curx, 4);
-    DAT_00801a74 = curx;
+    BaseMapEntryCount = curx;
     MapTileSets = malloc(sizeof(*MapTileSets) * curx);
     for (i = 0; i < curx; i++) {
         DrawWatchSprite();
@@ -2687,13 +2687,13 @@ unsigned int UnloadBaseMap(void) {
     }
     free(MapObjectElements);
     i = 0;
-    if (0 < DAT_00801a74) {
+    if (0 < BaseMapEntryCount) {
         do {
             LLIDB_FindElementFromDataPtr(MapTileSets[i], &elem2, 0);
             elem2->flags = elem2->flags & 0xfffcfff1;
             LLIDB_UnLoadData(elem2);
             i = i + 1;
-        } while (i < DAT_00801a74);
+        } while (i < BaseMapEntryCount);
     }
     free(MapTileSets);
     ClearOverlays();

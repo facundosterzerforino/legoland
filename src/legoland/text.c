@@ -36,7 +36,7 @@ LEGO_EXPORT void LoadBubbleHelpGFX(void) {
         SpeechBubbleData = LLIDB_LoadData(element);
     }
 
-    DAT_008139e0 = 0;
+    MoodIconSprites = 0;
     // STRING: LEGOLAND 0x004b9054
     MiHungrySprite = LoadSprite("mi_hungry.lls", 0);
     // STRING: LEGOLAND 0x004b9044
@@ -800,7 +800,7 @@ void HTBubbleHelpWithMood(RECT *rect, const char *text, int font, int mood_icon)
         RenderBlock(frame.left, frame.top, 1, frame.bottom - frame.top, 0);
         RenderBlock(frame.right, frame.top, 1, frame.bottom - frame.top, 0);
         if (mood_icon != 0) {
-            PrintSprite((&DAT_008139e0)[mood_icon], frame.right - half_icon_width, (frame.top + frame.bottom) / 2 - 0x14, 0, 0);
+            PrintSprite((&MoodIconSprites)[mood_icon], frame.right - half_icon_width, (frame.top + frame.bottom) / 2 - 0x14, 0, 0);
         }
         /* DrawText needs a GDI DC: unlock the render surface, then restore its status. */
         PushRenderingStatusAndUnlockVideoSurface();

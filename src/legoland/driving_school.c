@@ -213,16 +213,16 @@ void DrivingSchoolSetEditMode(void) {
     EditMode.unk8 = DrivingSchoolRide;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
-    DAT_0082f760.field_1828 |= 0x100;
-    DefaultCursor(&DAT_0082c6e0);
-    memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
-    DAT_0082c6e0.field_1828 |= 0x200;
-    DefaultCursor(&DAT_0082df20);
-    memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
-    EditCursor.next = &DAT_0082f760;
-    DAT_0082f760.next = &DAT_0082c6e0;
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, DrivingSchoolPart1Footprint, 20);
+    ExtraEditCursor1.field_1828 |= 0x100;
+    DefaultCursor(&ExtraEditCursor2);
+    memcpy(ExtraEditCursor2.field_1414, DrivingSchoolPart2Footprint, 20);
+    ExtraEditCursor2.field_1828 |= 0x200;
+    DefaultCursor(&ExtraEditCursor3);
+    memcpy(ExtraEditCursor3.field_1414, DrivingSchoolPart3Footprint, 20);
+    EditCursor.next = &ExtraEditCursor1;
+    ExtraEditCursor1.next = &ExtraEditCursor2;
 }
 
 // FUNCTION: LEGOLAND 0x00405630
@@ -280,33 +280,33 @@ void DrivingSchoolCalcCursor(struct Element *param_1, int *param_2, unsigned int
 
     c694 = DrivingSchoolRide;
     mapx = EditCursor.tile_x;
-    memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
-    DAT_0082f760.field_1830 = 0;
+    memcpy(ExtraEditCursor1.field_1414, DrivingSchoolPart1Footprint, 20);
+    ExtraEditCursor1.field_1830 = 0;
     mapy = EditCursor.tile_y;
-    DAT_0082f760.field_1828 = 0x4108;
-    DAT_0082f760.tile_x = c694->footprint.x0 + mapx;
-    DAT_0082f760.tile_y = c694->footprint.y0 + mapy;
+    ExtraEditCursor1.field_1828 = 0x4108;
+    ExtraEditCursor1.tile_x = c694->footprint.x0 + mapx;
+    ExtraEditCursor1.tile_y = c694->footprint.y0 + mapy;
 
-    memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
-    DAT_0082c6e0.field_1830 = 0;
-    DAT_0082c6e0.field_1828 = 0x4208;
-    DAT_0082c6e0.tile_x = c694->footprint.x0 + mapx;
-    DAT_0082c6e0.tile_y = c694->footprint.y0 + mapy;
+    memcpy(ExtraEditCursor2.field_1414, DrivingSchoolPart2Footprint, 20);
+    ExtraEditCursor2.field_1830 = 0;
+    ExtraEditCursor2.field_1828 = 0x4208;
+    ExtraEditCursor2.tile_x = c694->footprint.x0 + mapx;
+    ExtraEditCursor2.tile_y = c694->footprint.y0 + mapy;
 
-    memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
-    DAT_0082df20.field_1830 = 0;
-    DAT_0082df20.field_1828 = 0x5008;
-    DAT_0082df20.tile_x = c694->footprint.x0 + mapx;
-    DAT_0082df20.tile_y = c694->footprint.y0 + mapy;
+    memcpy(ExtraEditCursor3.field_1414, DrivingSchoolPart3Footprint, 20);
+    ExtraEditCursor3.field_1830 = 0;
+    ExtraEditCursor3.field_1828 = 0x5008;
+    ExtraEditCursor3.tile_x = c694->footprint.x0 + mapx;
+    ExtraEditCursor3.tile_y = c694->footprint.y0 + mapy;
 
-    ValidateCursor(&DAT_0082df20, src);
-    ValidateCursor(&DAT_0082c6e0, src);
-    ValidateCursor(&DAT_0082f760, src);
+    ValidateCursor(&ExtraEditCursor3, src);
+    ValidateCursor(&ExtraEditCursor2, src);
+    ValidateCursor(&ExtraEditCursor1, src);
     ValidateCursor(&EditCursor, src);
 
-    EditCursor.next = &DAT_0082f760;
-    DAT_0082f760.next = &DAT_0082c6e0;
-    DAT_0082c6e0.next = &DAT_0082df20;
+    EditCursor.next = &ExtraEditCursor1;
+    ExtraEditCursor1.next = &ExtraEditCursor2;
+    ExtraEditCursor2.next = &ExtraEditCursor3;
     PropagateCursorBlocked(&EditCursor);
 }
 
@@ -315,17 +315,17 @@ void DrivingSchoolDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct RideQueueEntry *node = RoadEntryList;
 
     BasicObjectDCalcCursor(param_1, param_2);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 20);
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, RoadPieceFootprint, 20);
 
     while (node != NULL) {
         if (node->id == QueryObj.id) {
-            DAT_0082f760.tile_x = node->x;
-            DAT_0082f760.tile_y = node->y;
-            ResetCursorBuildable(&DAT_0082f760);
-            DAT_0082f760.field_1828 = 0x18;
-            BuildCursorPtr(&DAT_0082f760, 0, 0);
-            RenderCursor(&DAT_0082f760);
+            ExtraEditCursor1.tile_x = node->x;
+            ExtraEditCursor1.tile_y = node->y;
+            ResetCursorBuildable(&ExtraEditCursor1);
+            ExtraEditCursor1.field_1828 = 0x18;
+            BuildCursorPtr(&ExtraEditCursor1, 0, 0);
+            RenderCursor(&ExtraEditCursor1);
         }
         node = node->next;
     }
@@ -340,8 +340,8 @@ void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3
     struct NewBloke *nextBloke;
 
     StandardRemoveObject(obj, tile, (struct Cursor *)param_3);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 20);
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, RoadPieceFootprint, 20);
 
     if (count->tile.id == tile.id) {
         DrivingSchoolCountList = count->next;
@@ -367,9 +367,9 @@ void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3
                 UpdateQueuePathShape(queue->id, queue->x, queue->y);
                 AddBricks(((struct DSObjClass *)ZebraCrossingRide)->cost);
             }
-            DAT_0082f760.tile_x = queue->x;
-            DAT_0082f760.tile_y = queue->y;
-            StandardRemoveObject((Element *)((struct DSObjClass *)DrivingSchoolRoadsClass)->element, *(TileId *)&queue->id, &DAT_0082f760);
+            ExtraEditCursor1.tile_x = queue->x;
+            ExtraEditCursor1.tile_y = queue->y;
+            StandardRemoveObject((Element *)((struct DSObjClass *)DrivingSchoolRoadsClass)->element, *(TileId *)&queue->id, &ExtraEditCursor1);
             RemoveRoadEntry(queue->x, queue->y);
         }
         queue = next;

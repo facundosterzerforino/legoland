@@ -567,7 +567,7 @@ extern float TrainCarMass;
 // 0x004ab43c
 extern float FLOAT_004ab43c;
 // 0x004ab418
-extern double DAT_004ab418;
+extern double CastleEpsilon;
 // 0x004ab424
 extern float FLOAT_004ab424;
 // 0x004ab428
@@ -672,7 +672,7 @@ extern GUID IID_IDirectDraw2_Guid;
 // 0x004b4034
 extern int DAT_004b4034[16];
 // 0x004b40a4
-extern unsigned int DAT_004b40a4[4];
+extern unsigned int CatapultSlotLayers[4];
 extern int DAT_004b40b4[4];
 // 0x004b40c8
 extern struct FXItem Catapult_SFX[4]; /* their file names follow */
@@ -681,11 +681,11 @@ extern struct FXItem Helicopter_SFX[4]; /* their file names follow */
 // 0x004b43f8
 extern struct FXItem DRIVING_SCHOOL_SFX[6]; /* their file names follow */
 // 0x004b4440
-extern unsigned int DAT_004b4440[5];
+extern unsigned int DrivingSchoolPart1Footprint[5];
 // 0x004b4458
-extern unsigned int DAT_004b4458[5];
+extern unsigned int DrivingSchoolPart2Footprint[5];
 // 0x004b4470
-extern unsigned int DAT_004b4470[5];
+extern unsigned int DrivingSchoolPart3Footprint[5];
 // 0x004b4688
 extern struct FXItem JOUST_SFX[1];
 // 0x004b4728 (20 bytes: copied whole into cursors and rides, including the NULL next)
@@ -806,7 +806,7 @@ extern unsigned int DAT_004b5ca4;
 // 0x004b5ca8
 extern unsigned int DAT_004b5ca8;
 // 0x004b5cac
-extern float DAT_004b5cac;
+extern float TrackLightingBase;
 // 0x004b5cb0
 extern unsigned int TrackLightDir;
 // 0x004b5cb4
@@ -814,7 +814,7 @@ extern unsigned int DAT_004b5cb4;
 // 0x004b5cb8
 extern unsigned int DAT_004b5cb8;
 // 0x004b5cbc
-extern float DAT_004b5cbc;
+extern float ModelLightingBase;
 // 0x004b5cc0
 extern unsigned int ModelLightDir;
 // 0x004b5cc4
@@ -1054,7 +1054,7 @@ extern int DAT_004b95f4;
 // 0x004b95f8
 extern int DAT_004b95f8;
 // 0x004b95fc
-extern int DAT_004b95fc;
+extern int ScrollMarginTopLeft;
 // 0x004b9600
 extern int DAT_004b9600;
 // 0x004b9604
@@ -1062,7 +1062,7 @@ extern int DAT_004b9604;
 // 0x004b9608
 extern int DAT_004b9608;
 // 0x004b960c
-extern int DAT_004b960c;
+extern int ScrollMarginTop;
 // 0x004b9610
 extern int DAT_004b9610;
 // 0x004b9ca4
@@ -1123,11 +1123,11 @@ extern BITMAPINFOHEADER AviFrameFormat;
 // 0x004bb588
 // 0x004bb58c
 // 0x004bb598
-extern struct Point DAT_004bb598;
+extern struct Point AStarStartPoint;
 // 0x004bb5a0
-extern int DAT_004bb5a0;
+extern int AStarGoalX;
 // 0x004bb5a4
-extern int DAT_004bb5a4;
+extern int AStarGoalY;
 // 0x004bb5ac
 extern unsigned int ScriptObjectiveKind;
 // 0x004bb5b0
@@ -1725,9 +1725,9 @@ extern float rsqrtf_exp_table[256];
 // 0x00611648
 extern unsigned int DAT_00611648;
 // 0x0061164c
-extern float DAT_0061164c;
+extern float TrackLightingOffset;
 // 0x00611650
-extern float DAT_00611650;
+extern float ModelLightingOffset;
 // 0x00611654
 extern float DAT_00611654;
 // 0x00611658
@@ -1776,9 +1776,9 @@ extern unsigned int RailSplitCount;
 extern unsigned int DAT_00615f70[4];
 // 0x00615f84
 extern struct CurveWalker *RangeWalker;
-extern int DAT_00615fc4;
+extern int BisectRootCallCount;
 extern int BisectRootStepCount;
-extern int DAT_00615fcc;
+extern int WalkerRangeCallCount;
 extern float RangeRadius;
 extern float RangeRadiusSq;
 extern float RangeOuterSq;
@@ -1837,7 +1837,7 @@ extern struct Sprite *CarouselEntranceMatte2Sprite;
 // 0x00616078
 extern int CarouselDrawOffsetX;
 // 0x0061607c
-extern int DAT_0061607c;
+extern int CarouselDrawOffsetY;
 // 0x00616080
 extern void *CarouselOnBinV;
 // 0x00616084
@@ -1877,7 +1877,7 @@ extern struct Ride *EntranceRide;
 // 0x006160f0
 extern struct Sprite *EntranceLayer;
 // 0x00616110
-extern int DAT_00616110;
+extern int Entrance1AlternateBit;
 // 0x006160fc
 extern struct Sprite *EntranceMatte1Sprite;
 // 0x00616100
@@ -2814,7 +2814,7 @@ extern unsigned int ZBufferStride;
 // 0x0066be50
 extern struct Image *ZBufferSourceImage;
 // 0x0066be54
-extern unsigned short DAT_0066be54[0x4b002];
+extern unsigned short ZBufferRenderPixels[0x4b002];
 // 0x00701e58
 extern unsigned int Render3DTargetPitch;
 // 0x00701e5c
@@ -3192,7 +3192,7 @@ extern struct EditState TitleSavedEditMode; /* EditMode saved by SaveScreenState
 // 0x007cb300
 extern struct ScreenMode TitleSavedScreenMode; /* FrontEndScreenMode saved */
 // 0x007cb30c
-extern unsigned int DAT_007cb30c; /* DAT_00668e38 saved */
+extern unsigned int TitleSavedScreenFlag; /* DAT_00668e38 saved */
 // 0x007cb310
 extern unsigned int SavedGameScreenFromExitDialog;
 // 0x007cb314
@@ -3274,11 +3274,11 @@ extern HMIDIOUT MidiOutHandle;
 // 0x007fd640
 extern struct ResVolume *ResourceVolumes[4];
 // 0x007fd660
-extern struct Element *DAT_007fd660[256];
+extern struct Element *SaveGameElements[256];
 // 0x007fda60
 extern struct BlokeSave BlokeSaveBuffer;
 // 0x007fdb84
-extern int DAT_007fdb84;
+extern int SaveGameElementCount;
 // 0x007fdb88
 extern unsigned int SelectElementMask;
 // 0x007fdba0
@@ -3511,7 +3511,7 @@ extern int *BasicTiles1Data;
 // 0x00801a70
 extern struct MapTileSet **MapTileSets; /* the level's tile object sets */
 // 0x00801a74
-extern int DAT_00801a74;
+extern int BaseMapEntryCount;
 // 0x00801a80
 extern struct MapRect RectList[10];
 // 0x00801b20
@@ -3593,7 +3593,7 @@ extern int MapViewX;
 // 0x008139cc
 extern int MapViewY;
 // 0x008139e0
-extern struct Sprite *DAT_008139e0;
+extern struct Sprite *MoodIconSprites;
 // 0x008139e4
 extern struct Sprite *MiHungrySprite;
 // 0x008139e8
@@ -3619,7 +3619,7 @@ extern void *SpeechBubbleData;
 // 0x00813a10
 extern unsigned int DebugAllocatedBytes;
 // 0x00813a18
-extern unsigned long DAT_00813a18;
+extern unsigned long LastFrameTickCount;
 // 0x00813a2c
 extern int DAT_00813a2c;
 // 0x00813a34
@@ -3760,7 +3760,7 @@ extern void *AdPhoneGestureAnim;
 // 0x0081c0c0
 extern int TextureSizes[0x200];
 // 0x0081c4c0
-extern unsigned int DAT_0081c4c0[0x100];
+extern unsigned int BmpPalette[0x100];
 // 0x0081c8c0
 extern struct LocFile *VisitorLocData;
 // 0x0081c8c4
@@ -4041,7 +4041,7 @@ extern struct Ride *BoatingSchoolMermaidRide;
 // 0x0082adfc
 extern struct Sprite *BoatingSchoolHullMaskSprite;
 // 0x0082ae00
-extern void *DAT_0082ae00;
+extern void *BoatingSchoolLayer5Sprite;
 // 0x0082ae20
 extern struct Cursor DAT_0082ae20;
 // 0x0082c654
@@ -4078,11 +4078,11 @@ extern unsigned short *DSchoolBluePalette;
 // 0x0082c6c0
 extern struct Sprite *DSchoolMatteSprite;
 // 0x0082c6e0
-extern struct Cursor DAT_0082c6e0;
+extern struct Cursor ExtraEditCursor2;
 // 0x0082df20
-extern struct Cursor DAT_0082df20;
+extern struct Cursor ExtraEditCursor3;
 // 0x0082f760
-extern struct Cursor DAT_0082f760;
+extern struct Cursor ExtraEditCursor1;
 // 0x00830f94
 extern struct Sprite *DSCarSprite;
 // 0x00830f98
@@ -4223,13 +4223,13 @@ extern int TrainStepCycleHistory[64];
 extern int DepthClearCycleHistory[64];
 
 // 0x0060fbf8
-extern int DAT_0060fbf8[64];
+extern int BisectRootCallHistory[64];
 
 // 0x006101f8
 extern int BisectRootStepHistory[64];
 
 // 0x0060fcf8
-extern int DAT_0060fcf8[64];
+extern int WalkerRangeCallHistory[64];
 
 // 0x00610904
 extern int TotalCastleCycleHistory[64];

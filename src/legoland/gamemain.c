@@ -227,8 +227,8 @@ struct GameMainNode *GetPathNodeAt(struct Point *pos, int *result) {
     node->x = pos->x;
     node->y = pos->y;
     node->path_cost = 0x7fffffff;
-    dy = abs(pos->y - DAT_004bb5a4);
-    dx = abs(pos->x - DAT_004bb5a0);
+    dy = abs(pos->y - AStarGoalY);
+    dx = abs(pos->x - AStarGoalX);
     node->parent = 0;
     node->field_24 = 0;
     node->heuristic = dx + dy;
@@ -349,18 +349,18 @@ void FindMapPathAStar(int x, int y, int a, int b) {
     int cur_y;
     int pos_x;
     int cur_x2;
-    DAT_004bb598.x = x;
-    DAT_004bb598.y = y;
+    AStarStartPoint.x = x;
+    AStarStartPoint.y = y;
     best = NULL;
-    DAT_004bb5a0 = a;
-    DAT_004bb5a4 = b;
-    nb = GetPathNodeAt(&DAT_004bb598, &result);
+    AStarGoalX = a;
+    AStarGoalY = b;
+    nb = GetPathNodeAt(&AStarStartPoint, &result);
     nb->path_cost = 0;
     InsertOpenListSorted((struct GameMainNode *)nb);
     while ((cur = OpenPathNodeList) != NULL) {
         OpenPathNodeList = cur->next;
 
-        if ((DAT_004bb5a0 == cur->x && cur->y == DAT_004bb5a4) || cur->field_20 == 1) {
+        if ((AStarGoalX == cur->x && cur->y == AStarGoalY) || cur->field_20 == 1) {
             best = cur;
         } else {
             pos.x = cur->x;
