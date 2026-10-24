@@ -1045,7 +1045,7 @@ void CountClassesOfType1Or3(int *param_1, int *param_2) {
 
 // FUNCTION: LEGOLAND 0x00444c40
 int IsRidePartClass(struct Ride *node) {
-    return FindStringNoCase(((struct Ride *)node)->element->name, &DAT_004b7e9c, 0x16) >= 0;
+    return FindStringNoCase(((struct Ride *)node)->element->name, &RidePartClassNames, 0x16) >= 0;
 }
 
 // FUNCTION: LEGOLAND 0x00444c70

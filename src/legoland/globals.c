@@ -296,43 +296,43 @@ struct Footprint LogFlumeFootprint;
 // 0x008003e8 is EditCursor.field_1828 — see struct Cursor in gamemap.h.
 
 // GLOBAL: LEGOLAND 0x004b473c
-int DAT_004b473c[4];
+int FlumeTrackMode3Sprites[4];
 
 // GLOBAL: LEGOLAND 0x004b474c
-int DAT_004b474c[2];
+int FlumeTrackMode1Sprites[2];
 
 // GLOBAL: LEGOLAND 0x004b4754
-int DAT_004b4754[4];
+int FlumeTrackMode2Sprites[4];
 
 // GLOBAL: LEGOLAND 0x004b4764
-int DAT_004b4764;
+int FlumeTrackMode4Sprite;
 
 // GLOBAL: LEGOLAND 0x004b47f8
-struct Sprite *DAT_004b47f8;
+struct Sprite *LogFlumeFc1M1StageSprite;
 
 // GLOBAL: LEGOLAND 0x004b4804
-struct Sprite *DAT_004b4804;
+struct Sprite *LogFlumeFc1M2StageSprite;
 
 // GLOBAL: LEGOLAND 0x004b4808
-struct FlumeTemplate DAT_004b4808;
+struct FlumeTemplate LogFlumeSpecialCorner1Stages;
 
 // GLOBAL: LEGOLAND 0x004b4818
-struct Sprite *DAT_004b4818;
+struct Sprite *LogFlumeFc3M1StageSprite;
 
 // GLOBAL: LEGOLAND 0x004b4824
-struct Sprite *DAT_004b4824;
+struct Sprite *LogFlumeFc3M2StageSprite;
 
 // GLOBAL: LEGOLAND 0x004b4828
-struct FlumeTemplate DAT_004b4828;
+struct FlumeTemplate LogFlumeSpecialCorner3Stages;
 
 // GLOBAL: LEGOLAND 0x004b4838
-struct Sprite *DAT_004b4838;
+struct Sprite *LogFlumeHup1M1StageSprite;
 
 // GLOBAL: LEGOLAND 0x004b4850
-struct Sprite *DAT_004b4850;
+struct Sprite *LogFlumeHup1M2StageSprite;
 
 // GLOBAL: LEGOLAND 0x004b4858
-struct FlumeTemplate DAT_004b4858;
+struct FlumeTemplate LogFlumeHoldUpStages;
 
 // GLOBAL: LEGOLAND 0x004b4bd0
 unsigned char DrivingSchoolPumpsFootprint[0x14];
@@ -691,10 +691,10 @@ struct Point JungleCruiseQueueOffsets[5];
 struct Footprint DAT_004b7230;
 
 // GLOBAL: LEGOLAND 0x004b7248
-struct Footprint DAT_004b7248;
+struct Footprint JungleCruiseStartFootprintTemplate;
 
 // GLOBAL: LEGOLAND 0x004b72e4
-unsigned char DAT_004b72e4[0x190];
+unsigned char JunglePathTilePatterns[0x190];
 
 // GLOBAL: LEGOLAND 0x004b7478
 struct Footprint JungleCruiseDefaultFootprint;
@@ -727,8 +727,9 @@ char PlaneRideManboxName[] = "manbox??";
 // GLOBAL: LEGOLAND 0x004b79d0
 struct FXItem PlaneRideFX[2];
 
+/* FPU control word loaded while a 3D person is rendered. */
 // GLOBAL: LEGOLAND 0x004b7abc
-unsigned short DAT_004b7abc;
+unsigned short PersonRenderFpuControlWord;
 
 // GLOBAL: LEGOLAND 0x004b7ac0
 unsigned char BlokeColours[0x18];
@@ -763,8 +764,9 @@ unsigned short DAT_004b7d7e;
 // GLOBAL: LEGOLAND 0x004b7d84
 unsigned int DAT_004b7d84;
 
+/* Start of the 22 element names IsRidePartClass accepts. */
 // GLOBAL: LEGOLAND 0x004b7e9c
-unsigned int DAT_004b7e9c;
+unsigned int RidePartClassNames;
 
 // GLOBAL: LEGOLAND 0x004b81c0
 // STRING: LEGOLAND 0x004b8260
@@ -863,8 +865,9 @@ struct FXItem GameFX[FX_COUNT];
 // GLOBAL: LEGOLAND 0x004b9550
 unsigned char DirectionBits[8];
 
+/* Path 3x3 square masks tried by FindPathSquare3x3, with the matching x/y origin offsets after them. */
 // GLOBAL: LEGOLAND 0x004b9558
-unsigned int DAT_004b9558[9] = {
+unsigned int PathSquare3x3Masks[9] = {
     0x01ce7000,
     0x00e73800,
     0x00739c00,
@@ -877,10 +880,10 @@ unsigned int DAT_004b9558[9] = {
 };
 
 // GLOBAL: LEGOLAND 0x004b957c
-int DAT_004b957c[9] = {-2, -1, 0, -2, -1, 0, -2, -1, 0};
+int PathSquare3x3OffsetsX[9] = {-2, -1, 0, -2, -1, 0, -2, -1, 0};
 
 // GLOBAL: LEGOLAND 0x004b95a0
-int DAT_004b95a0[9] = {-2, -2, -2, -1, -1, -1, 0, 0, 0};
+int PathSquare3x3OffsetsY[9] = {-2, -2, -2, -1, -1, -1, 0, 0, 0};
 
 // GLOBAL: LEGOLAND 0x004b95c4
 unsigned char DAT_004b95c4[8];
@@ -954,11 +957,13 @@ void *PTR_some_list_head_004ba87c;
 // GLOBAL: LEGOLAND 0x004ba880
 void *PTR_DAT_004ba880;
 
+/* Print colour/flag for build icons the player cannot afford (cost above the brick count). */
 // GLOBAL: LEGOLAND 0x004ba884
-unsigned int DAT_004ba884 = 0xff000000;
+unsigned int UnaffordableIconColour = 0xff000000;
 
+/* Advice speech table indexed by advice id (TryPlayAdviceSpeech). */
 // GLOBAL: LEGOLAND 0x004ba8e0
-struct InfoTimedEntry DAT_004ba8e0[17];
+struct InfoTimedEntry AdviceSpeechEntries[17];
 
 // GLOBAL: LEGOLAND 0x004ba9ac
 unsigned int AdviceSpeechIds[234];
@@ -1000,8 +1005,9 @@ unsigned int WesternThemeDeselected;
 // GLOBAL: LEGOLAND 0x004bb0a0
 unsigned int AdventurersThemeDeselected;
 
+/* Pairs of object name and build element name (NULL = itself) used by SelectMatchingBuildElement. */
 // GLOBAL: LEGOLAND 0x004bb0a4
-struct TrackElemPair DAT_004bb0a4[29];
+struct TrackElemPair BuildElementNameMap[29];
 
 // GLOBAL: LEGOLAND 0x004bb18c
 unsigned int DAT_004bb18c[4];
@@ -1029,26 +1035,26 @@ unsigned int ScriptObjectiveKind;
 unsigned int ScriptConditionActive;
 
 // GLOBAL: LEGOLAND 0x004bb5b4
-unsigned int DAT_004bb5b4;
+unsigned int ScriptZoningNames;
 
 // GLOBAL: LEGOLAND 0x004bb5c4
-unsigned int DAT_004bb5c4;
+unsigned int ScriptThemeNames;
 
 // GLOBAL: LEGOLAND 0x004bb5d8
-unsigned int DAT_004bb5d8;
+unsigned int ScriptTabNames;
 
 // GLOBAL: LEGOLAND 0x004bb5e0
-unsigned int DAT_004bb5e0;
+unsigned int ScriptModeNames;
 
 // GLOBAL: LEGOLAND 0x004bb5f4
-unsigned int DAT_004bb5f4;
+unsigned int ScriptFeatureNames;
 
 /* Start of the 25 report names matched by the script REPORT command. */
 // GLOBAL: LEGOLAND 0x004bb624
 unsigned int ScriptReportNames;
 
 // GLOBAL: LEGOLAND 0x004bb688
-unsigned int DAT_004bb688;
+unsigned int ScriptHapFactorNames;
 
 // GLOBAL: LEGOLAND 0x004bb6bc
 unsigned int DAT_004bb6bc;
@@ -1154,8 +1160,9 @@ unsigned int MusicEnabled;
 // GLOBAL: LEGOLAND 0x004bf778
 unsigned int MusicState;
 
+/* Twelve tile offsets FindNearbyRepairTarget checks around a worker. */
 // GLOBAL: LEGOLAND 0x004bff28
-const int DAT_004bff28[12][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {0, 2}, {0, -2},
+const int RepairSearchOffsets[12][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {0, 2}, {0, -2},
     {2, 0}, {-2, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
 // GLOBAL: LEGOLAND 0x004c10d4
@@ -2597,7 +2604,7 @@ struct IconNode *AppraisalNextIcon;
 struct IconNode *AppraisalPrevIcon;
 
 // GLOBAL: LEGOLAND 0x006660b0
-char DAT_006660b0[256];
+char GfxFileNameBuffer[256];
 
 // GLOBAL: LEGOLAND 0x006661bc
 int ParkVisitorCount;
@@ -2862,16 +2869,16 @@ unsigned int ShowPathTileOverlay;
 int DeferredSpriteCount;
 
 // GLOBAL: LEGOLAND 0x00667d48
-unsigned int DAT_00667d48;
+unsigned int PathOverlayBlinkMask;
 
 // GLOBAL: LEGOLAND 0x00667d4c
-unsigned int DAT_00667d4c;
+unsigned int LastMouseScrollFrameMS;
 
 // GLOBAL: LEGOLAND 0x00667d50
 unsigned int MapDataLoaded;
 
 // GLOBAL: LEGOLAND 0x00667d54
-unsigned int DAT_00667d54;
+unsigned int DamageTimerStart;
 
 /* Game timer frame of the last ride wear tick (IsRideWearDue). */
 // GLOBAL: LEGOLAND 0x00667d58
@@ -3024,7 +3031,7 @@ struct ObjectiveEvent *ScriptEventList;
 unsigned int ScriptPurgePending;
 
 // GLOBAL: LEGOLAND 0x0066878c
-int DAT_0066878c;
+int ScriptNeedRemaining;
 
 // GLOBAL: LEGOLAND 0x00668790
 unsigned int ScriptSectionStarted;
@@ -3445,7 +3452,7 @@ struct GameMainNode *ClosedPathNodeList;
 int ScriptResourceLineNumber;
 
 // GLOBAL: LEGOLAND 0x00668fd0
-char DAT_00668fd0[128];
+char CurrentScriptFileName[128];
 
 // GLOBAL: LEGOLAND 0x00669050
 unsigned char CurrentObjectiveEventFlags;
@@ -5701,8 +5708,9 @@ int DAT_006148b8[546][2];
 // GLOBAL: LEGOLAND 0x00667528
 int ExceptionReportStarted;
 
+/* Number of code bytes at CS:EIP written to the exception log (16). */
 // GLOBAL: LEGOLAND 0x004b8a88
-int DAT_004b8a88 = 0x10;
+int StackDumpCodeBytes = 0x10;
 
 // GLOBAL: LEGOLAND 0x004b8a8c
 int StackDumpMaxWords = 0x800;

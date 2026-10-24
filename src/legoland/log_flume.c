@@ -1520,13 +1520,13 @@ int GetFlumeTrackSpriteIndex(struct FlumeEntry *node) {
     if (node != NULL) {
         switch (node->mode) {
         case 1:
-            return DAT_004b474c[node->submode];
+            return FlumeTrackMode1Sprites[node->submode];
         case 2:
-            return DAT_004b4754[node->submode];
+            return FlumeTrackMode2Sprites[node->submode];
         case 3:
-            return DAT_004b473c[node->submode];
+            return FlumeTrackMode3Sprites[node->submode];
         case 4:
-            result = DAT_004b4764;
+            result = FlumeTrackMode4Sprite;
         }
     }
     return result;
@@ -3922,8 +3922,8 @@ void LogFlumeSpecialCorner1LoadSprites(struct Element *obj_ptr) {
     // STRING: LEGOLAND 0x004b4a4c
     LogFlumeFc1M2Sprite = LoadSprite("fc1_m2.lls", 1);
 
-    DAT_004b47f8 = LogFlumeFc1M1Sprite;
-    DAT_004b4804 = LogFlumeFc1M2Sprite;
+    LogFlumeFc1M1StageSprite = LogFlumeFc1M1Sprite;
+    LogFlumeFc1M2StageSprite = LogFlumeFc1M2Sprite;
 }
 
 // FUNCTION: LEGOLAND 0x0040e920
@@ -3972,8 +3972,8 @@ void LogFlumeSpecialCorner3LoadSprites(struct Element *obj_ptr) {
     // STRING: LEGOLAND 0x004b4a70
     LogFlumeFc3M2Sprite = LoadSprite("fc3_m2.lls", 1);
 
-    DAT_004b4818 = LogFlumeFc3M1Sprite;
-    DAT_004b4824 = LogFlumeFc3M2Sprite;
+    LogFlumeFc3M1StageSprite = LogFlumeFc3M1Sprite;
+    LogFlumeFc3M2StageSprite = LogFlumeFc3M2Sprite;
 }
 
 // FUNCTION: LEGOLAND 0x0040e9e0
@@ -4140,7 +4140,7 @@ void RenderLogFlumeSpecialCorner1(Element *elem, unsigned int param_2, unsigned 
     DrawFlumeBarrelsAtTile(tile);
     entry = FindFlumeSubEntryByTile(tile);
     if (entry != NULL) {
-        DrawFlumeBarrelsByStage(entry, pos.x, pos.y, (struct FlumeStageList *)&DAT_004b4808, 0);
+        DrawFlumeBarrelsByStage(entry, pos.x, pos.y, (struct FlumeStageList *)&LogFlumeSpecialCorner1Stages, 0);
         DrawFlumeTrackEnds((struct FlumeEntry *)entry, 1);
     }
 }
@@ -4199,7 +4199,7 @@ void RenderLogFlumeSpecialCorner3(Element *elem, unsigned int param_2, unsigned 
     DrawFlumeBarrelsAtTile(tile);
     entry = FindFlumeSubEntryByTile(tile);
     if (entry != NULL) {
-        DrawFlumeBarrelsByStage(entry, pos.x, pos.y, (struct FlumeStageList *)&DAT_004b4828, 1);
+        DrawFlumeBarrelsByStage(entry, pos.x, pos.y, (struct FlumeStageList *)&LogFlumeSpecialCorner3Stages, 1);
         DrawFlumeTrackEnds((struct FlumeEntry *)entry, 1);
     }
 }
@@ -4698,8 +4698,8 @@ void LogFlumeHoldUpLoadSprites(struct Element *obj_ptr) {
     LogFlumeHup1M1Sprite = LoadSprite("hup1_m1.lls", 1);
     // STRING: LEGOLAND 0x004b4aac
     LogFlumeHup1M2Sprite = LoadSprite("hup1_m2.lls", 1);
-    DAT_004b4838 = LogFlumeHup1M1Sprite;
-    DAT_004b4850 = LogFlumeHup1M2Sprite;
+    LogFlumeHup1M1StageSprite = LogFlumeHup1M1Sprite;
+    LogFlumeHup1M2StageSprite = LogFlumeHup1M2Sprite;
 }
 
 // FUNCTION: LEGOLAND 0x0040ffa0
@@ -4746,7 +4746,7 @@ void RenderLogFlumeHoldUp(Element *elem, unsigned int param_2, unsigned int para
     DrawFlumeBarrelsAtTile(tile);
     entry = FindFlumeSubEntryByTile(tile);
     if (entry != NULL) {
-        DrawFlumeBarrelsByStage(entry, pos.x, pos.y, (struct FlumeStageList *)&DAT_004b4858, 0);
+        DrawFlumeBarrelsByStage(entry, pos.x, pos.y, (struct FlumeStageList *)&LogFlumeHoldUpStages, 0);
         DrawFlumeTrackEnds((struct FlumeEntry *)entry, 1);
     }
 }

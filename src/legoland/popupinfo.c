@@ -1415,7 +1415,7 @@ unsigned int TryPlayAdviceSpeech(unsigned int param) {
     struct InfoTimedEntry *entry;
     unsigned long now;
 
-    entry = &DAT_004ba8e0[param];
+    entry = &AdviceSpeechEntries[param];
     if ((int)CurrentAdvicePriority < (int)param) {
         now = GetTicks();
         if ((int)(entry->interval + entry->last_time) < (int)now) {

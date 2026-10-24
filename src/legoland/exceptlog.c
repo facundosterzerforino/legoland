@@ -97,7 +97,7 @@ int stackdump(void *exc_info, const char *filename) {
         // STRING: LEGOLAND 0x004b8afc
         WriteFileFormatted(hFile, "Bytes at CS:EIP:\r\n");
         ip = (unsigned char *)ctx->Eip;
-        for (i = 0; i < DAT_004b8a88; i++) {
+        for (i = 0; i < StackDumpCodeBytes; i++) {
             __try {
                 // STRING: LEGOLAND 0x004b8af4
                 WriteFileFormatted(hFile, "%02x ", ip[i]);

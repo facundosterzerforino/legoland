@@ -1992,7 +1992,7 @@ LEGO_EXPORT void MouseScrollMap(void) {
         ScrollSpeedY = 0;
     }
     ProcessScrolling((int)(LastFrameMS * ScrollSpeedX) / 0x100, (int)(LastFrameMS * ScrollSpeedY) / 0x100);
-    DAT_00667d4c = LastFrameMS;
+    LastMouseScrollFrameMS = LastFrameMS;
 }
 
 // FUNCTION: LEGOLAND 0x004615f0
@@ -3094,7 +3094,7 @@ int IsRideWearDue(void) {
 
 // FUNCTION: LEGOLAND 0x00463560
 void ResetDamageTimer(void) {
-    DAT_00667d54 = GetGameTimer();
+    DamageTimerStart = GetGameTimer();
     LastRideWearFrame = GetGameTimerFrames();
 }
 

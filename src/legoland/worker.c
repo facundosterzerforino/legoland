@@ -1276,7 +1276,7 @@ MapElement *FindNearbyRepairTarget(Bloke *worker, int x, int y) {
     int tx;
     int ty;
 
-    for (offset = &DAT_004bff28[0][1]; offset < &DAT_004bff28[12][1]; offset += 2) {
+    for (offset = &RepairSearchOffsets[0][1]; offset < &RepairSearchOffsets[12][1]; offset += 2) {
         tx = offset[-1] + x;
         ty = offset[0] + y;
         if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {

@@ -290,7 +290,7 @@ unsigned int ScriptEventNeed(struct ObjectiveEvent *arg) {
     count = ObjCount((struct Element *)arg->element);
     if (count < (int)arg->field_1c) {
         QueueBuildMoreObjectsHint(arg, arg->field_4, arg->field_1c - count);
-        DAT_0066878c = arg->field_1c - count;
+        ScriptNeedRemaining = arg->field_1c - count;
         return 0;
     }
     return 1;

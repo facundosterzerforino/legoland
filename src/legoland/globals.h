@@ -691,31 +691,31 @@ extern struct FXItem JOUST_SFX[1];
 // 0x004b4728 (20 bytes: copied whole into cursors and rides, including the NULL next)
 extern struct Footprint LogFlumeFootprint;
 // 0x004b473c
-extern int DAT_004b473c[4];
+extern int FlumeTrackMode3Sprites[4];
 // 0x004b474c
-extern int DAT_004b474c[2];
+extern int FlumeTrackMode1Sprites[2];
 // 0x004b4754
-extern int DAT_004b4754[4];
+extern int FlumeTrackMode2Sprites[4];
 // 0x004b4764
-extern int DAT_004b4764;
+extern int FlumeTrackMode4Sprite;
 // 0x004b47f8
-extern struct Sprite *DAT_004b47f8;
+extern struct Sprite *LogFlumeFc1M1StageSprite;
 // 0x004b4804
-extern struct Sprite *DAT_004b4804;
+extern struct Sprite *LogFlumeFc1M2StageSprite;
 // 0x004b4808
-extern struct FlumeTemplate DAT_004b4808;
+extern struct FlumeTemplate LogFlumeSpecialCorner1Stages;
 // 0x004b4818
-extern struct Sprite *DAT_004b4818;
+extern struct Sprite *LogFlumeFc3M1StageSprite;
 // 0x004b4824
-extern struct Sprite *DAT_004b4824;
+extern struct Sprite *LogFlumeFc3M2StageSprite;
 // 0x004b4828
-extern struct FlumeTemplate DAT_004b4828;
+extern struct FlumeTemplate LogFlumeSpecialCorner3Stages;
 // 0x004b4838
-extern struct Sprite *DAT_004b4838;
+extern struct Sprite *LogFlumeHup1M1StageSprite;
 // 0x004b4850
-extern struct Sprite *DAT_004b4850;
+extern struct Sprite *LogFlumeHup1M2StageSprite;
 // 0x004b4858
-extern struct FlumeTemplate DAT_004b4858;
+extern struct FlumeTemplate LogFlumeHoldUpStages;
 // 0x004b4bd0
 extern unsigned char DrivingSchoolPumpsFootprint[0x14];
 // 0x004b4bf0
@@ -924,9 +924,9 @@ extern struct Point JungleCruiseQueueOffsets[5];
 // 0x004b7230
 extern struct Footprint DAT_004b7230;
 // 0x004b7248
-extern struct Footprint DAT_004b7248;
+extern struct Footprint JungleCruiseStartFootprintTemplate;
 // 0x004b72e4
-extern unsigned char DAT_004b72e4[0x190];
+extern unsigned char JunglePathTilePatterns[0x190];
 // 0x004b7478
 extern struct Footprint JungleCruiseDefaultFootprint;
 // 0x004b7618
@@ -945,7 +945,7 @@ extern struct Point SpaceTowerSeatOffsets[8];
 extern char PlaneRideManboxName[];
 extern struct FXItem PlaneRideFX[2];
 // 0x004b7abc
-extern unsigned short DAT_004b7abc;
+extern unsigned short PersonRenderFpuControlWord;
 // 0x004b7ac0
 extern unsigned char BlokeColours[0x18];
 // 0x004b7ae0
@@ -969,7 +969,7 @@ extern unsigned short DAT_004b7d7e;
 // 0x004b7d84
 extern unsigned int DAT_004b7d84;
 // 0x004b7e9c
-extern unsigned int DAT_004b7e9c;
+extern unsigned int RidePartClassNames;
 // 0x004b81c0
 extern char *GraphicsPath;
 // 0x004b81c4
@@ -1032,11 +1032,11 @@ extern struct DeferredSprite *DeferredSpriteCursor;
 // 0x004b9550
 extern unsigned char DirectionBits[8];
 // 0x004b9558
-extern unsigned int DAT_004b9558[9];
+extern unsigned int PathSquare3x3Masks[9];
 // 0x004b957c
-extern int DAT_004b957c[9];
+extern int PathSquare3x3OffsetsX[9];
 // 0x004b95a0
-extern int DAT_004b95a0[9];
+extern int PathSquare3x3OffsetsY[9];
 // 0x004b95c4
 extern unsigned char DAT_004b95c4[8];
 // 0x004b95cc
@@ -1084,9 +1084,9 @@ extern void *PTR_some_list_head_004ba87c;
 // 0x004ba880
 extern void *PTR_DAT_004ba880;
 // 0x004ba884
-extern unsigned int DAT_004ba884;
+extern unsigned int UnaffordableIconColour;
 // 0x004ba8e0
-extern struct InfoTimedEntry DAT_004ba8e0[17];
+extern struct InfoTimedEntry AdviceSpeechEntries[17];
 // 0x004ba9ac
 extern unsigned int AdviceSpeechIds[234];
 // 0x004bad54
@@ -1113,7 +1113,7 @@ extern unsigned int WesternThemeDeselected;
 // 0x004bb0a0
 extern unsigned int AdventurersThemeDeselected;
 // 0x004bb0a4
-extern struct TrackElemPair DAT_004bb0a4[29];
+extern struct TrackElemPair BuildElementNameMap[29];
 // 0x004bb18c
 extern unsigned int DAT_004bb18c[4];
 // 0x004bb4dc
@@ -1133,19 +1133,19 @@ extern unsigned int ScriptObjectiveKind;
 // 0x004bb5b0
 extern unsigned int ScriptConditionActive;
 // 0x004bb5b4
-extern unsigned int DAT_004bb5b4;
+extern unsigned int ScriptZoningNames;
 // 0x004bb5c4
-extern unsigned int DAT_004bb5c4;
+extern unsigned int ScriptThemeNames;
 // 0x004bb5d8
-extern unsigned int DAT_004bb5d8;
+extern unsigned int ScriptTabNames;
 // 0x004bb5e0
-extern unsigned int DAT_004bb5e0;
+extern unsigned int ScriptModeNames;
 // 0x004bb5f4
-extern unsigned int DAT_004bb5f4;
+extern unsigned int ScriptFeatureNames;
 // 0x004bb624
 extern unsigned int ScriptReportNames;
 // 0x004bb688
-extern unsigned int DAT_004bb688;
+extern unsigned int ScriptHapFactorNames;
 // 0x004bb6bc
 extern unsigned int DAT_004bb6bc;
 // 0x004bb6d4
@@ -1185,7 +1185,7 @@ extern unsigned int MusicEnabled;
 // 0x004bf778
 extern unsigned int MusicState;
 // 0x004bff28
-extern const int DAT_004bff28[12][2];
+extern const int RepairSearchOffsets[12][2];
 // 0x004c10d4
 extern struct NewBloke *DrivingSchoolCars;
 // 0x004c10dc
@@ -2153,7 +2153,7 @@ extern struct IconNode *AppraisalNextIcon;
 // 0x006660ac
 extern struct IconNode *AppraisalPrevIcon;
 // 0x006660b0
-extern char DAT_006660b0[256];
+extern char GfxFileNameBuffer[256];
 // 0x006661bc
 extern int ParkVisitorCount;
 // 0x006661c0
@@ -2323,13 +2323,13 @@ extern unsigned int ShowPathTileOverlay;
 // 0x00667d44
 extern int DeferredSpriteCount;
 // 0x00667d48
-extern unsigned int DAT_00667d48;
+extern unsigned int PathOverlayBlinkMask;
 // 0x00667d4c
-extern unsigned int DAT_00667d4c;
+extern unsigned int LastMouseScrollFrameMS;
 // 0x00667d50
 extern unsigned int MapDataLoaded;
 // 0x00667d54
-extern unsigned int DAT_00667d54;
+extern unsigned int DamageTimerStart;
 // 0x00667d58
 extern int LastRideWearFrame;
 // 0x00667d60
@@ -2439,7 +2439,7 @@ extern struct ObjectiveEvent *ScriptEventList;
 // 0x00668788
 extern unsigned int ScriptPurgePending;
 // 0x0066878c
-extern int DAT_0066878c;
+extern int ScriptNeedRemaining;
 // 0x00668790
 extern unsigned int ScriptSectionStarted;
 // 0x00668794
@@ -2709,7 +2709,7 @@ extern struct GameMainNode *ClosedPathNodeList;
 // 0x00668fcc
 extern int ScriptResourceLineNumber;
 // 0x00668fd0
-extern char DAT_00668fd0[128];
+extern char CurrentScriptFileName[128];
 // 0x00669050
 extern unsigned char CurrentObjectiveEventFlags;
 // 0x00669054
@@ -4291,7 +4291,7 @@ extern int DAT_006148b8[546][2];
 // 0x00667528
 extern int ExceptionReportStarted;
 // 0x004b8a88
-extern int DAT_004b8a88;
+extern int StackDumpCodeBytes;
 // 0x004b8a8c
 extern int StackDumpMaxWords;
 // 0x004b8a90

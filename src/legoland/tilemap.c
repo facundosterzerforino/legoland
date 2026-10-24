@@ -374,7 +374,7 @@ LEGO_EXPORT void RenderView(void) {
     PrintBackground(DAT_00667cd0, DAT_00667cd4);
     if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == PathControlObject)) {
         ShowPathTileOverlay = 1;
-        DAT_00667d48 = (GetTickCount() & 0x100) ? 0xff : 0;
+        PathOverlayBlinkMask = (GetTickCount() & 0x100) ? 0xff : 0;
     } else {
         ShowPathTileOverlay = 0;
     }
@@ -1208,9 +1208,9 @@ int FindPathSquare3x3(int *param_1, int *param_2) {
     pt.y = param_1[1] + -2;
     mask = GetPathMask5x5((int *)&pt);
     for (i = 0; i < 9; i++) {
-        if ((DAT_004b9558[i] & mask) == DAT_004b9558[i]) {
-            param_2[0] = DAT_004b957c[i] + param_1[0];
-            param_2[1] = DAT_004b95a0[i] + param_1[1];
+        if ((PathSquare3x3Masks[i] & mask) == PathSquare3x3Masks[i]) {
+            param_2[0] = PathSquare3x3OffsetsX[i] + param_1[0];
+            param_2[1] = PathSquare3x3OffsetsY[i] + param_1[1];
             param_2[2] = param_2[0] + 2;
             param_2[3] = param_2[1] + 2;
             return 1;

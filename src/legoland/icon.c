@@ -694,7 +694,7 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
                 if (cost <= GetBrickCount()) {
                     PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
                 } else {
-                    PrintSprite(node->sprite, node->x, node->y, DAT_004ba884, (int *)&ctx);
+                    PrintSprite(node->sprite, node->x, node->y, UnaffordableIconColour, (int *)&ctx);
                 }
             }
             if (node->field_8 != NULL) {

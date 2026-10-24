@@ -1018,7 +1018,7 @@ int ScriptCmdZoning(struct CommandArgs *arg, int argc) {
         if (CheckScriptCommand(arg, argc, 2, 2) == 0) {
             return 0;
         }
-        index = FindStringNoCase(arg->arg1, &DAT_004bb5b4, 4);
+        index = FindStringNoCase(arg->arg1, &ScriptZoningNames, 4);
         if (index == -1) {
             return 0;
         }
@@ -1162,7 +1162,7 @@ int ScriptCmdSelectTheme(struct CommandArgs *arg, int argc) {
     }
     if (CheckScriptCommand(arg, argc, 2, 0) != 0) {
         if (argc != 0) {
-            index = FindStringNoCase(arg->arg1, &DAT_004bb5c4, 5);
+            index = FindStringNoCase(arg->arg1, &ScriptThemeNames, 5);
         } else {
             index = 0;
         }
@@ -1183,7 +1183,7 @@ int ScriptCmdSelectTab(struct CommandArgs *arg, int argc) {
     }
     if (CheckScriptCommand(arg, argc, 2, 0) != 0) {
         if (argc != 0) {
-            index = FindStringNoCase(arg->arg1, &DAT_004bb5d8, 2);
+            index = FindStringNoCase(arg->arg1, &ScriptTabNames, 2);
         } else {
             index = 0;
         }
@@ -1204,7 +1204,7 @@ int ScriptCmdSelectMode(struct CommandArgs *arg, int argc) {
     }
     if (CheckScriptCommand(arg, argc, 2, 1) != 0) {
         if (argc != 0) {
-            index = FindStringNoCase(arg->arg1, &DAT_004bb5e0, 5);
+            index = FindStringNoCase(arg->arg1, &ScriptModeNames, 5);
         }
         if (index != -1) {
             NewScriptSelectModeEvent(CurrentObjectiveEventFlags, index);
@@ -1424,7 +1424,7 @@ int ScriptCmdFeature(struct CommandArgs *arg, int argc) {
         if (CheckScriptCommand(arg, argc, 5, 2) == 0) {
             return 0;
         }
-        index = FindStringNoCase(arg->arg1, &DAT_004bb5f4, 0xc);
+        index = FindStringNoCase(arg->arg1, &ScriptFeatureNames, 0xc);
         v = atoi(arg->arg2);
         if (index == -1) {
             return 0;
@@ -1499,7 +1499,7 @@ int ScriptCmdHapFactor(struct CommandArgs *arg, int argc) {
         return 0;
     }
     n = atoi(arg->arg2);
-    r = FindStringNoCase(arg->arg1, &DAT_004bb688, 13);
+    r = FindStringNoCase(arg->arg1, &ScriptHapFactorNames, 13);
     if (r == -1) {
         return 0;
     }

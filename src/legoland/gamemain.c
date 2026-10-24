@@ -574,7 +574,7 @@ int ParseScriptFile(const char *name, struct ScriptCommand *commands, int count,
         "Scripts\\", name);
     file = RES_OpenFile(path);
     if (file != NULL) {
-        strncpy(DAT_00668fd0, name, 128);
+        strncpy(CurrentScriptFileName, name, 128);
         result = ParseScriptResFile(file, commands, count, flags);
         RES_CloseFile(file);
         return result;

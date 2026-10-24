@@ -28,7 +28,7 @@ struct LLSFileHeader {
 LEGO_EXPORT char *GetGFXFName(const char *name, unsigned char type, char *out) {
     char *result = out;
     if (result == NULL) {
-        result = DAT_006660b0;
+        result = GfxFileNameBuffer;
     }
     switch (type) {
     case 0:

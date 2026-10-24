@@ -1121,7 +1121,7 @@ void LoadJungleCruiseResources(Element *obj) {
     DAT_004b7260.v[0] += JungleCruiseFootprint.v[0];
     DAT_004b7260.v[2] += JungleCruiseFootprint.v[0];
     DAT_004b7260.v[3] += JungleCruiseFootprint.v[1];
-    JungleCruiseStartFootprint = DAT_004b7248;
+    JungleCruiseStartFootprint = JungleCruiseStartFootprintTemplate;
     JungleCruiseStartFootprint.v[1] += JungleCruiseFootprint.v[3] + 1;
     JungleCruiseStartFootprint.v[0] += JungleCruiseFootprint.v[0];
     JungleCruiseStartFootprint.v[2] += JungleCruiseFootprint.v[0];
@@ -2176,7 +2176,7 @@ void AddJunglePathTile(int x, int y, int mask, unsigned short *owner) {
             elem->field_10 = 2;
             elem->field_0 = ActiveJungleCruiseRide->element;
             *(unsigned short *)&elem->field_4 = tile.id;
-            SetMapTile(pt.x, pt.y, *BoatingSchoolTileMap[DAT_004b72e4[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)DAT_004b72e4[mask * 25 + row * 5 + col]);
+            SetMapTile(pt.x, pt.y, *BoatingSchoolTileMap[JunglePathTilePatterns[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)JunglePathTilePatterns[mask * 25 + row * 5 + col]);
         }
     }
 }

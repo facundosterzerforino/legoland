@@ -1216,7 +1216,7 @@ void SelectMatchingBuildElement(void) {
     if ((obj->flags & 0x2000000) != 0) {
         match = info;
     } else {
-        pair = &DAT_004bb0a4[0].elem_name;
+        pair = &BuildElementNameMap[0].elem_name;
         do {
             if (_stricmp(pair[-1], info->name) == 0) {
                 if (*pair != NULL) {
