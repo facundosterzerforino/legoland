@@ -21,8 +21,8 @@ void UpdateQueuePathShape(unsigned short param_1, int param_2, int param_3);
 
 struct RideQueueEntry;
 int GetDiagonalRoadNeighbours(int x, int y, struct RideQueueEntry **out);
-struct RideQueueEntry *FUN_004134f0(int arg1, int arg2, struct RideQueueEntry *tile);
-int FUN_00413520(int x, int y, struct NeighborResult *out);
+struct RideQueueEntry *FilterRoadStartNeighbour(int arg1, int arg2, struct RideQueueEntry *tile);
+int GetConnectedRoadNeighbours(int x, int y, struct NeighborResult *out);
 int GetRoadNeighbours(int x, int y, struct NeighborResult *out);
 
 void LoadDrivingSchoolRoadsResources(struct Element *head);

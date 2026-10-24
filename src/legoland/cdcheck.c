@@ -105,19 +105,17 @@ int IsCdVolumePresent(char *expected_volume) {
     return present;
 }
 
-// Empty in the original executable, with no recovered source callers. Its purpose is
-// unknown; keep the address name rather than guessing an initialization/cleanup role.
+// Empty in the original (does nothing); nothing calls it.
 // FUNCTION: LEGOLAND 0x004511e0
-void FUN_004511e0(void) { return; }
+void Empty_004511e0(void) { return; }
 
-// Empty drive-letter hook called by EjectCdDrive. The original body ignores its argument,
-// so the caller establishes the argument's meaning but not the hook's original purpose.
+// Empty in the original: EjectCdDrive calls it with the drive letter, which it ignores.
 // FUNCTION: LEGOLAND 0x004511f0
-void FUN_004511f0(int drive_letter) { return; }
+void Empty_004511f0(int drive_letter) { return; }
 
-// Another empty, unreferenced original entry point. There is no evidence for a semantic name.
+// Empty in the original (does nothing); nothing calls it.
 // FUNCTION: LEGOLAND 0x00451200
-void FUN_00451200(void) { return; }
+void Empty_00451200(void) { return; }
 
 // Given a drive letter, attempt media unlock/ejection, release the logical-volume lock,
 // close the persistent VWIN32 handle, and invalidate it. Individual failures are ignored.
@@ -126,7 +124,7 @@ void FUN_00451200(void) { return; }
 void EjectCdDrive(int drive_letter) {
     int drive_number;
 
-    FUN_004511f0(drive_letter);
+    Empty_004511f0(drive_letter);
     if (VWin32DeviceHandle != INVALID_HANDLE_VALUE) {
         // Only the low byte is written/read by the original DOS-drive conversion.
         *(char *)&drive_number = (char)toupper((char)drive_letter) - 0x40;

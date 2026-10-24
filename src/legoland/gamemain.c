@@ -668,7 +668,7 @@ void ResetLevelScriptState(void) {
     ResetAppraisalStreak();
     StopAppraisalTimer();
     ClearObjectiveCounters();
-    FUN_004688e0();
+    Empty_004688e0();
     ConfigureAppraisal(0, 0);
     ClearBriefingAndHintsFileNames();
     SetDefaultMoodDeltas();

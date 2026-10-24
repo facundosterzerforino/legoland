@@ -3459,7 +3459,7 @@ extern unsigned char ObjectiveCounters[10];
 // 0x007fe994
 extern unsigned int ScriptTimeBase;
 // 0x007fe998
-extern unsigned short DAT_007fe998;
+extern unsigned short LLSColourMask;
 // 0x007fe9a8
 extern unsigned short *MousePixelAddress;
 // 0x007fe9c0

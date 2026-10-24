@@ -86,8 +86,9 @@ char GetObjectiveCounter(int index) {
     return 0;
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x004688e0
-void FUN_004688e0(void) {}
+void Empty_004688e0(void) {}
 
 /* Script bridges event (ScriptEventBridges, game_util): OpenBridge(index) for a valid index (< 4). The second
  * argument is not used. */
@@ -252,7 +253,7 @@ void ShowNextObjectiveMessage(void) {
             SpeechCloseFile();
             SpeechLoadWavFile(at + 1);
             SpeechPlay();
-            FUN_0046d3a0();
+            SetHelpKindObjectiveMessage();
         }
         if (DisplayAdvisorHelp(event->text, event->type == 0, 0) != 0) {
             SetNextAdvisorAnimState(5, 0);

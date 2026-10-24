@@ -1998,7 +1998,7 @@ L4412e4:
         lea ecx, [ebp - 0x1a4]
         push eax
         push ecx
-        call FUN_00486590
+        call DrawGouraudRampTriangle
         add esp, 0x10
         jmp L4414b2
 L441451:
@@ -2023,7 +2023,7 @@ L441451:
         lea edx, [ebp - 0x1a4]
         push ecx
         push edx
-        call FUN_00486c70
+        call DrawGouraudTexturedTriangle
         add esp, 0x10
         jmp L4414b2
 L4414af:
@@ -2227,7 +2227,7 @@ L441682:
         lea ecx, [ebp - 0x1a4]
         push eax
         push ecx
-        call FUN_004877b0
+        call DrawFlatRampTriangle
         add esp, 0x10
         jmp L4417d1
 L441770:
@@ -2252,7 +2252,7 @@ L441770:
         lea edx, [ebp - 0x1a4]
         push ecx
         push edx
-        call FUN_00487d40
+        call DrawFlatTexturedTriangle
         add esp, 0x10
         jmp L4417d1
 L4417ce:

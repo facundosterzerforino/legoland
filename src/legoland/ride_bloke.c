@@ -202,8 +202,10 @@ void AddDrivingSchoolStraightWaypoint(struct NewBloke *param_1) {
     param_1->f_bb = frame + 1;
 }
 
+/* Turn code 4 (no road ahead): a tight 90-degree turn towards the road centre (right when cars drive on the left,
+ * left otherwise) into the next lane; two of them make the U-turn at a dead end. */
 // FUNCTION: LEGOLAND 0x00401660
-void FUN_00401660(struct NewBloke *b) {
+void AddDrivingSchoolEndOfRoadTurnWaypoints(struct NewBloke *b) {
     struct Point local;
     unsigned int frame;
     unsigned char d;
@@ -1016,7 +1018,7 @@ void UpdateDrivingSchoolCar(struct NewBloke *b) {
         }
         break;
     case 4:
-        FUN_00401660(b);
+        AddDrivingSchoolEndOfRoadTurnWaypoints(b);
         b->f_c4 = 0;
         break;
     case 5:

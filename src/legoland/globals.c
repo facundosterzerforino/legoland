@@ -4583,8 +4583,9 @@ unsigned char ObjectiveCounters[10];
 // GLOBAL: LEGOLAND 0x007fe994
 unsigned int ScriptTimeBase;
 
+/* Colour every LLS pixel is ANDed with in SoftPrint_XBltFast (nearest colour of the tint), or ~nearest(15,15,15) for the half-bright draw. */
 // GLOBAL: LEGOLAND 0x007fe998
-unsigned short DAT_007fe998;
+unsigned short LLSColourMask;
 
 /* Address of the surface pixel under the mouse; the span drawers compare their write pointer against it. */
 // GLOBAL: LEGOLAND 0x007fe9a8

@@ -171,4 +171,4 @@ int __stdcall EnumPrintersA(unsigned long flags, char *name, unsigned long level
 }
 
 // STUB: LEGOLAND 0x0049e448
-void FUN_0049e448(void) { STUB(); }
+void CrtFpMathInit(void) { STUB(); }

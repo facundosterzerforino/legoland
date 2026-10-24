@@ -56,7 +56,7 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void);
 LEGO_EXPORT void UpdateFocussedIconPtr(void);
 void UpdateEditModeButtonSprites(void);
 LEGO_EXPORT void RemoveIconGroup(unsigned short group);
-void FUN_0046d3a0(void);
+void SetHelpKindObjectiveMessage(void);
 void RemoveIconRange(unsigned short val);
 int RenderBlinkIcon(struct IconNode *node);
 void SetIconSprite(struct IconNode *node, struct Sprite *sprite);

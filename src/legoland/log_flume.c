@@ -1532,8 +1532,9 @@ int GetFlumeTrackSpriteIndex(struct FlumeEntry *node) {
     return result;
 }
 
+/* Maps screen y across the rect's vertical screen span (scaled) to 32..224, clamped. Nothing calls it. */
 // FUNCTION: LEGOLAND 0x0040adb0
-int FUN_0040adb0(TileId tile, struct FlumeRect *rect, int param_3, int y, float scale) {
+int ScaleYAcrossFlumeRect(TileId tile, struct FlumeRect *rect, int param_3, int y, float scale) {
     int bounds[4];
     struct Point pt;
     int top;

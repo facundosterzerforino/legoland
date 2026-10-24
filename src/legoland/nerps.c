@@ -2353,7 +2353,7 @@ unsigned int LoadScripts(void) {
         }
     } else {
         ClearObjectiveCounters();
-        FUN_004688e0();
+        Empty_004688e0();
         if (SaveGameRead(ObjectiveCounters, i) == 0) {
             return 0;
         }

@@ -146,8 +146,10 @@ int GetDiagonalRoadNeighbours(int x, int y, struct RideQueueEntry **out) {
     return count;
 }
 
+/* Neighbour filter for GetConnectedRoadNeighbours: a road start tile (shape 6, the driving school's own exit) only
+ * connects to the tile 4 to its east, so it is dropped unless (x, y) is that tile. */
 // FUNCTION: LEGOLAND 0x004134f0
-struct RideQueueEntry *FUN_004134f0(int arg1, int arg2, struct RideQueueEntry *tile) {
+struct RideQueueEntry *FilterRoadStartNeighbour(int arg1, int arg2, struct RideQueueEntry *tile) {
     if (tile != NULL) {
         if ((tile->field_14 & 0xf) != 6) {
             return tile;
@@ -161,26 +163,27 @@ struct RideQueueEntry *FUN_004134f0(int arg1, int arg2, struct RideQueueEntry *t
     return 0;
 }
 
+/* GetRoadNeighbours (north, east, south, west) with FilterRoadStartNeighbour applied; returns how many remain. */
 // FUNCTION: LEGOLAND 0x00413520
-int FUN_00413520(int x, int y, struct NeighborResult *out) {
+int GetConnectedRoadNeighbours(int x, int y, struct NeighborResult *out) {
     struct NeighborResult r;
     struct RideQueueEntry *t3;
     int count = 0;
 
     GetRoadNeighbours(x, y, &r);
-    r.field_0 = (struct RideQueueEntry *)FUN_004134f0(x, y, (struct RideQueueEntry *)r.field_0);
+    r.field_0 = (struct RideQueueEntry *)FilterRoadStartNeighbour(x, y, (struct RideQueueEntry *)r.field_0);
     if (r.field_0 != NULL) {
         count = 1;
     }
-    r.field_8 = (struct RideQueueEntry *)FUN_004134f0(x, y, (struct RideQueueEntry *)r.field_8);
+    r.field_8 = (struct RideQueueEntry *)FilterRoadStartNeighbour(x, y, (struct RideQueueEntry *)r.field_8);
     if (r.field_8 != NULL) {
         count++;
     }
-    r.field_10 = (struct RideQueueEntry *)FUN_004134f0(x, y, (struct RideQueueEntry *)r.field_10);
+    r.field_10 = (struct RideQueueEntry *)FilterRoadStartNeighbour(x, y, (struct RideQueueEntry *)r.field_10);
     if (r.field_10 != NULL) {
         count++;
     }
-    t3 = FUN_004134f0(x, y, (struct RideQueueEntry *)r.field_18);
+    t3 = FilterRoadStartNeighbour(x, y, (struct RideQueueEntry *)r.field_18);
     if (t3 != NULL) {
         count++;
     }
@@ -251,7 +254,7 @@ void UpdateQueuePathShape(unsigned short param_1, int param_2, int param_3) {
     if (e != NULL) {
         flag = e->field_14 & 0x10;
     }
-    FUN_00413520(param_2, param_3, &r);
+    GetConnectedRoadNeighbours(param_2, param_3, &r);
     if (r.field_0 != NULL && r.field_0->id == id) {
         mask = count = 1;
     }
@@ -392,8 +395,10 @@ unsigned int CountRoadEntriesWithId(unsigned short param_1) {
     return count;
 }
 
+/* Road tile callback for walkers (TILES FOR DSCHOOL): 2 = no road at the tile, 1 = road without cars, 3 = road with
+ * cars on it (field_1c counts cars; IncRoadTileOccupancy counts walkers in field_1d). */
 // FUNCTION: LEGOLAND 0x00413990
-unsigned char FUN_00413990(unsigned int param_1, unsigned int param_2) {
+unsigned char GetRoadTileCarState(unsigned int param_1, unsigned int param_2) {
     struct RideQueueEntry *tile = FindQueueEntryAtTile(param_1 >> 8, param_2 >> 8);
     if (tile == NULL) {
         return 2;
@@ -432,7 +437,7 @@ void LoadDrivingSchoolRoadsResources(struct Element *head) {
     // STRING: LEGOLAND 0x004b4c80
     if (LLIDB_FindElement("TILES FOR DSCHOOL", handle, 0) == 0) {
         struct RoadCallbacks *callbacks = head->data;
-        callbacks->field_18 = FUN_00413990;
+        callbacks->field_18 = GetRoadTileCarState;
         callbacks->field_1c = IncRoadTileOccupancy;
         callbacks->field_20 = DecRoadTileOccupancy;
     }
@@ -514,7 +519,7 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
             SetCursorBlocked(&EditCursor, 2);
         } else {
             if (IsCursorBuildable(&EditCursor) != 0) {
-                if (!(FUN_00413520(EditCursor.tile_x, EditCursor.tile_y, &neighbors) == 0)) {
+                if (!(GetConnectedRoadNeighbours(EditCursor.tile_x, EditCursor.tile_y, &neighbors) == 0)) {
                     if (neighbor_entries[0] != NULL) {
                         type = neighbor_entries[0]->id;
                     } else if (neighbor_entries[2] != NULL) {
@@ -638,7 +643,7 @@ void DrivingSchoolRoadsAddObject(struct Element *edit, struct RoadPlaceArg *plac
     int x = place->x;
     int y = place->y;
 
-    FUN_00413520(x, y, &r);
+    GetConnectedRoadNeighbours(x, y, &r);
     if (r.field_0) {
         id.id = r.field_0->id;
     } else if (r.field_8) {

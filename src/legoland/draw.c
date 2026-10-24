@@ -1975,7 +1975,7 @@ L46563c:
         mov ecx, edx
         or ecx, ecx
         je L465769
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
 L46566c:
         mov word ptr [edi], ax
         add edi, 2
@@ -1990,7 +1990,7 @@ L465691:
         sub edx, ecx
         or ecx, ecx
         je L4655a7
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
 L4656a2:
         mov word ptr [edi], ax
         add edi, 2
@@ -2019,7 +2019,7 @@ L4656e2:
         add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
         add edi, 2
         loop L4656e2
@@ -2039,7 +2039,7 @@ L465723:
         add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
         add edi, 2
         loop L465723
@@ -2261,7 +2261,7 @@ L465a88:
         push edx
         call GetNearestColour
         mov edi, dword ptr [ebp + 0xc]
-        mov dword ptr [DAT_007fe998], eax
+        mov dword ptr [LLSColourMask], eax
         movsx eax, word ptr [ebx + 0x18]
         mov ecx, dword ptr [edi]
         mov edx, dword ptr [edi + 4]
@@ -2333,7 +2333,7 @@ L465b4d:
         mov edx, dword ptr [CurrentSurfaceDesc + 0x10]
         add esp, 0xc
         not eax
-        mov dword ptr [DAT_007fe998], eax
+        mov dword ptr [LLSColourMask], eax
         mov ebx, dword ptr [esi]
         mov dword ptr [SpanDrawPitch], edx
         mov ecx, dword ptr [edi]
@@ -2405,7 +2405,7 @@ L465bce:
         lea ecx, [esi + 0x10]
         push ecx
         push edi
-        call FUN_00468410
+        call BlitLLS16HalfBright
         movsx eax, word ptr [ebx]
         add esp, 0x2c
         inc eax
@@ -2444,7 +2444,7 @@ L465c77:
         push eax
         push esi
         push edi
-        call FUN_00468410
+        call BlitLLS16HalfBright
         add esp, 0x2c
         pop edi
         pop esi
@@ -2485,7 +2485,7 @@ L465cd7:
         push ecx
         push esi
         push edi
-        call FUN_00468410
+        call BlitLLS16HalfBright
         add esp, 0x2c
         pop edi
         pop esi
@@ -2499,7 +2499,7 @@ L465d21:
         push ecx
         push edi
         push edx
-        call FUN_00465ee0
+        call DrawLLSSpriteTinted
         add esp, 0xc
         pop edi
         pop esi
@@ -2556,7 +2556,7 @@ L465dda:
         mov ebp, eax
         cmp eax, dword ptr [StoredTransparentColour]
         je L465df5
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
 L465df5:
         inc esi
@@ -2610,7 +2610,7 @@ L465e95:
         movzx eax, word ptr [esi]
         cmp eax, dword ptr [StoredTransparentColour]
         je L465eaa
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
 L465eaa:
         add esi, 2
@@ -2639,8 +2639,10 @@ L465ecf:
     }
 }
 
+/* SoftPrint_XBltFast path for LLS sprites without the dim flag: draws the current frame (frame 0 then the overlay
+ * frame for layered LLS) through BlitLLS16MaskedPick. */
 // FUNCTION: LEGOLAND 0x00465ee0
-void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
+void DrawLLSSpriteTinted(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     struct DrawLLSFrame *frame = (struct DrawLLSFrame *)(lls + 1);
     unsigned short *dst;
     unsigned short *pixels;
@@ -2670,7 +2672,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
+        BlitLLS16MaskedPick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
         i = lls->frame + 1;
         while (i-- != 0) {
             frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
@@ -2679,7 +2681,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
+        BlitLLS16MaskedPick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
     } else {
         i = frame_index;
         while (i-- != 0) {
@@ -2689,7 +2691,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
+        BlitLLS16MaskedPick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
     }
 }
 
@@ -4900,9 +4902,11 @@ L468013:
     }
 }
 
+/* Blits one 16-bit LLS frame with clipping, ANDing every pixel with LLSColourMask (the tint colour) and setting
+ * MousePixelCovered when it draws over the mouse pixel. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00468040
-__declspec(naked) void FUN_00468040(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) {
+__declspec(naked) void BlitLLS16MaskedPick(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor) {
     __asm {
         push edi
         mov edx, dword ptr [esp + 0x14]
@@ -5022,7 +5026,7 @@ L468179:
         mov ecx, eax
 L468193:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
         add esi, 2
         add edi, 2
@@ -5037,7 +5041,7 @@ L4681ae:
         add ecx, dword ptr [esp + 0x34]
 L4681bc:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
         add esi, 2
         add edi, 2
@@ -5064,7 +5068,7 @@ L4681ee:
         mov ecx, eax
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         rep stosw
         jmp L468237
 L468217:
@@ -5074,7 +5078,7 @@ L468217:
         add ecx, dword ptr [esp + 0x34]
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         rep stosw
         jmp L468370
 L468237:
@@ -5096,7 +5100,7 @@ L46824d:
         jne L468283
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi - 2], ax
         jmp L468365
 L468283:
@@ -5138,7 +5142,7 @@ L4682e2:
         mov dword ptr [esp + 0x34], eax
 L4682f6:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
         add esi, 2
         add edi, 2
@@ -5151,7 +5155,7 @@ L46830e:
         push eax
 L468315:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         mov word ptr [edi], ax
         add esi, 2
         add edi, 2
@@ -5167,14 +5171,14 @@ L468331:
         mov dword ptr [esp + 0x34], eax
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         rep stosw
         jmp L468365
 L46834f:
         mov ecx, dword ptr [esp + 0x34]
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         rep stosw
         jmp L468370
 L468365:
@@ -5239,9 +5243,11 @@ L4683d1:
     }
 }
 
+/* Like BlitLLS16MaskedPick, but halves each masked pixel (mask = ~nearest(15,15,15)): the frame is drawn at half
+ * brightness. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00468410
-__declspec(naked) void FUN_00468410(void) {
+__declspec(naked) void BlitLLS16HalfBright(void) {
     __asm {
         push edi
         mov edx, dword ptr [esp + 0x14]
@@ -5361,7 +5367,7 @@ L468549:
         mov ecx, eax
 L468563:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         mov word ptr [edi], ax
         add esi, 2
@@ -5377,7 +5383,7 @@ L468581:
         add ecx, dword ptr [esp + 0x34]
 L46858f:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         mov word ptr [edi], ax
         add esi, 2
@@ -5405,7 +5411,7 @@ L4685c4:
         mov ecx, eax
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         rep stosw
         jmp L468613
@@ -5416,7 +5422,7 @@ L4685f0:
         add ecx, dword ptr [esp + 0x34]
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         rep stosw
         jmp L46875b
@@ -5439,7 +5445,7 @@ L468629:
         jne L468662
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         mov word ptr [edi - 2], ax
         jmp L468750
@@ -5482,7 +5488,7 @@ L4686c1:
         mov dword ptr [esp + 0x34], eax
 L4686d5:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         mov word ptr [edi], ax
         add esi, 2
@@ -5496,7 +5502,7 @@ L4686f0:
         push eax
 L4686f7:
         mov ax, word ptr [esi]
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         mov word ptr [edi], ax
         add esi, 2
@@ -5513,7 +5519,7 @@ L468716:
         mov dword ptr [esp + 0x34], eax
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         rep stosw
         jmp L468750
@@ -5521,7 +5527,7 @@ L468737:
         mov ecx, dword ptr [esp + 0x34]
         mov ax, word ptr [esi]
         add esi, 2
-        and ax, word ptr [DAT_007fe998]
+        and ax, word ptr [LLSColourMask]
         shr ax, 1
         rep stosw
         jmp L46875b

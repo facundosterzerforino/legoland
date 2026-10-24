@@ -1256,8 +1256,9 @@ void ClearInterfaceSlotValues(void) {
     }
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x00476020
-void FUN_00476020(void) {}
+void Empty_00476020(void) {}
 
 // FUNCTION: LEGOLAND 0x00476030
 void SetButtonFlashState(int index, unsigned int value) {
@@ -1303,7 +1304,7 @@ void DrawFlashingButtons(void) {
     int i;
 
     played = 0;
-    FUN_00476020();
+    Empty_00476020();
     if (EditMode.unk4 == 3) {
         coords = InterfaceIconPos;
         i = 0;

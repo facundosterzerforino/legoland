@@ -215,9 +215,11 @@ int InitReciprocalTables(void) {
     return 0;
 }
 
+/* Rasterises one person-mesh triangle with Gouraud shading through CurrentColorRamp (vertex intensities field_14
+ * interpolated), Z-buffered, clipped to the viewport, with the mouse-pixel hit test. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00486590
-__declspec(naked) void FUN_00486590(void) {
+__declspec(naked) void DrawGouraudRampTriangle(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -845,9 +847,11 @@ L486c69:
     }
 }
 
+/* Textured twin of DrawGouraudRampTriangle: samples CurrentTexture and lights it with interpolated vertex
+ * intensities. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00486c70
-__declspec(naked) void FUN_00486c70(void) {
+__declspec(naked) void DrawGouraudTexturedTriangle(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -1768,9 +1772,10 @@ L4877a0:
     }
 }
 
+/* Flat-shaded twin of DrawGouraudRampTriangle: one ramp colour from the first vertex's intensity. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x004877b0
-__declspec(naked) void FUN_004877b0(void) {
+__declspec(naked) void DrawFlatRampTriangle(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -2281,9 +2286,10 @@ L487d31:
     }
 }
 
+/* Textured triangle lit by the first vertex's intensity only (flat). */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00487d40
-__declspec(naked) void FUN_00487d40(void) {
+__declspec(naked) void DrawFlatTexturedTriangle(void) {
     __asm {
         push ebp
         mov ebp, esp
@@ -3123,9 +3129,11 @@ void StartMousePixelHitTest(unsigned char *base, struct RenderViewport *vp) {
     MousePixelAddress = (unsigned short *)(base + (vp->y * Render3DTargetPitch) + (vp->x * 2));
 }
 
+/* Returns the 16-bit colour of CurrentTexture at u, v (16.16 fractions) lit by intensity p3 through the texel's
+ * colour ramp. Nothing calls it. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00488730
-__declspec(naked) unsigned short FUN_00488730(unsigned int p1, unsigned int p2, unsigned int p3) {
+__declspec(naked) unsigned short SampleCurrentTexture(unsigned int p1, unsigned int p2, unsigned int p3) {
     __asm {
         push ebp
         mov ebp, esp

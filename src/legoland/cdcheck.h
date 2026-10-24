@@ -19,9 +19,9 @@ int FindCdDriveWithVolume(char *expected_volume);
 int IsCdVolumePresent(char *expected_volume);
 
 // Original no-op entry points; the empty bodies do not establish their semantic names.
-void FUN_004511e0(void);
-void FUN_004511f0(int drive_letter);
-void FUN_00451200(void);
+void Empty_004511e0(void);
+void Empty_004511f0(int drive_letter);
+void Empty_00451200(void);
 
 // Eject by drive letter through the persistent VWin32DeviceHandle, then close the handle.
 void EjectCdDrive(int drive_letter);

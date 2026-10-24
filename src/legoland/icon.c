@@ -85,8 +85,10 @@ struct InfoSource {
 #include "sound_music.h"
 #include "text.h"
 
+/* Sets CurrentHelpKind to 4 when ShowNextObjectiveMessage starts an objective message's speech
+ * (UpdateSpeechPlayback only replays kinds 0-2). */
 // FUNCTION: LEGOLAND 0x0046d3a0
-void FUN_0046d3a0(void) { CurrentHelpKind = 4; }
+void SetHelpKindObjectiveMessage(void) { CurrentHelpKind = 4; }
 
 // FUNCTION: LEGOLAND 0x0046d3c0
 void FreeIcon(struct IconNode *node) {

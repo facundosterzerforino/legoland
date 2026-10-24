@@ -91,8 +91,8 @@ void BlitLLS16ClipLeftRight(unsigned short *dst, unsigned short *src, unsigned c
 void BlitLLS16ClipLeft(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
 void BlitLLS16ClipRight(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
 void BlitLLS16(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip);
-void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos);
-void FUN_00468040(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void DrawLLSSpriteTinted(struct DrawLLS *lls, RECT *clip, struct Point *pos);
+void BlitLLS16MaskedPick(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
 void SoftPrint_IndexedLLS(void);
 void SoftPrint_IndexedLLSMasked(void);
-void FUN_00468410(void);
+void BlitLLS16HalfBright(void);

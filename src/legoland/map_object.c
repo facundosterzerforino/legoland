@@ -547,8 +547,10 @@ int IsObjectTypeNot0Or2(struct Ride *obj) {
     return 1;
 }
 
+/* 1 when IsObjectTypeNot0Or2, or the object's parent element has flag 0x10 and the object has neither flag 0x200000
+ * nor 0x400000. BuildObject then stamps its footprint; ValidateCursor lets it stand on path tiles. */
 // FUNCTION: LEGOLAND 0x0045eaf0
-int FUN_0045eaf0(struct Ride *obj) {
+int IsTypeNot0Or2OrParentFlag10(struct Ride *obj) {
     if (IsObjectTypeNot0Or2((struct Ride *)obj) != 0) {
         return 1;
     }
@@ -587,7 +589,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
             return 0;
         }
         UseBricks(GetObjCost(obj));
-        if (IsClassFlag200000Clear((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
+        if (IsClassFlag200000Clear((struct Ride *)obj) != 0 || IsTypeNot0Or2OrParentFlag10((struct Ride *)obj) != 0) {
             StampObjectFootprintOnMap(editObj, (struct Point *)coords, 0x20);
         } else {
             SetObjRectFlags(editObj, (struct Point *)coords, 0x20);
@@ -606,7 +608,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         }
     } else {
         UseBricks(GetObjCost(obj));
-        if (IsClassFlag200000Clear((struct Ride *)obj) != 0 || FUN_0045eaf0((struct Ride *)obj) != 0) {
+        if (IsClassFlag200000Clear((struct Ride *)obj) != 0 || IsTypeNot0Or2OrParentFlag10((struct Ride *)obj) != 0) {
             StampObjectFootprintOnMap(editObj, (struct Point *)coords, 0);
         }
         GetObjectEntrancePos(obj, &out);
@@ -1115,7 +1117,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, void *param) {
                             SetCursorBlocked(cursor, 5);
                         }
                     }
-                    if (FUN_0045eaf0((struct Ride *)param) != 0) {
+                    if (IsTypeNot0Or2OrParentFlag10((struct Ride *)param) != 0) {
                         if ((tile->flags & 0x10) && (tile->field_10 & 1) == 0) {
                             SetCursorBlocked(cursor, 9);
                         }
