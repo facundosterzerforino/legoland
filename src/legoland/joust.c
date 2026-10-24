@@ -139,8 +139,9 @@ void JoustLoadResources(struct Element *root) {
     LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)JoustLayer, 1), 0);
 }
 
+/* Returns 1 when the byte is nonzero, else 0. */
 // FUNCTION: LEGOLAND 0x00407c20
-char FUN_00407c20(unsigned char param_1) {
+char IsByteNonZero(unsigned char param_1) {
     return (unsigned int)(param_1 != 0);
 }
 
@@ -230,7 +231,7 @@ void JoustUpdate(struct Element *elem) {
                     b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                     b->low_level_action = 7;
                     NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
-                    b->field_44 = FUN_00407c20(hb);
+                    b->field_44 = IsByteNonZero(hb);
                     h.c[b->field_44] = 1;
                     b->param_action++;
                     count++;
@@ -263,7 +264,7 @@ void JoustUpdate(struct Element *elem) {
             case 6:
                 sprintf(name + 6, "%02d", b->field_44 + 1);
                 SetBlokePositionFromBNV(JoustRideBnv, b, name, (char)hb, -1617735.0f, -1617993.5f, 0);
-                if (f20 != 0 && (char)FUN_00407c20(hb) == b->field_44) {
+                if (f20 != 0 && (char)IsByteNonZero(hb) == b->field_44) {
                     b->dest.x = (x + 2) << 8;
                     b->flags &= 0xff7f;
                     b->dest.y = (y << 8) - 0x100;

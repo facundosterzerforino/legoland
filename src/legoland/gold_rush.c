@@ -275,8 +275,10 @@ void UpdateGoldWashAvailability(void *param) {
     }
 }
 
+/* Gold rush: walks the rider to the centre of its wash slot point (Gold_Points of its slot, offset by the ride tile
+ * p) and faces the move. */
 // FUNCTION: LEGOLAND 0x00406f60
-void FUN_00406f60(struct RideNode *item, unsigned char *p) {
+void WalkGoldRushRiderToSlotCentre(struct RideNode *item, unsigned char *p) {
     struct Bloke *b = item->rider;
     int slot = Gold_Slots[b->field_36].index;
 
@@ -291,8 +293,10 @@ void FUN_00406f60(struct RideNode *item, unsigned char *p) {
     NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
 }
 
+/* Gold rush: walks the rider to the approach point 2.5 tiles to the -x side of its slot point, shifted further by
+ * the slot weight (weight * 2 tiles). */
 // FUNCTION: LEGOLAND 0x00407000
-void FUN_00407000(struct RideNode *item, unsigned char *p) {
+void WalkGoldRushRiderToSlotApproach(struct RideNode *item, unsigned char *p) {
     struct Bloke *b = item->rider;
     struct GoldSlot *s = &Gold_Slots[b->field_36];
     int slot = s->index;
@@ -328,8 +332,10 @@ void SendGoldRushRiderToSlot(struct RideNode *item, unsigned char *p) {
     NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
 }
 
+/* Gold rush: after panning, moves the rider half a tile down and walks it back to the same approach point as
+ * WalkGoldRushRiderToSlotApproach. */
 // FUNCTION: LEGOLAND 0x00407170
-void FUN_00407170(struct RideNode *item, unsigned char *p) {
+void ReturnGoldRushRiderToSlotApproach(struct RideNode *item, unsigned char *p) {
     struct Bloke *b = item->rider;
     struct GoldSlot *s = &Gold_Slots[b->field_36];
     int slot = s->index;
@@ -412,11 +418,11 @@ void GoldRushUpdate(struct Element *elem) {
                 break;
             case 3:
             case 8:
-                FUN_00406f60((struct RideNode *)node, t);
+                WalkGoldRushRiderToSlotCentre((struct RideNode *)node, t);
                 b->param_action++;
                 break;
             case 4:
-                FUN_00407000((struct RideNode *)node, t);
+                WalkGoldRushRiderToSlotApproach((struct RideNode *)node, t);
                 b->param_action++;
                 break;
             case 5:
@@ -428,7 +434,7 @@ void GoldRushUpdate(struct Element *elem) {
                 GoldRushWashPan((struct RideNode *)node);
                 break;
             case 7:
-                FUN_00407170((struct RideNode *)node, t);
+                ReturnGoldRushRiderToSlotApproach((struct RideNode *)node, t);
                 b->param_action++;
                 break;
             case 9:

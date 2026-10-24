@@ -580,8 +580,10 @@ void DropNonEndFlumeTrackNeighbours(struct StateSlots *slots) {
     }
 }
 
+/* Log flume track cursor test: true when the neighbour connection mask is a dead end, straight or corner (no T or
+ * cross) and every present neighbour piece is in mode 3 or 4. */
 // FUNCTION: LEGOLAND 0x00409580
-int FUN_00409580(int code, struct StateSlots *slots) {
+int CanPlaceLogFlumeTrack(int code, struct StateSlots *slots) {
     int result = 0;
     if (code == 1 || code == 4 || code == 0x10 || code == 0x40 || code == 0x11 || code == 0x44 || code == 5 || code == 0x14 || code == 0x50 || code == 0x41) {
         result = 1;
@@ -1238,8 +1240,10 @@ void LogFlumeEntranceSetEditMode(void) {
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
+/* Places the entrance's log particles at the footprint's bottom-left edge midpoint (GetFlumeEdgeMidBottomLeft),
+ * linking each to successive nodes, with z 0, scale 1, w 0.1 and cleared state. */
 // FUNCTION: LEGOLAND 0x0040a580
-void FUN_0040a580(struct FlumeEntry *param) {
+void ResetLogFlumeEntranceParticles(struct FlumeEntry *param) {
     int i;
     struct Particle *p;
     struct FlumeEntry *node;
@@ -1267,12 +1271,13 @@ void FUN_0040a580(struct FlumeEntry *param) {
     }
 }
 
+/* Sets a new log flume entrance to 4 particles (field_d0 = 6) and places them with ResetLogFlumeEntranceParticles. */
 // FUNCTION: LEGOLAND 0x0040a5d0
-void FUN_0040a5d0(struct FlumeEntry *param) {
+void InitLogFlumeEntranceParticles(struct FlumeEntry *param) {
     if (param != NULL) {
         param->count = 4;
         param->field_d0 = 6;
-        FUN_0040a580(param);
+        ResetLogFlumeEntranceParticles(param);
     }
 }
 
@@ -1382,7 +1387,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
         coords[1] = node_y;
         AddBasicObject(DAT_004c74f4, coords);
         LinkNodeAfter((struct FlumeEntry *)prev, (struct FlumeEntry *)node);
-        FUN_0040a5d0((struct FlumeEntry *)entry);
+        InitLogFlumeEntranceParticles((struct FlumeEntry *)entry);
     }
 }
 
@@ -2165,7 +2170,7 @@ void UpdateLogFlumeEntranceEntry(struct FlumeEntry *set) {
             }
         }
     } else {
-        FUN_0040a580((struct FlumeEntry *)set);
+        ResetLogFlumeEntranceParticles((struct FlumeEntry *)set);
     }
     {
         /* Calculate both world coordinates before the queue call. The Point preserves
@@ -2506,7 +2511,7 @@ void LogFlumeTrackCalcCursor(Element *elem, int *param_2, unsigned int param_3) 
             }
             DropForeignFlumeTrackNeighbours(key, list);
             code = FlumeNeighbourMask(list);
-            if (FUN_00409580(code, (struct StateSlots *)list)) {
+            if (CanPlaceLogFlumeTrack(code, (struct StateSlots *)list)) {
                 AppendFlumeNeighbourCursors((struct FlumeEntry **)list, &EditCursor);
                 ResetCursorBuildable(&EditCursor);
             }

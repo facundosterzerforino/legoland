@@ -885,7 +885,7 @@ extern struct FXItem ENTRANCE_SFX[1]; /* its file name follows */
 // 0x004b66e8
 extern struct FXItem RESTAURANT_SFX[1];
 // 0x004b66f4
-extern int DAT_004b66f4[15 * 6];
+extern int Restaurant1CustomerPath[15 * 6];
 // 0x004b685c
 extern int DAT_004b685c;
 // 0x004b6860

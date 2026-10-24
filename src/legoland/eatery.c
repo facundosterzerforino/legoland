@@ -669,16 +669,19 @@ void LoadRestaurant1Resources(struct Element *obj) {
     LoadMoneySFX();
 }
 
+/* Sends a Restaurant1 customer to step `step` of its seat's walk path (Restaurant1CustomerPath, seat =
+ * bloke->field_36): sets the destination relative to tile (x, y), starts the walk (low-level action 7), stores the
+ * frame and optionally turns to face the move. */
 // FUNCTION: LEGOLAND 0x0042f0f0
-void FUN_0042f0f0(struct Bloke *bloke, int x, int y, int step) {
+void MoveRestaurant1CustomerToStep(struct Bloke *bloke, int x, int y, int step) {
     int idx = (step + bloke->field_36 * 5) * 6;
-    int y_add = DAT_004b66f4[idx + 1];
-    int dir_flag = DAT_004b66f4[idx + 4];
-    int frame = DAT_004b66f4[idx + 5];
+    int y_add = Restaurant1CustomerPath[idx + 1];
+    int dir_flag = Restaurant1CustomerPath[idx + 4];
+    int frame = Restaurant1CustomerPath[idx + 5];
     char dir;
 
-    bloke->dest.x = (DAT_004b66f4[idx] + x) * 0x100 + DAT_004b66f4[idx + 2];
-    bloke->dest.y = (y + y_add) * 0x100 + DAT_004b66f4[idx + 3];
+    bloke->dest.x = (Restaurant1CustomerPath[idx] + x) * 0x100 + Restaurant1CustomerPath[idx + 2];
+    bloke->dest.y = (y + y_add) * 0x100 + Restaurant1CustomerPath[idx + 3];
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->target_dir = dir + 0x10;
     bloke->low_level_action = 7;
@@ -758,16 +761,16 @@ void Restaurant1Update(Element *obj) {
                 if (bloke->field_46 == 4) {
                     bloke->param_action = 8;
                 } else {
-                    FUN_0042f0f0(bloke, x, y, 0);
+                    MoveRestaurant1CustomerToStep(bloke, x, y, 0);
                     bloke->param_action++;
                 }
                 break;
             case 2:
-                FUN_0042f0f0(bloke, x, y, 1);
+                MoveRestaurant1CustomerToStep(bloke, x, y, 1);
                 bloke->param_action++;
                 break;
             case 3:
-                FUN_0042f0f0(bloke, x, y, 2);
+                MoveRestaurant1CustomerToStep(bloke, x, y, 2);
                 bloke->param_action++;
                 break;
             case 4:
@@ -786,11 +789,11 @@ void Restaurant1Update(Element *obj) {
                 bloke->flags &= 0xfeff;
                 bloke->height = 0;
                 BlokeWalkAnim(bloke);
-                FUN_0042f0f0(bloke, x, y, 3);
+                MoveRestaurant1CustomerToStep(bloke, x, y, 3);
                 bloke->param_action++;
                 break;
             case 7:
-                FUN_0042f0f0(bloke, x, y, 4);
+                MoveRestaurant1CustomerToStep(bloke, x, y, 4);
                 bloke->param_action += 2;
                 seats.c[bloke->field_36] = 0;
                 break;
@@ -939,8 +942,10 @@ void LoadRestaurant2Resources(struct Element *obj) {
     LLSSetFrame((struct LLS *)GetLLSForLayer(EateryLayerOwner, 3), 0);
 }
 
+/* Allocates a zeroed 0x40-byte Restaurant2 state node for the instance at the given tile id (field_38 = 0x143) and
+ * pushes it onto SaveBlockList. */
 // FUNCTION: LEGOLAND 0x0042f920
-void FUN_0042f920(unsigned short *param_1) {
+void AddRestaurant2Node(unsigned short *param_1) {
     struct SaveBlock *node = malloc(sizeof(struct SaveBlock));
     if (node != NULL) {
         unsigned int *p = (unsigned int *)node;
@@ -979,7 +984,7 @@ void Restaurant2AddObject(struct Element *param_1, unsigned char *param_2) {
     id[0] = param_2[0];
     id[1] = param_2[4];
     AddBasicObject(param_1, (int *)param_2);
-    FUN_0042f920((unsigned short *)id);
+    AddRestaurant2Node((unsigned short *)id);
 }
 
 // FUNCTION: LEGOLAND 0x0042f9d0
@@ -1031,8 +1036,10 @@ void Restaurant2RemoveObject(struct Element *arg1, TileId tile, struct Cursor *a
     RemoveAllBlokesFromRide(((struct Element *)arg1)->ride, tile);
 }
 
+/* Moves a Restaurant2 rider diagonally by 8 times the step table entry idx: towards -x/-y with the first table for
+ * dir 1, towards +x/+y with the second table otherwise. */
 // FUNCTION: LEGOLAND 0x0042fa90
-void FUN_0042fa90(struct RideNode *node, int dir, int idx) {
+void ShiftRestaurant2RiderDiagonally(struct RideNode *node, int dir, int idx) {
     if (dir == 1) {
         node->rider->pos.x += DAT_004b6860[idx] * -8;
         node->rider->pos.y += DAT_004b6860[idx] * -8;
@@ -1195,7 +1202,7 @@ void Restaurant2Update(Element *obj) {
                 break;
             case 6:
                 if (f18 == 2 && f28 == 0) {
-                    FUN_0042fa90(node, 1, f7);
+                    ShiftRestaurant2RiderDiagonally(node, 1, f7);
                 } else if (f28 != 0) {
                     bloke->param_action++;
                 }
@@ -1251,7 +1258,7 @@ void Restaurant2Update(Element *obj) {
                     f28 = 0;
                 }
                 if (f18 == 2 && f28 == 0) {
-                    FUN_0042fa90(node, 2, f7);
+                    ShiftRestaurant2RiderDiagonally(node, 2, f7);
                 } else if (f28 != 0) {
                     bloke->param_action++;
                 }
@@ -2068,8 +2075,10 @@ void OctopusCafeUpdate(Element *obj) {
     }
 }
 
+/* Draws the Octopus Cafe in layers: the base sprite, then the first pair of seated blokes and the sprite over them,
+ * then the second pair and its overlay sprite (an overlay only when its pair has someone). */
 // FUNCTION: LEGOLAND 0x00431c50
-void FUN_00431c50(unsigned int param_1, unsigned int param_2, struct Sprite *param_3, struct Sprite *param_4, struct Sprite *param_5, struct Bloke *param_6, struct Bloke *param_7, struct Bloke *param_8, struct Bloke *param_9, unsigned int param_10) {
+void RenderOctopusCafeSeatLayers(unsigned int param_1, unsigned int param_2, struct Sprite *param_3, struct Sprite *param_4, struct Sprite *param_5, struct Bloke *param_6, struct Bloke *param_7, struct Bloke *param_8, struct Bloke *param_9, unsigned int param_10) {
     PrintSprite(param_3, param_1, param_2, param_10, 0);
     if (param_6 != 0 || param_7 != 0) {
         if (param_6 != 0) {
@@ -2127,25 +2136,25 @@ void RenderOctopusCafe(struct Element *param_1, unsigned int param_2, unsigned i
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 2) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentESprite, OctTabEASprite, OctTabEBSprite, buckets[14], buckets[15], buckets[12], buckets[13], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentESprite, OctTabEASprite, OctTabEBSprite, buckets[14], buckets[15], buckets[12], buckets[13], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 3) IP_RenderBlokeIn3DNow(blokes[i]);
     }
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 4) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentFSprite, OctTabFASprite, OctTabFBSprite, buckets[17], buckets[18], buckets[16], buckets[19], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentFSprite, OctTabFASprite, OctTabFBSprite, buckets[17], buckets[18], buckets[16], buckets[19], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 5) IP_RenderBlokeIn3DNow(blokes[i]);
     }
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 6) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentDSprite, OctTabDASprite, OctTabDBSprite, buckets[10], buckets[11], buckets[8], buckets[9], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentDSprite, OctTabDASprite, OctTabDBSprite, buckets[10], buckets[11], buckets[8], buckets[9], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 7) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentCSprite, OctTabCASprite, OctTabCBSprite, buckets[4], buckets[7], buckets[5], buckets[6], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentCSprite, OctTabCASprite, OctTabCBSprite, buckets[4], buckets[7], buckets[5], buckets[6], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 8) IP_RenderBlokeIn3DNow(blokes[i]);
     }
@@ -2162,28 +2171,28 @@ void RenderOctopusCafe(struct Element *param_1, unsigned int param_2, unsigned i
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0xc) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentGSprite, OctTabGASprite, OctTabGBSprite, buckets[21], buckets[22], buckets[20], buckets[23], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentGSprite, OctTabGASprite, OctTabGBSprite, buckets[21], buckets[22], buckets[20], buckets[23], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0xd) IP_RenderBlokeIn3DNow(blokes[i]);
     }
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0xe) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentHSprite, OctTabHASprite, OctTabHBSprite, buckets[24], buckets[25], buckets[26], buckets[27], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentHSprite, OctTabHASprite, OctTabHBSprite, buckets[24], buckets[25], buckets[26], buckets[27], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0xf) IP_RenderBlokeIn3DNow(blokes[i]);
     }
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0x10) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentBSprite, OctTabBASprite, OctTabBBSprite, buckets[0], buckets[3], buckets[1], buckets[2], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentBSprite, OctTabBASprite, OctTabBBSprite, buckets[0], buckets[3], buckets[1], buckets[2], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0x11) IP_RenderBlokeIn3DNow(blokes[i]);
     }
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0x12) IP_RenderBlokeIn3DNow(blokes[i]);
     }
-    FUN_00431c50(param_2, param_3, OctTentASprite, OctTabAASprite, OctTabABSprite, buckets[28], buckets[29], buckets[30], buckets[31], param_6);
+    RenderOctopusCafeSeatLayers(param_2, param_3, OctTentASprite, OctTabAASprite, OctTabABSprite, buckets[28], buckets[29], buckets[30], buckets[31], param_6);
     for (i = 0; i < count; i = i + 1) {
         if (blokes[i]->field_37 == 0x13) IP_RenderBlokeIn3DNow(blokes[i]);
     }

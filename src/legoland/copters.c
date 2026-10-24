@@ -274,7 +274,7 @@ void CoptersInitNode(struct CopterNode *node) {
             node->layer[4].frame = frame - 1;
         }
     }
-    FUN_004049a0(node, 1);
+    ResetCoptersRide(node, 1);
 }
 
 // FUNCTION: LEGOLAND 0x00404040
@@ -593,8 +593,11 @@ unsigned int CoptersResumeSample(void *param) {
     return 0;
 }
 
+/* Starts a copter ride: flags every occupied seat layer, sets running flag 1 (clearing 0x4000), resets the layer
+ * frames, plays the start sound and a looping rotor sound that stays paused until CoptersResumeSample resumes it
+ * 0xb54 ms later. */
 // FUNCTION: LEGOLAND 0x004048b0
-void FUN_004048b0(struct CopterSfxNode *node) {
+void StartCoptersRide(struct CopterSfxNode *node) {
     struct FXItem *fx = Helicopter_SFX;
     struct SampleSource params;
     struct Sample *sample;
@@ -630,8 +633,10 @@ void FUN_004048b0(struct CopterSfxNode *node) {
     AddSFX_Callback(sample, 0xb54, (unsigned int (*)(struct Sample *))CoptersResumeSample);
 }
 
+/* Resets a copter ride: clears seat layers, riders and counters, rewinds the frames to their last one and clears
+ * flags 0x4001. With param 0 it also fades the ride's positional sounds and plays the stop sound. */
 // FUNCTION: LEGOLAND 0x004049a0
-void FUN_004049a0(struct CopterNode *node, int param) {
+void ResetCoptersRide(struct CopterNode *node, int param) {
     struct FXItem *fx = Helicopter_SFX;
     struct SampleSource params;
     struct CopterSfxNode *n = (struct CopterSfxNode *)node;
@@ -678,7 +683,7 @@ void CoptersUpdateNode(struct CopterNode *node) {
             !(node->layer[2].flags & 1) && !(node->layer[3].flags & 1) &&
             !(node->layer[4].flags & 1)) {
             if (GetAllBlokesOffRide(ActiveCopterRide, node->field_0) != 0) {
-                FUN_004049a0(node, 0);
+                ResetCoptersRide(node, 0);
             }
             return;
         }
@@ -692,7 +697,7 @@ void CoptersUpdateNode(struct CopterNode *node) {
         if (node->field_8 & 0x4000) {
             if (node->field_2 == node->field_10) {
                 node->field_8 &= ~0x4000u;
-                FUN_004048b0((struct CopterSfxNode *)node);
+                StartCoptersRide((struct CopterSfxNode *)node);
                 return;
             }
         } else if (node->field_2 != 0) {
@@ -793,7 +798,7 @@ void CoptersUpdate(struct Element *elem) {
                 b->param_action++;
                 cn->field_2++;
                 if ((short)(signed char)cn->field_2 == ActiveCopterRide->seats) {
-                    FUN_004048b0((struct CopterSfxNode *)cn);
+                    StartCoptersRide((struct CopterSfxNode *)cn);
                 }
                 break;
             case 5:

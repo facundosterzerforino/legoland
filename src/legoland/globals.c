@@ -627,8 +627,10 @@ struct FXItem ENTRANCE_SFX[1];
 // GLOBAL: LEGOLAND 0x004b66e8
 struct FXItem RESTAURANT_SFX[1];
 
+/* Restaurant1 customer walk paths: 3 seats x 5 steps x 6 ints (tile dx, tile dy, sub-tile x, sub-tile y,
+ * face flag, frame). */
 // GLOBAL: LEGOLAND 0x004b66f4
-int DAT_004b66f4[15 * 6];
+int Restaurant1CustomerPath[15 * 6];
 
 // GLOBAL: LEGOLAND 0x004b685c
 int DAT_004b685c;
