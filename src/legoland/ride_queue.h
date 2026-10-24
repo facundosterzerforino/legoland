@@ -62,4 +62,4 @@ struct RideQueueEntry *FindQueueEntryById(unsigned short param_1);
 void PlaceRoadTiles(int x, int y, int param_3, int param_4);
 void JoinQueue(struct Queue *queue, struct RideNode *mid);
 
-extern unsigned short DAT_004b4c08[15][4];
+extern unsigned short RoadPieceTileTable[15][4];

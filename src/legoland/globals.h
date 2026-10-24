@@ -1351,9 +1351,7 @@ extern struct Ride *LogFlumeSpecialCorner1Ride;
 // 0x004c4460
 extern struct Element *LogFlumeCsaw2Element;
 // 0x004c5c90
-extern unsigned int DAT_004c5c90;
 // 0x004c74c8
-extern unsigned int DAT_004c74c8;
 // 0x004c74f4
 extern struct Element *LogFlumeTrackElement;
 // 0x004c74f8
@@ -1667,7 +1665,7 @@ extern char EmptyString[0x100];
 // 0x004dcbb8
 extern float LmsLightDir[3];
 // 0x004dcbd0
-extern struct VecMath VecMathOps; /* .dim was DAT_004dcbf8 */
+extern struct VecMath VecMathOps; /* .dim is the global at 0x004dcbf8 */
 // 0x004dcc00
 /* a vector of the castle's numerical code: count floats (the pool's are 0x54 bytes) */
 struct FloatArray {
@@ -1729,7 +1727,7 @@ extern float TrackLightingOffset;
 // 0x00611650
 extern float ModelLightingOffset;
 // 0x00611654
-extern float DAT_00611654;
+extern float UnusedTrackFloat;
 // 0x00611658
 extern Vector3 TrackRailOffsets[4];
 // 0x00611688
@@ -1746,7 +1744,7 @@ extern unsigned int RailDrawOrder[16];
 // 0x00611750
 extern Vector3 TrackArcTangents[4];
 // 0x00611780
-extern unsigned char DAT_00611780[0x40];
+extern unsigned char UnusedTrackScratch[0x40];
 // 0x006117c0
 extern Vector3 TrackSideMidpoints[34];
 // 0x00611958
@@ -4140,9 +4138,9 @@ extern char SafariManboxName[];
 extern int AltManBaseTextureA;
 
 // 0x00641004
-extern int DAT_00641004[3000];
+extern int PersonMeshVertexZ[3000];
 // 0x00643edc
-extern int DAT_00643edc[9131];
+extern int PersonMeshVertices[9131];
 // 0x0063810c
 extern int AltManTextureCountA;
 

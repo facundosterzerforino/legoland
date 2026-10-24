@@ -1612,21 +1612,21 @@ L440f86:
         add eax, 0xc
         mov edx, dword ptr [eax + edx - 0xc]
         add edx, edi
-        mov dword ptr [eax + DAT_00643edc], edx
+        mov dword ptr [eax + PersonMeshVertices], edx
         mov edx, dword ptr [esi + 0x1c]
         mov edx, dword ptr [eax + edx - 8]
         sub edx, dword ptr [esi + 4]
-        mov dword ptr [eax + DAT_00643edc + 0x4], edx
+        mov dword ptr [eax + PersonMeshVertices + 0x4], edx
         mov edx, dword ptr [esi + 0x1c]
         mov edx, dword ptr [eax + edx - 4]
         add edx, ebx
         dec ecx
-        mov dword ptr [eax + DAT_00643edc + 0x8], edx
+        mov dword ptr [eax + PersonMeshVertices + 0x8], edx
         jne L440f86
 L440fba:
         mov ebx, dword ptr [ebp - 0xdc]
         mov edi, dword ptr [ebp - 0x20]
-        lea esi, [DAT_00643edc + 0xc]
+        lea esi, [PersonMeshVertices + 0xc]
 L440fc9:
         mov eax, dword ptr [esi]
         imul dword ptr [ebx]
@@ -1672,13 +1672,13 @@ L440fc9:
         add esi, 0xc
         dec edi
         jne L440fc9
-        mov ecx, dword ptr [DAT_00643edc + 0x14]
+        mov ecx, dword ptr [PersonMeshVertices + 0x14]
         mov edi, dword ptr [ebp - 0x20]
         mov esi, ecx
         test edi, edi
         mov dword ptr [ebp - 0x28], esi
         jle L441071
-        mov edx, offset DAT_00643edc + 0x14
+        mov edx, offset PersonMeshVertices + 0x14
         mov ebx, edi
 L44105a:
         mov eax, dword ptr [edx]
@@ -1710,8 +1710,8 @@ L441071:
         test edi, edi
         jle L44115d
         mov ecx, dword ptr [ebp - 0x20]
-        mov edi, offset DAT_00641004
-        mov esi, offset DAT_00643edc + 0x14
+        mov edi, offset PersonMeshVertexZ
+        mov esi, offset PersonMeshVertices + 0x14
         mov dword ptr [ebp - 0x5c], ecx
 L4410ae:
         mov eax, dword ptr [esi]
@@ -1793,8 +1793,8 @@ L441185:
         lea edx, [edx + ecx*4]
         mov dword ptr [ebp - 0x10], edx
         lea eax, [eax + eax*2]
-        lea ecx, [eax*4 + DAT_00643edc + 0xc]
-        mov esi, dword ptr [eax*4 + DAT_00643edc + 0xc]
+        lea ecx, [eax*4 + PersonMeshVertices + 0xc]
+        mov esi, dword ptr [eax*4 + PersonMeshVertices + 0xc]
         mov eax, dword ptr [ecx + 4]
         mov edi, dword ptr [ecx + 8]
         mov ecx, dword ptr [edx + 4]
@@ -1802,9 +1802,9 @@ L441185:
         mov dword ptr [ebp - 0xe8], edi
         lea ecx, [ecx + ecx*2]
         lea edx, [edx + edx*2]
-        lea ecx, [ecx*4 + DAT_00643edc + 0xc]
+        lea ecx, [ecx*4 + PersonMeshVertices + 0xc]
         mov ebx, ecx
-        lea edx, [edx*4 + DAT_00643edc + 0xc]
+        lea edx, [edx*4 + PersonMeshVertices + 0xc]
         mov ecx, dword ptr [ebx]
         mov dword ptr [ebp - 0x78], ecx
         mov ecx, dword ptr [ebx + 4]
@@ -1915,13 +1915,13 @@ L4412e4:
         jns L4414af
         mov eax, dword ptr [ebp - 0x10]
         mov edx, dword ptr [eax]
-        mov ecx, dword ptr [edx*4 + DAT_00641004]
+        mov ecx, dword ptr [edx*4 + PersonMeshVertexZ]
         mov edx, dword ptr [eax + 4]
         mov dword ptr [ebp - 0x19c], ecx
-        mov ecx, dword ptr [edx*4 + DAT_00641004]
+        mov ecx, dword ptr [edx*4 + PersonMeshVertexZ]
         mov edx, dword ptr [eax + 8]
         mov dword ptr [ebp - 0x180], ecx
-        mov eax, dword ptr [edx*4 + DAT_00641004]
+        mov eax, dword ptr [edx*4 + PersonMeshVertexZ]
         mov dword ptr [ebp - 0x164], eax
         mov ecx, dword ptr [ebp + 8]
         lea ebx, [ecx + ecx*8]
@@ -2055,24 +2055,24 @@ L4414f2:
         mov dword ptr [ebp - 0x10], ecx
         mov eax, dword ptr [ecx]
         lea edx, [eax + eax*2]
-        lea eax, [edx*4 + DAT_00643edc + 0xc]
-        mov edx, dword ptr [edx*4 + DAT_00643edc + 0xc]
+        lea eax, [edx*4 + PersonMeshVertices + 0xc]
+        mov edx, dword ptr [edx*4 + PersonMeshVertices + 0xc]
         mov dword ptr [ebp - 0x78], edx
         mov esi, dword ptr [eax + 4]
         mov eax, dword ptr [eax + 8]
         mov dword ptr [ebp - 0x70], eax
         mov eax, dword ptr [ecx + 4]
         lea edx, [eax + eax*2]
-        lea eax, [edx*4 + DAT_00643edc + 0xc]
-        mov edx, dword ptr [edx*4 + DAT_00643edc + 0xc]
+        lea eax, [edx*4 + PersonMeshVertices + 0xc]
+        mov edx, dword ptr [edx*4 + PersonMeshVertices + 0xc]
         mov dword ptr [ebp - 0xf0], edx
         mov ebx, dword ptr [eax + 4]
         mov eax, dword ptr [eax + 8]
         mov dword ptr [ebp - 0xe8], eax
         mov eax, dword ptr [ecx + 8]
         lea ecx, [eax + eax*2]
-        lea edx, [ecx*4 + DAT_00643edc + 0xc]
-        mov eax, dword ptr [ecx*4 + DAT_00643edc + 0xc]
+        lea edx, [ecx*4 + PersonMeshVertices + 0xc]
+        mov eax, dword ptr [ecx*4 + PersonMeshVertices + 0xc]
         mov dword ptr [ebp - 0x6c], eax
         mov edi, dword ptr [edx + 4]
         mov ecx, dword ptr [edx + 8]
@@ -2183,13 +2183,13 @@ L441682:
         jns L4417ce
         mov eax, dword ptr [ebp - 0x10]
         mov edx, dword ptr [eax]
-        mov ecx, dword ptr [edx*4 + DAT_00641004]
+        mov ecx, dword ptr [edx*4 + PersonMeshVertexZ]
         mov edx, dword ptr [eax + 4]
         mov dword ptr [ebp - 0x19c], ecx
-        mov ecx, dword ptr [edx*4 + DAT_00641004]
+        mov ecx, dword ptr [edx*4 + PersonMeshVertexZ]
         mov edx, dword ptr [eax + 8]
         mov dword ptr [ebp - 0x180], ecx
-        mov eax, dword ptr [edx*4 + DAT_00641004]
+        mov eax, dword ptr [edx*4 + PersonMeshVertexZ]
         mov dword ptr [ebp - 0x164], eax
         mov ecx, dword ptr [ebp + 8]
         lea ecx, [ecx + ecx*2]

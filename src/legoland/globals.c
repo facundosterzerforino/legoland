@@ -348,7 +348,7 @@ unsigned int RoadPieceFootprint[5];
 int TrafficLightTimer;
 
 // GLOBAL: LEGOLAND 0x004b4c08
-unsigned short DAT_004b4c08[15][4];
+unsigned short RoadPieceTileTable[15][4];
 
 // GLOBAL: LEGOLAND 0x004b4cb8
 struct FXItem SAFARI_SFX[1];
@@ -570,8 +570,9 @@ struct EdgeMesh RailTubeMesh;
 // GLOBAL: LEGOLAND 0x004b6010
 unsigned short SupportPostModelTriangles[16][8]; /* SupportPostModel's 16 triangles */
 
+/* Face normals of SupportPostModel (its field_10 points here). */
 // GLOBAL: LEGOLAND 0x004b6110
-float DAT_004b6110[16];
+float SupportPostModelNormals[16];
 
 // GLOBAL: LEGOLAND 0x004b6150
 struct LmsFile SupportPostModel = {0};
@@ -579,8 +580,9 @@ struct LmsFile SupportPostModel = {0};
 // GLOBAL: LEGOLAND 0x004b61e0
 struct CastleFloatEnt TrackTieShape[8] = {0}; /* a unit box; c holds z as float bits */
 
+/* Face normals of TrackTieModel (its field_10 points here). */
 // GLOBAL: LEGOLAND 0x004b6240
-float DAT_004b6240[12];
+float TrackTieModelNormals[12];
 
 // GLOBAL: LEGOLAND 0x004b6270
 unsigned short TrackTieModelTriangles[8][8]; /* TrackTieModel's 8 triangles */
@@ -1965,8 +1967,9 @@ float TrackLightingOffset = 0;
 // GLOBAL: LEGOLAND 0x00611650
 float ModelLightingOffset = 0;
 
+/* Only touched through BuildTrackPieceCurves biased addressing of TrackRailOffsets; never read. */
 // GLOBAL: LEGOLAND 0x00611654
-float DAT_00611654 = 0;
+float UnusedTrackFloat = 0;
 
 // GLOBAL: LEGOLAND 0x00611658
 Vector3 TrackRailOffsets[4] = {0};
@@ -1983,8 +1986,9 @@ unsigned int RailDrawOrder[16] = {0};
 // GLOBAL: LEGOLAND 0x00611750
 Vector3 TrackArcTangents[4] = {0};
 
+/* Never referenced. */
 // GLOBAL: LEGOLAND 0x00611780
-unsigned char DAT_00611780[0x40] = {0};
+unsigned char UnusedTrackScratch[0x40] = {0};
 
 /* Track geometry (BuildTrackPieceCurves, x 20): side midpoints of a cell, rail offsets, arc tangents and arc centres, from the *Unit tables. */
 // GLOBAL: LEGOLAND 0x006117c0
@@ -5594,11 +5598,13 @@ char SafariManboxName[] = "manbox??";
 // GLOBAL: LEGOLAND 0x00641000
 int AltManBaseTextureA;
 
+/* DrawPersonMesh: Z-buffer value per vertex (person layer field_34 in the top byte, scaled depth below). */
 // GLOBAL: LEGOLAND 0x00641004
-int DAT_00641004[3000];
+int PersonMeshVertexZ[3000];
 
+/* DrawPersonMesh: transformed vertices (x, y, z 16.16), 12 bytes each, vertex 1 at +0xc. */
 // GLOBAL: LEGOLAND 0x00643edc
-int DAT_00643edc[9131];
+int PersonMeshVertices[9131];
 
 // GLOBAL: LEGOLAND 0x0063810c
 int AltManTextureCountA;
