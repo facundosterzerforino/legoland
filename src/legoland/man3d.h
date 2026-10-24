@@ -167,7 +167,7 @@ void *Load3DDataFile(const char *param_1, const char *param_2);
 struct Bloke;
 void UpdatePersonFromBloke(struct Person *person, struct Bloke *bloke);
 void AddPersonToList(struct Person *person);
-void FUN_00440a30(struct Person *person);
+void DrawPersonMesh(struct Person *person);
 struct IntVec3;
 void ComputeMeshElemBounds(struct MeshElem *elem, struct IntVec3 *out);
 LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);

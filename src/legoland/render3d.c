@@ -538,8 +538,10 @@ struct ColourRef {
     unsigned char b2;
 };
 
+/* Replaces the key colour param_1 on colour-ramp faces (flag 0x2000) with param_4 in the first half of the face
+ * list and param_2 in the second half, rebuilding each face's ramp. param_3 is unused. */
 // FUNCTION: LEGOLAND 0x004424e0
-void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, struct ColourRef *param_3, struct ColourRef *param_4, struct PersonFace *param_5, int param_6) {
+void RecolourPersonFaces(struct ColourRef *param_1, struct ColourRef *param_2, struct ColourRef *param_3, struct ColourRef *param_4, struct PersonFace *param_5, int param_6) {
     int i = 0;
     int count;
     struct PersonFace *entry;
@@ -585,8 +587,12 @@ void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, struct C
     }
 }
 
+/* Returns a malloc'd copy of the mesh faces for this person. Visitors (character 1) get random alternatives for the
+ * two swappable textures from the man or woman list (flag is person->random; the picks are kept in field_80 and
+ * field_7c). The grey key colour 0x565656 becomes the person's two BlokeColours: random for visitors, fixed for
+ * characters 2 and 3. */
 // FUNCTION: LEGOLAND 0x00442580
-void *FUN_00442580(struct Person *person, struct LocFile *context, struct PersonFace *src, unsigned int count, unsigned int flag) {
+void *CreatePersonFaceList(struct Person *person, struct LocFile *context, struct PersonFace *src, unsigned int count, unsigned int flag) {
     int *arrA;
     int idxI;
     int valC;
@@ -678,7 +684,7 @@ void *FUN_00442580(struct Person *person, struct LocFile *context, struct Person
             RemapTexCoordsToCell(context, valC, arrA[idxI], (struct PersonFace *)mem, count);
             RemapTexCoordsToCell(context, valE, arrD[idxJ], (struct PersonFace *)mem, count);
         }
-        FUN_004424e0(&z0, &z1, &z3, &z2, mem, count);
+        RecolourPersonFaces(&z0, &z1, &z3, &z2, mem, count);
     }
     return mem;
 }
@@ -776,8 +782,11 @@ unsigned char *Get3DDataListString(char *param_1, int param_2, volatile int para
 // GLOBAL: LEGOLAND 0x004b7d00
 const char ModelLineFormat[] = "%s %i %i %i %i %i";
 
+/* Reads an alternative texture list (altman.txt as set 0, altwoman.txt as set 1): two base texture names and the
+ * alternatives that may replace them, resolved to indices through the model texture list (Path3DFormat).
+ * CreatePersonFaceList picks from these tables. */
 // FUNCTION: LEGOLAND 0x00442980
-void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) {
+void LoadPersonAltTextureList(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) {
     int idx = 0;
     /* As in the original (0x442a13), count1 and count2 are not set when Load3DDataFile fails, and count2 is not set
      * when count1 is 0: the game reads whatever is in their stack slots there. */

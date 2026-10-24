@@ -445,7 +445,7 @@ unsigned int RenderAdvisorIcon(struct IconNode *param_1) {
             // STRING: LEGOLAND 0x004b7da8
             AdvisorDebugStage = "BltAdvisor";
             PushRenderingStatusAndLockVideoSurface();
-            FUN_004659a0(frame, param_1->x, param_1->y);
+            DrawAviFrame(frame, param_1->x, param_1->y);
             PopRenderingStatus();
             AdvisorAnimFrame++;
             // STRING: LEGOLAND 0x004b7d98

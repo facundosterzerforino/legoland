@@ -45,7 +45,7 @@ LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3
 LEGO_EXPORT void ClearOverrideFrame(void);
 LEGO_EXPORT void ClearOverridePalette(void);
 void DrawMovieFrameDoubled(struct AviFrame *frame);
-void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3);
+void DrawAviFrame(struct AviFrame *param_1, int param_2, int param_3);
 void LoadWatchSprite(int a, int b);
 void UnloadWatchSprite(void);
 LEGO_EXPORT void CommitCliprectToHardware(void);

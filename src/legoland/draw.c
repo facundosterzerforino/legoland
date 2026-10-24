@@ -328,8 +328,10 @@ LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) {
     VideoSurfaceLocked = 0;
 }
 
+/* Pushes the rendering status, unlocks the render surface if it is locked, then always locks it again.
+ * PushSetTarget calls it after switching renderEngine to the sprite surface. */
 // FUNCTION: LEGOLAND 0x004640f0
-void FUN_004640f0(void) {
+void PushRenderingStatusAndRelockVideoSurface(void) {
     RECT local;
     LPDIRECTDRAWSURFACE surface;
     int wasLocked;
@@ -2173,8 +2175,10 @@ void DrawMovieFrameDoubled(struct AviFrame *frame) {
     }
 }
 
+/* Copies an AVI frame (rows stored bottom-up) to the current surface at (x, y), widening 555 pixels to 565 when
+ * DisplayPixelFormat is 2. */
 // FUNCTION: LEGOLAND 0x004659a0
-void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
+void DrawAviFrame(struct AviFrame *param_1, int param_2, int param_3) {
     int height;
     int width;
     int last;
@@ -2910,7 +2914,7 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     *slot = renderEngine;
     renderEngineTargetIdx++;
     renderEngine = sprite->surface;
-    FUN_004640f0();
+    PushRenderingStatusAndRelockVideoSurface();
 }
 
 // FUNCTION: LEGOLAND 0x00466600

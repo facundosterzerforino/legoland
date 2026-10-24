@@ -610,7 +610,7 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
             StartMousePixelHitTest((unsigned char *)vid.bits, (struct RenderViewport *)&MousePos);
             Render_SetViewport(&clip);
             __asm { fstcw word ptr [SavedFPUControlWord] }
-            __asm {fldcw word ptr[PersonRenderFpuControlWord]} FUN_00440a30(person);
+            __asm {fldcw word ptr[PersonRenderFpuControlWord]} DrawPersonMesh(person);
             __asm { fldcw word ptr [SavedFPUControlWord] }
             if (MousePixelCovered != 0) {
                 if (DAT_00668954 != 0 && person->bloke == GetWorkerOnMouse()) {
@@ -888,9 +888,9 @@ LEGO_EXPORT void InitMan(void) {
     // STRING: LEGOLAND 0x004b7bc0
     ManMeshes[4] = Load3DMesh("ManPan.ManPan.3d", "visitor", ctx);
     // STRING: LEGOLAND 0x004b7ba4
-    FUN_00442980("altman.txt", proj, "visitor", 0, ctx);
+    LoadPersonAltTextureList("altman.txt", proj, "visitor", 0, ctx);
     // STRING: LEGOLAND 0x004b7b94
-    FUN_00442980("altwoman.txt", proj, "visitor", 1, ctx);
+    LoadPersonAltTextureList("altwoman.txt", proj, "visitor", 1, ctx);
     AltManFileData = Load3DDataFile("visitor", "altman.txt");
     AltWomanFileData = Load3DDataFile("visitor", "altwoman.txt");
     ctx = GetLoadedTextureCount();
@@ -1020,7 +1020,7 @@ LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, int anim) {
         {
             struct MeshElem *e = mesh->elems;
             struct PersonFace *f8 = mesh->field_8;
-            person->field_50 = FUN_00442580(person, context, f8, e->shared->count, person->random);
+            person->field_50 = CreatePersonFaceList(person, context, f8, e->shared->count, person->random);
         }
     }
 }
@@ -1212,9 +1212,12 @@ void ComputeMeshElemBounds(struct MeshElem *elem, struct IntVec3 *out) {
     out[1] = mx;
 }
 
+/* Draws the person's animated 3D mesh into the current 3D target, which Render3DPerson sets up first: gets the
+ * animation pose, resets the Z buffer, transforms the vertices and rasterises each face with its colour ramp (flag
+ * 0x2000) or texture. */
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.
 // FUNCTION: LEGOLAND 0x00440a30
-__declspec(naked) void FUN_00440a30(struct Person *person) {
+__declspec(naked) void DrawPersonMesh(struct Person *person) {
     __asm {
         push ebp
         mov ebp, esp
