@@ -26,7 +26,7 @@ LEGO_EXPORT unsigned int RenderScaledSprite(struct Sprite *param_1, int param_2,
 void InitPackedColorLookupTable(void);
 void FreeCursorCache(void);
 void *GetOrCreateColorRamp(int param_1, void *param_2);
-void FUN_00488700(unsigned char *base, struct RenderViewport *vp);
+void StartMousePixelHitTest(unsigned char *base, struct RenderViewport *vp);
 int InitReciprocalTables(void);
 void LoadTextureNode(struct Image *image, unsigned int index);
 void FreeTextureNodes(void);

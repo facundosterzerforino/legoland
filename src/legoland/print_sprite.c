@@ -65,7 +65,7 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
     unsigned int result;
 
     result = 1;
-    DAT_007feb14 = 0;
+    MousePixelCovered = 0;
     if ((sprite->flags & 0x8000) == 0) {
         if (param_4 != 0) {
             if (*GetVRAMAddress(sprite) == 0) {
@@ -127,7 +127,7 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
             } while (i < sprite->group->count);
         }
     }
-    if (param_5 != NULL && DAT_007feb14 != 0 && *param_5 != 0x100) {
+    if (param_5 != NULL && MousePixelCovered != 0 && *param_5 != 0x100) {
         Hover = *(struct HoverInfo *)param_5;
     }
     return result;
@@ -531,10 +531,10 @@ void FUN_00485f20(void *ptr) {
 
 // FUNCTION: LEGOLAND 0x00485f30
 void SetRender3DTarget(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
-    DAT_00797e68 = param_1;
-    DAT_00701e58 = param_2;
-    DAT_00701e60 = param_3;
-    DAT_0066be48 = param_4;
+    Render3DTargetBits = param_1;
+    Render3DTargetPitch = param_2;
+    Render3DTargetWidth = param_3;
+    Render3DTargetHeight = param_4;
 }
 
 // FUNCTION: LEGOLAND 0x00485f60

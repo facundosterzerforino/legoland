@@ -259,10 +259,10 @@ L4865eb:
         mov eax, dword ptr [edx + 4]
         sar edi, 0x10
         mov dword ptr [ebp - 0x28], edi
-        mov edi, dword ptr [DAT_00701e58]
+        mov edi, dword ptr [Render3DTargetPitch]
         sar eax, 0x10
         imul edi, eax
-        add edi, dword ptr [DAT_00797e68]
+        add edi, dword ptr [Render3DTargetBits]
         mov esi, dword ptr [ecx + 4]
         sar esi, 0x10
         mov dword ptr [ebp - 0x18], edi
@@ -379,7 +379,7 @@ L48672b:
         mov eax, dword ptr [ebp - 0x58]
         mul ecx
         add dword ptr [ebp - 0x10], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0x18], eax
 L486768:
@@ -391,7 +391,7 @@ L486771:
         cmp eax, ecx
         jg L48692f
         mov eax, dword ptr [ebp - 0x18]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 0xc]
         mov edi, dword ptr [ebp + 8]
         mov dword ptr [ebp - 0x6c], eax
@@ -494,11 +494,11 @@ L486881:
         mov dword ptr [ebx + ecx], edx
         mov ebx, dword ptr [DAT_0066b61c]
         mov ebx, dword ptr [ebx + 4]
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x22]
         sete cl
         movzx edx, word ptr [ebx + edx*2]
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
         mov word ptr [esi], dx
 L4868be:
         inc eax
@@ -667,7 +667,7 @@ L486a66:
         mov eax, dword ptr [ebp - 0x58]
         mul ecx
         add dword ptr [ebp - 0x10], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0x18], eax
 L486aa3:
@@ -679,7 +679,7 @@ L486aac:
         cmp ecx, eax
         jg L486c69
         mov eax, dword ptr [ebp - 0x18]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 0xc]
         mov edi, dword ptr [ebp + 8]
         mov dword ptr [ebp - 0x6c], eax
@@ -782,11 +782,11 @@ L486bbb:
         mov dword ptr [ebx + ecx], edx
         mov ebx, dword ptr [DAT_0066b61c]
         mov ebx, dword ptr [ebx + 4]
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x22]
         sete cl
         movzx edx, word ptr [ebx + edx*2]
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
         mov word ptr [esi], dx
 L486bf8:
         inc eax
@@ -890,10 +890,10 @@ L486cd5:
         mov esi, dword ptr [edx + 4]
         sar ecx, 0x10
         mov dword ptr [ebp - 0x40], ecx
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         sar esi, 0x10
         imul ecx, esi
-        add ecx, dword ptr [DAT_00797e68]
+        add ecx, dword ptr [Render3DTargetBits]
         mov edi, dword ptr [eax + 4]
         sar edi, 0x10
         mov dword ptr [ebp - 0x3c], ecx
@@ -1108,7 +1108,7 @@ L486f45:
         mov eax, dword ptr [ebp - 0x38]
         mul ecx
         add dword ptr [ebp - 4], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0x3c], eax
 L486fa8:
@@ -1120,7 +1120,7 @@ L486fb1:
         cmp edx, eax
         jg L487280
         mov eax, dword ptr [ebp - 0x3c]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 8]
         mov edi, dword ptr [ebp + 0x10]
         mov dword ptr [ebp - 0xac], eax
@@ -1272,11 +1272,11 @@ L487168:
         movzx edx, byte ptr [edx]
         mov ebx, dword ptr [ebx + edx*4]
         mov ebx, dword ptr [ebx + 4]
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x16]
         sete cl
         movzx edx, word ptr [ebx + edx*2]
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
         mov word ptr [esi], dx
 L4871c5:
         inc eax
@@ -1521,7 +1521,7 @@ L487465:
         mov eax, dword ptr [ebp - 0x38]
         mul ecx
         add dword ptr [ebp - 4], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0x3c], eax
 L4874c8:
@@ -1533,7 +1533,7 @@ L4874d1:
         cmp edx, eax
         jg L4877a0
         mov eax, dword ptr [ebp - 0x3c]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 8]
         mov edi, dword ptr [ebp + 0x10]
         mov dword ptr [ebp - 0xac], eax
@@ -1685,11 +1685,11 @@ L487688:
         movzx edx, byte ptr [edx]
         mov ebx, dword ptr [ebx + edx*4]
         mov ebx, dword ptr [ebx + 4]
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x16]
         sete cl
         movzx edx, word ptr [ebx + edx*2]
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
         mov word ptr [esi], dx
 L4876e5:
         inc eax
@@ -1819,10 +1819,10 @@ L487826:
         mov eax, dword ptr [edx + 4]
         sar edi, 0x10
         mov dword ptr [ebp - 0x18], edi
-        mov edi, dword ptr [DAT_00701e58]
+        mov edi, dword ptr [Render3DTargetPitch]
         sar eax, 0x10
         imul edi, eax
-        add edi, dword ptr [DAT_00797e68]
+        add edi, dword ptr [Render3DTargetBits]
         mov esi, dword ptr [ecx + 4]
         sar esi, 0x10
         mov dword ptr [ebp - 0xc], edi
@@ -1907,7 +1907,7 @@ L487916:
         mov eax, dword ptr [ebp - 0x38]
         mul ecx
         add dword ptr [ebp - 8], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0xc], eax
 L487943:
@@ -1919,7 +1919,7 @@ L48794c:
         cmp eax, ecx
         jg L487aaa
         mov eax, dword ptr [ebp - 0xc]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 0xc]
         mov edi, dword ptr [ebp + 8]
         mov dword ptr [ebp - 0x4c], eax
@@ -2000,12 +2000,12 @@ L487a26:
         mov edx, dword ptr [ebp - 0x14]
         cmp edx, dword ptr [ebx + ecx]
         jb L487a55
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         mov dword ptr [ebx + ecx], edx
         mov edx, dword ptr [ebp - 0x50]
         sete cl
         mov word ptr [esi], dx
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
 L487a55:
         inc eax
         mov ebx, dword ptr [ebp - 0x2c]
@@ -2135,7 +2135,7 @@ L487b9e:
         mov eax, dword ptr [ebp - 0x38]
         mul ecx
         add dword ptr [ebp - 8], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0xc], eax
 L487bcb:
@@ -2147,7 +2147,7 @@ L487bd4:
         cmp edx, eax
         jg L487d31
         mov eax, dword ptr [ebp - 0xc]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 0xc]
         mov edi, dword ptr [ebp + 8]
         mov dword ptr [ebp - 0x4c], eax
@@ -2228,12 +2228,12 @@ L487cad:
         mov edx, dword ptr [ebp - 0x14]
         cmp edx, dword ptr [ebx + ecx]
         jb L487cdc
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         mov dword ptr [ebx + ecx], edx
         mov edx, dword ptr [ebp - 0x50]
         sete cl
         mov word ptr [esi], dx
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
 L487cdc:
         inc eax
         mov ebx, dword ptr [ebp - 0x2c]
@@ -2328,10 +2328,10 @@ L487daf:
         mov esi, dword ptr [ecx + 4]
         sar edx, 0x10
         mov dword ptr [ebp - 0x38], edx
-        mov edx, dword ptr [DAT_00701e58]
+        mov edx, dword ptr [Render3DTargetPitch]
         sar esi, 0x10
         imul edx, esi
-        add edx, dword ptr [DAT_00797e68]
+        add edx, dword ptr [Render3DTargetBits]
         mov edi, dword ptr [eax + 4]
         sar edi, 0x10
         mov dword ptr [ebp - 0x34], edx
@@ -2516,7 +2516,7 @@ L487fc2:
         mov eax, dword ptr [ebp - 0x30]
         mul ecx
         add dword ptr [ebp - 4], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0x34], eax
 L48800f:
@@ -2528,7 +2528,7 @@ L488018:
         cmp ecx, eax
         jg L48824d
         mov eax, dword ptr [ebp - 0x34]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 8]
         mov edi, dword ptr [ebp + 0x10]
         mov dword ptr [ebp - 0x8c], eax
@@ -2659,11 +2659,11 @@ L488166:
         movzx edx, byte ptr [edx]
         mov ebx, dword ptr [ebx + edx*4]
         mov ebx, dword ptr [ebx + 4]
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x8e]
         sete cl
         movzx edx, word ptr [ebx + edx*2]
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
         mov word ptr [esi], dx
 L4881c0:
         inc eax
@@ -2870,7 +2870,7 @@ L4883d8:
         mov eax, dword ptr [ebp - 0x30]
         mul ecx
         add dword ptr [ebp - 4], eax
-        mov eax, dword ptr [DAT_00701e58]
+        mov eax, dword ptr [Render3DTargetPitch]
         mul ecx
         add dword ptr [ebp - 0x34], eax
 L488425:
@@ -2882,7 +2882,7 @@ L48842e:
         cmp eax, ecx
         jg L488664
         mov eax, dword ptr [ebp - 0x34]
-        mov ecx, dword ptr [DAT_00701e58]
+        mov ecx, dword ptr [Render3DTargetPitch]
         mov esi, dword ptr [ebp + 8]
         mov edi, dword ptr [ebp + 0x10]
         mov dword ptr [ebp - 0x8c], eax
@@ -3013,11 +3013,11 @@ L48857d:
         movzx edx, byte ptr [edx]
         mov ebx, dword ptr [ebx + edx*4]
         mov ebx, dword ptr [ebx + 4]
-        cmp esi, dword ptr [DAT_007fe9a8]
+        cmp esi, dword ptr [MousePixelAddress]
         movzx edx, word ptr [ebp - 0x8e]
         sete cl
         movzx edx, word ptr [ebx + edx*2]
-        or byte ptr [DAT_007feb14], cl
+        or byte ptr [MousePixelCovered], cl
         mov word ptr [esi], dx
 L4885d7:
         inc eax
@@ -3112,10 +3112,12 @@ void FUN_004886e0(unsigned int index) {
     FUN_00485f20(TextureNodes[index]);
 }
 
+/* Starts a mouse hit test for the next draw: clears the covered flag and points the mouse pixel address at point pt
+ * (MousePos) in the surface at base, using the 3D target pitch. */
 // FUNCTION: LEGOLAND 0x00488700
-void FUN_00488700(unsigned char *base, struct RenderViewport *vp) {
-    DAT_007feb14 = 0;
-    DAT_007fe9a8 = (unsigned short *)(base + (vp->y * DAT_00701e58) + (vp->x * 2));
+void StartMousePixelHitTest(unsigned char *base, struct RenderViewport *vp) {
+    MousePixelCovered = 0;
+    MousePixelAddress = (unsigned short *)(base + (vp->y * Render3DTargetPitch) + (vp->x * 2));
 }
 
 // Hand-written assembly in the original (MSVC6 never emits it from C); transcribed as naked __asm.

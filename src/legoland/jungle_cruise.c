@@ -553,12 +553,12 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
                     break;
                 }
             }
-            sx = (int)((float)(DAT_004b7148[bit].ox * 40) * DAT_004ab3fc);
-            sy = (int)((float)(DAT_004b7148[bit].oy * 40) * DAT_004ab3fc);
+            sx = (int)((float)(JungleCruiseDirSteps[bit].ox * 40) * DAT_004ab3fc);
+            sy = (int)((float)(JungleCruiseDirSteps[bit].oy * 40) * DAT_004ab3fc);
             for (i = 0; i < 80; i++) {
                 if (i < 40) {
-                    ride->step_offsets[i * 2] = (int)((float)(DAT_004b7148[bit].dx * i) * DAT_004ab3fc + sx);
-                    ride->step_offsets[i * 2 + 1] = (int)((float)(DAT_004b7148[bit].dy * i) * DAT_004ab3fc + sy);
+                    ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * DAT_004ab3fc + sx);
+                    ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * i) * DAT_004ab3fc + sy);
                 } else {
                     ride->step_offsets[i * 2] = 0;
                     ride->step_offsets[i * 2 + 1] = 0;
@@ -574,8 +574,8 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
         idx = (bit + 2) % 4;
         for (i = 0; i < 80; i++) {
             if (i >= 40) {
-                ride->step_offsets[i * 2] = DAT_004b7148[idx].dx * 16 + ride->step_offsets[i * 2 - 2];
-                ride->step_offsets[i * 2 + 1] = DAT_004b7148[idx].dy * 16 + ride->step_offsets[i * 2 - 1];
+                ride->step_offsets[i * 2] = JungleCruiseDirSteps[idx].dx * 16 + ride->step_offsets[i * 2 - 2];
+                ride->step_offsets[i * 2 + 1] = JungleCruiseDirSteps[idx].dy * 16 + ride->step_offsets[i * 2 - 1];
             } else {
                 ride->step_offsets[2 * i] = 0;
                 ride->step_offsets[i * 2 + 1] = 0;
@@ -619,24 +619,24 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
                     break;
                 }
             }
-            sx = (int)((float)(DAT_004b7148[bit].ox * 40) * DAT_004ab3fc);
-            sy = (int)((float)(DAT_004b7148[bit].oy * 40) * DAT_004ab3fc);
+            sx = (int)((float)(JungleCruiseDirSteps[bit].ox * 40) * DAT_004ab3fc);
+            sy = (int)((float)(JungleCruiseDirSteps[bit].oy * 40) * DAT_004ab3fc);
             if (from == to) {
                 for (i = 0; i < 80; i++) {
                     if (i < 40) {
-                        ride->step_offsets[i * 2] = (int)((float)(DAT_004b7148[bit].dx * i) * DAT_004ab3fc + sx);
-                        ride->step_offsets[i * 2 + 1] = (int)((float)(DAT_004b7148[bit].dy * i) * DAT_004ab3fc + sy);
+                        ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * DAT_004ab3fc + sx);
+                        ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * i) * DAT_004ab3fc + sy);
                     } else {
-                        ride->step_offsets[i * 2] = (int)((float)(DAT_004b7148[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
-                        ride->step_offsets[i * 2 + 1] = (int)((float)(DAT_004b7148[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
+                        ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
+                        ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
                     }
                 }
             } else {
                 fx = (float)sx;
                 fy = (float)sy;
                 for (i = 0; i < 80; i++) {
-                    ride->step_offsets[i * 2] = (int)((float)(DAT_004b7148[bit].dx * i) * DAT_004ab3fc + fx);
-                    ride->step_offsets[i * 2 + 1] = (int)((float)(i * DAT_004b7148[bit].dy) * DAT_004ab3fc + fy);
+                    ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * DAT_004ab3fc + fx);
+                    ride->step_offsets[i * 2 + 1] = (int)((float)(i * JungleCruiseDirSteps[bit].dy) * DAT_004ab3fc + fy);
                 }
             }
         }

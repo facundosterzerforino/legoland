@@ -675,7 +675,7 @@ struct Footprint DAT_004b7260;
 struct Footprint JungleCruiseStartFootprint;
 
 // GLOBAL: LEGOLAND 0x004b7148
-struct BoatDirStep DAT_004b7148[4];
+struct BoatDirStep JungleCruiseDirSteps[4];
 
 // GLOBAL: LEGOLAND 0x004b7188
 struct BoatArc DAT_004b7188[4];
@@ -3588,7 +3588,7 @@ unsigned int ZBufferWidth;
 unsigned int ZBufferHeight;
 
 // GLOBAL: LEGOLAND 0x0066be48
-unsigned int DAT_0066be48;
+unsigned int Render3DTargetHeight;
 
 // GLOBAL: LEGOLAND 0x0066be4c
 unsigned int ZBufferStride;
@@ -3600,13 +3600,13 @@ struct Image *ZBufferSourceImage;
 unsigned short DAT_0066be54[0x4b002];
 
 // GLOBAL: LEGOLAND 0x00701e58
-unsigned int DAT_00701e58;
+unsigned int Render3DTargetPitch;
 
 // GLOBAL: LEGOLAND 0x00701e5c
 unsigned char *ZBuffer;
 
 // GLOBAL: LEGOLAND 0x00701e60
-unsigned int DAT_00701e60;
+unsigned int Render3DTargetWidth;
 
 // GLOBAL: LEGOLAND 0x00701e64
 struct Sprite *ZBufferImageSprite;
@@ -3614,8 +3614,9 @@ struct Sprite *ZBufferImageSprite;
 // GLOBAL: LEGOLAND 0x00701e68
 unsigned short ZBufferImagePixels[0x4b000];
 
+/* 3D render target: address of the first pixel (SetRender3DTarget), with pitch, width and height after it. */
 // GLOBAL: LEGOLAND 0x00797e68
-unsigned char *DAT_00797e68;
+unsigned char *Render3DTargetBits;
 
 // GLOBAL: LEGOLAND 0x00797e6c
 void *DAT_00797e6c;
@@ -4560,8 +4561,9 @@ unsigned int DAT_007fe994;
 // GLOBAL: LEGOLAND 0x007fe998
 unsigned short DAT_007fe998;
 
+/* Address of the surface pixel under the mouse; the span drawers compare their write pointer against it. */
 // GLOBAL: LEGOLAND 0x007fe9a8
-unsigned short *DAT_007fe9a8;
+unsigned short *MousePixelAddress;
 
 // GLOBAL: LEGOLAND 0x007fe9c0
 struct Sprite *PointerSprites[9];
@@ -4581,8 +4583,9 @@ unsigned int StoredTransparentColour;
 // GLOBAL: LEGOLAND 0x007fea48
 LEGO_EXPORT unsigned int FramesPerSecond;
 
+/* Set by the sprite/span drawers when they draw over the pixel under the mouse (hover hit test, e.g. a person under the cursor). */
 // GLOBAL: LEGOLAND 0x007feb14
-unsigned int DAT_007feb14;
+unsigned int MousePixelCovered;
 
 // GLOBAL: LEGOLAND 0x007feb18
 unsigned int DAT_007feb18;

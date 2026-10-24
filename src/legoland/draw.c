@@ -719,7 +719,7 @@ L46475b:
         mov edx, dword ptr [DrawClipExtent + 0x4]
         and edx, edx
         je L4649b5
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [DAT_007fea18], al
         and ecx, ecx
@@ -742,7 +742,7 @@ L4647a6:
         and edx, edx
         je L4649b5
         sub esi, ecx
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [DAT_007fea18], al
         and ecx, ecx
@@ -787,7 +787,7 @@ L464833:
         add ebp, 4
 L464859:
         mov dword ptr [DAT_00668160], eax
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [DAT_007fea18], al
         test ebx, 2
@@ -819,13 +819,13 @@ L464887:
         add edi, 2
 L4648bc:
         rep stosd
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx eax, byte ptr [DAT_007fea18]
         sbb ecx, -1
         and eax, ecx
-        movzx ecx, byte ptr [DAT_007feb14]
+        movzx ecx, byte ptr [MousePixelCovered]
         or eax, ecx
-        mov byte ptr [DAT_007feb14], al
+        mov byte ptr [MousePixelCovered], al
         jmp L4649b5
 L4648e3:
         add eax, eax
@@ -834,17 +834,17 @@ L4648e3:
         sub edx, ecx
         movzx eax, word ptr [eax]
         rep stosw
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx eax, byte ptr [DAT_007fea18]
         sbb ecx, -1
         and eax, ecx
-        movzx ecx, byte ptr [DAT_007feb14]
+        movzx ecx, byte ptr [MousePixelCovered]
         or eax, ecx
-        mov byte ptr [DAT_007feb14], al
+        mov byte ptr [MousePixelCovered], al
         jmp L4647e2
 L464919:
         mov ecx, 1
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         sete al
         mov byte ptr [DAT_007fea18], al
 L46492c:
@@ -862,13 +862,13 @@ L464934:
         inc esi
         stosw
         loop L464934
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx eax, byte ptr [DAT_007fea18]
         sbb ecx, -1
         and eax, ecx
-        movzx ecx, byte ptr [DAT_007feb14]
+        movzx ecx, byte ptr [MousePixelCovered]
         or eax, ecx
-        mov byte ptr [DAT_007feb14], al
+        mov byte ptr [MousePixelCovered], al
 L46496b:
         lea esi, [esi + edx]
         jmp L4649b5
@@ -882,13 +882,13 @@ L464972:
         inc esi
         stosw
         loop L464972
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx eax, byte ptr [DAT_007fea18]
         sbb ecx, -1
         and eax, ecx
-        movzx ecx, byte ptr [DAT_007feb14]
+        movzx ecx, byte ptr [MousePixelCovered]
         or eax, ecx
-        mov byte ptr [DAT_007feb14], al
+        mov byte ptr [MousePixelCovered], al
         jmp L4647e2
 L4649aa:
         dec edx
@@ -1387,7 +1387,7 @@ L464f30:
         mov edx, dword ptr [MousePos]
         add ecx, eax
         lea eax, [ecx + edx*2]
-        mov dword ptr [DAT_007fe9a8], eax
+        mov dword ptr [MousePixelAddress], eax
         mov eax, dword ptr [edi + 0x14]
         cmp eax, 2
         jne L464fd1
@@ -1883,7 +1883,7 @@ L46551e:
         mov edx, dword ptr [DrawClipExtent + 0x4]
         and edx, edx
         je L465769
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [DAT_007fea18], al
         and ecx, ecx
@@ -1906,7 +1906,7 @@ L465569:
         mov edx, dword ptr [DrawClipExtent + 0x4]
         and edx, edx
         je L465769
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [DAT_007fea18], al
         and ecx, ecx
@@ -1949,7 +1949,7 @@ L4655eb:
 L46560d:
         and eax, 0xf
         mov dword ptr [DAT_00668160], eax
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [DAT_007fea18], al
         test ebx, 2
@@ -1978,11 +1978,11 @@ L46566c:
         mov word ptr [edi], ax
         add edi, 2
         loop L46566c
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx ecx, byte ptr [DAT_007fea18]
         seta al
         and eax, ecx
-        or dword ptr [DAT_007feb14], eax
+        or dword ptr [MousePixelCovered], eax
         jmp L465769
 L465691:
         sub edx, ecx
@@ -1993,15 +1993,15 @@ L4656a2:
         mov word ptr [edi], ax
         add edi, 2
         loop L4656a2
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx ecx, byte ptr [DAT_007fea18]
         seta al
         and eax, ecx
-        or dword ptr [DAT_007feb14], eax
+        or dword ptr [MousePixelCovered], eax
         jmp L4655a7
 L4656c7:
         mov ecx, 1
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         sete al
         mov byte ptr [DAT_007fea18], al
 L4656da:
@@ -2021,11 +2021,11 @@ L4656e2:
         mov word ptr [edi], ax
         add edi, 2
         loop L4656e2
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx ecx, byte ptr [DAT_007fea18]
         seta al
         and eax, ecx
-        or dword ptr [DAT_007feb14], eax
+        or dword ptr [MousePixelCovered], eax
 L46571c:
         lea esi, [esi + edx]
         jmp L465769
@@ -2041,11 +2041,11 @@ L465723:
         mov word ptr [edi], ax
         add edi, 2
         loop L465723
-        cmp edi, dword ptr [DAT_007fe9a8]
+        cmp edi, dword ptr [MousePixelAddress]
         movzx ecx, byte ptr [DAT_007fea18]
         seta al
         and eax, ecx
-        or dword ptr [DAT_007feb14], eax
+        or dword ptr [MousePixelCovered], eax
         jmp L4655a7
 L46575e:
         dec edx
@@ -2281,7 +2281,7 @@ L465a88:
         mov eax, dword ptr [MousePos]
         add edx, ecx
         lea ecx, [edx + eax*2]
-        mov dword ptr [DAT_007fe9a8], ecx
+        mov dword ptr [MousePixelAddress], ecx
         mov eax, dword ptr [esi + 0x14]
         cmp eax, 2
         jne L465b4d
@@ -2362,7 +2362,7 @@ L465bce:
         add edi, ecx
         mov ecx, dword ptr [MousePos]
         lea ecx, [edi + ecx*2]
-        mov dword ptr [DAT_007fe9a8], ecx
+        mov dword ptr [MousePixelAddress], ecx
         mov ecx, dword ptr [ebp + 0x10]
         mov edi, dword ptr [ecx]
         mov ecx, dword ptr [SpriteClipOrigin + 0x4]
@@ -2378,7 +2378,7 @@ L465bce:
         mov cl, byte ptr [ebx + 0x14]
         test cl, 1
         je L465cc9
-        mov edx, dword ptr [DAT_007fe9a8]
+        mov edx, dword ptr [MousePixelAddress]
         mov ecx, dword ptr [esi + 4]
         push edx
         mov edx, dword ptr [SpriteClipOrigin]
@@ -2416,7 +2416,7 @@ L465c70:
         dec eax
         jne L465c70
 L465c77:
-        mov ecx, dword ptr [DAT_007fe9a8]
+        mov ecx, dword ptr [MousePixelAddress]
         mov edx, dword ptr [DrawClipExtent + 0x4]
         mov eax, dword ptr [esi + 4]
         push ecx
@@ -2458,7 +2458,7 @@ L465cd0:
         dec ecx
         jne L465cd0
 L465cd7:
-        mov edx, dword ptr [DAT_007fe9a8]
+        mov edx, dword ptr [MousePixelAddress]
         mov ecx, dword ptr [esi + 4]
         push edx
         mov edx, dword ptr [SpriteClipOrigin]
@@ -2659,14 +2659,14 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     if (frame_index >= lls->frame_count) {
         frame_index = lls->frame_count - 1;
     }
-    DAT_007fe9a8 = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + MousePos.y * CurrentSurfaceDesc.lPitch + MousePos.x * 2);
+    MousePixelAddress = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + MousePos.y * CurrentSurfaceDesc.lPitch + MousePos.x * 2);
     dst = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + pos->y * CurrentSurfaceDesc.lPitch + (pos->x - SpriteClipOrigin.left) * 2);
     if (lls->flags & 1) {
         pixels = frame->pixels;
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
         i = lls->frame + 1;
         while (i-- != 0) {
             frame = (struct DrawLLSFrame *)((unsigned char *)frame + frame->size);
@@ -2675,7 +2675,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
     } else {
         i = frame_index;
         while (i-- != 0) {
@@ -2685,7 +2685,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
         off = frame->pixel_count * 2 + 0x10;
         runs = (unsigned char *)frame + off;
         mask = (unsigned int *)((unsigned char *)frame + (frame->run_bytes + off));
-        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+        FUN_00468040(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
     }
 }
 
@@ -2976,7 +2976,7 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
 // Draws one frame of a 16-bit animation (an .lls of 16-bit pixels, image type 3) into the software screen at pos,
 // the part inside clip, with the hand-written row blitters: the one for the frame's clipping (whole rows, cut on the
 // left and/or the right), the "Pick" ones when the mouse is over the sprite's rectangle (they also note a drawn pixel
-// under the cursor, DAT_007fe9a8). Layered animations (flags 1) draw frame 0 and then the current frame on top.
+// under the cursor, MousePixelAddress). Layered animations (flags 1) draw frame 0 and then the current frame on top.
 // FUNCTION: LEGOLAND 0x00466770
 void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     struct DrawLLSFrame *frame = (struct DrawLLSFrame *)(lls + 1);
@@ -3003,7 +3003,7 @@ void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos) 
     }
     /* is the mouse cursor over the sprite? */
     hit = 0;
-    DAT_007fe9a8 = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + MousePos.y * CurrentSurfaceDesc.lPitch + MousePos.x * 2);
+    MousePixelAddress = (unsigned short *)((unsigned char *)CurrentSurfaceDesc.lpSurface + MousePos.y * CurrentSurfaceDesc.lPitch + MousePos.x * 2);
     if (MousePos.x >= pos->x && MousePos.x <= pos->x + lls->width && MousePos.y >= pos->y && MousePos.y <= pos->y + lls->height) {
         hit = 1;
     }
@@ -3015,27 +3015,27 @@ void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos) 
         mask = (unsigned int *)((unsigned char *)(frame->pixels + frame->pixel_count) + frame->run_bytes);
         if (hit) {
             if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
-                BlitLLS16Pick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16Pick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             } else if (SpriteClipOrigin.left != 0) {
                 if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
-                    BlitLLS16PickClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16PickClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 } else {
-                    BlitLLS16PickClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16PickClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 }
             } else {
-                BlitLLS16PickClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16PickClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             }
         } else {
             if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
                 BlitLLS16(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top);
             } else if (SpriteClipOrigin.left != 0) {
                 if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
-                    BlitLLS16ClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16ClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 } else {
-                    BlitLLS16ClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16ClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 }
             } else {
-                BlitLLS16ClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16ClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             }
         }
         i = lls->frame + 1;
@@ -3047,27 +3047,27 @@ void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos) 
         mask = (unsigned int *)((unsigned char *)(frame->pixels + frame->pixel_count) + frame->run_bytes);
         if (hit) {
             if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
-                BlitLLS16Pick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16Pick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             } else if (SpriteClipOrigin.left != 0) {
                 if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
-                    BlitLLS16PickClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16PickClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 } else {
-                    BlitLLS16PickClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16PickClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 }
             } else {
-                BlitLLS16PickClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16PickClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             }
         } else {
             if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
                 BlitLLS16(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top);
             } else if (SpriteClipOrigin.left != 0) {
                 if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
-                    BlitLLS16ClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16ClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 } else {
-                    BlitLLS16ClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                    BlitLLS16ClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
                 }
             } else {
-                BlitLLS16ClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16ClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             }
         }
         return;
@@ -3081,27 +3081,27 @@ void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos) 
     mask = (unsigned int *)((unsigned char *)(frame->pixels + frame->pixel_count) + frame->run_bytes);
     if (hit) {
         if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
-            BlitLLS16Pick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+            BlitLLS16Pick(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
         } else if (SpriteClipOrigin.left != 0) {
             if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
-                BlitLLS16PickClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16PickClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             } else {
-                BlitLLS16PickClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16PickClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             }
         } else {
-            BlitLLS16PickClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+            BlitLLS16PickClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
         }
     } else {
         if (lls->width <= DrawClipExtent.width - SpriteClipOrigin.left) {
             BlitLLS16(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top);
         } else if (SpriteClipOrigin.left != 0) {
             if (lls->width - SpriteClipOrigin.left > DrawClipExtent.width) {
-                BlitLLS16ClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16ClipLeftRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             } else {
-                BlitLLS16ClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+                BlitLLS16ClipLeft(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
             }
         } else {
-            BlitLLS16ClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, DAT_007fe9a8);
+            BlitLLS16ClipRight(dst, pixels, runs, mask, DrawClipExtent.height, CurrentSurfaceDesc.lPitch, SpriteClipOrigin.top, SpriteClipOrigin.left, DrawClipExtent.width, 0, MousePixelAddress);
         }
     }
 }
@@ -3232,7 +3232,7 @@ L466ebb:
         sar eax, 1
         cmp eax, ecx
         jae L466ee8
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L466ee8:
         rep movsw
         jmp L466f91
@@ -3247,7 +3247,7 @@ L466ef0:
         sar eax, 1
         cmp eax, ecx
         jae L466f11
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L466f11:
         rep movsw
         mov eax, dword ptr [esp + 0x34]
@@ -3274,7 +3274,7 @@ L466f30:
         sar eax, 1
         cmp eax, ecx
         jae L466f5a
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L466f5a:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3290,7 +3290,7 @@ L466f65:
         sar eax, 1
         cmp eax, ecx
         jae L466f83
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L466f83:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3317,7 +3317,7 @@ L466fa7:
         sub edi, 2
         cmp eax, edi
         jne L466fd9
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L466fd9:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3360,7 +3360,7 @@ L467037:
         sar eax, 1
         cmp eax, ecx
         jae L46705e
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L46705e:
         rep movsw
         jmp L4670d2
@@ -3373,7 +3373,7 @@ L467063:
         sar eax, 1
         cmp eax, ecx
         jae L46707d
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L46707d:
         rep movsw
         pop eax
@@ -3389,7 +3389,7 @@ L467086:
         sar eax, 1
         cmp eax, ecx
         jae L4670a5
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4670a5:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3402,7 +3402,7 @@ L4670b0:
         sar eax, 1
         cmp eax, ecx
         jae L4670c7
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4670c7:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3589,7 +3589,7 @@ L46729c:
         sar eax, 1
         cmp eax, ecx
         jae L4672c3
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4672c3:
         rep movsw
         jmp L467305
@@ -3611,7 +3611,7 @@ L4672d6:
         sar eax, 1
         cmp eax, ecx
         jae L4672fa
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4672fa:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3635,7 +3635,7 @@ L467310:
         sub edi, 2
         cmp eax, edi
         jne L46733e
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L46733e:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3669,7 +3669,7 @@ L467386:
         sar eax, 1
         cmp eax, ecx
         jae L467399
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L467399:
         test ebp, 0x55555555
         jne L4673a9
@@ -3775,7 +3775,7 @@ L467479:
         sub edi, 2
         cmp eax, edi
         jne L4674ab
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4674ab:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3817,7 +3817,7 @@ L467509:
         sar eax, 1
         cmp eax, ecx
         jae L467530
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L467530:
         rep movsw
         jmp L4675a4
@@ -3830,7 +3830,7 @@ L467535:
         sar eax, 1
         cmp eax, ecx
         jae L46754f
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L46754f:
         rep movsw
         pop eax
@@ -3846,7 +3846,7 @@ L467558:
         sar eax, 1
         cmp eax, ecx
         jae L467577
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L467577:
         mov ax, word ptr [esi]
         add esi, 2
@@ -3859,7 +3859,7 @@ L467582:
         sar eax, 1
         cmp eax, ecx
         jae L467599
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L467599:
         mov ax, word ptr [esi]
         add esi, 2
@@ -4016,7 +4016,7 @@ L4676c0:
         sar eax, 1
         cmp eax, ecx
         jae L46772c
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L46772c:
         test ebp, 0x55555555
         jne L467748
@@ -4043,7 +4043,7 @@ L46775c:
 L467764:
         cmp dword ptr [esp + 0x3c], edi
         jne L467771
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L467771:
         mov ax, word ptr [esi]
         add esi, 2
@@ -5124,7 +5124,7 @@ L4682cf:
         sar eax, 1
         cmp eax, ecx
         jae L4682e2
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4682e2:
         test ebp, 0x55555555
         jne L468331
@@ -5468,7 +5468,7 @@ L4686ae:
         sar eax, 1
         cmp eax, ecx
         jae L4686c1
-        or dword ptr [DAT_007feb14], 1
+        or dword ptr [MousePixelCovered], 1
 L4686c1:
         test ebp, 0x55555555
         jne L468716

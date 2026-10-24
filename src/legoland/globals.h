@@ -914,7 +914,7 @@ extern struct Footprint DAT_004b7260;
 extern struct Footprint JungleCruiseStartFootprint;
 // 0x004b7288
 // 0x004b7148
-extern struct BoatDirStep DAT_004b7148[4];
+extern struct BoatDirStep JungleCruiseDirSteps[4];
 // 0x004b7188
 extern struct BoatArc DAT_004b7188[4];
 // 0x004b71c8
@@ -2808,7 +2808,7 @@ extern unsigned int ZBufferWidth;
 // 0x0066be44
 extern unsigned int ZBufferHeight;
 // 0x0066be48
-extern unsigned int DAT_0066be48;
+extern unsigned int Render3DTargetHeight;
 // 0x0066be4c
 extern unsigned int ZBufferStride;
 // 0x0066be50
@@ -2816,17 +2816,17 @@ extern struct Image *ZBufferSourceImage;
 // 0x0066be54
 extern unsigned short DAT_0066be54[0x4b002];
 // 0x00701e58
-extern unsigned int DAT_00701e58;
+extern unsigned int Render3DTargetPitch;
 // 0x00701e5c
 extern unsigned char *ZBuffer;
 // 0x00701e60
-extern unsigned int DAT_00701e60;
+extern unsigned int Render3DTargetWidth;
 // 0x00701e64
 extern struct Sprite *ZBufferImageSprite;
 // 0x00701e68
 extern unsigned short ZBufferImagePixels[0x4b000];
 // 0x00797e68
-extern unsigned char *DAT_00797e68;
+extern unsigned char *Render3DTargetBits;
 // 0x00797e6c
 extern void *DAT_00797e6c;
 // 0x00797e70
@@ -3461,7 +3461,7 @@ extern unsigned int DAT_007fe994;
 // 0x007fe998
 extern unsigned short DAT_007fe998;
 // 0x007fe9a8
-extern unsigned short *DAT_007fe9a8;
+extern unsigned short *MousePixelAddress;
 // 0x007fe9c0
 extern struct Sprite *PointerSprites[9];
 // 0x007fea10
@@ -3475,7 +3475,7 @@ extern unsigned int StoredTransparentColour;
 // 0x007fea48
 extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
-extern unsigned int DAT_007feb14;
+extern unsigned int MousePixelCovered;
 // 0x007feb18
 extern unsigned int DAT_007feb18;
 // 0x007febb8
