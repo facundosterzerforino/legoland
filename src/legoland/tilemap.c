@@ -369,7 +369,7 @@ LEGO_EXPORT void RenderView(void) {
     count = 0;
     rides = ObjectClassList;
     BGFullUpdate = 1;
-    DAT_00667cc4 = 0;
+    UnusedRenderViewCounter = 0;
     GetClipping(&clip);
     DrawViewMapTiles();
     PrintBackground(BackgroundOffsetX, BackgroundOffsetY);

@@ -374,7 +374,7 @@ LEGO_EXPORT void ResetInfoStruct(void) {
     PopUpInfoState = 0;
     PopUpDeleteConfirm = 0;
     PopUpInfoResizePending = 0;
-    DAT_007fdf98 = 0;
+    PopUpFollowingVisitor = 0;
     PopupInfoLineCount = 0;
     DisableInfoPopUPIcons();
     EnablePopUpIconHandlers();
@@ -389,7 +389,7 @@ LEGO_EXPORT void PopInfoSizeMayChange(void) {
 
 // FUNCTION: LEGOLAND 0x00471570
 LEGO_EXPORT void StopFollowingBloke(void) {
-    if (DAT_007fdf98 == 0) {
+    if (PopUpFollowingVisitor == 0) {
         return;
     }
     ResetInfoStruct();
@@ -545,7 +545,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     PopUpInfoResizePending = 1;
     PopUpInfoX = param_4;
     PopUpInfoY = param_5;
-    DAT_007fdf88 = (unsigned short)t.data.value;
+    PopUpInfoHoverValue = (unsigned short)t.data.value;
     PopUpInfoHover.type = t.type;
     PopUpInfoHover.ptr = t.ptr;
     PopUpInfoHover.data.value = t.data.value;
@@ -592,8 +592,8 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     case 0x306:
         PopUpInfoSubjectType = t.type;
         PopUpInfoBloke = t.ptr;
-        DAT_007fdf90 = t.ptr->person->field_1c;
-        DAT_007fdf94 = t.ptr->person->field_20;
+        PopUpVisitorField1c = t.ptr->person->field_1c;
+        PopUpVisitorField20 = t.ptr->person->field_20;
         return;
     case 0x308:
         if (t.ptr->action != 5) {
@@ -952,7 +952,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     ride = (struct Ride *)PopUpInfoRide;
     bloke = (struct Bloke *)PopUpInfoBloke;
     GetNearestColour(0xda, 0xc6, 0x96);
-    DAT_0066895c = 0;
+    PopUpShowsBuildProgress = 0;
     if (PopUpInfoState == 2) {
         DrawNewObjectPopup();
         return;
@@ -1027,7 +1027,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     case 0x104:
         sprintf(buf_a, (char *)PercentSFormat, ride->name);
         sprintf(buf_b, (char *)PercentSFormat, GetString(0xa0));
-        DAT_0066895c = 1;
+        PopUpShowsBuildProgress = 1;
         break;
     case 0x10b:
         info = PopUpInfoData;
@@ -1057,8 +1057,8 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             return;
         }
         sprintf(buf_a, GetVisitorName(PopUpInfoBloke));
-        sprintf(buf_b, DAT_004d8bb0);
-        DAT_007fdf98 = 1;
+        sprintf(buf_b, EmptyString);
+        PopUpFollowingVisitor = 1;
         break;
     }
     if (0 != PopUpInfoResizePending) {
@@ -1125,7 +1125,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
             PrintSprite(IHungrySprite, br.x - width / 4 - 0x20, sprite_y, 0, 0);
         }
     }
-    if (repairable != 0 || DAT_0066895c != 0) {
+    if (repairable != 0 || PopUpShowsBuildProgress != 0) {
         if (repairable != 0) {
             frac = (float)PopUpInfoTile[0x11] / ride->durability;
         } else {

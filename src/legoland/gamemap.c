@@ -92,7 +92,7 @@ void ResetCoverageCounters(void) {
     Type3CoveredSquares = 0;
     PathSquareCount = 0;
     SceneryCoveredSquares = 0;
-    DAT_00667cfc = 0;
+    UnusedCoverageCounter = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004598d0

@@ -274,7 +274,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     // STRING: LEGOLAND 0x004bdd80
     DebugTrace("Directory read OK");
     volume->dir = 0;
-    RegisterResourceDirectoryTree(dir_data, volume, dir_data, DAT_004d8bb0);
+    RegisterResourceDirectoryTree(dir_data, volume, dir_data, EmptyString);
     free(dir_data);
 
     volume->next = MasterVolList;

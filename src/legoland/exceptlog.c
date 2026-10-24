@@ -22,7 +22,7 @@ int stackdump(void *exc_info, const char *filename) {
     char *bufend;
     HANDLE hFile;
     int count = 0;
-    char buf[1000] = {DAT_004d8bb0[0]};
+    char buf[1000] = {EmptyString[0]};
     MEMORY_BASIC_INFORMATION mbi;
     char *out;
     int maxlen = 50;
@@ -196,7 +196,7 @@ void WriteModuleInfo(HANDLE file, UINT_PTR base) {
             HANDLE fh;
             IMAGE_NT_HEADERS *nthdr;
 
-            buf[0] = DAT_004d8bb0[0];
+            buf[0] = EmptyString[0];
             memset(buf + 1, 0, sizeof(buf) - 1);
             fsize = 0;
             if (*(WORD *)hinst == IMAGE_DOS_SIGNATURE) {

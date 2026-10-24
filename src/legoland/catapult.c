@@ -311,7 +311,7 @@ void SendRiderToCatapultSlot(const unsigned short *key, struct RideNode *entry, 
     node->slots[slot] = entry;
     bloke->field_3a = 3;
     bloke->dest.x = (x << 8) - (rand() % 2 ? 0x10 : -0x10) - 0xe0;
-    bloke->dest.y = (y << 8) + (rand() % 2 ? 0x20 : -0x20) + DAT_004b40b4[slot];
+    bloke->dest.y = (y << 8) + (rand() % 2 ? 0x20 : -0x20) + CatapultSlotOffsetsY[slot];
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->low_level_action = 7;
     bloke->target_dir = dir + 0x10;

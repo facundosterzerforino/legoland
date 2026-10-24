@@ -151,7 +151,7 @@ void FindOpenDoorPoints(short *pos, struct DirPoints *out, unsigned int mask) {
         if ((mask & bit) != 0) {
             out->pt[i][0] = pos[0] + PieceNeighbourOffsets[i][0];
             out->pt[i][1] = pos[1] + PieceNeighbourOffsets[i][1];
-            if (IsAreaListClearAt(&out->pt[i][0], &DAT_004b5570) == 1) {
+            if (IsAreaListClearAt(&out->pt[i][0], &DoorAreaList) == 1) {
                 out->mask |= bit;
             }
         }
@@ -2683,7 +2683,7 @@ __declspec(naked) void FillSpansGouraud(void) {
         mov dword ptr [ebp - 0xc], eax
         mov eax, dword ptr [ebp + 8]
         mov eax, dword ptr [eax*4 + CoasterShadeTables]
-        mov dword ptr [DAT_004d89b4 + 0xc], eax
+        mov dword ptr [GouraudSpanState + 0xc], eax
         mov eax, dword ptr [FilledTriangleCount]
         inc eax
         mov dword ptr [FilledTriangleCount], eax
@@ -2702,10 +2702,10 @@ __declspec(naked) void FillSpansGouraud(void) {
 L41fe1b:
         mov eax, dword ptr [esi + 4]
         sar eax, 0x10
-        mov dword ptr [DAT_004d89b4], eax
+        mov dword ptr [GouraudSpanState], eax
         mov eax, dword ptr [esi + 4]
         shl eax, 0x10
-        mov dword ptr [DAT_004d89b4 + 0x8], eax
+        mov dword ptr [GouraudSpanState + 0x8], eax
         mov eax, dword ptr [ebp - 0xc]
         imul eax, ebx
         lea eax, [edi + eax*2]
@@ -2774,7 +2774,7 @@ L41fecb:
         mov ecx, dword ptr [ebp - 0x60]
         xor edx, edx
         add ecx, dword ptr [ebp - 0x4c]
-        mov esi, dword ptr [DAT_004d89b4 + 0xc]
+        mov esi, dword ptr [GouraudSpanState + 0xc]
         mov dword ptr [ebp - 0x60], ecx
         ror ecx, 0x10
         mov eax, ecx
@@ -2787,9 +2787,9 @@ L41fecb:
 L41ff08:
         mov dl, byte ptr [ecx]
         mov dx, word ptr [esi + edx*2]
-        add eax, dword ptr [DAT_004d89b4 + 0x8]
+        add eax, dword ptr [GouraudSpanState + 0x8]
         mov word ptr [edi + ebx*2], dx
-        adc ecx, dword ptr [DAT_004d89b4]
+        adc ecx, dword ptr [GouraudSpanState]
         xor edx, edx
         add ebx, 1
         jle L41ff08
@@ -2799,9 +2799,9 @@ L41ff27:
 L41ff29:
         mov dl, byte ptr [ecx]
         mov dx, word ptr [esi + edx*2]
-        add eax, dword ptr [DAT_004d89b4 + 0x8]
+        add eax, dword ptr [GouraudSpanState + 0x8]
         mov word ptr [edi + ebx*2], dx
-        sbb ecx, dword ptr [DAT_004d89b4]
+        sbb ecx, dword ptr [GouraudSpanState]
         xor edx, edx
         add ebx, 1
         jle L41ff29
@@ -2863,7 +2863,7 @@ __declspec(naked) void FillSpansGouraudZ(void) {
         mov dword ptr [ebp - 0xc], eax
         mov eax, dword ptr [ebp + 8]
         mov eax, dword ptr [eax*4 + CoasterShadeTables]
-        mov dword ptr [DAT_004d89b4 + 0xc], eax
+        mov dword ptr [GouraudSpanState + 0xc], eax
         mov eax, dword ptr [FilledTriangleCount]
         inc eax
         mov dword ptr [FilledTriangleCount], eax
@@ -2882,11 +2882,11 @@ __declspec(naked) void FillSpansGouraudZ(void) {
 L420019:
         mov esi, dword ptr [eax + 4]
         sar esi, 0x10
-        mov dword ptr [DAT_004d89b4], esi
+        mov dword ptr [GouraudSpanState], esi
         mov esi, dword ptr [eax + 4]
         and esi, 0xffffff00
         shl esi, 0x10
-        mov dword ptr [DAT_004d89b4 + 0x8], esi
+        mov dword ptr [GouraudSpanState + 0x8], esi
         mov eax, dword ptr [eax + 8]
         sar eax, 8
         and eax, 0xffffff
@@ -2896,7 +2896,7 @@ L420019:
         shl eax, 1
         add edi, eax
         add ebx, eax
-        mov dword ptr [DAT_004d89b4 + 0x8], esi
+        mov dword ptr [GouraudSpanState + 0x8], esi
         mov dword ptr [ebp - 0x14], edi
         mov dword ptr [ebp - 0x10], ebx
 L42005d:
@@ -2985,7 +2985,7 @@ L42010e:
         cmp edx, dword ptr [ebp + 0x10]
         jne L420184
         push ebp
-        mov ebp, dword ptr [DAT_004d89b4 + 0xc]
+        mov ebp, dword ptr [GouraudSpanState + 0xc]
         xor edx, edx
 L42014f:
         mov edx, eax
@@ -2998,8 +2998,8 @@ L42014f:
         mov dx, word ptr [ebp + edx*2]
         mov word ptr [edi + ebx*2], dx
 L42016b:
-        add eax, dword ptr [DAT_004d89b4 + 0x8]
-        adc ecx, dword ptr [DAT_004d89b4]
+        add eax, dword ptr [GouraudSpanState + 0x8]
+        adc ecx, dword ptr [GouraudSpanState]
         and eax, 0xfeffffff
         add ebx, 1
         jle L42014f
@@ -3007,7 +3007,7 @@ L42016b:
         jmp L4201be
 L420184:
         push ebp
-        mov ebp, dword ptr [DAT_004d89b4 + 0xc]
+        mov ebp, dword ptr [GouraudSpanState + 0xc]
 L42018b:
         mov edx, eax
         sar edx, 8
@@ -3019,8 +3019,8 @@ L42018b:
         mov dx, word ptr [ebp + edx*2]
         mov word ptr [edi + ebx*2], dx
 L4201a7:
-        add eax, dword ptr [DAT_004d89b4 + 0x8]
-        sbb ecx, dword ptr [DAT_004d89b4]
+        add eax, dword ptr [GouraudSpanState + 0x8]
+        sbb ecx, dword ptr [GouraudSpanState]
         and eax, 0xfeffffff
         add ebx, 1
         jle L42018b
@@ -3207,7 +3207,7 @@ void *LoadCreatedDataFile(const char *fileName, unsigned int *sizeOut) {
     }
 
     fileSize = GetFileSize(hFile, 0);
-    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
+    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)EmptyString, 0);
     if (buffer == 0) {
         CloseHandle(hFile);
         SetCurrentDirectoryIfNotNull("..\\..\\..");
@@ -3388,23 +3388,23 @@ L42086a:
         mov edi, edx
         mov edx, eax
         mov dword ptr [ebp - 0x54], esi
-        mov eax, dword ptr [edx + DAT_004d8bb0 + 0x8]
-        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0x8]
+        mov eax, dword ptr [edx + EmptyString + 0x8]
+        mov ebx, dword ptr [edi + EmptyString + 0x8]
         sub ebx, eax
-        mov eax, dword ptr [edx + DAT_004d8bb0 + 0xc]
+        mov eax, dword ptr [edx + EmptyString + 0xc]
         mov dword ptr [ebp - 4], ebx
-        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [edi + EmptyString + 0xc]
         fild dword ptr [ebp - 4]
         sub ebx, eax
         shl esi, 4
         fstp dword ptr [ebp - 0x38]
         mov dword ptr [ebp - 4], ebx
-        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0x8]
+        mov ebx, dword ptr [esi + EmptyString + 0x8]
         fild dword ptr [ebp - 4]
-        sub ebx, dword ptr [edx + DAT_004d8bb0 + 0x8]
+        sub ebx, dword ptr [edx + EmptyString + 0x8]
         fstp dword ptr [ebp - 0x30]
         mov dword ptr [ebp - 4], ebx
-        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [esi + EmptyString + 0xc]
         fild dword ptr [ebp - 4]
         sub ebx, eax
         mov dword ptr [ebp - 4], ebx
@@ -3420,9 +3420,9 @@ L42086a:
         fnstsw ax
         test ah, 0x41
         jne L4209d3
-        mov eax, dword ptr [edx + DAT_004d8bb0 + 0x14]
-        mov edi, dword ptr [edi + DAT_004d8bb0 + 0x14]
-        mov esi, dword ptr [esi + DAT_004d8bb0 + 0x14]
+        mov eax, dword ptr [edx + EmptyString + 0x14]
+        mov edi, dword ptr [edi + EmptyString + 0x14]
+        mov esi, dword ptr [esi + EmptyString + 0x14]
         mov edx, eax
         or eax, edi
         and edx, 0xff
@@ -3435,16 +3435,16 @@ L42086a:
         mov dword ptr [ebp - 0x44], edx
         jne L4209d3
         movsx eax, word ptr [ecx + 2]
-        fld dword ptr [DAT_004dcbb8 + 0x8]
+        fld dword ptr [LmsLightDir + 0x8]
         mov edi, dword ptr [ebp + 8]
         lea eax, [eax + eax*2]
         mov edx, dword ptr [edi + 0x10]
         fmul dword ptr [edx + eax*4 + 8]
-        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fld dword ptr [LmsLightDir + 0x4]
         fmul dword ptr [edx + eax*4 + 4]
         lea eax, [edx + eax*4]
         faddp st(1), st
-        fld dword ptr [DAT_004dcbb8]
+        fld dword ptr [LmsLightDir]
         fmul dword ptr [eax]
         faddp st(1), st
         fadd dword ptr [CastleLightBias]
@@ -3467,10 +3467,10 @@ L42099a:
         shl eax, 4
         add ecx, 0x1c
         dec esi
-        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [eax + EmptyString + 0xc]
         mov dword ptr [ecx - 0x20], ebx
-        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0x8]
-        mov eax, dword ptr [eax + DAT_004d8bb0 + 0x10]
+        mov ebx, dword ptr [eax + EmptyString + 0x8]
+        mov eax, dword ptr [eax + EmptyString + 0x10]
         mov dword ptr [ecx - 0x1c], ebx
         mov dword ptr [ecx - 0x18], eax
         jne L42099a
@@ -3563,23 +3563,23 @@ L420a7a:
         mov edi, ecx
         mov ecx, eax
         mov dword ptr [ebp - 0x58], esi
-        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x8]
-        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0x8]
+        mov eax, dword ptr [ecx + EmptyString + 0x8]
+        mov ebx, dword ptr [edi + EmptyString + 0x8]
         sub ebx, eax
-        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0xc]
+        mov eax, dword ptr [ecx + EmptyString + 0xc]
         mov dword ptr [ebp + 0x10], ebx
-        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [edi + EmptyString + 0xc]
         fild dword ptr [ebp + 0x10]
         sub ebx, eax
         shl esi, 4
         fstp dword ptr [ebp - 0x3c]
         mov dword ptr [ebp + 0x10], ebx
-        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0x8]
+        mov ebx, dword ptr [esi + EmptyString + 0x8]
         fild dword ptr [ebp + 0x10]
-        sub ebx, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        sub ebx, dword ptr [ecx + EmptyString + 0x8]
         fstp dword ptr [ebp - 0x34]
         mov dword ptr [ebp + 0x10], ebx
-        mov ebx, dword ptr [esi + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [esi + EmptyString + 0xc]
         fild dword ptr [ebp + 0x10]
         sub ebx, eax
         mov dword ptr [ebp + 0x10], ebx
@@ -3595,9 +3595,9 @@ L420a7a:
         fnstsw ax
         test ah, 0x41
         jne L420bf2
-        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x14]
-        mov edi, dword ptr [edi + DAT_004d8bb0 + 0x14]
-        mov esi, dword ptr [esi + DAT_004d8bb0 + 0x14]
+        mov eax, dword ptr [ecx + EmptyString + 0x14]
+        mov edi, dword ptr [edi + EmptyString + 0x14]
+        mov esi, dword ptr [esi + EmptyString + 0x14]
         mov ecx, eax
         or eax, edi
         and ecx, 0xff
@@ -3615,16 +3615,16 @@ L420a7a:
         mov dword ptr [ebp + 0x10], 3
 L420b5f:
         movsx eax, word ptr [esi]
-        fld dword ptr [DAT_004dcbb8 + 0x8]
+        fld dword ptr [LmsLightDir + 0x8]
         mov ebx, dword ptr [ebp + 8]
         lea eax, [eax + eax*2]
         mov ebx, dword ptr [ebx + 0x14]
         fmul dword ptr [ebx + eax*4 + 8]
-        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fld dword ptr [LmsLightDir + 0x4]
         fmul dword ptr [ebx + eax*4 + 4]
         lea eax, [ebx + eax*4]
         faddp st(1), st
-        fld dword ptr [DAT_004dcbb8]
+        fld dword ptr [LmsLightDir]
         fmul dword ptr [eax]
         faddp st(1), st
         fadd dword ptr [CastleLightBias]
@@ -3636,10 +3636,10 @@ L420b5f:
         shl eax, 4
         add edi, 4
         add ecx, 0x1c
-        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [eax + EmptyString + 0xc]
         mov dword ptr [ecx - 0x20], ebx
-        mov ebx, dword ptr [eax + DAT_004d8bb0 + 0x8]
-        mov eax, dword ptr [eax + DAT_004d8bb0 + 0x10]
+        mov ebx, dword ptr [eax + EmptyString + 0x8]
+        mov eax, dword ptr [eax + EmptyString + 0x10]
         mov dword ptr [ecx - 0x1c], ebx
         mov ebx, dword ptr [ebp - 0x14]
         mov dword ptr [ecx - 0x18], ebx
@@ -3740,23 +3740,23 @@ L420c9a:
         mov edi, ecx
         mov ecx, eax
         mov dword ptr [ebp - 0x58], edx
-        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x8]
-        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0x8]
+        mov eax, dword ptr [ecx + EmptyString + 0x8]
+        mov ebx, dword ptr [edi + EmptyString + 0x8]
         sub ebx, eax
-        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0xc]
+        mov eax, dword ptr [ecx + EmptyString + 0xc]
         mov dword ptr [ebp + 0x10], ebx
-        mov ebx, dword ptr [edi + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [edi + EmptyString + 0xc]
         fild dword ptr [ebp + 0x10]
         sub ebx, eax
         shl edx, 4
         fstp dword ptr [ebp - 0x3c]
         mov dword ptr [ebp + 0x10], ebx
-        mov ebx, dword ptr [edx + DAT_004d8bb0 + 0x8]
+        mov ebx, dword ptr [edx + EmptyString + 0x8]
         fild dword ptr [ebp + 0x10]
-        sub ebx, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        sub ebx, dword ptr [ecx + EmptyString + 0x8]
         fstp dword ptr [ebp - 0x34]
         mov dword ptr [ebp + 0x10], ebx
-        mov ebx, dword ptr [edx + DAT_004d8bb0 + 0xc]
+        mov ebx, dword ptr [edx + EmptyString + 0xc]
         fild dword ptr [ebp + 0x10]
         sub ebx, eax
         mov dword ptr [ebp + 0x10], ebx
@@ -3772,9 +3772,9 @@ L420c9a:
         fnstsw ax
         test ah, 0x41
         jne L420e41
-        mov eax, dword ptr [ecx + DAT_004d8bb0 + 0x14]
-        mov edi, dword ptr [edi + DAT_004d8bb0 + 0x14]
-        mov edx, dword ptr [edx + DAT_004d8bb0 + 0x14]
+        mov eax, dword ptr [ecx + EmptyString + 0x14]
+        mov edi, dword ptr [edi + EmptyString + 0x14]
+        mov edx, dword ptr [edx + EmptyString + 0x14]
         mov ecx, eax
         or eax, edi
         and ecx, 0xff
@@ -3787,16 +3787,16 @@ L420c9a:
         mov dword ptr [ebp - 0x48], ecx
         jne L420e41
         movsx eax, word ptr [esi + 2]
-        fld dword ptr [DAT_004dcbb8 + 0x8]
+        fld dword ptr [LmsLightDir + 0x8]
         mov edx, dword ptr [ebp + 8]
         lea ecx, [eax + eax*2]
         mov eax, dword ptr [edx + 0x10]
         fmul dword ptr [eax + ecx*4 + 8]
-        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fld dword ptr [LmsLightDir + 0x4]
         fmul dword ptr [eax + ecx*4 + 4]
         lea eax, [eax + ecx*4]
         faddp st(1), st
-        fld dword ptr [DAT_004dcbb8]
+        fld dword ptr [LmsLightDir]
         fmul dword ptr [eax]
         faddp st(1), st
         fadd dword ptr [CastleLightBias]
@@ -3820,11 +3820,11 @@ L420dd1:
         add eax, 0x1c
         mov ecx, dword ptr [edx]
         shl ecx, 4
-        mov edx, dword ptr [ecx + DAT_004d8bb0 + 0xc]
+        mov edx, dword ptr [ecx + EmptyString + 0xc]
         mov dword ptr [eax - 0x20], edx
-        mov edx, dword ptr [ecx + DAT_004d8bb0 + 0x8]
+        mov edx, dword ptr [ecx + EmptyString + 0x8]
         mov dword ptr [eax - 0x1c], edx
-        mov ecx, dword ptr [ecx + DAT_004d8bb0 + 0x10]
+        mov ecx, dword ptr [ecx + EmptyString + 0x10]
         movsx edx, word ptr [esi]
         lea edx, [edx + edx*2]
         lea edi, [edi + edx*2]
@@ -3917,23 +3917,23 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         lea ecx, [ebp - 0x5c]
         push 1
         push ecx
-        push offset DAT_004dcbb8
+        push offset LmsLightDir
         push offset CastleLightDir
         call TransformPoints3x4
-        fld dword ptr [DAT_004dcbb8]
+        fld dword ptr [LmsLightDir]
         fmul dword ptr [CastleLightScale]
         mov eax, dword ptr [ebp + 0x10]
         lea edx, [ebp - 0x5c]
         push edx
         push ebx
         push eax
-        fstp dword ptr [DAT_004dcbb8]
-        fld dword ptr [DAT_004dcbb8 + 0x4]
+        fstp dword ptr [LmsLightDir]
+        fld dword ptr [LmsLightDir + 0x4]
         fmul dword ptr [CastleLightScale]
-        fstp dword ptr [DAT_004dcbb8 + 0x4]
-        fld dword ptr [DAT_004dcbb8 + 0x8]
+        fstp dword ptr [LmsLightDir + 0x4]
+        fld dword ptr [LmsLightDir + 0x8]
         fmul dword ptr [CastleLightScale]
-        fstp dword ptr [DAT_004dcbb8 + 0x8]
+        fstp dword ptr [LmsLightDir + 0x8]
         call MakeMat4FromRotTrans
         lea ecx, [ebp - 0x9c]
         lea edx, [ebp - 0x5c]
@@ -3947,7 +3947,7 @@ __declspec(naked) unsigned int DrawLmsModel(struct LmsFile *a, struct LmsRec *b,
         lea ecx, [ebp - 0x9c]
         push 0x10
         push ecx
-        push offset DAT_004d8bb0 + 0x8
+        push offset EmptyString + 0x8
         push edx
         call ProjectPoints
         add esp, 0x44
@@ -4018,7 +4018,7 @@ float BoxFaceNormals[6][3] = {
 };
 
 // GLOBAL: LEGOLAND 0x004b5748
-struct BoxFace DAT_004b5748[12] = {
+struct BoxFace BoxSolidFaces[12] = {
     {0, 0, {0, 1, 2}, {0, 0, 0}},
     {0, 0, {0, 2, 3}, {0, 0, 0}},
     {0, 1, {7, 6, 5}, {0, 0, 0}},
@@ -4034,7 +4034,7 @@ struct BoxFace DAT_004b5748[12] = {
 };
 
 // GLOBAL: LEGOLAND 0x004b5808
-BoxFace DAT_004b5808[12] = {
+BoxFace BoxSolidOriginFaces[12] = {
     {0, 0, {0, 1, 2}, {0, 0, 0}},
     {0, 0, {0, 2, 3}, {0, 0, 0}},
     {0, 1, {7, 6, 5}, {0, 0, 0}},
@@ -4050,7 +4050,7 @@ BoxFace DAT_004b5808[12] = {
 };
 
 // GLOBAL: LEGOLAND 0x004b58c8
-struct BoxSolid BoxSolidTemplate = {8, 0, 12, NULL, BoxFaceNormals, NULL, DAT_004b5748, 12};
+struct BoxSolid BoxSolidTemplate = {8, 0, 12, NULL, BoxFaceNormals, NULL, BoxSolidFaces, 12};
 
 // GLOBAL: LEGOLAND 0x004b5f50
 void *TexturedSpanFillers[2] = {FillSpansTexturedZ, FillSpansTexturedZ};
@@ -4087,14 +4087,14 @@ void InitBoxSolidToOrigin(struct BoxSolid *box, struct FVec3 *verts, struct FVec
             box->xverts[i] = tmp;
         }
         for (i = 0; i < 12; i++) {
-            DAT_004b5808[i].plane = -1;
-            DAT_004b5808[i].u[0] = DAT_004b5808[i].t[0];
-            DAT_004b5808[i].u[1] = DAT_004b5808[i].t[1];
-            DAT_004b5808[i].u[2] = DAT_004b5808[i].t[2];
+            BoxSolidOriginFaces[i].plane = -1;
+            BoxSolidOriginFaces[i].u[0] = BoxSolidOriginFaces[i].t[0];
+            BoxSolidOriginFaces[i].u[1] = BoxSolidOriginFaces[i].t[1];
+            BoxSolidOriginFaces[i].u[2] = BoxSolidOriginFaces[i].t[2];
         }
         box->nFaceA = 0;
         box->nFaceB = 12;
-        box->faceB = DAT_004b5808;
+        box->faceB = BoxSolidOriginFaces;
     }
 }
 
@@ -4129,14 +4129,14 @@ void InitBoxSolidCentred(struct BoxSolid *box, struct FVec3 *verts, struct FVec3
             box->xverts[i] = tmp;
         }
         for (i = 0; i < 12; i++) {
-            DAT_004b5808[i].plane = -1;
-            DAT_004b5808[i].u[0] = DAT_004b5808[i].t[0];
-            DAT_004b5808[i].u[1] = DAT_004b5808[i].t[1];
-            DAT_004b5808[i].u[2] = DAT_004b5808[i].t[2];
+            BoxSolidOriginFaces[i].plane = -1;
+            BoxSolidOriginFaces[i].u[0] = BoxSolidOriginFaces[i].t[0];
+            BoxSolidOriginFaces[i].u[1] = BoxSolidOriginFaces[i].t[1];
+            BoxSolidOriginFaces[i].u[2] = BoxSolidOriginFaces[i].t[2];
         }
         box->nFaceA = 0;
         box->nFaceB = 12;
-        box->faceB = DAT_004b5808;
+        box->faceB = BoxSolidOriginFaces;
     }
 }
 
@@ -4242,7 +4242,7 @@ void InitVecMathOps(void) {
     VecMathOps.release = FreeVecScratch;
 
     table = VecScratchPool;
-    cur = DAT_004dcc00;
+    cur = VecScratchBuffers;
     while ((INT_PTR)cur < (INT_PTR)&VecScratchTop) {
         *table = cur;
         cur++;
@@ -5050,7 +5050,7 @@ void *ReadFileToBuffer(const char *fileName, unsigned int *bytesReadPtr) {
     }
 
     fileSize = GetFileSize(hFile, 0);
-    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
+    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)EmptyString, 0);
     if (buffer == 0) {
         CloseHandle(hFile);
         return 0;
@@ -6920,7 +6920,7 @@ void RecordCastleFrameCounters(void) {
     DepthSpanRecordHistory[CastleCounterFrame & 0x3f] = DepthSpanRecordCount;
     FilledTriangleHistory[CastleCounterFrame & 0x3f] = FilledTriangleCount;
     EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] = EdgeMeshDrawCycles;
-    DAT_00610704[CastleCounterFrame & 0x3f] = DAT_00611644;
+    UnusedCastleCycleHistory[CastleCounterFrame & 0x3f] = UnusedCastleCycles;
     SupportPostCycleHistory[CastleCounterFrame & 0x3f] = SupportPostDrawCycles;
     LmsDrawCycleHistory[CastleCounterFrame & 0x3f] = LmsDrawCycles;
     TrainStepCycleHistory[CastleCounterFrame & 0x3f] = TrainStepCycles;
@@ -6928,11 +6928,11 @@ void RecordCastleFrameCounters(void) {
     BisectRootCallHistory[CastleCounterFrame & 0x3f] = BisectRootCallCount;
     BisectRootStepHistory[CastleCounterFrame & 0x3f] = BisectRootStepCount;
     WalkerRangeCallHistory[CastleCounterFrame & 0x3f] = WalkerRangeCallCount;
-    TotalCastleCycleHistory[CastleCounterFrame & 0x3f] = DAT_00610704[CastleCounterFrame & 0x3f] + EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] + TrainStepCycleHistory[CastleCounterFrame & 0x3f] + SupportPostCycleHistory[CastleCounterFrame & 0x3f] + LmsDrawCycleHistory[CastleCounterFrame & 0x3f] + DepthClearCycleHistory[CastleCounterFrame & 0x3f];
+    TotalCastleCycleHistory[CastleCounterFrame & 0x3f] = UnusedCastleCycleHistory[CastleCounterFrame & 0x3f] + EdgeMeshDrawCycleHistory[CastleCounterFrame & 0x3f] + TrainStepCycleHistory[CastleCounterFrame & 0x3f] + SupportPostCycleHistory[CastleCounterFrame & 0x3f] + LmsDrawCycleHistory[CastleCounterFrame & 0x3f] + DepthClearCycleHistory[CastleCounterFrame & 0x3f];
     DepthSpanRecordCount = 0;
     FilledTriangleCount = 0;
     EdgeMeshDrawCycles = 0;
-    DAT_00611644 = 0;
+    UnusedCastleCycles = 0;
     SupportPostDrawCycles = 0;
     LmsDrawCycles = 0;
     TrainStepCycles = 0;
@@ -7256,17 +7256,17 @@ void SetTrackLighting(void) {
     f = f * 0.5f;
 
     i1 = TrackLightDir;
-    i2 = DAT_004b5cb4;
-    i3 = DAT_004b5cb8;
+    i2 = TrackLightDirY;
+    i3 = TrackLightDirZ;
     CastleLightDir = i1;
 
     memcpy(&i1, &TrackLightingOffset, sizeof(i1));
-    DAT_004b5ca4 = i2;
+    CastleLightDirY = i2;
     memcpy(&i2, &TrackLightingBase, sizeof(i2));
-    DAT_004b5ca8 = i3;
+    CastleLightDirZ = i3;
 
-    DAT_00611648 = i1;
-    DAT_004b5c9c = i2;
+    CastleShadeMin = i1;
+    CastleShadeMax = i2;
     CastleLightBias = f;
 
     f = TrackLightingBase;
@@ -7288,18 +7288,18 @@ void SetModelLighting(void) {
     f = f * 0.5f;
 
     i1 = ModelLightDir;
-    i2 = DAT_004b5cc4;
-    i3 = DAT_004b5cc8;
+    i2 = ModelLightDirY;
+    i3 = ModelLightDirZ;
     CastleLightDir = i1;
 
     memcpy(&i1, &ModelLightingOffset, sizeof(i1));
-    DAT_004b5ca4 = i2;
+    CastleLightDirY = i2;
     memcpy(&i2, &ModelLightingBase, sizeof(i2));
-    DAT_004b5ca8 = i3;
+    CastleLightDirZ = i3;
 
     if (f == f) {
-        DAT_00611648 = i1;
-        DAT_004b5c9c = i2;
+        CastleShadeMin = i1;
+        CastleShadeMax = i2;
         CastleLightBias = f;
     }
 
@@ -8614,7 +8614,7 @@ void *LoadRollerCoasterFile(void) {
         return 0;
     }
     fileSize = GetFileSize(hFile, 0);
-    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)DAT_004d8bb0, 0);
+    buffer = MemAlloc(fileSize, 0, (unsigned int)(UINT_PTR)EmptyString, 0);
     if (buffer == 0) {
         CloseHandle(hFile);
         return 0;
@@ -9302,10 +9302,10 @@ void HeightTrackPathAddObject(Element *obj, const struct Struct427bc0Src *src) {
 void InitStraightPieceCurve(int a, int b, int c, struct LineCurve *obj, int d) {
     Vector3 pt;
 
-    pt.x = DAT_006117c0[b].x;
-    pt.y = DAT_006117c0[b].y;
-    pt.z = DAT_006117c0[b].z - (float)(c * 6);
-    InitLineCurve(obj, &DAT_006117c0[a].x, &pt.x, (struct Words3 *)&DAT_00611658[d]);
+    pt.x = TrackSideMidpoints[b].x;
+    pt.y = TrackSideMidpoints[b].y;
+    pt.z = TrackSideMidpoints[b].z - (float)(c * 6);
+    InitLineCurve(obj, &TrackSideMidpoints[a].x, &pt.x, (struct Words3 *)&TrackRailOffsets[d]);
 }
 
 /* Index of the piece's stretch in TrackPieceCurves: 0..7 for the eight turns, else 8 + 5 * direction + (height
@@ -9365,42 +9365,42 @@ void BuildTrackPieceCurves(void) {
     n = 0;
 
     for (i = 0; i <= 3; i++) {
-        DAT_006117c0[i].x = DAT_004b5e00[i][0] * 20.0f;
-        DAT_006117c0[i].y = DAT_004b5e00[i][1] * 20.0f;
-        DAT_006117c0[i].z = DAT_004b5e00[i][2] * 20.0f;
+        TrackSideMidpoints[i].x = TrackSideMidpointsUnit[i][0] * 20.0f;
+        TrackSideMidpoints[i].y = TrackSideMidpointsUnit[i][1] * 20.0f;
+        TrackSideMidpoints[i].z = TrackSideMidpointsUnit[i][2] * 20.0f;
     }
     for (i = 0; i <= 3; i++) {
-        DAT_00611658[i].x = DAT_004b5e30[i][0] * 20.0f;
-        DAT_00611658[i].y = DAT_004b5e30[i][1] * 20.0f;
-        DAT_00611658[i].z = DAT_004b5e30[i][2] * 20.0f;
+        TrackRailOffsets[i].x = TrackRailOffsetsUnit[i][0] * 20.0f;
+        TrackRailOffsets[i].y = TrackRailOffsetsUnit[i][1] * 20.0f;
+        TrackRailOffsets[i].z = TrackRailOffsetsUnit[i][2] * 20.0f;
     }
     for (i = 0; i <= 3; i++) {
-        DAT_00611750[i].x = DAT_004b5e60[i][0] * 20.0f;
-        DAT_00611750[i].y = DAT_004b5e60[i][1] * 20.0f;
-        DAT_00611750[i].z = DAT_004b5e60[i][2] * 20.0f;
+        TrackArcTangents[i].x = TrackArcTangentsUnit[i][0] * 20.0f;
+        TrackArcTangents[i].y = TrackArcTangentsUnit[i][1] * 20.0f;
+        TrackArcTangents[i].z = TrackArcTangentsUnit[i][2] * 20.0f;
     }
     for (i = 0; i <= 3; i++) {
-        DAT_006116e0[i].x = DAT_004b5e90[i][0] * 20.0f;
-        DAT_006116e0[i].y = DAT_004b5e90[i][1] * 20.0f;
-        DAT_006116e0[i].z = DAT_004b5e90[i][2] * 20.0f;
+        TrackArcCentres[i].x = TrackArcCentresUnit[i][0] * 20.0f;
+        TrackArcCentres[i].y = TrackArcCentresUnit[i][1] * 20.0f;
+        TrackArcCentres[i].z = TrackArcCentresUnit[i][2] * 20.0f;
     }
     for (i = 0; i <= 3; i++) {
-        q = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][1]];
-        y = DAT_004b5f14[i][1];
-        p = (struct Words3 *)&DAT_00611750[DAT_004b5ef4[i][0]];
-        x = DAT_004b5f14[i][0];
-        InitArcCurve(p, q, (struct Words3 *)&DAT_006116e0[i], &((struct ArcCurve *)TrackPieceCurves)[n++], x, y);
+        q = (struct Words3 *)&TrackArcTangents[TrackArcTangentPairs[i][1]];
+        y = TrackArcRadii[i][1];
+        p = (struct Words3 *)&TrackArcTangents[TrackArcTangentPairs[i][0]];
+        x = TrackArcRadii[i][0];
+        InitArcCurve(p, q, (struct Words3 *)&TrackArcCentres[i], &((struct ArcCurve *)TrackPieceCurves)[n++], x, y);
         if (5 == n) { /* the original has a test with an empty body here (cmp n, 5; jne +0) */
             n = 5;
         }
-        InitArcCurve(q, p, (struct Words3 *)&DAT_006116e0[i], &((struct ArcCurve *)TrackPieceCurves)[n++], y, x);
+        InitArcCurve(q, p, (struct Words3 *)&TrackArcCentres[i], &((struct ArcCurve *)TrackPieceCurves)[n++], y, x);
     }
     base = &((struct ArcCurve *)TrackPieceCurves)[n];
     for (j = 0; j <= 3; j++) {
         cur = base;
         base += 5;
         for (k = 0; k < 5; k++) {
-            InitStraightPieceCurve(DAT_004b5ec0[j], (DAT_004b5ec0[j] - 2) & 3, DAT_004b5ee0[k], (struct LineCurve *)cur++, j);
+            InitStraightPieceCurve(TrackStraightStartSides[j], (TrackStraightStartSides[j] - 2) & 3, TrackStraightHeightSteps[k], (struct LineCurve *)cur++, j);
         }
     }
 }
@@ -9561,19 +9561,19 @@ __declspec(naked) void FillSpansTexturedZ(void) {
         add edx, 8
         add esp, 8
         mov dword ptr [ebp - 0x10], edx
-        mov dword ptr [DAT_0061195c], esi
+        mov dword ptr [TexturedSpanSource], esi
         mov esi, dword ptr [ebp + 0xc]
         mov ebx, dword ptr [esi + 4]
         sar ebx, cl
         mov ecx, edx
         mov edx, 1
-        mov dword ptr [DAT_00612160], ebx
+        mov dword ptr [TexturedSpanState], ebx
         mov ebx, dword ptr [esi + 8]
         shl ebx, 8
         sar ebx, cl
-        mov dword ptr [DAT_00612160 + 0x4], ebx
+        mov dword ptr [TexturedSpanState + 0x4], ebx
         mov ecx, dword ptr [esi + 0xc]
-        mov dword ptr [DAT_00612160 + 0xc], ecx
+        mov dword ptr [TexturedSpanState + 0xc], ecx
         lea ecx, [eax + edi]
         mov eax, dword ptr [FilledTriangleCount]
         shl edx, cl
@@ -9581,7 +9581,7 @@ __declspec(naked) void FillSpansTexturedZ(void) {
         inc eax
         mov dword ptr [FilledTriangleCount], eax
         mov eax, dword ptr [ebp - 8]
-        mov dword ptr [DAT_00612160 + 0x14], edx
+        mov dword ptr [TexturedSpanState + 0x14], edx
         mov edx, dword ptr [ebp + 0x18]
         mov eax, dword ptr [eax]
         lea ecx, [eax + eax*2]
@@ -9602,7 +9602,7 @@ __declspec(naked) void FillSpansTexturedZ(void) {
         test edx, edx
         mov dword ptr [ebp - 0x1c], ecx
         jle L4289ad
-        mov ecx, offset DAT_00611960
+        mov ecx, offset TexelShadeCache
         mov eax, offset CoasterShadeTables
 L428998:
         mov edi, dword ptr [esi]
@@ -9614,7 +9614,7 @@ L428998:
         mov word ptr [ecx - 2], di
         jne L428998
 L4289ad:
-        mov dword ptr [ebp + 0x10], offset DAT_00611960
+        mov dword ptr [ebp + 0x10], offset TexelShadeCache
 L4289b4:
         mov ecx, dword ptr [ebp + 0x14]
         mov esi, dword ptr [ebp + 0x18]
@@ -9727,11 +9727,11 @@ L428ad3:
         cmp cx, word ptr [esi + ebx*2]
         jb L428b0d
         mov word ptr [esi + ebx*2], cx
-        mov ecx, dword ptr [DAT_0061195c]
+        mov ecx, dword ptr [TexturedSpanSource]
         and ecx, edx
         or ecx, eax
         shr ecx, 0x10
-        and ecx, dword ptr [DAT_00612160 + 0x14]
+        and ecx, dword ptr [TexturedSpanState + 0x14]
         sub ecx, dword ptr [esp + 4]
         mov cl, byte ptr [esi + ecx]
         and ecx, 0xff
@@ -9739,9 +9739,9 @@ L428ad3:
         mov cx, word ptr [esi + ecx*2]
         mov word ptr [edi + ebx*2], cx
 L428b0d:
-        add eax, dword ptr [DAT_00612160]
-        add edx, dword ptr [DAT_00612160 + 0x4]
-        add ebp, dword ptr [DAT_00612160 + 0xc]
+        add eax, dword ptr [TexturedSpanState]
+        add edx, dword ptr [TexturedSpanState + 0x4]
+        add ebp, dword ptr [TexturedSpanState + 0xc]
         add ebx, 1
         jle L428ad3
         add esp, 8
@@ -9838,7 +9838,7 @@ __declspec(naked) void BuildRailTubeMesh(void *p, unsigned int a, unsigned int b
         jl L428e2a
         mov edx, dword ptr [ebp + 0x18]
         mov edi, dword ptr [ebp + 8]
-        mov ebx, offset DAT_006139c8
+        mov ebx, offset RailTubeVertexBuffer
         inc ecx
         mov dword ptr [ebp + 8], edx
         mov dword ptr [ebp + 0x14], ebx
@@ -9898,23 +9898,23 @@ L428cf0:
         push 0x14
         push eax
         push ebx
-        push offset DAT_006121c8
+        push offset RailTubeRingPoints
         call ProjectPoints
-        fld dword ptr [DAT_004b5ca8]
+        fld dword ptr [CastleLightDirZ]
         fmul dword ptr [ebp - 0x28]
-        fld dword ptr [DAT_004b5ca4]
+        fld dword ptr [CastleLightDirY]
         fmul dword ptr [ebp - 0x2c]
         add esp, 0x4c
-        mov esi, offset DAT_006126d8
+        mov esi, offset RailTubeRingNormals
         add ebx, 0x10
         faddp st(1), st
         fld dword ptr [CastleLightDir]
         fmul dword ptr [ebp - 0x30]
         faddp st(1), st
         fmul dword ptr [CastleLightScale]
-        fld dword ptr [DAT_004b5ca8]
+        fld dword ptr [CastleLightDirZ]
         fmul dword ptr [ebp - 0x1c]
-        fld dword ptr [DAT_004b5ca4]
+        fld dword ptr [CastleLightDirY]
         fmul dword ptr [ebp - 0x20]
         faddp st(1), st
         fld dword ptr [CastleLightDir]
@@ -9933,7 +9933,7 @@ L428de0:
         mov dword ptr [ebx], eax
         add esi, 8
         add ebx, 0x14
-        cmp esi, offset DAT_00612708
+        cmp esi, offset RailTubeTriangles
         jl L428de0
         mov edx, dword ptr [ebp + 0x14]
         mov ecx, dword ptr [ebp + 8]
@@ -10018,59 +10018,59 @@ void InitRailTubeMesh(void) {
     float s;
 
     {
-        int *end = &DAT_00613908[0][1]; /* the edge's second vertex */
+        int *end = &RailTubeSegmentEdges[0][1]; /* the edge's second vertex */
         for (i = 0; i <= 4; i++, end += 2) {
             end[-1] = i;
             end[0] = i + 1;
         }
     }
-    DAT_00613908[5][0] = i;
-    DAT_00613908[5][1] = 0;
+    RailTubeSegmentEdges[5][0] = i;
+    RailTubeSegmentEdges[5][1] = 0;
     n = 6;
     for (j = 0; j <= 4; j++) {
-        DAT_00613908[n][0] = j;
-        DAT_00613908[n][1] = j + 6;
+        RailTubeSegmentEdges[n][0] = j;
+        RailTubeSegmentEdges[n][1] = j + 6;
         n++;
-        DAT_00613908[n][0] = j;
-        DAT_00613908[n][1] = j + 7;
+        RailTubeSegmentEdges[n][0] = j;
+        RailTubeSegmentEdges[n][1] = j + 7;
         n++;
     }
-    DAT_00613908[n][0] = j;
-    DAT_00613908[n][1] = j + 6;
+    RailTubeSegmentEdges[n][0] = j;
+    RailTubeSegmentEdges[n][1] = j + 6;
     n++;
-    DAT_00613908[n][0] = j;
-    DAT_00613908[n][1] = 6;
+    RailTubeSegmentEdges[n][0] = j;
+    RailTubeSegmentEdges[n][1] = 6;
     n++;
     for (j = 0; j <= 4; j++) {
-        DAT_00613908[n][0] = j + 6;
-        DAT_00613908[n][1] = j + 7;
+        RailTubeSegmentEdges[n][0] = j + 6;
+        RailTubeSegmentEdges[n][1] = j + 7;
         n++;
     }
-    DAT_00613908[n][0] = j + 6;
-    DAT_00613908[n][1] = 6;
+    RailTubeSegmentEdges[n][0] = j + 6;
+    RailTubeSegmentEdges[n][1] = 6;
 
     v = 6;
     for (e = 18; e < 23; e++) {
-        DAT_00613878[t * 3] = e - 18 + 0x80000000;
-        DAT_00613878[t * 3 + 1] = v + 1;
-        DAT_00613878[t * 3 + 2] = v + 2 + 0x80000000;
+        RailTubeSegmentTriangles[t * 3] = e - 18 + 0x80000000;
+        RailTubeSegmentTriangles[t * 3 + 1] = v + 1;
+        RailTubeSegmentTriangles[t * 3 + 2] = v + 2 + 0x80000000;
         t++;
-        DAT_00613878[t * 3] = v;
-        DAT_00613878[t * 3 + 1] = e;
-        DAT_00613878[t * 3 + 2] = v + 1 + 0x80000000;
+        RailTubeSegmentTriangles[t * 3] = v;
+        RailTubeSegmentTriangles[t * 3 + 1] = e;
+        RailTubeSegmentTriangles[t * 3 + 2] = v + 1 + 0x80000000;
         t++;
         v += 2;
     }
-    DAT_00613878[t * 3] = 0x80000005;
-    DAT_00613878[t * 3 + 1] = v + 1;
-    DAT_00613878[t * 3 + 2] = 0x80000006;
+    RailTubeSegmentTriangles[t * 3] = 0x80000005;
+    RailTubeSegmentTriangles[t * 3 + 1] = v + 1;
+    RailTubeSegmentTriangles[t * 3 + 2] = 0x80000006;
     t++;
-    DAT_00613878[t * 3] = v;
-    DAT_00613878[t * 3 + 1] = e;
-    DAT_00613878[t * 3 + 2] = v + 1 + 0x80000000;
+    RailTubeSegmentTriangles[t * 3] = v;
+    RailTubeSegmentTriangles[t * 3 + 1] = e;
+    RailTubeSegmentTriangles[t * 3 + 2] = v + 1 + 0x80000000;
 
     n = 0;
-    g = DAT_00612708[0];
+    g = RailTubeTriangles[0];
     for (k = 0; k < 30; k++) {
         k6 = k * 6;
         k18 = k * 18;
@@ -10079,15 +10079,15 @@ void InitRailTubeMesh(void) {
             cnt = 24;
         }
         for (m = 0; m < cnt; m++) {
-            DAT_006148b8[n][0] = DAT_00613908[m][0] + k6;
-            DAT_006148b8[n][1] = DAT_00613908[m][1] + k6;
+            RailTubeEdges[n][0] = RailTubeSegmentEdges[m][0] + k6;
+            RailTubeEdges[n][1] = RailTubeSegmentEdges[m][1] + k6;
             n++;
         }
         out = g;
         g += 36;
         for (i = 0; i < 12; i++) {
             for (j = 0; j < 3; j++) {
-                unsigned int x = DAT_00613878[i * 3 + j];
+                unsigned int x = RailTubeSegmentTriangles[i * 3 + j];
                 *out++ = ((x & 0x7fffffff) + k18) | (x & 0x80000000);
             }
         }
@@ -10095,12 +10095,12 @@ void InitRailTubeMesh(void) {
 
     ang = FLOAT_004ab390;
     for (i = 0; i < 6; i++) {
-        DAT_006121c8[i][0] = 0.0f;
-        DAT_006121c8[i][1] = (float)cos(ang) * 1.8f;
+        RailTubeRingPoints[i][0] = 0.0f;
+        RailTubeRingPoints[i][1] = (float)cos(ang) * 1.8f;
         s = (float)sin(ang);
-        DAT_006121c8[i][2] = s * 1.8f;
-        DAT_006126d8[i][0] = (float)cos(ang);
-        DAT_006126d8[i][1] = s;
+        RailTubeRingPoints[i][2] = s * 1.8f;
+        RailTubeRingNormals[i][0] = (float)cos(ang);
+        RailTubeRingNormals[i][1] = s;
         ang += 1.0472f;
     }
 }
@@ -10143,15 +10143,15 @@ void InitSupportPostShape(void) {
     int i;
 
     for (i = 0; i <= 3; i++) {
-        DAT_006121c8[6 + i][1] = DAT_006121c8[6 + i][0] = DAT_004b5f80[0][i].a * 5.0f;
+        RailTubeRingPoints[6 + i][1] = RailTubeRingPoints[6 + i][0] = SupportPostShapeTemplate[0][i].a * 5.0f;
     }
     for (i = 0; i <= 3; i++) {
-        DAT_00612210[1][i].a = DAT_004b5f80[1][i].a * 1.5f;
-        DAT_00612210[1][i].b = DAT_004b5f80[1][i].b * 1.5f;
+        SupportPostShape[1][i].a = SupportPostShapeTemplate[1][i].a * 1.5f;
+        SupportPostShape[1][i].b = SupportPostShapeTemplate[1][i].b * 1.5f;
     }
     for (i = 0; i <= 3; i++) {
-        DAT_00612210[2][i].a = DAT_004b5f80[2][i].a * 1.5f;
-        DAT_00612210[2][i].b = DAT_004b5f80[2][i].b * 1.5f;
+        SupportPostShape[2][i].a = SupportPostShapeTemplate[2][i].a * 1.5f;
+        SupportPostShape[2][i].b = SupportPostShapeTemplate[2][i].b * 1.5f;
     }
 }
 
@@ -10178,8 +10178,8 @@ void DrawSupportPost(struct FVec3 *pos, struct FVec3 *basis) {
         pop edx
         pop eax
     }
-    src = (struct FVec3 *)DAT_00612210;
-    dst = (struct FVec3 *)DAT_00612708[30];
+    src = (struct FVec3 *)SupportPostShape;
+    dst = (struct FVec3 *)RailTubeTriangles[30];
     fx = (float)((int)pos->x * DOUBLE_004ab488) * 5.0f;
     fy = (float)((int)pos->y * DOUBLE_004ab488) * 5.0f;
     for (i = 0; i <= 3; i++) {
@@ -10220,13 +10220,13 @@ void DrawSupportPost(struct FVec3 *pos, struct FVec3 *basis) {
     ident[6] = 0.0f;
     ident[7] = 0.0f;
     ident[8] = 1.0f;
-    DrawLmsModel(&SupportPostModel, (struct LmsRec *)DAT_00615f70, zero, ident, 1);
+    DrawLmsModel(&SupportPostModel, (struct LmsRec *)SupportPostLmsRec, zero, ident, 1);
 }
 
 /* Draws the sleeper model at pos with the track's basis. */
 // FUNCTION: LEGOLAND 0x00429490
 void DrawTrackTie(struct FVec3 *param_1, struct FVec3 *param_2) {
-    DrawLmsModel(&TrackTieModel, (struct LmsRec *)DAT_004b62f0, param_1, param_2, 1);
+    DrawLmsModel(&TrackTieModel, (struct LmsRec *)TrackTieLmsRec, param_1, param_2, 1);
 }
 
 /* Scales the sleeper's vertices (2.5 along the track, 8.2 across). */
@@ -10278,7 +10278,7 @@ void BuildSlopeRun(struct PathSeg *seg, struct PathSeg *end, int count, float h,
     MapPosToWorld(&end->pos, h + dh, &b);
     b.x += CoasterCellEdgeMidpoints[dout][0];
     b.y += CoasterCellEdgeMidpoints[dout][1];
-    InitSlopeCurve(&a.x, &b.x, (struct Words3 *)DAT_004b63c8[di], (struct LineCurve *)&blob);
+    InitSlopeCurve(&a.x, &b.x, (struct Words3 *)SlopeRunDirections[di], (struct LineCurve *)&blob);
     for (i = 0; i < count; i++) {
         seg->flags |= 1;
         seg->blob = blob;
@@ -10547,7 +10547,7 @@ void WalkerPointBelowFn(float t, struct FloatArray *out) {
     struct FVec3 v;
 
     /* the integrator's time comes in as a float; its bits are the walker's position (GetWalkerTangentBelow passed an int) */
-    GetWalkerPointBelow(RangeWalker, DAT_00615f90, *(int *)&t, RangeDepth, (float *)&v);
+    GetWalkerPointBelow(RangeWalker, RangeWalkerSegment, *(int *)&t, RangeDepth, (float *)&v);
     out->data[0] = v.x;
     out->data[1] = v.y;
     out->data[2] = v.z;
@@ -10561,7 +10561,7 @@ void GetWalkerTangentBelow(struct CurveWalker *obj, int a, unsigned int b, float
 
     if (c != FLOAT_004ab390) {
         RangeWalker = obj;
-        DAT_00615f90 = a;
+        RangeWalkerSegment = a;
         RangeDepth = c;
         VecDerivative(WalkerPointBelowFn, &CurveVecMath, *(float *)&b, 0.01f, (struct FloatArray *)&local);
         out->x = local.v.x;
@@ -10588,14 +10588,14 @@ float WalkerRangeFn(unsigned int x) {
     v[1] = v[1] - c[1];
     v[2] = v[2] - c[2];
     if ((d = v[2] * v[2] + v[1] * v[1] + v[0] * v[0]) > RangeOuterSq) {
-        DAT_00615fe4++;
+        WalkerRangeOutsideCount++;
         return 1.0f;
     }
     if (RangeRadius > RangeDepth && d < RangeInnerSq) {
         return FLOAT_004ab468;
     }
     GetWalkerNormal(RangeWalker, 1, x, w);
-    DAT_00615fe8++;
+    WalkerRangeNormalCount++;
     v[0] = v[0] - RangeDepth * w[0];
     v[1] = v[1] - RangeDepth * w[1];
     v[2] = v[2] - RangeDepth * w[2];

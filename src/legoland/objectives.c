@@ -1223,7 +1223,7 @@ int ScriptEventInterval(struct ObjectiveEvent *arg) {
     SetIntervalScreenIsBriefing(0);
     if (LoadIntervalReport(arg->text) != 0) {
         EditMode.unk4 = 2;
-        DAT_00668e38 = 1;
+        FrontEndSubScreenActive = 1;
         FrontEndScreenMode.unk4 = 0xffffffff;
         FrontEndScreenMode.unk8 = 7;
         return 1;

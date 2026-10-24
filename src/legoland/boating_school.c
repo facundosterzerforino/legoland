@@ -134,7 +134,7 @@ void RenderBoatingSchoolBoats(int param_1) {
             PrintSprite(BoatingSchoolBoats->sprites[ride->step_sprite[BoatingSchoolAnimTick] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             if (ride->bloke != 0) {
                 person = Find3DPersonFromBloke(ride->bloke);
-                person->field_44 = ((float)(int)ride->step_sprite[BoatingSchoolAnimTick] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
+                person->field_44 = ((float)(int)ride->step_sprite[BoatingSchoolAnimTick] * BoatHeadingStepDegrees + Float45) * Float2Pi * FloatNegInv360;
                 SetPersonRotation(person, &person->field_40);
                 off.x = lpConfig->view_x + b.x + sx;
                 off.y = lpConfig->view_y + b.y + sy;
@@ -444,12 +444,12 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
                     break;
                 }
             }
-            sx = (int)((float)(BoatingSchoolDirSteps[bit].ox * 40) * DAT_004ab3fc);
-            sy = (int)((float)(BoatingSchoolDirSteps[bit].oy * 40) * DAT_004ab3fc);
+            sx = (int)((float)(BoatingSchoolDirSteps[bit].ox * 40) * Float16);
+            sy = (int)((float)(BoatingSchoolDirSteps[bit].oy * 40) * Float16);
             for (i = 0; i < 80; i++) {
                 if (i < 40) {
-                    ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * i) * DAT_004ab3fc + sx);
-                    ride->step_xy[i * 2 + 1] = (int)((float)(BoatingSchoolDirSteps[bit].dy * i) * DAT_004ab3fc + sy);
+                    ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * i) * Float16 + sx);
+                    ride->step_xy[i * 2 + 1] = (int)((float)(BoatingSchoolDirSteps[bit].dy * i) * Float16 + sy);
                 } else {
                     ride->step_xy[i * 2] = 0;
                     ride->step_xy[i * 2 + 1] = 0;
@@ -481,7 +481,7 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
         }
         if (((unsigned)to < from ? to & (from >> 2) : to == from || from & (to >> 2)) == 0) {
             if ((to & (2 * from)) != 0) {
-                arc = DAT_004b5158;
+                arc = BoatingSchoolArcsAlt;
             } else if ((from & (to * 2)) != 0) {
                 arc = BoatingSchoolArcs;
             }
@@ -493,13 +493,13 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
             arc = arc + bit;
             step = (arc->a1 - arc->a0) * BoatArcStepScale;
             angle = arc->a0;
-            ride->step_xy[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
-            ride->step_xy[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+            ride->step_xy[0] = (int)((sin(angle * DegToRad) + arc->cx) * BoatArcScale);
+            ride->step_xy[1] = (int)((cos((angle + Float180) * DegToRad) + arc->cy) * BoatArcScale);
             p = &ride->step_xy[3];
             for (i = 0x4f; i != 0; i--) {
                 angle += step;
-                p[-1] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
-                p[0] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+                p[-1] = (int)((sin(angle * DegToRad) + arc->cx) * BoatArcScale);
+                p[0] = (int)((cos((angle + Float180) * DegToRad) + arc->cy) * BoatArcScale);
                 p += 2;
             }
         } else {
@@ -508,24 +508,24 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
                     break;
                 }
             }
-            sx = (int)((float)(BoatingSchoolDirSteps[bit].ox * 40) * DAT_004ab3fc);
-            sy = (int)((float)(BoatingSchoolDirSteps[bit].oy * 40) * DAT_004ab3fc);
+            sx = (int)((float)(BoatingSchoolDirSteps[bit].ox * 40) * Float16);
+            sy = (int)((float)(BoatingSchoolDirSteps[bit].oy * 40) * Float16);
             if (from == to) {
                 for (i = 0; i < 80; i++) {
                     if (i < 40) {
-                        ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * i) * DAT_004ab3fc + sx);
-                        ride->step_xy[i * 2 + 1] = (int)((float)(BoatingSchoolDirSteps[bit].dy * i) * DAT_004ab3fc + sy);
+                        ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * i) * Float16 + sx);
+                        ride->step_xy[i * 2 + 1] = (int)((float)(BoatingSchoolDirSteps[bit].dy * i) * Float16 + sy);
                     } else {
-                        ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
-                        ride->step_xy[i * 2 + 1] = (int)((float)(BoatingSchoolDirSteps[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
+                        ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * (80 - i)) * Float16 + sx);
+                        ride->step_xy[i * 2 + 1] = (int)((float)(BoatingSchoolDirSteps[bit].dy * (80 - i)) * Float16 + sy);
                     }
                 }
             } else {
                 fx = (float)sx;
                 fy = (float)sy;
                 for (i = 0; i < 80; i++) {
-                    ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * i) * DAT_004ab3fc + fx);
-                    ride->step_xy[i * 2 + 1] = (int)((float)(i * BoatingSchoolDirSteps[bit].dy) * DAT_004ab3fc + fy);
+                    ride->step_xy[i * 2] = (int)((float)(BoatingSchoolDirSteps[bit].dx * i) * Float16 + fx);
+                    ride->step_xy[i * 2 + 1] = (int)((float)(i * BoatingSchoolDirSteps[bit].dy) * Float16 + fy);
                 }
             }
         }
@@ -727,27 +727,27 @@ void BoatingSchoolDCalcCursor(void *param_1, struct Point *param_2) {
     PathCursor.field_1828 = 0x1008;
     PathCursor.field_1830 = 0;
     QueryCursor.next = &PathCursor;
-    DAT_00810144 = 1;
-    DefaultCursor(&DAT_0082ae20);
-    *(struct Footprint *)DAT_0082ae20.field_1414 = BoatingSchoolWaterFootprint;
+    QueryCursorKeepPath = 1;
+    DefaultCursor(&BoatingSchoolDCursor);
+    *(struct Footprint *)BoatingSchoolDCursor.field_1414 = BoatingSchoolWaterFootprint;
     for (; path != NULL; path = path->next) {
         if (path->owner.id == QueryObj.id) {
-            DAT_0082ae20.tile_x = path->tile.pos.x;
-            DAT_0082ae20.tile_y = path->tile.pos.y;
-            ResetCursorBuildable(&DAT_0082ae20);
-            DAT_0082ae20.field_1828 = 8;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
+            BoatingSchoolDCursor.tile_x = path->tile.pos.x;
+            BoatingSchoolDCursor.tile_y = path->tile.pos.y;
+            ResetCursorBuildable(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.field_1828 = 8;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
         }
     }
     for (; node != NULL; node = node->next) {
         if (node->owner == QueryObj.id) {
-            DAT_0082ae20.tile_x = node->tile.pos.x;
-            DAT_0082ae20.tile_y = node->tile.pos.y;
-            ResetCursorBuildable(&DAT_0082ae20);
-            DAT_0082ae20.field_1828 = 8;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
+            BoatingSchoolDCursor.tile_x = node->tile.pos.x;
+            BoatingSchoolDCursor.tile_y = node->tile.pos.y;
+            ResetCursorBuildable(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.field_1828 = 8;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
         }
     }
 }
@@ -785,9 +785,9 @@ void BoatingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *cursor)
         path = BoatPathList;
         while (path != NULL) {
             if (path->owner.id == tile.id) {
-                DAT_0082ae20.tile_x = path->tile.pos.x;
-                DAT_0082ae20.tile_y = path->tile.pos.y;
-                RemoveBoatPath(&fake, path->tile, &DAT_0082ae20);
+                BoatingSchoolDCursor.tile_x = path->tile.pos.x;
+                BoatingSchoolDCursor.tile_y = path->tile.pos.y;
+                RemoveBoatPath(&fake, path->tile, &BoatingSchoolDCursor);
                 path = BoatPathList;
             } else {
                 path = path->next;

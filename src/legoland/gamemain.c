@@ -675,7 +675,7 @@ void ResetLevelScriptState(void) {
     SetDefaultClassLimits();
     ClearInterfaceSlotValues();
     ClearButtonFlashStates();
-    SetPendingMovie(DAT_004d8bb0);
+    SetPendingMovie(EmptyString);
     ResetDamageTimer();
     ResetPathUpdateTimer();
     ResetPathSceneryTimer();

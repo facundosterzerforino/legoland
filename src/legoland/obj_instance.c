@@ -59,7 +59,7 @@ done:
 void ClearObjInstanceTable(void) {
     struct ObjTableEntry *entry;
 
-    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         entry->key = 0xffff;
     }
 }
@@ -70,7 +70,7 @@ int AddObjInstance(const struct Point *pos) {
     struct ObjTableEntry *entry;
 
     index = 0;
-    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == 0xffff) {
             ObjInstanceTable[index].key = (pos->x << 8) + pos->y;
             ObjInstanceTableCounts[index].key = 0;
@@ -89,7 +89,7 @@ int RemoveObjInstance(const struct Point *pos) {
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == target) {
             ObjInstanceTable[index].key = 0xffff;
             return 1;
@@ -107,7 +107,7 @@ int IncObjInstanceCount(const struct Point *pos) {
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == target) {
             ObjInstanceTableCounts[index].key++;
             return 1;
@@ -125,7 +125,7 @@ unsigned short GetObjInstanceCount(const struct Point *pos) {
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == target) {
             return ObjInstanceTableCounts[index].key;
         }

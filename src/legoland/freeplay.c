@@ -49,7 +49,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     unsigned int count;
     unsigned int i;
 
-    DAT_00668e38 = 0;
+    FrontEndSubScreenActive = 0;
     Empty_0048b6c0();
     FreePlayCostTotal = 0;
     FreePlaySelectedCount = 0;

@@ -127,7 +127,7 @@ L44199b:
         add eax, edx
         mov dword ptr [ebp + 0x1c], 0x47800000
         mov dword ptr [ebp - 0xc], eax
-        mov eax, offset DAT_004b7ae0
+        mov eax, offset RideMatrixRowOrder
         lea edx, [ecx + 0x58]
         mov dword ptr [ebp + 8], eax
         mov dword ptr [ebp + 0xc], edx
@@ -136,16 +136,16 @@ L4419eb:
         xor ecx, ecx
         lea ebx, [esi + esi*2 + 3]
 L4419f3:
-        mov eax, dword ptr [ecx + DAT_004b7aec]
+        mov eax, dword ptr [ecx + RideMatrixColOrder]
         add eax, ebx
         fld dword ptr [edi + eax*4]
         fstp dword ptr [ebp + 0x10]
         fld dword ptr [ebp + 0x10]
         fmul dword ptr [ebp + 0x1c]
         fistp dword ptr [ebp + 0x10]
-        mov eax, dword ptr [ecx + DAT_004b7af8]
+        mov eax, dword ptr [ecx + RideMatrixColSign]
         add ecx, 4
-        imul eax, dword ptr [esi*4 + DAT_004b7b04]
+        imul eax, dword ptr [esi*4 + RideMatrixRowSign]
         imul eax, dword ptr [ebp + 0x10]
         mov dword ptr [edx], eax
         add edx, 0xc
@@ -155,7 +155,7 @@ L4419f3:
         mov edx, dword ptr [ebp + 0xc]
         add eax, 4
         add edx, 4
-        cmp eax, offset DAT_004b7aec
+        cmp eax, offset RideMatrixColOrder
         mov dword ptr [ebp + 8], eax
         mov dword ptr [ebp + 0xc], edx
         jl L4419eb
@@ -1000,7 +1000,7 @@ LEGO_EXPORT int TMNegParity(float *param_1) {
     a.x = param_1[6];
     a.y = param_1[7];
     a.z = param_1[8];
-    if (DotProduct(&cross, &a) < DAT_004ab4c8) {
+    if (DotProduct(&cross, &a) < DoubleZero) {
         return 1;
     }
     return 0;

@@ -162,7 +162,7 @@ unsigned char TitleMovieHandler(unsigned int param_1, unsigned int param_2) {
         EditMode.unk4 = 2;
         FrontEndScreenMode.unk4 = 0xffffffff;
         FrontEndScreenMode.unk8 = 9;
-        DAT_00668e38 = 1;
+        FrontEndSubScreenActive = 1;
     }
     return 1;
 }
@@ -371,7 +371,7 @@ void SetPendingMovie(const char *param_1) {
         IntervalMovieName[0xff] = 0;
     } else {
         strcpy(IntervalMovieName, param_1);
-        (&DAT_00798777)[strlen(param_1) + 1] = 0;
+        (&IntervalMovieNameEnd)[strlen(param_1) + 1] = 0;
     }
 }
 
@@ -515,7 +515,7 @@ void KillIntervalScreen(void) {
 unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char param_2, unsigned int param_3, unsigned int param_4) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        DAT_00668e38 = 0;
+        FrontEndSubScreenActive = 0;
         KillIntervalScreen();
         EditMode.unk4 = 3;
         SetDefaultMouseHandlers();
@@ -526,7 +526,7 @@ unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char par
             SetPointer(0);
             PlayMovie(IntervalMovieName, 1, 1);
             SetPointer(6);
-            SetPendingMovie(DAT_004d8bb0);
+            SetPendingMovie(EmptyString);
         }
         SpeechCloseFile();
         SpeechDelayFrames = 4;
@@ -790,7 +790,7 @@ unsigned int ShowIntervalScreen(const char *a, const char *b) {
         if (b != 0) {
             LoadIntervalHints(b);
         }
-        DAT_00668e38 = 1;
+        FrontEndSubScreenActive = 1;
         EditMode.unk4 = 2;
         FrontEndScreenMode.unk4 = 0xffffffff;
         FrontEndScreenMode.unk8 = 7;

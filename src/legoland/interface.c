@@ -188,10 +188,10 @@ void ResetThemeIconStates(void) {
 
 // FUNCTION: LEGOLAND 0x004745c0
 LEGO_EXPORT void Load_Interface_ThemeIcons(void) {
-    if (DAT_00668eb4 != 0) {
+    if (ThemeIconsLoaded != 0) {
         return;
     }
-    DAT_00668eb4 = 1;
+    ThemeIconsLoaded = 1;
     // STRING: LEGOLAND 0x004bb464
     LegolandThemeOnSprite = LoadSprite("legoland_themeON.lls", 4);
     // STRING: LEGOLAND 0x004bb44c
@@ -214,9 +214,9 @@ LEGO_EXPORT void Load_Interface_ThemeIcons(void) {
 LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void) {
     unsigned int sprite;
 
-    if (DAT_00668eb4 != 0) {
-        sprite = DAT_00668eb4;
-        DAT_00668eb4 = 0;
+    if (ThemeIconsLoaded != 0) {
+        sprite = ThemeIconsLoaded;
+        ThemeIconsLoaded = 0;
         if (sprite != 0) {
             if (LegolandThemeOnSprite != 0) {
                 KillSprite(LegolandThemeOnSprite);
@@ -628,7 +628,7 @@ unsigned char InterfaceOptionsClicked(unsigned int a, unsigned int flags, unsign
             PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
             GamePad = (GamePad & 0xffff00ff) | ((GamePad & 0xff00) & 0xeb00);
             EditMode.unk0 = 0;
-            DAT_00668e38 = 1;
+            FrontEndSubScreenActive = 1;
             EditMode.unk4 = 2;
             FrontEndScreenMode.unk4 = 0xffffffff;
             FrontEndScreenMode.unk8 = 5;
@@ -1233,7 +1233,7 @@ void SelectMatchingBuildElement(void) {
         return;
     }
     EditMode.unk0 = 0;
-    DAT_00667108 = 1;
+    IgnoreNextButtonRelease = 1;
     GamePad = GamePad & 0xffffebff;
 }
 
@@ -1599,7 +1599,7 @@ int GetPerformanceTime(void) {
         } else {
             state = 2;
             PerfCounterState = state;
-            PerfCounterScale = DAT_004ab528 / (float)freq.QuadPart;
+            PerfCounterScale = FloatMsPerSecond / (float)freq.QuadPart;
         }
     }
     switch (state) {

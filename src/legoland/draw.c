@@ -191,7 +191,7 @@ LEGO_EXPORT int InitScreen(void) {
         desc.ddsCaps.dwCaps = 0x4000;
         desc.dwWidth = lpConfig->screen_width;
         desc.dwHeight = lpConfig->screen_height;
-        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668074, NULL) != 0) {
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &SecondaryOffscreenSurface, NULL) != 0) {
             return 0;
         }
         IDirectDraw2_CreateClipper(DDRAWENV.ddraw2, 0, &DDrawClipper, NULL);
@@ -251,7 +251,7 @@ LEGO_EXPORT int InitScreen(void) {
         desc.ddsCaps.dwCaps = 0x40;
         desc.dwWidth = lpConfig->screen_width;
         desc.dwHeight = lpConfig->screen_height;
-        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668074, NULL) != 0) {
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &SecondaryOffscreenSurface, NULL) != 0) {
             return 0;
         }
     }
@@ -598,11 +598,11 @@ L464596:
         mov esi, dword ptr [ebp - 0xc]
         mov ebp, dword ptr [ebp - 4]
         xor eax, eax
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         and edx, edx
         je L464693
 L4645fc:
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L464612
@@ -610,12 +610,12 @@ L4645fc:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L464612:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L46467e
         test ebx, 1
         je L4645fc
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         sub eax, 4
         movzx ecx, bl
@@ -625,11 +625,11 @@ L464612:
         movzx ecx, bl
         add ebp, 4
 L464645:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         shr ebx, 6
         test ecx, ecx
         je L46468c
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L464667
@@ -637,7 +637,7 @@ L464645:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L464667:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L464676
         jmp L4645fc
@@ -663,7 +663,7 @@ L4646a1:
         and edx, edx
         je L4647dc
 L4646b5:
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L4646cb
@@ -671,12 +671,12 @@ L4646b5:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L4646cb:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L464796
         test ebx, 1
         je L464797
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         sub eax, 4
         movzx ecx, bl
@@ -686,11 +686,11 @@ L4646cb:
         movzx ecx, bl
         add ebp, 4
 L464706:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         shr ebx, 6
         test ecx, ecx
         je L464a45
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L46472c
@@ -698,7 +698,7 @@ L464706:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L46472c:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L46475b
         sub edx, ecx
@@ -753,7 +753,7 @@ L4647a6:
 L4647dc:
         mov edx, dword ptr [DrawClipExtent + 0x4]
 L4647e2:
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L4647f8
@@ -761,12 +761,12 @@ L4647e2:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L4647f8:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L464919
         test ebx, 1
         je L4649aa
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         sub eax, 4
         movzx ecx, bl
@@ -776,11 +776,11 @@ L4647f8:
         movzx ecx, bl
         add ebp, 4
 L464833:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         shr ebx, 6
         test ecx, ecx
         je L464a45
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L464859
@@ -788,7 +788,7 @@ L464833:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L464859:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [SpanStartAtOrBeforeMouse], al
@@ -898,7 +898,7 @@ L4649aa:
         je L4649b5
         jmp L4647e2
 L4649b5:
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L4649cb
@@ -906,12 +906,12 @@ L4649b5:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L4649cb:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L464a37
         test ebx, 1
         je L4649b5
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         sub eax, 4
         movzx ecx, bl
@@ -921,11 +921,11 @@ L4649cb:
         movzx ecx, bl
         add ebp, 4
 L4649fe:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         shr ebx, 6
         test ecx, ecx
         je L464a45
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L464a20
@@ -933,7 +933,7 @@ L4649fe:
         mov ebx, dword ptr [ebp]
         add ebp, 4
 L464a20:
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L464a2f
         jmp L4649b5
@@ -1045,42 +1045,42 @@ L464aec:
         mov esi, dword ptr [ebp - 4]
         mov ebp, dword ptr [ebp + 8]
         xor eax, eax
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         and edx, edx
         je L464bf9
 L464b4c:
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L464b68
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464b68:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L464be4
         test ebx, 1
         je L464b4c
         shr ebx, 2
-        cmp dword ptr [DAT_00668160], 4
+        cmp dword ptr [LLSMaskCodesLeft], 4
         jae L464b9a
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464b9a:
         shrd ecx, ebx, 8
         shr ebx, 6
-        sub dword ptr [DAT_00668160], 4
+        sub dword ptr [LLSMaskCodesLeft], 4
         shr ecx, 0x18
         je L464bf2
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L464bc9
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464bc9:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L464bdc
         jmp L464b4c
@@ -1107,37 +1107,37 @@ L464c07:
         je L464d2f
 L464c1b:
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L464c37
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464c37:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L464cfa
         test ebx, 1
         je L464cfb
         shr ebx, 2
-        cmp dword ptr [DAT_00668160], 4
+        cmp dword ptr [LLSMaskCodesLeft], 4
         jae L464c71
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464c71:
         shrd ecx, ebx, 8
         shr ebx, 6
-        sub dword ptr [DAT_00668160], 4
+        sub dword ptr [LLSMaskCodesLeft], 4
         shr ecx, 0x18
         je L464eb4
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L464ca4
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464ca4:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L464cd1
         sub edx, ecx
@@ -1183,7 +1183,7 @@ L464d0a:
 L464d2f:
         mov edx, dword ptr [DrawClipExtent + 0x4]
 L464d35:
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L464d46
@@ -1192,7 +1192,7 @@ L464d35:
 L464d46:
         and eax, 0xf
         test ebx, 2
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         je L464dd2
         test ebx, 1
         je L464e03
@@ -1207,7 +1207,7 @@ L464d75:
         shr ebx, 6
         and eax, 0xf
         test ecx, ecx
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         je L464eb4
         shr ebx, 2
         dec eax
@@ -1216,7 +1216,7 @@ L464d75:
         add ebp, 4
 L464d97:
         and eax, 0xf
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         test ebx, 2
         je L464db0
         sub edx, ecx
@@ -1272,37 +1272,37 @@ L464e03:
         jmp L464d35
 L464e0e:
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L464e2a
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464e2a:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L464ea6
         test ebx, 1
         je L464e0e
         shr ebx, 2
-        cmp dword ptr [DAT_00668160], 4
+        cmp dword ptr [LLSMaskCodesLeft], 4
         jae L464e5c
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464e5c:
         shrd ecx, ebx, 8
         shr ebx, 6
-        sub dword ptr [DAT_00668160], 4
+        sub dword ptr [LLSMaskCodesLeft], 4
         shr ecx, 0x18
         je L464eb4
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L464e8b
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L464e8b:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L464e9e
         jmp L464e0e
@@ -1445,7 +1445,7 @@ L464fef:
         test eax, eax
         jne L4650ba
         mov edx, dword ptr [edi]
-        mov dword ptr [DAT_007fea40], edx
+        mov dword ptr [SoftPrintSourceBits], edx
         movsx eax, word ptr [edi + 8]
         add eax, 3
         and al, 0xfc
@@ -1469,7 +1469,7 @@ L464fef:
         mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
-        mov esi, dword ptr [DAT_007fea40]
+        mov esi, dword ptr [SoftPrintSourceBits]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
         imul ecx, dword ptr [SoftPrintWidth]
@@ -1505,7 +1505,7 @@ L4650a5:
         jmp L4651a8
 L4650ba:
         mov eax, dword ptr [edi]
-        mov dword ptr [DAT_007fea40], eax
+        mov dword ptr [SoftPrintSourceBits], eax
         movsx ecx, word ptr [edi + 8]
         shl ecx, 1
         mov dword ptr [SoftPrintWidth], ecx
@@ -1525,7 +1525,7 @@ L4650ba:
         mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
-        mov esi, dword ptr [DAT_007fea40]
+        mov esi, dword ptr [SoftPrintSourceBits]
         add esi, dword ptr [eax]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
@@ -1770,42 +1770,42 @@ L465335:
         mov esi, dword ptr [ebp - 0x10]
         mov ebp, dword ptr [ebp - 8]
         xor eax, eax
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         and edx, edx
         je L465443
 L465396:
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L4653b2
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L4653b2:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L46542e
         test ebx, 1
         je L465396
         shr ebx, 2
-        cmp dword ptr [DAT_00668160], 4
+        cmp dword ptr [LLSMaskCodesLeft], 4
         jae L4653e4
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L4653e4:
         shrd ecx, ebx, 8
         shr ebx, 6
-        sub dword ptr [DAT_00668160], 4
+        sub dword ptr [LLSMaskCodesLeft], 4
         shr ecx, 0x18
         je L46543c
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L465413
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L465413:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L465426
         jmp L465396
@@ -1832,37 +1832,37 @@ L465451:
         je L4655a1
 L465465:
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L465481
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L465481:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L465559
         test ebx, 1
         je L46555a
         shr ebx, 2
-        cmp dword ptr [DAT_00668160], 4
+        cmp dword ptr [LLSMaskCodesLeft], 4
         jae L4654bb
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L4654bb:
         shrd ecx, ebx, 8
         shr ebx, 6
-        sub dword ptr [DAT_00668160], 4
+        sub dword ptr [LLSMaskCodesLeft], 4
         shr ecx, 0x18
         je L46580f
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L4654ee
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L4654ee:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L46551e
         sub edx, ecx
@@ -1917,7 +1917,7 @@ L465569:
 L4655a1:
         mov edx, dword ptr [DrawClipExtent + 0x4]
 L4655a7:
-        mov eax, dword ptr [DAT_00668160]
+        mov eax, dword ptr [LLSMaskCodesLeft]
         shr ebx, 2
         dec eax
         jns L4655b8
@@ -1926,7 +1926,7 @@ L4655a7:
 L4655b8:
         and eax, 0xf
         test ebx, 2
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         je L4656c7
         test ebx, 1
         je L46575e
@@ -1941,7 +1941,7 @@ L4655eb:
         shr ebx, 6
         and eax, 0xf
         test ecx, ecx
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         je L46580f
         shr ebx, 2
         dec eax
@@ -1950,7 +1950,7 @@ L4655eb:
         add ebp, 4
 L46560d:
         and eax, 0xf
-        mov dword ptr [DAT_00668160], eax
+        mov dword ptr [LLSMaskCodesLeft], eax
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
         mov byte ptr [SpanStartAtOrBeforeMouse], al
@@ -2056,37 +2056,37 @@ L46575e:
         jmp L4655a7
 L465769:
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L465785
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L465785:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L465801
         test ebx, 1
         je L465769
         shr ebx, 2
-        cmp dword ptr [DAT_00668160], 4
+        cmp dword ptr [LLSMaskCodesLeft], 4
         jae L4657b7
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L4657b7:
         shrd ecx, ebx, 8
         shr ebx, 6
-        sub dword ptr [DAT_00668160], 4
+        sub dword ptr [LLSMaskCodesLeft], 4
         shr ecx, 0x18
         je L46580f
         shr ebx, 2
-        and dword ptr [DAT_00668160], 0xf
+        and dword ptr [LLSMaskCodesLeft], 0xf
         jne L4657e6
         mov ebx, dword ptr [ebp]
         add ebp, 4
-        mov dword ptr [DAT_00668160], 0x10
+        mov dword ptr [LLSMaskCodesLeft], 0x10
 L4657e6:
-        dec dword ptr [DAT_00668160]
+        dec dword ptr [LLSMaskCodesLeft]
         test ebx, 2
         je L4657f9
         jmp L465769
@@ -2139,7 +2139,7 @@ void DrawMovieFrameDoubled(struct AviFrame *frame) {
 
     dst = CurrentSurfaceDesc.lpSurface;
     width = frame->width;
-    DAT_006681ec = (DAT_006681ec != dst) ? dst : 0;
+    MovieLastDoubledSurface = (MovieLastDoubledSurface != dst) ? dst : 0;
     height = frame->height;
     rest = lpConfig->screen_height;
     rest = rest - height * 2;
@@ -2511,7 +2511,7 @@ L465d38:
         test eax, eax
         jne L465e0a
         mov eax, dword ptr [esi]
-        mov dword ptr [DAT_007fea40], eax
+        mov dword ptr [SoftPrintSourceBits], eax
         movsx ecx, word ptr [esi + 8]
         add ecx, 3
         and ecx, 0xfffffffc
@@ -2535,7 +2535,7 @@ L465d38:
         mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
-        mov esi, dword ptr [DAT_007fea40]
+        mov esi, dword ptr [SoftPrintSourceBits]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
         imul ecx, dword ptr [SoftPrintWidth]
@@ -2572,7 +2572,7 @@ L465df5:
         jmp L465eba
 L465e0a:
         mov ecx, dword ptr [esi]
-        mov dword ptr [DAT_007fea40], ecx
+        mov dword ptr [SoftPrintSourceBits], ecx
         movsx edx, word ptr [esi + 8]
         shl edx, 1
         mov dword ptr [SoftPrintWidth], edx
@@ -2592,7 +2592,7 @@ L465e0a:
         mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
-        mov esi, dword ptr [DAT_007fea40]
+        mov esi, dword ptr [SoftPrintSourceBits]
         add esi, dword ptr [eax]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]

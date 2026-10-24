@@ -554,16 +554,16 @@ void CoptersPlaceRider(struct CopterNode *node, int index) {
         frame->mat[2][1] = frame->mat[1][2] * frame->mat[0][0] - frame->mat[1][0] * frame->mat[0][2];
         frame->mat[2][2] = frame->mat[1][0] * frame->mat[0][1] - frame->mat[0][0] * frame->mat[1][1];
         for (i = 0; i < 3; i++) {
-            r = DAT_004b42a0[i];
+            r = CoptersMatrixRowOrder[i];
             for (j = 0; j < 3; j++) {
                 /* float -> 16.16 fixed, rounded by fistp (inline asm in the original too) */
-                *(float *)&tmp = CoptersPos->entries[layer][entry->frame].mat[r][DAT_004b42ac[j]];
+                *(float *)&tmp = CoptersPos->entries[layer][entry->frame].mat[r][CoptersMatrixColOrder[j]];
                 __asm {
                 fld dword ptr tmp
                 fmul scale
                 fistp tmp
                 }
-                person->m[j * 3 + i] = DAT_004b42b8[j] * DAT_004b42c4[r] * tmp;
+                person->m[j * 3 + i] = CoptersMatrixColSign[j] * CoptersMatrixRowSign[r] * tmp;
             }
         }
     }

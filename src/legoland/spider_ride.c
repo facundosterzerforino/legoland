@@ -244,9 +244,9 @@ void SpiderRideLoad(struct Element *param_1) {
     SpiderRideBinVs[0] = SpiderRunBinV;
     SpiderRideDrawOffset.x = -1;
     SpiderRideDrawOffset.y = 2;
-    DAT_004cbf38[1] = ZSpiderSprite;
+    SpiderRideCarAssets[1] = ZSpiderSprite;
     SpiderRideBinVs[1] = SpiderOnBinV;
-    DAT_004cbf38[0] = SpiderOffBinV;
+    SpiderRideCarAssets[0] = SpiderOffBinV;
     HideLayer(SpiderRideLayer, 2);
     StopLayerPlaying(SpiderRideLayer, 2);
     LLSSetFrame(GetLLSForLayer(SpiderRideLayer, 2), 0);
@@ -437,7 +437,7 @@ void SpiderRideUpdate(Element *obj) {
                 bloke->person->field_30 = 1;
                 coords[0] = (ox - SpiderRideDrawOffset.x / 2 - sc.x) * 2;
                 coords[1] = (oy - SpiderRideDrawOffset.y / 2 - sc.y) * 2;
-                bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
+                bloke->person->sprite = (struct Sprite *)SpiderRideCarAssets[1];
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->field_35 = 0;
                 // STRING: LEGOLAND 0x004b4704
@@ -468,7 +468,7 @@ void SpiderRideUpdate(Element *obj) {
                 BlokeSitAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 bloke->field_35 = 1;
-                bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
+                bloke->person->sprite = (struct Sprite *)SpiderRideCarAssets[1];
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->param_action++;
@@ -483,12 +483,12 @@ void SpiderRideUpdate(Element *obj) {
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 bloke->flags |= 0x80;
-                bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
+                bloke->person->sprite = (struct Sprite *)SpiderRideCarAssets[1];
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->field_35 = 2;
                 sprintf(SpiderBnvInfo.name + 6, "%02d", bloke->field_36);
-                bloke->path = NewBNVPath(DAT_004cbf38[0], 2, SpiderBnvInfo.name, -1617787.75f, -1618096.5f, walk);
+                bloke->path = NewBNVPath(SpiderRideCarAssets[0], 2, SpiderBnvInfo.name, -1617787.75f, -1618096.5f, walk);
                 BNVPath_SetDFrame(bloke, bloke->path, 0);
                 UpdateBlokeFromBNVPath(bloke, bloke->path);
                 bloke->param_action++;
@@ -615,7 +615,7 @@ LEGO_EXPORT int LoadSpider(struct Element *arg) {
     while (list != NULL) {
         car = list->person;
         if (car->field_30 != 0) {
-            car->sprite = DAT_004cbf38[car->field_30];
+            car->sprite = SpiderRideCarAssets[car->field_30];
         } else {
             car->sprite = NULL;
             list->person->field_30 = 0;

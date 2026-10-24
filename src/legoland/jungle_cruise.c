@@ -28,13 +28,13 @@ void InitJungleCruiseSeatOffsets(void) {
     float a;
 
     for (i = 0; i < 16; i++) {
-        a = (i * DAT_004ab3e8) * DAT_004ab3f4;
+        a = (i * BoatHeadingStepDegrees) * DegToRad;
         JungleCruiseSeatOffsets[0][i].x = (int)(sin(a) * JungleCruiseSeatRadiusX);
         JungleCruiseSeatOffsets[0][i].y = (int)(cos(a) * JungleCruiseSeatRadiusY);
-        a = (i * DAT_004ab3e8 + DAT_004ab3ec - DAT_004ab3fc) * DAT_004ab3f4;
+        a = (i * BoatHeadingStepDegrees + Float180 - Float16) * DegToRad;
         JungleCruiseSeatOffsets[1][i].x = (int)(sin(a) * JungleCruiseSeatRadiusX);
         JungleCruiseSeatOffsets[1][i].y = (int)(cos(a) * JungleCruiseSeatRadiusY);
-        a = (i * DAT_004ab3e8 + DAT_004ab4a0) * DAT_004ab3f4;
+        a = (i * BoatHeadingStepDegrees + Float196) * DegToRad;
         JungleCruiseSeatOffsets[2][i].x = (int)(sin(a) * JungleCruiseSeatRadiusX);
         JungleCruiseSeatOffsets[2][i].y = (int)(cos(a) * JungleCruiseSeatRadiusY);
     }
@@ -178,22 +178,22 @@ void DrawJungleCruiseBoats(int docked) {
                         fwdPos.y = JungleCruiseSeatOffsets[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
                         switch (seat) {
                         case 0:
-                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 +
-                                                   DAT_004ab3e4) *
-                                DAT_004ab3dc * DAT_004ab3e0;
+                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * BoatHeadingStepDegrees +
+                                                   Float45) *
+                                Float2Pi * FloatNegInv360;
                             break;
                         case 1:
                             person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] + 6) & 0xf) *
-                                                       DAT_004ab3e8 +
-                                                   DAT_004ab3e4) *
-                                DAT_004ab3dc * DAT_004ab3e0;
+                                                       BoatHeadingStepDegrees +
+                                                   Float45) *
+                                Float2Pi * FloatNegInv360;
                             fwdPos.y -= 0x10;
                             break;
                         case 2:
                             person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) *
-                                                       DAT_004ab3e8 +
-                                                   DAT_004ab3e4) *
-                                DAT_004ab3dc * DAT_004ab3e0;
+                                                       BoatHeadingStepDegrees +
+                                                   Float45) *
+                                Float2Pi * FloatNegInv360;
                             fwdPos.y -= 0x10;
                             break;
                         }
@@ -227,22 +227,22 @@ void DrawJungleCruiseBoats(int docked) {
                         backPos.y = JungleCruiseSeatOffsets[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
                         switch (seat) {
                         case 0:
-                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 +
-                                                   DAT_004ab3e4) *
-                                DAT_004ab3dc * DAT_004ab3e0;
+                            person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * BoatHeadingStepDegrees +
+                                                   Float45) *
+                                Float2Pi * FloatNegInv360;
                             break;
                         case 1:
                             person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] + 6) & 0xf) *
-                                                       DAT_004ab3e8 +
-                                                   DAT_004ab3e4) *
-                                DAT_004ab3dc * DAT_004ab3e0;
+                                                       BoatHeadingStepDegrees +
+                                                   Float45) *
+                                Float2Pi * FloatNegInv360;
                             backPos.y -= 0x10;
                             break;
                         case 2:
                             person->field_44 = ((float)(int)((ride->step_frames[JungleCruiseStep] - 6) & 0xf) *
-                                                       DAT_004ab3e8 +
-                                                   DAT_004ab3e4) *
-                                DAT_004ab3dc * DAT_004ab3e0;
+                                                       BoatHeadingStepDegrees +
+                                                   Float45) *
+                                Float2Pi * FloatNegInv360;
                             backPos.y -= 0x10;
                             break;
                         }
@@ -553,12 +553,12 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
                     break;
                 }
             }
-            sx = (int)((float)(JungleCruiseDirSteps[bit].ox * 40) * DAT_004ab3fc);
-            sy = (int)((float)(JungleCruiseDirSteps[bit].oy * 40) * DAT_004ab3fc);
+            sx = (int)((float)(JungleCruiseDirSteps[bit].ox * 40) * Float16);
+            sy = (int)((float)(JungleCruiseDirSteps[bit].oy * 40) * Float16);
             for (i = 0; i < 80; i++) {
                 if (i < 40) {
-                    ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * DAT_004ab3fc + sx);
-                    ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * i) * DAT_004ab3fc + sy);
+                    ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * Float16 + sx);
+                    ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * i) * Float16 + sy);
                 } else {
                     ride->step_offsets[i * 2] = 0;
                     ride->step_offsets[i * 2 + 1] = 0;
@@ -604,13 +604,13 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
             arc += bit;
             step = (arc->a1 - arc->a0) * BoatArcStepScale;
             angle = arc->a0;
-            ride->step_offsets[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
-            ride->step_offsets[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+            ride->step_offsets[0] = (int)((sin(angle * DegToRad) + arc->cx) * BoatArcScale);
+            ride->step_offsets[1] = (int)((cos((angle + Float180) * DegToRad) + arc->cy) * BoatArcScale);
             p = &ride->step_offsets[3];
             for (i = 0x4f; i != 0; i--) {
                 angle += step;
-                p[-1] = (int)((sin(DAT_004ab3f4 * angle) + arc->cx) * DAT_004ab3f0);
-                p[0] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+                p[-1] = (int)((sin(DegToRad * angle) + arc->cx) * BoatArcScale);
+                p[0] = (int)((cos((angle + Float180) * DegToRad) + arc->cy) * BoatArcScale);
                 p = p + 2;
             }
         } else {
@@ -619,24 +619,24 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
                     break;
                 }
             }
-            sx = (int)((float)(JungleCruiseDirSteps[bit].ox * 40) * DAT_004ab3fc);
-            sy = (int)((float)(JungleCruiseDirSteps[bit].oy * 40) * DAT_004ab3fc);
+            sx = (int)((float)(JungleCruiseDirSteps[bit].ox * 40) * Float16);
+            sy = (int)((float)(JungleCruiseDirSteps[bit].oy * 40) * Float16);
             if (from == to) {
                 for (i = 0; i < 80; i++) {
                     if (i < 40) {
-                        ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * DAT_004ab3fc + sx);
-                        ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * i) * DAT_004ab3fc + sy);
+                        ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * Float16 + sx);
+                        ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * i) * Float16 + sy);
                     } else {
-                        ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
-                        ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
+                        ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * (80 - i)) * Float16 + sx);
+                        ride->step_offsets[i * 2 + 1] = (int)((float)(JungleCruiseDirSteps[bit].dy * (80 - i)) * Float16 + sy);
                     }
                 }
             } else {
                 fx = (float)sx;
                 fy = (float)sy;
                 for (i = 0; i < 80; i++) {
-                    ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * DAT_004ab3fc + fx);
-                    ride->step_offsets[i * 2 + 1] = (int)((float)(i * JungleCruiseDirSteps[bit].dy) * DAT_004ab3fc + fy);
+                    ride->step_offsets[i * 2] = (int)((float)(JungleCruiseDirSteps[bit].dx * i) * Float16 + fx);
+                    ride->step_offsets[i * 2 + 1] = (int)((float)(i * JungleCruiseDirSteps[bit].dy) * Float16 + fy);
                 }
             }
         }
@@ -1255,54 +1255,54 @@ void JungleCruiseDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct JungleObj *p2 = JungleObjList;
 
     BasicObjectDCalcCursor(param_1, param_2);
-    DefaultCursor(&DAT_0082ae20);
-    memcpy(DAT_0082ae20.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
+    DefaultCursor(&BoatingSchoolDCursor);
+    memcpy(BoatingSchoolDCursor.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
     for (; p1 != NULL; p1 = p1->next) {
         if (p1->owner.id == QueryObj.id) {
-            DAT_0082ae20.tile_x = p1->tile.pos.x;
-            DAT_0082ae20.tile_y = p1->tile.pos.y;
-            ResetCursorBuildable(&DAT_0082ae20);
-            DAT_0082ae20.field_1828 = 8;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
+            BoatingSchoolDCursor.tile_x = p1->tile.pos.x;
+            BoatingSchoolDCursor.tile_y = p1->tile.pos.y;
+            ResetCursorBuildable(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.field_1828 = 8;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
         }
     }
     for (; p2 != NULL; p2 = p2->next) {
         if (p2->owner == QueryObj.id) {
-            DAT_0082ae20.tile_x = p2->tile.pos.x;
-            DAT_0082ae20.tile_y = p2->tile.pos.y;
-            ResetCursorBuildable(&DAT_0082ae20);
-            DAT_0082ae20.field_1828 = 8;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
+            BoatingSchoolDCursor.tile_x = p2->tile.pos.x;
+            BoatingSchoolDCursor.tile_y = p2->tile.pos.y;
+            ResetCursorBuildable(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.field_1828 = 8;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
         }
     }
-    DAT_0082ae20.field_1414[1] -= 5;
+    BoatingSchoolDCursor.field_1414[1] -= 5;
     for (; p3 != NULL; p3 = p3->next) {
         if (p3->owner == QueryObj.id) {
-            DAT_0082ae20.tile_x = p3->tile.pos.x;
-            DAT_0082ae20.tile_y = p3->tile.pos.y;
-            ResetCursorBuildable(&DAT_0082ae20);
-            DAT_0082ae20.field_1828 = 8;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
+            BoatingSchoolDCursor.tile_x = p3->tile.pos.x;
+            BoatingSchoolDCursor.tile_y = p3->tile.pos.y;
+            ResetCursorBuildable(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.field_1828 = 8;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
         }
     }
     for (; p4 != NULL; p4 = p4->next) {
         if (p4->owner == QueryObj.id) {
-            DAT_0082ae20.field_1414[1] = -1;
-            DAT_0082ae20.field_1414[3] = 1;
-            DAT_0082ae20.field_1414[0] = 0;
-            DAT_0082ae20.field_1414[2] = 0;
-            DAT_0082ae20.tile_x = p4->tile.pos.x;
-            DAT_0082ae20.tile_y = p4->tile.pos.y;
-            ResetCursorBuildable(&DAT_0082ae20);
-            DAT_0082ae20.field_1828 = 8;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
-            DAT_0082ae20.tile_x = DAT_0082ae20.tile_x - 6;
-            BuildCursorPtr(&DAT_0082ae20, 0, 0);
-            RenderCursor(&DAT_0082ae20);
+            BoatingSchoolDCursor.field_1414[1] = -1;
+            BoatingSchoolDCursor.field_1414[3] = 1;
+            BoatingSchoolDCursor.field_1414[0] = 0;
+            BoatingSchoolDCursor.field_1414[2] = 0;
+            BoatingSchoolDCursor.tile_x = p4->tile.pos.x;
+            BoatingSchoolDCursor.tile_y = p4->tile.pos.y;
+            ResetCursorBuildable(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.field_1828 = 8;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
+            BoatingSchoolDCursor.tile_x = BoatingSchoolDCursor.tile_x - 6;
+            BuildCursorPtr(&BoatingSchoolDCursor, 0, 0);
+            RenderCursor(&BoatingSchoolDCursor);
         }
     }
 }
@@ -1338,13 +1338,13 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
         fake.ride = ActiveJungleCruiseRide;
         IncrementObjectCount(ActiveJungleCruiseRide);
         IncrementObjectCount(ActiveJungleCruiseRide);
-        memcpy(DAT_0082ae20.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
+        memcpy(BoatingSchoolDCursor.field_1414, &JungleCruiseDefaultFootprint, sizeof(JungleCruiseDefaultFootprint));
         path = JunglePathList;
         while (path != NULL) {
             if (path->owner.id == tile.id) {
-                DAT_0082ae20.tile_x = path->tile.pos.x;
-                DAT_0082ae20.tile_y = path->tile.pos.y;
-                RemoveJunglePath(&fake, path->tile, &DAT_0082ae20);
+                BoatingSchoolDCursor.tile_x = path->tile.pos.x;
+                BoatingSchoolDCursor.tile_y = path->tile.pos.y;
+                RemoveJunglePath(&fake, path->tile, &BoatingSchoolDCursor);
                 path = JunglePathList;
             } else {
                 path = path->next;
@@ -1382,7 +1382,7 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
                 fish = fish->next;
             }
         }
-        fake.ride = DAT_0081cb64;
+        fake.ride = JungleCruiseInstanceClass;
         thing = JungleCruiseInstanceList;
         while (thing != NULL) {
             if (thing->owner == tile.id) {

@@ -760,10 +760,10 @@ int CanDrivingSchoolCarProceed(struct NewBloke *param_1) {
     }
     local.x = iVar1->x;
     local.y = iVar1->y;
-    StepPointByDirection((int *)&local, (int *)&local, DAT_004b4034[(unsigned int)param_1->f_b8]);
+    StepPointByDirection((int *)&local, (int *)&local, Heading16ToDir8[(unsigned int)param_1->f_b8]);
     iVar1 = FindRoadEntryAt(local.x, local.y);
     if ((iVar1 != 0) && ((iVar1->field_14 & 0xf) == 5)) {
-        return IsTrafficLightGreenForDir(DAT_004b4034[(unsigned int)param_1->f_b8]);
+        return IsTrafficLightGreenForDir(Heading16ToDir8[(unsigned int)param_1->f_b8]);
     }
     return 1;
 }

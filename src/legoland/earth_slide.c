@@ -218,7 +218,7 @@ void LoadEarthSlideResources(struct Element *param_1) {
     // STRING: LEGOLAND 0x004b663c
     EarthPos = LoadPos("3ddata\\earth.pos");
     // STRING: LEGOLAND 0x004b6620
-    EarthSlideRin = LoadRin("3ddata\\earthslide.rin", DAT_004b6638);
+    EarthSlideRin = LoadRin("3ddata\\earthslide.rin", CurrentDirPath);
     if (EarthSlideRin != NULL) {
         EarthSlideRin->x = -0x9e;
         EarthSlideRin->y = -6;
@@ -234,8 +234,8 @@ void LoadEarthSlideResources(struct Element *param_1) {
     EarthSlideEntranceMatteSprite = LoadSprite("EarthSlide Entrance Matte.lls", 1);
     // STRING: LEGOLAND 0x004b65e0
     EarthSlideEntranceMatte2Sprite = LoadSprite("EarthSlideEntranceMatte2.lls", 1);
-    DAT_006160c8 = 0;
-    DAT_006160cc = 0;
+    UnusedEarthSlideA = 0;
+    UnusedEarthSlideB = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0042d1f0

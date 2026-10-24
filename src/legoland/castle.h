@@ -585,8 +585,8 @@ struct BoxSolid {
 };
 
 extern float BoxFaceNormals[6][3];
-extern struct BoxFace DAT_004b5748[12];
-extern struct BoxFace DAT_004b5808[12];
+extern struct BoxFace BoxSolidFaces[12];
+extern struct BoxFace BoxSolidOriginFaces[12];
 extern struct BoxSolid BoxSolidTemplate;
 
 void InitBoxSolidToOrigin(struct BoxSolid *box, struct FVec3 *verts, struct FVec3 *xverts, int unused, float w, float h, float d);

@@ -1409,13 +1409,13 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         bx = (short)pts->xpts[i] + screen[0];
         by = (short)pts->ypts[i] + screen[1];
         if (cursor->field_1828 & 4) {
-            pat = CursorDashPattern1;
+            pat = CursorBlueColours;
         } else if (cursor->field_1828 & 2) {
-            pat = DAT_004b95c4;
+            pat = CursorCyanColours;
         } else if (pts->fpts[i] & 0xc) {
-            pat = CursorDashPattern2;
+            pat = CursorGreenColours;
         } else {
-            pat = CursorDashPattern3;
+            pat = CursorRedColours;
         }
         if (cursor->field_1828 & 0x20) {
             switch (pts->fpts[i] & 3) {
@@ -1755,8 +1755,8 @@ void DrawViewMapTiles(void) {
     clip.right = lpConfig->view_width + clip.left;
     clip.bottom = lpConfig->view_height + clip.top;
     DrawMapTiles(&pos, &clip);
-    DAT_004b95ec = sy;
-    DAT_004b95e8 = sx;
+    UnusedViewMapTileY = sy;
+    UnusedViewMapTileX = sx;
     BackgroundOffsetX = 0;
     BackgroundOffsetY = 0;
     BGFullUpdate = 0;
@@ -3016,12 +3016,12 @@ void PrintCapacityStats(void) {
         }
         // STRING: LEGOLAND 0x004b9c6c
         sprintf(buf, "[%s x %d]: Cap %d  x %d%% = %.2f (Capped %d) = %.2f", ((char **)&ScriptCapacityClassNames)[i], MapStats.classes[i].built, MapStats.classes[i].capacity, MapStats.classes[i].percent,
-            (double)((float)prod * DAT_004ab518), MapStats.classes[i].limit, (double)((float)capped * DAT_004ab518));
+            (double)((float)prod * FloatOnePercent), MapStats.classes[i].limit, (double)((float)capped * FloatOnePercent));
         Print(SPRITE_ClipRect.left + 8, (i + 1) * 0x14 + SPRITE_ClipRect.top, buf, 2);
         total += capped;
     }
     // STRING: LEGOLAND 0x004b9c40
-    sprintf(buf, "Tot Capacity = %.2f (limit %d - %d) = %d", (double)((float)total * DAT_004ab518),
+    sprintf(buf, "Tot Capacity = %.2f (limit %d - %d) = %d", (double)((float)total * FloatOnePercent),
         MapStats.capacity_min, MapStats.capacity_max, MapStats.capacity);
     Print(SPRITE_ClipRect.left + 8, SPRITE_ClipRect.top + 0x96, buf, 2);
 }

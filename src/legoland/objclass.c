@@ -705,11 +705,11 @@ LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride) {
 
     slot = (struct InfoNode **)&ClassRideList;
     node = ClassRideList;
-    if (ClassRideList != DAT_0066924c) {
+    if (ClassRideList != ClassRideBestPtr) {
         while (node != 0) {
             next = node->next;
-            if (next == DAT_0066924c) {
-                DAT_0066924c = node;
+            if (next == ClassRideBestPtr) {
+                ClassRideBestPtr = node;
                 goal->x = node->x << 8;
                 goal->y = node->y << 8;
                 *ride = node->classid;
@@ -731,7 +731,7 @@ LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride) {
 
 // FUNCTION: LEGOLAND 0x00481690
 LEGO_EXPORT void ResetBestPtr(void) {
-    DAT_0066924c = 0;
+    ClassRideBestPtr = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004816a0

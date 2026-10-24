@@ -313,7 +313,7 @@ int ScriptCmdLookAt(struct CommandArgs *param_1, int param_2) {
 
 // FUNCTION: LEGOLAND 0x00478e20
 int ScriptCmdBriefingFile(struct CommandArgs *param_1, int param_2) {
-    char *name = DAT_004d8bb0;
+    char *name = EmptyString;
     if (ScriptConditionActive != 0) {
         if (CheckScriptCommand(param_1, param_2, 5, 0) == 0) {
             return 0;
@@ -332,7 +332,7 @@ int ScriptCmdBriefingFile(struct CommandArgs *param_1, int param_2) {
 
 // FUNCTION: LEGOLAND 0x00478e90
 int ScriptCmdHintsFile(struct CommandArgs *param_1, int param_2) {
-    char *name = DAT_004d8bb0;
+    char *name = EmptyString;
     if (ScriptConditionActive != 0) {
         if (CheckScriptCommand(param_1, param_2, 5, 0) == 0) {
             return 0;
@@ -863,7 +863,7 @@ int ScriptCmdAppraisal(struct CommandArgs *arg, int argc) {
     char buf[0x200];
     int v;
 
-    buf[0] = DAT_004d8bb0[0];
+    buf[0] = EmptyString[0];
     memset(buf + 1, 0, sizeof(buf) - 1);
     if (ScriptConditionActive == 0) {
         return 1;
@@ -1132,7 +1132,7 @@ int ScriptCmdEndScreens(struct CommandArgs *arg, int argc) {
     char buf[0x200];
     int v;
 
-    buf[0] = DAT_004d8bb0[0];
+    buf[0] = EmptyString[0];
     memset(buf + 1, 0, sizeof(buf) - 1);
     if (ScriptConditionActive != 0) {
         if (CheckScriptCommand(arg, argc, 5, 1) == 0) {

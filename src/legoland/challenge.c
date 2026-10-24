@@ -395,9 +395,9 @@ void InitAdvisorFrameFormat(void) {
 void SetAdvisorVidAnim(struct AnimHandle *handle) {
     struct AnimHandle *current;
 
-    DAT_00665f68 = 0;
-    DAT_00665f6c = 0;
-    DAT_00665f64 = 0;
+    UnusedAdvisorVidB = 0;
+    UnusedAdvisorVidC = 0;
+    UnusedAdvisorVidA = 0;
     AdvisorAnimFrame = 0;
     if (handle->open_cb != NULL) {
         handle->open_cb(handle);

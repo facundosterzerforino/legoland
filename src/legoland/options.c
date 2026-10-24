@@ -152,7 +152,7 @@ LEGO_EXPORT void InitOptionScreen(void) {
     FxVolumeMarkerIcon = icon;
 
     ExitCheckBoxShown = 0;
-    DAT_00798754 = 0;
+    ExitDialogAfterLongPlay = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0048ef10
@@ -197,7 +197,7 @@ unsigned char OptionsAcceptIconHandler(unsigned int param_1, unsigned int param_
         if (CurrentProfile.save_slot != 0) {
             UpDateCurrentSaveSlotInfo();
         }
-        DAT_00668e38 = 0;
+        FrontEndSubScreenActive = 0;
         RemoveIconGroup(7);
         KillTitleScreenSprites();
         EditMode.unk4 = 3;
@@ -247,16 +247,16 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
         if (FrontEndScreenMode.unk8 == 5) {
             OkKeyHandler = ExitLevelOkClicked;
             if (GetGameTimerSinceMark() > 0xea60) {
-                DAT_00798754 = 1;
+                ExitDialogAfterLongPlay = 1;
                 // STRING: LEGOLAND 0x004bf4c4
                 icon = LoadSpriteIcon("PU_BigPopupBK.lls", 4, param_1, param_2, 0xe);
                 y_offset = 0xdc;
                 break;
             }
-            DAT_00798754 = 0;
+            ExitDialogAfterLongPlay = 0;
         } else {
             OkKeyHandler = ExitCheckBoxOkClicked;
-            DAT_00798754 = 0;
+            ExitDialogAfterLongPlay = 0;
         }
         // STRING: LEGOLAND 0x004bf4b0
         icon = LoadSpriteIcon("PU_InfoPopupBK.lls", 4, param_1, param_2, 0xe);
@@ -276,7 +276,7 @@ LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) {
     PopUpCloseIcon->flags |= 0x2000;
     PopUpCloseIcon->flags |= 0x4002;
     PopUpCloseIcon->event_handler = (void *)ExitCheckBoxCloseClicked;
-    DAT_007cb318 = 0;
+    ExitDialogAltText = 0;
     SavedGameScreenFromExitDialog = 0;
     CancelKeyHandler = ExitCheckBoxCloseClicked;
 }
@@ -292,7 +292,7 @@ LEGO_EXPORT void PrintExitCheckBox(void) {
         rc.top = 0x2e;
         rc.right = 0x1b6;
         rc.bottom = 0x47;
-        if (DAT_007cb318 != 0) {
+        if (ExitDialogAltText != 0) {
             InfoPrintCent(strlen(GetString(0x88)), GetString(0x88), 1, rc, 1);
         } else {
             InfoPrintCent(strlen(GetString(0x89)), GetString(0x89), 2, rc, 1);
@@ -302,9 +302,9 @@ LEGO_EXPORT void PrintExitCheckBox(void) {
         rc.top = 0x4b;
         rc.right = 0x1b6;
         rc.bottom = 0xae;
-        if (DAT_007cb318 != 0) {
+        if (ExitDialogAltText != 0) {
             InfoPrintCent(strlen(GetString(0x8a)), GetString(0x8a), 1, rc, 1);
-        } else if (DAT_00798754 != 0) {
+        } else if (ExitDialogAfterLongPlay != 0) {
             rc.bottom = 0x112;
             InfoPrintCent(strlen(GetString(0x884)), GetString(0x884), 1, rc, 1);
         } else {
@@ -323,7 +323,7 @@ unsigned char ExitLevelOkClicked(unsigned int param_1, unsigned int param_2) {
         ExitCheckBoxShown = 0;
         CloseFontEndCheckBox();
         MapStats.level_end = 3;
-        DAT_00668e38 = 0;
+        FrontEndSubScreenActive = 0;
         RemoveIconGroup(7);
         DestroyIconGroup(0xd2);
         KillTitleScreenSprites();
@@ -563,7 +563,7 @@ unsigned char OptionsVolumeMarkerIconHandler(struct IconNode *param_1, unsigned 
 
 // FUNCTION: LEGOLAND 0x0048f9f0
 void SaveScreenState(unsigned int *param_1, struct ScreenMode *param_2, struct EditState *param_3) {
-    *param_1 = DAT_00668e38;
+    *param_1 = FrontEndSubScreenActive;
     *param_3 = EditMode;
     *param_2 = FrontEndScreenMode;
 }
@@ -572,7 +572,7 @@ void SaveScreenState(unsigned int *param_1, struct ScreenMode *param_2, struct E
 unsigned int RestoreScreenState(unsigned int *param_1, struct ScreenMode *param_2, struct EditState *param_3) {
     unsigned int ret;
     ret = FrontEndScreenMode.unk8;
-    DAT_00668e38 = *param_1;
+    FrontEndSubScreenActive = *param_1;
     EditMode = *param_3;
     FrontEndScreenMode = *param_2;
     FrontEndScreenMode.unk4 = ret;
@@ -602,7 +602,7 @@ LEGO_EXPORT void RenderScreen(void) {
     ReadGameButtons();
     PushRenderingStatusAndLockVideoSurface();
     PrintSprite(SPRITE_TitleScreenBk, 0, 0, 0, locals);
-    if (DAT_00668e38 != 0) {
+    if (FrontEndSubScreenActive != 0) {
         RenderIcons2(7, 0xe, 0);
         UpdateFocussedIconPtr();
         ProcessFrontEndHelp();
@@ -622,8 +622,8 @@ LEGO_EXPORT void RenderScreen(void) {
 unsigned char ReturnToTitleClicked(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        if (DAT_00668e38 != 0) {
-            DAT_00668e38 = 0;
+        if (FrontEndSubScreenActive != 0) {
+            FrontEndSubScreenActive = 0;
         }
         FrontEndScreenMode.unk8 = 1;
     }

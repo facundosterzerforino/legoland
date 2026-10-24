@@ -326,7 +326,7 @@ LEGO_EXPORT void DrawAndClearPrintList(void) {
     node = PrintListHead;
     saved_pal = GetOverridePalette();
     saved_frame = GetOverrideFrame();
-    DAT_0066b5ac = 0;
+    UnusedPrintListCounter = 0;
     for (; node != NULL; node = node->right) {
         if ((node->flags & 1) != 0) {
             if (node->clipped.clip.left < 0 || node->clipped.clip.right > (int)(unsigned int)lpConfig->screen_width || node->clipped.clip.top < 0 || node->clipped.clip.bottom > (int)(unsigned int)lpConfig->screen_height) {
@@ -558,7 +558,7 @@ void FreeZBuffer(void) {
  * reciprocal tables. */
 // FUNCTION: LEGOLAND 0x00485fc0
 void InitRender3D(unsigned int param_1) {
-    *(unsigned int *)&DAT_007cb5e0 = param_1;
+    *(unsigned int *)&ColorGreenBits = param_1;
     InitPackedColorLookupTable();
     AllocZBuffer();
     InitReciprocalTables();

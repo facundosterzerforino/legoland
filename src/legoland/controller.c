@@ -23,7 +23,7 @@ LEGO_EXPORT int SetupControllers(void) {
     MapLeftButtonMask = 1;
     RightButtonMask = 2;
     GamePad = 0;
-    DAT_00813a54 = 4;
+    MiddleButtonMask = 4;
     LeftButtonMask = 1;
     WatchedButtonMask = 0x100;
     CancelKeyMask = 0x200;
@@ -224,9 +224,9 @@ LEGO_EXPORT void ReadGameButtons(void) {
     held = CONTROLLERBUFFER->buttons;
     pressed = (PrevHeldButtons ^ held) & held;
     released = ~pressed & (PrevHeldButtons ^ held);
-    if (released != 0 && DAT_00667108 != 0) {
+    if (released != 0 && IgnoreNextButtonRelease != 0) {
         released = 0;
-        DAT_00667108 = 0;
+        IgnoreNextButtonRelease = 0;
     }
     if (pressed != 0) {
         ButtonRepeatLastTick = GetTickCount();

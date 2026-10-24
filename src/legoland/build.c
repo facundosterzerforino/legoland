@@ -139,7 +139,7 @@ LEGO_EXPORT void DoBuildEffects(Ride *ride, TileId coords) {
     int left;
     BuildObj *o;
 
-    if (ReturnZero_00450c70(ride) && DAT_0066895c == 0) {
+    if (ReturnZero_00450c70(ride) && PopUpShowsBuildProgress == 0) {
         pt.x = ride->footprint.x0 + coords.pos.x;
         pt.y = ride->footprint.y1 + coords.pos.y;
         GetTileBounds(&pt, b);

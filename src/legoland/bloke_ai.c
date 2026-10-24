@@ -297,11 +297,11 @@ void LogBlokeAiMessage(char *msg) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        PTR_DAT_004b8348[i] = BlokeAiLogLines[(BlokeAiLogIndex + i) & 7];
+        BlokeAiLogLinePtrs[i] = BlokeAiLogLines[(BlokeAiLogIndex + i) & 7];
     }
     BlokeAiLogIndex++;
     // STRING: LEGOLAND 0x004b8404
-    sprintf(PTR_DAT_004b8348[7], "%c:%s", CurrentBlokeLetter, msg);
+    sprintf(BlokeAiLogLinePtrs[7], "%c:%s", CurrentBlokeLetter, msg);
     // STRING: LEGOLAND 0x004b83f0
     DBPrintf("[Bloke %c] - %s\n", CurrentBlokeLetter, msg);
 }

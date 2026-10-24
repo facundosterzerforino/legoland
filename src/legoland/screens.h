@@ -1,9 +1,8 @@
 #pragma once
 
 void GetProductVersion(char *param_1);
-// FUN_00458930 is the game's own __ftol (compiler float->int conversion helper).
+// The game's own __ftol at 0x00458930 (compiler float->int conversion helper).
 int _ftol();
-#define FUN_00458930 _ftol
 void ResetEditState(void);
 void StartLevelGame(void);
 void UnloadMap(void);

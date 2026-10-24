@@ -42,7 +42,7 @@ LEGO_EXPORT void InitProgressScreen(void) {
         return;
     }
     if ((int)lpConfig->level > 0xf) {
-        DAT_00668e38 = 1;
+        FrontEndSubScreenActive = 1;
         SPRITE_TitleScreenBk = NULL;
         EditMode.unk4 = 2;
         FrontEndScreenMode.unk4 = 0xffffffff;
@@ -164,7 +164,7 @@ unsigned char ProgressPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
             KillProgressScreenSprites();
             if ((int)lpConfig->level <= 0xf) {
                 LoadWatchSprite(0xfa, 0x181);
-                DAT_00668e38 = 0;
+                FrontEndSubScreenActive = 0;
                 InitGameInterface(1);
                 EditMode.unk4 = 3;
                 SetDefaultMouseHandlers();
@@ -179,7 +179,7 @@ unsigned char ProgressPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
                 EditMode.unk4 = 2;
                 FrontEndScreenMode.unk4 = 0xffffffff;
                 FrontEndScreenMode.unk8 = 8;
-                DAT_00668e38 = 1;
+                FrontEndSubScreenActive = 1;
             }
         } while (0);
     }
@@ -195,7 +195,7 @@ void LoadTutorialSprites(void) {
         e->sprite0 = LoadSprite(e->name0, 4);
         e->sprite1 = LoadSprite(e->name1, 4);
         e++;
-    } while ((INT_PTR)&e->sprite0 < (INT_PTR)&DAT_004bed40);
+    } while ((INT_PTR)&e->sprite0 < (INT_PTR)&TutorialEndSprite0);
 }
 // FUNCTION: LEGOLAND 0x0048bd40
 void ReferenceTutorialSprites(void) {
@@ -206,7 +206,7 @@ void ReferenceTutorialSprites(void) {
         ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
-    } while ((INT_PTR)esi < (INT_PTR)&DAT_004bed44);
+    } while ((INT_PTR)esi < (INT_PTR)&TutorialEndSprite1);
 }
 // FUNCTION: LEGOLAND 0x0048bd70
 void KillTutorialScreenSprites(void) {
@@ -215,7 +215,7 @@ void KillTutorialScreenSprites(void) {
     RemoveIconGroup(0x1c);
     RemoveIconGroup(0x23);
     slot = (struct FreePlaySpriteSlot *)&ProgressScreenTables.tutorials[0].sprite0;
-    while ((INT_PTR)slot < (INT_PTR)&DAT_004bed40) {
+    while ((INT_PTR)slot < (INT_PTR)&TutorialEndSprite0) {
         while (KillSprite(slot->sprite0) == 0) {
         }
         while (KillSprite(slot->sprite1) == 0) {
@@ -298,7 +298,7 @@ unsigned char TutorialPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         KillTutorialScreenSprites();
         LoadWatchSprite(0x186, 0x18b);
-        DAT_00668e38 = 0;
+        FrontEndSubScreenActive = 0;
         InitGameInterface(1);
         EditMode.unk4 = 3;
         SetDefaultMouseHandlers();

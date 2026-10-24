@@ -227,7 +227,7 @@ unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned
         if (FrontEndScreenMode.unk4 != 0xffffffff) {
             return r;
         }
-        DAT_00668e38 = 0;
+        FrontEndSubScreenActive = 0;
         RemoveIconGroup(7);
     } else {
         if (!(flags & 2) || CurrentProfile.save_slot == 0) {
@@ -237,7 +237,7 @@ unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned
         SpeechCloseFile();
         SpeechDelayFrames = 4;
         StoreNewSaveGameToDisk();
-        DAT_00668e38 = 0;
+        FrontEndSubScreenActive = 0;
         RemoveIconGroup(7);
     }
     KillTitleScreenSprites();

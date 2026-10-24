@@ -195,7 +195,7 @@ void ProcessMapEditing(void) {
         v = Hover.data.value & 0xffff;
         pt.x = v & 0xff;
         pt.y = v >> 8;
-        DAT_00810144 = 0;
+        QueryCursorKeepPath = 0;
         if (DragRemoveClass != NULL && (DragRemoveClass == PathControlObject || DragRemoveClass == HedgeObjectClass)) {
             GamePad |= 0x800;
         } else {
@@ -214,7 +214,7 @@ void ProcessMapEditing(void) {
                 SetCursorBlocked(&QueryCursor, 1);
                 QueryCursor.tile_x = MouseTileX;
                 QueryCursor.tile_y = MouseTileY;
-                DAT_00667c5c = 0;
+                UnusedMapEditFlag = 0;
                 GamePad &= ~0x400;
                 if (!(MouseClickFlags & 2)) {
                     DragRemoveClass = NULL;
@@ -224,7 +224,7 @@ void ProcessMapEditing(void) {
             UpdateEditSelection();
             QueryCursor = EditCursor;
         }
-        if (DAT_00810144 == 0) {
+        if (QueryCursorKeepPath == 0) {
             QueryCursor.field_1830 = 0;
         }
         BuildCursorPtr(&QueryCursor, 0, 0);
@@ -281,7 +281,7 @@ void ProcessMapEditing(void) {
                         tile = NULL;
                     }
                     QueryClass = (struct Ride *)tile->field_0->ride;
-                    if (DAT_00810144 == 0) {
+                    if (QueryCursorKeepPath == 0) {
                         ClearPathUnderFootprint((struct Ride *)QueryClass, &pt.x);
                     }
                     RemObjFromMap(QueryClass, QueryClass->element, QueryObj, &QueryCursor);
@@ -388,7 +388,7 @@ void ProcessMapEditing(void) {
             SetCursorBlocked(&QueryCursor, 1);
             QueryCursor.tile_x = MouseTileX;
             QueryCursor.tile_y = MouseTileY;
-            DAT_00667c5c = 0;
+            UnusedMapEditFlag = 0;
             GamePad &= ~0x400;
             if (!(MouseClickFlags & 2)) {
                 DragRemoveClass = NULL;

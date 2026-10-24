@@ -69,7 +69,7 @@ void InitPackedColorLookupTable(void) {
     unsigned short v;
     float f;
 
-    n = *(unsigned int *)&DAT_007cb5e0;
+    n = *(unsigned int *)&ColorGreenBits;
     sh = n + 5;
     mask = 0xffu >> (8 - n);
     for (i = 0; i < 256; i++) {
@@ -3180,7 +3180,7 @@ __declspec(naked) unsigned short SampleCurrentTexture(unsigned int p1, unsigned 
 // FUNCTION: LEGOLAND 0x004887a0
 void InitZBufferImageSprite(void) {
     ZBufferImageSpriteReady = (void *)1;
-    ZBufferSourceImage = CreateSourceImage(DAT_004d8bb0, 0);
+    ZBufferSourceImage = CreateSourceImage(EmptyString, 0);
     ZBufferSourceImage->data = ZBufferImagePixels;
     ZBufferSourceImage->width = 0x280;
     ZBufferSourceImage->height = 0x1e0;

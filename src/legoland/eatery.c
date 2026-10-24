@@ -1041,11 +1041,11 @@ void Restaurant2RemoveObject(struct Element *arg1, TileId tile, struct Cursor *a
 // FUNCTION: LEGOLAND 0x0042fa90
 void ShiftRestaurant2RiderDiagonally(struct RideNode *node, int dir, int idx) {
     if (dir == 1) {
-        node->rider->pos.x += DAT_004b6860[idx] * -8;
-        node->rider->pos.y += DAT_004b6860[idx] * -8;
+        node->rider->pos.x += Restaurant2DownSteps[idx] * -8;
+        node->rider->pos.y += Restaurant2DownSteps[idx] * -8;
     } else {
-        node->rider->pos.x += DAT_004b68e0[idx] * 8;
-        node->rider->pos.y += DAT_004b68e0[idx] * 8;
+        node->rider->pos.x += Restaurant2UpSteps[idx] * 8;
+        node->rider->pos.y += Restaurant2UpSteps[idx] * 8;
     }
 }
 
@@ -1359,8 +1359,8 @@ void Restaurant2Update(Element *obj) {
         case 2:
             if (f7 <= 0x20) {
                 f7++;
-                f38 -= (&DAT_004b685c)[f7];
-                f3c += DAT_004b68e0[f7];
+                f38 -= (&Restaurant2DownStepsBase)[f7];
+                f3c += Restaurant2UpSteps[f7];
             } else {
                 lift = 1;
                 f1c = 0;
@@ -1952,7 +1952,7 @@ void OctopusCafeUpdate(Element *obj) {
         case 3:
         case 4:
             BuyItem((struct Element *)obj, tile, 1);
-            idx = DAT_004b6a34[bloke->param_action + (bloke->field_36 >> 1) * 4];
+            idx = OctopusCafeEntryPath[bloke->param_action + (bloke->field_36 >> 1) * 4];
             if (idx == -1) {
                 bloke->param_action++;
                 continue;
@@ -2037,7 +2037,7 @@ void OctopusCafeUpdate(Element *obj) {
         case 16:
             /* walk out along the table's exit path, skipping unused points */
             do {
-                idx = DAT_004b6a78[(bloke->field_36 >> 1) * 4 - bloke->param_action];
+                idx = OctopusCafeExitPath[(bloke->field_36 >> 1) * 4 - bloke->param_action];
                 bloke->param_action++;
             } while (idx == -1);
             bloke->dest.x = OctopusCafeSpotOffsets[idx * 2] - 0x80 + (tile->pos.x << 8);
@@ -2125,7 +2125,7 @@ void RenderOctopusCafe(struct Element *param_1, unsigned int param_2, unsigned i
             } else {
                 blokes[count] = bloke;
                 count = count + 1;
-                bloke->field_37 = DAT_004b6d58[(((bloke->pos.x >> 8) - tile->pos.x) * 0xb - (bloke->pos.y >> 8) + tile->pos.y) * 4];
+                bloke->field_37 = OctopusCafeDepthMap[(((bloke->pos.x >> 8) - tile->pos.x) * 0xb - (bloke->pos.y >> 8) + tile->pos.y) * 4];
             }
         }
         node = node->next;

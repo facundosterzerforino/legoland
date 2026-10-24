@@ -148,7 +148,7 @@ void RenderFrontEndScreen(unsigned char param_1) {
     ResetHitInfo();
     PushRenderingStatusAndLockVideoSurface();
     PrintSprite(SPRITE_TitleScreenBk, 0, 0, 0, 0);
-    if (DAT_00668e38 != 0) {
+    if (FrontEndSubScreenActive != 0) {
         RenderIcons2(7, 0xe, 0);
         if (FrontEndScreenMode.unk8 == 6) {
             RenderIcons2(0x1c, 0x23, 0);
@@ -438,14 +438,14 @@ int UpdateApplicationFrame(void) {
                 }
                 UnlockAllFreePlayObjects();
                 UnloadMap();
-                DAT_00668e38 = 1;
+                FrontEndSubScreenActive = 1;
                 EditMode.unk4 = 2;
                 FrontEndScreenMode.unk4 = 0xffffffff;
                 FrontEndScreenMode.unk8 = 6;
                 UpdateSpeechPlayback();
                 return 1;
             }
-            DAT_00668e38 = 0;
+            FrontEndSubScreenActive = 0;
             EditMode.unk4 = 2;
             FrontEndScreenMode.unk4 = 0xffffffff;
             FrontEndScreenMode.unk8 = 1;
@@ -776,7 +776,7 @@ void ShowLevelEndScreens(char *s) {
     }
     SetIntervalScreenIsBriefing(0);
     if (LoadIntervalReport(buffer) != 0) {
-        DAT_00668e38 = 1;
+        FrontEndSubScreenActive = 1;
         EditMode.unk4 = 2;
         FrontEndScreenMode.unk4 = 0xffffffff;
         FrontEndScreenMode.unk8 = 7;

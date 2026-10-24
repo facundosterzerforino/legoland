@@ -426,7 +426,7 @@ void RenderSpaceTower(struct Element *param_1, unsigned int param_2, unsigned in
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->tile.id, param_4, 2) == 0) {
                 bloke = node->rider;
-                if ((bloke->flags & 0x80) == 0 && SpaceTowerLayouts[bloke->field_50].anim_layout == &DAT_004b7750) {
+                if ((bloke->flags & 0x80) == 0 && SpaceTowerLayouts[bloke->field_50].anim_layout == &SpaceTowerBackSeatLayout) {
                     IP_RenderBlokeIn3DNow(bloke);
                 }
             }
@@ -440,7 +440,7 @@ void RenderSpaceTower(struct Element *param_1, unsigned int param_2, unsigned in
         for (; node != NULL; node = node->next) {
             if (memcmp(&node->tile.id, param_4, 2) == 0) {
                 bloke = node->rider;
-                if ((bloke->flags & 0x80) == 0 && SpaceTowerLayouts[bloke->field_50].anim_layout == &DAT_004b76b8) {
+                if ((bloke->flags & 0x80) == 0 && SpaceTowerLayouts[bloke->field_50].anim_layout == &SpaceTowerFrontSeatLayout) {
                     IP_RenderBlokeIn3DNow(bloke);
                 }
             }

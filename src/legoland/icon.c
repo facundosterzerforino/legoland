@@ -116,8 +116,8 @@ void FreeIcon(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046d440
 void AppendIcon(struct IconNode *node) {
-    ((struct IconNode *)PTR_some_list_head_004ba87c)->next = node;
-    PTR_some_list_head_004ba87c = node;
+    ((struct IconNode *)IconListTail)->next = node;
+    IconListTail = node;
 }
 
 // FUNCTION: LEGOLAND 0x0046d460
@@ -127,8 +127,8 @@ void UnlinkIconAtSlot(struct IconNode **slot) {
     if (FocussedIconPtr == node->next) {
         FocussedIconPtr = NULL;
     }
-    if (PTR_some_list_head_004ba87c == *slot) {
-        PTR_some_list_head_004ba87c = (struct IconNode *)slot;
+    if (IconListTail == *slot) {
+        IconListTail = (struct IconNode *)slot;
     }
     node = *slot;
     next = node->next;
@@ -143,8 +143,8 @@ void FreeIconAtSlot(struct IconNode **slot) {
     if (FocussedIconPtr == node->next) {
         FocussedIconPtr = NULL;
     }
-    if (PTR_DAT_004ba880 == *slot) {
-        PTR_DAT_004ba880 = slot;
+    if (HelpIconListTail == *slot) {
+        HelpIconListTail = slot;
     }
     node = *slot;
     next = node->next;
@@ -187,8 +187,8 @@ LEGO_EXPORT void RemoveIconGroup(unsigned short group) {
             node = node->next;
         }
     }
-    slot = &DAT_006687cc;
-    node = DAT_006687cc;
+    slot = &HelpIconListHead;
+    node = HelpIconListHead;
     while (node != NULL) {
         if (node->id == group) {
             node = node->next;
@@ -219,8 +219,8 @@ void RemoveIconRange(unsigned short val) {
             removed++;
         }
     }
-    slot = &DAT_006687cc;
-    node = DAT_006687cc;
+    slot = &HelpIconListHead;
+    node = HelpIconListHead;
     while (node != NULL) {
         if (node->id < val || (int)node->id >= val + 7) {
             slot = &node->next;
@@ -242,7 +242,7 @@ LEGO_EXPORT struct IconNode *FindIcon(unsigned short id) {
         }
         node = node->next;
     }
-    node = (struct IconNode *)DAT_006687cc;
+    node = (struct IconNode *)HelpIconListHead;
     while (node) {
         if (node->id == id && (node->flags & 0x100) == 0) {
             return node;
@@ -1285,7 +1285,7 @@ void RenderIconsExceptId(short param_1) {
 // FUNCTION: LEGOLAND 0x0046f200
 LEGO_EXPORT void RenderHelpIcons(void) {
     struct PrintCtx ctx = {2};
-    struct IconNode *node = DAT_006687cc;
+    struct IconNode *node = HelpIconListHead;
     StoreClipping();
     SetClippingToScreenRect(0);
     for (; node != NULL; node = node->next) {
@@ -1351,7 +1351,7 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
     x = (short)param_1->x;
     y = (short)param_1->y;
     for (i = 0; i < 2; i++) {
-        for (cur = i != 0 ? DAT_006687cc : IconListHead; cur != NULL; cur = cur->next) {
+        for (cur = i != 0 ? HelpIconListHead : IconListHead; cur != NULL; cur = cur->next) {
             if (doGeom) {
                 flags = cur->flags;
                 if ((flags & 0x10) != 0 && (flags & 0x400) == 0 && x >= cur->x && y >= cur->y &&
