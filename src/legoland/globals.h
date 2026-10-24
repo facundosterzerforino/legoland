@@ -1481,13 +1481,13 @@ extern int ImtGetCount;
 // 0x007fe9a4
 extern int SpanDrawPitch;
 // 0x007fea14
-extern int DAT_007fea14;
+extern int SoftPrintHeight;
 // 0x007fea18
-extern unsigned char DAT_007fea18;
+extern unsigned char SpanStartAtOrBeforeMouse;
 // 0x007fea1c
-extern int DAT_007fea1c;
+extern int SoftPrintWidth;
 // 0x007fea20
-extern unsigned int DAT_007fea20;
+extern unsigned int IndexedLLSPalette;
 // 0x007fea4c
 extern struct DrawClipOrigin SpriteClipOrigin;
 // 0x007febac
@@ -3465,7 +3465,7 @@ extern unsigned short *MousePixelAddress;
 // 0x007fe9c0
 extern struct Sprite *PointerSprites[9];
 // 0x007fea10
-extern unsigned int DAT_007fea10;
+extern unsigned int SpanRowsLeft;
 // 0x007fea30
 extern RECT WatchRect;
 // 0x007fea40
@@ -3477,7 +3477,7 @@ extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
 extern unsigned int MousePixelCovered;
 // 0x007feb18
-extern unsigned int DAT_007feb18;
+extern unsigned int SpanDstRow;
 // 0x007febb8
 extern unsigned short RenderOrderFirstAnchor;
 // 0x007febc0

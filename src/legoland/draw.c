@@ -508,11 +508,11 @@ L4644f2:
         mov ecx, dword ptr [eax + 4]
         test edx, edx
         je L464511
-        mov dword ptr [DAT_007fea20], edx
+        mov dword ptr [IndexedLLSPalette], edx
         jmp L46451b
 L464511:
         lea ecx, [ecx + eax + 8]
-        mov dword ptr [DAT_007fea20], ecx
+        mov dword ptr [IndexedLLSPalette], ecx
 L46451b:
         test esi, esi
         je L464528
@@ -546,7 +546,7 @@ L464547:
         jne L464565
         lea edx, [ecx + eax + 8]
 L464565:
-        mov dword ptr [DAT_007fea20], edx
+        mov dword ptr [IndexedLLSPalette], edx
         lea eax, [ecx + eax + 0x208]
         jmp L464593
 L464574:
@@ -582,7 +582,7 @@ L464596:
         mov ecx, dword ptr [eax + 4]
         imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
         add edi, ecx
-        mov dword ptr [DAT_007feb18], edi
+        mov dword ptr [SpanDstRow], edi
         mov eax, dword ptr [ebp + 0xc]
         mov ecx, dword ptr [eax]
         mov dword ptr [SpriteClipOrigin + 0x4], ecx
@@ -658,7 +658,7 @@ L464693:
         and edx, edx
         je L464a64
 L4646a1:
-        mov dword ptr [DAT_007fea10], edx
+        mov dword ptr [SpanRowsLeft], edx
         mov edx, dword ptr [SpriteClipOrigin + 0x4]
         and edx, edx
         je L4647dc
@@ -723,7 +723,7 @@ L46475b:
         je L4649b5
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
         and ecx, ecx
         jne L464884
         jmp L4647e2
@@ -746,7 +746,7 @@ L4647a6:
         sub esi, ecx
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
         and ecx, ecx
         jne L46492c
         jmp L4647e2
@@ -791,7 +791,7 @@ L464859:
         mov dword ptr [DAT_00668160], eax
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
         test ebx, 2
         je L464887
         sub edx, ecx
@@ -808,7 +808,7 @@ L464887:
         ja L4648e3
         add eax, eax
         inc esi
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         mov ecx, edx
         movzx eax, word ptr [eax]
         push eax
@@ -822,7 +822,7 @@ L464887:
 L4648bc:
         rep stosd
         cmp edi, dword ptr [MousePixelAddress]
-        movzx eax, byte ptr [DAT_007fea18]
+        movzx eax, byte ptr [SpanStartAtOrBeforeMouse]
         sbb ecx, -1
         and eax, ecx
         movzx ecx, byte ptr [MousePixelCovered]
@@ -832,12 +832,12 @@ L4648bc:
 L4648e3:
         add eax, eax
         inc esi
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         sub edx, ecx
         movzx eax, word ptr [eax]
         rep stosw
         cmp edi, dword ptr [MousePixelAddress]
-        movzx eax, byte ptr [DAT_007fea18]
+        movzx eax, byte ptr [SpanStartAtOrBeforeMouse]
         sbb ecx, -1
         and eax, ecx
         movzx ecx, byte ptr [MousePixelCovered]
@@ -848,7 +848,7 @@ L464919:
         mov ecx, 1
         cmp edi, dword ptr [MousePixelAddress]
         sete al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
 L46492c:
         cmp edx, ecx
         ja L464970
@@ -859,13 +859,13 @@ L464934:
         je L46496b
         movzx eax, byte ptr [esi]
         add eax, eax
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
         stosw
         loop L464934
         cmp edi, dword ptr [MousePixelAddress]
-        movzx eax, byte ptr [DAT_007fea18]
+        movzx eax, byte ptr [SpanStartAtOrBeforeMouse]
         sbb ecx, -1
         and eax, ecx
         movzx ecx, byte ptr [MousePixelCovered]
@@ -879,13 +879,13 @@ L464970:
 L464972:
         movzx eax, byte ptr [esi]
         add eax, eax
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
         stosw
         loop L464972
         cmp edi, dword ptr [MousePixelAddress]
-        movzx eax, byte ptr [DAT_007fea18]
+        movzx eax, byte ptr [SpanStartAtOrBeforeMouse]
         sbb ecx, -1
         and eax, ecx
         movzx ecx, byte ptr [MousePixelCovered]
@@ -947,11 +947,11 @@ L464a3d:
         lea esi, [esi + ecx]
         jmp L4649b5
 L464a45:
-        mov edi, dword ptr [DAT_007feb18]
-        mov edx, dword ptr [DAT_007fea10]
+        mov edi, dword ptr [SpanDstRow]
+        mov edx, dword ptr [SpanRowsLeft]
         add edi, dword ptr [SpanDrawPitch]
         dec edx
-        mov dword ptr [DAT_007feb18], edi
+        mov dword ptr [SpanDstRow], edi
         jne L4646a1
 L464a64:
         pop ebp
@@ -1029,7 +1029,7 @@ L464aec:
         mov ecx, dword ptr [eax + 4]
         imul ecx, ecx, 0x200
         add edi, ecx
-        mov dword ptr [DAT_007feb18], edi
+        mov dword ptr [SpanDstRow], edi
         mov eax, dword ptr [ebp + 0xc]
         mov ecx, dword ptr [eax]
         mov dword ptr [SpriteClipOrigin + 0x4], ecx
@@ -1101,7 +1101,7 @@ L464bf9:
         and edx, edx
         je L464ed3
 L464c07:
-        mov dword ptr [DAT_007fea10], edx
+        mov dword ptr [SpanRowsLeft], edx
         mov edx, dword ptr [SpriteClipOrigin + 0x4]
         and edx, edx
         je L464d2f
@@ -1316,11 +1316,11 @@ L464eac:
         lea esi, [esi + ecx]
         jmp L464e0e
 L464eb4:
-        mov edi, dword ptr [DAT_007feb18]
-        mov edx, dword ptr [DAT_007fea10]
+        mov edi, dword ptr [SpanDstRow]
+        mov edx, dword ptr [SpanRowsLeft]
         add edi, dword ptr [SpanDrawPitch]
         dec edx
-        mov dword ptr [DAT_007feb18], edi
+        mov dword ptr [SpanDstRow], edi
         jne L464c07
 L464ed3:
         popad
@@ -1449,12 +1449,12 @@ L464fef:
         movsx eax, word ptr [edi + 8]
         add eax, 3
         and al, 0xfc
-        mov dword ptr [DAT_007fea1c], eax
+        mov dword ptr [SoftPrintWidth], eax
         movsx ecx, word ptr [edi + 0xa]
-        mov dword ptr [DAT_007fea14], ecx
+        mov dword ptr [SoftPrintHeight], ecx
         mov edx, dword ptr [edi + 4]
         add edx, 4
-        mov dword ptr [DAT_007fea20], edx
+        mov dword ptr [IndexedLLSPalette], edx
         pushad
         mov eax, dword ptr [ebp + 8]
         mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
@@ -1472,18 +1472,18 @@ L464fef:
         mov esi, dword ptr [DAT_007fea40]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
-        imul ecx, dword ptr [DAT_007fea1c]
+        imul ecx, dword ptr [SoftPrintWidth]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
         sub ebx, dword ptr [SpanDrawPitch]
         sub ebx, dword ptr [SpanDrawPitch]
-        mov ebp, dword ptr [DAT_007fea1c]
+        mov ebp, dword ptr [SoftPrintWidth]
         sub ebp, dword ptr [SpanDrawPitch]
 L465083:
         mov ecx, dword ptr [SpanDrawPitch]
         push ebp
         push ebx
-        mov ebx, dword ptr [DAT_007fea20]
+        mov ebx, dword ptr [IndexedLLSPalette]
 L465091:
         movzx eax, byte ptr [esi]
         movzx eax, word ptr [ebx + eax*2]
@@ -1508,9 +1508,9 @@ L4650ba:
         mov dword ptr [DAT_007fea40], eax
         movsx ecx, word ptr [edi + 8]
         shl ecx, 1
-        mov dword ptr [DAT_007fea1c], ecx
+        mov dword ptr [SoftPrintWidth], ecx
         movsx edx, word ptr [edi + 0xa]
-        mov dword ptr [DAT_007fea14], edx
+        mov dword ptr [SoftPrintHeight], edx
         pushad
         mov eax, dword ptr [ebp + 8]
         mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
@@ -1529,12 +1529,12 @@ L4650ba:
         add esi, dword ptr [eax]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
-        imul ecx, dword ptr [DAT_007fea1c]
+        imul ecx, dword ptr [SoftPrintWidth]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
         sub ebx, dword ptr [SpanDrawPitch]
         sub ebx, dword ptr [SpanDrawPitch]
-        mov ebp, dword ptr [DAT_007fea1c]
+        mov ebp, dword ptr [SoftPrintWidth]
         sub ebp, dword ptr [SpanDrawPitch]
         sub ebp, dword ptr [SpanDrawPitch]
 L46513f:
@@ -1615,13 +1615,13 @@ __declspec(naked) LEGO_EXPORT void SoftPrint_Clear(void) {
         mov ecx, dword ptr [CurrentSurfaceDesc + 0x8]
         mov dword ptr [ebp - 4], eax
         mov eax, dword ptr [CurrentSurfaceDesc + 0xc]
-        mov dword ptr [DAT_007fea14], ecx
-        mov dword ptr [DAT_007fea1c], eax
+        mov dword ptr [SoftPrintHeight], ecx
+        mov dword ptr [SoftPrintWidth], eax
         pushad
         mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
-        mov edx, dword ptr [DAT_007fea1c]
+        mov edx, dword ptr [SoftPrintWidth]
         mov dword ptr [SpanDrawPitch], edx
-        mov edx, dword ptr [DAT_007fea14]
+        mov edx, dword ptr [SoftPrintHeight]
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
         sub ebx, dword ptr [SpanDrawPitch]
         sub ebx, dword ptr [SpanDrawPitch]
@@ -1697,7 +1697,7 @@ L4652b5:
         mov esi, dword ptr [eax + 4]
         test ecx, ecx
         lea esi, [esi + eax + 8]
-        mov dword ptr [DAT_007fea20], esi
+        mov dword ptr [IndexedLLSPalette], esi
         je L4652d7
 L4652d0:
         mov edi, dword ptr [eax]
@@ -1723,7 +1723,7 @@ L4652ef:
 L4652ff:
         lea edx, [ecx + eax + 8]
         lea eax, [ecx + eax + 0x208]
-        mov dword ptr [DAT_007fea20], edx
+        mov dword ptr [IndexedLLSPalette], edx
         jmp L465332
 L465312:
         movsx ecx, word ptr [edx]
@@ -1754,7 +1754,7 @@ L465335:
         mov ecx, dword ptr [eax + 4]
         imul ecx, dword ptr [CurrentSurfaceDesc + 0x10]
         add edi, ecx
-        mov dword ptr [DAT_007feb18], edi
+        mov dword ptr [SpanDstRow], edi
         mov eax, dword ptr [ebp + 0xc]
         mov ecx, dword ptr [eax]
         mov dword ptr [SpriteClipOrigin + 0x4], ecx
@@ -1826,7 +1826,7 @@ L465443:
         and edx, edx
         je L46582e
 L465451:
-        mov dword ptr [DAT_007fea10], edx
+        mov dword ptr [SpanRowsLeft], edx
         mov edx, dword ptr [SpriteClipOrigin + 0x4]
         and edx, edx
         je L4655a1
@@ -1887,7 +1887,7 @@ L46551e:
         je L465769
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
         and ecx, ecx
         jne L46563b
         jmp L4655a7
@@ -1910,7 +1910,7 @@ L465569:
         je L465769
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
         and ecx, ecx
         jne L4656da
         jmp L4655a7
@@ -1953,7 +1953,7 @@ L46560d:
         mov dword ptr [DAT_00668160], eax
         cmp edi, dword ptr [MousePixelAddress]
         setbe al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
         test ebx, 2
         je L46563c
         sub edx, ecx
@@ -1967,7 +1967,7 @@ L46563c:
         je L4656da
         movzx eax, byte ptr [esi]
         add eax, eax
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
         cmp edx, ecx
@@ -1981,7 +1981,7 @@ L46566c:
         add edi, 2
         loop L46566c
         cmp edi, dword ptr [MousePixelAddress]
-        movzx ecx, byte ptr [DAT_007fea18]
+        movzx ecx, byte ptr [SpanStartAtOrBeforeMouse]
         seta al
         and eax, ecx
         or dword ptr [MousePixelCovered], eax
@@ -1996,7 +1996,7 @@ L4656a2:
         add edi, 2
         loop L4656a2
         cmp edi, dword ptr [MousePixelAddress]
-        movzx ecx, byte ptr [DAT_007fea18]
+        movzx ecx, byte ptr [SpanStartAtOrBeforeMouse]
         seta al
         and eax, ecx
         or dword ptr [MousePixelCovered], eax
@@ -2005,7 +2005,7 @@ L4656c7:
         mov ecx, 1
         cmp edi, dword ptr [MousePixelAddress]
         sete al
-        mov byte ptr [DAT_007fea18], al
+        mov byte ptr [SpanStartAtOrBeforeMouse], al
 L4656da:
         cmp edx, ecx
         ja L465721
@@ -2016,7 +2016,7 @@ L4656e2:
         je L46571c
         movzx eax, byte ptr [esi]
         add eax, eax
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
         and ax, word ptr [DAT_007fe998]
@@ -2024,7 +2024,7 @@ L4656e2:
         add edi, 2
         loop L4656e2
         cmp edi, dword ptr [MousePixelAddress]
-        movzx ecx, byte ptr [DAT_007fea18]
+        movzx ecx, byte ptr [SpanStartAtOrBeforeMouse]
         seta al
         and eax, ecx
         or dword ptr [MousePixelCovered], eax
@@ -2036,7 +2036,7 @@ L465721:
 L465723:
         movzx eax, byte ptr [esi]
         add eax, eax
-        add eax, dword ptr [DAT_007fea20]
+        add eax, dword ptr [IndexedLLSPalette]
         movzx eax, word ptr [eax]
         inc esi
         and ax, word ptr [DAT_007fe998]
@@ -2044,7 +2044,7 @@ L465723:
         add edi, 2
         loop L465723
         cmp edi, dword ptr [MousePixelAddress]
-        movzx ecx, byte ptr [DAT_007fea18]
+        movzx ecx, byte ptr [SpanStartAtOrBeforeMouse]
         seta al
         and eax, ecx
         or dword ptr [MousePixelCovered], eax
@@ -2100,11 +2100,11 @@ L465807:
         lea esi, [esi + ecx]
         jmp L465769
 L46580f:
-        mov edi, dword ptr [DAT_007feb18]
-        mov edx, dword ptr [DAT_007fea10]
+        mov edi, dword ptr [SpanDstRow]
+        mov edx, dword ptr [SpanRowsLeft]
         add edi, dword ptr [SpanDrawPitch]
         dec edx
-        mov dword ptr [DAT_007feb18], edi
+        mov dword ptr [SpanDstRow], edi
         jne L465451
 L46582e:
         popad
@@ -2515,12 +2515,12 @@ L465d38:
         movsx ecx, word ptr [esi + 8]
         add ecx, 3
         and ecx, 0xfffffffc
-        mov dword ptr [DAT_007fea1c], ecx
+        mov dword ptr [SoftPrintWidth], ecx
         movsx edx, word ptr [esi + 0xa]
-        mov dword ptr [DAT_007fea14], edx
+        mov dword ptr [SoftPrintHeight], edx
         mov eax, dword ptr [esi + 4]
         add eax, 4
-        mov dword ptr [DAT_007fea20], eax
+        mov dword ptr [IndexedLLSPalette], eax
         pushad
         mov eax, dword ptr [ebp + 0x10]
         mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
@@ -2538,18 +2538,18 @@ L465d38:
         mov esi, dword ptr [DAT_007fea40]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
-        imul ecx, dword ptr [DAT_007fea1c]
+        imul ecx, dword ptr [SoftPrintWidth]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
         sub ebx, dword ptr [SpanDrawPitch]
         sub ebx, dword ptr [SpanDrawPitch]
-        mov ebp, dword ptr [DAT_007fea1c]
+        mov ebp, dword ptr [SoftPrintWidth]
         sub ebp, dword ptr [SpanDrawPitch]
 L465dcc:
         mov ecx, dword ptr [SpanDrawPitch]
         push ebp
         push ebx
-        mov ebx, dword ptr [DAT_007fea20]
+        mov ebx, dword ptr [IndexedLLSPalette]
 L465dda:
         movzx eax, byte ptr [esi]
         movzx eax, word ptr [ebx + eax*2]
@@ -2575,9 +2575,9 @@ L465e0a:
         mov dword ptr [DAT_007fea40], ecx
         movsx edx, word ptr [esi + 8]
         shl edx, 1
-        mov dword ptr [DAT_007fea1c], edx
+        mov dword ptr [SoftPrintWidth], edx
         movsx eax, word ptr [esi + 0xa]
-        mov dword ptr [DAT_007fea14], eax
+        mov dword ptr [SoftPrintHeight], eax
         pushad
         mov eax, dword ptr [ebp + 0x10]
         mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
@@ -2596,12 +2596,12 @@ L465e0a:
         add esi, dword ptr [eax]
         add esi, dword ptr [eax]
         mov ecx, dword ptr [eax + 4]
-        imul ecx, dword ptr [DAT_007fea1c]
+        imul ecx, dword ptr [SoftPrintWidth]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
         sub ebx, dword ptr [SpanDrawPitch]
         sub ebx, dword ptr [SpanDrawPitch]
-        mov ebp, dword ptr [DAT_007fea1c]
+        mov ebp, dword ptr [SoftPrintWidth]
         sub ebp, dword ptr [SpanDrawPitch]
         sub ebp, dword ptr [SpanDrawPitch]
 L465e8f:

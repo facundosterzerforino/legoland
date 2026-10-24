@@ -1611,16 +1611,17 @@ int ImtGetCount;
 int SpanDrawPitch;
 
 // GLOBAL: LEGOLAND 0x007fea14
-int DAT_007fea14;
+int SoftPrintHeight;
 
 // GLOBAL: LEGOLAND 0x007fea18
-unsigned char DAT_007fea18;
+unsigned char SpanStartAtOrBeforeMouse;
 
 // GLOBAL: LEGOLAND 0x007fea1c
-int DAT_007fea1c;
+int SoftPrintWidth;
 
+/* 16-bit colour table the indexed LLS blitters look pixel bytes up in. */
 // GLOBAL: LEGOLAND 0x007fea20
-unsigned int DAT_007fea20;
+unsigned int IndexedLLSPalette;
 
 // GLOBAL: LEGOLAND 0x007fea4c
 struct DrawClipOrigin SpriteClipOrigin;
@@ -4593,7 +4594,7 @@ unsigned short *MousePixelAddress;
 struct Sprite *PointerSprites[9];
 
 // GLOBAL: LEGOLAND 0x007fea10
-unsigned int DAT_007fea10;
+unsigned int SpanRowsLeft;
 
 // GLOBAL: LEGOLAND 0x007fea30
 RECT WatchRect;
@@ -4611,8 +4612,9 @@ LEGO_EXPORT unsigned int FramesPerSecond;
 // GLOBAL: LEGOLAND 0x007feb14
 unsigned int MousePixelCovered;
 
+/* Hand-written blitters: surface address of the current row; SpanRowsLeft counts the rows left. */
 // GLOBAL: LEGOLAND 0x007feb18
-unsigned int DAT_007feb18;
+unsigned int SpanDstRow;
 
 /* Anchor tile id of the first object in the map render order chain. */
 // GLOBAL: LEGOLAND 0x007febb8
