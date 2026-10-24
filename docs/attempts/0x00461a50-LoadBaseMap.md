@@ -33,3 +33,15 @@ for a compiler temporary in the tile loop; ours gives the temporary its own slot
 |---|---|
 | 295 random declaration orders of the 20 locals | 96.71 (layout ignores declaration order) |
 | n/idx block-scoped in the first loop (frame shrinks to 0x51c); separate block-scoped pos per loop | 89.88-92.51 |
+
+## 2026-10-24 agent notes (97.17% -> 97.60%)
+
+
+## 2026-10-24 Opus 5.5: harness 96.71 -> 97.20
+Slot map (orig vs ours, from the -8/+20/+8 offset diffs): the original's bridge-name length shares a slot with `sample`,
+and the overlay `count` shares gfx1's slot; ours had them the other way round. Reading the length into `sample`
+instead of `count` gives the original's packing for both. Same behaviour: sample is set to 0 before the BRIDGES header,
+and the overlay loop only reads 2 bytes into it, so a name length below 0x10000 leaves its high half 0 as before.
+Left: sq1/sq2 swap partners (sq1 should share sample's slot), pos/tilemap one slot lower, and the hoisted `prev & 0x20`
+and runlen temps of the first RLE block sit in each other's slots. No change from: the four Points declared in any
+order, per-case or per-if Point scopes, reusing n/idx for any block int, unifying block vars across blocks, volatile probes.

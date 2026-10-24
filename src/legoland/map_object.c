@@ -2588,9 +2588,11 @@ LEGO_EXPORT unsigned int LoadBaseMap(const char *param_1) {
         RES_ReadFile(file, hdr, 8);
         // STRING: LEGOLAND 0x004b9c24
         if (memcmp(hdr, "BRIDGES!", 8) == 0) {
-            if (RES_ReadFile(file, &count, 4) == 4) {
-                RES_ReadFile(file, hdr, count);
-                hdr[count] = 0;
+            /* The name length goes into sample (dead until the overlay loop zeroes its high half by reading 2
+             * bytes over it): the original keeps both in one frame slot. */
+            if (RES_ReadFile(file, &sample, 4) == 4) {
+                RES_ReadFile(file, hdr, sample);
+                hdr[sample] = 0;
                 SetBridgeParamsByName(hdr);
                 BridgesHandle = (void *)ElemID(hdr);
                 BridgesData = LLIDB_LoadData(BridgesHandle);
