@@ -927,8 +927,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     int bar_y;
     int bar_w;
     int mid;
-    int sprite_y;
-    int ty;
+    int row_y; /* y of the current label/icon row: the original keeps one variable for both */
     int mood;
     int hunger;
     int power;
@@ -1104,25 +1103,25 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         br.y = y + size * 20 + 0x63;
         width = br.x - tl.x;
         mid = (br.y + tl.y) / 2;
-        ty = mid + 0x22;
-        PrintTextBox(GetString(0x8e), tl.x, ty, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
-        PrintTextBox(GetString(0x8f), (br.x + tl.x) / 2, ty, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
+        row_y = mid + 0x22;
+        PrintTextBox(GetString(0x8e), tl.x, row_y, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
+        PrintTextBox(GetString(0x8f), (br.x + tl.x) / 2, row_y, width / 2, 0x14, 2, 0x11, 0xff0000, 0xffffff);
         if (mood == 3) {
-            sprite_y = mid - 0x20;
-            PrintSprite(ISadSprite, width / 4 + tl.x - 0x20, sprite_y, 0, 0);
+            row_y = mid - 0x20;
+            PrintSprite(ISadSprite, width / 4 + tl.x - 0x20, row_y, 0, 0);
         } else if (mood == 2) {
-            sprite_y = mid - 0x20;
-            PrintSprite(IHappySprite, width / 4 + tl.x - 0x20, sprite_y, 0, 0);
+            row_y = mid - 0x20;
+            PrintSprite(IHappySprite, width / 4 + tl.x - 0x20, row_y, 0, 0);
         } else {
-            sprite_y = mid - 0x20;
-            PrintSprite(INormSprite, width / 4 + tl.x - 0x20, sprite_y, 0, 0);
+            row_y = mid - 0x20;
+            PrintSprite(INormSprite, width / 4 + tl.x - 0x20, row_y, 0, 0);
         }
         if (hunger == 0) {
-            PrintSprite(IFullSprite, br.x - width / 4 - 0x20, sprite_y, 0, 0);
+            PrintSprite(IFullSprite, br.x - width / 4 - 0x20, row_y, 0, 0);
         } else if (hunger == 1) {
-            PrintSprite(IPeckishSprite, br.x - width / 4 - 0x20, sprite_y, 0, 0);
+            PrintSprite(IPeckishSprite, br.x - width / 4 - 0x20, row_y, 0, 0);
         } else {
-            PrintSprite(IHungrySprite, br.x - width / 4 - 0x20, sprite_y, 0, 0);
+            PrintSprite(IHungrySprite, br.x - width / 4 - 0x20, row_y, 0, 0);
         }
     }
     if (repairable != 0 || PopUpShowsBuildProgress != 0) {

@@ -15,3 +15,11 @@
 ## Ideas not tried yet
 
 - 
+
+## 2026-10-24 agent notes (94.43% -> 96.20%)
+
+
+## 2026-10-24 Opus 5.5: harness 94.33 -> 96.10
+The text-row y (`ty`) and the sprite-row y (`sprite_y`) are one variable (`row_y`) in the original: merging them fixes
+most of the stack-slot diffs. Found with a pairwise same-type local merge sweep (211 pairs, then 191 from the result:
+no second gain).
