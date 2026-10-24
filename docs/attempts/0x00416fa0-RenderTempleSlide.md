@@ -1,6 +1,6 @@
 # RenderTempleSlide (0x00416fa0, `src/legoland/temple_slide.c`)
 
-**Best: 96.67%**. Kind: C.
+**Best: 100%**. Kind: C.
 
 ## What still differs
 
@@ -30,3 +30,9 @@ The remaining diff is the operand order of the off1/off2 adds (the original adds
 | `struct Point off[2]` (both index orders) | 89.17-90.00 |
 | off2 at function scope, off1 in the block | 96.67 |
 | all locals at function scope, ~150 random declaration orders | 96.67 |
+
+## 2026-10-24 (Opus 5.5): 100
+The add-order diff was not the expression: TempleSlideDrawOffsetX/Y are one `struct Point`, and `off1 = TempleSlideDrawOffset;`
+(a struct copy, like `off2 = SafariRideDrawOffset` in RenderSafari) gives the original's operand order. LoadTempleSlide reads
+ZTempSlideSprite as the word after TempleSlideDrawOffset.y (`[f30*4 + 0x4cbfcc]`): written as `(&ZTempSlideSprite)[field_30 - 1]`,
+with both globals initialised in globals.c so they stay adjacent in .data (otherwise LoadTempleSlide drops to 98.70).

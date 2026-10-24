@@ -107,8 +107,7 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
 
             struct Point off2;
 
-            off1.x = TempleSlideDrawOffsetX;
-            off1.y = TempleSlideDrawOffsetY[0];
+            off1 = TempleSlideDrawOffset;
             AdjustOffsetForViewMode(&off1);
             off2.x = TempleSlideDrawOffset2X;
             off2.y = TempleSlideDrawOffset2Y;
@@ -148,8 +147,8 @@ void TempleSlideLoad(struct Element *arg) {
         // STRING: LEGOLAND 0x004b4f64
         "Zbuffers\\tempslide.bnv");
     GetLLSForSprite((struct Sprite *)ActiveTempleSlideRide->layer);
-    TempleSlideDrawOffsetX = 0;
-    TempleSlideDrawOffsetY[0] = 1;
+    TempleSlideDrawOffset.x = 0;
+    TempleSlideDrawOffset.y = 1;
     TempleSlideDrawOffset2X = 13;
     TempleSlideDrawOffset2Y = 93;
     TempSlideMatteSprite = LoadSprite(
@@ -355,9 +354,9 @@ void TempleSlideUpdate(Element *obj) {
                 cx = (lpConfig->view_x - sx) + tw;
                 sy = Get_YScroll();
                 cy = cy + (lpConfig->view_y - sy);
-                cx = cx - TempleSlideDrawOffsetX / 2 - coords.x;
+                cx = cx - TempleSlideDrawOffset.x / 2 - coords.x;
                 bloke->flags |= 0x80;
-                cy = cy - TempleSlideDrawOffsetY[0] / 2 - coords.y;
+                cy = cy - TempleSlideDrawOffset.y / 2 - coords.y;
                 off[0] = cx * 2;
                 off[1] = cy * 2;
                 bloke->person->sprite = ZTempSlideSprite;
@@ -494,7 +493,9 @@ LEGO_EXPORT int LoadTempleSlide(struct Element *obj) {
         struct BNVRef *path;
 
         if (render->field_30 != 0) {
-            render->sprite = (struct Sprite *)TempleSlideDrawOffsetY[render->field_30];
+            /* The original reads [field_30 * 4 + 0x4cbfcc] (just past TempleSlideDrawOffset.y). field_30 is
+             * only ever 1 here (the rider is on the slide), which reads ZTempSlideSprite. */
+            render->sprite = (&ZTempSlideSprite)[render->field_30 - 1];
         } else {
             render->field_2c = 0;
             node->person->field_30 = 0;

@@ -1559,9 +1559,7 @@ extern struct BinVFile *TempleSlideBinVs[3];
 // 0x004cbfc4
 extern void *TempSlideBinV;
 // 0x004cbfc8
-extern int TempleSlideDrawOffsetX;
-// 0x004cbfcc
-extern int TempleSlideDrawOffsetY[1];
+extern struct Point TempleSlideDrawOffset;
 // 0x004cbfd0
 extern struct Sprite *ZTempSlideSprite;
 // 0x004cbfd4

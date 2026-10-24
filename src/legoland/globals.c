@@ -1742,14 +1742,13 @@ struct BinVFile *TempleSlideBinVs[3];
 // GLOBAL: LEGOLAND 0x004cbfc4
 void *TempSlideBinV;
 
+/* Initialised so both land in .data in this order: LoadTempleSlide reaches ZTempSlideSprite as the word after
+ * TempleSlideDrawOffset, as in the original. */
 // GLOBAL: LEGOLAND 0x004cbfc8
-int TempleSlideDrawOffsetX;
-
-// GLOBAL: LEGOLAND 0x004cbfcc
-int TempleSlideDrawOffsetY[1];
+struct Point TempleSlideDrawOffset = {0};
 
 // GLOBAL: LEGOLAND 0x004cbfd0
-struct Sprite *ZTempSlideSprite;
+struct Sprite *ZTempSlideSprite = NULL;
 
 // GLOBAL: LEGOLAND 0x004cbfd4
 struct SlideNode *SlideNodeList;
