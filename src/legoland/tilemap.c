@@ -372,7 +372,7 @@ LEGO_EXPORT void RenderView(void) {
     DAT_00667cc4 = 0;
     GetClipping(&clip);
     DrawViewMapTiles();
-    PrintBackground(DAT_00667cd0, DAT_00667cd4);
+    PrintBackground(BackgroundOffsetX, BackgroundOffsetY);
     if (EditMode.unk0 == 2 || (EditMode.unk0 == 1 && EditMode.unk8 == PathControlObject)) {
         ShowPathTileOverlay = 1;
         PathOverlayBlinkMask = (GetTickCount() & 0x100) ? 0xff : 0;

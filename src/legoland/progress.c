@@ -264,7 +264,7 @@ void InitTutorialScreen(void) {
     ReferenceTutorialSprites();
     RemoveIconGroup(0x1c);
     i = 0;
-    mapping = DAT_007cb380;
+    mapping = TutorialIcons;
     entry = &ProgressScreenTables.tutorials[0];
     do {
         if (i == lpConfig->level - 1) {
@@ -368,7 +368,7 @@ void DrawTutorialList(void) {
         rc.right = 0x1d6;
         NewPrintCent(GetString(0x28a), 3, rc, 0);
         i = 0;
-        mapping = DAT_007cb380;
+        mapping = TutorialIcons;
         entry = &ProgressScreenTables.tutorials[0].x;
         do {
             text = GetString(entry[-1]);

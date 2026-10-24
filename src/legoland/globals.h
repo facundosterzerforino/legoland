@@ -547,7 +547,7 @@ extern float DAT_004ab3f0;
 // 0x004ab3f4
 extern float DAT_004ab3f4;
 // 0x004ab3f8
-extern float DAT_004ab3f8;
+extern float BoatArcStepScale;
 // 0x004ab3fc
 extern float DAT_004ab3fc;
 // 0x004ab478
@@ -579,7 +579,7 @@ extern float FLOAT_004ab444;
 // 0x004ab550
 extern float FLOAT_004ab550;
 // 0x004b4860
-extern struct Point DAT_004b4860;
+extern struct Point LogFlumeDropDrawOffset;
 
 // 0x004c2b00
 extern struct FlumeShape FlumeStraightShape1;
@@ -756,7 +756,7 @@ extern struct BoatArc DAT_004b5158[4];
 // 0x004b5198
 extern struct BoatArc DAT_004b5198[4];
 // 0x004b51d8
-extern int DAT_004b51d8[0x80];
+extern int BoatingSchoolRiderOffsets[0x80];
 // 0x004b5260
 extern struct Footprint DAT_004b5260;
 // 0x004b5278
@@ -916,7 +916,7 @@ extern struct Footprint JungleCruiseStartFootprint;
 // 0x004b7148
 extern struct BoatDirStep JungleCruiseDirSteps[4];
 // 0x004b7188
-extern struct BoatArc DAT_004b7188[4];
+extern struct BoatArc JungleCruiseArcs[4];
 // 0x004b71c8
 extern struct BoatArc DAT_004b71c8[4];
 // 0x004b7290
@@ -1050,21 +1050,21 @@ extern int DAT_004b95e8;
 // 0x004b95ec
 extern int DAT_004b95ec;
 // 0x004b95f4
-extern int DAT_004b95f4;
+extern int ScrollMarginTopRight;
 // 0x004b95f8
-extern int DAT_004b95f8;
+extern int ScrollMarginBottomLeft;
 // 0x004b95fc
 extern int ScrollMarginTopLeft;
 // 0x004b9600
-extern int DAT_004b9600;
+extern int ScrollMarginBottomRight;
 // 0x004b9604
-extern int DAT_004b9604;
+extern int ScrollMaxX;
 // 0x004b9608
-extern int DAT_004b9608;
+extern int ScrollMarginLeft;
 // 0x004b960c
 extern int ScrollMarginTop;
 // 0x004b9610
-extern int DAT_004b9610;
+extern int ScrollMarginBottom;
 // 0x004b9ca4
 extern int (*BlitFrameFunc)(void);
 // 0x004b9ca8
@@ -1211,29 +1211,29 @@ extern void *CopterModelLayers;
 // 0x004c113c
 extern struct Sprite *CopterModelSprites[10];
 // 0x004c1164
-extern struct RenderItemNode **DAT_004c1164;
+extern struct RenderItemNode **CoptersRenderList2;
 // 0x004c1168
-extern struct RenderItemNode **DAT_004c1168;
+extern struct RenderItemNode **CoptersRenderList3;
 // 0x004c1170
 extern struct RideSpriteInfo CoptersSpriteInfo;
 // 0x004c1188
-extern struct RenderItemNode **DAT_004c1188;
+extern struct RenderItemNode **CoptersRenderList4;
 // 0x004c1190
-extern struct RenderItemNode **DAT_004c1190;
+extern struct RenderItemNode **CoptersRenderList1;
 // 0x004c1194
-extern struct RenderItemNode **DAT_004c1194;
+extern struct RenderItemNode **CoptersRenderList0;
 // 0x004c1198
 extern struct Ride *ActiveCopterRide;
 // 0x004c119c
-extern struct RenderItemNode *DAT_004c119c;
+extern struct RenderItemNode *CoptersRenderListHead0;
 // 0x004c11a0
-extern struct RenderItemNode *DAT_004c11a0;
+extern struct RenderItemNode *CoptersRenderListHead1;
 // 0x004c11a4
-extern struct RenderItemNode *DAT_004c11a4;
+extern struct RenderItemNode *CoptersRenderListHead2;
 // 0x004c11a8
-extern struct RenderItemNode *DAT_004c11a8;
+extern struct RenderItemNode *CoptersRenderListHead3;
 // 0x004c11ac
-extern struct RenderItemNode *DAT_004c11ac;
+extern struct RenderItemNode *CoptersRenderListHead4;
 // 0x004c11b0
 extern struct RenderItemNode *DAT_004c11b0;
 // 0x004c11b4
@@ -1457,9 +1457,9 @@ extern struct RenderItemNode *SafariRiderRenderList;
 // 0x004cbed0
 extern struct RideSpriteInfo SafariSpriteInfo;
 // 0x004cbee8
-extern int DAT_004cbee8;
+extern int SafariRideDrawOffset1X;
 // 0x004cbeec
-extern int DAT_004cbeec;
+extern int SafariRideDrawOffset1Y;
 // 0x004cbef4
 extern void *SafariRunBNV;
 // 0x007988d0
@@ -1479,7 +1479,7 @@ extern void *DMusicNotificationEvent;
 // 0x0079a6b0
 extern int ImtGetCount;
 // 0x007fe9a4
-extern int DAT_007fe9a4;
+extern int SpanDrawPitch;
 // 0x007fea14
 extern int DAT_007fea14;
 // 0x007fea18
@@ -1551,9 +1551,9 @@ extern struct Ride *ActiveTempleSlideRide;
 // 0x004cbf84
 extern struct RenderItemNode *TempleSlideRiderRenderList;
 // 0x004cbf88
-extern unsigned int DAT_004cbf88;
+extern unsigned int TempleSlideDrawOffset2X;
 // 0x004cbf8c
-extern unsigned int DAT_004cbf8c;
+extern unsigned int TempleSlideDrawOffset2Y;
 // 0x004cbf98
 extern struct RideSpriteInfo TempleSlideSpriteInfo;
 // 0x004cbfb8
@@ -1785,7 +1785,7 @@ extern float RangeOuterSq;
 extern float RangeInnerSq;
 extern int DAT_00615fe4;
 extern int DAT_00615fe8;
-extern int DAT_00615fec;
+extern int BisectRootMaxSteps;
 extern float *RangeCentre;
 extern int (*RangeRootFinder)(float (*fn)(unsigned int), float lo, float hi, float *out);
 
@@ -2165,7 +2165,7 @@ extern int VisitorSpawnCounter;
 // 0x006661cc
 extern char DAT_006661cc[8][100];
 // 0x006664ec
-extern int DAT_006664ec;
+extern int BlokeAiLogIndex;
 // 0x006664f8
 extern struct BuildObj BuildObjArray[256]; /* objects under construction */
 // 0x006670f8
@@ -2283,9 +2283,9 @@ extern LEGO_EXPORT int ScrollSpeedY;
 // 0x00667cc4
 extern int DAT_00667cc4;
 // 0x00667cd0
-extern int DAT_00667cd0;
+extern int BackgroundOffsetX;
 // 0x00667cd4
-extern int DAT_00667cd4;
+extern int BackgroundOffsetY;
 // 0x00667cd8
 extern unsigned int MapBatchUpdate;
 // 0x00667cdc
@@ -2481,7 +2481,7 @@ extern struct Sprite *IfSidebar1Sprite;
 // 0x00668840
 extern short DAT_00668840;
 // 0x0066884c
-extern short DAT_0066884c;
+extern short IconBBoxExtraWidth;
 // 0x00668858
 extern struct IconNode DefaultIconNode;
 // 0x006688a8
@@ -2967,7 +2967,7 @@ extern struct Sprite *RegCornerMaskSprite;
 // 0x00798734
 extern void *SavedGameList;
 // 0x00798738
-extern int DAT_00798738;
+extern int SaveNameTextWidth;
 // 0x0079873c
 extern void *OptionsSavedCancelKeyHandler;
 // 0x00798740
@@ -3005,7 +3005,7 @@ extern unsigned int IntervalHintBubbleEndTime;
 // 0x00798890
 extern void *ProfileListHead;
 // 0x00798894
-extern int DAT_00798894;
+extern int ProfileNameTextWidth;
 // 0x00798898
 extern unsigned int AviLockBytes1;
 // 0x0079889c
@@ -3210,11 +3210,11 @@ extern unsigned int SavedGameScreenFromTitle;
 // 0x007cb328
 extern unsigned int LoadMode;
 // 0x007cb340
-extern char DAT_007cb340[0x20];
+extern char ProfileListNewLabel[0x20];
 // 0x007cb360
 extern struct IconNode *DeleteIcon;
 // 0x007cb380
-extern struct IconNode *DAT_007cb380[5];
+extern struct IconNode *TutorialIcons[5];
 // 0x007cb394
 extern unsigned int HighestUnlockedLevelIndex;
 // 0x007cb398
@@ -3621,7 +3621,7 @@ extern unsigned int DebugAllocatedBytes;
 // 0x00813a18
 extern unsigned long LastFrameTickCount;
 // 0x00813a2c
-extern int DAT_00813a2c;
+extern int FrameTicksAccumulated;
 // 0x00813a34
 extern unsigned short DragQueryObjectId;
 // 0x00813a38

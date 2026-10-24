@@ -4948,8 +4948,8 @@ void RenderLogFlumeDrop(Element *elem, unsigned int param_2, unsigned int param_
         if (entry->field_24 != NULL && (entry->field_24->flags & 2)) {
             pos = GetFlumePieceScreenPos(entry);
             off = GetRenderOffsetForLayer(ride->layer, 1);
-            off.x += DAT_004b4860.x;
-            off.y += DAT_004b4860.y;
+            off.x += LogFlumeDropDrawOffset.x;
+            off.y += LogFlumeDropDrawOffset.y;
             AdjustOffsetForViewMode(&off);
             if (LogFlumeSplashSprite != NULL) {
                 frame = ((struct FlumeSlot *)entry->field_24)[1].timer; /* the next slot */

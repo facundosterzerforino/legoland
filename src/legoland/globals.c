@@ -46,7 +46,7 @@ GUID CLSID_DirectMusicPerformance = {0xd2ac2881, 0xb39b, 0x11d1, {0x87, 0x04, 0x
 GUID NullGuid = {0x00000000, 0x0000, 0x0000, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
 
 // GLOBAL: LEGOLAND 0x004b4860
-struct Point DAT_004b4860;
+struct Point LogFlumeDropDrawOffset;
 
 // GLOBAL: LEGOLAND 0x004c2b00
 struct FlumeShape FlumeStraightShape1;
@@ -121,7 +121,7 @@ float DAT_004ab3f0;
 float DAT_004ab3f4;
 
 // GLOBAL: LEGOLAND 0x004ab3f8
-float DAT_004ab3f8;
+float BoatArcStepScale;
 
 // GLOBAL: LEGOLAND 0x004ab3fc
 float DAT_004ab3fc;
@@ -397,7 +397,7 @@ struct BoatArc DAT_004b5158[4];
 struct BoatArc DAT_004b5198[4];
 
 // GLOBAL: LEGOLAND 0x004b51d8
-int DAT_004b51d8[0x80];
+int BoatingSchoolRiderOffsets[0x80];
 
 // GLOBAL: LEGOLAND 0x004b5260
 struct Footprint DAT_004b5260;
@@ -678,7 +678,7 @@ struct Footprint JungleCruiseStartFootprint;
 struct BoatDirStep JungleCruiseDirSteps[4];
 
 // GLOBAL: LEGOLAND 0x004b7188
-struct BoatArc DAT_004b7188[4];
+struct BoatArc JungleCruiseArcs[4];
 
 // GLOBAL: LEGOLAND 0x004b71c8
 struct BoatArc DAT_004b71c8[4];
@@ -907,28 +907,28 @@ int DAT_004b95ec;
 struct DeferredSprite *DeferredSpriteCursor;
 
 // GLOBAL: LEGOLAND 0x004b95f4
-int DAT_004b95f4;
+int ScrollMarginTopRight;
 
 // GLOBAL: LEGOLAND 0x004b95f8
-int DAT_004b95f8;
+int ScrollMarginBottomLeft;
 
 // GLOBAL: LEGOLAND 0x004b95fc
 int ScrollMarginTopLeft;
 
 // GLOBAL: LEGOLAND 0x004b9600
-int DAT_004b9600;
+int ScrollMarginBottomRight;
 
 // GLOBAL: LEGOLAND 0x004b9604
-int DAT_004b9604;
+int ScrollMaxX;
 
 // GLOBAL: LEGOLAND 0x004b9608
-int DAT_004b9608;
+int ScrollMarginLeft;
 
 // GLOBAL: LEGOLAND 0x004b960c
 int ScrollMarginTop;
 
 // GLOBAL: LEGOLAND 0x004b9610
-int DAT_004b9610;
+int ScrollMarginBottom;
 
 // GLOBAL: LEGOLAND 0x004b9ca4
 int (*BlitFrameFunc)(void);
@@ -1203,40 +1203,41 @@ void *CopterModelLayers;
 struct Sprite *CopterModelSprites[10];
 
 // GLOBAL: LEGOLAND 0x004c1164
-struct RenderItemNode **DAT_004c1164;
+struct RenderItemNode **CoptersRenderList2;
 
 // GLOBAL: LEGOLAND 0x004c1168
-struct RenderItemNode **DAT_004c1168;
+struct RenderItemNode **CoptersRenderList3;
 
 // GLOBAL: LEGOLAND 0x004c1170
 struct RideSpriteInfo CoptersSpriteInfo;
 
 // GLOBAL: LEGOLAND 0x004c1188
-struct RenderItemNode **DAT_004c1188;
+struct RenderItemNode **CoptersRenderList4;
 
 // GLOBAL: LEGOLAND 0x004c1190
-struct RenderItemNode **DAT_004c1190;
+struct RenderItemNode **CoptersRenderList1;
 
 // GLOBAL: LEGOLAND 0x004c1194
-struct RenderItemNode **DAT_004c1194;
+struct RenderItemNode **CoptersRenderList0;
 
 // GLOBAL: LEGOLAND 0x004c1198
 struct Ride *ActiveCopterRide;
 
+/* Copters render list heads; the five list pointers after them in CoptersLoad point here, and CoptersRender clears them each frame. */
 // GLOBAL: LEGOLAND 0x004c119c
-struct RenderItemNode *DAT_004c119c;
+struct RenderItemNode *CoptersRenderListHead0;
 
 // GLOBAL: LEGOLAND 0x004c11a0
-struct RenderItemNode *DAT_004c11a0;
+struct RenderItemNode *CoptersRenderListHead1;
 
 // GLOBAL: LEGOLAND 0x004c11a4
-struct RenderItemNode *DAT_004c11a4;
+struct RenderItemNode *CoptersRenderListHead2;
 
 // GLOBAL: LEGOLAND 0x004c11a8
-struct RenderItemNode *DAT_004c11a8;
+struct RenderItemNode *CoptersRenderListHead3;
 
 // GLOBAL: LEGOLAND 0x004c11ac
-struct RenderItemNode *DAT_004c11ac;
+struct RenderItemNode *CoptersRenderListHead4;
 
 // GLOBAL: LEGOLAND 0x004c11b0
 struct RenderItemNode *DAT_004c11b0;
@@ -1572,10 +1573,10 @@ struct RenderItemNode *SafariRiderRenderList;
 struct RideSpriteInfo SafariSpriteInfo;
 
 // GLOBAL: LEGOLAND 0x004cbee8
-int DAT_004cbee8;
+int SafariRideDrawOffset1X;
 
 // GLOBAL: LEGOLAND 0x004cbeec
-int DAT_004cbeec;
+int SafariRideDrawOffset1Y;
 
 // GLOBAL: LEGOLAND 0x004cbef4
 void *SafariRunBNV;
@@ -1606,7 +1607,7 @@ void *DMusicNotificationEvent;
 int ImtGetCount;
 
 // GLOBAL: LEGOLAND 0x007fe9a4
-int DAT_007fe9a4;
+int SpanDrawPitch;
 
 // GLOBAL: LEGOLAND 0x007fea14
 int DAT_007fea14;
@@ -1715,10 +1716,10 @@ struct Ride *ActiveTempleSlideRide;
 struct RenderItemNode *TempleSlideRiderRenderList;
 
 // GLOBAL: LEGOLAND 0x004cbf88
-unsigned int DAT_004cbf88;
+unsigned int TempleSlideDrawOffset2X;
 
 // GLOBAL: LEGOLAND 0x004cbf8c
-unsigned int DAT_004cbf8c;
+unsigned int TempleSlideDrawOffset2Y;
 
 // GLOBAL: LEGOLAND 0x004cbf98
 struct RideSpriteInfo TempleSlideSpriteInfo;
@@ -2062,7 +2063,7 @@ int DAT_00615fe4;
 int DAT_00615fe8;
 
 // GLOBAL: LEGOLAND 0x00615fec
-int DAT_00615fec;
+int BisectRootMaxSteps;
 
 // GLOBAL: LEGOLAND 0x00615f8c
 float *RangeCentre;
@@ -2624,7 +2625,7 @@ int VisitorSpawnCounter;
 char DAT_006661cc[8][100];
 
 // GLOBAL: LEGOLAND 0x006664ec
-int DAT_006664ec;
+int BlokeAiLogIndex;
 
 // GLOBAL: LEGOLAND 0x006664f8
 struct BuildObj BuildObjArray[256] = {0};
@@ -2808,10 +2809,10 @@ LEGO_EXPORT int ScrollSpeedY;
 int DAT_00667cc4;
 
 // GLOBAL: LEGOLAND 0x00667cd0
-int DAT_00667cd0;
+int BackgroundOffsetX;
 
 // GLOBAL: LEGOLAND 0x00667cd4
-int DAT_00667cd4;
+int BackgroundOffsetY;
 
 /* Set while many objects are built/removed at once (drag removal, UnloadMap): per-object sounds and
  * CalculateMapRenderOrder are skipped and MapBatchChanged records that something changed. */
@@ -3101,7 +3102,7 @@ struct Sprite *IfSidebar1Sprite;
 short DAT_00668840;
 
 // GLOBAL: LEGOLAND 0x0066884c
-short DAT_0066884c;
+short IconBBoxExtraWidth;
 
 // GLOBAL: LEGOLAND 0x00668858
 struct IconNode DefaultIconNode;
@@ -3846,7 +3847,7 @@ struct Sprite *RegCornerMaskSprite;
 void *SavedGameList;
 
 // GLOBAL: LEGOLAND 0x00798738
-int DAT_00798738;
+int SaveNameTextWidth;
 
 /* Saved cancel-key callback restored when leaving the options-related screen. */
 // GLOBAL: LEGOLAND 0x0079873c
@@ -3907,7 +3908,7 @@ unsigned int IntervalHintBubbleEndTime;
 void *ProfileListHead;
 
 // GLOBAL: LEGOLAND 0x00798894
-int DAT_00798894;
+int ProfileNameTextWidth;
 
 // GLOBAL: LEGOLAND 0x00798898
 unsigned int AviLockBytes1;
@@ -4192,13 +4193,13 @@ unsigned int SavedGameScreenFromTitle;
 unsigned int LoadMode;
 
 // GLOBAL: LEGOLAND 0x007cb340
-char DAT_007cb340[0x20];
+char ProfileListNewLabel[0x20];
 
 // GLOBAL: LEGOLAND 0x007cb360
 struct IconNode *DeleteIcon;
 
 // GLOBAL: LEGOLAND 0x007cb380
-struct IconNode *DAT_007cb380[5];
+struct IconNode *TutorialIcons[5];
 
 /* Highest unlocked profile level slot, zero-based; used to choose the progress-screen level. */
 // GLOBAL: LEGOLAND 0x007cb394
@@ -4822,7 +4823,7 @@ unsigned int DebugAllocatedBytes;
 unsigned long LastFrameTickCount;
 
 // GLOBAL: LEGOLAND 0x00813a2c
-int DAT_00813a2c;
+int FrameTicksAccumulated;
 
 /* Tile id of the object queried when a demolish drag starts (BeginTileSelectionDrag); not read elsewhere. */
 // GLOBAL: LEGOLAND 0x00813a34

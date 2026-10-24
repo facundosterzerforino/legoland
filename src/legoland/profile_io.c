@@ -359,7 +359,7 @@ LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite) {
             count--;
             TempProfile.name[count] = 0;
         }
-        if (count < 0x1f && DAT_00798894 < 0x7b && input > '\0') {
+        if (count < 0x1f && ProfileNameTextWidth < 0x7b && input > '\0') {
             if (input == ' ') {
                 if (count != 0) {
                     TempProfile.name[count] = ' ';
@@ -382,7 +382,7 @@ LEGO_EXPORT void EnterNewProfile(struct IconNode *sprite) {
     } else {
         center_x = (rc.right + rc.left) >> 1;
     }
-    DAT_00798894 = (center_x - ((rc.right + rc.left) >> 1)) * 2;
+    ProfileNameTextWidth = (center_x - ((rc.right + rc.left) >> 1)) * 2;
     rc.top = sprite->y + 5;
     blink = "|";
     if (GetBlink() == 0) {

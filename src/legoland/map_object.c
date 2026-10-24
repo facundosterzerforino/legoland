@@ -1755,8 +1755,8 @@ void DrawViewMapTiles(void) {
     DrawMapTiles(&pos, &clip);
     DAT_004b95ec = sy;
     DAT_004b95e8 = sx;
-    DAT_00667cd0 = 0;
-    DAT_00667cd4 = 0;
+    BackgroundOffsetX = 0;
+    BackgroundOffsetY = 0;
     BGFullUpdate = 0;
 }
 
@@ -1881,14 +1881,14 @@ void DrawViewPathTiles(void) {
 
 // FUNCTION: LEGOLAND 0x00461290
 void ClampScrollPosition(int param_1, int param_2, int param_3, int param_4) {
-    int marginTopRight; /* DAT_004b95f4 / 2 */
-    int marginBottomLeft; /* DAT_004b95f8 / 2 */
+    int marginTopRight; /* ScrollMarginTopRight / 2 */
+    int marginBottomLeft; /* ScrollMarginBottomLeft / 2 */
     int marginTopLeft; /* ScrollMarginTopLeft / 2 */
-    int marginBottomRight; /* DAT_004b9600 / 2 */
+    int marginBottomRight; /* ScrollMarginBottomRight / 2 */
     int marginTop; /* ScrollMarginTop / 2 */
-    int marginBottom; /* DAT_004b9610 / 2 */
-    int marginLeft; /* DAT_004b9608 / 2 */
-    int maxX; /* DAT_004b9604 / 2, then the right clamp */
+    int marginBottom; /* ScrollMarginBottom / 2 */
+    int marginLeft; /* ScrollMarginLeft / 2 */
+    int maxX; /* ScrollMaxX / 2, then the right clamp */
     int tileW;
     int tileH;
     int rightX; /* right corner of the map diamond */
@@ -1901,14 +1901,14 @@ void ClampScrollPosition(int param_1, int param_2, int param_3, int param_4) {
     int y;
     int over;
 
-    marginTopRight = DAT_004b95f4 >> 1;
-    marginBottomLeft = DAT_004b95f8 >> 1;
+    marginTopRight = ScrollMarginTopRight >> 1;
+    marginBottomLeft = ScrollMarginBottomLeft >> 1;
     marginTopLeft = ScrollMarginTopLeft >> 1;
-    marginBottomRight = DAT_004b9600 >> 1;
+    marginBottomRight = ScrollMarginBottomRight >> 1;
     marginTop = ScrollMarginTop >> 1;
-    marginBottom = DAT_004b9610 >> 1;
-    marginLeft = DAT_004b9608 >> 1;
-    maxX = DAT_004b9604 >> 1;
+    marginBottom = ScrollMarginBottom >> 1;
+    marginLeft = ScrollMarginLeft >> 1;
+    maxX = ScrollMaxX >> 1;
     GetTileDimensions(&tileW, &tileH);
     tileW <<= 7;
     tileH = tileW >> 1;

@@ -603,7 +603,7 @@ void GetIconBBox(struct IconNode *icon, struct Bbox *bbox) {
                 bbox->max_y = bbox->max_y + DAT_00668840;
             }
             if (ind->field_22 & 2) {
-                bbox->max_x = bbox->max_x + DAT_0066884c;
+                bbox->max_x = bbox->max_x + IconBBoxExtraWidth;
             }
         }
     }

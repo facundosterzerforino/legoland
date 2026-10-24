@@ -148,8 +148,8 @@ void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 
                         off2 = SafariRideDrawOffset;
                         person = bloke->person;
-                        off1.x = DAT_004cbee8;
-                        off1.y = DAT_004cbeec;
+                        off1.x = SafariRideDrawOffset1X;
+                        off1.y = SafariRideDrawOffset1Y;
                         AdjustOffsetForViewMode(&off1);
                         person->offset.x = bloke->screen_x + off1.x;
                         person->offset.y = bloke->screen_y + off1.y;
@@ -186,8 +186,8 @@ void SafariRideLoad(struct Element *a1) {
     ZSafariSprite = LoadSprite("z_Safari.lls", 1);
     SafariRideDrawOffset.x = 0;
     SafariRideDrawOffset.y = -1;
-    DAT_004cbee8 = -41;
-    DAT_004cbeec = -95;
+    SafariRideDrawOffset1X = -41;
+    SafariRideDrawOffset1Y = -95;
     HideLayer(SafariLayer, 0);
     StopLayerPlaying(SafariLayer, 0);
     LLSSetFrame(GetLLSForLayer(SafariLayer, 0), 0);

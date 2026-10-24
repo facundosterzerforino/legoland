@@ -10631,8 +10631,8 @@ int BisectRoot(float (*fn)(unsigned int), float lo, float hi, float *out) {
         n++;
     }
     *out = (lo + hi) * 0.5f;
-    if (n > DAT_00615fec) {
-        DAT_00615fec = n;
+    if (n > BisectRootMaxSteps) {
+        BisectRootMaxSteps = n;
     }
     return 1;
 }

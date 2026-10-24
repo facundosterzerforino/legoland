@@ -188,11 +188,11 @@ void CoptersLoad(struct Element *param_1) {
     CopterQueueTables[1] = BuildQueueTable(&CopterPathTable1);
     CopterQueueTables[3] = BuildQueueTable(&CopterPathTable3);
     CopterQueueTables[4] = BuildQueueTable(&CopterPathTable4);
-    DAT_004c1194 = &DAT_004c119c;
-    DAT_004c1190 = &DAT_004c11a0;
-    DAT_004c1164 = &DAT_004c11a4;
-    DAT_004c1168 = &DAT_004c11a8;
-    DAT_004c1188 = &DAT_004c11ac;
+    CoptersRenderList0 = &CoptersRenderListHead0;
+    CoptersRenderList1 = &CoptersRenderListHead1;
+    CoptersRenderList2 = &CoptersRenderListHead2;
+    CoptersRenderList3 = &CoptersRenderListHead3;
+    CoptersRenderList4 = &CoptersRenderListHead4;
     // STRING: LEGOLAND 0x004b43bc
     CopterBaseMatteSprite = LoadSprite("cop_base Matte.lls", 1);
     Load_FXList(Helicopter_SFX, 4);
@@ -286,7 +286,7 @@ void CoptersUnload(void) {
     }
 
     current = CopterModelSprites;
-    while ((INT_PTR)current < (INT_PTR)&DAT_004c1164) {
+    while ((INT_PTR)current < (INT_PTR)&CoptersRenderList2) {
         if (*current != NULL) {
             KillSprite(*current);
         }
@@ -385,11 +385,11 @@ void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, void *un
         int key;
 
         RenderItems_New();
-        DAT_004c119c = NULL;
-        DAT_004c11a0 = NULL;
-        DAT_004c11a4 = NULL;
-        DAT_004c11a8 = NULL;
-        DAT_004c11ac = NULL;
+        CoptersRenderListHead0 = NULL;
+        CoptersRenderListHead1 = NULL;
+        CoptersRenderListHead2 = NULL;
+        CoptersRenderListHead3 = NULL;
+        CoptersRenderListHead4 = NULL;
         DAT_004c11b0 = NULL;
         base.y = node->field_1 + ActiveCopterRide->y;
         for (rn = ActiveCopterRide->riders; rn != NULL; rn = rn->next) {
@@ -397,26 +397,26 @@ void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, void *un
                 key = rn->person->field_20;
                 d = base.y - (rn->rider->pos.y >> 8);
                 if (d >= 5) {
-                    AddBlokeToRenderList(DAT_004c1190, rn, key);
+                    AddBlokeToRenderList(CoptersRenderList1, rn, key);
                 }
                 if (d >= 3 && d <= 4) {
-                    AddBlokeToRenderList(DAT_004c1168, rn, key);
+                    AddBlokeToRenderList(CoptersRenderList3, rn, key);
                 }
                 if (d >= 0 && d <= 2) {
-                    AddBlokeToRenderList(DAT_004c1194, rn, key);
+                    AddBlokeToRenderList(CoptersRenderList0, rn, key);
                 }
             }
         }
         CoptersRenderLayer(node, 0, clip);
         CoptersRenderLayer(node, 2, clip);
-        RenderBlokeList((struct RenderItemNode **)DAT_004c1164);
-        RenderBlokeList((struct RenderItemNode **)DAT_004c1190);
+        RenderBlokeList((struct RenderItemNode **)CoptersRenderList2);
+        RenderBlokeList((struct RenderItemNode **)CoptersRenderList1);
         CoptersRenderLayer(node, 3, clip);
         CoptersRenderLayer(node, 4, clip);
-        RenderBlokeList((struct RenderItemNode **)DAT_004c1168);
-        RenderBlokeList((struct RenderItemNode **)DAT_004c1188);
+        RenderBlokeList((struct RenderItemNode **)CoptersRenderList3);
+        RenderBlokeList((struct RenderItemNode **)CoptersRenderList4);
         CoptersRenderLayer(node, 1, clip);
-        RenderBlokeList((struct RenderItemNode **)DAT_004c1194);
+        RenderBlokeList((struct RenderItemNode **)CoptersRenderList0);
     }
     pos = GetScreenCoordsForObject(tile, ride);
     {

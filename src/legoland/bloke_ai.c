@@ -297,9 +297,9 @@ void LogBlokeAiMessage(char *msg) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        PTR_DAT_004b8348[i] = DAT_006661cc[(DAT_006664ec + i) & 7];
+        PTR_DAT_004b8348[i] = DAT_006661cc[(BlokeAiLogIndex + i) & 7];
     }
-    DAT_006664ec++;
+    BlokeAiLogIndex++;
     // STRING: LEGOLAND 0x004b8404
     sprintf(PTR_DAT_004b8348[7], "%c:%s", CurrentBlokeLetter, msg);
     // STRING: LEGOLAND 0x004b83f0

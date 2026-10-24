@@ -139,8 +139,8 @@ void RenderBoatingSchoolBoats(int param_1) {
                 off.x = lpConfig->view_x + b.x + sx;
                 off.y = lpConfig->view_y + b.y + sy;
                 AdjustBlokePosition((struct Point *)&off);
-                seat.x = DAT_004b51d8[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2] + 0x44;
-                seat.y = DAT_004b51d8[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2 + 1] + 0x34;
+                seat.x = BoatingSchoolRiderOffsets[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2] + 0x44;
+                seat.y = BoatingSchoolRiderOffsets[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2 + 1] + 0x34;
                 AdjustOffsetForViewMode(&seat);
                 person->screen.x = seat.x + off.x;
                 person->screen.y = seat.y + off.y;
@@ -491,7 +491,7 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
                 }
             }
             arc = arc + bit;
-            step = (arc->a1 - arc->a0) * DAT_004ab3f8;
+            step = (arc->a1 - arc->a0) * BoatArcStepScale;
             angle = arc->a0;
             ride->step_xy[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
             ride->step_xy[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);

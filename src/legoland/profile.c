@@ -76,7 +76,7 @@ LEGO_EXPORT void InitListProfiles(void) {
     ((struct IconNode *)AcceptIcon)->event_handler = (void *)AcceptProfileClick;
     OkKeyHandler = AcceptProfileClick;
     CancelKeyHandler = CancelProfileSelectionClicked;
-    strcpy(DAT_007cb340, GetString(0x84));
+    strcpy(ProfileListNewLabel, GetString(0x84));
 
     for (; node != NULL; node = node->next) {
         if (node->has_header) {
@@ -428,7 +428,7 @@ LEGO_EXPORT void PrintProfileDetails(void) {
     icon = IconListHead;
     DeleteIcon->flags |= 0x400;
     rc.top = 0x72;
-    PrintTextBox(DAT_007cb340, 0x8d, rc.top, 0xf0, 0x2e, 3, 0x25, 0xffffff, 0);
+    PrintTextBox(ProfileListNewLabel, 0x8d, rc.top, 0xf0, 0x2e, 3, 0x25, 0xffffff, 0);
     for (; icon != NULL; icon = icon->next) {
         show = 1;
         sel = 1;

@@ -110,8 +110,8 @@ void RenderTempleSlide(Element *obj, unsigned int param_2, unsigned int param_3,
             off1.x = TempleSlideDrawOffsetX;
             off1.y = TempleSlideDrawOffsetY[0];
             AdjustOffsetForViewMode(&off1);
-            off2.x = DAT_004cbf88;
-            off2.y = DAT_004cbf8c;
+            off2.x = TempleSlideDrawOffset2X;
+            off2.y = TempleSlideDrawOffset2Y;
             AdjustOffsetForViewMode(&off2);
             person = bloke->person;
             person->offset.x = bloke->screen_x;
@@ -150,8 +150,8 @@ void TempleSlideLoad(struct Element *arg) {
     GetLLSForSprite((struct Sprite *)ActiveTempleSlideRide->layer);
     TempleSlideDrawOffsetX = 0;
     TempleSlideDrawOffsetY[0] = 1;
-    DAT_004cbf88 = 13;
-    DAT_004cbf8c = 93;
+    TempleSlideDrawOffset2X = 13;
+    TempleSlideDrawOffset2Y = 93;
     TempSlideMatteSprite = LoadSprite(
         // STRING: LEGOLAND 0x004b4f50
         "tempslide_matte.lls", 1);

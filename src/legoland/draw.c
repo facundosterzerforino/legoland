@@ -461,7 +461,7 @@ __declspec(naked) void SoftPrint_IndexedLLS(void) {
         sub esp, 0x14
         mov eax, dword ptr [CurrentSurfaceDesc + 0x10]
         mov ecx, dword ptr [ebp + 8]
-        mov dword ptr [DAT_007fe9a4], eax
+        mov dword ptr [SpanDrawPitch], eax
         mov eax, dword ptr [OverrideFrame]
         push ebx
         mov edx, 1
@@ -949,7 +949,7 @@ L464a3d:
 L464a45:
         mov edi, dword ptr [DAT_007feb18]
         mov edx, dword ptr [DAT_007fea10]
-        add edi, dword ptr [DAT_007fe9a4]
+        add edi, dword ptr [SpanDrawPitch]
         dec edx
         mov dword ptr [DAT_007feb18], edi
         jne L4646a1
@@ -989,7 +989,7 @@ __declspec(naked) LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *par
         push esi
         test ecx, ecx
         push edi
-        mov dword ptr [DAT_007fe9a4], 0x200
+        mov dword ptr [SpanDrawPitch], 0x200
         jge L464ab1
         movsx ecx, word ptr [edx]
 L464ab1:
@@ -1318,7 +1318,7 @@ L464eac:
 L464eb4:
         mov edi, dword ptr [DAT_007feb18]
         mov edx, dword ptr [DAT_007fea10]
-        add edi, dword ptr [DAT_007fe9a4]
+        add edi, dword ptr [SpanDrawPitch]
         dec edx
         mov dword ptr [DAT_007feb18], edi
         jne L464c07
@@ -1466,7 +1466,7 @@ L464fef:
         mov eax, dword ptr [ebp - 4]
         mov edx, dword ptr [eax + 8]
         sub edx, dword ptr [eax]
-        mov dword ptr [DAT_007fe9a4], edx
+        mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
         mov esi, dword ptr [DAT_007fea40]
@@ -1475,12 +1475,12 @@ L464fef:
         imul ecx, dword ptr [DAT_007fea1c]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
-        sub ebx, dword ptr [DAT_007fe9a4]
-        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [SpanDrawPitch]
+        sub ebx, dword ptr [SpanDrawPitch]
         mov ebp, dword ptr [DAT_007fea1c]
-        sub ebp, dword ptr [DAT_007fe9a4]
+        sub ebp, dword ptr [SpanDrawPitch]
 L465083:
-        mov ecx, dword ptr [DAT_007fe9a4]
+        mov ecx, dword ptr [SpanDrawPitch]
         push ebp
         push ebx
         mov ebx, dword ptr [DAT_007fea20]
@@ -1522,7 +1522,7 @@ L4650ba:
         mov eax, dword ptr [ebp - 4]
         mov edx, dword ptr [eax + 8]
         sub edx, dword ptr [eax]
-        mov dword ptr [DAT_007fe9a4], edx
+        mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
         mov esi, dword ptr [DAT_007fea40]
@@ -1532,13 +1532,13 @@ L4650ba:
         imul ecx, dword ptr [DAT_007fea1c]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
-        sub ebx, dword ptr [DAT_007fe9a4]
-        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [SpanDrawPitch]
+        sub ebx, dword ptr [SpanDrawPitch]
         mov ebp, dword ptr [DAT_007fea1c]
-        sub ebp, dword ptr [DAT_007fe9a4]
-        sub ebp, dword ptr [DAT_007fe9a4]
+        sub ebp, dword ptr [SpanDrawPitch]
+        sub ebp, dword ptr [SpanDrawPitch]
 L46513f:
-        mov ecx, dword ptr [DAT_007fe9a4]
+        mov ecx, dword ptr [SpanDrawPitch]
 L465145:
         movzx eax, word ptr [esi]
         cmp eax, dword ptr [StoredTransparentColour]
@@ -1620,14 +1620,14 @@ __declspec(naked) LEGO_EXPORT void SoftPrint_Clear(void) {
         pushad
         mov edi, dword ptr [CurrentSurfaceDesc + 0x24]
         mov edx, dword ptr [DAT_007fea1c]
-        mov dword ptr [DAT_007fe9a4], edx
+        mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [DAT_007fea14]
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
-        sub ebx, dword ptr [DAT_007fe9a4]
-        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [SpanDrawPitch]
+        sub ebx, dword ptr [SpanDrawPitch]
         mov eax, dword ptr [ebp - 4]
 L465223:
-        mov ecx, dword ptr [DAT_007fe9a4]
+        mov ecx, dword ptr [SpanDrawPitch]
         rep stosw
         add edi, ebx
         dec edx
@@ -1657,7 +1657,7 @@ __declspec(naked) void SoftPrint_IndexedLLSMasked(void) {
         push edi
         test ecx, ecx
         mov dword ptr [ebp - 0xc], ebx
-        mov dword ptr [DAT_007fe9a4], eax
+        mov dword ptr [SpanDrawPitch], eax
         jl L46526d
         mov edx, dword ptr [ebp + 8]
         mov dword ptr [ebp - 4], ecx
@@ -2102,7 +2102,7 @@ L465807:
 L46580f:
         mov edi, dword ptr [DAT_007feb18]
         mov edx, dword ptr [DAT_007fea10]
-        add edi, dword ptr [DAT_007fe9a4]
+        add edi, dword ptr [SpanDrawPitch]
         dec edx
         mov dword ptr [DAT_007feb18], edi
         jne L465451
@@ -2335,7 +2335,7 @@ L465b4d:
         not eax
         mov dword ptr [DAT_007fe998], eax
         mov ebx, dword ptr [esi]
-        mov dword ptr [DAT_007fe9a4], edx
+        mov dword ptr [SpanDrawPitch], edx
         mov ecx, dword ptr [edi]
         mov dword ptr [SpriteClipOrigin + 0x4], ecx
         mov eax, dword ptr [edi + 8]
@@ -2532,7 +2532,7 @@ L465d38:
         mov eax, dword ptr [ebp + 0xc]
         mov edx, dword ptr [eax + 8]
         sub edx, dword ptr [eax]
-        mov dword ptr [DAT_007fe9a4], edx
+        mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
         mov esi, dword ptr [DAT_007fea40]
@@ -2541,12 +2541,12 @@ L465d38:
         imul ecx, dword ptr [DAT_007fea1c]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
-        sub ebx, dword ptr [DAT_007fe9a4]
-        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [SpanDrawPitch]
+        sub ebx, dword ptr [SpanDrawPitch]
         mov ebp, dword ptr [DAT_007fea1c]
-        sub ebp, dword ptr [DAT_007fe9a4]
+        sub ebp, dword ptr [SpanDrawPitch]
 L465dcc:
-        mov ecx, dword ptr [DAT_007fe9a4]
+        mov ecx, dword ptr [SpanDrawPitch]
         push ebp
         push ebx
         mov ebx, dword ptr [DAT_007fea20]
@@ -2589,7 +2589,7 @@ L465e0a:
         mov eax, dword ptr [ebp + 0xc]
         mov edx, dword ptr [eax + 8]
         sub edx, dword ptr [eax]
-        mov dword ptr [DAT_007fe9a4], edx
+        mov dword ptr [SpanDrawPitch], edx
         mov edx, dword ptr [eax + 0xc]
         sub edx, dword ptr [eax + 4]
         mov esi, dword ptr [DAT_007fea40]
@@ -2599,13 +2599,13 @@ L465e0a:
         imul ecx, dword ptr [DAT_007fea1c]
         add esi, ecx
         mov ebx, dword ptr [CurrentSurfaceDesc + 0x10]
-        sub ebx, dword ptr [DAT_007fe9a4]
-        sub ebx, dword ptr [DAT_007fe9a4]
+        sub ebx, dword ptr [SpanDrawPitch]
+        sub ebx, dword ptr [SpanDrawPitch]
         mov ebp, dword ptr [DAT_007fea1c]
-        sub ebp, dword ptr [DAT_007fe9a4]
-        sub ebp, dword ptr [DAT_007fe9a4]
+        sub ebp, dword ptr [SpanDrawPitch]
+        sub ebp, dword ptr [SpanDrawPitch]
 L465e8f:
-        mov ecx, dword ptr [DAT_007fe9a4]
+        mov ecx, dword ptr [SpanDrawPitch]
 L465e95:
         movzx eax, word ptr [esi]
         cmp eax, dword ptr [StoredTransparentColour]
@@ -2650,7 +2650,7 @@ void FUN_00465ee0(struct DrawLLS *lls, RECT *clip, struct Point *pos) {
     int i;
     int off;
 
-    DAT_007fe9a4 = CurrentSurfaceDesc.lPitch;
+    SpanDrawPitch = CurrentSurfaceDesc.lPitch;
     SpriteClipOrigin.left = clip->left;
     DrawClipExtent.width = clip->right - clip->left;
     SpriteClipOrigin.top = clip->top;
@@ -2866,7 +2866,7 @@ LEGO_EXPORT int RenderingComplete(void) {
         mov ebx, LastFrameTickCount
         sub eax, ebx
         mov LastFrameTickCount, eax
-        add DAT_00813a2c, eax
+        add FrameTicksAccumulated, eax
         popad
     }
 #else
@@ -2874,12 +2874,12 @@ LEGO_EXPORT int RenderingComplete(void) {
         int tsc = (int)GetTickCount();
         tsc -= LastFrameTickCount;
         LastFrameTickCount = tsc;
-        DAT_00813a2c += tsc;
+        FrameTicksAccumulated += tsc;
     }
 #endif
     LastRenderingCompleteTick = GetTickCount();
     result = BlitFrameFunc();
-    DAT_00813a2c = 0;
+    FrameTicksAccumulated = 0;
 #if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
         pushad
@@ -2992,7 +2992,7 @@ void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos) 
     int hit;
     int i;
 
-    DAT_007fe9a4 = CurrentSurfaceDesc.lPitch;
+    SpanDrawPitch = CurrentSurfaceDesc.lPitch;
     SpriteClipOrigin.left = clip->left;
     DrawClipExtent.width = clip->right - clip->left;
     SpriteClipOrigin.top = clip->top;

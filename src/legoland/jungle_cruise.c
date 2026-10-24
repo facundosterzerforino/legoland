@@ -590,7 +590,7 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
         }
         if ((to < from ? to & (from >> 2) : to == from || from & (to >> 2)) == 0) {
             if ((to & (from * 2)) != 0) {
-                arc = DAT_004b7188;
+                arc = JungleCruiseArcs;
             } else if ((from & (to * 2)) != 0) {
                 arc = DAT_004b71c8;
             }
@@ -602,7 +602,7 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
                 bit++;
             }
             arc += bit;
-            step = (arc->a1 - arc->a0) * DAT_004ab3f8;
+            step = (arc->a1 - arc->a0) * BoatArcStepScale;
             angle = arc->a0;
             ride->step_offsets[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
             ride->step_offsets[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);

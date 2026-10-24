@@ -627,7 +627,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct IconNode *sprite) {
             TempProfile.name[count] = zero;
         }
         if (count < 0x1f) {
-            if (0xcb > DAT_00798738) {
+            if (0xcb > SaveNameTextWidth) {
                 if (input > '\0') {
                     int index = count;
                     count++;
@@ -654,7 +654,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct IconNode *sprite) {
     } else {
         center_x = (rc.right + rc.left) >> 1;
     }
-    DAT_00798738 = (center_x - ((rc.right + rc.left) >> 1)) * 2;
+    SaveNameTextWidth = (center_x - ((rc.right + rc.left) >> 1)) * 2;
     rc.top = sprite->y + 0x20;
     blink = GetBlink() ? "|" : " ";
     strcpy(cursor_str, blink);
