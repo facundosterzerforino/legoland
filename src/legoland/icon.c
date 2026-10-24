@@ -877,20 +877,20 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     if (fill > width) {
         fill = width;
     }
-    if (fill > DAT_006688c4) {
-        DAT_006688c4 += 6;
-        if (DAT_006688c4 > fill) {
-            DAT_006688c4 = fill;
+    if (fill > MoneyBarShownWidth) {
+        MoneyBarShownWidth += 6;
+        if (MoneyBarShownWidth > fill) {
+            MoneyBarShownWidth = fill;
         }
     } else {
-        DAT_006688c4 -= 6;
-        if (DAT_006688c4 < fill) {
-            DAT_006688c4 = fill;
+        MoneyBarShownWidth -= 6;
+        if (MoneyBarShownWidth < fill) {
+            MoneyBarShownWidth = fill;
         }
     }
     StoreClipping();
     clip.left = node->x;
-    clip.right = DAT_006688c4 + clip.left;
+    clip.right = MoneyBarShownWidth + clip.left;
     clip.top = node->y;
     clip.bottom = node->height + clip.top;
     SetClipping(&clip);

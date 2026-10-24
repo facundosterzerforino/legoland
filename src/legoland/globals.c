@@ -2995,7 +2995,7 @@ char ObjectiveTextBuffer[0x404];
 unsigned int ScriptDirtyCategories;
 
 // GLOBAL: LEGOLAND 0x00668614
-unsigned int DAT_00668614;
+unsigned int CurrentObjectivePromptIndex;
 
 /* Repeated-objective request allowing the next advisor message to bypass its ordinary delay. */
 // GLOBAL: LEGOLAND 0x00668618
@@ -3127,8 +3127,9 @@ int PowerDemandBarPos;
 // GLOBAL: LEGOLAND 0x006688c0
 int EnergyBarSupplyWidth;
 
+/* Money bar width on screen; RenderMoneyBar moves it 6 pixels per frame towards the real fill. */
 // GLOBAL: LEGOLAND 0x006688c4
-int DAT_006688c4;
+int MoneyBarShownWidth;
 
 // GLOBAL: LEGOLAND 0x006688c8
 unsigned int RenderIconsLastTicks;
@@ -3341,7 +3342,7 @@ struct Sprite *BriefIcon2Sprite;
 struct Sprite *BriefIconSprite;
 
 // GLOBAL: LEGOLAND 0x00668e9c
-void *DAT_00668e9c;
+void *BriefingIcon;
 
 // GLOBAL: LEGOLAND 0x00668ea0
 struct Sprite *ScriptEndSprite;
@@ -3630,7 +3631,7 @@ unsigned short ZBufferImagePixels[0x4b000];
 unsigned char *Render3DTargetBits;
 
 // GLOBAL: LEGOLAND 0x00797e6c
-void *DAT_00797e6c;
+void *CursorCacheList;
 
 // GLOBAL: LEGOLAND 0x00797e70
 float ReciprocalTable[100];
@@ -3691,7 +3692,7 @@ struct IconNode *FreePlayStartIcon;
 unsigned int FreePlaySelectedCount;
 
 // GLOBAL: LEGOLAND 0x00798660
-unsigned int DAT_00798660;
+unsigned int ProgressLevelPicked;
 
 // GLOBAL: LEGOLAND 0x00798664
 unsigned int ProgressShowsTutorials;
@@ -3700,7 +3701,7 @@ unsigned int ProgressShowsTutorials;
 unsigned long ProgressLastClickTicks;
 
 // GLOBAL: LEGOLAND 0x00798668
-unsigned int DAT_00798668;
+unsigned int ProgressScreenToggled;
 
 // GLOBAL: LEGOLAND 0x00798674
 struct Sprite *PuOkOnSprite;
@@ -3802,7 +3803,7 @@ void *ProfileSavedCancelKeyHandler;
 void *ProfileSavedOkKeyHandler;
 
 // GLOBAL: LEGOLAND 0x00798700
-unsigned int DAT_00798700;
+unsigned int NewSaveGamePopUpShown;
 
 // GLOBAL: LEGOLAND 0x00798704
 struct Sprite *RegSaveSlotOnSprite;
@@ -3872,8 +3873,9 @@ struct Sprite *PrintInfoSprite;
 // GLOBAL: LEGOLAND 0x00798768
 int CertificatePrintResultTimer;
 
+/* Frames left before the certificate is printed (2 after the click); the "printing" note shows meanwhile. */
 // GLOBAL: LEGOLAND 0x0079876c
-unsigned int DAT_0079876c;
+unsigned int CertificatePrintCountdown;
 
 // GLOBAL: LEGOLAND 0x00798770
 unsigned int CertificateScreenActive;
@@ -3985,8 +3987,9 @@ unsigned int SpeechFlags;
 // GLOBAL: LEGOLAND 0x0079a840
 int SpeechPageIndex;
 
+/* Speech buffer pages (4 KB each) holding audio that has not played yet; the stream stops when it reaches 0. */
 // GLOBAL: LEGOLAND 0x0079a844
-int DAT_0079a844;
+int SpeechPagesQueued;
 
 // GLOBAL: LEGOLAND 0x0079a848
 void *SpeechSoundBuffer;
@@ -4182,7 +4185,7 @@ char SavedMusicVolume;
 unsigned int ExitCheckBoxShown;
 
 // GLOBAL: LEGOLAND 0x007cb324
-unsigned int DAT_007cb324;
+unsigned int SavedGameScreenFromTitle;
 
 // GLOBAL: LEGOLAND 0x007cb328
 unsigned int LoadMode;
@@ -4304,8 +4307,9 @@ char DAT_007fdba0[0x100];
 // GLOBAL: LEGOLAND 0x007fdca0
 int SelectedElementIndex;
 
+/* Script string of the last PROMPT command; AddScriptEvent stores it in each new event (field_40). */
 // GLOBAL: LEGOLAND 0x007fdca4
-unsigned int DAT_007fdca4;
+unsigned int ScriptPromptStringIndex;
 
 // GLOBAL: LEGOLAND 0x007fdca8
 float PerfCounterScale;
@@ -4571,8 +4575,9 @@ unsigned int HelpShownTick;
 // GLOBAL: LEGOLAND 0x007fe930
 unsigned char ObjectiveCounters[10];
 
+/* Game timer at SaveScripts/LoadScripts time; objective event timestamps are saved relative to it. */
 // GLOBAL: LEGOLAND 0x007fe994
-unsigned int DAT_007fe994;
+unsigned int ScriptTimeBase;
 
 // GLOBAL: LEGOLAND 0x007fe998
 unsigned short DAT_007fe998;

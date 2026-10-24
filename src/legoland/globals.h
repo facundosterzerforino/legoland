@@ -2415,7 +2415,7 @@ extern char ObjectiveTextBuffer[0x404];
 // 0x00668610
 extern unsigned int ScriptDirtyCategories;
 // 0x00668614
-extern unsigned int DAT_00668614;
+extern unsigned int CurrentObjectivePromptIndex;
 // 0x00668618
 extern unsigned int AdvisorRepeatPending;
 // 0x0066861c
@@ -2499,7 +2499,7 @@ extern int PowerDemandBarPos;
 // 0x006688c0
 extern int EnergyBarSupplyWidth;
 // 0x006688c4
-extern int DAT_006688c4;
+extern int MoneyBarShownWidth;
 // 0x006688c8
 extern unsigned int RenderIconsLastTicks;
 // 0x006688cc
@@ -2637,7 +2637,7 @@ extern struct Sprite *BriefIcon2Sprite;
 // 0x00668e98
 extern struct Sprite *BriefIconSprite;
 // 0x00668e9c
-extern void *DAT_00668e9c;
+extern void *BriefingIcon;
 // 0x00668ea0
 extern struct Sprite *ScriptEndSprite;
 // 0x00668ea4
@@ -2828,7 +2828,7 @@ extern unsigned short ZBufferImagePixels[0x4b000];
 // 0x00797e68
 extern unsigned char *Render3DTargetBits;
 // 0x00797e6c
-extern void *DAT_00797e6c;
+extern void *CursorCacheList;
 // 0x00797e70
 extern float ReciprocalTable[100];
 // 0x00798000
@@ -2866,11 +2866,11 @@ extern struct IconNode *FreePlayStartIcon;
 // 0x00798650
 extern unsigned int FreePlaySelectedCount;
 // 0x00798660
-extern unsigned int DAT_00798660;
+extern unsigned int ProgressLevelPicked;
 // 0x00798664
 extern unsigned int ProgressShowsTutorials;
 // 0x00798668
-extern unsigned int DAT_00798668;
+extern unsigned int ProgressScreenToggled;
 extern unsigned long ProgressLastClickTicks;
 // 0x00798674
 extern struct Sprite *PuOkOnSprite;
@@ -2939,7 +2939,7 @@ extern void *ProfileSavedCancelKeyHandler;
 // 0x007986f8
 extern void *ProfileSavedOkKeyHandler;
 // 0x00798700
-extern unsigned int DAT_00798700;
+extern unsigned int NewSaveGamePopUpShown;
 // 0x00798704
 extern struct Sprite *RegSaveSlotOnSprite;
 // 0x00798708
@@ -2985,7 +2985,7 @@ extern struct Sprite *PrintInfoSprite;
 // 0x00798768
 extern int CertificatePrintResultTimer;
 // 0x0079876c
-extern unsigned int DAT_0079876c;
+extern unsigned int CertificatePrintCountdown;
 // 0x00798770
 extern unsigned int CertificateScreenActive;
 // 0x00798777
@@ -3059,7 +3059,7 @@ extern unsigned int SpeechFlags;
 // 0x0079a840
 extern int SpeechPageIndex;
 // 0x0079a844
-extern int DAT_0079a844;
+extern int SpeechPagesQueued;
 // 0x0079a848
 extern void *SpeechSoundBuffer;
 // 0x0079a84c
@@ -3206,7 +3206,7 @@ extern char SavedMusicVolume;
 // 0x007cb320
 extern unsigned int ExitCheckBoxShown;
 // 0x007cb324
-extern unsigned int DAT_007cb324;
+extern unsigned int SavedGameScreenFromTitle;
 // 0x007cb328
 extern unsigned int LoadMode;
 // 0x007cb340
@@ -3287,7 +3287,7 @@ extern char DAT_007fdba0[0x100];
 // 0x007fdca0
 extern int SelectedElementIndex;
 // 0x007fdca4
-extern unsigned int DAT_007fdca4;
+extern unsigned int ScriptPromptStringIndex;
 // 0x007fdca8
 extern float PerfCounterScale;
 // 0x007fdcc0
@@ -3457,7 +3457,7 @@ extern unsigned int HelpShownTick;
 // 0x007fe930
 extern unsigned char ObjectiveCounters[10];
 // 0x007fe994
-extern unsigned int DAT_007fe994;
+extern unsigned int ScriptTimeBase;
 // 0x007fe998
 extern unsigned short DAT_007fe998;
 // 0x007fe9a8

@@ -727,7 +727,7 @@ void PostPendingObjectiveHints(void) {
             switch (node->type) {
             case 0:
                 PostObjectiveMessage((char *)PercentSFormat, ScriptStringTable[node->field_40]);
-                DAT_00668614 = node->field_40;
+                CurrentObjectivePromptIndex = node->field_40;
                 break;
             case 1:
                 // STRING: LEGOLAND 0x004ba6bc

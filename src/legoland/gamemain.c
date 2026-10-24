@@ -661,7 +661,7 @@ void ResetLevelScriptState(void) {
     MapStats.capacity_min = 0;
 
     FreeScriptStrings();
-    DAT_007fdca4 = AddScriptString(0, 0, 0);
+    ScriptPromptStringIndex = AddScriptString(0, 0, 0);
     ScriptConditionActive = 1;
 
     ResetReportFlags();

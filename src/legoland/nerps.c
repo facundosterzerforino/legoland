@@ -1273,7 +1273,7 @@ int RemoveScriptSection(struct NerpsListNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046b610
 void AddScriptEvent(struct ObjectiveEvent *node, struct NerpsListNode *list) {
-    node->field_40 = DAT_007fdca4;
+    node->field_40 = ScriptPromptStringIndex;
     if (list->field_c != NULL) {
         node->next = list->field_c;
     }
@@ -1315,15 +1315,15 @@ void PostScriptSectionIntro(struct NerpsListNode *ctx, unsigned int param_2) {
             node->flags_10 = 0x20;
         }
         InsertObjectiveMessageSorted(node);
-        DAT_00668614 = 0;
+        CurrentObjectivePromptIndex = 0;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046b700
 unsigned int RepeatCurrentObjective(void) {
     if (CurrentScriptSection != 0) {
-        if (DAT_00668614 != 0) {
-            PostObjectiveMessage(PercentSFormat, ScriptStringTable[DAT_00668614]);
+        if (CurrentObjectivePromptIndex != 0) {
+            PostObjectiveMessage(PercentSFormat, ScriptStringTable[CurrentObjectivePromptIndex]);
             AdvisorRepeatPending = 1;
             return 1;
         }
@@ -2131,11 +2131,11 @@ unsigned int SaveObjectiveEventList(struct ObjectiveEvent *node) {
     while (node != NULL) {
         int ok;
 
-        node->timestamp -= DAT_007fe994;
+        node->timestamp -= ScriptTimeBase;
         // STRING: LEGOLAND 0x004ba808
         DBPrintf("Saving Event, Timestamp = %d\n", node->timestamp);
         ok = SaveGameWrite(node, sizeof(struct ObjectiveEvent));
-        node->timestamp += DAT_007fe994;
+        node->timestamp += ScriptTimeBase;
         if (ok == 0) {
             return 0;
         }
@@ -2181,7 +2181,7 @@ struct ObjectiveEvent *LoadObjectiveEventList(void) {
         }
         // STRING: LEGOLAND 0x004ba838
         DBPrintf("Loading Event, TimeStamp = %d", node->timestamp);
-        node->timestamp += DAT_007fe994;
+        node->timestamp += ScriptTimeBase;
         // STRING: LEGOLAND 0x004ba828
         DBPrintf("Fixed up to %d\n", node->timestamp);
         str = (char *)ReadSaveString();
@@ -2226,7 +2226,7 @@ unsigned int SaveScripts(void) {
     int i;
 
     ScriptLoadErrorCount = 0;
-    DAT_007fe994 = GetGameTimer();
+    ScriptTimeBase = GetGameTimer();
     if (SaveObjectiveIcons() == 0) {
         return 0;
     }
@@ -2244,7 +2244,7 @@ unsigned int SaveScripts(void) {
             return 0;
         }
     }
-    scratch = DAT_007fe994 - ObjectiveHintTimer;
+    scratch = ScriptTimeBase - ObjectiveHintTimer;
     if (SaveGameWrite(&scratch, 4) == 0) {
         return 0;
     }
@@ -2286,7 +2286,7 @@ unsigned int SaveScripts(void) {
 
 // FUNCTION: LEGOLAND 0x0046cb20
 unsigned int UnloadLevelData(void) {
-    DAT_00668614 = 0;
+    CurrentObjectivePromptIndex = 0;
     if (DAT_00810140 != 0) {
         UnloadSaveGameMap();
     } else {
@@ -2309,7 +2309,7 @@ unsigned int LoadScripts(void) {
     unsigned char skip;
 
     ScriptLoadErrorCount = 0;
-    DAT_007fe994 = GetGameTimer();
+    ScriptTimeBase = GetGameTimer();
     if (ScriptLoadErrorCount != 0) {
         return 0;
     }
@@ -2334,8 +2334,8 @@ unsigned int LoadScripts(void) {
     if (SaveGameRead(&base, 4) == 0) {
         return 0;
     }
-    ObjectiveHintTimer = DAT_007fe994 + base;
-    DAT_00668614 = 0;
+    ObjectiveHintTimer = ScriptTimeBase + base;
+    CurrentObjectivePromptIndex = 0;
     UpdateScriptEndIcon((void *)1);
     if (SaveGameRead(&i, 4) == 0) {
         return 0;

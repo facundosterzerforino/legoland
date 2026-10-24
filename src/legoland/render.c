@@ -85,8 +85,8 @@ void InitPackedColorLookupTable(void) {
 void *FindCursorCacheEntry(struct CursorKey *key) {
     struct CursorCacheNode *node;
 
-    if (DAT_00797e6c != 0) {
-        node = DAT_00797e6c;
+    if (CursorCacheList != 0) {
+        node = CursorCacheList;
         while (node != 0) {
             if (node->b == key->b && node->g == key->g && node->r == key->r) {
                 return node->value;
@@ -106,10 +106,10 @@ struct CursorCacheNode *AddCursorCacheEntry(void *value, const unsigned char *ke
         node->g = key[1];
         node->r = key[0];
         node->value = value;
-        if (DAT_00797e6c) {
-            node->next = DAT_00797e6c;
+        if (CursorCacheList) {
+            node->next = CursorCacheList;
         }
-        DAT_00797e6c = node;
+        CursorCacheList = node;
     }
     return node;
 }
@@ -127,7 +127,7 @@ void FreeCursorBitmap(void *param) {
 
 // FUNCTION: LEGOLAND 0x00486250
 void FreeCursorCache(void) {
-    struct CursorCacheNode *node = DAT_00797e6c;
+    struct CursorCacheNode *node = CursorCacheList;
     while (node != 0) {
         struct CursorCacheNode *next = node->next;
         FreeCursorBitmap(node->value);

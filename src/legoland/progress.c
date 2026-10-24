@@ -25,10 +25,10 @@ LEGO_EXPORT void InitProgressScreen(void) {
     if ((int)lpConfig->level < 1) {
         lpConfig->level = 1;
     }
-    if (DAT_00798660 == 0) {
+    if (ProgressLevelPicked == 0) {
         UpdateUnlockedLevelSelection();
         if (MapStats.level_end == 0) {
-            if (DAT_00798668 == 0) {
+            if (ProgressScreenToggled == 0) {
                 lpConfig->level = HighestUnlockedLevelIndex + 1;
             }
         }
@@ -54,7 +54,7 @@ LEGO_EXPORT void InitProgressScreen(void) {
     // STRING: LEGOLAND 0x004bef44
     SPRITE_TitleScreenBk = LoadSprite("Progress_ScreenBK.lls", 4);
     flags = 0x6002;
-    if (DAT_00798660 == 0) {
+    if (ProgressLevelPicked == 0) {
         if (MapStats.level_end == 1 && lpConfig->level == 6) {
             MapStats.level_end = 2;
         }
@@ -135,7 +135,7 @@ LEGO_EXPORT void InitProgressScreen(void) {
 
 // FUNCTION: LEGOLAND 0x0048bb60
 unsigned char ProgressLevelClicked(unsigned char *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3) {
-    DAT_00798660 = 1;
+    ProgressLevelPicked = 1;
     if ((arg1 & 2) != 0) {
         if ((int)(GetTicks() - ProgressLastClickTicks) < 500 && arg0[0x18] == ProgressScreenTables.last_clicked) {
             if (ProgressShowsTutorials != 0) {
@@ -170,12 +170,12 @@ unsigned char ProgressPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
                 SetDefaultMouseHandlers();
                 StartLevelGame();
                 UnloadWatchSprite();
-                DAT_00798660 = 0;
-                DAT_00798668 = 0;
+                ProgressLevelPicked = 0;
+                ProgressScreenToggled = 0;
             } else {
-                DAT_00798660 = 0;
+                ProgressLevelPicked = 0;
                 GamePad &= ~0x20;
-                DAT_00798668 = 0;
+                ProgressScreenToggled = 0;
                 EditMode.unk4 = 2;
                 FrontEndScreenMode.unk4 = 0xffffffff;
                 FrontEndScreenMode.unk8 = 8;
@@ -236,7 +236,7 @@ void InitTutorialScreen(void) {
     // STRING: LEGOLAND 0x004bef88
     SPRITE_TitleScreenBk = LoadSprite("TutorialBK.lls", 0);
     ProgressShowsTutorials = 1;
-    if (DAT_00798660 == 0) {
+    if (ProgressLevelPicked == 0) {
         LoadTutorialSprites();
         // STRING: LEGOLAND 0x004bef70
         icon = LoadSpriteIcon("Accept_on_Report.lls", 4, 0x20a, 0x16c, 0x23);
@@ -304,8 +304,8 @@ unsigned char TutorialPlayClicked(unsigned char *arg0, unsigned int arg1, unsign
         SetDefaultMouseHandlers();
         StartLevelGame();
         UnloadWatchSprite();
-        DAT_00798660 = 0;
-        DAT_00798668 = 0;
+        ProgressLevelPicked = 0;
+        ProgressScreenToggled = 0;
     }
     return 1;
 }
@@ -321,8 +321,8 @@ unsigned char ProgressGoBackClicked(unsigned int a1, unsigned int a2, unsigned i
         OkKeyHandler = 0;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         temp = ProgressShowsTutorials;
-        DAT_00798660 = 0;
-        DAT_00798668 = 0;
+        ProgressLevelPicked = 0;
+        ProgressScreenToggled = 0;
         if (temp != 0) {
             KillTutorialScreenSprites();
         } else {
@@ -338,8 +338,8 @@ unsigned char ProgressGoBackClicked(unsigned int a1, unsigned int a2, unsigned i
 // FUNCTION: LEGOLAND 0x0048c090
 unsigned char ToggleProgressTutorialScreenClicked(void *param1, unsigned char param2) {
     if (param2 & 2) {
-        DAT_00798660 = 0;
-        DAT_00798668 = 1;
+        ProgressLevelPicked = 0;
+        ProgressScreenToggled = 1;
         FrontEndScreenMode.unk4 = 0xffffffff;
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         if (ProgressShowsTutorials != 0) {

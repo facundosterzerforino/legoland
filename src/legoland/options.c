@@ -213,7 +213,7 @@ unsigned char OptionsSaveIconHandler(unsigned int param_1, unsigned int param_2)
     if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         LoadMode = 0;
-        DAT_007cb324 = 0;
+        SavedGameScreenFromTitle = 0;
         FrontEndScreenMode.unk8 = 4;
     }
     return 1;
@@ -354,7 +354,7 @@ unsigned char ExitCheckBoxSaveClicked(unsigned int param_1, unsigned int param_2
         CloseFontEndCheckBox();
         SavedGameScreenFromExitDialog = 1;
         LoadMode = 0;
-        DAT_007cb324 = 0;
+        SavedGameScreenFromTitle = 0;
         FrontEndScreenMode.unk8 = 4;
     }
     return 1;
@@ -365,7 +365,7 @@ unsigned char OptionsLoadIconHandler(unsigned int param_1, unsigned int param_2)
     if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         LoadMode = 1;
-        DAT_007cb324 = 0;
+        SavedGameScreenFromTitle = 0;
         FrontEndScreenMode.unk8 = 4;
     }
     return 1;

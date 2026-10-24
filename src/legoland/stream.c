@@ -393,7 +393,7 @@ void SpeechResetBuffers(void) {
     SpeechPcmReadPos = 0;
     SpeechPcmWritePos = 0;
     SpeechPageIndex = 0;
-    DAT_0079a844 = 0;
+    SpeechPagesQueued = 0;
     SpeechConvertedSize = 0;
     SpeechConvertedUsed = 0;
 }
@@ -457,7 +457,7 @@ int SpeechFillSoundBuffer(void) {
                     memset((unsigned char *)ptr1 + SpeechPageIndex * 0x1000 + n, 0, 0x1000 - n);
                 }
                 if (n != 0) {
-                    DAT_0079a844++;
+                    SpeechPagesQueued++;
                 }
                 SpeechPageIndex++;
             } while (SpeechPageIndex < 10);
@@ -504,12 +504,12 @@ int SpeechStreamUpdate(void) {
             n = SpeechReadPcmBuffer(buf, size1);
             if (n == 0x1000) {
                 memcpy(ptr1, buf, 0x1000);
-                DAT_0079a844++;
+                SpeechPagesQueued++;
             } else {
                 memcpy(ptr1, buf, n);
                 memset((unsigned char *)ptr1 + n, 0, 0x1000 - n);
                 if (n != 0) {
-                    DAT_0079a844++;
+                    SpeechPagesQueued++;
                 }
             }
             ((struct KLIBAUDIO_Buf *)((struct KLIBAUDIO_Object *)SpeechSoundBuffer)->vtable)->Unlock(SpeechSoundBuffer, ptr1, size1, NULL, 0);
@@ -518,8 +518,8 @@ int SpeechStreamUpdate(void) {
                 SpeechPageIndex = 0;
             }
         }
-        DAT_0079a844--;
-        if (DAT_0079a844 == 0) {
+        SpeechPagesQueued--;
+        if (SpeechPagesQueued == 0) {
             SpeechStop();
             return 0;
         }

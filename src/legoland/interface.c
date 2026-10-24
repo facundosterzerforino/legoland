@@ -460,7 +460,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->flags |= 0x600a;
         icon->event_handler = (void *)InterfaceBriefingClicked;
         icon->render_func = (void *)RenderFocusableIcon;
-        DAT_00668e9c = icon;
+        BriefingIcon = icon;
         icon->flags |= 0x400;
         HasIntervalReport(BriefingFileName);
 
@@ -519,7 +519,7 @@ void UnloadGameInterface(void) {
         RemoveIconGroup(0x93);
         ScriptEndIcon = 0;
         RemoveIconGroup(0x9a);
-        DAT_00668e9c = NULL;
+        BriefingIcon = NULL;
         RemoveIconRange(0xd2);
         UnLoad_PopUpInfo();
         BuildSidePanelState = 2;

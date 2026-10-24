@@ -97,7 +97,7 @@ unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2) 
     if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         LoadMode = 1;
-        DAT_007cb324 = 1;
+        SavedGameScreenFromTitle = 1;
         FrontEndScreenMode.unk8 = 4;
     }
     return 1;
@@ -276,8 +276,8 @@ unsigned char CertificateGoBackHandler(unsigned int param_1, unsigned int param_
 unsigned char CertificatePrintHandler(unsigned int param_1, unsigned int param_2) {
     if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
-        if (CertificatePrintResultTimer == 0 && DAT_0079876c == 0) {
-            DAT_0079876c = 2;
+        if (CertificatePrintResultTimer == 0 && CertificatePrintCountdown == 0) {
+            CertificatePrintCountdown = 2;
         }
     }
     return 1;
@@ -310,7 +310,7 @@ struct Sprite *InitCertificateScreen(void) {
     result = LoadSprite("printinfo.lls", 4);
     PrintInfoSprite = result;
     CertificatePrintResultTimer = 0;
-    DAT_0079876c = 0;
+    CertificatePrintCountdown = 0;
     return result;
 }
 
@@ -324,15 +324,15 @@ void RenderCertificateScreen(void) {
         rc.left = 0;
         rc.right = 0x280;
         NewPrintCent((char *)&CurrentProfile, 0, rc, 0);
-        if (DAT_0079876c != 0) {
+        if (CertificatePrintCountdown != 0) {
             PrintSprite(PrintInfoSprite, 0xc6, 0x28, 0, hit);
             rc.top = 0x2d;
             rc.bottom = 0x43;
             rc.left = 0xc6;
             rc.right = (short)PrintInfoSprite->width + 0xc6;
             NewPrintCent(GetString(0x23a), 1, rc, 1);
-            DAT_0079876c = DAT_0079876c + -1;
-            if (DAT_0079876c == 0) {
+            CertificatePrintCountdown = CertificatePrintCountdown + -1;
+            if (CertificatePrintCountdown == 0) {
                 SpeechCloseFile();
                 SpeechDelayFrames = 4;
                 CertificatePrintResultTimer = PrintCertificateWithCurrentDate() ? 0x8c : -0x8c;
@@ -794,13 +794,13 @@ unsigned int ShowIntervalScreen(const char *a, const char *b) {
         EditMode.unk4 = 2;
         FrontEndScreenMode.unk4 = 0xffffffff;
         FrontEndScreenMode.unk8 = 7;
-        if (DAT_00668e9c != 0) {
-            ((struct IconNode *)DAT_00668e9c)->flags &= 0xfffffbff;
+        if (BriefingIcon != 0) {
+            ((struct IconNode *)BriefingIcon)->flags &= 0xfffffbff;
         }
         return 1;
     }
-    if (DAT_00668e9c != 0) {
-        ((struct IconNode *)DAT_00668e9c)->flags |= 0x400;
+    if (BriefingIcon != 0) {
+        ((struct IconNode *)BriefingIcon)->flags |= 0x400;
     }
     return 0;
 }
@@ -809,14 +809,14 @@ unsigned int ShowIntervalScreen(const char *a, const char *b) {
 unsigned int HasIntervalReport(const char *param_1) {
     unsigned int result;
 
-    if (DAT_00668e9c == 0) {
+    if (BriefingIcon == 0) {
         return 0;
     }
     if (LoadIntervalReport(param_1) != 0) {
-        ((struct IconNode *)DAT_00668e9c)->flags &= 0xfffffbff;
+        ((struct IconNode *)BriefingIcon)->flags &= 0xfffffbff;
         result = 1;
     } else {
-        ((struct IconNode *)DAT_00668e9c)->flags |= 0x400;
+        ((struct IconNode *)BriefingIcon)->flags |= 0x400;
         result = 0;
     }
     FreeIntervalReport();

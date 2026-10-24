@@ -87,7 +87,7 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
     // STRING: LEGOLAND 0x004bf170
     icon = (struct IconNode *)LoadSpriteIcon("GoBack_on_SavedGame.lls", 4, 0x1c2, 0x13, 7);
     icon->flags |= 0x6002;
-    if (DAT_007cb324) {
+    if (SavedGameScreenFromTitle) {
         icon->event_handler = (void *)ReturnToTitleClicked;
         icon->string_id = 0x26;
         icon->string = GetString(0x26);
@@ -213,7 +213,7 @@ unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags) {
         KillSaveScreenSprites();
         KillTitleScreenSprites();
         DeleteSavedGameList();
-        if (DAT_007cb324 == 0) {
+        if (SavedGameScreenFromTitle == 0) {
             UnloadMap();
         }
     }
@@ -372,7 +372,7 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
                         by = node->y + 0x1b;
                         rc.top = node->y + 0x22;
                         LightUpthisDeleteIcon(node, 0);
-                    } else if (DAT_00798700 != 0) {
+                    } else if (NewSaveGamePopUpShown != 0) {
                         SetIconSprite(node, RegDeletePopUpSprite);
                         node->y = (short)(node->field_1cb * 0x26 + 0x54);
                         by = node->y;
@@ -412,7 +412,7 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
             rc.right = rc.left + 0xd7;
             rc.bottom = rc.top + 0x13;
             if (node->field_18p != NULL && draw != 0) {
-                if (CurrentProfile.save_slot - 1 != node->field_1cb || (DeletePopUpShown == 0 && DAT_00798700 == 0)) {
+                if (CurrentProfile.save_slot - 1 != node->field_1cb || (DeletePopUpShown == 0 && NewSaveGamePopUpShown == 0)) {
                     NewPrintCent((char *)node->field_18p, 2, rc, 1);
                 }
             }
@@ -420,7 +420,7 @@ LEGO_EXPORT void PrintSavedGameDetails(void) {
         node = node->next;
     }
 
-    if (DAT_00798700 != 0) {
+    if (NewSaveGamePopUpShown != 0) {
         rc.left = selected->x + 8;
         rc.top = selected->y + 7;
         rc.right = rc.left + 0xae;
@@ -594,7 +594,7 @@ unsigned char SaveSlotClicked(struct IconNode *icon, unsigned int a2, unsigned i
         if (icon->field_18p != "EMPTY") {
             SetTempProfileName(icon->field_18p);
         }
-        DAT_00798700 = 1;
+        NewSaveGamePopUpShown = 1;
         FrontEndInputEnabled = 0;
     }
     return 1;
@@ -695,7 +695,7 @@ unsigned char NewSaveGameOkClicked(struct IconNode *icon, unsigned int a2, unsig
         SpeechDelayFrames = 4;
         StoreNewSaveGameToDisk();
         FrontEndScreenMode.unk4 = 0xffffffff;
-        DAT_00798700 = 0;
+        NewSaveGamePopUpShown = 0;
         FrontEndInputEnabled = 1;
         RestoreProfileKeyHandlers();
     }
@@ -713,7 +713,7 @@ unsigned char NewSaveGameCloseClicked(struct IconNode *icon, unsigned char flags
         CurrentProfile.save_slot = 0;
         RemoveIconGroup(7);
         InitSavedGameScreen();
-        DAT_00798700 = 0;
+        NewSaveGamePopUpShown = 0;
         FrontEndInputEnabled = 1;
         RestoreProfileKeyHandlers();
     }

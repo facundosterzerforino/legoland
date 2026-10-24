@@ -44,7 +44,7 @@ void BeginScriptSection(void) {
     unsigned int id = NextScriptSectionId;
     NextScriptSectionId = NextScriptSectionId + 1;
     CurrentScriptSection = AllocScriptSection(id);
-    DAT_007fdca4 = 0;
+    ScriptPromptStringIndex = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00478820
@@ -435,13 +435,13 @@ int ScriptCmdPrompt(struct CommandArgs *arg, int argc) {
         }
         if (argc > 0) {
             if (argc > 1) {
-                DAT_007fdca4 = AddScriptString(arg->arg1, arg->arg2, 1);
+                ScriptPromptStringIndex = AddScriptString(arg->arg1, arg->arg2, 1);
                 return 1;
             }
-            DAT_007fdca4 = AddScriptString(arg->arg1, NULL, 1);
+            ScriptPromptStringIndex = AddScriptString(arg->arg1, NULL, 1);
             return 1;
         }
-        DAT_007fdca4 = 0;
+        ScriptPromptStringIndex = 0;
     }
     return 1;
 }
