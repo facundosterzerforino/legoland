@@ -592,7 +592,7 @@ void JungleCruiseBuildStepPath(struct JungleRide *ride, int from, int to) {
             if ((to & (from * 2)) != 0) {
                 arc = JungleCruiseArcs;
             } else if ((from & (to * 2)) != 0) {
-                arc = DAT_004b71c8;
+                arc = JungleCruiseArcsAlt;
             }
             bit = 0;
             while (bit < 4) {
@@ -1116,11 +1116,11 @@ void LoadJungleCruiseResources(Element *obj) {
     // STRING: LEGOLAND 0x004b72b8
     JungMaskSprite = LoadSprite("jungmask.lls", 1);
     JungleCruiseFootprint = JungleCruiseRide->footprint;
-    DAT_004b7260 = DAT_004b7230;
-    DAT_004b7260.v[1] += JungleCruiseFootprint.v[1];
-    DAT_004b7260.v[0] += JungleCruiseFootprint.v[0];
-    DAT_004b7260.v[2] += JungleCruiseFootprint.v[0];
-    DAT_004b7260.v[3] += JungleCruiseFootprint.v[1];
+    JungleCruiseExtraFootprint = JungleCruiseExtraFootprintTemplate;
+    JungleCruiseExtraFootprint.v[1] += JungleCruiseFootprint.v[1];
+    JungleCruiseExtraFootprint.v[0] += JungleCruiseFootprint.v[0];
+    JungleCruiseExtraFootprint.v[2] += JungleCruiseFootprint.v[0];
+    JungleCruiseExtraFootprint.v[3] += JungleCruiseFootprint.v[1];
     JungleCruiseStartFootprint = JungleCruiseStartFootprintTemplate;
     JungleCruiseStartFootprint.v[1] += JungleCruiseFootprint.v[3] + 1;
     JungleCruiseStartFootprint.v[0] += JungleCruiseFootprint.v[0];
@@ -1171,7 +1171,7 @@ void JungleCruiseSetEditMode(void) {
     EditMode.unk8 = JungleCruiseRide;
     DefaultCursor(&EditCursor);
     JungleCruiseFootprint.next = &JungleCruiseStartFootprint;
-    JungleCruiseStartFootprint.next = &DAT_004b7260;
+    JungleCruiseStartFootprint.next = &JungleCruiseExtraFootprint;
     SetEditCursorFootPrint(&JungleCruiseFootprint);
 }
 
@@ -1191,8 +1191,8 @@ void JungleCruiseAddObject(struct Element *obj, int *coords) {
     score->tile.id = tile.id;
     score->start.pos.x = coords[0] + JungleCruiseStartFootprint.v[0] + 2;
     score->start.pos.y = coords[1] + JungleCruiseStartFootprint.v[1] + 2;
-    score->end.pos.x = coords[0] + DAT_004b7260.v[0] + 2;
-    score->end.pos.y = coords[1] + DAT_004b7260.v[1] + 2;
+    score->end.pos.x = coords[0] + JungleCruiseExtraFootprint.v[0] + 2;
+    score->end.pos.y = coords[1] + JungleCruiseExtraFootprint.v[1] + 2;
     score->connected = 0;
     score->field_c = 9999;
     score->field_10 = 0;
@@ -1209,7 +1209,7 @@ void JungleCruiseAddObject(struct Element *obj, int *coords) {
     JungleScoreList = score;
     AddBasicObject(obj, coords);
     AddJunglePathTile(coords[0] + JungleCruiseStartFootprint.v[0] + 2, coords[1] + JungleCruiseStartFootprint.v[1] + 2, 1, &score->tile.id);
-    AddJunglePathTile(coords[0] + DAT_004b7260.v[0] + 2, coords[1] + DAT_004b7260.v[1] + 2, 4, &score->tile.id);
+    AddJunglePathTile(coords[0] + JungleCruiseExtraFootprint.v[0] + 2, coords[1] + JungleCruiseExtraFootprint.v[1] + 2, 4, &score->tile.id);
     for (y = JungleCruiseFootprint.v[1]; y <= JungleCruiseFootprint.v[3]; y++) {
         for (x = JungleCruiseFootprint.v[0]; x <= JungleCruiseFootprint.v[2] - 1; x++) {
             if (x == JungleCruiseFootprint.v[0]) {
@@ -1228,8 +1228,8 @@ void JungleCruiseCalcCursor(Element *obj, int *param_2, unsigned int param_3) {
     memcpy(EditCursor.field_1414, &JungleCruiseFootprint, sizeof(JungleCruiseFootprint));
     EditCursor.field_1830 = 0;
     JungleCruiseFootprint.next = &JungleCruiseStartFootprint;
-    JungleCruiseStartFootprint.next = &DAT_004b7260;
-    DAT_004b7260.v[4] = 0;
+    JungleCruiseStartFootprint.next = &JungleCruiseExtraFootprint;
+    JungleCruiseExtraFootprint.v[4] = 0;
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
     ResetCursorBuildable(&EditCursor);
     PathCursor.tile_x = EditCursor.tile_x;

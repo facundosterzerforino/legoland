@@ -483,7 +483,7 @@ void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to) {
             if ((to & (2 * from)) != 0) {
                 arc = DAT_004b5158;
             } else if ((from & (to * 2)) != 0) {
-                arc = DAT_004b5198;
+                arc = BoatingSchoolArcs;
             }
             for (bit = 0; bit < 4; bit++) {
                 if ((from & (1 << bit)) != 0) {
@@ -580,12 +580,12 @@ void LoadBoatingSchoolResources(Element *obj) {
     LLSStop(lls);
     LLSSetFrame(lls, lls->frame_count);
     BoatingSchoolFootprint = BoatingSchoolRide->footprint;
-    DAT_004cc048 = DAT_004b5260;
-    DAT_004cc048.v[1] += BoatingSchoolFootprint.v[1];
-    DAT_004cc048.v[0] += BoatingSchoolFootprint.v[0];
-    DAT_004cc048.v[2] += BoatingSchoolFootprint.v[0];
-    DAT_004cc048.v[3] += BoatingSchoolFootprint.v[1];
-    BoatingSchoolStartFootprint = DAT_004b5278;
+    BoatingSchoolExtraFootprint = BoatingSchoolExtraFootprintTemplate;
+    BoatingSchoolExtraFootprint.v[1] += BoatingSchoolFootprint.v[1];
+    BoatingSchoolExtraFootprint.v[0] += BoatingSchoolFootprint.v[0];
+    BoatingSchoolExtraFootprint.v[2] += BoatingSchoolFootprint.v[0];
+    BoatingSchoolExtraFootprint.v[3] += BoatingSchoolFootprint.v[1];
+    BoatingSchoolStartFootprint = BoatingSchoolStartFootprintTemplate;
     BoatingSchoolStartFootprint.v[1] += BoatingSchoolFootprint.v[3] + 1;
     BoatingSchoolStartFootprint.v[0] += BoatingSchoolFootprint.v[0];
     BoatingSchoolStartFootprint.v[2] += BoatingSchoolFootprint.v[0];
@@ -633,7 +633,7 @@ void SetBoatingSchoolEditCursor(void) {
     EditMode.unk8 = BoatingSchoolRide;
     DefaultCursor(&EditCursor);
     BoatingSchoolFootprint.next = &BoatingSchoolStartFootprint;
-    BoatingSchoolStartFootprint.next = &DAT_004cc048;
+    BoatingSchoolStartFootprint.next = &BoatingSchoolExtraFootprint;
     SetEditCursorFootPrint(BoatingSchoolFootprint.v);
 }
 
@@ -653,8 +653,8 @@ void BoatingSchoolAddObject(struct Element *obj, int *coords) {
     score->id = tile.id;
     score->start.pos.x = coords[0] + BoatingSchoolStartFootprint.v[0] + 2;
     score->start.pos.y = coords[1] + BoatingSchoolStartFootprint.v[1] + 2;
-    score->end.pos.x = coords[0] + DAT_004cc048.v[0] + 2;
-    score->end.pos.y = coords[1] + DAT_004cc048.v[1] + 2;
+    score->end.pos.x = coords[0] + BoatingSchoolExtraFootprint.v[0] + 2;
+    score->end.pos.y = coords[1] + BoatingSchoolExtraFootprint.v[1] + 2;
     score->connected = 0;
     score->field_c = 9999;
     score->field_10 = 0;
@@ -667,7 +667,7 @@ void BoatingSchoolAddObject(struct Element *obj, int *coords) {
     BoatRideNodeList = score;
     AddBasicObject(obj, coords);
     AddBoatPathTile(coords[0] + BoatingSchoolStartFootprint.v[0] + 2, coords[1] + BoatingSchoolStartFootprint.v[1] + 2, 1, &score->id);
-    AddBoatPathTile(coords[0] + DAT_004cc048.v[0] + 2, coords[1] + DAT_004cc048.v[1] + 2, 4, &score->id);
+    AddBoatPathTile(coords[0] + BoatingSchoolExtraFootprint.v[0] + 2, coords[1] + BoatingSchoolExtraFootprint.v[1] + 2, 4, &score->id);
     for (y = BoatingSchoolFootprint.v[1]; y <= BoatingSchoolFootprint.v[3]; y++) {
         for (x = BoatingSchoolFootprint.v[0]; x <= BoatingSchoolFootprint.v[2]; x++) {
             if (x == BoatingSchoolFootprint.v[0]) {
@@ -692,7 +692,7 @@ void BoatingSchoolCalcCursor(struct Element *param_1, int *param_2, unsigned int
     struct Ride *cursor = (struct Ride *)param_1->data; /* the class (as the original names it) */
 
     BoatingSchoolFootprint.next = &BoatingSchoolStartFootprint;
-    BoatingSchoolStartFootprint.next = &DAT_004cc048;
+    BoatingSchoolStartFootprint.next = &BoatingSchoolExtraFootprint;
     BoatingSchoolStartFootprint.next->next = NULL;
     memcpy(EditCursor.field_1414, BoatingSchoolFootprint.v, 20);
     EditCursor.field_1830 = 0;
@@ -1799,7 +1799,7 @@ void AddBoatPathTile(int x, int y, int mask, unsigned short *owner) {
             elem->field_10 = 2;
             elem->field_0 = BoatingSchoolWaterRide->element;
             *(unsigned short *)&elem->field_4 = tile.id;
-            SetMapTile(pt.x, pt.y, *BoatingSchoolTileMapping[DAT_004b53d4[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)DAT_004b53d4[mask * 25 + row * 5 + col]);
+            SetMapTile(pt.x, pt.y, *BoatingSchoolTileMapping[BoatPathTilePatterns[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)BoatPathTilePatterns[mask * 25 + row * 5 + col]);
         }
     }
 }

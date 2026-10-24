@@ -175,10 +175,10 @@ float FLOAT_004ab458;
 float FLOAT_004ab45c;
 
 // GLOBAL: LEGOLAND 0x004ab4bc
-float DAT_004ab4bc;
+float RidePointOriginY;
 
 // GLOBAL: LEGOLAND 0x004ab4c0
-float DAT_004ab4c0;
+float RidePointOriginX;
 
 // GLOBAL: LEGOLAND 0x004ab4c8
 double DAT_004ab4c8;
@@ -350,10 +350,10 @@ unsigned short DAT_004b4c08[15][4];
 struct FXItem SAFARI_SFX[1];
 
 // GLOBAL: LEGOLAND 0x004b4cc4
-int DAT_004b4cc4[8] = {0x42, 0x42, 0x2f, 0x2f, 0x50, 0x50, 0x30, 0x30};
+int SafariRideFrameThreshold1[8] = {0x42, 0x42, 0x2f, 0x2f, 0x50, 0x50, 0x30, 0x30};
 
 // GLOBAL: LEGOLAND 0x004b4ce4
-int DAT_004b4ce4[8] = {0x3f, 0x3f, 0x3f, 0x3f, 0x30, 0x30, 0x20, 0x20};
+int SafariRideFrameThreshold2[8] = {0x3f, 0x3f, 0x3f, 0x3f, 0x30, 0x30, 0x20, 0x20};
 
 // GLOBAL: LEGOLAND 0x004b4d88
 struct FXItem SpiderRide_SFX[1];
@@ -362,7 +362,7 @@ struct FXItem SpiderRide_SFX[1];
 struct SpiderBnv SpiderBnvInfo = {"manbox??", {0, 0x20, 0x1c, 0x14, 0x18, 0x0c, 0x10, 0x14, 0x0c, 0x14, 0x18, 0x1c, 0x21, 0x24, 0x21, 0x24}, {0x20, 0x14, 0x18, 0x20, 0x18, 0x20, 0x20, 0x18, 0x20, 0x14, 0x18, 0x10, 0x0c, 0x08, 0x0c, 0x12, 0x14}};
 
 // GLOBAL: LEGOLAND 0x004b4e20
-Point DAT_004b4e20;
+Point SpiderRideDrawAdjust;
 
 // GLOBAL: LEGOLAND 0x004b4f08
 char *TempleSlidePathNames[4] = {
@@ -394,16 +394,16 @@ struct BoatDirStep BoatingSchoolDirSteps[4];
 struct BoatArc DAT_004b5158[4];
 
 // GLOBAL: LEGOLAND 0x004b5198
-struct BoatArc DAT_004b5198[4];
+struct BoatArc BoatingSchoolArcs[4];
 
 // GLOBAL: LEGOLAND 0x004b51d8
 int BoatingSchoolRiderOffsets[0x80];
 
 // GLOBAL: LEGOLAND 0x004b5260
-struct Footprint DAT_004b5260;
+struct Footprint BoatingSchoolExtraFootprintTemplate;
 
 // GLOBAL: LEGOLAND 0x004b5278
-struct Footprint DAT_004b5278;
+struct Footprint BoatingSchoolStartFootprintTemplate;
 
 // GLOBAL: LEGOLAND 0x004b5290
 struct Point BoatingSchoolQueueOffsets[6];
@@ -415,7 +415,7 @@ struct FXItem PTR_s_Boat_Noise_wav[2];
 struct Footprint BoatingSchoolWaterFootprint;
 
 // GLOBAL: LEGOLAND 0x004b53d4
-unsigned char DAT_004b53d4[0x190];
+unsigned char BoatPathTilePatterns[0x190];
 
 // GLOBAL: LEGOLAND 0x004b5570
 struct AreaNode DAT_004b5570;
@@ -669,7 +669,7 @@ int OctopusCafeChairIndices[0x5c];
 unsigned char DAT_004b6d58[0x120];
 
 // GLOBAL: LEGOLAND 0x004b7260
-struct Footprint DAT_004b7260;
+struct Footprint JungleCruiseExtraFootprint;
 
 // GLOBAL: LEGOLAND 0x004b7278
 struct Footprint JungleCruiseStartFootprint;
@@ -681,14 +681,14 @@ struct BoatDirStep JungleCruiseDirSteps[4];
 struct BoatArc JungleCruiseArcs[4];
 
 // GLOBAL: LEGOLAND 0x004b71c8
-struct BoatArc DAT_004b71c8[4];
+struct BoatArc JungleCruiseArcsAlt[4];
 
 /* Jungle cruise queue walk offsets (1/256 tile) from the ride origin, indexed 4 - slot. */
 // GLOBAL: LEGOLAND 0x004b7290
 struct Point JungleCruiseQueueOffsets[5];
 
 // GLOBAL: LEGOLAND 0x004b7230
-struct Footprint DAT_004b7230;
+struct Footprint JungleCruiseExtraFootprintTemplate;
 
 // GLOBAL: LEGOLAND 0x004b7248
 struct Footprint JungleCruiseStartFootprintTemplate;
@@ -749,20 +749,21 @@ int DAT_004b7b04[3] = {-1, 1, 1};
 // GLOBAL: LEGOLAND 0x004b7b10
 const char Path3DFormat[] = ".\\3ddata\\new\\%s\\%s";
 
+/* BITMAPINFOHEADER passed to AVIStreamGetFrameOpen for the advisor video (InitAdvisorFrameFormat: 112x96, 16 bpp). */
 // GLOBAL: LEGOLAND 0x004b7d70
-unsigned int DAT_004b7d70;
+unsigned int AdvisorFrameFormat;
 
 // GLOBAL: LEGOLAND 0x004b7d74
-unsigned int DAT_004b7d74;
+unsigned int AdvisorFrameWidth;
 
 // GLOBAL: LEGOLAND 0x004b7d78
-unsigned int DAT_004b7d78;
+unsigned int AdvisorFrameHeight;
 
 // GLOBAL: LEGOLAND 0x004b7d7e
-unsigned short DAT_004b7d7e;
+unsigned short AdvisorFrameBitCount;
 
 // GLOBAL: LEGOLAND 0x004b7d84
-unsigned int DAT_004b7d84;
+unsigned int AdvisorFrameSizeImage;
 
 /* Start of the 22 element names IsRidePartClass accepts. */
 // GLOBAL: LEGOLAND 0x004b7e9c
@@ -889,13 +890,13 @@ int PathSquare3x3OffsetsY[9] = {-2, -2, -2, -1, -1, -1, 0, 0, 0};
 unsigned char DAT_004b95c4[8];
 
 // GLOBAL: LEGOLAND 0x004b95cc
-unsigned char DAT_004b95cc[8];
+unsigned char CursorDashPattern1[8];
 
 // GLOBAL: LEGOLAND 0x004b95d4
-unsigned char DAT_004b95d4[8];
+unsigned char CursorDashPattern2[8];
 
 // GLOBAL: LEGOLAND 0x004b95dc
-unsigned char DAT_004b95dc[8];
+unsigned char CursorDashPattern3[8];
 
 // GLOBAL: LEGOLAND 0x004b95e8
 int DAT_004b95e8;
@@ -1240,7 +1241,7 @@ struct RenderItemNode *CoptersRenderListHead3;
 struct RenderItemNode *CoptersRenderListHead4;
 
 // GLOBAL: LEGOLAND 0x004c11b0
-struct RenderItemNode *DAT_004c11b0;
+struct RenderItemNode *CoptersRenderListHead5;
 
 // GLOBAL: LEGOLAND 0x004c11b4
 struct CopterNode *CopterNodeList;
@@ -1804,7 +1805,7 @@ struct InterfaceResearchNode;
 struct BoatRide *BoatRideList;
 
 // GLOBAL: LEGOLAND 0x004cc048
-struct Footprint DAT_004cc048;
+struct Footprint BoatingSchoolExtraFootprint;
 
 // GLOBAL: LEGOLAND 0x004cc060
 struct Footprint BoatingSchoolStartFootprint;
@@ -2622,7 +2623,7 @@ struct Element *Entrance1Elem;
 int VisitorSpawnCounter;
 
 // GLOBAL: LEGOLAND 0x006661cc
-char DAT_006661cc[8][100];
+char BlokeAiLogLines[8][100];
 
 // GLOBAL: LEGOLAND 0x006664ec
 int BlokeAiLogIndex;
@@ -2715,7 +2716,7 @@ unsigned int FullMapRendered;
 struct Sprite *MapSpannerSprite;
 
 // GLOBAL: LEGOLAND 0x00667c3c
-int DAT_00667c3c;
+int FtolScratch;
 
 // GLOBAL: LEGOLAND 0x00667c40
 const char *AdvisorDebugStage;
@@ -3099,7 +3100,7 @@ struct Sprite *IfSideBDownSprite;
 struct Sprite *IfSidebar1Sprite;
 
 // GLOBAL: LEGOLAND 0x00668840
-short DAT_00668840;
+short IconBBoxExtraHeight;
 
 // GLOBAL: LEGOLAND 0x0066884c
 short IconBBoxExtraWidth;
@@ -5473,7 +5474,7 @@ struct RoadLights *DrivingSchoolLightsData;
 void *DrivingSchoolRoadsClass;
 
 // GLOBAL: LEGOLAND 0x0082c688
-void *DAT_0082c688;
+void *LogFlumeInterfaceRide;
 
 // GLOBAL: LEGOLAND 0x0082c690
 unsigned short *DSchoolRedPalette;

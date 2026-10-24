@@ -385,10 +385,10 @@ void CloseAviAnim(struct AnimHandle *handle) {
 
 // FUNCTION: LEGOLAND 0x00443d90
 void InitAdvisorFrameFormat(void) {
-    DAT_004b7d7e = 0x10;
-    DAT_004b7d74 = 0x70;
-    DAT_004b7d78 = 0x60;
-    DAT_004b7d84 = 0x5400;
+    AdvisorFrameBitCount = 0x10;
+    AdvisorFrameWidth = 0x70;
+    AdvisorFrameHeight = 0x60;
+    AdvisorFrameSizeImage = 0x5400;
 }
 
 // FUNCTION: LEGOLAND 0x00443dc0
@@ -409,7 +409,7 @@ void SetAdvisorVidAnim(struct AnimHandle *handle) {
     }
     CurrentAdvisorAnim = handle;
     if (handle != NULL) {
-        handle->getframe = AVIStreamGetFrameOpen(handle->stream, &DAT_004b7d70);
+        handle->getframe = AVIStreamGetFrameOpen(handle->stream, &AdvisorFrameFormat);
     }
 }
 

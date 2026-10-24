@@ -411,7 +411,7 @@ void SafariRideUpdate(Element *obj) {
                     free(bloke->path);
                     bloke->path = NULL;
                 }
-                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4cc4[bloke->field_36]) {
+                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= SafariRideFrameThreshold1[bloke->field_36]) {
                     bloke->field_35 = 1;
                     bloke->param_action = 5;
                     free(bloke->path);
@@ -454,7 +454,7 @@ void SafariRideUpdate(Element *obj) {
                     free(node->rider->path);
                     bloke->path = NULL;
                 }
-                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= DAT_004b4ce4[bloke->field_36]) {
+                if (bloke->path != NULL && (int)BNVPath_GetDFrame(bloke->path) >= SafariRideFrameThreshold2[bloke->field_36]) {
                     bloke->field_35 = 2;
                     bloke->param_action = 13;
                     free(bloke->path);

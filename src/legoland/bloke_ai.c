@@ -297,7 +297,7 @@ void LogBlokeAiMessage(char *msg) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        PTR_DAT_004b8348[i] = DAT_006661cc[(BlokeAiLogIndex + i) & 7];
+        PTR_DAT_004b8348[i] = BlokeAiLogLines[(BlokeAiLogIndex + i) & 7];
     }
     BlokeAiLogIndex++;
     // STRING: LEGOLAND 0x004b8404

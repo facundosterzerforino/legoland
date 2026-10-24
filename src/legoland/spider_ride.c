@@ -191,7 +191,7 @@ void RenderSpider(Element *obj, void *param_2, void *param_3, TileId *tile, void
                     adj.x = 0;
                     adj.y = 0;
                     if (b->field_35 == 1) {
-                        adj = DAT_004b4e20;
+                        adj = SpiderRideDrawAdjust;
                         AdjustOffsetForViewMode(&adj);
                     }
                     p->offset.x = b->screen_x;

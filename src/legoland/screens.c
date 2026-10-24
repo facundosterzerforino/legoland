@@ -232,7 +232,7 @@ void PrintTitleScreen1(void) {
 
 // FUNCTION: LEGOLAND 0x00458930
 int _ftol() {
-    __asm fistp dword ptr[DAT_00667c3c] __asm mov eax, [DAT_00667c3c]
+    __asm fistp dword ptr[FtolScratch] __asm mov eax, [FtolScratch]
 }
 
 // FUNCTION: LEGOLAND 0x00458940

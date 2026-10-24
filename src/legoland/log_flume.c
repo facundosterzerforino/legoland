@@ -5239,7 +5239,7 @@ void LogFlume_GetInterfaces(struct Element *flume, struct Ride *vtbl) {
     }
     // STRING: LEGOLAND 0x004b4ba4
     if (_stricmp("LOG FLUME TRACK", flume->name) == 0) {
-        DAT_0082c688 = flume->ride;
+        LogFlumeInterfaceRide = flume->ride;
         vtbl->cb_a4 = LogFlumeTrackLoad;
         vtbl->cb_8c = LogFlumeTrackSetEditMode;
         vtbl->cb_sprite = (struct RideSpriteInfo * (*)(struct Element *, unsigned short)) GetLogFlumeTrackSpriteInfo; /* takes the tile id as a TileId */

@@ -600,7 +600,7 @@ void GetIconBBox(struct IconNode *icon, struct Bbox *bbox) {
         ind = (struct Indicator *)icon->field_30;
         if (ind != NULL) {
             if (ind->field_22 & 8) {
-                bbox->max_y = bbox->max_y + DAT_00668840;
+                bbox->max_y = bbox->max_y + IconBBoxExtraHeight;
             }
             if (ind->field_22 & 2) {
                 bbox->max_x = bbox->max_x + IconBBoxExtraWidth;

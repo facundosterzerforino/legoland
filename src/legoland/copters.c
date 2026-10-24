@@ -390,7 +390,7 @@ void CoptersRender(Element *obj, int unused, int unused2, TileId *tile, void *un
         CoptersRenderListHead2 = NULL;
         CoptersRenderListHead3 = NULL;
         CoptersRenderListHead4 = NULL;
-        DAT_004c11b0 = NULL;
+        CoptersRenderListHead5 = NULL;
         base.y = node->field_1 + ActiveCopterRide->y;
         for (rn = ActiveCopterRide->riders; rn != NULL; rn = rn->next) {
             if ((rn->rider->flags & 0x80) == 0) {

@@ -1407,13 +1407,13 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         bx = (short)pts->xpts[i] + screen[0];
         by = (short)pts->ypts[i] + screen[1];
         if (cursor->field_1828 & 4) {
-            pat = DAT_004b95cc;
+            pat = CursorDashPattern1;
         } else if (cursor->field_1828 & 2) {
             pat = DAT_004b95c4;
         } else if (pts->fpts[i] & 0xc) {
-            pat = DAT_004b95d4;
+            pat = CursorDashPattern2;
         } else {
-            pat = DAT_004b95dc;
+            pat = CursorDashPattern3;
         }
         if (cursor->field_1828 & 0x20) {
             switch (pts->fpts[i] & 3) {
