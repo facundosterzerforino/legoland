@@ -1968,10 +1968,10 @@ void OctopusCafeUpdate(Element *obj) {
             spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
             bloke->pos = bloke->dest;
             chair = DAT_004b6be8[bloke->field_36];
-            off.x = DAT_004b6b38[chair * 4];
-            off.y = DAT_004b6b38[chair * 4 + 1];
-            bloke->dest.x = DAT_004b6990[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
-            bloke->dest.y = (tile->pos.y << 8) + DAT_004b6990[spot * 2 + 1] + 0x80 + off.y;
+            off.x = OctopusCafeChairOffsets[chair * 4];
+            off.y = OctopusCafeChairOffsets[chair * 4 + 1];
+            bloke->dest.x = OctopusCafeSpotOffsets[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
+            bloke->dest.y = (tile->pos.y << 8) + OctopusCafeSpotOffsets[spot * 2 + 1] + 0x80 + off.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->target_dir = dir + 0x10;
             bloke->low_level_action = 7;
@@ -1987,11 +1987,11 @@ void OctopusCafeUpdate(Element *obj) {
             bloke->pos = bloke->dest;
             bloke->field_40 = 1;
             chair = DAT_004b6be8[bloke->field_36];
-            off.x = DAT_004b6b38[chair * 4 + 2];
-            off.y = DAT_004b6b38[chair * 4 + 3];
+            off.x = OctopusCafeChairOffsets[chair * 4 + 2];
+            off.y = OctopusCafeChairOffsets[chair * 4 + 3];
             spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
-            bloke->dest.x = DAT_004b6990[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
-            bloke->dest.y = (tile->pos.y << 8) + DAT_004b6990[spot * 2 + 1] + 0x80 + off.y;
+            bloke->dest.x = OctopusCafeSpotOffsets[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
+            bloke->dest.y = (tile->pos.y << 8) + OctopusCafeSpotOffsets[spot * 2 + 1] + 0x80 + off.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->target_dir = dir + 0x10;
             bloke->low_level_action = 7;
@@ -2017,11 +2017,11 @@ void OctopusCafeUpdate(Element *obj) {
             bloke->height = 0;
             BlokeWalkAnim(bloke);
             chair = DAT_004b6be8[bloke->field_36];
-            off.x = DAT_004b6b38[chair * 4];
-            off.y = DAT_004b6b38[chair * 4 + 1];
+            off.x = OctopusCafeChairOffsets[chair * 4];
+            off.y = OctopusCafeChairOffsets[chair * 4 + 1];
             spot = DAT_004b6a44[(bloke->field_36 >> 1) * 4];
-            bloke->dest.x = DAT_004b6990[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
-            bloke->dest.y = (tile->pos.y << 8) + DAT_004b6990[spot * 2 + 1] + 0x80 + off.y;
+            bloke->dest.x = OctopusCafeSpotOffsets[spot * 2] + (tile->pos.x << 8) - 0x80 + off.x;
+            bloke->dest.y = (tile->pos.y << 8) + OctopusCafeSpotOffsets[spot * 2 + 1] + 0x80 + off.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->target_dir = dir + 0x10;
             bloke->low_level_action = 7;
@@ -2040,8 +2040,8 @@ void OctopusCafeUpdate(Element *obj) {
                 idx = DAT_004b6a78[(bloke->field_36 >> 1) * 4 - bloke->param_action];
                 bloke->param_action++;
             } while (idx == -1);
-            bloke->dest.x = DAT_004b6990[idx * 2] - 0x80 + (tile->pos.x << 8);
-            bloke->dest.y = (tile->pos.y << 8) + 0x80 + DAT_004b6990[idx * 2 + 1];
+            bloke->dest.x = OctopusCafeSpotOffsets[idx * 2] - 0x80 + (tile->pos.x << 8);
+            bloke->dest.y = (tile->pos.y << 8) + 0x80 + OctopusCafeSpotOffsets[idx * 2 + 1];
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->low_level_action = 7;
             bloke->target_dir = dir + 0x10;
@@ -2065,8 +2065,8 @@ void OctopusCafeUpdate(Element *obj) {
             continue;
         }
         /* walk to waypoint idx of the table */
-        bloke->dest.x = DAT_004b6990[idx * 2] - 0x80 + (tile->pos.x << 8);
-        bloke->dest.y = (tile->pos.y << 8) + 0x80 + DAT_004b6990[idx * 2 + 1];
+        bloke->dest.x = OctopusCafeSpotOffsets[idx * 2] - 0x80 + (tile->pos.x << 8);
+        bloke->dest.y = (tile->pos.y << 8) + 0x80 + OctopusCafeSpotOffsets[idx * 2 + 1];
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
         bloke->target_dir = dir + 0x10;
         bloke->low_level_action = 7;

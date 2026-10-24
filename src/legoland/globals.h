@@ -719,7 +719,7 @@ extern struct FlumeTemplate LogFlumeHoldUpStages;
 // 0x004b4bd0
 extern unsigned char DrivingSchoolPumpsFootprint[0x14];
 // 0x004b4bf0
-extern unsigned int DAT_004b4bf0[5];
+extern unsigned int RoadPieceFootprint[5];
 // 0x004b4c04
 extern int TrafficLightTimer;
 // 0x004b4cb8
@@ -766,7 +766,7 @@ extern struct Point BoatingSchoolQueueOffsets[6];
 // 0x004b52c0
 extern struct FXItem PTR_s_Boat_Noise_wav[2];
 // 0x004b53c0
-extern struct Footprint DAT_004b53c0;
+extern struct Footprint BoatingSchoolWaterFootprint;
 // 0x004b53d4
 extern unsigned char DAT_004b53d4[0x190];
 // 0x004b5570
@@ -895,7 +895,7 @@ extern int DAT_004b68e0[0x22];
 // 0x004b6968
 extern struct FXItem OCTOPUS_SFX[3];
 // 0x004b6990
-extern int DAT_004b6990[0x29];
+extern int OctopusCafeSpotOffsets[0x29];
 // 0x004b6a34
 extern int DAT_004b6a34[4];
 // 0x004b6a44
@@ -903,7 +903,7 @@ extern int DAT_004b6a44[0xd];
 // 0x004b6a78
 extern int DAT_004b6a78[0x30];
 // 0x004b6b38
-extern int DAT_004b6b38[0x2c];
+extern int OctopusCafeChairOffsets[0x2c];
 // 0x004b6be8
 extern int DAT_004b6be8[0x5c];
 // 0x004b6d58
@@ -1343,7 +1343,7 @@ extern struct Ride *LogFlumeEntranceRide;
 // 0x004c2ba0
 extern struct Element *LogFlumeSpecialCorner4Element;
 // 0x004c2c18
-extern struct Cursor DAT_004c2c18;
+extern struct Cursor LogFlumeEntranceCursor2;
 // 0x004c2bf0
 extern struct Ride *LogFlumeCsaw2Ride;
 // 0x004c445c
@@ -1495,7 +1495,7 @@ extern struct DrawClipSize DrawClipExtent;
 // 0x0082c66c
 extern struct Sprite *ZSafariSprite;
 // 0x0082c670
-extern struct Point DAT_0082c670;
+extern struct Point SafariRideDrawOffset;
 // 0x004cbef8
 extern void *SafariPathRunBNV;
 // 0x004cbefc
@@ -1523,7 +1523,7 @@ extern void *SpiderOnBinV;
 // 0x004cbf28
 extern struct Sprite *SpiderRideLayer;
 // 0x0082c660
-extern Point DAT_0082c660;
+extern Point SpiderRideDrawOffset;
 // 0x004cbf30
 extern void *SpiderRideBinVs[2];
 // 0x004cbf38
@@ -2006,13 +2006,13 @@ extern int DialogListScrollY;
 // 0x0062fea4
 extern int DAT_0062fea4;
 // 0x0062fea8
-extern int *DAT_0062fea8;
+extern int *AltManTexturesB;
 // 0x0062feac
 extern void *AltWomanFileData;
 // 0x0062feb0
 extern void *GeoffMeshes[2];
 // 0x0062feb8
-extern int DAT_0062feb8[1];
+extern int AltManTextureCountB[1];
 // 0x0062febc
 extern void *ManMeshes[6];
 // 0x0062fed4
@@ -2025,15 +2025,15 @@ extern struct RenderItemNode *RenderItem2PoolNext; /* the second pool's next nod
 // 0x0062fef4
 extern void *TracyWalkMesh;
 // 0x0062fef8
-extern int *DAT_0062fef8;
+extern int *AltWomanTexturesA;
 // 0x00630100
 extern void *AltManFileData;
 // 0x00638358
 extern unsigned short SavedFPUControlWord;
 // 0x0064cd8c
-extern int *DAT_0064cd8c;
+extern int *AltWomanTexturesB;
 // 0x00655a38
-extern int *DAT_00655a38;
+extern int *AltManTexturesA;
 // 0x00655a3c
 extern void *PersonListHead;
 // 0x00655a4c
@@ -2485,7 +2485,7 @@ extern short DAT_0066884c;
 // 0x00668858
 extern struct IconNode DefaultIconNode;
 // 0x006688a8
-extern void *DAT_006688a8;
+extern void *NewIconGroupCallbacks;
 // 0x006688ac
 extern void *NewGroupRenderFunc;
 // 0x006688b0
@@ -3375,7 +3375,7 @@ extern int PopUpInfoSubjectType;
 // 0x007fdfa0
 extern unsigned int PopUpInfoState;
 // 0x007fdfa4
-extern unsigned int DAT_007fdfa4;
+extern unsigned int PopUpDeleteConfirm;
 // 0x007fdfa8
 extern unsigned int PopUpInfoResizePending;
 // 0x007fdfac
@@ -3479,13 +3479,13 @@ extern unsigned int MousePixelCovered;
 // 0x007feb18
 extern unsigned int DAT_007feb18;
 // 0x007febb8
-extern unsigned short DAT_007febb8;
+extern unsigned short RenderOrderFirstAnchor;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
 // 0x008003f4
 extern struct Element *LevelMapHandle;
 // 0x008003f8
-extern unsigned int DAT_008003f8;
+extern unsigned int BasicTileSlot0;
 // 0x00800400
 extern LEGO_EXPORT RECT ObjectPartArray[256];
 // 0x00801400
@@ -3515,7 +3515,7 @@ extern int DAT_00801a74;
 // 0x00801a80
 extern struct MapRect RectList[10];
 // 0x00801b20
-extern unsigned int DAT_00801b20;
+extern unsigned int BasicTileSlot1;
 // 0x00801b24
 extern LEGO_EXPORT unsigned int ObjectPartCount;
 // 0x00801b40
@@ -3529,17 +3529,17 @@ extern int Bridge0OverlayOffsetX;
 // 0x00805f44
 extern int Bridge0OverlayOffsetY;
 // 0x00805f48
-extern unsigned int DAT_00805f48;
+extern unsigned int BasicTileSlot3;
 // 0x00805f60
 extern LEGO_EXPORT struct Sprite *TileSpriteArray[2048];
 // 0x00807f60
 extern struct MapRenderOrderEntry MapRenderOrderList[4096];
 // 0x0080ff60
-extern unsigned int DAT_0080ff60;
+extern unsigned int BasicTileSlot2;
 // 0x0080ff64
 extern struct Element *CastleObjElem;
 // 0x0080ff68
-extern unsigned int DAT_0080ff68;
+extern unsigned int BasicTileSlot4;
 // 0x0080ff6c
 extern void *DragRemoveClass;
 extern unsigned int MapScreenClosePending;
@@ -3677,9 +3677,9 @@ extern unsigned int ScrollLeftKeyMask;
 // 0x00813ab4
 extern unsigned int ScrollLeftKeyState;
 // 0x00813ab8
-extern unsigned int DAT_00813ab8;
+extern unsigned int WatchedButtonMask;
 // 0x00813abc
-extern unsigned int DAT_00813abc;
+extern unsigned int WatchedButtonState;
 // 0x00813ac0
 extern unsigned int LeftButtonMask;
 // 0x00813ac4
@@ -4137,29 +4137,29 @@ extern float TrainSeatSpacing;
 extern char SafariManboxName[];
 
 // 0x00641000
-extern int DAT_00641000;
+extern int AltManBaseTextureA;
 
 // 0x00641004
 extern int DAT_00641004[3000];
 // 0x00643edc
 extern int DAT_00643edc[9131];
 // 0x0063810c
-extern int DAT_0063810c;
+extern int AltManTextureCountA;
 
 // 0x0064cd90
-extern int DAT_0064cd90;
+extern int AltManBaseTextureB;
 
 // 0x0064cd88
-extern int DAT_0064cd88;
+extern int AltWomanTextureCountA;
 
 // 0x0063835c
-extern int DAT_0063835c;
+extern int AltWomanTextureCountB;
 
 // 0x00638110
-extern int DAT_00638110;
+extern int AltWomanBaseTextureA;
 
 // 0x00638108
-extern int DAT_00638108;
+extern int AltWomanBaseTextureB;
 
 // 0x004b5600
 extern int **ClipVertexLists[2];

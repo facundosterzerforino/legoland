@@ -338,7 +338,7 @@ struct FlumeTemplate LogFlumeHoldUpStages;
 unsigned char DrivingSchoolPumpsFootprint[0x14];
 
 // GLOBAL: LEGOLAND 0x004b4bf0
-unsigned int DAT_004b4bf0[5];
+unsigned int RoadPieceFootprint[5];
 
 // GLOBAL: LEGOLAND 0x004b4c04
 int TrafficLightTimer;
@@ -412,7 +412,7 @@ struct Point BoatingSchoolQueueOffsets[6];
 struct FXItem PTR_s_Boat_Noise_wav[2];
 
 // GLOBAL: LEGOLAND 0x004b53c0
-struct Footprint DAT_004b53c0;
+struct Footprint BoatingSchoolWaterFootprint;
 
 // GLOBAL: LEGOLAND 0x004b53d4
 unsigned char DAT_004b53d4[0x190];
@@ -648,7 +648,7 @@ int DAT_004b68e0[0x22];
 struct FXItem OCTOPUS_SFX[3];
 
 // GLOBAL: LEGOLAND 0x004b6990
-int DAT_004b6990[0x29];
+int OctopusCafeSpotOffsets[0x29];
 
 // GLOBAL: LEGOLAND 0x004b6a34
 int DAT_004b6a34[4];
@@ -660,7 +660,7 @@ int DAT_004b6a44[0xd];
 int DAT_004b6a78[0x30];
 
 // GLOBAL: LEGOLAND 0x004b6b38
-int DAT_004b6b38[0x2c];
+int OctopusCafeChairOffsets[0x2c];
 
 // GLOBAL: LEGOLAND 0x004b6be8
 int DAT_004b6be8[0x5c];
@@ -1400,7 +1400,7 @@ struct Element *LogFlumeSpecialCorner1Element;
 struct Ride *LogFlumeEntranceRide;
 
 // GLOBAL: LEGOLAND 0x004c2c18
-struct Cursor DAT_004c2c18;
+struct Cursor LogFlumeEntranceCursor2;
 
 // GLOBAL: LEGOLAND 0x004c2ba0
 struct Element *LogFlumeSpecialCorner4Element;
@@ -1630,7 +1630,7 @@ struct DrawClipSize DrawClipExtent;
 struct Sprite *ZSafariSprite;
 
 // GLOBAL: LEGOLAND 0x0082c670
-struct Point DAT_0082c670;
+struct Point SafariRideDrawOffset;
 
 /* Safari BNV per rider path index (0 run, 1 on, 2 off), read as an array starting here. */
 // GLOBAL: LEGOLAND 0x004cbef8
@@ -1673,7 +1673,7 @@ void *SpiderOnBinV;
 struct Sprite *SpiderRideLayer;
 
 // GLOBAL: LEGOLAND 0x0082c660
-Point DAT_0082c660;
+Point SpiderRideDrawOffset;
 
 // GLOBAL: LEGOLAND 0x004cbf30
 void *SpiderRideBinVs[2];
@@ -2385,7 +2385,7 @@ int DialogListScrollY;
 int DAT_0062fea4;
 
 // GLOBAL: LEGOLAND 0x0062fea8
-int *DAT_0062fea8;
+int *AltManTexturesB;
 
 // GLOBAL: LEGOLAND 0x0062feac
 void *AltWomanFileData;
@@ -2394,7 +2394,7 @@ void *AltWomanFileData;
 void *GeoffMeshes[2];
 
 // GLOBAL: LEGOLAND 0x0062feb8
-int DAT_0062feb8[1];
+int AltManTextureCountB[1];
 
 // GLOBAL: LEGOLAND 0x0062febc
 void *ManMeshes[6];
@@ -2412,7 +2412,7 @@ struct RenderItemNode *RenderItem2PoolNext;
 void *TracyWalkMesh;
 
 // GLOBAL: LEGOLAND 0x0062fef8
-int *DAT_0062fef8;
+int *AltWomanTexturesA;
 
 // GLOBAL: LEGOLAND 0x00630100
 void *AltManFileData;
@@ -2421,10 +2421,10 @@ void *AltManFileData;
 unsigned short SavedFPUControlWord;
 
 // GLOBAL: LEGOLAND 0x0064cd8c
-int *DAT_0064cd8c;
+int *AltWomanTexturesB;
 
 // GLOBAL: LEGOLAND 0x00655a38
-int *DAT_00655a38;
+int *AltManTexturesA;
 
 // GLOBAL: LEGOLAND 0x00655a3c
 void *PersonListHead;
@@ -3106,7 +3106,7 @@ short DAT_0066884c;
 struct IconNode DefaultIconNode;
 
 // GLOBAL: LEGOLAND 0x006688a8
-void *DAT_006688a8;
+void *NewIconGroupCallbacks;
 
 // GLOBAL: LEGOLAND 0x006688ac
 void *NewGroupRenderFunc;
@@ -4451,7 +4451,7 @@ int PopUpInfoSubjectType;
 unsigned int PopUpInfoState;
 
 // GLOBAL: LEGOLAND 0x007fdfa4
-unsigned int DAT_007fdfa4;
+unsigned int PopUpDeleteConfirm;
 
 // GLOBAL: LEGOLAND 0x007fdfa8
 unsigned int PopUpInfoResizePending;
@@ -4611,8 +4611,9 @@ unsigned int MousePixelCovered;
 // GLOBAL: LEGOLAND 0x007feb18
 unsigned int DAT_007feb18;
 
+/* Anchor tile id of the first object in the map render order chain. */
 // GLOBAL: LEGOLAND 0x007febb8
-unsigned short DAT_007febb8;
+unsigned short RenderOrderFirstAnchor;
 
 // GLOBAL: LEGOLAND 0x007febc0
 LEGO_EXPORT struct Cursor EditCursor;
@@ -4620,8 +4621,9 @@ LEGO_EXPORT struct Cursor EditCursor;
 // GLOBAL: LEGOLAND 0x008003f4
 struct Element *LevelMapHandle;
 
+/* Basic tile slots 0-4 (offsets from the first BASIC TILES 1 sprite), set by LoadMapTiles; slot 3 is the red marker tile. */
 // GLOBAL: LEGOLAND 0x008003f8
-unsigned int DAT_008003f8;
+unsigned int BasicTileSlot0;
 
 // GLOBAL: LEGOLAND 0x00800400
 LEGO_EXPORT RECT ObjectPartArray[256];
@@ -4667,7 +4669,7 @@ int DAT_00801a74;
 struct MapRect RectList[10];
 
 // GLOBAL: LEGOLAND 0x00801b20
-unsigned int DAT_00801b20;
+unsigned int BasicTileSlot1;
 
 // GLOBAL: LEGOLAND 0x00801b24
 LEGO_EXPORT unsigned int ObjectPartCount;
@@ -4688,7 +4690,7 @@ int Bridge0OverlayOffsetX;
 int Bridge0OverlayOffsetY;
 
 // GLOBAL: LEGOLAND 0x00805f48
-unsigned int DAT_00805f48;
+unsigned int BasicTileSlot3;
 
 // GLOBAL: LEGOLAND 0x00805f60
 LEGO_EXPORT struct Sprite *TileSpriteArray[2048];
@@ -4697,13 +4699,13 @@ LEGO_EXPORT struct Sprite *TileSpriteArray[2048];
 struct MapRenderOrderEntry MapRenderOrderList[4096];
 
 // GLOBAL: LEGOLAND 0x0080ff60
-unsigned int DAT_0080ff60;
+unsigned int BasicTileSlot2;
 
 // GLOBAL: LEGOLAND 0x0080ff64
 struct Element *CastleObjElem;
 
 // GLOBAL: LEGOLAND 0x0080ff68
-unsigned int DAT_0080ff68;
+unsigned int BasicTileSlot4;
 
 // GLOBAL: LEGOLAND 0x0080ff6c
 void *DragRemoveClass;
@@ -4906,10 +4908,11 @@ unsigned int ScrollLeftKeyMask;
 unsigned int ScrollLeftKeyState;
 
 // GLOBAL: LEGOLAND 0x00813ab8
-unsigned int DAT_00813ab8;
+unsigned int WatchedButtonMask;
 
+/* Bits for WatchedButtonMask (button mask) this frame: 1 pressed, 2 released, 4 held, 8 repeat. */
 // GLOBAL: LEGOLAND 0x00813abc
-unsigned int DAT_00813abc;
+unsigned int WatchedButtonState;
 
 // GLOBAL: LEGOLAND 0x00813ac0
 unsigned int LeftButtonMask;
@@ -5558,8 +5561,9 @@ float TrainSeatSpacing = 16.0f;
 // GLOBAL: LEGOLAND 0x004b4cac
 char SafariManboxName[] = "manbox??";
 
+/* Alt textures for men (altman.txt): base texture A index, then alternatives; B likewise. CreatePersonFaceList swaps base for a random alternative. */
 // GLOBAL: LEGOLAND 0x00641000
-int DAT_00641000;
+int AltManBaseTextureA;
 
 // GLOBAL: LEGOLAND 0x00641004
 int DAT_00641004[3000];
@@ -5568,22 +5572,22 @@ int DAT_00641004[3000];
 int DAT_00643edc[9131];
 
 // GLOBAL: LEGOLAND 0x0063810c
-int DAT_0063810c;
+int AltManTextureCountA;
 
 // GLOBAL: LEGOLAND 0x0064cd90
-int DAT_0064cd90;
+int AltManBaseTextureB;
 
 // GLOBAL: LEGOLAND 0x0064cd88
-int DAT_0064cd88;
+int AltWomanTextureCountA;
 
 // GLOBAL: LEGOLAND 0x0063835c
-int DAT_0063835c;
+int AltWomanTextureCountB;
 
 // GLOBAL: LEGOLAND 0x00638110
-int DAT_00638110;
+int AltWomanBaseTextureA;
 
 // GLOBAL: LEGOLAND 0x00638108
-int DAT_00638108;
+int AltWomanBaseTextureB;
 
 // GLOBAL: LEGOLAND 0x004d87cc
 int *ClipVertsOut[32];

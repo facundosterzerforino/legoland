@@ -146,7 +146,7 @@ void RenderSafari(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                         struct Person *person;
                         struct Point off1;
 
-                        off2 = DAT_0082c670;
+                        off2 = SafariRideDrawOffset;
                         person = bloke->person;
                         off1.x = DAT_004cbee8;
                         off1.y = DAT_004cbeec;
@@ -184,8 +184,8 @@ void SafariRideLoad(struct Element *a1) {
     SafariOffBNV = LoadBinV("Zbuffers\\Safarioff.bnv");
     // STRING: LEGOLAND 0x004b4d1c
     ZSafariSprite = LoadSprite("z_Safari.lls", 1);
-    DAT_0082c670.x = 0;
-    DAT_0082c670.y = -1;
+    SafariRideDrawOffset.x = 0;
+    SafariRideDrawOffset.y = -1;
     DAT_004cbee8 = -41;
     DAT_004cbeec = -95;
     HideLayer(SafariLayer, 0);
@@ -390,8 +390,8 @@ void SafariRideUpdate(Element *obj) {
                 x = (x + oy) * h >> 9;
                 ox = lpConfig->view_x - (short)Get_XScroll() + y;
                 x = x + (lpConfig->view_y - (short)Get_YScroll());
-                coords[1] = (x - DAT_0082c670.y / 2 - sc.y) * 2;
-                coords[0] = (ox - DAT_0082c670.x / 2 - sc.x) * 2;
+                coords[1] = (x - SafariRideDrawOffset.y / 2 - sc.y) * 2;
+                coords[0] = (ox - SafariRideDrawOffset.x / 2 - sc.x) * 2;
                 bloke->person->sprite = SafariRiderSprite;
                 bloke->person->field_30 = 1;
                 bloke->person->depth = GetUnitDepth(-1617787.0f, -1618006.0f);

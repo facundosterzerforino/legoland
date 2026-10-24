@@ -460,11 +460,11 @@ void DrivingSchoolRoadsSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = DrivingSchoolRoadsClass;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&DAT_004b4bf0);
+    SetEditCursorFootPrint(&RoadPieceFootprint);
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, &DAT_004b4bf0, 20);
+    memcpy(DAT_0082f760.field_1414, &RoadPieceFootprint, 20);
     DAT_0082f760.field_1828 = 0x34;
 }
 
@@ -546,7 +546,7 @@ void DrivingSchoolRoadsCalcCursor(Element *obj, int *param_2, unsigned int param
                 }
             }
             if (entry != NULL && IsCursorBuildable(&EditCursor) != 0) {
-                memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
+                memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 20);
                 EditCursor.next = &DAT_0082f760;
                 DAT_0082f760.tile_x = entry->x;
                 DAT_0082f760.tile_y = entry->y;
@@ -611,7 +611,7 @@ void RoadSetQueryCursor(struct Element *dummy, struct RoadPlaceArg *param) {
         QueryCursor.tile_x = tile->x;
         QueryCursor.tile_y = tile->y;
 
-        src = &DAT_004b4bf0[0];
+        src = &RoadPieceFootprint[0];
         dst = &QueryCursor.field_1414[0];
         count = 5;
         while (count != 0) {
@@ -811,7 +811,7 @@ void ZebraCrossingSetEditMode(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = ZebraCrossingRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&DAT_004b4bf0);
+    SetEditCursorFootPrint(&RoadPieceFootprint);
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0, 0);
 }

@@ -952,7 +952,7 @@ LEGO_EXPORT void UnInitMan(void) {
             FreeMesh(*p);
         }
         p++;
-    } while ((INT_PTR)p < (INT_PTR)DAT_0062feb8);
+    } while ((INT_PTR)p < (INT_PTR)AltManTextureCountB);
     if (TracyWalkMesh != 0) {
         FreeMesh(TracyWalkMesh);
     }

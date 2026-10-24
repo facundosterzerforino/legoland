@@ -25,7 +25,7 @@ LEGO_EXPORT int SetupControllers(void) {
     GamePad = 0;
     DAT_00813a54 = 4;
     LeftButtonMask = 1;
-    DAT_00813ab8 = 0x100;
+    WatchedButtonMask = 0x100;
     CancelKeyMask = 0x200;
     ScrollUpKeyMask = 0x20;
     ScrollRightKeyMask = 0x10;
@@ -244,11 +244,11 @@ LEGO_EXPORT void ReadGameButtons(void) {
     GamePad = GamePad & 0xffffffe1;
     PrevHeldButtons = held;
 
-    DAT_00813abc = 0;
-    if ((pressed & DAT_00813ab8) != 0) DAT_00813abc = 1;
-    if ((released & DAT_00813ab8) != 0) DAT_00813abc |= 2;
-    if ((held & DAT_00813ab8) != 0) DAT_00813abc |= 4;
-    if ((repeat & DAT_00813ab8) != 0) DAT_00813abc |= 8;
+    WatchedButtonState = 0;
+    if ((pressed & WatchedButtonMask) != 0) WatchedButtonState = 1;
+    if ((released & WatchedButtonMask) != 0) WatchedButtonState |= 2;
+    if ((held & WatchedButtonMask) != 0) WatchedButtonState |= 4;
+    if ((repeat & WatchedButtonMask) != 0) WatchedButtonState |= 8;
 
     CancelKeyState = 0;
     if ((pressed & CancelKeyMask) != 0) CancelKeyState = 1;

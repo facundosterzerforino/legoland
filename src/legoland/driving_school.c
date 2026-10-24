@@ -316,7 +316,7 @@ void DrivingSchoolDCalcCursor(struct Element *param_1, struct Point *param_2) {
 
     BasicObjectDCalcCursor(param_1, param_2);
     DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
+    memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 20);
 
     while (node != NULL) {
         if (node->id == QueryObj.id) {
@@ -341,7 +341,7 @@ void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3
 
     StandardRemoveObject(obj, tile, (struct Cursor *)param_3);
     DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
+    memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 20);
 
     if (count->tile.id == tile.id) {
         DrivingSchoolCountList = count->next;

@@ -1413,8 +1413,8 @@ void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_
     PathCursor.footprint.y0 = EditCursor.footprint.y0 - 1;
     PathCursor.footprint.x0 = EditCursor.footprint.x0 + 3;
     EditCursor.next = &LogFlumeEntranceCursor;
-    LogFlumeEntranceCursor.next = &DAT_004c2c18;
-    DAT_004c2c18.next = &PathCursor;
+    LogFlumeEntranceCursor.next = &LogFlumeEntranceCursor2;
+    LogFlumeEntranceCursor2.next = &PathCursor;
     PathCursor.next = NULL;
     PathCursor.footprint.x1 = EditCursor.footprint.x1 + 1;
     PathCursor.footprint.y1 = 1 + EditCursor.footprint.y1;
@@ -1432,11 +1432,11 @@ void LogFlumeEntranceCalcCursor(Element *elem, int *param_2, unsigned int param_
     fy0 = LogFlumeEntranceRide->footprint.y0;
     LogFlumeEntranceCursor.tile_y = fy0 + y - h;
     LogFlumeEntranceCursor.tile_x++;
-    DAT_004c2c18.tile_x = LogFlumeEntranceRide->footprint.x0 + x;
-    DAT_004c2c18.tile_y = LogFlumeEntranceRide->footprint.y1 + y - 1 + h;
-    DAT_004c2c18.tile_x++;
-    memcpy(DAT_004c2c18.footprint.v, LogFlumeEntranceCursor.footprint.v, 20);
-    ResetCursorBuildable(&DAT_004c2c18);
+    LogFlumeEntranceCursor2.tile_x = LogFlumeEntranceRide->footprint.x0 + x;
+    LogFlumeEntranceCursor2.tile_y = LogFlumeEntranceRide->footprint.y1 + y - 1 + h;
+    LogFlumeEntranceCursor2.tile_x++;
+    memcpy(LogFlumeEntranceCursor2.footprint.v, LogFlumeEntranceCursor.footprint.v, 20);
+    ResetCursorBuildable(&LogFlumeEntranceCursor2);
     ValidateCursor(&EditCursor, ride);
     PropagateCursorBlocked(&EditCursor);
 }

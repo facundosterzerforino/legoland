@@ -170,7 +170,7 @@ void DrivingSchoolPumpsCalcCursor(Element *obj, int *screen, unsigned int param_
     }
     if (tile != NULL && IsCursorBuildable(&EditCursor)) {
         EditCursor.next = &DAT_0082f760;
-        memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 0x14);
+        memcpy(DAT_0082f760.field_1414, RoadPieceFootprint, 0x14);
         DAT_0082f760.field_1830 = 0;
         DAT_0082f760.tile_x = tile->x;
         DAT_0082f760.tile_y = tile->y;

@@ -372,7 +372,7 @@ LEGO_EXPORT void ResetInfoStruct(void) {
     PopUpInfoTile = 0;
     PopUpInfoSubjectType = 0;
     PopUpInfoState = 0;
-    DAT_007fdfa4 = 0;
+    PopUpDeleteConfirm = 0;
     PopUpInfoResizePending = 0;
     DAT_007fdf98 = 0;
     PopupInfoLineCount = 0;
@@ -1203,14 +1203,14 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
     PuCornerMaskIcon->x = last_x;
     PuCornerMaskIcon->y = icon_y;
     PuCornerMaskIcon->flags = PuCornerMaskIcon->flags & 0xfffffbff;
-    left_bound = DAT_007fdfa4 != 0 ? ClosePopUpIcon->x : PuCornerMaskIcon->x;
+    left_bound = PopUpDeleteConfirm != 0 ? ClosePopUpIcon->x : PuCornerMaskIcon->x;
     if (ClosePopUpIcon->x + 0x24 < MousePos.x || MousePos.x < left_bound) {
         SetPopUpIconSprites();
     }
     if (icon_bottom < MousePos.y || MousePos.y < icon_y) {
         SetPopUpIconSprites();
     }
-    if (DAT_007fdfa4 != 0) {
+    if (PopUpDeleteConfirm != 0) {
         DrawInfoPopupFooter();
     }
     Empty_00472090();
@@ -1265,7 +1265,7 @@ unsigned char DeleteObjectEventHandler(void *param_1, unsigned char param_2) {
     SetIconSprite(param_1, PuDeleteObjectOnSprite);
     if ((param_2 & 2) != 0) {
         DisablePopUpIconHandlers();
-        DAT_007fdfa4 = 1;
+        PopUpDeleteConfirm = 1;
         return 1;
     }
     return 1;
@@ -1316,7 +1316,7 @@ unsigned char CBCloseEventHandler(void *param1, unsigned char param2) {
         PopUpInfoOkIcon->flags |= 0x400;
         CBCloseIcon->flags |= 0x400;
         EnablePopUpIconHandlers();
-        DAT_007fdfa4 = 0;
+        PopUpDeleteConfirm = 0;
     }
 
     return 1;

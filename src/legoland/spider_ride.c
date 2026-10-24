@@ -187,7 +187,7 @@ void RenderSpider(Element *obj, void *param_2, void *param_3, TileId *tile, void
                     Person *p = b->person;
                     Point base;
                     Point adj;
-                    base = DAT_0082c660;
+                    base = SpiderRideDrawOffset;
                     adj.x = 0;
                     adj.y = 0;
                     if (b->field_35 == 1) {
@@ -242,8 +242,8 @@ void SpiderRideLoad(struct Element *param_1) {
     // STRING: LEGOLAND 0x004b4e38
     ZSpiderSprite = LoadSprite("z_spider.lls", 1);
     SpiderRideBinVs[0] = SpiderRunBinV;
-    DAT_0082c660.x = -1;
-    DAT_0082c660.y = 2;
+    SpiderRideDrawOffset.x = -1;
+    SpiderRideDrawOffset.y = 2;
     DAT_004cbf38[1] = ZSpiderSprite;
     SpiderRideBinVs[1] = SpiderOnBinV;
     DAT_004cbf38[0] = SpiderOffBinV;
@@ -435,8 +435,8 @@ void SpiderRideUpdate(Element *obj) {
                 oy = off.y + (lpConfig->view_y - (short)Get_YScroll());
                 bloke->flags |= 0x80;
                 bloke->person->field_30 = 1;
-                coords[0] = (ox - DAT_0082c660.x / 2 - sc.x) * 2;
-                coords[1] = (oy - DAT_0082c660.y / 2 - sc.y) * 2;
+                coords[0] = (ox - SpiderRideDrawOffset.x / 2 - sc.x) * 2;
+                coords[1] = (oy - SpiderRideDrawOffset.y / 2 - sc.y) * 2;
                 bloke->person->sprite = (struct Sprite *)DAT_004cbf38[1];
                 bloke->person->depth = GetUnitDepth(-1617787.75f, -1618096.5f);
                 bloke->field_35 = 0;

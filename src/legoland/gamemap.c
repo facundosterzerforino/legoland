@@ -598,7 +598,7 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) {
     pt.x = 0;
     pt.y = 0;
     MapRenderOrderCount = 0;
-    link = &DAT_007febb8;
+    link = &RenderOrderFirstAnchor;
     memset(MapRenderOrderList, 0, sizeof(MapRenderOrderList));
     while (pt.x < lpConfig->width) {
         if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
@@ -662,7 +662,7 @@ void CalculateFullMapRenderOrder(void) {
     Element *roads;
     Point pt;
 
-    link = &DAT_007febb8;
+    link = &RenderOrderFirstAnchor;
     pt.x = 0;
     pt.y = 0;
     roads = ElemID("DRIVING SCHOOL ROADS");
@@ -721,8 +721,8 @@ LEGO_EXPORT MapElement *GetFirstRenderObject(void) {
     int y;
     MapElement *element;
 
-    x = ((unsigned char *)&DAT_007febb8)[0];
-    y = ((unsigned char *)&DAT_007febb8)[1];
+    x = ((unsigned char *)&RenderOrderFirstAnchor)[0];
+    y = ((unsigned char *)&RenderOrderFirstAnchor)[1];
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         return 0;
     }
@@ -730,7 +730,7 @@ LEGO_EXPORT MapElement *GetFirstRenderObject(void) {
     if (element == 0) {
         return 0;
     }
-    if (DAT_007febb8 == 0 && (element->flags & 0xa8) == 0) {
+    if (RenderOrderFirstAnchor == 0 && (element->flags & 0xa8) == 0) {
         return 0;
     }
     return element;

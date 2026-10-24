@@ -729,7 +729,7 @@ void BoatingSchoolDCalcCursor(void *param_1, struct Point *param_2) {
     QueryCursor.next = &PathCursor;
     DAT_00810144 = 1;
     DefaultCursor(&DAT_0082ae20);
-    *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b53c0;
+    *(struct Footprint *)DAT_0082ae20.field_1414 = BoatingSchoolWaterFootprint;
     for (; path != NULL; path = path->next) {
         if (path->owner.id == QueryObj.id) {
             DAT_0082ae20.tile_x = path->tile.pos.x;
@@ -1405,10 +1405,10 @@ void BoatingSchoolMermaidRemoveObject(void *param_1, TileId tile, struct Cursor 
 void BoatingSchoolWaterLoad(Element *arg) {
     struct Ride *building = arg->ride;
     BoatingSchoolWaterRide = building;
-    DAT_004b53c0.v[1] += building->footprint.v[1];
-    DAT_004b53c0.v[0] += building->footprint.v[0];
-    DAT_004b53c0.v[2] += building->footprint.v[0];
-    DAT_004b53c0.v[3] += building->footprint.v[1];
+    BoatingSchoolWaterFootprint.v[1] += building->footprint.v[1];
+    BoatingSchoolWaterFootprint.v[0] += building->footprint.v[0];
+    BoatingSchoolWaterFootprint.v[2] += building->footprint.v[0];
+    BoatingSchoolWaterFootprint.v[3] += building->footprint.v[1];
 }
 
 // FUNCTION: LEGOLAND 0x0041b880
@@ -1416,7 +1416,7 @@ void BoatingSchoolSetEditMode(void) {
     struct Ride *state = BoatingSchoolWaterRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = state;
-    memcpy(&state->footprint, &DAT_004b53c0, sizeof(DAT_004b53c0));
+    memcpy(&state->footprint, &BoatingSchoolWaterFootprint, sizeof(BoatingSchoolWaterFootprint));
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(&EditMode.unk8->footprint);
@@ -1531,7 +1531,7 @@ void BoatingSchoolWaterCalcCursor(Element *obj, int *param_2, unsigned int param
     struct MapRect rect;
 
     n = 0;
-    memcpy(EditCursor.field_1414, &DAT_004b53c0, sizeof(DAT_004b53c0));
+    memcpy(EditCursor.field_1414, &BoatingSchoolWaterFootprint, sizeof(BoatingSchoolWaterFootprint));
     ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
     mask = GetBoatPathNeighbourMask(EditCursor.tile_x, EditCursor.tile_y, &owner);
     EditCursor.field_1830 = n;
@@ -1639,7 +1639,7 @@ void BoatingSchoolWaterDCalcCursor(struct Element *param_1, int *coords) {
         }
     }
     ride = BoatRideList;
-    memcpy(&QueryClass->footprint, &DAT_004b53c0, sizeof(DAT_004b53c0));
+    memcpy(&QueryClass->footprint, &BoatingSchoolWaterFootprint, sizeof(BoatingSchoolWaterFootprint));
     BasicObjectDCalcCursor(param_1, (struct Point *)coords);
     for (; ride != NULL; ride = ride->next) {
         if ((tile.pos.x == ride->tile_x && tile.pos.y == ride->tile_y) || (tile.pos.x == ride->next_x && tile.pos.y == ride->next_y)) {

@@ -612,21 +612,21 @@ void *CreatePersonFaceList(struct Person *person, struct LocFile *context, struc
 
     if (person->character == 1) {
         if (flag == 0) {
-            arrA = DAT_00655a38;
-            arrD = DAT_0062fea8;
-            valC = DAT_00641000;
-            modI = DAT_0063810c;
-            modJ = DAT_0062feb8[0];
-            valE = DAT_0064cd90;
+            arrA = AltManTexturesA;
+            arrD = AltManTexturesB;
+            valC = AltManBaseTextureA;
+            modI = AltManTextureCountA;
+            modJ = AltManTextureCountB[0];
+            valE = AltManBaseTextureB;
             z0.b0 = z0.b1 = z0.b2 = 0x56;
             z3.b0 = z3.b1 = z3.b2 = 0;
         } else {
-            arrA = DAT_0062fef8;
-            arrD = DAT_0064cd8c;
-            modI = DAT_0064cd88;
-            modJ = DAT_0063835c;
-            valC = DAT_00638110;
-            valE = DAT_00638108;
+            arrA = AltWomanTexturesA;
+            arrD = AltWomanTexturesB;
+            modI = AltWomanTextureCountA;
+            modJ = AltWomanTextureCountB;
+            valC = AltWomanBaseTextureA;
+            valE = AltWomanBaseTextureB;
             z0.b0 = z0.b1 = z0.b2 = 0x56;
             z3.b0 = z3.b1 = z3.b2 = 1;
         }
@@ -833,23 +833,23 @@ void LoadPersonAltTextureList(const char *param_1, const char *param_2, const ch
     }
     sprintf(path, Path3DFormat, param_3, param_2);
     if (param_4 == 0) {
-        DAT_0063810c = count1;
-        DAT_00655a38 = (int *)malloc(count1 * 4);
-        DAT_0062feb8[0] = count2;
-        DAT_0062fea8 = (int *)malloc(count2 * 4);
-        arr1 = DAT_00655a38;
-        arr2 = DAT_0062fea8;
-        out_b = &DAT_0064cd90;
-        out_a = &DAT_00641000;
+        AltManTextureCountA = count1;
+        AltManTexturesA = (int *)malloc(count1 * 4);
+        AltManTextureCountB[0] = count2;
+        AltManTexturesB = (int *)malloc(count2 * 4);
+        arr1 = AltManTexturesA;
+        arr2 = AltManTexturesB;
+        out_b = &AltManBaseTextureB;
+        out_a = &AltManBaseTextureA;
     } else {
-        DAT_0064cd88 = count1;
-        DAT_0062fef8 = (int *)malloc(count1 * 4);
-        DAT_0063835c = count2;
-        DAT_0064cd8c = (int *)malloc(count2 * 4);
-        arr1 = DAT_0062fef8;
-        arr2 = DAT_0064cd8c;
-        out_b = &DAT_00638108;
-        out_a = &DAT_00638110;
+        AltWomanTextureCountA = count1;
+        AltWomanTexturesA = (int *)malloc(count1 * 4);
+        AltWomanTextureCountB = count2;
+        AltWomanTexturesB = (int *)malloc(count2 * 4);
+        arr1 = AltWomanTexturesA;
+        arr2 = AltWomanTexturesB;
+        out_b = &AltWomanBaseTextureB;
+        out_a = &AltWomanBaseTextureA;
     }
     file = RES_OpenFile(path);
     if (file != NULL) {
@@ -889,17 +889,17 @@ void LoadPersonAltTextureList(const char *param_1, const char *param_2, const ch
 
 // FUNCTION: LEGOLAND 0x00442c70
 unsigned int FreeRender3DBuffers(void) {
-    if (DAT_00655a38) {
-        free(DAT_00655a38);
+    if (AltManTexturesA) {
+        free(AltManTexturesA);
     }
-    if (DAT_0062fea8) {
-        free(DAT_0062fea8);
+    if (AltManTexturesB) {
+        free(AltManTexturesB);
     }
-    if (DAT_0062fef8) {
-        free(DAT_0062fef8);
+    if (AltWomanTexturesA) {
+        free(AltWomanTexturesA);
     }
-    if (DAT_0064cd8c) {
-        free(DAT_0064cd8c);
+    if (AltWomanTexturesB) {
+        free(AltWomanTexturesB);
     }
     return 0;
 }
