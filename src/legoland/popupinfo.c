@@ -373,7 +373,7 @@ LEGO_EXPORT void ResetInfoStruct(void) {
     DAT_007fdf9c = 0;
     DAT_007fdfa0 = 0;
     DAT_007fdfa4 = 0;
-    DAT_007fdfa8 = 0;
+    PopUpInfoResizePending = 0;
     DAT_007fdf98 = 0;
     PopupInfoLineCount = 0;
     DisableInfoPopUPIcons();
@@ -383,7 +383,7 @@ LEGO_EXPORT void ResetInfoStruct(void) {
 // FUNCTION: LEGOLAND 0x00471550
 LEGO_EXPORT void PopInfoSizeMayChange(void) {
     if (DAT_007fdfa0 != 0) {
-        DAT_007fdfa8 = 1;
+        PopUpInfoResizePending = 1;
     }
 }
 
@@ -542,7 +542,7 @@ LEGO_EXPORT void PopUpInfoSetUp(struct HoverInfo t, unsigned int param_4, unsign
     }
     ResetInfoStruct();
     DAT_007fdfa0 = 1;
-    DAT_007fdfa8 = 1;
+    PopUpInfoResizePending = 1;
     PopUpInfoX = param_4;
     PopUpInfoY = param_5;
     DAT_007fdf88 = (unsigned short)t.data.value;
@@ -1060,7 +1060,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
         DAT_007fdf98 = 1;
         break;
     }
-    if (0 != DAT_007fdfa8) {
+    if (0 != PopUpInfoResizePending) {
         if (DAT_007fdf9c == 0x306) {
             PopupInfoLineCount = 2;
         } else {
@@ -1071,7 +1071,7 @@ LEGO_EXPORT void DrawPopUpInfo(void) {
                 PopupInfoLineCount = name_lines;
             }
         }
-        DAT_007fdfa8 = 0;
+        PopUpInfoResizePending = 0;
     }
     ClampPopUpInfoPosition(*(unsigned int *)&PopupInfoLineCount & 0xff);
     size = *(unsigned int *)&PopupInfoLineCount & 0xff;
@@ -1407,7 +1407,7 @@ unsigned char DeleteWorkOrderEventHandler(void *param_1, unsigned char param_2) 
 
 // FUNCTION: LEGOLAND 0x004735b0
 void ClearAdvicePriority(void) {
-    DAT_00668960 = 0;
+    CurrentAdvicePriority = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004735e0
@@ -1416,11 +1416,11 @@ unsigned int TryPlayAdviceSpeech(unsigned int param) {
     unsigned long now;
 
     entry = &DAT_004ba8e0[param];
-    if ((int)DAT_00668960 < (int)param) {
+    if ((int)CurrentAdvicePriority < (int)param) {
         now = GetTicks();
         if ((int)(entry->interval + entry->last_time) < (int)now) {
             if (PlaySpeech(entry->sample) != 0) {
-                DAT_00668960 = param;
+                CurrentAdvicePriority = param;
                 entry->last_time = now;
                 return 1;
             }
@@ -1436,7 +1436,7 @@ unsigned int PlayCantBuildAdvice(unsigned int param_1) {
 
 // FUNCTION: LEGOLAND 0x00473660
 void UpdateAdvicePriority(void) {
-    if (DAT_00668960 == 0) {
+    if (CurrentAdvicePriority == 0) {
         return;
     }
     if (SpeechIsPlaying() != 0) {

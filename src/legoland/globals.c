@@ -286,7 +286,7 @@ unsigned int DAT_004b4458[5];
 unsigned int DAT_004b4470[5];
 
 // GLOBAL: LEGOLAND 0x004b4580
-struct FortRect DAT_004b4580 = {-1, -3, 3, 3};
+struct FortRect FortWanderRect = {-1, -3, 3, 3};
 
 // GLOBAL: LEGOLAND 0x004b4688
 struct FXItem JOUST_SFX[1];
@@ -587,8 +587,9 @@ unsigned int DAT_004b62f0[4];
 // GLOBAL: LEGOLAND 0x004b6300
 struct LmsFile TrackTieModel;
 
+/* Edge midpoints of a 40-unit coaster cell per door direction (N, E, S, W), used by BuildSlopeRun. */
 // GLOBAL: LEGOLAND 0x004b6398
-float DAT_004b6398[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 40.0f, 0.0f}, {0.0f, 20.0f, 0.0f}};
+float CoasterCellEdgeMidpoints[4][3] = {{20.0f, 0.0f, 0.0f}, {40.0f, 20.0f, 0.0f}, {20.0f, 40.0f, 0.0f}, {0.0f, 20.0f, 0.0f}};
 
 // GLOBAL: LEGOLAND 0x004b63c8
 float DAT_004b63c8[4][3] = {{10.0f, 0.0f, 0.0f}, {0.0f, 10.0f, 0.0f}, {-10.0f, 0.0f, 0.0f}, {0.0f, -10.0f, 0.0f}};
@@ -1322,7 +1323,7 @@ struct JoustNode *JoustNodeList;
 struct Sprite *LogFlumeTunelMSprite;
 
 // GLOBAL: LEGOLAND 0x004c1260
-struct Cursor DAT_004c1260;
+struct Cursor FlumeNeighbourCursor2;
 
 // GLOBAL: LEGOLAND 0x004c2a94
 struct Sprite *LogFlumeHup1M1Sprite;
@@ -1412,7 +1413,7 @@ struct Cursor DAT_004c4468;
 struct Cursor DAT_004c5ca0;
 
 // GLOBAL: LEGOLAND 0x004c74f4
-struct Element *DAT_004c74f4;
+struct Element *LogFlumeTrackElement;
 
 // GLOBAL: LEGOLAND 0x004c74f8
 struct Cursor LogFlumeCursor;
@@ -1427,7 +1428,7 @@ struct RideSpriteInfo LogFlumeTrackSpriteInfo;
 struct Sprite *LogFlumeFc2M1Sprite;
 
 // GLOBAL: LEGOLAND 0x004c8d38
-struct Footprint DAT_004c8d38;
+struct Footprint LogFlumeTrackPieceFootprint;
 
 // GLOBAL: LEGOLAND 0x004c8d4c
 struct Element *LogFlumeDropElement;
@@ -1456,8 +1457,9 @@ struct RenderItemNode *FlumeCornerBarrelsLowWeight;
 // GLOBAL: LEGOLAND 0x004ca5ac
 struct RenderItemNode *FlumeCornerBarrelsHighWeight;
 
+/* Cursor appended for the first occupied flume neighbour (AppendFlumeNeighbourCursors). */
 // GLOBAL: LEGOLAND 0x004ca5b0
-struct Cursor DAT_004ca5b0;
+struct Cursor FlumeNeighbourCursor1;
 
 // GLOBAL: LEGOLAND 0x004cbe08
 struct Sprite *LogFlumeFc3M2Sprite;
@@ -2736,8 +2738,9 @@ long LastMapClickX;
 // GLOBAL: LEGOLAND 0x00667c74
 long LastMapClickY;
 
+/* Set by SavedGameLoadClicked: the next UpdateApplicationFrame loads the pending save (or starts the level) and clears it. */
 // GLOBAL: LEGOLAND 0x00667c64
-unsigned int DAT_00667c64;
+unsigned int GameStartPending;
 
 // GLOBAL: LEGOLAND 0x00667c78
 unsigned int SamplesPaused;
@@ -3229,8 +3232,9 @@ struct Sprite *PopUpSpritesLoaded;
 // GLOBAL: LEGOLAND 0x0066895c
 int DAT_0066895c;
 
+/* Priority of the advice speech playing now; TryPlayAdviceSpeech only interrupts it with a higher one. */
 // GLOBAL: LEGOLAND 0x00668960
-unsigned int DAT_00668960;
+unsigned int CurrentAdvicePriority;
 
 // GLOBAL: LEGOLAND 0x00668964
 int PopUpMessageCentrePieces;
@@ -3332,7 +3336,7 @@ void *DAT_00668e9c;
 struct Sprite *ScriptEndSprite;
 
 // GLOBAL: LEGOLAND 0x00668ea4
-unsigned int DAT_00668ea4;
+unsigned int InterfaceControlIconsLoaded;
 
 // GLOBAL: LEGOLAND 0x00668eb0
 struct IconNode *SelectedThemeIcon;
@@ -3665,11 +3669,13 @@ unsigned int SavedClipBottom;
 // GLOBAL: LEGOLAND 0x00798648
 unsigned int DAT_00798648;
 
+/* Free play Start icon: disabled (flag 0x400) until at least one object is selected. */
 // GLOBAL: LEGOLAND 0x0079864c
-struct IconNode *DAT_0079864c;
+struct IconNode *FreePlayStartIcon;
 
+/* Number of objects selected on the free play screen; enables/disables the Start icon at 1/0. */
 // GLOBAL: LEGOLAND 0x00798650
-unsigned int DAT_00798650;
+unsigned int FreePlaySelectedCount;
 
 // GLOBAL: LEGOLAND 0x00798660
 unsigned int DAT_00798660;
@@ -4427,7 +4433,7 @@ unsigned int DAT_007fdfa0;
 unsigned int DAT_007fdfa4;
 
 // GLOBAL: LEGOLAND 0x007fdfa8
-unsigned int DAT_007fdfa8;
+unsigned int PopUpInfoResizePending;
 
 // GLOBAL: LEGOLAND 0x007fdfac
 unsigned char PopupInfoLineCount;

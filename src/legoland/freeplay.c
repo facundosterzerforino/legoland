@@ -52,7 +52,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     DAT_00668e38 = 0;
     FUN_0048b6c0();
     FreePlayCostTotal = 0;
-    DAT_00798650 = 0;
+    FreePlaySelectedCount = 0;
 
     // STRING: LEGOLAND 0x004beb34
     SPRITE_TitleScreenBk = LoadSprite("FreePlayScreenBK.lls", 0);
@@ -93,7 +93,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
     icon->event_handler = (void *)FreePlayStartIconHandler;
     OkKeyHandler = FreePlayStartIconHandler;
     icon->flags |= 0x400;
-    DAT_0079864c = icon;
+    FreePlayStartIcon = icon;
 
     // STRING: LEGOLAND 0x004bea60
     bar = LoadSpriteIcon("Bar_Rides.lls", 4, 0xd1, 0x156, 7);
@@ -178,7 +178,7 @@ void StartFreePlayGame(void) {
 
 // FUNCTION: LEGOLAND 0x0048ac60
 unsigned char FreePlayStartIconHandler(unsigned int param_1, unsigned int param_2) {
-    if (DAT_0079864c != 0 && (DAT_0079864c->flags & 0x400) != 0) {
+    if (FreePlayStartIcon != 0 && (FreePlayStartIcon->flags & 0x400) != 0) {
         return 0;
     }
 
@@ -298,8 +298,8 @@ void SelectFreePlayObject(const char *param) {
         node->field_c = 1;
     }
 
-    if (DAT_00798650++ == 0) {
-        DAT_0079864c->flags &= ~0x400u;
+    if (FreePlaySelectedCount++ == 0) {
+        FreePlayStartIcon->flags &= ~0x400u;
     }
 }
 
@@ -313,8 +313,8 @@ void DeselectFreePlayObject(const char *param) {
         node->field_c = 0;
     }
 
-    if (--DAT_00798650 == 0) {
-        DAT_0079864c->flags |= 0x400;
+    if (--FreePlaySelectedCount == 0) {
+        FreePlayStartIcon->flags |= 0x400;
     }
 }
 

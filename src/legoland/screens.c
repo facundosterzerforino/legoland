@@ -368,7 +368,7 @@ int UpdateApplicationFrame(void) {
         EnableSidePanelIcons();
         MapScreenClosePending = 0;
         ResumeGameTimer();
-    } else if (DAT_00667c64 != 0) {
+    } else if (GameStartPending != 0) {
         PauseGameTimer();
         ResetGameTimer();
         MarkGameTimer();
@@ -391,7 +391,7 @@ int UpdateApplicationFrame(void) {
             StartLevelGame();
         }
         UpdateSoundVols();
-        DAT_00667c64 = 0;
+        GameStartPending = 0;
         MapStats.level_end = 0;
         EditMode.unk4 = 3;
         SetDefaultMouseHandlers();
@@ -419,7 +419,7 @@ int UpdateApplicationFrame(void) {
         break;
     }
 
-    if (DAT_00667c64 == 0) {
+    if (GameStartPending == 0) {
         // STRING: LEGOLAND 0x004b9160
         AdvisorDebugStage = "SFX";
         UpdateSound();

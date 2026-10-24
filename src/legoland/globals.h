@@ -525,7 +525,7 @@ extern GUID CLSID_DirectMusicPerformance;
 // 0x004acfd0
 extern GUID NullGuid;
 // 0x004b4580
-extern struct FortRect DAT_004b4580;
+extern struct FortRect FortWanderRect;
 
 // 0x004ab390
 extern float FLOAT_004ab390;
@@ -857,7 +857,7 @@ extern unsigned int DAT_004b62f0[4];
 // 0x004b6300
 extern struct LmsFile TrackTieModel; /* the track sleeper: 8 vertices (TrackTieVerts, InitTrackTieShape), 8 flat triangles */
 // 0x004b6398
-extern float DAT_004b6398[4][3];
+extern float CoasterCellEdgeMidpoints[4][3];
 // 0x004b63c8
 extern float DAT_004b63c8[4][3];
 // 0x004b6408
@@ -1295,7 +1295,7 @@ extern struct JoustNode *JoustNodeList;
 // 0x004c1258
 extern struct Sprite *LogFlumeTunelMSprite;
 // 0x004c1260
-extern struct Cursor DAT_004c1260;
+extern struct Cursor FlumeNeighbourCursor2;
 // 0x004c2a94
 extern struct Sprite *LogFlumeHup1M1Sprite;
 // 0x004c2a98
@@ -1355,7 +1355,7 @@ extern unsigned int DAT_004c5c90;
 // 0x004c74c8
 extern unsigned int DAT_004c74c8;
 // 0x004c74f4
-extern struct Element *DAT_004c74f4;
+extern struct Element *LogFlumeTrackElement;
 // 0x004c74f8
 extern struct Cursor LogFlumeCursor;
 // 0x004c4468
@@ -1369,7 +1369,7 @@ extern struct RideSpriteInfo LogFlumeTrackSpriteInfo;
 // 0x004c8d2c
 extern struct Sprite *LogFlumeFc2M1Sprite;
 // 0x004c8d38
-extern struct Footprint DAT_004c8d38;
+extern struct Footprint LogFlumeTrackPieceFootprint;
 // 0x004c8d4c
 extern struct Element *LogFlumeDropElement;
 // 0x004c8d50
@@ -1387,7 +1387,7 @@ extern struct Sprite *LogFlumeFc4MSprite;
 extern struct RenderItemNode *FlumeCornerBarrelsLowWeight;
 extern struct RenderItemNode *FlumeCornerBarrelsHighWeight;
 // 0x004ca5b0
-extern struct Cursor DAT_004ca5b0;
+extern struct Cursor FlumeNeighbourCursor1;
 // 0x004cbe08
 extern struct Sprite *LogFlumeFc3M2Sprite;
 // 0x004cbe0c
@@ -2246,7 +2246,7 @@ extern const char *AdvisorDebugStage;
 extern unsigned int DAT_00667c48;
 // 0x00667c4c
 extern int LevelScriptLoadResult;
-extern unsigned int DAT_00667c64;
+extern unsigned int GameStartPending;
 extern unsigned int SamplesPaused;
 // 0x00667c7c
 extern unsigned int MapLoaded;
@@ -2575,7 +2575,7 @@ extern struct Sprite *PopUpSpritesLoaded;
 // 0x0066895c
 extern int DAT_0066895c;
 // 0x00668960
-extern unsigned int DAT_00668960;
+extern unsigned int CurrentAdvicePriority;
 // 0x00668964
 extern int PopUpMessageCentrePieces;
 // 0x00668968
@@ -2641,7 +2641,7 @@ extern void *DAT_00668e9c;
 // 0x00668ea0
 extern struct Sprite *ScriptEndSprite;
 // 0x00668ea4
-extern unsigned int DAT_00668ea4;
+extern unsigned int InterfaceControlIconsLoaded;
 // 0x00668eb0
 extern struct IconNode *SelectedThemeIcon;
 // 0x00668eb4
@@ -2862,9 +2862,9 @@ extern unsigned int SavedClipBottom;
 // 0x00798648
 extern unsigned int DAT_00798648;
 // 0x0079864c
-extern struct IconNode *DAT_0079864c;
+extern struct IconNode *FreePlayStartIcon;
 // 0x00798650
-extern unsigned int DAT_00798650;
+extern unsigned int FreePlaySelectedCount;
 // 0x00798660
 extern unsigned int DAT_00798660;
 // 0x00798664
@@ -3377,7 +3377,7 @@ extern unsigned int DAT_007fdfa0;
 // 0x007fdfa4
 extern unsigned int DAT_007fdfa4;
 // 0x007fdfa8
-extern unsigned int DAT_007fdfa8;
+extern unsigned int PopUpInfoResizePending;
 // 0x007fdfac
 extern unsigned char PopupInfoLineCount;
 // 0x007fdfb0

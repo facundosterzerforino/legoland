@@ -116,12 +116,12 @@ void FortWanderUpdate(RideNode *node, Bloke *bloke) {
         }
         break;
     case 2:
-        r = (DAT_004b4580.right - DAT_004b4580.left) << 8;
-        h = (DAT_004b4580.bottom - DAT_004b4580.top) << 8;
+        r = (FortWanderRect.right - FortWanderRect.left) << 8;
+        h = (FortWanderRect.bottom - FortWanderRect.top) << 8;
         fx = (rand() & 0xff) * 0.003921569f;
         fy = (rand() & 0xff) * 0.003921569f;
-        bloke->dest.x = (int)(((tile->pos.x + DAT_004b4580.left) << 8) + r * fx);
-        bloke->dest.y = (int)(((tile->pos.y + DAT_004b4580.top) << 8) + h * fy);
+        bloke->dest.x = (int)(((tile->pos.x + FortWanderRect.left) << 8) + r * fx);
+        bloke->dest.y = (int)(((tile->pos.y + FortWanderRect.top) << 8) + h * fy);
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
         bloke->low_level_action = 7;
         bloke->target_dir = dir + 0x10;

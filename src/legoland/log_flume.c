@@ -1327,7 +1327,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
         memcpy(&LogFlumeTrackRide->footprint, &LogFlumeFootprint, sizeof(struct Footprint));
         LogFlumeTrackRide->footprint.x1--;
         LogFlumeTrackRide->footprint.y1--;
-        AddBasicObject(DAT_004c74f4, coords);
+        AddBasicObject(LogFlumeTrackElement, coords);
         mid = AllocFlumeNode();
         mid->parent = entry;
         mid->ride = LogFlumeEntranceRide;
@@ -1385,7 +1385,7 @@ void LogFlumeEntranceAddObject(Element *elem, int *pt) {
         node_y = node->tile.pos.y;
         coords[0] = node->tile.pos.x;
         coords[1] = node_y;
-        AddBasicObject(DAT_004c74f4, coords);
+        AddBasicObject(LogFlumeTrackElement, coords);
         LinkNodeAfter((struct FlumeEntry *)prev, (struct FlumeEntry *)node);
         InitLogFlumeEntranceParticles((struct FlumeEntry *)entry);
     }
@@ -2400,7 +2400,7 @@ void LogFlumeTrackLoad(Element *elem) {
     LogFlumeTrackRide->flags |= 0x400;
     LogFlumeTrackRide->field_18 = 0;
     LogFlumeTrackRide->field_14 = 0;
-    DAT_004c74f4 = elem;
+    LogFlumeTrackElement = elem;
     // STRING: LEGOLAND 0x004b4a0c
     if (LLIDB_FindElement("LOG FLUME IMAGE LIST", &LogFlumeImageListId, 0) == 0) {
         LogFlumeImageList = LLIDB_LoadData((void *)LogFlumeImageListId);
@@ -2590,7 +2590,7 @@ void LogFlumeTrackAddObject(struct Element *unused, struct Point *pt) {
             memcpy(&LogFlumeTrackRide->footprint, &LogFlumeFootprint, sizeof(struct Footprint));
             LogFlumeTrackRide->footprint.x1--;
             LogFlumeTrackRide->footprint.y1--;
-            AddBasicObject(DAT_004c74f4, coords);
+            AddBasicObject(LogFlumeTrackElement, coords);
             InsertFlumePieceIntoChain(entry, list);
             SetFlumePieceShapeFromNeighbours(entry, (struct StateSlots *)list);
         }
@@ -2989,10 +2989,10 @@ void GetFlumePieceFootprint(struct FlumeEntry *entry, struct Footprint **out, Ti
     r = cur->ride;
     if (r == LogFlumeTrackRide) {
         v = LogFlumeFootprint.x1;
-        memcpy(&DAT_004c8d38, &LogFlumeFootprint, sizeof(struct Footprint));
-        DAT_004c8d38.x1 = v - 1;
-        DAT_004c8d38.y1 = DAT_004c8d38.y1 - 1;
-        *out = &DAT_004c8d38;
+        memcpy(&LogFlumeTrackPieceFootprint, &LogFlumeFootprint, sizeof(struct Footprint));
+        LogFlumeTrackPieceFootprint.x1 = v - 1;
+        LogFlumeTrackPieceFootprint.y1 = LogFlumeTrackPieceFootprint.y1 - 1;
+        *out = &LogFlumeTrackPieceFootprint;
     } else if (r == LogFlumeDropRide) {
         *out = (struct Footprint *)LogFlumeDropRide->footprint.v;
     } else if (r == LogFlumeHoldUpRide) {
@@ -3077,8 +3077,8 @@ unsigned int SetFlumeEditCursor(void *param_1, unsigned int *param_2) {
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     SetEditCursorFootPrint(param_2);
-    DAT_004ca5b0.field_1828 = 0x2034;
-    DAT_004c1260.field_1828 = 0x2034;
+    FlumeNeighbourCursor1.field_1828 = 0x2034;
+    FlumeNeighbourCursor2.field_1828 = 0x2034;
     DAT_004c4468.field_1828 = 0x2034;
     DAT_004c5ca0.field_1828 = 0x2034;
     return 0x2034;
@@ -3135,16 +3135,16 @@ void AppendFlumeNeighbourCursors(struct FlumeEntry **list, struct Cursor *first)
 
     cur = NULL;
     flags = FlumeNeighbourMask(list);
-    DAT_004ca5b0.next = NULL;
-    DAT_004c1260.next = NULL;
-    first->next = &DAT_004ca5b0;
+    FlumeNeighbourCursor1.next = NULL;
+    FlumeNeighbourCursor2.next = NULL;
+    first->next = &FlumeNeighbourCursor1;
     i = 0;
     do {
         if (cur == NULL) {
-            cur = &DAT_004ca5b0;
+            cur = &FlumeNeighbourCursor1;
         } else {
-            cur->next = &DAT_004c1260;
-            cur = &DAT_004c1260;
+            cur->next = &FlumeNeighbourCursor2;
+            cur = &FlumeNeighbourCursor2;
         }
         if (flags & 1) {
             struct Footprint *fp;

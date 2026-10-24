@@ -10270,11 +10270,11 @@ void BuildSlopeRun(struct PathSeg *seg, struct PathSeg *end, int count, float h,
     step = 1.0f / (float)count;
     t = 0.0f;
     MapPosToWorld(&seg->pos, h, &a);
-    a.x += DAT_004b6398[di][0];
-    a.y += DAT_004b6398[di][1];
+    a.x += CoasterCellEdgeMidpoints[di][0];
+    a.y += CoasterCellEdgeMidpoints[di][1];
     MapPosToWorld(&end->pos, h + dh, &b);
-    b.x += DAT_004b6398[dout][0];
-    b.y += DAT_004b6398[dout][1];
+    b.x += CoasterCellEdgeMidpoints[dout][0];
+    b.y += CoasterCellEdgeMidpoints[dout][1];
     InitSlopeCurve(&a.x, &b.x, (struct Words3 *)DAT_004b63c8[di], (struct LineCurve *)&blob);
     for (i = 0; i < count; i++) {
         seg->flags |= 1;

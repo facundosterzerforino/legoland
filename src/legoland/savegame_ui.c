@@ -206,7 +206,7 @@ unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags) {
             CurrentProfile.speech_volume = TempProfile.speech_volume;
             CurrentProfile.music_volume = TempProfile.music_volume;
             CurrentProfile.fx_volume = TempProfile.fx_volume;
-            DAT_00667c64 = 1;
+            GameStartPending = 1;
             SaveGameLoadPending = 1;
         }
         RemoveIconGroup(7);

@@ -67,10 +67,10 @@ struct AviStreamInfo {
 
 // FUNCTION: LEGOLAND 0x004741f0
 LEGO_EXPORT void Load_Interface_ControlIcons(void) {
-    if (DAT_00668ea4 != 0) {
+    if (InterfaceControlIconsLoaded != 0) {
         return;
     }
-    DAT_00668ea4 = 1;
+    InterfaceControlIconsLoaded = 1;
     // STRING: LEGOLAND 0x004bb3b4
     InterfaceBgSprite = LoadSprite("InterfaceBG.lls", 4);
     // STRING: LEGOLAND 0x004bb3a4
@@ -123,9 +123,9 @@ LEGO_EXPORT void Load_Interface_ControlIcons(void) {
 
 // FUNCTION: LEGOLAND 0x004743b0
 LEGO_EXPORT void UnLoad_Interface_ControlIcons(void) {
-    if (DAT_00668ea4 != 0) {
+    if (InterfaceControlIconsLoaded != 0) {
         memset(DAT_007fdd70, 0, sizeof(DAT_007fdd70));
-        DAT_00668ea4 = 0;
+        InterfaceControlIconsLoaded = 0;
         KillSprite(InterfaceBgSprite);
         InterfaceBgSprite = NULL;
         KillSprite(NoEnergySprite);
