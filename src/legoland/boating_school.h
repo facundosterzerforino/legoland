@@ -58,13 +58,13 @@ struct MermaidNode {
 
 /* LLIDB "BOATING SCHOOL BOATS" data: boat sprites with per-frame screen offsets. */
 int AddBoatRide(TileId tile, struct Bloke *bloke);
-void FUN_00418fe0(int param_1);
+void RenderBoatingSchoolBoats(int param_1);
 void UpdateBoatRides(void);
-void FUN_004193c0(struct BoatRide *param_1);
-struct BoatRide *FUN_00419420(struct BoatRide *param_1);
-void FUN_00419520(struct BoatRide *param_1, int param_2);
+void LaunchBoatingSchoolBoat(struct BoatRide *param_1);
+struct BoatRide *DockBoatingSchoolBoat(struct BoatRide *param_1);
+void SteerBoatingSchoolBoat(struct BoatRide *param_1, int param_2);
 void BoatingSchoolBuildStepPath(struct BoatRide *ride, int from, int to);
-unsigned int FUN_004192d0(void *param_1);
+unsigned int TagAndCountBoatingSchoolBoats(void *param_1);
 void RemoveBoatRide(struct BoatRide *param_1);
 void AddBoatRideNodeValue(unsigned short id, unsigned int value);
 struct PathNode *FindBoatPathAt(unsigned int a, unsigned int b);

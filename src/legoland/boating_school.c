@@ -93,8 +93,11 @@ void RemoveBoatRide(struct BoatRide *param_1) {
     }
 }
 
+/* Draws the boating school boats (param_1 nonzero: boats at the dock, states 1 and 0x10; zero: boats out on the
+ * water) with their riders turned to the boat heading, and stores each boat's screen position. At animation tick
+ * 0x4f of the second docking step it hands the rider back to its AI (param_action + 1). */
 // FUNCTION: LEGOLAND 0x00418fe0
-void FUN_00418fe0(int param_1) {
+void RenderBoatingSchoolBoats(int param_1) {
     struct BoatRide *ride;
     int tw;
     int th;
@@ -154,9 +157,12 @@ void FUN_00418fe0(int param_1) {
     }
 }
 
+/* Stamps every boating school boat with the id at param_1 and returns the number of boats when that id is nonzero,
+ * else 0 (BoatingSchoolUpdate compares six visitors per boat against it). 100% match, so the original assigned here
+ * as well. */
 /* reads the id its argument starts with */
 // FUNCTION: LEGOLAND 0x004192d0
-unsigned int FUN_004192d0(void *param_1) {
+unsigned int TagAndCountBoatingSchoolBoats(void *param_1) {
     unsigned short *id = (unsigned short *)param_1;
     struct BoatRide *node = BoatRideList;
     unsigned int count = 0;
@@ -181,23 +187,23 @@ void UpdateBoatRides(void) {
         node->tile_y = node->next_y;
         if (node->field_3e4 == 0x10) {
             cur = node;
-            node = FUN_00419420(node);
+            node = DockBoatingSchoolBoat(node);
             if (node != cur) {
                 continue;
             }
         } else {
             switch (node->field_3e4) {
             case 1:
-                FUN_004193c0(node);
+                LaunchBoatingSchoolBoat(node);
                 break;
             case 4:
-                FUN_00419520(node, 0);
+                SteerBoatingSchoolBoat(node, 0);
                 break;
             case 8:
-                FUN_00419520(node, 1);
+                SteerBoatingSchoolBoat(node, 1);
                 break;
             case 0x10:
-                node = FUN_00419420(node);
+                node = DockBoatingSchoolBoat(node);
                 break;
             }
         }
@@ -208,8 +214,10 @@ void UpdateBoatRides(void) {
     }
 }
 
+/* Boat state 1: leaves the dock heading south (+5 tiles in y), switches to sailing state 4 and clears the counters
+ * of its boating school node. */
 // FUNCTION: LEGOLAND 0x004193c0
-void FUN_004193c0(struct BoatRide *param_1) {
+void LaunchBoatingSchoolBoat(struct BoatRide *param_1) {
     struct BoatRideNode *node = BoatRideNodeList;
     BoatingSchoolBuildStepPath(param_1, param_1->field_3dc, 4);
     param_1->field_3e4 = 4;
@@ -223,8 +231,10 @@ void FUN_004193c0(struct BoatRide *param_1) {
     }
 }
 
+/* Boat state 0x10, one docking step per call (countdown field_3e8 3, 2, 1): rebuilds the step path into the dock.
+ * When the countdown is done it fades the rider's sounds and removes the boat, returning the next one. */
 // FUNCTION: LEGOLAND 0x00419420
-struct BoatRide *FUN_00419420(struct BoatRide *param_1) {
+struct BoatRide *DockBoatingSchoolBoat(struct BoatRide *param_1) {
     int *p;
     int i;
     struct BoatRide *result;
@@ -276,8 +286,11 @@ struct BoatRide *FUN_00419420(struct BoatRide *param_1) {
     return param_1;
 }
 
+/* Picks the next 5-tile move of a sailing boat from the path tile's direction mask, avoiding other boats and
+ * sometimes turning at random. param_2 (return state 8) restricts it to the way back. At the path end it starts
+ * docking (state 0x10); with no exit it turns round. When its sailing countdown runs out it switches to state 8. */
 // FUNCTION: LEGOLAND 0x00419520
-void FUN_00419520(struct BoatRide *ride, int param_2) {
+void SteerBoatingSchoolBoat(struct BoatRide *ride, int param_2) {
     struct BoatRideNode *score = BoatRideNodeList;
     struct BoatRide *other = BoatRideList;
     struct PathNode *path;
@@ -835,7 +848,7 @@ void BoatingSchoolUpdate(void) {
         BoatingSchoolAnimTick = 0;
         UpdateBoatRides();
     }
-    FUN_00418fe0(0);
+    RenderBoatingSchoolBoats(0);
     for (; node != NULL; node = next) {
         score = BoatRideNodeList;
         next = node->next;
@@ -886,7 +899,7 @@ void BoatingSchoolUpdate(void) {
             break;
         case 1:
             if (bloke == score->blokes[0] && score->connected != 0) {
-                if ((int)score->value >= (int)FUN_004192d0(score) * 6 && AddBoatRide(tile, bloke) != 0) {
+                if ((int)score->value >= (int)TagAndCountBoatingSchoolBoats(score) * 6 && AddBoatRide(tile, bloke) != 0) {
                     BlokeSitAnim(bloke);
                     BlokeSetFrame(bloke, 0);
                     score->blokes[0] = 0;
@@ -967,7 +980,7 @@ void RenderBoatingSchool(Element *obj, unsigned int param_2, unsigned int param_
     struct Point pos;
     struct Point offset;
 
-    FUN_00418fe0(1);
+    RenderBoatingSchoolBoats(1);
     pos = GetScreenCoordsForObject((TileId *)tile, ride);
     offset = GetRenderOffsetForLayer((struct Sprite *)BoatingSchoolRide->layer, 3);
     AdjustOffsetForViewMode(&offset);

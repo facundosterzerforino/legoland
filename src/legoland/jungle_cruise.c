@@ -20,21 +20,23 @@
 #include "screens.h"
 #include "tilemap.h"
 
+/* Fills JungleCruiseSeatOffsets: for each of the 3 seats, 16 points on an ellipse (radii
+ * JungleCruiseSeatRadiusX/Y), one per boat heading frame. */
 // FUNCTION: LEGOLAND 0x00432ac0
-void FUN_00432ac0(void) {
+void InitJungleCruiseSeatOffsets(void) {
     int i;
     float a;
 
     for (i = 0; i < 16; i++) {
         a = (i * DAT_004ab3e8) * DAT_004ab3f4;
-        DAT_0081cb80[0][i].x = (int)(sin(a) * DAT_004ab4b0);
-        DAT_0081cb80[0][i].y = (int)(cos(a) * DAT_004ab4a8);
+        JungleCruiseSeatOffsets[0][i].x = (int)(sin(a) * JungleCruiseSeatRadiusX);
+        JungleCruiseSeatOffsets[0][i].y = (int)(cos(a) * JungleCruiseSeatRadiusY);
         a = (i * DAT_004ab3e8 + DAT_004ab3ec - DAT_004ab3fc) * DAT_004ab3f4;
-        DAT_0081cb80[1][i].x = (int)(sin(a) * DAT_004ab4b0);
-        DAT_0081cb80[1][i].y = (int)(cos(a) * DAT_004ab4a8);
+        JungleCruiseSeatOffsets[1][i].x = (int)(sin(a) * JungleCruiseSeatRadiusX);
+        JungleCruiseSeatOffsets[1][i].y = (int)(cos(a) * JungleCruiseSeatRadiusY);
         a = (i * DAT_004ab3e8 + DAT_004ab4a0) * DAT_004ab3f4;
-        DAT_0081cb80[2][i].x = (int)(sin(a) * DAT_004ab4b0);
-        DAT_0081cb80[2][i].y = (int)(cos(a) * DAT_004ab4a8);
+        JungleCruiseSeatOffsets[2][i].x = (int)(sin(a) * JungleCruiseSeatRadiusX);
+        JungleCruiseSeatOffsets[2][i].y = (int)(cos(a) * JungleCruiseSeatRadiusY);
     }
 }
 
@@ -172,8 +174,8 @@ void DrawJungleCruiseBoats(int docked) {
                     seat = row + d;
                     if (ride->blokes[seat] != NULL) {
                         person = Find3DPersonFromBloke(ride->blokes[seat]);
-                        fwdPos.x = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
-                        fwdPos.y = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
+                        fwdPos.x = JungleCruiseSeatOffsets[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
+                        fwdPos.y = JungleCruiseSeatOffsets[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
                         switch (seat) {
                         case 0:
                             person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 +
@@ -221,8 +223,8 @@ void DrawJungleCruiseBoats(int docked) {
                     seat = row + d;
                     if (ride->blokes[seat] != NULL) {
                         person = Find3DPersonFromBloke(ride->blokes[seat]);
-                        backPos.x = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
-                        backPos.y = DAT_0081cb80[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
+                        backPos.x = JungleCruiseSeatOffsets[seat][ride->step_frames[JungleCruiseStep] & 0xf].x + 0x20;
+                        backPos.y = JungleCruiseSeatOffsets[seat][ride->step_frames[JungleCruiseStep] & 0xf].y + 0x18;
                         switch (seat) {
                         case 0:
                             person->field_44 = ((float)(int)ride->step_frames[JungleCruiseStep] * DAT_004ab3e8 +
@@ -276,8 +278,10 @@ void DrawJungleCruiseBoats(int docked) {
     }
 }
 
+/* Jungle cruise twin of TagAndCountBoatingSchoolBoats: stamps every boat with the id at param_1 and returns the
+ * boat count when it is nonzero. */
 // FUNCTION: LEGOLAND 0x004332c0
-unsigned int FUN_004332c0(unsigned short *param_1) {
+unsigned int TagAndCountJungleCruiseBoats(unsigned short *param_1) {
     struct JungleRide *node = JungleRideList;
     unsigned int count = 0;
     if (node != NULL) {
@@ -304,23 +308,23 @@ void UpdateJungleRides(void) {
         node->cur_y = node->next_y;
         if (node->field_3e0 == 0x10) {
             cur = node;
-            node = FUN_004333e0(node);
+            node = DockJungleCruiseBoat(node);
             if (node != cur) {
                 continue;
             }
         } else {
             switch (node->field_3e0) {
             case 1:
-                FUN_004333b0(node);
+                LaunchJungleCruiseBoat(node);
                 break;
             case 4:
-                FUN_004334c0(node, 0);
+                SteerJungleCruiseBoat(node, 0);
                 break;
             case 8:
-                FUN_004334c0(node, 1);
+                SteerJungleCruiseBoat(node, 1);
                 break;
             case 0x10:
-                node = FUN_004333e0(node);
+                node = DockJungleCruiseBoat(node);
                 break;
             }
         }
@@ -331,15 +335,18 @@ void UpdateJungleRides(void) {
     }
 }
 
+/* Jungle cruise boat state 1: leaves the dock heading south and switches to sailing state 4. */
 // FUNCTION: LEGOLAND 0x004333b0
-void FUN_004333b0(struct JungleRide *param_1) {
+void LaunchJungleCruiseBoat(struct JungleRide *param_1) {
     JungleCruiseBuildStepPath(param_1, param_1->from_dir, 4);
     param_1->field_3e0 = 4;
     param_1->next_y = param_1->cur_y + 5;
 }
 
+/* Jungle cruise boat state 0x10, one docking step per call; removes the boat when the countdown is done and returns
+ * the next one. */
 // FUNCTION: LEGOLAND 0x004333e0
-struct JungleRide *FUN_004333e0(struct JungleRide *param_1) {
+struct JungleRide *DockJungleCruiseBoat(struct JungleRide *param_1) {
     unsigned int *p;
     int i;
     struct JungleRide *result;
@@ -387,8 +394,10 @@ struct JungleRide *FUN_004333e0(struct JungleRide *param_1) {
     return param_1;
 }
 
+/* Jungle cruise twin of SteerBoatingSchoolBoat: chooses the next 5-tile move from the path mask, avoiding other
+ * boats; param_2 restricts it to the way back. */
 // FUNCTION: LEGOLAND 0x004334c0
-void FUN_004334c0(struct JungleRide *ride, int param_2) {
+void SteerJungleCruiseBoat(struct JungleRide *ride, int param_2) {
     struct JungleScore *score = JungleScoreList;
     struct JungleRide *other = JungleRideList;
     struct JunglePath *path;
@@ -1030,9 +1039,11 @@ struct RideSpriteInfo *GetMonkeyFishSpriteInfo(Element *obj, unsigned short para
     return &RideSpriteInfoBuffer;
 }
 
+/* Removes a jungle cruise instance: standard object removal with a fixed cursor footprint, clears flag 0x40 on the
+ * tiles beside it, and unlinks and frees its node from JungleCruiseInstanceList. */
 // FUNCTION: LEGOLAND 0x00434b40
-void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3) {
-    struct JungleObj *node = DAT_00629c34;
+void RemoveJungleCruiseInstance(void *param_1, TileId tile, struct Cursor *param_3) {
+    struct JungleObj *node = JungleCruiseInstanceList;
     struct JungleObj *prev = NULL;
     struct MapElement *elem;
     int x;
@@ -1078,7 +1089,7 @@ void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3) {
             free(node);
             return;
         }
-        DAT_00629c34 = node->next;
+        JungleCruiseInstanceList = node->next;
         free(node);
     }
 }
@@ -1115,7 +1126,7 @@ void LoadJungleCruiseResources(Element *obj) {
     JungleCruiseStartFootprint.v[0] += JungleCruiseFootprint.v[0];
     JungleCruiseStartFootprint.v[2] += JungleCruiseFootprint.v[0];
     JungleCruiseStartFootprint.v[3] += JungleCruiseFootprint.v[3] + 1;
-    FUN_00432ac0();
+    InitJungleCruiseSeatOffsets();
 }
 
 // FUNCTION: LEGOLAND 0x00434e50
@@ -1240,7 +1251,7 @@ void JungleCruiseCalcCursor(Element *obj, int *param_2, unsigned int param_3) {
 void JungleCruiseDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct JunglePath *p1 = JunglePathList;
     struct JungleFish *p3 = JungleFishList;
-    struct JungleObj *p4 = DAT_00629c34;
+    struct JungleObj *p4 = JungleCruiseInstanceList;
     struct JungleObj *p2 = JungleObjList;
 
     BasicObjectDCalcCursor(param_1, param_2);
@@ -1372,17 +1383,17 @@ void JungleCruiseRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) 
             }
         }
         fake.ride = DAT_0081cb64;
-        thing = DAT_00629c34;
+        thing = JungleCruiseInstanceList;
         while (thing != NULL) {
             if (thing->owner == tile.id) {
                 savedX = cursor->tile_x;
                 savedY = cursor->tile_y;
                 cursor->tile_x = thing->tile.pos.x;
                 cursor->tile_y = thing->tile.pos.y;
-                FUN_00434b40(&fake, thing->tile, cursor);
+                RemoveJungleCruiseInstance(&fake, thing->tile, cursor);
                 cursor->tile_x = savedX;
                 cursor->tile_y = savedY;
-                thing = DAT_00629c34;
+                thing = JungleCruiseInstanceList;
             } else {
                 thing = thing->next;
             }
@@ -1429,7 +1440,7 @@ void JungleCruiseUpdate(void) {
     for (boat = JungleScoreList; boat != NULL; boat = boat->next) {
         tile.id = boat->tile.id;
         if (boat->seats[0] != NULL && --boat->timer <= 0 && boat->connected != 0 &&
-            boat->field_40 > (int)FUN_004332c0(&boat->tile.id) * 6 &&
+            boat->field_40 > (int)TagAndCountJungleCruiseBoats(&boat->tile.id) * 6 &&
             AddJungleRide(tile, boat->seats[0], boat->seats[1], boat->seats[2]) != 0) {
             boat->seats[0]->flags |= 0x80;
             boat->seats[0]->param_action++;

@@ -557,9 +557,9 @@ extern double DOUBLE_004ab488;
 // 0x004ab4a0
 extern float DAT_004ab4a0;
 // 0x004ab4a8
-extern double DAT_004ab4a8;
+extern double JungleCruiseSeatRadiusY;
 // 0x004ab4b0
-extern double DAT_004ab4b0;
+extern double JungleCruiseSeatRadiusX;
 // 0x004ab4b8
 extern float FLOAT_004ab4b8;
 // 0x004ab430
@@ -1915,7 +1915,7 @@ extern struct JungleObj *JungleObjList;
 // 0x00629c30
 extern struct JungleFish *JungleFishList;
 // 0x00629c34
-extern struct JungleObj *DAT_00629c34;
+extern struct JungleObj *JungleCruiseInstanceList;
 // 0x00629c3c
 extern struct JungleScore *JungleScoreList;
 // 0x00629c40
@@ -3850,7 +3850,7 @@ extern struct Ride *MonkeyTreeRide;
 // 0x0081cb74
 extern struct Ride *MFish2Ride;
 // 0x0081cb80
-extern struct Point DAT_0081cb80[3][16];
+extern struct Point JungleCruiseSeatOffsets[3][16];
 // 0x0081cd00
 extern struct SpriteSet *JungleCruiseBoats;
 // 0x0081cd04

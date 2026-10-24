@@ -136,10 +136,10 @@ double DOUBLE_004ab488;
 float DAT_004ab4a0;
 
 // GLOBAL: LEGOLAND 0x004ab4a8
-double DAT_004ab4a8;
+double JungleCruiseSeatRadiusY;
 
 // GLOBAL: LEGOLAND 0x004ab4b0
-double DAT_004ab4b0;
+double JungleCruiseSeatRadiusX;
 
 // GLOBAL: LEGOLAND 0x004ab4b8
 float FLOAT_004ab4b8;
@@ -2240,7 +2240,7 @@ struct JungleObj *JungleObjList;
 struct JungleFish *JungleFishList;
 
 // GLOBAL: LEGOLAND 0x00629c34
-struct JungleObj *DAT_00629c34;
+struct JungleObj *JungleCruiseInstanceList;
 
 // GLOBAL: LEGOLAND 0x00629c3c
 struct JungleScore *JungleScoreList;
@@ -5136,8 +5136,9 @@ struct Ride *MonkeyTreeRide;
 // GLOBAL: LEGOLAND 0x0081cb74
 struct Ride *MFish2Ride;
 
+/* Rider screen offsets per seat (3) and boat heading frame (16), built by the seat ellipse initialiser. */
 // GLOBAL: LEGOLAND 0x0081cb80
-struct Point DAT_0081cb80[3][16];
+struct Point JungleCruiseSeatOffsets[3][16];
 
 // GLOBAL: LEGOLAND 0x0081cd00
 struct SpriteSet *JungleCruiseBoats;
