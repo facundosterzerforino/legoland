@@ -284,7 +284,6 @@ void TempleSlideUpdate(Element *obj) {
     int th;
     int tw;
     RideNode *node;
-    int t;
 
     ride = obj->ride;
     node = ride->riders;
@@ -339,10 +338,10 @@ void TempleSlideUpdate(Element *obj) {
                     int px = bloke->pos.x;
                     GetTileDimensions(&tw, &th);
                     y = (px + py) * th >> 9;
-                    t = (px - py) * tw >> 9;
+                    x = (px - py) * tw >> 9;
                 }
                 sx = Get_XScroll();
-                x = (lpConfig->view_x - sx) + t;
+                x += lpConfig->view_x - sx;
                 sy = Get_YScroll();
                 y += lpConfig->view_y - sy;
                 x = x - TempleSlideDrawOffset.x / 2 - coords.x;
