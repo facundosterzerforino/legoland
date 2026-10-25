@@ -154,6 +154,7 @@ void JoustUpdate(struct Element *elem) {
     struct JoustNode *jn;
     unsigned char *t;
     char name[9];
+    struct JoustPair pair; /* the node's pair copy: one local for both loops, as in the original */
 
     node = ride->riders;
     // STRING: LEGOLAND 0x004b470c
@@ -165,7 +166,6 @@ void JoustUpdate(struct Element *elem) {
         char count;
         char horses;
         struct JoustSub12 flags;
-        struct JoustPair h;
         char hb;
         unsigned int f1c;
         unsigned int f20;
@@ -181,7 +181,7 @@ void JoustUpdate(struct Element *elem) {
         count = jn->x;
         horses = jn->y;
         flags = jn->sub12;
-        h = jn->pair;
+        pair = jn->pair;
         hb = jn->phase;
         f1c = jn->field_1c;
         f20 = jn->field_20;
@@ -232,7 +232,7 @@ void JoustUpdate(struct Element *elem) {
                     b->low_level_action = 7;
                     NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
                     b->field_44 = IsByteNonZero(hb);
-                    h.c[b->field_44] = 1;
+                    pair.c[b->field_44] = 1;
                     b->param_action++;
                     count++;
                     busy--;
@@ -248,7 +248,7 @@ void JoustUpdate(struct Element *elem) {
                 b->param_action++;
                 break;
             case 4:
-                h.c[b->field_44] = 2;
+                pair.c[b->field_44] = 2;
                 sprintf(name + 6, "%02d", b->field_44 + 1);
                 SetBlokePositionFromBNV(JoustRideBnv, b, name, (char)hb, -1617735.0f, -1617993.5f, 0);
                 if (b->field_58++ > 0x96) {
@@ -258,7 +258,7 @@ void JoustUpdate(struct Element *elem) {
             case 5:
                 sprintf(name + 6, "%02d", b->field_44 + 1);
                 SetBlokePositionFromBNV(JoustRideBnv, b, name, (char)hb, -1617735.0f, -1617993.5f, 0);
-                h.c[b->field_44] = 3;
+                pair.c[b->field_44] = 3;
                 b->param_action++;
                 break;
             case 6:
@@ -273,7 +273,7 @@ void JoustUpdate(struct Element *elem) {
                     b->person->field_2c = 0;
                     b->person->field_30 = 0;
                     NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
-                    h.c[b->field_44] = 1;
+                    pair.c[b->field_44] = 1;
                     b->param_action++;
                     count--;
                 }
@@ -284,7 +284,7 @@ void JoustUpdate(struct Element *elem) {
                 b->target_dir = CalcMoveLine(b->pos, b->dest, &b->nav) + 0x10;
                 b->low_level_action = 7;
                 NewDirForAction(b, (unsigned char)((b->target_dir >> 5) + 3));
-                h.c[b->field_44] = 0;
+                pair.c[b->field_44] = 0;
                 b->param_action = 0x1e;
                 break;
             case 10:
@@ -412,43 +412,42 @@ void JoustUpdate(struct Element *elem) {
         jn->x = count;
         jn->y = horses;
         jn->sub12 = flags;
-        jn->pair = h;
+        jn->pair = pair;
         jn->frame = hb;
         jn->field_1c = f1c;
         jn->field_20 = f20;
     }
     for (jn = JoustNodeList; jn != NULL; jn = jn->next) {
-        struct JoustPair s;
         char step = jn->phase;
         int busy = jn->busy;
         char count = jn->x;
         unsigned int f20 = jn->field_20;
         unsigned int f1c = 0;
 
-        s = jn->pair;
+        pair = jn->pair;
         do {
             switch (0) {
             default:
                 if (step == 0) {
                     if ((busy != 0 && count < 2) || count == 0) {
-                        if (s.c[0] != 0) {
+                        if (pair.c[0] != 0) {
                             break;
                         }
                         f1c = 1;
-                    } else if (s.c[0] != 1) {
-                        if (s.c[0] != 3) {
+                    } else if (pair.c[0] != 1) {
+                        if (pair.c[0] != 3) {
                             break;
                         }
                         f20 = 1;
                     }
                 } else if (step == 0x20) {
                     if ((busy != 0 && count < 2) || count == 0) {
-                        if (s.c[1] != 0) {
+                        if (pair.c[1] != 0) {
                             break;
                         }
                         f1c = 1;
-                    } else if (s.c[1] != 1) {
-                        if (s.c[1] != 3) {
+                    } else if (pair.c[1] != 1) {
+                        if (pair.c[1] != 3) {
                             break;
                         }
                         f20 = 1;
@@ -483,7 +482,7 @@ void JoustUpdate(struct Element *elem) {
             f1c = 0;
             f20 = 0;
         } while (0);
-        jn->pair = s;
+        jn->pair = pair;
         jn->phase = step;
         jn->field_1c = f1c;
         jn->field_20 = f20;

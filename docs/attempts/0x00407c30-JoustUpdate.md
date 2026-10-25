@@ -33,3 +33,10 @@ have bodies identical to 11, 21 and 16 in our C, so MSVC6 merges them; the origi
 only cross-jumps their common tails (checked with capstone: the constants are the same, so this is not a behaviour
 bug). The original's copies differ in which dest field is reloaded (case 14 passes dest.y from a register, case 28
 reloads both), so their source differs slightly. Rewrites of case 29 / case 14 (`x <<= 8` locals, field order): 74.8-77.16.
+
+## 2026-10-25 agent notes (75.94% -> 76.22%)
+
+
+## 2026-10-24 Opus 5.5: harness 77.16 -> 77.45
+The two per-loop `struct JoustPair` copies (`h` in the update loop, `s` in the sound loop) are one function-scope
+local in the original. Found by the slotsweep block-merge pass.
