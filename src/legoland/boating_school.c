@@ -104,9 +104,8 @@ void RenderBoatingSchoolBoats(int param_1) {
     int tw2;
     int dx;
     int th2;
-    int dy;
+    int dy; /* the step's y, then reused for the tile's screen x: one variable in the original */
     struct Point b;
-    int sx;
     int sy;
     struct Person *person;
     struct Point off;
@@ -124,19 +123,19 @@ void RenderBoatingSchoolBoats(int param_1) {
             b.y = (dx + dy) * th2;
             b.x >>= 9;
             b.y >>= 9;
-            sx = (ride->tile_x - ride->tile_y) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
+            dy = (ride->tile_x - ride->tile_y) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
             sy = (ride->tile_x + ride->tile_y) * (th >> 1) - (ScrollY >> 8);
             off.x = BoatingSchoolBoats->offset_x[ride->step_sprite[BoatingSchoolAnimTick] & 0xff] >> 1;
             off.y = BoatingSchoolBoats->offset_y[ride->step_sprite[BoatingSchoolAnimTick] & 0xff] >> 1;
             AdjustOffsetForViewMode(&off);
-            ride->screen_x = lpConfig->view_x + b.x + off.x + sx;
+            ride->screen_x = lpConfig->view_x + b.x + off.x + dy;
             ride->screen_y = lpConfig->view_y + b.y + off.y + sy;
             PrintSprite(BoatingSchoolBoats->sprites[ride->step_sprite[BoatingSchoolAnimTick] & 0xff], ride->screen_x, ride->screen_y, 0, 0);
             if (ride->bloke != 0) {
                 person = Find3DPersonFromBloke(ride->bloke);
                 person->field_44 = ((float)(int)ride->step_sprite[BoatingSchoolAnimTick] * BoatHeadingStepDegrees + Float45) * Float2Pi * FloatNegInv360;
                 SetPersonRotation(person, &person->field_40);
-                off.x = lpConfig->view_x + b.x + sx;
+                off.x = lpConfig->view_x + b.x + dy;
                 off.y = lpConfig->view_y + b.y + sy;
                 AdjustBlokePosition((struct Point *)&off);
                 seat.x = BoatingSchoolRiderOffsets[(ride->step_sprite[BoatingSchoolAnimTick] & 0xf) * 2] + 0x44;
