@@ -17,3 +17,13 @@ scalar-replaces off completely (no frame home, harness 43-44 because every slot 
 keeps a home only because off.y is spilled. Self-assignments (`tw = tw;`, `(void)th;`) do not change the frame order
 (it is decided after optimisation). Next idea: find what gives off a memory home (a second use in another region, as in
 RunAppraisal's write-through variables) and then what makes VC6 pack it with the tile pointer.
+
+## 2026-10-24 Opus 5.5, second pass (no change)
+- Synthetic VC6 tests (a stand-alone ride-update skeleton compiled with /FAs): neither a `__int64`-returning inline
+  helper for the playfield offset (`*(__int64 *)&off = MapToPlayfield(px, py)`), nor a `union { __int64; struct { int lo,
+  hi; } }` local, nor an `__int64 t` gives the Point a memory home packed with the tile pointer.
+- TempleSlideUpdate: every placement of tw/th/t/px/py at block or function scope (32 masks x 2 product orders), dead
+  stores of a field/call/product/address, dropping the `tile` local, and a `person` local: no frame change. One real
+  gain: computing the x offset straight into `x` with `x += view_x - sx` (81.22 -> 81.72, landed).
+- Pairwise merges of same-typed locals and block-to-function hoists (slotsweep) on Safari, Carousel, Plane, Spinning
+  Barrels and Spider: all tie.

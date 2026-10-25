@@ -42,3 +42,13 @@ How the frame was found (five probe agents with small MSVC6 tests):
 - Remove section 10's RECT home: build the two rectangles so that no field is spilled.
 - Pack like the original: n and the render-object count into the row-offset temporary's slot, and so on (see
   "Packing" above).
+
+## 2026-10-24 Opus 5.5 (analysis, no change)
+- The comparison covers the whole function: reccmp's size is 34704 bytes, both builds have 292 calls with the same
+  target histogram and nearly identical instruction-length histograms (8085 vs ~8110 instructions). An earlier estimate
+  that only 28.7 KB was compared was wrong.
+- verify: 816 removed / 830 added lines in 131 hunks; about half touch `[esp + N]` (slot choice), most of the rest are
+  branch displacements and loads that move with them. The first hunk is the classic "constant through a register"
+  pattern (`mov ecx, 0x50; mov [esp+0x1c], ecx` vs an immediate store): the original reuses those values later.
+- Slot sweep (every pairwise merge of same-typed function-scope locals, 438 candidates, plus 17 block-to-function
+  hoists): all exactly tie at the harness score, so the slot problem here is not about which named variables share.
